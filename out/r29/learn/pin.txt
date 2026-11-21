@@ -1,0 +1,14 @@
+dist/r29-learn-b0.html   window 390 x 560: {"stage": 170, "bar": 222, "block": 406, "share": 0.724, "held": false}
+dist/r29-learn-b0.html   window 390 x 600: {"stage": 170, "bar": 222, "block": 406, "share": 0.677, "held": true}
+dist/r29-learn-b0.html   window 390 x 640: {"stage": 182, "bar": 222, "block": 417, "share": 0.652, "held": true}
+dist/r29-learn-b0.html   window 390 x 667: {"stage": 189, "bar": 222, "block": 425, "share": 0.637, "held": true}
+dist/r29-learn-b0.html   window 390 x 700: {"stage": 199, "bar": 222, "block": 434, "share": 0.62, "held": true}
+dist/r29-learn-b0.html   window 390 x 740: {"stage": 210, "bar": 222, "block": 446, "share": 0.602, "held": true}
+dist/r29-learn-b0.html   window 390 x 800: {"stage": 242, "bar": 222, "block": 478, "share": 0.597, "held": true}
+dist/r29-learn.html      window 390 x 560: {"stage": 170, "bar": 266, "block": 450, "share": 0.803, "held": false}
+dist/r29-learn.html      window 390 x 600: {"stage": 170, "bar": 222, "block": 406, "share": 0.677, "held": true}
+dist/r29-learn.html      window 390 x 640: {"stage": 182, "bar": 222, "block": 417, "share": 0.652, "held": true}
+dist/r29-learn.html      window 390 x 667: {"stage": 189, "bar": 266, "block": 469, "share": 0.703, "held": true}
+dist/r29-learn.html      window 390 x 700: {"stage": 199, "bar": 266, "block": 478, "share": 0.683, "held": true}
+dist/r29-learn.html      window 390 x 740: {"stage": 210, "bar": 266, "block": 490, "share": 0.662, "held": true}
+dist/r29-learn.html      window 390 x 800: {"stage": 242, "bar": 266, "block": 522, "share": 0.652, "held": true}

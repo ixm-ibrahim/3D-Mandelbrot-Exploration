@@ -1,0 +1,2 @@
+dist/r29-learn.html against dist/r29-learn-b0.html, 1400x950 dark, 53 states
+pictures identical pixel for pixel: 53 of 53;  words identical: 53 of 53

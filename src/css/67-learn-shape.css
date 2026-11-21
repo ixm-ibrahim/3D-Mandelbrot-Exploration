@@ -72,3 +72,31 @@ body.is-learn-shape .learn-space .learn-space-1 + .seg input:checked + span { bo
   /* 2D and 3D are wide enough for a thumb (they were 33 px each) */
   #learnShapeSpaceBar .seg span { min-width: 44px; }
 }
+
+/* ----- (round 29) Each step: At once | Move by move, and Dots */
+/* the third group of the transport's row: it takes a line of its own where the row has no room left */
+.learn-shape-how { flex: 0 1 auto; }
+.learn-shape-dots { display: inline-flex; align-items: center; gap: 6px; flex: none; margin-left: 4px; }
+.learn-shape-dots select, #learnShapeDots { font-family: var(--f-mono); font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
+.learn-shape-dots select { min-height: 40px; padding: 3px 6px; }
+.learn-shape-dots select:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.learn-shape-dots select:disabled, #learnShapeDots:disabled { opacity: .45; }
+/* the names of the parts of one step, under the sentence: the one being played is marked (the look of One point's row of moves) */
+.learn-shape-parts { margin: 0 0 2px; }
+.learn-shape-parts[hidden] { display: none; }
+.learn-shape-parts button.is-on { background: color-mix(in srgb, var(--brass) 16%, transparent); }
+
+@media (pointer: coarse) {
+  .learn-shape-dots select { min-height: 44px; }
+}
+@media (max-width: 620px) {
+  .learn-shape-how { flex: 1 1 100%; gap: 6px; }
+  .learn-shape-how #learnShapeEachBar { flex: 1 1 auto; }
+  .learn-shape-dots { margin-left: 0; }
+  .learn-shape-dots select { min-height: 40px; padding: 1px 2px; }
+  /* a phone has no room for the row of names: the line above the sentence names the part */
+  .learn-shape-parts { display: none; }
+}
+/* a low phone window (learnShapePaint decides): the row would make the picture's block too tall to be held at the
+   top of the window while the controls scroll, so there the two choices stand in the panel only */
+.learn-shape-bar.is-low .learn-shape-how { display: none; }

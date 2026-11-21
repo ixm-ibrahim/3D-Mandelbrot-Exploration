@@ -97,3 +97,6 @@ body.is-learn .stage { height: clamp(300px, calc(min(74vh, 100vh - var(--stage-t
   .learn-btns .btn { min-height: 40px; padding: 6px 4px; font-size: 12.5px; letter-spacing: .02em; }
   .learn-btns .learn-step { flex-basis: 40px; }
 }
+
+/* ----- (round 29) the line under the select Show: what the extra points are, and whether they are laid out afresh */
+.learn-show-line { color: var(--ink); border-left: 3px solid var(--line); padding-left: 8px; }

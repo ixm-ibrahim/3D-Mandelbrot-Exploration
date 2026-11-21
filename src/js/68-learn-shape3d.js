@@ -25,6 +25,7 @@
 //                                fine folds (see SOLID); o.solid is the same for every level that has none of its own
 //   o.look, o.lod, o.res         for trying things out and for timings (see LOOK and QUAL below)
 //   view.slicePoint(row, col, opt), view.time(o, reps), view.stats(), learnShape3d.source(approach, n2)
+//   learnShape3d.orbit(p, kind, c, maxK)   (round 29) out() with the places kept: where the point is after each step
 //
 // Building speed (see the header of 30-shaders.js): the compiler behind WebGL on Windows copies a function into
 // every place that calls it. So main() is one loop around ONE call of lsOrb(), whose loop holds ONE call of the
@@ -244,6 +245,40 @@ void main(){
       if (!(Math.hypot(z[0], z[1], z[2]) <= BALL)) return k;
     }
     return K + 1;
+  }
+
+  // (Round 29.) The same orbit, kept: for "A whole shape, Move by move" (67-learn-shape.js), whose dots are shown
+  // where they are now. Line for line the arithmetic of out() above, which is left as it was.
+  // -> { out, pts, c, carry }
+  //   out     what out() answers
+  //   pts[j]  where the dot is after j steps, for j = 0 .. min(out, maxK): when the dot is thrown out, the last
+  //           place is the one that lies outside the big ball. Empty when the picture's point itself lies outside.
+  //   c       the number that is added at every step (what the approach's own cmap makes of the picture's c)
+  //   carry   for an entry whose orbit carries something (CARRY): carry[j] is what it carries when step j + 1
+  //           begins; null for every other entry
+  function orbit(p, kind, c, maxK) {
+    const a = ap(), id = a.id, q = S.param[id] || {}, n = S.n, jul = kind === 'j', ab = S.abs, fl = S.flip;
+    const K = maxK === undefined ? 16 : maxK, res = { out: 0, pts: [], c: [0, 0, 0], carry: null };
+    if (!(Math.hypot(p[0], p[1], p[2]) <= BALL)) return res;
+    let z = [0, 0, 0], cc;
+    if (jul) { z = zmapJs(id, p, c, q); cc = cmapJs(id, c, q, true); } else cc = cmapJs(id, p, q, false);
+    res.c = [cc[0], cc[1], cc[2]];
+    const car = typeof CARRY !== 'undefined' && CARRY[id] ? CARRY[id] : null;
+    let st = car ? car.start(q) : null;
+    res.pts.push([z[0], z[1], z[2]]);
+    if (car) res.carry = [st];
+    if (jul && !(Math.hypot(z[0], z[1], z[2]) <= BALL)) return res;
+    for (let k = 1; k <= K; k++) {
+      const v = [ab[0] ? Math.abs(z[0]) : z[0], (ab[1] ? Math.abs(z[1]) : z[1]) * (fl[0] ? -1 : 1), (ab[2] ? Math.abs(z[2]) : z[2]) * (fl[1] ? -1 : 1)];
+      let w;
+      if (car) { st = car.step(st, v, cc, q); w = car.pw(st, v, n); } else w = MATH[id](v, n, q, cc);
+      z = [w[0] + cc[0], w[1] + cc[1], w[2] + cc[2]];
+      res.pts.push(z);
+      if (car) res.carry.push(st);
+      if (!(Math.hypot(z[0], z[1], z[2]) <= BALL)) { res.out = k; return res; }
+    }
+    res.out = K + 1;
+    return res;
   }
 
   // ----- the camera, shared with whoever draws on top of the picture
@@ -571,5 +606,5 @@ void main(){
     return { canvas, draw, slice, columns, dispose, slicePoint, time, stats: () => ({ builds: Object.assign({}, stats.builds), last: stats.last, gpuMs: Object.assign({}, gpuMs), lod: Object.assign({}, lod) }), proj };
   }
 
-  return { make, out, ok: () => okFlag, note: () => noteText, proj, source: sourceFor };
+  return { make, out, orbit, ok: () => okFlag, note: () => noteText, proj, source: sourceFor };
 })();

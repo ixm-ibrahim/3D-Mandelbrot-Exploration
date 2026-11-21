@@ -1242,3 +1242,55 @@ D. User clarified (verbatim, in memory): Balls on balls is "this klein attempt o
    polish the Kleinian entry beyond what they ask.
 E. NOTHING IS RUNNING. No candidate rule in hand. src == base21a. Still unanswered by the user: carried-over
    object as an entry? second Learn view?
+
+## 2026-11-21: ROUND 29 started (two tracks running), repository created
+
+User, after Version 21 (verbatim): "1. i didn't mind the intersection or collision of the balls after 100%, please
+remove whatever automatic rule you have. publish it (and commit it, let's have this as a new repo in my github, you
+can store the project in documents/personal/3D-Mandelbrot-Exploration" and, a little later, the Learn message quoted
+in full in docs/ROUND29-LEARN.md section 0 (moves inside each step for A whole shape; a grid of points under Show;
+"directions" and the laying out afresh are not understood; "All this will help us go through different 3d
+approaches at the mathematical level and I can help figure things out too").
+
+A. What the plain recipe gives when nothing keeps the spheres apart (mine: out/r29/me/plain.py, plain-all.png,
+   plain.txt): both spheres equal, 120: a dense field of balls with round holes, far distance inside; from about 137
+   (square grid) the flat cut is filled completely; past 241 everything is inside. Second sphere 75 at size 80: a
+   clean chain with buds (this part of the dial was closed in V21). The user must be told this plainly.
+B. Track A "free" (docs/ROUND29.md): both dials free, no jump over 50..100, no clamp; GL_BALLS and GL_BALLS_RHO
+   untouched for the states V21 could reach, a new general program GL_BALLS_FREE ('balls3') for the rest.
+   Workflow task wfj17skip, run wf_755a8ddb-1a9; folders out/r29/free, truth, eyes, ui, fix, final. Result key
+   `result` { build, checks, fix, fix2, final, page, overlayDir, buildLine }.
+C. Track B "learn" (docs/ROUND29-LEARN.md): A whole shape gets "Each step: At once | Move by move" (default Move by
+   move) with dots (Out, the moves, Thrown out, Home) and "Dots: Few | Some | Many"; One point's Show gets "A grid of
+   points" (not laid out afresh), the third choice is renamed by space, new help and a line under Show.
+   Workflow task wqh4fcrny, run wf_1eea81e0-f8e; folders out/r29/learn, learn-truth, learn-reader, learn-play,
+   learn-fix, learn-final. Allowed files: the four Learn js files, the two Learn css files, body.html if needed.
+D. Repository: `git init` here (branch main), `.gitignore` (dist/, the heavy files of out/, notes/paper-kucera.txt,
+   .claude/), `.gitattributes` (* -text), README.md. First commit b990b2f "3D Squaring Lab, Version 21, with the
+   research so far" (4019 files, 59 MB, out/r29 left out). Private GitHub repo created and pushed:
+   https://github.com/ixm-ibrahim/3D-Mandelbrot-Exploration (remote origin, main tracks origin/main).
+E. Folder: the app could not resolve Documents\Personal\3D-Mandelbrot-Exploration (it does not exist; I may not make
+   it); the folder picker was then cancelled. STILL OPEN: ask the user for a folder; when they give one,
+   change_directory to it (the app copies the files at the end of that turn).
+F. TO DO when the tracks return: read each final NOTES.md and the result; merge the overlay into src/ (Track A's
+   files and Track B's files do not overlap by design; check), `python build.py`, my own checks (recipe against the
+   page at cutting states; real-mouse look), freeze base22a, publish (Artifact, url
+   https://claude.ai/artifact/Ko9sxAgS5VMvsdEZi4uu3e), commit ("Version 22: ..."), push. If the tracks finish apart,
+   publish the first as Version 22 and the second as Version 23. Send the final checkers' user-*.png pictures.
+
+## 2026-11-21, later: VERSION 22 PUBLISHED (Learn: move by move, a grid of points); the way of working changed
+
+- The user (verbatim): "btw, you use up so many tokens - just tell me what to check and I can do it faster than
+  whatever you run". So: NO checking rounds any more. Build, one quick look, publish, give a short checklist.
+  Both workflows are stopped as soon as their builder hands over (the Learn one was stopped; its checkers never ran).
+- The user (verbatim): "why is the repo private? I have to pay for that - just keep it public". The repo is PUBLIC.
+- The user found the many base*/ folders disorganized. 25 were removed (commit 7239e21); base19a/20a/21a stay only
+  until the free-dials builder is done, then they go. Versions are git tags from now on (v21 = b990b2f). No more
+  frozen copies and no more overlays: edit src/ directly, on a branch if need be.
+- Version 22 = base21a + the Learn builder's overlay (out/r29/learn/overlay, six files), merged into src/; the built
+  page is byte for byte the builder's tested dist/r29-learn.html. Version id 1795278071-21e8. The builder's own
+  numbers and what it says is not right: out/r29/learn/NOTES.md (section 4: phone, 3D depth, pace).
+- Still running: the free-dials builder (workflow wfj17skip). When it hands over: stop the workflow, copy its overlay
+  (00-core, 32-balls, 40-render, 46-mesh, 80-ui) into src/, build, quick look, publish as Version 23, commit, tag.
+  Then remove base19a/20a/21a, and move the session to C:\Users\IbrahimMahmoud\Documents\Personal\3D-Mandelbrot-Exploration
+  (change_directory; access is already granted) as the LAST thing.

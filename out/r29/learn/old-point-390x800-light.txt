@@ -1,0 +1,2 @@
+dist/r29-learn.html against dist/r29-learn-b0.html, 390x800 light, 71 states
+pictures identical pixel for pixel: 71 of 71;  words identical: 71 of 71

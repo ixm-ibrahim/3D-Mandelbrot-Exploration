@@ -32,7 +32,7 @@ const LEARN = {
   follow: 'point',               // 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js draws and paints)
   space: 2,                      // 1 a line, 2 a page, 3 space
   pts: null,                     // pts[space] = { z, c }: where the first step starts, and the point c
-  show: 'circle',                // 'point' | 'circle' | 'all': the companions
+  show: 'circle',                // 'point' | 'circle' | 'all' | 'grid': the extra points ('grid', round 29, is not laid out afresh)
   hidden: { 1: true, 2: false }, // "Show the hidden direction", for the line and for the page
   k: 0,                          // whole steps already taken: the step on show starts at orbit[k]
   pos: 0,                        // where in the step: 0 .. number of moves (2.5 = half way through the third move)
@@ -73,6 +73,91 @@ function learnVSheet(m, a) {
   if (fr) { const iu = dot(a, fr[0]), iw = dot(a, fr[1]); ctr = sub(a, add(scl(fr[0], iu), scl(fr[1], iw))); rs = Math.hypot(iu, iw); }
   return { hinge: hinge ? norm(hinge) : null, sheet, fr, ctr, rs };
 }
+// ---------- (round 29) dots with a colour of their own, and the choice Show: A grid of points
+// Is the stage dark (the dark theme)? The dots' colours are light on a dark stage and deep on a light one.
+function learnVDark() {
+  try { const v = hexRgb(LEARN.col.stage); return 0.3 * v[0] + 0.59 * v[1] + 0.11 * v[2] < 0.5; } catch (err) { return true; }
+}
+// A dot's colour for good, from where it starts: the hue from which way it lies from the centre (in space: round
+// the z-axis; on a line: from left to right), and how light from how far out it lies (in space: how high). So the
+// eye can follow a dot, and a turn or a stretch of the whole grid shows in the colours.
+function learnVDotColour(p, space, dark) {
+  if (space === 1) return `hsl(${Math.round(clamp((p[0] + 2) / 4, 0, 1) * 300)}, ${dark ? 88 : 82}%, ${dark ? 66 : 38}%)`;
+  const hue = Math.round((Math.atan2(p[1], p[0]) * 180 / PI + 360) % 360);
+  const t = space === 3 ? clamp((2 - p[2]) / 4, 0, 1) : clamp(Math.hypot(p[0], p[1]) / 2, 0, 1);
+  return dark ? `hsl(${hue}, 88%, ${Math.round(80 - 26 * t)}%)` : `hsl(${hue}, 84%, ${Math.round(26 + 18 * t)}%)`;
+}
+// An even grid of points over the big circle (everything no further than 2 from the centre; in space the big ball;
+// on a line a row from −2 to 2), with the gap h between neighbours. The grid is shifted off the centre: half a gap
+// along x and a quarter along y on the page, so that no two dots are mirror twins through the centre (squaring
+// would lay them on top of each other); half, half and a quarter in space, so that no dot sits on an axis or in
+// the flat plane, where many of the 3D rules have a special case. "A whole shape" lays its dots out the same way
+// (learnShapeDots in 67-learn-shape.js).
+const LEARN_V_GRID = { 1: 0.1, 2: 0.25, 3: 0.5 };
+function learnVGridPoints(space, gap) {
+  const h = gap || LEARN_V_GRID[space], m = Math.ceil(2 / h) + 1, out = [];
+  if (space === 1) { const n = Math.round(2 / h); for (let i = -n; i <= n; i++) out.push([i * h + 0, 0, 0]); return out; }
+  if (space === 2) {
+    for (let j = m - 1; j >= -m; j--) for (let i = -m; i < m; i++) { const p = [(i + 0.5) * h, (j + 0.25) * h, 0]; if (p[0] * p[0] + p[1] * p[1] <= 4) out.push(p); }
+    return out;
+  }
+  for (let k = m - 1; k >= -m; k--) for (let j = m - 1; j >= -m; j--) for (let i = -m; i < m; i++) {
+    const p = [(i + 0.5) * h, (j + 0.5) * h, (k + 0.25) * h];
+    if (p[0] * p[0] + p[1] * p[1] + p[2] * p[2] <= 4) out.push(p);
+  }
+  return out;
+}
+// A handful of the grid's dots to draw larger, so that single ones can be followed: the ones nearest to five
+// places spread round the centre.
+function learnVGridMarked(start, space) {
+  const want = space === 1 ? [[-1.5, 0, 0], [-0.7, 0, 0], [0.4, 0, 0], [1.1, 0, 0], [1.8, 0, 0]]
+    : space === 2 ? [20, 95, 165, 235, 310].map((d, i) => { const a = d * PI / 180, r = i % 2 ? 0.75 : 1.3; return [r * Math.cos(a), r * Math.sin(a), 0]; })
+      : [[1, 0.3, 0.5], [-0.4, 1, -0.5], [-1, -0.5, 0.6], [0.3, -1.1, -0.4], [0.2, 0.3, 1.3]];
+  const out = [];
+  for (const t of want) {
+    let best = -1, bd = Infinity;
+    start.forEach((p, i) => { const d = Math.hypot(p[0] - t[0], p[1] - t[1], p[2] - t[2]); if (d < bd && !out.includes(i)) { bd = d; best = i; } });
+    if (best >= 0) out.push(best);
+  }
+  return out;
+}
+// The words of the select Show for the space on show: its choices, its help, and the line under it.
+function learnVShowOptions(space) {
+  return [['point', 'The point alone'], ['circle', 'A small circle round the point'],
+    ['all', space === 1 ? 'A row of points along the line' : space === 2 ? 'One point for every direction (a ring)' : 'One point for every direction (a ball)'],
+    ['grid', 'A grid of points']];
+}
+function learnVShowHelp(space) {
+  const head = 'The extra points take the same moves as your point, each by its own amount, so you see what a move does to everything around the point. ';
+  const tail = 'These are not laid out afresh: each goes on from where the last step left it.';
+  if (space === 1) return head + 'A small circle: on a line, a short row of points close around your point. A row of points along the line: points laid out evenly from −2 to 2. Both of these are laid out afresh at the start of every step. A grid of points: on a line, a row of dots from −2 to 2. ' + tail;
+  return head + 'A small circle: points close around your point. One point for every direction: a direction is which way a point lies from the centre, without how far. These points all lie 1 from the centre, one in each direction, so they show what a move does to every direction at once. Both of these are laid out afresh at the start of every step. A grid of points: dots laid out evenly over the picture. ' + tail;
+}
+// One short line under the select, on show while extra points are: what they are right now, and whether they are
+// laid out afresh.
+function learnVShowLine() {
+  const L = LEARN, sp = L.space, k = L.k, afresh = ' Laid out afresh at each step.';
+  if (L.show === 'circle') return (sp === 1 ? 'Short row: points close around your point.' : 'Small circle: points close around your point.') + afresh;
+  if (L.show === 'all') return (sp === 1 ? 'Row: points along the line, from −2 to 2.' : (sp === 2 ? 'Ring' : 'Ball') + ': one point for every direction, all 1 from the centre.') + afresh;
+  if (L.show === 'grid') {
+    return k > 0 ? `Grid: each dot goes on from where the last step left it. This is where they are after ${k} step${k === 1 ? '' : 's'}.`
+      : `Grid: dots laid out evenly ${sp === 1 ? 'along the line, from −2 to 2' : sp === 2 ? 'over the big circle' : 'over the big ball'}. Each dot goes on from where the last step left it.`;
+  }
+  return '';
+}
+function learnVShowPaint() {
+  const L = LEARN, c = L.showCtl, line = L.el.showLine;
+  if (!c || !line) return;
+  if (L.showSig !== L.space) {
+    L.showSig = L.space;
+    c.setOptions(learnVShowOptions(L.space));
+    const help = document.getElementById('learn-showHelp');
+    if (help) help.textContent = learnVShowHelp(L.space);
+  }
+  const text = learnVShowLine();
+  if (line.textContent !== text) line.textContent = text;
+  line.hidden = !text;
+}
 // ---------- the plan: the moves of the step on show, and everything the picture needs from them
 function learnVBuild() {
   const L = LEARN, sp = L.space, P = L.pts[sp], id = ap().id;
@@ -91,10 +176,16 @@ function learnVBuild() {
   const run = v => { const out = [v.slice()]; for (const m of moves) out.push(at(m, out[out.length - 1], 1)); return out; };
   // the steps taken so far, worked out again from the first point (the approach, the power or c may have changed)
   const orbit = [P.z.slice()];
+  // (round 29) Show: A grid of points. These dots are not laid out afresh: like the point itself, each goes on from
+  // where the last step left it, through the same moves (for an entry whose orbit carries something: the moves of the
+  // point's own steps, as for every extra point). Worked out again from the fresh grid, as the point's steps are.
+  const gridStart = L.show === 'grid' ? learnVGridPoints(sp) : null;
+  let grid = gridStart;
   while (orbit.length <= L.k && moves.length) {
     const a = orbit[orbit.length - 1], r = run(a), e = r[r.length - 1];
     if (len(e) > 8) break;
     orbit.push(e);
+    if (grid) grid = grid.map(v => { const q = run(v); return q[q.length - 1]; });
     // An entry whose orbit carries something: the step after this one gets moves of its own, made with what the
     // orbit carries once this step is done. (Every other entry has one plan for every step, as before.)
     if (plan.carry) {
@@ -124,6 +215,9 @@ function learnVBuild() {
       for (let i = 0; i < M; i++) { const zz = 1 - (i + 0.5) * 2 / M, rr = Math.sqrt(1 - zz * zz); base.push([rr * Math.cos(i * ga), rr * Math.sin(i * ga), zz]); }
       follow.push(40, 110, 190, 260);
     }
+  } else if (grid) {
+    for (const v of grid) base.push(v);
+    for (const i of learnVGridMarked(gridStart, sp)) follow.push(i);
   }
   const comp = [base];
   moves.forEach((m, j) => comp.push(comp[j].map(v => at(m, v, 1))));
@@ -135,7 +229,8 @@ function learnVBuild() {
     const key = [[0, 0, 0]];
     const see = (v, most) => { const l = len(v); key.push(l > most ? scl(v, most / l) : v); };
     pts.forEach(v => see(v, 9)); paths.forEach(p => p.forEach(v => see(v, 9))); orbit.forEach(v => see(v, 9)); see(P.c, 9);
-    comp[0].forEach(v => see(v, 4)); comp[comp.length - 1].forEach(v => see(v, 4));
+    if (grid) { for (let i = 0; i < sp; i++) for (const s of [-2, 2]) { const v = [0, 0, 0]; v[i] = s; key.push(v); } }      // (round 29)
+    else { comp[0].forEach(v => see(v, 4)); comp[comp.length - 1].forEach(v => see(v, 4)); }
     const frame = list => {
       const lo = [0, 0, 0], hi = [0, 0, 0];
       list.forEach(v => { for (let i = 0; i < 3; i++) { lo[i] = Math.min(lo[i], v[i]); hi[i] = Math.max(hi[i], v[i]); } });
@@ -165,7 +260,7 @@ function learnVBuild() {
   }
   const end = pts[pts.length - 1], away = len(end) > 8 || !learnVFinite(end);
   L.cache = {
-    moves, pts, paths, say, orbit, comp, follow, at, fault, away, end, sheets,
+    moves, pts, paths, say, orbit, comp, follow, at, fault, away, end, sheets, gridStart, gridCol: null, gridDark: null,
     note: fault || (plan && plan.note) || '',
     names: moves.map(m => m.name || m.key || 'Move'),
     doneText: moves.length ? `Step ${L.k + 1} is done: z went from ${learnVXyz(z)} to ${learnVXyz(end)}.` +
@@ -326,6 +421,32 @@ function learnVDraw() {
         trace(now, true); fill(C.brass, 0.14); trace(now, true); stroke(C.ink, 1.25, 0.85);
       }
       now.forEach(v => { const q = P.to(v); g.beginPath(); g.arc(q[0], q[1] + lift, vk === 'f1' ? 2.25 : 1.6, 0, 2 * PI); fill(C.ink, 0.9); });
+    } else if (L.show === 'grid') {
+      // (round 29) A grid of points: each dot in the colour of the place it started from, a handful larger, with a
+      // ring where this step found them. The big circle they were laid out over (in space the big ball's outline) is
+      // drawn too. A dot that has gone out of the picture is not drawn; the frame does not grow to hold it.
+      const dark = learnVDark();
+      if (!K.gridCol || K.gridDark !== dark) { K.gridDark = dark; K.gridCol = K.gridStart.map(v => learnVDotColour(v, sp, dark)); }
+      if (vk === 'f2' || vk === 'h2') { trace(circle(ex, ey, 2), true); stroke(C.ink2, 1.25, 0.6, [4, 4]); }
+      else if (vk === 's3') { g.beginPath(); g.arc(P.o[0], P.o[1], 2 * P.s, 0, 2 * PI); stroke(C.ink2, 1.25, 0.5, [4, 4]); }
+      const qs = now.map(v => P.to(v)), seen = q => isFinite(q[0]) && isFinite(q[1]) && q[0] > -10 && q[0] < w + 10 && q[1] > -10 && q[1] < h + 10;
+      const order = now.map((v, i) => i);
+      if (P.cam) order.sort((a, b) => qs[a][2] - qs[b][2]);      // the far ones first
+      const r0 = vk === 'f1' ? 2.4 : sp === 3 ? 2.3 : small ? 2.2 : 2.8;
+      for (const i of order) {
+        const q = qs[i];
+        if (K.follow.includes(i) || !seen(q)) continue;
+        g.beginPath(); g.arc(q[0], q[1] + lift, r0 + 0.9, 0, 2 * PI); fill(C.stage, 0.9);
+        g.beginPath(); g.arc(q[0], q[1] + lift, r0, 0, 2 * PI); fill(K.gridCol[i], P.cam && sp === 3 ? 0.6 + 0.4 * clamp((q[2] + 2) / 4, 0, 1) : 1);
+      }
+      K.follow.forEach(i => {
+        const q = qs[i], q0 = P.to(K.comp[0][i]);
+        if (seen(q0)) { g.beginPath(); g.arc(q0[0], q0[1] + lift, 6.5, 0, 2 * PI); stroke(K.gridCol[i], 1.5, 0.85); }
+        if (!seen(q)) return;
+        g.beginPath(); g.arc(q[0], q[1] + lift, 7.6, 0, 2 * PI); fill(C.stage);
+        g.beginPath(); g.arc(q[0], q[1] + lift, 6.4, 0, 2 * PI); stroke(C.ink, 1.4, 1);
+        g.beginPath(); g.arc(q[0], q[1] + lift, 4.9, 0, 2 * PI); fill(K.gridCol[i]);
+      });
     } else {
       const hues = [C.ok, C.bad, C.ink, C.warn];
       now.forEach((v, i) => {
@@ -459,6 +580,7 @@ function learnVPaint() {
   put(el.hint, cam ? 'Drag to turn the picture. Scroll or pinch to zoom.' : 'Drag the ring to move z, and the diamond to move c. Scroll to zoom.');
   el.viewReset.hidden = !(Math.abs(V.zoom - 1) > 1e-6 || (cam && (V.user || V.pitch !== D.pitch)));
   for (const r of el.spaces) r.checked = +r.value === L.space;
+  learnVShowPaint();      // (round 29) the choices of Show, its help and the line under it
 }
 // ---------- the clock: one frame redoes what is stale, moves a playing step on, and draws
 function learnVQueue() { if (!LEARN.raf && LEARN.on) LEARN.raf = requestAnimationFrame(learnVFrame); }
@@ -722,9 +844,14 @@ function learnInit() {
     // (the labels are upper case, which would print the points z and c as capitals: class asis keeps them as typed)
     pd('zx', 'The point <span class="asis">z</span>, along x'), pd('zy', 'The point <span class="asis">z</span>, along y', () => L.space >= 2), pd('zz', 'The point <span class="asis">z</span>, along z', () => L.space === 3),
     pd('cx', 'The point <span class="asis">c</span>, along x'), pd('cy', 'The point <span class="asis">c</span>, along y', () => L.space >= 2), pd('cz', 'The point <span class="asis">c</span>, along z', () => L.space === 3),
-    { type: 'select', key: 'show', label: 'Show', def: 'circle', options: [['point', 'The point alone'], ['circle', 'A small circle round the point'], ['all', 'All directions at once']],
-      help: 'The companions take the same moves as the point, each by its own amount, so they show what a move does to everything near the point and not only to the point. On a line the circle is a short row of dots, and all directions is a row of dots along the line.' },
+    // (round 29: a fourth choice, the third named by what it is in the space on show, and a help that says what a
+    // direction is and which of the extra points are laid out afresh; see learnVShowOptions and learnVShowHelp)
+    { type: 'select', key: 'show', label: 'Show', def: 'circle', options: learnVShowOptions(L.space), help: learnVShowHelp(L.space) },
   ], store, () => learnVChanged(), { idPrefix: 'learn-', group: 'learn' });
+  // one line under the select: what the extra points are right now, and whether they are laid out afresh
+  L.showCtl = L.dials.controls.find(c => c.id === 'learn-show') || null; L.showSig = L.space;
+  el.showLine = make('p', 'note learn-show-line'); el.showLine.id = 'learnShowLine'; el.showLine.hidden = true;
+  { const sel = el.panel.querySelector('#learn-show'), field = sel ? sel.closest('.field') : null; if (field) field.after(el.showLine); else el.panel.querySelector('#learnDials').appendChild(el.showLine); }
   el.panel.querySelector('#learnZero').addEventListener('click', () => { L.set({ z: [0, 0, 0] }); learnVShowStage(); });
   el.panel.querySelector('#learnJuliaC').addEventListener('click', () => { L.set({ c: S.c.slice() }); learnVShowStage(); });
   // the kit puts its own controls back first; the points and the rest follow
@@ -747,7 +874,7 @@ LEARN.set = o => {
   if (o.space !== undefined && [1, 2, 3].includes(+o.space) && +o.space !== L.space) { L.space = +o.space; L.k = 0; L.pos = 0; L.endSide = false; }
   if (o.z) { L.pts[L.space].z = vec(o.z); L.k = 0; }
   if (o.c) L.pts[L.space].c = vec(o.c);
-  if (o.show !== undefined && ['point', 'circle', 'all'].includes(o.show)) L.show = o.show;
+  if (o.show !== undefined && ['point', 'circle', 'all', 'grid'].includes(o.show)) L.show = o.show;
   if (o.hidden !== undefined && L.space < 3) L.hidden[L.space] = !!o.hidden;
   if (L.dials) { L.dials.sync(); L.checks.sync(); }
   learnVChanged();
@@ -761,6 +888,18 @@ LEARN.again = () => { learnVAgain(); return LEARN.state(); };
 LEARN.play = until => learnVPlay(until);
 LEARN.setOn = on => { learnVSetOn(on); return LEARN.state(); };
 LEARN.reset = () => learnReset();
+// (round 29) points(): the extra points of the step on show. start: where the first step found them (for the grid:
+// the fresh grid, before any step); now: where they are at this moment of the step; afresh: are they laid out anew
+// at every step; marked: the ones drawn larger; line: the sentence under the select Show.
+LEARN.points = () => {
+  const L = LEARN;
+  if (L.stale || !L.cache) learnVBuild();
+  const K = L.cache, a = learnVAt(), m = K.moves[a.j];
+  const now = !K.comp[0].length || !m ? K.comp[0] : a.t >= 1 ? K.comp[a.j + 1] : a.t <= 0 ? K.comp[a.j] : K.comp[a.j].map(v => K.at(m, v, a.t));
+  return { show: L.show, space: L.space, step: L.k, afresh: L.show !== 'grid', start: (K.gridStart || K.comp[0]).map(v => v.slice()), stepStart: K.comp[0].map(v => v.slice()),
+    now: now.map(v => v.slice()), end: K.comp[K.comp.length - 1].map(v => v.slice()), marked: K.follow.slice(), line: learnVShowLine(),
+    options: learnVShowOptions(L.space).map(o => o[1]), help: learnVShowHelp(L.space) };
+};
 LEARN.state = () => {
   const L = LEARN;
   if (L.stale || !L.cache) learnVBuild();

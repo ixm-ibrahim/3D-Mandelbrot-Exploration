@@ -3,7 +3,10 @@
 // learnPlan({ space, id, params, n, c, abs, flip }) -> { moves: [Move], note, ... }
 //   space 1 | 2 | 3;  id an approach id;  params that approach's dials (S.param[id]);  n the power;
 //   c a 3-vector;  abs [0|1, 0|1, 0|1] and flip [flip y, flip z]: the modifiers (S.abs, S.flip)
-// Move = { key, name, say(a, b), at(v, t), hinge(v), sheet(v), hidden }
+// Move = { key, name, say(a, b), at(v, t), hinge(v), sheet(v), hidden, all }
+//   all (round 29): what the move does to EVERY dot at once, as the end of a sentence that begins with the move's
+//   name ("every dot’s angle is doubled"). "A whole shape, Move by move" (67-learn-shape.js) shows it; One point
+//   does not read it.
 //   at(v, t): where the point v is after the fraction t of the move (at(v, 0) = v). Every move works from the
 //   point it is given and nothing else, so the view can push any other point through the same chain.
 // learnRun(plan, v) -> [v0, v1, ..., vk];  learnCheck(plan, v) -> |vk - the lab's own rule applied to v|.
@@ -38,6 +41,18 @@ const learnPt = (v, space) => (space === 1 ? learnNum(v[0], true) : '(' + (space
 const learnMul = n => (learnIs(n, 2) ? 'Squaring doubles it to ' : learnIs(n, 3) ? 'Cubing triples it to ' : `The power ${aprNum(n)} multiplies it by ${aprNum(n)}, to `);
 const learnPowWord = n => (learnIs(n, 2) ? 'squared' : learnIs(n, 3) ? 'cubed' : 'raised to the power ' + aprNum(n));
 const learnSame = rad => (Math.abs(rad) > PI + 1e-9 ? ` (the same direction as ${learnDeg(learnWrap(rad))})` : '');
+// (Round 29.) Words for what a move does to every dot at once.
+const learnTimes = n => (learnIs(n, 2) ? 'doubled' : learnIs(n, 3) ? 'tripled' : `multiplied by ${aprNum(n)}`);
+const learnAllTurn = (n, what) => (learnIs(n, 1) ? 'the power is 1, so no dot turns' : `every dot’s ${what} is ${learnTimes(n)}`);
+// what: "distance from the centre"; a: where a far dot moves ("out"), b: where a near dot moves ("in")
+function learnAllStretch(n, what, a = 'out', b = 'in') {
+  if (learnIs(n, 1)) return 'the power is 1, so no dot moves';
+  const how = `every dot’s ${what} is ${learnPowWord(n)}`;
+  if (n > 1) return `${how}, so dots further out than 1 move ${a} and dots nearer than 1 move ${b}`;
+  if (n > 0) return `${how}, so every dot moves towards the distance 1`;
+  if (n < 0) return `${how}: with a negative power near dots go far ${a} and far dots come ${b}`;
+  return `${how}, so every dot goes to the distance 1`;
+}
 const LEARN_NO_DIR = 'The point is at the origin. It has no direction, so there is nothing to turn.';
 
 // ----- small geometry
@@ -87,7 +102,7 @@ function learnOpen(v, e, f, n, t) {
 // ----- one move. `f(v, t)` is only asked for 0 < t <= 1.
 function learnMove(key, name, f, say, o = {}) {
   return {
-    key, name, hidden: !!o.hidden,
+    key, name, hidden: !!o.hidden, all: o.all || '',
     at: (v, t) => (t > 0 ? f(v, Math.min(t, 1)) : [v[0], v[1], v[2]]),
     say(a, b) { return say(a, b || f(a, 1)); },
     hinge: o.hinge || (() => null), sheet: o.sheet || (() => null),
@@ -110,7 +125,12 @@ function learnMirror(space, abs, flip) {
     const ch = [0, 1, 2].filter(i => b[i] !== a[i] && !(b[i] === 0 && a[i] === 0)).map(i => `${'xyz'[i]} goes from ${learnNum(a[i], true)} to ${learnNum(b[i], true)}`);
     const which = names.length > 1 ? `The modifiers ${names.join(', ')} are ticked` : `The modifier ${names[0]} is ticked`;
     return ch.length ? `${which}, so before anything else ${ch.join(' and ')}, straight through 0.` : `${which}, but for this point that changes nothing.`;
-  });
+  }, { all: (names.length > 1 ? `the modifiers ${names.join(', ')} are ticked` : `the modifier ${names[0]} is ticked`) + ', so '
+    + (names.length > 1 ? 'every dot first goes straight to its mirror place'
+      : on[0] ? 'every dot left of the centre goes straight across to its mirror place on the right'
+        : on[1] ? 'every dot below the centre goes straight up to its mirror place above'
+          : on[2] ? 'every dot under the flat plane goes straight up to its mirror place above it'
+            : fl[1] ? 'every dot goes straight to its mirror place: up becomes down' : 'every dot goes straight to its mirror place on the other side of the flat plane') });
 }
 // The turn about the z-axis by (n - 1) times the angle around it. `what`: 'lean' (page), 'longitude' (space).
 function learnTurnZ(n, space, what) {
@@ -133,12 +153,13 @@ function learnTurnZ(n, space, what) {
     if (Math.abs(th) < 1e-12) return `${head} Any number times 0° is still 0°, so the point does not turn.`;
     return `${head} ${learnMul(n)}${learnDeg(n * th)}${learnSame(n * th)}: the point turns by ${learnDeg(Math.abs((n - 1) * th))} about the z-axis.`;
   };
-  return learnMove('turn', 'Turn', f, say, { hinge: LEARN_Z, sheet: LEARN_PAGE, hidden: space === 1 });
+  return learnMove('turn', 'Turn', f, say, { hinge: LEARN_Z, sheet: LEARN_PAGE, hidden: space === 1,
+    all: learnAllTurn(n, space < 3 ? 'angle' : 'angle around the z-axis') + (what === 'flat' && !learnIs(n, 1) ? '; its height is not touched' : '') });
 }
 // The stretch: the length r goes to r^n (the lab's own capped power). rule: the whole power, asked only at the origin.
 function learnStretch(n, rule) {
   const f = (v, t) => learnScale(v, learnPowLen(len(v), n), t, rule);
-  return learnMove('stretch', 'Stretch', f, (a, b) => learnSayStretch(n, 'Its length', len(a), len(b)));
+  return learnMove('stretch', 'Stretch', f, (a, b) => learnSayStretch(n, 'Its length', len(a), len(b)), { all: learnAllStretch(n, 'distance from the centre') });
 }
 // (Round 22.) A reader who has just seen the Turn double an angle takes the Stretch for doubling too. So for a whole
 // power above 1 the contrast is said outright, with a number that tells the two apart: 3 squared is 9, 3 doubled is 6
@@ -183,7 +204,11 @@ function learnLeanMerc(n) {
     if (learnIs(n, 1)) return `${head} The power is 1, so it stays there.`;
     return `${head} ${learnMul(n).replace(' it ', ' that number ')}${learnNum(learnMerc(b), true)}, which is latitude ${learnDeg(learnLat(b))}. On this scale a point can come close to a pole but never pass over it.`;
   };
-  return learnMove('lean', 'Lean', f, say, { hinge: learnLevelHinge, sheet: learnMeridian });
+  return learnMove('lean', 'Lean', f, say, { hinge: learnLevelHinge, sheet: learnMeridian,
+    all: learnIs(n, 1) ? 'the power is 1, so no dot leans'
+      : n > 1 ? 'every dot off the flat plane leans further towards the pole on its side, and never passes over it. Dots in the flat plane stay in it'
+        : n > 0 ? 'every dot off the flat plane leans back towards it. Dots in the flat plane stay in it'
+          : 'every dot off the flat plane leans over to the other side of it. Dots in the flat plane stay in it' });
 }
 function learnLift(lift) {
   const f = (v, t) => {
@@ -193,7 +218,8 @@ function learnLift(lift) {
     return [h * u[0], h * u[1], r * Math.tanh(m)];
   };
   const say = (a, b) => (len(a) > 0 ? `The Lift toward the pole dial adds ${learnNum(lift)} on the Mercator scale: the latitude goes from ${learnDeg(learnLat(a))} to ${learnDeg(learnLat(b))}.` : LEARN_NO_DIR);
-  return learnMove('phase', 'Lift', f, say, { hinge: learnLevelHinge, sheet: learnMeridian });
+  return learnMove('phase', 'Lift', f, say, { hinge: learnLevelHinge, sheet: learnMeridian,
+    all: `every dot is pushed towards the ${lift < 0 ? 'lower' : 'upper'} pole, each along its own way round: the dial “Lift toward the pole”` });
 }
 // a dial that adds an angle to the longitude: a plain turn about the z-axis
 function learnTurnDial(rad, label, name) {
@@ -202,7 +228,8 @@ function learnTurnDial(rad, label, name) {
     if (!(Math.hypot(a[0], a[1]) > 0)) return `The ${label} dial turns space by ${learnDeg(rad)} about the z-axis. The point is on that axis, so it stays.`;
     return `The ${label} dial adds ${learnDeg(rad)} to the longitude: it goes from ${learnDeg(Math.atan2(a[1], a[0]))} to ${learnDeg(Math.atan2(b[1], b[0]))}.`;
   };
-  return learnMove('phase', name, (v, t) => learnRz(v, t * rad), say, { hinge: LEARN_Z, sheet: LEARN_PAGE });
+  return learnMove('phase', name, (v, t) => learnRz(v, t * rad), say, { hinge: LEARN_Z, sheet: LEARN_PAGE,
+    all: `all the dots turn together about the z-axis by ${learnDeg(rad)}: ` + (/phase/i.test(label) ? 'one of this approach’s dials adds that turn' : `the dial “${label}”`) });
 }
 // Sphere inversions, two planes: the turn about the x-axis that takes the point where foldk puts it
 function learnFold(k) {
@@ -217,7 +244,8 @@ function learnFold(k) {
     if (len(sub(a, b)) < 1e-12 * len(a)) return `The fold comes first, but it leaves this point alone: at ${learnDeg(pa)} around the x-axis it is already where the fold wants it.`;
     return `The fold comes first. Around the x-axis the point sits at ${learnDeg(pa)}, and the fold of ${aprNum(k)} planes carries it to ${learnDeg(pb)}.`;
   };
-  return learnMove('fold', 'Fold', f, say, { hinge: LEARN_X, sheet: LEARN_YZ });
+  return learnMove('fold', 'Fold', f, say, { hinge: LEARN_X, sheet: LEARN_YZ,
+    all: 'every dot turns about the x-axis by its own amount. Dots on two sides of a crease go opposite ways' });
 }
 // Quaternion square: the angle from the axis is multiplied. tau: the tilt (0 for the Lathe), worked in the frame
 // turned by the tilt, exactly as MATH.tilt does.
@@ -237,6 +265,7 @@ function learnLathe(n, tau, tilted) {
     return `${head} ${learnMul(n)}${learnDeg(to)}, in the flat sheet that holds ${axis} and the point.${past}`;
   };
   return learnMove('turn', 'Turn', f, say, {
+    all: learnIs(n, 1) ? 'the power is 1, so no dot turns' : `every dot’s angle away from ${axis} is ${learnTimes(n)}; it swings in the plane that holds that axis and the dot`,
     hinge: v => (len(v) > 0 ? learnRz(cross(ex, side(v).u), -tau) : null),
     sheet: v => (len(v) > 0 ? [learnRz(ex, -tau), learnRz(side(v).u, -tau)] : null),
   });
@@ -254,7 +283,8 @@ function learnSpin(spin) {
     const p = Math.atan2(a[2], a[1]);
     return `The Spin multiplier dial is at ${aprNum(spin)}: the point’s angle round the x-axis, ${learnDeg(p)}, is multiplied by it and becomes ${learnDeg(spin * p)}${learnSame(spin * p)}.`;
   };
-  return learnMove('spin', 'Spin', f, say, { hinge: LEARN_X, sheet: LEARN_YZ });
+  return learnMove('spin', 'Spin', f, say, { hinge: LEARN_X, sheet: LEARN_YZ,
+    all: `every dot’s angle round the x-axis is multiplied by ${aprNum(spin)}: the dial “Spin multiplier”` });
 }
 // Twisted quaternion square: the turn back about the z-axis by (n - 1) times the tilt
 function learnBack(n, tau) {
@@ -265,7 +295,8 @@ function learnBack(n, tau) {
     if (!(Math.hypot(a[0], a[1]) > 0)) return `${amount} The point is on that axis, so it stays.`;
     return `${amount} The point’s longitude goes from ${learnDeg(Math.atan2(a[1], a[0]))} to ${learnDeg(Math.atan2(b[1], b[0]))}.`;
   };
-  return learnMove('back', 'Turn back', (v, t) => learnRz(v, t * ang), say, { hinge: LEARN_Z, sheet: LEARN_PAGE });
+  return learnMove('back', 'Turn back', (v, t) => learnRz(v, t * ang), say, { hinge: LEARN_Z, sheet: LEARN_PAGE,
+    all: Math.abs(ang) < 1e-12 ? 'there is nothing to turn back, so no dot moves' : `all the dots turn back together about the z-axis by ${learnDeg(Math.abs(ang))}` });
 }
 // Mandelbulb: the latitude (from the flat plane) or, classic, the angle from the z-axis is multiplied in the
 // meridian sheet; the phase of that angle is added in the same move, because a point that has passed over the
@@ -291,7 +322,9 @@ function learnLeanBulb(n, phase, classic, label) {
     const leaves = classic && learnFlat(a) && Math.abs(b[2]) > 1e-9 * len(b) ? ' The point leaves the flat plane.' : '';
     return head + grow + add1 + past + leaves;
   };
-  return learnMove('lean', 'Lean', f, say, { hinge: learnLevelHinge, sheet: learnMeridian });
+  return learnMove('lean', 'Lean', f, say, { hinge: learnLevelHinge, sheet: learnMeridian,
+    all: (learnIs(n, 1) ? `the power is 1, so every dot keeps its angle ${classic ? 'from the z-axis' : 'above the flat plane'}` : `every dot’s angle ${classic ? 'from the z-axis' : 'above the flat plane'} is ${learnTimes(n)}`)
+      + (phase ? `, and one of this approach’s dials adds ${learnDeg(phase)}` : '') + (classic ? '. A dot may swing past the axis' : '. A dot may swing over a pole') });
 }
 // Split: the flat part (x, y) is stretched on its own, then the height on its own
 function learnStretchFlat(m) {
@@ -299,7 +332,8 @@ function learnStretchFlat(m) {
     const rho = Math.hypot(v[0], v[1]), R = learnPowLen(rho, m), w = learnScale([v[0], v[1], 0], R, t, p => { const a = Math.atan2(p[1], p[0]) * m; return [R * Math.cos(a), R * Math.sin(a), 0]; });
     return [w[0], w[1], v[2]];
   };
-  return learnMove('stretch', 'Stretch', f, (a, b) => learnSayStretch(m, 'The length of the flat part', Math.hypot(a[0], a[1]), Math.hypot(b[0], b[1]), true) + ' The height is not touched.');
+  return learnMove('stretch', 'Stretch', f, (a, b) => learnSayStretch(m, 'The length of the flat part', Math.hypot(a[0], a[1]), Math.hypot(b[0], b[1]), true) + ' The height is not touched.',
+    { all: learnAllStretch(m, 'distance from the z-axis', 'away from it', 'towards it') + '. Heights are not touched' });
 }
 function learnHeight(m) {
   const f = (v, t) => {
@@ -315,7 +349,7 @@ function learnHeight(m) {
     return `The height, ${learnNum(a[2])}, is ${learnPowWord(m)} on its own, like a number on a line: ${learnNum(b[2])}.`
       + (a[2] < 0 ? ' On the way it passes through 0: the shadow of a swing through a direction that space does not have.' : '');
   };
-  return learnMove('own', 'Height', f, say);
+  return learnMove('own', 'Height', f, say, { all: learnIs(m, 1) ? 'the power is 1, so no dot moves' : `every dot’s height is ${learnPowWord(m)} on its own, like a number on a line. A dot under the flat plane passes through it` });
 }
 // Split, negative power: one sphere inversion with a mirror (y -> -y), as MATH.split ends
 function learnInvert() {
@@ -332,7 +366,7 @@ function learnInvert() {
     if (!(L * most > 1)) return `A negative power ends by turning space inside out. The point is at the origin, which goes as far out as the lab counts: ${learnNum(len(b))}.`;
     return `A negative power ends by turning space inside out through the sphere of radius 1: the length goes from ${learnNum(L)} to ${learnNum(len(b))}, which is 1 divided by it, and y goes to its mirror value, from ${learnNum(a[1], true)} to ${learnNum(b[1], true)}.`;
   };
-  return learnMove('own', 'Inside out', f, say);
+  return learnMove('own', 'Inside out', f, say, { all: 'space is turned inside out: every dot’s distance from the centre becomes 1 divided by it, and its y goes to the mirror value' });
 }
 // Any other rule F: the direction goes the short way round the sphere to where the rule sends it. together: the
 // length goes with it in the same move (used when the rule's length depends on the direction).
@@ -354,7 +388,8 @@ function learnOwn(F, together) {
     return `The rule sends this direction ${learnDeg(ang)} round the sphere, and the point goes there the short way.` + lens;
   };
   const way = v => { const T = F(v); if (!(len(v) > 0) || !(len(T) > 0)) return null; const d = norm(v), w = sub(norm(T), scl(d, dot(d, norm(T)))); return len(w) > 1e-12 ? [d, norm(w)] : null; };
-  return learnMove('own', 'Turn', f, say, { hinge: v => { const s = way(v); return s ? cross(s[0], s[1]) : null; }, sheet: way });
+  return learnMove('own', 'Turn', f, say, { hinge: v => { const s = way(v); return s ? cross(s[0], s[1]) : null; }, sheet: way,
+    all: 'every dot swings round the centre, the short way, to the direction this approach sends it to' + (together ? ', and its distance from the centre changes on the way' : '') + '. Each by its own amount: Follow One point shows it for a single dot' });
 }
 // The Stretch of a rule whose length is the plain power of the length, |F(v)| = |v|^n, for a reader who takes "stretch"
 // for doubling (round 22): the words of learnSayStretch, and for a whole power above 1 the contrast said outright.
@@ -367,7 +402,7 @@ function learnSayPower(n, r, R) {
 // the stretch that follows learnOwn: the length goes to the rule's length (the rule's length must not depend on the direction).
 // n: the power. Where the rule's length is the plain power of the point's length (to rounding), the move says so in plain
 // words (learnSayPower); for any other rule it keeps the sentence it had.
-function learnStretchTo(F, n) {
+function learnStretchTo(F, n, plain) {
   const f = (v, t) => learnScale(v, len(F(v)), t, F);
   const say = (a, b) => {
     const r = len(a), R = len(b);
@@ -375,7 +410,8 @@ function learnStretchTo(F, n) {
     if (n !== undefined && Math.abs(R - learnPowLen(r, n)) <= 1e-9 * Math.max(1, R)) return learnSayPower(n, r, R);
     return `Then the length goes from ${learnNum(r)} to the rule’s length, ${learnNum(R)}.`;
   };
-  return learnMove('stretch', 'Stretch', f, say);
+  // plain (round 29): the rule's length is the plain power of the dot's own, whatever its direction (probed by learnPlan)
+  return learnMove('stretch', 'Stretch', f, say, { all: plain ? learnAllStretch(n, 'distance from the centre') : 'every dot’s distance from the centre goes to the one this approach gives it. Each by its own amount: Follow One point shows it for a single dot' });
 }
 
 // ----- the plans
@@ -476,7 +512,8 @@ function learnPlan(o = {}) {
       // length does not depend on the direction; otherwise both go in one move.
       const lens = [0.7, 1.3].map(r => LEARN_PROBE_DIRS.map(d => len(F(scl(norm(d), r)))));
       const even = lens.every(l => Math.max(...l) - Math.min(...l) <= 1e-9 * Math.max(...l));
-      if (even) moves.push(learnOwn(F, false), learnStretchTo(F, n));
+      const plain = even && [0.7, 1.3].every((r, i) => Math.abs(lens[i][0] - learnPowLen(r, n)) <= 1e-9 * Math.max(1, lens[i][0]));
+      if (even) moves.push(learnOwn(F, false), learnStretchTo(F, n, plain));
       else moves.push(learnOwn(F, true));
       note = `No simpler moves are written out for “${A.name}”. The point goes the short way round the sphere to the direction the rule sends it to` + (even ? ', and then its length goes to the rule’s length.' : ', and its length changes on the way: with these dials the rule’s length depends on the direction, so the two cannot be shown apart.')
         + (car ? ' In this entry an orbit carries something from step to step, and a squaring depends on it. The moves on show are those of the step on show: the first step is the first squaring of an orbit, and after “Next step” they are the moves of the squaring the orbit has come to.' : '');
