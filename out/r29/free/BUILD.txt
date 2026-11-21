@@ -1,0 +1,20 @@
+Round 29, Track A ("free"): how the test page is built. Run from the project root. One line each.
+
+The page with the overlay (put your own name in place of r29-free, for example --name r29-truth):
+
+PYTHONIOENCODING=utf-8 python -W ignore build.py --name r29-free --base base21a --swap js/32-balls.js=out/r29/free/overlay/js/32-balls.js js/40-render.js=out/r29/free/overlay/js/40-render.js js/80-ui.js=out/r29/free/overlay/js/80-ui.js
+
+The frozen page to compare with (Version 21, no overlay):
+
+PYTHONIOENCODING=utf-8 python -W ignore build.py --name r29-free-base --base base21a
+
+Overlay files (three, all JavaScript; no CSS, no body.html, no 00-core.js, no 46-mesh.js, no 90-boot.js):
+  out/r29/free/overlay/js/32-balls.js
+  out/r29/free/overlay/js/40-render.js
+  out/r29/free/overlay/js/80-ui.js
+
+The overlay files are written by out/r29/free/mk/make_overlay.py from base21a and the parts in out/r29/free/mk/parts/
+(that script copies the two old program texts from base21a as they are). To change the overlay, either edit the three
+files above directly, or edit the parts and run:  PYTHONIOENCODING=utf-8 python -B out/r29/free/mk/make_overlay.py
+
+Never run plain "python build.py": it overwrites the published page.

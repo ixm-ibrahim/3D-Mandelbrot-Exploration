@@ -1,0 +1,15 @@
+X9 start: 3221 stops, 100 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 100 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+X6 start: 4107 stops, 70 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 70 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+X1 start: 9256 stops, 6 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 6 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+Y1 start: 2059 stops, 40 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 40 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+Y1 second: 4754 stops, 108 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 106 (thin parts), inside only by the depth of 16 at 0, nothing at all at 2
+X1 second: 9486 stops, 3 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 3 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+X6 second: 5722 stops, 83 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 83 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+X9 second: 4918 stops, 141 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 141 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+X9d start: 3219 stops, 138 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 138 (thin parts), inside only by the depth of 60 at 0, nothing at all at 0
+X9d second: 4918 stops, 195 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 195 (thin parts), inside only by the depth of 60 at 0, nothing at all at 0
+Y3 start: 1177 stops, 16 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 16 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+Y3 second: 2738 stops, 30 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 30 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+Y5 start: 1927 stops, 53 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 53 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+Y5 second: 3390 stops, 108 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 108 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0
+Y6 second: 3849 stops, 1 of them "in the air" by rays29.py; looked at again: something inside within 4 pixels at 1 (thin parts), inside only by the depth of 16 at 0, nothing at all at 0

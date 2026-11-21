@@ -1,0 +1,2 @@
+X1 start (the distance as built): 9504 rays in the Drawing radius, 9255 stop; strides a ray: mean 17.0, median 15, nine in ten under 32, most 103; rays still going after 520: 0; strides at the least stride (creeping): 21 % of all (0 s)
+X1 start nodepth=1: 9504 rays in the Drawing radius, 9255 stop; strides a ray: mean 14.6, median 12, nine in ten under 28, most 76; rays still going after 520: 0; strides at the least stride (creeping): 12 % of all (0 s)

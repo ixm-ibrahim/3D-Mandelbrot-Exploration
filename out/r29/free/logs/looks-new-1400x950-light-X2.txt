@@ -1,0 +1,5 @@
+page dist/r29-free.html, 1400x950, light: exit 0, no console errors
+X2   size 130 second 100 depth 16 (t 0.884615) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.883 | outline pixels 17632, stray 1065 (to two pixels of ink: 19070, stray 1563) | verdict of the shader against the recipe, away from every edge: 325 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.

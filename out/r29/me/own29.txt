@@ -1,0 +1,23 @@
+page dist/preview.html, exit 0
+   | step 1 result: "page up, 21 entries"
+   | step 1 waited 2.3 s
+   | no console errors
+size   55.56, second sphere 100.00 %, grid 0, depth 16 (boxes show 55.56 / 100 / 16; program k-balls): inside in space   369 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  150.00, second sphere  33.33 %, grid 0, depth 16 (boxes show 150 / 33.33 / 16; program k-balls2): inside in space   389 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  120.00, second sphere 100.00 %, grid 0, depth 16 (boxes show 120 / 100 / 16; program k-balls3): inside in space  2663 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 6 of 21312 differ
+size  130.00, second sphere 100.00 %, grid 0, depth 16 (boxes show 130 / 100 / 16; program k-balls3): inside in space  4493 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 8 of 21312 differ
+size  150.00, second sphere 100.00 %, grid 2, depth 16 (boxes show 150 / 100 / 16; program k-balls3): inside in space  5213 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  150.00, second sphere 100.00 %, grid 1, depth 16 (boxes show 150 / 100 / 16; program k-balls3): inside in space 11304 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  150.00, second sphere  75.00 %, grid 0, depth 16 (boxes show 150 / 75 / 16; program k-balls3): inside in space  1057 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  300.00, second sphere  50.00 %, grid 0, depth 16 (boxes show 300 / 50 / 16; program k-balls3): inside in space  2584 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  400.00, second sphere 100.00 %, grid 0, depth 16 (boxes show 400 / 100 / 16; program k-balls3): inside in space 12000 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  105.00, second sphere 100.00 %, grid 0, depth 40 (boxes show 105 / 100 / 40; program k-balls3): inside in space   988 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 10 of 21312 differ
+size   80.00, second sphere  75.00 %, grid 0, depth 16 (boxes show 80 / 75 / 16; program k-balls3): inside in space   364 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size   60.00, second sphere  60.00 %, grid 1, depth 16 (boxes show 60 / 60 / 16; program k-balls3): inside in space   389 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  100.00, second sphere  90.00 %, grid 0, depth 16 (boxes show 100 / 90 / 16; program k-balls3): inside in space   478 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size   55.56, second sphere  99.00 %, grid 0, depth 16 (boxes show 55.56 / 99 / 16; program k-balls3): inside in space   365 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  133.33, second sphere  75.00 %, grid 0, depth 16 (boxes show 133.33 / 75 / 16; program k-balls3): inside in space   733 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size  120.00, second sphere  51.00 %, grid 2, depth 16 (boxes show 120 / 51 / 16; program k-balls3): inside in space   372 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size   30.00, second sphere  75.00 %, grid 0, depth 16 (boxes show 30 / 75 / 16; program k-balls3): inside in space   576 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+size   62.50, second sphere  62.50 %, grid 0, depth 24 (boxes show 62.5 / 62.5 / 24; program k-balls3): inside in space   339 of 12000; twin against my recipe 0 of 24000 differ; shader against my recipe 0 of 21312 differ
+ALL: 24 of 815616 verdicts differ

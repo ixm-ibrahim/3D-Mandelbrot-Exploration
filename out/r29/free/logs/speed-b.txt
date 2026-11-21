@@ -1,0 +1,9 @@
+page dist/r29-free.html, exit 0, no console errors
+V21 (150, 33.33) k-balls2  k-balls2  whole picture    111 ms (1.00 x) | rays that stop on something  22 % | one distance in the open (512 x 512 of them, 100 % in the open)  24.0 ms (1.00 x)
+V21 (100, 100) k-balls     k-balls   whole picture    185 ms (1.67 x) | rays that stop on something  20 % | one distance in the open (512 x 512 of them, 100 % in the open)  20.7 ms (0.86 x)
+V21 (55.56, 100) k-balls   k-balls   whole picture    130 ms (1.18 x) | rays that stop on something  25 % | one distance in the open (512 x 512 of them, 100 % in the open)  24.7 ms (1.03 x)
+Y1 (80, 75)                k-balls3  whole picture    129 ms (1.17 x) | rays that stop on something  22 % | one distance in the open (512 x 512 of them, 100 % in the open)  21.8 ms (0.91 x)
+X9 (105, 100)              k-balls3  whole picture    417 ms (3.76 x) | rays that stop on something  32 % | one distance in the open (512 x 512 of them, 100 % in the open)  12.3 ms (0.51 x)
+X1 (120, 100)              k-balls3  whole picture    855 ms (7.72 x) | rays that stop on something  97 % | one distance in the open (512 x 512 of them, 100 % in the open)  12.1 ms (0.50 x)
+X1 at depth 60             k-balls3  whole picture    792 ms (7.15 x) | rays that stop on something  97 % | one distance in the open (512 x 512 of them, 100 % in the open)  13.7 ms (0.57 x)
+X6 (150, 75)               k-balls3  whole picture    408 ms (3.68 x) | rays that stop on something  44 % | one distance in the open (512 x 512 of them, 100 % in the open)  12.2 ms (0.51 x)

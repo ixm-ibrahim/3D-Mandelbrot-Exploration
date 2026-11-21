@@ -1,0 +1,69 @@
+page dist/r29-free.html, 1400x950, light: exit 0, no console errors
+X1   size 120 second 100 depth 16 (t 0.916667) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.607 | outline pixels 34222, stray 309 (to two pixels of ink: 37540, stray 519) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.
+X2   size 130 second 100 depth 16 (t 0.884615) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.883 | outline pixels 17632, stray 762 (to two pixels of ink: 19070, stray 1165) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.
+X3   size 150 second 100 depth 16 (t 0.833333) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 1.000 | outline pixels 0, stray 0 (to two pixels of ink: 0, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. The flat picture is filled completely.
+X4   size 150 second 100 depth 16 (t 0.833333) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 1.000 | outline pixels 0, stray 0 (to two pixels of ink: 0, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. The flat picture is filled completely.
+X5   size 200 second 100 depth 16 (t 0.750000) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 1.000 | outline pixels 0, stray 0 (to two pixels of ink: 0, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. The flat picture is filled completely.
+X6   size 150 second 75 depth 16 (t 0.833333) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. The second sphere is now 75 % of the first. Reset this section puts it back to 100.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.280 | outline pixels 27394, stray 41 (to two pixels of ink: 30892, stray 74) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. The second sphere is now 75 % of the first. Reset this section puts it back to 100.
+X7   size 300 second 50 depth 16 (t 0.666667) | program k-balls3 | 3D: camera distance 15.370, Drawing radius 10.500000000000002 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius. The second sphere is now 50 % of the first. Reset this section puts it back to 100.
+     2D: view 9.606 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.470 | outline pixels 20598, stray 511 (to two pixels of ink: 24188, stray 2443) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. The second sphere is now 50 % of the first. Reset this section puts it back to 100.
+X8   size 400 second 100 depth 16 (t 0.625000) | program k-balls3 | 3D: camera distance 19.981, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. Far out everything is filled, so the picture is one lump as large as the Drawing radius.
+     2D: view 12.488 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 1.000 | outline pixels 0, stray 0 (to two pixels of ink: 0, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again. The flat picture is filled completely.
+X9   size 105 second 100 depth 16 (t 0.976190) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.241 | outline pixels 28988, stray 348 (to two pixels of ink: 32184, stray 886) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.
+X9d  size 105 second 100 depth 60 (t 0.976190) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.239 | outline pixels 26822, stray 0 (to two pixels of ink: 30188, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.
+Y1   size 80 second 75 depth 16 (t 1.125000) | program k-balls3 | 3D: camera distance 4.860, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 75 % of the first. Reset this section puts it back to 100.
+     2D: view 3.038 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.252 | outline pixels 10894, stray 85 (to two pixels of ink: 13278, stray 186) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 75 % of the first. Reset this section puts it back to 100.
+Y2   size 60 second 60 depth 16 (t 1.333333) | program k-balls3 | 3D: camera distance 3.576, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 60 % of the first. Reset this section puts it back to 100.
+     2D: view 2.235 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.324 | outline pixels 7814, stray 0 (to two pixels of ink: 9756, stray 66) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 60 % of the first. Reset this section puts it back to 100.
+Y3   size 100 second 90 depth 16 (t 1.000000) | program k-balls3 | 3D: camera distance 10.091, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 90 % of the first. Reset this section puts it back to 100.
+     2D: view 6.307 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.136 | outline pixels 15154, stray 10 (to two pixels of ink: 17902, stray 106) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 90 % of the first. Reset this section puts it back to 100.
+Y4   size 55.56 second 99 depth 16 (t 1.400000) | program k-balls3 | 3D: camera distance 3.751, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 99 % of the first. Reset this section puts it back to 100.
+     2D: view 2.344 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.293 | outline pixels 10300, stray 0 (to two pixels of ink: 12706, stray 36) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 99 % of the first. Reset this section puts it back to 100.
+Y5   size 133.33 second 75 depth 16 (t 0.875009) | program k-balls3 | 3D: camera distance 13.174, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: At 133.33 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. The second sphere is now 75 % of the first. Reset this section puts it back to 100.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.177 | outline pixels 24174, stray 611 (to two pixels of ink: 28100, stray 2517) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: At 133.33 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. The second sphere is now 75 % of the first. Reset this section puts it back to 100.
+Y6   size 120 second 51 depth 16 (t 0.916667) | program k-balls3 | 3D: camera distance 6.500, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 51 % of the first. Reset this section puts it back to 100.
+     2D: view 4.062 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.238 | outline pixels 8818, stray 0 (to two pixels of ink: 10876, stray 24) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 51 % of the first. Reset this section puts it back to 100.
+Y7   size 30 second 75 depth 16 (t 2.166667) | program k-balls3 | 3D: camera distance 3.300, Drawing radius 13.65 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 75 % of the first. Reset this section puts it back to 100.
+     2D: view 2.100 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.242 | outline pixels 5358, stray 0 (to two pixels of ink: 6912, stray 98) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 75 % of the first. Reset this section puts it back to 100.

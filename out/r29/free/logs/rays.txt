@@ -1,0 +1,57 @@
+X1   start  size  120.00 second 100.00 grid 0 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 9.00 | 9504 rays (8 s in the page, 10 s here)
+            stops: reference 9242, page 9256 | page against reference along the ray, in pixels: median -1.54, within 3 of each other 6982 of 9242 | holes 0 | stops in the air 6
+X1   second size  120.00 second 100.00 grid 0 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 9.00 | 9504 rays (10 s in the page, 127 s here)
+            stops: reference 9483, page 9486 | page against reference along the ray, in pixels: median -1.49, within 3 of each other 7334 of 9483 | holes 0 | stops in the air 3
+X2   start  size  130.00 second 100.00 grid 0 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 9.00 | the eye stands inside the solid: not counted
+X2   second size  130.00 second 100.00 grid 0 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 9.00 | the eye stands inside the solid: not counted
+X3   start  size  150.00 second 100.00 grid 2 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 9.00 | the eye stands inside the solid: not counted
+X3   second size  150.00 second 100.00 grid 2 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 9.00 | 9504 rays (10 s in the page, 75 s here)
+            stops: reference 9084, page 9094 | page against reference along the ray, in pixels: median -1.91, within 3 of each other 7132 of 9084 | holes 0 | stops in the air 0
+X4   start  size  150.00 second 100.00 grid 1 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 9.00 | the eye stands inside the solid: not counted
+X4   second size  150.00 second 100.00 grid 1 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 9.00 | the eye stands inside the solid: not counted
+X5   start  size  200.00 second 100.00 grid 2 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 9.00 | the eye stands inside the solid: not counted
+X5   second size  200.00 second 100.00 grid 2 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 9.00 | the eye stands inside the solid: not counted
+X6   start  size  150.00 second  75.00 grid 0 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 9.00 | 9504 rays (9 s in the page, 16 s here)
+            stops: reference 3949, page 4107 | page against reference along the ray, in pixels: median -2.73, within 3 of each other 2126 of 3949 | holes 0 | stops in the air 70
+X6   second size  150.00 second  75.00 grid 0 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 9.00 | 9504 rays (8 s in the page, 137 s here)
+            stops: reference 5597, page 5722 | page against reference along the ray, in pixels: median -2.82, within 3 of each other 2963 of 5597 | holes 0 | stops in the air 83
+X7   start  size  300.00 second  50.00 grid 0 depth  16 | k-balls3, eye 15.37 from the middle, Drawing radius 10.50 | the eye stands inside the solid: not counted
+X7   second size  300.00 second  50.00 grid 0 depth  16 | k-balls3, eye 9.22 from the middle, Drawing radius 10.50 | the eye stands inside the solid: not counted
+X8   start  size  400.00 second 100.00 grid 0 depth  16 | k-balls3, eye 19.98 from the middle, Drawing radius 13.65 | the eye stands inside the solid: not counted
+X8   second size  400.00 second 100.00 grid 0 depth  16 | k-balls3, eye 11.99 from the middle, Drawing radius 13.65 | the eye stands inside the solid: not counted
+X9   start  size  105.00 second 100.00 grid 0 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 13.65 | 9504 rays (7 s in the page, 178 s here)
+            stops: reference 3048, page 3221 | page against reference along the ray, in pixels: median -3.03, within 3 of each other 1511 of 3045 | holes 0 | stops in the air 100
+X9   second size  105.00 second 100.00 grid 0 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 13.65 | 9504 rays (8 s in the page, 128 s here)
+            stops: reference 4746, page 4918 | page against reference along the ray, in pixels: median -3.32, within 3 of each other 2199 of 4745 | holes 0 | stops in the air 141
+X9d  start  size  105.00 second 100.00 grid 0 depth  60 | k-balls3, eye 13.17 from the middle, Drawing radius 13.65 | 9504 rays (8 s in the page, 169 s here)
+            stops: reference 3017, page 3219 | page against reference along the ray, in pixels: median -3.32, within 3 of each other 1383 of 3017 | holes 0 | stops in the air 138
+X9d  second size  105.00 second 100.00 grid 0 depth  60 | k-balls3, eye 7.90 from the middle, Drawing radius 13.65 | 9504 rays (7 s in the page, 147 s here)
+            stops: reference 4716, page 4918 | page against reference along the ray, in pixels: median -3.57, within 3 of each other 2051 of 4716 | holes 0 | stops in the air 195
+Y1   start  size   80.00 second  75.00 grid 0 depth  16 | k-balls3, eye 4.86 from the middle, Drawing radius 13.65 | 9504 rays (6 s in the page, 30 s here)
+            stops: reference 1972, page 2059 | page against reference along the ray, in pixels: median -1.94, within 3 of each other 1416 of 1972 | holes 0 | stops in the air 40
+Y1   second size   80.00 second  75.00 grid 0 depth  16 | k-balls3, eye 2.92 from the middle, Drawing radius 13.65 | 9504 rays (6 s in the page, 37 s here)
+            stops: reference 4639, page 4754 | page against reference along the ray, in pixels: median -1.98, within 3 of each other 3305 of 4639 | holes 0 | stops in the air 108
+Y2   start  size   60.00 second  60.00 grid 1 depth  16 | k-balls3, eye 3.58 from the middle, Drawing radius 13.65 | 9504 rays (6 s in the page, 40 s here)
+            stops: reference 2553, page 2608 | page against reference along the ray, in pixels: median -1.67, within 3 of each other 2083 of 2553 | holes 0 | stops in the air 0
+Y2   second size   60.00 second  60.00 grid 1 depth  16 | k-balls3, eye 2.15 from the middle, Drawing radius 13.65 | 9504 rays (5 s in the page, 36 s here)
+            stops: reference 5820, page 5906 | page against reference along the ray, in pixels: median -1.70, within 3 of each other 4698 of 5820 | holes 0 | stops in the air 0
+Y3   start  size  100.00 second  90.00 grid 0 depth  16 | k-balls3, eye 10.09 from the middle, Drawing radius 13.65 | 9504 rays (6 s in the page, 31 s here)
+            stops: reference 1098, page 1177 | page against reference along the ray, in pixels: median -2.38, within 3 of each other 654 of 1098 | holes 0 | stops in the air 16
+Y3   second size  100.00 second  90.00 grid 0 depth  16 | k-balls3, eye 6.05 from the middle, Drawing radius 13.65 | 9504 rays (6 s in the page, 33 s here)
+            stops: reference 2614, page 2738 | page against reference along the ray, in pixels: median -2.45, within 3 of each other 1528 of 2614 | holes 0 | stops in the air 30
+Y4   start  size   55.56 second  99.00 grid 0 depth  16 | k-balls3, eye 3.75 from the middle, Drawing radius 13.65 | 9504 rays (8 s in the page, 31 s here)
+            stops: reference 2327, page 2401 | page against reference along the ray, in pixels: median -1.96, within 3 of each other 1679 of 2327 | holes 0 | stops in the air 0
+Y4   second size   55.56 second  99.00 grid 0 depth  16 | k-balls3, eye 2.25 from the middle, Drawing radius 13.65 | 9504 rays (7 s in the page, 29 s here)
+            stops: reference 5308, page 5426 | page against reference along the ray, in pixels: median -1.93, within 3 of each other 3877 of 5308 | holes 0 | stops in the air 0
+Y5   start  size  133.33 second  75.00 grid 0 depth  16 | k-balls3, eye 13.17 from the middle, Drawing radius 13.65 | 9504 rays (8 s in the page, 89 s here)
+            stops: reference 1787, page 1927 | page against reference along the ray, in pixels: median -2.46, within 3 of each other 1018 of 1785 | holes 0 | stops in the air 53
+Y5   second size  133.33 second  75.00 grid 0 depth  16 | k-balls3, eye 7.90 from the middle, Drawing radius 13.65 | 9504 rays (8 s in the page, 121 s here)
+            stops: reference 3227, page 3390 | page against reference along the ray, in pixels: median -2.64, within 3 of each other 1759 of 3227 | holes 0 | stops in the air 108
+Y6   start  size  120.00 second  51.00 grid 2 depth  16 | k-balls3, eye 6.50 from the middle, Drawing radius 13.65 | 9504 rays (6 s in the page, 30 s here)
+            stops: reference 1608, page 1639 | page against reference along the ray, in pixels: median -1.43, within 3 of each other 1456 of 1608 | holes 0 | stops in the air 0
+Y6   second size  120.00 second  51.00 grid 2 depth  16 | k-balls3, eye 3.90 from the middle, Drawing radius 13.65 | 9504 rays (7 s in the page, 28 s here)
+            stops: reference 3817, page 3849 | page against reference along the ray, in pixels: median -1.43, within 3 of each other 3443 of 3817 | holes 0 | stops in the air 1
+Y7   start  size   30.00 second  75.00 grid 0 depth  16 | k-balls3, eye 3.30 from the middle, Drawing radius 13.65 | 9504 rays (6 s in the page, 30 s here)
+            stops: reference 1899, page 1938 | page against reference along the ray, in pixels: median -1.66, within 3 of each other 1547 of 1899 | holes 0 | stops in the air 0
+Y7   second size   30.00 second  75.00 grid 0 depth  16 | k-balls3, eye 1.98 from the middle, Drawing radius 13.65 | 9504 rays (7 s in the page, 29 s here)
+            stops: reference 4215, page 4270 | page against reference along the ray, in pixels: median -1.63, within 3 of each other 3533 of 4215 | holes 0 | stops in the air 0

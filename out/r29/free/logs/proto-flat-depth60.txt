@@ -1,0 +1,8 @@
+flat X1   size  120.00 second 100.00 grid 0 depth  60 | inside share 0.638 | outside 238619: too long 0 (0.0000 %), worst ratio 1.000 | wrongly under a pixel 0 (0.000 %) | median est/true 0.88
+flat X2   size  130.00 second 100.00 grid 0 depth  60 | inside share 0.866 | outside 87971: too long 0 (0.0000 %), worst ratio 1.000 | wrongly under a pixel 0 (0.000 %) | median est/true 0.91
+flat X6   size  150.00 second  75.00 grid 0 depth  60 | inside share 0.348 | outside 429668: too long 0 (0.0000 %), worst ratio 0.999 | wrongly under a pixel 0 (0.000 %) | median est/true 0.86
+flat X7   size  300.00 second  50.00 grid 0 depth  60 | inside share 0.521 | outside 315377: too long 0 (0.0000 %), worst ratio 1.127 | wrongly under a pixel 0 (0.000 %) | median est/true 0.49
+flat X9   size  105.00 second 100.00 grid 0 depth  60 | inside share 0.270 | outside 481064: too long 0 (0.0000 %), worst ratio 0.999 | wrongly under a pixel 0 (0.000 %) | median est/true 0.87
+flat Y5   size  133.33 second  75.00 grid 0 depth  60 | inside share 0.190 | outside 533870: too long 0 (0.0000 %), worst ratio 1.198 | wrongly under a pixel 36 (0.007 %) | median est/true 0.49
+flat O2   size  100.00 second 100.00 grid 0 depth  60 | inside share 0.186 | outside 536120: too long 0 (0.0000 %), worst ratio 1.183 | wrongly under a pixel 136 (0.025 %) | median est/true 0.43
+flat O6   size  200.00 second  50.00 grid 0 depth  60 | inside share 0.226 | outside 510112: too long 0 (0.0000 %), worst ratio 1.177 | wrongly under a pixel 24 (0.005 %) | median est/true 0.52

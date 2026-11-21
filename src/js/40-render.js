@@ -78,15 +78,18 @@ function sceneWant(a, eq, z0, n2, klein, needs = colProgramNeeds()) {
   // GL_BALLS_RHO, under a key of its own, so that 'balls' stays exactly the program it was.)
   if (klein === 'balls') return { key: keyOf('balls'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS + GL_TAIL };
   if (klein === 'balls2') return { key: keyOf('balls2'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_RHO + GL_TAIL };
+  // (Round 29: 'balls3' is that group for every other pair of its two numbers, where the two spheres cut into each
+  // other or the second lies between 1/2 and 1 of the first: GL_BALLS_FREE, again a text and a key of its own.)
+  if (klein === 'balls3') return { key: keyOf('balls3'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_FREE + GL_TAIL };
   if (klein) return { key: keyOf('klein'), src: () => GL_HEAD + defs + GL_COLOUR + GL_KLEIN + GL_TAIL };
   const fc = compileFormula(eq, true, n2), zc = compileFormula(z0, false, n2);
   return { key: keyOf([a.id, fc, zc].join('|')), src: () => GL_HEAD + defs + GL_COLOUR + a.glsl + GL_ORBIT.split('__F__').join(fc).split('__Z0__').join(zc) + GL_TAIL };
 }
 // Which Kleinian program the state asks for: false (not the Kleinian view), true (the group that was always
-// there), or 'balls' / 'balls2' (the second group, when its module is part of the page: with two equal spheres, and
-// with a smaller second sphere).
-const sceneKlein = () => (S.mode !== 'k' ? false : typeof GL_BALLS === 'string' && S.k.group === 1 ? (ballsRho() < 1 ? 'balls2' : 'balls') : true);
-const sceneBalls = (kl = sceneKlein()) => kl === 'balls' || kl === 'balls2';
+// there), or 'balls' / 'balls2' / 'balls3' (the second group, when its module is part of the page: with two equal
+// spheres, with a smaller second sphere, and with every other pair of its two numbers; ballsKind in 32-balls.js).
+const sceneKlein = () => (S.mode !== 'k' ? false : typeof GL_BALLS === 'string' && S.k.group === 1 ? ballsKind() : true);
+const sceneBalls = (kl = sceneKlein()) => kl === 'balls' || kl === 'balls2' || kl === 'balls3';
 function sceneNow() {   // what the current settings need; remembered, because the drawing loop asks every frame
   const klein = sceneKlein(), n2 = Math.abs(S.n - 2) < 1e-9, needs = colProgramNeeds();
   const sig = (klein ? (klein === true ? 'k' : 'k-' + klein) : [S.approach, n2, S.eq, S.z0].join('\n')) + '\n' + glNeedsKey(needs);
@@ -232,9 +235,10 @@ function sceneUniforms(P, o, b) {
   gl.uniform3fv(L('uAbs'), S.abs); gl.uniform3f(L('uSgn'), 1, S.flip[0] ? -1 : 1, S.flip[1] ? -1 : 1);
   const kl = sceneKlein(), balls = sceneBalls(kl);   // the second Kleinian group: its own depth, and its two numbers (uBT, uBGrid; no other program has them)
   gl.uniform1f(L('uBail'), 64); gl.uniform1i(L('uIter'), balls ? k.bit : S.mode === 'k' ? k.iter : S.iter);
-  // (uBT: the two spheres may touch, never cut into each other, so t is held to (1 + rho) / 2 or more: with two
-  //  equal spheres that is 1, as it always was. uBRho: only the program for a smaller second sphere has it.)
-  if (balls) { gl.uniform1f(L('uBT'), ballsT()); gl.uniform1i(L('uBGrid'), k.bgrid | 0); if (kl === 'balls2') gl.uniform1f(L('uBRho'), ballsRho()); }
+  // (uBT: t as the state holds it, ballsTOf. The program for two equal spheres is only chosen with t at 1 or more,
+  //  as it always was; the one for a smaller second sphere is handed the touching value for a t that is a rounding
+  //  hair under it. uBRho: the two programs for a second sphere of any size have it.)
+  if (balls) { gl.uniform1f(L('uBT'), ballsTOf(kl)); gl.uniform1i(L('uBGrid'), k.bgrid | 0); if (kl !== 'balls') gl.uniform1f(L('uBRho'), ballsRho()); }
   gl.uniform1f(L('uCut'), S.cutOn ? S.cut : 1e9);
   gl.uniform1f(L('uFlat'), S.flat || o.slice ? 1 : 0); gl.uniform2f(L('uFlatC'), v2.x, v2.y); gl.uniform1f(L('uFlatH'), v2.h); gl.uniform1f(L('uSliceZ'), v2.z);
   gl.uniform1f(L('uRaw'), o.raw ? 1 : 0);
@@ -529,10 +533,11 @@ function sceneWarm() {
   }
   const n2 = Math.abs(S.n - 2) < 1e-9, a = ap(), list = [];
   const want = (...args) => { try { list.push(sceneWant(...args)); } catch (err) { /* a formula that does not compile is not warmed */ } };
-  // Balls on balls on show: its other program first (the one for a smaller second sphere, or the one for two equal
-  // spheres), so that dragging the size of the neighbours past 100 does not stop to prepare it.
+  // Balls on balls on show: its other two programs first (the one for pairs of numbers whose spheres cut into each
+  // other before the others: that is where the size of the neighbours goes when it is dragged past 100), so that
+  // moving a dial does not stop to prepare one.
   const kl = sceneKlein();
-  if (sceneBalls(kl)) want(a, '', '', false, kl === 'balls' ? 'balls2' : 'balls');
+  if (sceneBalls(kl)) for (const other of ['balls3', 'balls2', 'balls']) if (other !== kl) want(a, '', '', false, other);
   APPROACHES.forEach(x => want(x, S.eq, S.z0, n2, false));
   want(a, S.eq, S.z0, !n2, false);
   want(a, '', '', false, true);

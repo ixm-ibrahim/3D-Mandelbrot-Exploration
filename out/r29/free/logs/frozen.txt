@@ -1,0 +1,7 @@
+GL_BALLS (5958 characters): the same to the byte: True
+GL_BALLS_RHO (6650 characters): the same to the byte: True
+everything from "// The scene program of this group." to the end of GL_BALLS_RHO (both texts and the two long comments, 22231 characters): the same to the byte: True
+GL_BALLS_FREE, the new program text: 12559 characters, after the two old ones: True
+32-balls.js     612 lines frozen,  1050 in the overlay: 101 taken out, 539 put in
+40-render.js    768 lines frozen,   773 in the overlay: 10 taken out, 15 put in
+80-ui.js        873 lines frozen,   825 in the overlay: 58 taken out, 10 put in

@@ -4844,11 +4844,12 @@ void main(){
 }`;
 
 // ==================== 32-balls.js ====================
-// ---------- Balls on balls: the second group of the Kleinian view (round 27; round 28: the second sphere's size).
+// ---------- Balls on balls: the second group of the Kleinian view (round 27; round 28: the second sphere's size;
+// round 29: the two dials are free of each other).
 // Not an approach and not a rule "square, then add c": a picture made only of slides by whole numbers and sphere
 // inversions. Its state is five numbers in S.k: group (0 the group that was always there, 1 this one), bt (the dial
-// t = top / 2), brho (the radius of the second sphere: 1, or 0.02 to 0.5), bgrid (0 square grid, 1 honeycomb grid,
-// 2 a line only) and bit (rounds of the recipe).
+// t = top / 2), brho (the radius of the second sphere: 0.02 to 1), bgrid (0 square grid, 1 honeycomb grid, 2 a line
+// only) and bit (rounds of the recipe).
 //
 // The recipe, in the object's own coordinates m, with top = 2t and rho = brho (rho = 1 is out/r25/klein/tree.py):
 //   repeat: if m.z < 0 or m.z > top: INSIDE. Slide (m.x, m.y) by the nearest whole number of the grid.
@@ -4862,86 +4863,87 @@ void main(){
 // is k^2 wide and its two big neighbours k^2 / (top - 1), whatever rho is: the dial "Size of the neighbours" shows
 // p = 100 / (top - 1). The first sphere is the mirror x -> -x of the picture, so the picture is always its own
 // mirror image left to right.
-// The two spheres touch at top = 1 + rho, that is at p = 100 / rho, and must not cut into each other. It is an object
-// (no two balls cut into each other) when rho = 1 and p <= 100 (round 27), or when rho <= 1/2 and p rho <= 100
-// (round 28: the copies of the second sphere at neighbouring whole numbers must not cut into each other either).
-// Between 1/2 and 1 only single values of rho work, and the dial does not offer them. So with two equal spheres the
-// neighbours are never larger than the middle ball, and with a second sphere half the size they go up to twice it.
+// The two spheres touch at top = 1 + rho, that is at p = 100 / rho. No two balls cut into each other when rho = 1 and
+// p <= 100 (round 27), or when rho <= 1/2 and p rho <= 100 (round 28: the copies of the second sphere at
+// neighbouring whole numbers do not cut into each other either). Round 29: each dial sets its own number and
+// nothing else, so every other pair of numbers can be had as well. Where p rho > 100 the two spheres of the recipe
+// cut into each other, and with rho between 1/2 and 1 the copies of the second sphere do; the picture is then
+// whatever the plain recipe above gives, balls that run into one another and round holes between them.
 const BALLS_K2 = 1.05, BALLS_T = 1.4, BALLS_ROUNDS = 16, BALLS_ROUNDS_MIN = 1, BALLS_ROUNDS_FEW = 5, BALLS_S3 = Math.sqrt(3);
-const BALLS_RHO_MIN = 0.02, BALLS_RHO_MAX = 0.5;   // the second sphere is as large as the first (1) or between these two
+// the second sphere: from BALLS_RHO_MIN of the first to as large as it; up to BALLS_RHO_HALF its copies at
+// neighbouring whole numbers do not cut into each other. (t: kept above 1/2 by a hair, so that top - 1 > 0.)
+const BALLS_RHO_MIN = 0.02, BALLS_RHO_HALF = 0.5, BALLS_T_MIN = 0.5001;
 const BALLS_NAME = 'Balls on balls', BALLS_TAG = 'a cousin of the flat picture: no c, no power';
 const BALLS_GRIDS = [[0, 'Square grid (four-fold)'], [1, 'Honeycomb grid (six-fold)'], [2, 'A line only (buds only round the flat picture)']];
 const BALLS_NOTE = 'Made only of slides by whole numbers and sphere inversions, so every body is an exact ball. It is a cousin of the flat picture: its flat cut is a chain of circles. It has no c and no power.';
 const ballsOn = () => S.k.group === 1;                 // this group is the one the Kleinian view holds
 const ballsShown = () => S.mode === 'k' && ballsOn();  // and it is on show
 const ballsGridId = g => (g === 1 || g === 'hex' || g === 'eisen' ? 1 : g === 2 || g === 'line' ? 2 : 0);
-// The second sphere's radius as the programs use it: 1 (also for a state that holds nothing), or 0.02 to 0.5. A number
-// between 0.5 and 1, which no dial gives (it can only be written into the state by hand), goes to the nearer of the
-// two as on the dial, so that nothing is ever drawn whose balls cut into each other.
-const ballsRho = (r = S.k.brho) => (+r <= 0.75 ? Math.min(BALLS_RHO_MAX, Math.max(BALLS_RHO_MIN, +r)) : 1);
-// t as the programs use it: the two spheres may touch, never cut into each other. (rho = 1: t >= 1, as it always was.)
-const ballsT = (t = S.k.bt, rho = ballsRho()) => Math.max((1 + rho) / 2, +t || 1);
-// The two spheres touch: the chain never ends.
-const ballsTouch = (t = S.k.bt, rho = ballsRho()) => (rho === 1 ? !(t > 1) : !(2 * t - 1 - rho > 1e-9));
-// The same "within rounding", for the sentence (docs/ROUND28.md, 1.2, point 6): the two dials show two decimals each,
-// and as they are shown the two numbers could multiply to 100 x 100 (33.33 and 300 do: the chain is then some 250
-// long and leaves the picture on both sides, as an endless one does). Two equal spheres: as it always was.
-function ballsTouchShown(t = S.k.bt, rho = ballsRho()) {
-  if (rho === 1 || ballsTouch(t, rho)) return ballsTouch(t, rho);
-  const p = ballsShare(ballsT(t, rho)), r = 100 * rho;
-  return 10000 - p * r <= 0.005 * (p + r);
+// The second sphere's radius as the programs use it: the number in the state, held to 0.02 ... 1 (1 for a state
+// that holds nothing). Nothing else changes it: not the size of the neighbours either.
+function ballsRho(r = S.k.brho) {
+  const v = r === undefined || r === null || r === '' ? NaN : +r;
+  return Number.isFinite(v) ? Math.min(1, Math.max(BALLS_RHO_MIN, v)) : 1;
+}
+// t as the programs use it: the number in the state as it stands (above 1/2 by a hair; 1 for a state that holds
+// nothing). The second sphere does not hold it up any more.
+const ballsT = (t = S.k.bt) => Math.max(BALLS_T_MIN, +t || 1);
+// Which of the three program texts draws a pair of numbers (40-render.js builds each under its own key):
+//   'balls'   two equal spheres that are apart or touch (rho = 1, t >= 1): GL_BALLS, round 27's text;
+//   'balls2'  a second sphere of half the first's size or less, apart from the first or touching it: GL_BALLS_RHO,
+//             round 28's text;
+//   'balls3'  every other pair, GL_BALLS_FREE: the two spheres cut into each other, or rho lies between 1/2 and 1.
+// Every pair Version 21 could reach lies in the first two, so its pictures are drawn by the programs that drew them.
+const ballsApart = (t, rho) => 2 * t - 1 - rho >= -1e-9;   // (the two spheres are apart, or touch)
+const ballsKind = (t = ballsT(), rho = ballsRho()) => (rho === 1 && t >= 1 ? 'balls' : rho <= BALLS_RHO_HALF && ballsApart(t, rho) ? 'balls2' : 'balls3');
+// t as a program is handed it (uBT). 'balls2' was written for spheres that never cut: a t that is a rounding hair
+// under the touching value is handed over as the touching value, as it always was.
+const ballsTOf = (kind, t = ballsT(), rho = ballsRho()) => (kind === 'balls2' ? Math.max((1 + rho) / 2, t) : t);
+// The two spheres touch: the chain never ends. (As the programs see the numbers.)
+const ballsTouch = (t = S.k.bt, rho = ballsRho()) => (rho === 1 ? !(ballsT(t) > 1) : !(2 * ballsT(t) - 1 - rho > 1e-9));
+// How the two spheres stand to each other as the two dials SHOW their numbers: -1 apart, 0 they touch, 1 they cut
+// into each other. The dials show two decimals each, so a product of the two shown numbers that could be 100 x 100
+// within their rounding counts as touching (33.33 and 300 do: the chain is then some 250 long and leaves the picture
+// on both sides, as an endless one does). Two equal spheres: 100 as the dial shows it is touching, more is cutting.
+function ballsMeet(t = S.k.bt, rho = ballsRho()) {
+  t = ballsT(t);
+  if (rho === 1) return t > 1 ? -1 : +ballsShare(t).toFixed(2) > 100 ? 1 : 0;
+  if (Math.abs(2 * t - 1 - rho) <= 1e-9) return 0;
+  const p = ballsShare(t), r = 100 * rho, over = p * r - 10000, tol = 0.005 * (p + r);
+  return over > tol ? 1 : over >= -tol ? 0 : -1;
 }
 // The dial shows t the way the eye meets it: the width of the two big neighbours as a share of the middle ball.
 const ballsShare = t => 100 / (2 * t - 1);
-const ballsFromShare = (p, rho = ballsRho()) => (Math.abs(p - ballsShare(BALLS_T)) < 0.06 ? BALLS_T : Math.max((1 + rho) / 2, 0.5 * (100 / Math.max(p, 1e-6) + 1)));
-// The dial "Second sphere" shows 100 rho. The value it takes for one that is asked for: 2 to 50, or 100; anything
-// between 50 and 100 goes to the nearer of the two (75 and below: 50), because there the buds on a neighbour would
-// cut into each other.
+const ballsFromShare = p => (Math.abs(p - ballsShare(BALLS_T)) < 0.06 ? BALLS_T : Math.max(BALLS_T_MIN, 0.5 * (100 / Math.max(p, 1e-6) + 1)));
+// The dial "Second sphere" shows 100 rho, with two decimals.
 const ballsRhoShown = () => +(100 * ballsRho()).toFixed(2);
-const ballsRhoFrom = v => (v > 75 ? 1 : Math.min(BALLS_RHO_MAX, Math.max(BALLS_RHO_MIN, v / 100)));
-// The two dials give way to each other, and the one the user moved wins (docs/ROUND28.md, 1.2, point 4).
-// Size set to p: where the two spheres would cut into each other (p rho > 100) the second sphere becomes 50 / p of
-// the first, and never more than half of it. From then on it FOLLOWS the size as min(1/2, 50 / p), which is half-way
-// to touching: so dragging the size past 100 simply works, the chain keeps its two ends and the picture changes
-// evenly. It follows until the user sets the second sphere by its own dial; a value set there stays as it is until
-// the size would make the two spheres cut into each other again. Coming back below 100 does not put the second
-// sphere back to 100 (it stays at 50): "Reset this section" does, and a sentence says what it is (ballsTrouble).
-// (BALLS_DIAL.follows: the second sphere was last set by the size dial. It only says who moved last, so it is kept
-//  here and not in the state S. Without it the rule would be the bare "only where p rho > 100": then, dragged from
-//  100 to 400, the second sphere would stand still while the chain grew endless at about 200, and jump there.)
-const BALLS_DIAL = { follows: false };
-// (The size counts as the dial shows it, with two decimals: a typed 100.004 is shown as 100 and is 100, so it does
-//  not send the second sphere to 50 under a dial that reads 100.)
-function ballsSetShare(p) {
-  let rho = ballsRho();
-  const shown = +(+p).toFixed(2);
-  if (shown * rho > 100 * (1 + 1e-9) || (BALLS_DIAL.follows && rho < 1)) { rho = Math.max(BALLS_RHO_MIN, Math.min(BALLS_RHO_MAX, 50 / p)); BALLS_DIAL.follows = true; }
-  // (two equal spheres: t from the number as it came, as it always was; a smaller second sphere: from the shown one)
-  S.k.brho = rho; S.k.bt = ballsFromShare(rho < 1 ? shown : p, rho);
-}
-// Second sphere set to v % of the first: where the two would cut into each other the neighbours become 50 / rho % of
-// the middle ball (t = rho + 1/2; so back to 100 gives neighbours of 50).
-function ballsSetRho(v) {
-  const rho = ballsRhoFrom(+(+v).toFixed(2)),   // (as the dial shows it: a typed 49.999 reads 50 and is 50)
-    cut = ballsShare(ballsT(S.k.bt, ballsRho())) * rho > 100 * (1 + 1e-9);
-  S.k.brho = rho; S.k.bt = cut ? rho + 0.5 : ballsT(S.k.bt, rho);
-  BALLS_DIAL.follows = false;
-}
-// The numbers the distance is made from (see GL_BALLS for rho = 1 and GL_BALLS_RHO for a smaller second sphere):
+const ballsRhoFrom = v => Math.min(1, Math.max(BALLS_RHO_MIN, v / 100));
+// The two dials. Each sets its own number and nothing else (round 29: Version 21 made the second sphere smaller by
+// itself where the two spheres would have cut into each other; the user asked for that rule to go).
+// (The size counts as it came while the two spheres are equal, as it always did, and as the dial shows it, with two
+//  decimals, beside a smaller second sphere, as in Version 21.)
+function ballsSetShare(p) { S.k.bt = ballsFromShare(ballsRho() < 1 ? +(+p).toFixed(2) : +p); }
+// (as the dial shows it: a typed 49.999 reads 50 and is 50)
+function ballsSetRho(v) { S.k.brho = ballsRhoFrom(+(+v).toFixed(2)); }
+// The numbers the distance is made from while the two spheres are apart (see GL_BALLS for rho = 1, GL_BALLS_RHO for
+// a smaller second sphere and GL_BALLS_FREE for one between 1/2 and 1):
 // HB, HT the two hull balls; the spindle's circle (centre (a, zm), radius R, d2 = R^2 - a^2) and whether it is used;
 // end = z2 - 1, where z2 is the upper of the two fixed points on the middle line (0 when the spheres touch).
-function ballsHulls(t, rho) {
-  if (rho === 1) { const H = t - Math.sqrt(Math.max(t * t - 1, 0)), s2 = t * t - 1; return { HB: H, HT: H, zm: t, d2: s2, a: 0.25 - s2, R: 0.25 + s2, on: t < BALLS_SPINDLE_T, end: t + Math.sqrt(Math.max(s2, 0)) - 1 }; }
+function ballsHulls(t, rho, any) {
+  if (rho === 1 && !any) { const H = t - Math.sqrt(Math.max(t * t - 1, 0)), s2 = t * t - 1; return { HB: H, HT: H, zm: t, d2: s2, a: 0.25 - s2, R: 0.25 + s2, on: t < BALLS_SPINDLE_T, end: t + Math.sqrt(Math.max(s2, 0)) - 1 }; }
   // (written so that nothing large is taken from something large: D = s - 2, which is 0 when the spheres touch)
+  // (`any`: these lines also for two equal spheres, as GL_BALLS_FREE writes them)
   const top = 2 * t, gap = Math.max(top - 1 - rho, 0), D = gap * (top - 1 + rho) / top, sq = Math.sqrt(D * (D + 4));
   const HB = 1 / (1 + 0.5 * (D + sq)), HT = rho * rho / (top - HB), zm = 1 + 0.5 * D, d2 = 0.25 * D * (D + 4), w = Math.min(0.5, top - zm + rho);
   return { HB, HT, zm, d2, a: (w * w - d2) / (2 * w), R: (w * w + d2) / (2 * w), on: d2 < 3, end: 0.5 * (D + sq) };
 }
-// How far the chain reaches from the middle of the picture, along x (Infinity where the two spheres touch: the chain
-// never ends). The chain runs out at the two fixed points on the middle line, which the frame carries to x = +-reach.
+// How far the chain reaches from the middle of the picture, along x (Infinity where the two spheres touch or cut into
+// each other: there is no end to frame). The chain runs out at the two fixed points on the middle line, which the
+// frame carries to x = +-reach.
 function ballsReach(t = S.k.bt, rho = ballsRho()) {
+  t = ballsT(t);
   if (rho === 1) return t > 1 ? BALLS_K2 / (t + Math.sqrt(t * t - 1) - 1) + BALLS_K2 / 2 : Infinity;
-  return ballsTouch(t, rho) ? Infinity : BALLS_K2 / ballsHulls(ballsT(t, rho), rho).end + BALLS_K2 / 2;
+  return 2 * t - 1 - rho > 1e-9 ? BALLS_K2 / ballsHulls(t, rho).end + BALLS_K2 / 2 : Infinity;
 }
 
 // The slide: the whole number of the grid nearest to (x, y), as [a, b] to take away.
@@ -4958,11 +4960,10 @@ function ballsNearest(grid, x, y) {
 }
 // The inside test, in JavaScript: the twin of the shader (and, for rho = 1, of tree.py). Picture coordinates.
 // opts = { t, grid ('square' | 'hex' | 'line', or 0 | 1 | 2), rounds, rho }; what is left out is read from the page.
-// (rho given here is used as it comes, also a value the dial does not offer: the checks show with it why not.)
-// (t read from the page is held as the picture holds it, ballsT: the two spheres may touch, never cut into each other.)
+// (t and rho, given here or read from the page, are used as they stand: nothing holds one by the other.)
 function ballsInside(x, y, z, opts) {
   const o = opts || {}, rho = o.rho === undefined ? ballsRho() : +o.rho, r2 = rho * rho;
-  const t = o.t === undefined ? ballsT(S.k.bt, rho) : +o.t, grid = ballsGridId(o.grid === undefined ? S.k.bgrid : o.grid);
+  const t = o.t === undefined ? ballsT() : +o.t, grid = ballsGridId(o.grid === undefined ? S.k.bgrid : o.grid);
   const rounds = o.rounds === undefined ? S.k.bit : Math.round(o.rounds), top = 2 * t;
   const ux = y, uy = z, uz = x - BALLS_K2 / 2;
   let d = ux * ux + uy * uy + uz * uz;
@@ -5000,9 +5001,8 @@ function ballsSide(top, rho, grid, HB) {
   const c2 = Math.max(0.25 - rho * rho, 0), w = Math.min(top - HB, (grid === 1 ? BALLS_S3 / 2 : 1) - rho);
   return { c2, a: (w * w - c2) / (2 * w), R: (w * w + c2) / (2 * w) };
 }
-// How far the point m (in the middle cell, ht under the top wall) stands inside it. Below 0: not inside it.
-function ballsSideRoom(m, ht, grid, sd) {
-  // the whole number next to the middle one that m leans towards: along it, and across it
+// The whole number next to the middle one that the point m leans towards: [along it, across it].
+function ballsLean(m, grid) {
   let al = Math.abs(m[0]), ac = m[1];
   if (grid === 0 && Math.abs(m[1]) > al) { al = Math.abs(m[1]); ac = m[0]; }
   if (grid === 1) {
@@ -5010,25 +5010,131 @@ function ballsSideRoom(m, ht, grid, sd) {
     if (d1 > al) { al = d1; ac = 0.5 * m[1] - 0.5 * BALLS_S3 * m[0]; }
     if (d2 > al) { al = d2; ac = 0.5 * m[1] + 0.5 * BALLS_S3 * m[0]; }
   }
-  const v = al - 0.5, q = Math.hypot(ac, ht);
+  return [al, ac];
+}
+// How far the point m (in the middle cell, ht under the top wall) stands inside it. Below 0: not inside it.
+function ballsSideRoom(m, ht, grid, sd) {
+  const [al, ac] = ballsLean(m, grid), v = al - 0.5, q = Math.hypot(ac, ht);
   return (sd.c2 - v * v + q * (2 * sd.a - q)) / (sd.R + Math.hypot(v, q - sd.a));
+}
+// ----- The pairs of numbers that GL_BALLS_FREE draws ('balls3'): the length that is certainly free, in JavaScript,
+// written the way that program writes it (the long comment above GL_BALLS_FREE says why each line holds).
+// The whole numbers round the middle one, by grid: first the middle itself, then the ones next to it, then (square
+// grid) the four on the diagonals.
+const BALLS_NEAR = [
+  [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [1, -1], [-1, 1], [-1, -1]],
+  [0, 1, 2, 3, 4, 5, 6].map(k => (k === 0 ? [0, 0] : [Math.cos((k - 1) * Math.PI / 3), Math.sin((k - 1) * Math.PI / 3)])),
+  [[0, 0], [1, 0], [-1, 0]]];
+// A length that is no longer than the distance from the point to the cell of a whole number (dx, dy: the point less
+// that number).
+function ballsCellFar(grid, dx, dy) {
+  if (grid === 2) return Math.max(Math.abs(dx) - 0.5, 0);
+  if (grid === 0) return Math.hypot(Math.max(Math.abs(dx) - 0.5, 0), Math.max(Math.abs(dy) - 0.5, 0));
+  return Math.max(Math.max(Math.abs(dx), Math.abs(0.5 * dx + 0.5 * BALLS_S3 * dy), Math.abs(0.5 * dx - 0.5 * BALLS_S3 * dy)) - 0.5, 0);
+}
+// The numbers that depend on the dials alone.
+function ballsFreeSet(t, rho, grid) {
+  const top = 2 * t, rr = rho * rho, f = { top, rho, rr, grid, apart: top - 1 - rho >= -1e-6, hu: ballsHulls(t, rho, true) };
+  // the side spindle (rho <= 1/2) or the side ring (rho > 1/2): its circle (c2, a, R), and how far across it may go
+  const c2 = 0.25 - rr, K = top * top - 1 + rr, disc = K * K + 4 * (top * top - 1) * c2, lim = grid === 2 ? 1e9 : grid === 0 ? 0.5 : 0.5 / BALLS_S3;
+  let w = (K + Math.sqrt(Math.max(disc, 0))) / (2 * (top + 1)), on = disc >= 0, clip = 1e9;
+  if (rho <= 0.5) w = Math.min(w, lim, (grid === 1 ? BALLS_S3 / 2 : 1) - rho);
+  else { on = on && w * w > -c2 * 1.0000001; clip = lim * -c2 / (w * w); }
+  f.side = { on: on && w > 0, c2, a: (w * w - c2) / (2 * w), R: (w * w + c2) / (2 * w), clip };
+  if (f.apart) return f;
+  // the two spheres cut into each other: the circle where they cross lies at the height zm and is q0 across
+  const zm = (top * top + 1 - rr) / (2 * top), dd = zm * zm - 1, q0 = Math.sqrt(Math.max(-dd, 0)), hmin = Math.min(zm, top - zm);
+  const rw = Math.min(0.5, top - zm + rho), slab = rr - 0.25;
+  f.zm = zm; f.dd = dd; f.q0 = q0;
+  f.ring = { on: rw * rw + dd > 0, a: (rw * rw - dd) / (2 * rw), R: (rw * rw + dd) / (2 * rw) };
+  f.ylim = slab > 1e-5 ? Math.min(grid === 0 ? -dd : grid === 1 ? 2 * (q0 - BALLS_S3 / 4) : 1e9, Math.sqrt(slab)) : -1;
+  const er2 = (grid === 0 ? 0.5 : 1 / 3) + dd;
+  f.edge = grid !== 2 && er2 > 0 && Math.sqrt(er2) <= Math.min(hmin, grid === 0 ? 1 : 0.5) ? Math.sqrt(er2) : -1;
+  // the depth of the search (see "the depth" above GL_BALLS_FREE)
+  const gv = q0 < 0.5 ? 0.5 : grid === 0 ? Math.SQRT1_2 : grid === 1 ? 1 / BALLS_S3 : q0 + 0.25, kap = Math.sqrt(Math.max(gv - q0, 1e-9) / (gv + q0));
+  f.rhoT = Math.log((1 + kap) / (1 - kap));
+  f.fan = Math.PI / Math.max(Math.PI - Math.acos(Math.min(1, Math.max(-1, (1 + rr - top * top) / (2 * rho)))), 1e-6) - 1e-3;
+  f.fanS = rho > 0.5 ? Math.PI / Math.max(Math.PI - Math.acos(Math.min(1, Math.max(-1, (2 * rr - 1) / (2 * rr)))), 1e-6) - 1e-3 : 0;
+  return f;
+}
+// At the place m where the recipe ends OUTSIDE (W, DF as the search carries them; left: the rounds it had left):
+// [the length that is certainly free, the true distance to the two first buds behind the mirrors].
+function ballsFreeRoom(m, W, DF, f, left) {
+  const { top, rho, rr, grid } = f, back = (e, p, w, df) => { const L = Math.hypot(p[0] - w[0], p[1] - w[1], p[2] - w[2]), x = Math.max(e, 0); return x * L / ((L + x) * df); };
+  const hb = m[2], ht = top - m[2], q = Math.hypot(m[0], m[1]), [al, ac] = ballsLean(m, grid);
+  // the side spindle or the side ring, between the second sphere and its copy at the next whole number
+  let side = -1;
+  if (f.side.on) {
+    const sd = f.side, v = al - 0.5, tq = Math.hypot(ac, ht);
+    side = Math.min((sd.c2 - v * v + tq * (2 * sd.a - tq)) / (sd.R + Math.hypot(v, tq - sd.a)), sd.clip - Math.abs(ac));
+  }
+  if (f.apart) {
+    // the two spheres apart: the hulls of GL_BALLS_RHO, which hold for a second sphere of any size
+    const hu = f.hu, HB = hu.HB, HT = hu.HT, restB = grid === 0 ? HB / 2 : grid === 1 ? HB / 3 : HB / 4, restT = rr * HT;
+    const rT = Math.min(rho, 2 * rr / (1 + Math.sqrt(Math.max(1 - 4 * rr, 0))) + restT), rt = Math.hypot(m[0], m[1], ht);
+    const cb = Math.hypot(m[0], m[1], hb - HB / 2) - HB / 2, ct = Math.hypot(m[0], m[1], ht - HT / 2) - HT / 2;
+    const lo = grid === 2 ? Math.hypot(m[1], hb) : hb, hi = grid === 2 ? Math.hypot(m[1], ht) : ht;
+    let e = Math.max(Math.min(cb, ct, Math.min(lo - restB, Math.max(hi - restT, rt - rT))), 0);
+    const dz = m[2] - hu.zm;
+    if (hu.on) e = Math.max(e, (hu.d2 + q * (2 * hu.a - q) - dz * dz) / (hu.R + Math.hypot(q - hu.a, dz)));
+    return [back(Math.max(e, side), m, W, DF), 1e9];
+  }
+  // the two spheres cut into each other
+  const C = [0, 0, top], rb = Math.max(dot(m, m), 1e-300), mt = sub(m, C), rt = Math.max(dot(mt, mt), 1e-300);
+  // looking through the first sphere, and through the second
+  const mA = scl(m, 1 / rb), WA = scl(W, 1 / Math.max(dot(W, W), 1e-300)), DFA = DF / rb, LA2 = Math.max(dot(sub(mA, WA), sub(mA, WA)), 1e-300);
+  const sB = rr / rt, Wt = sub(W, C), mB = add(scl(mt, sB), C), WB = add(scl(Wt, rr / Math.max(dot(Wt, Wt), 1e-300)), C), DFB = DF * sB, LB2 = Math.max(dot(sub(mB, WB), sub(mB, WB)), 1e-300);
+  const pearl = (h, D, kk) => (h > 0 ? 2 * h / (1 + Math.sqrt(1 + kk * h * Math.max(D, 0))) : h);
+  const bud = Math.min(pearl(top - mA[2], top - WA[2], 4 / LA2) / DFA, pearl(mB[2], WB[2], 4 / LB2) / DFB);
+  let eA = 0.5, eB = 0.5;
+  BALLS_NEAR[grid].forEach((c, k) => {
+    const ax = mA[0] - c[0], ay = mA[1] - c[1], fa = ballsCellFar(grid, ax, ay), bx = mB[0] - c[0], by = mB[1] - c[1], fb = ballsCellFar(grid, bx, by);
+    eA = Math.min(eA, Math.max(Math.hypot(ax, ay, mA[2] - top) - rho, fa));
+    if (grid === 0 && k >= 5) eA = Math.min(eA, Math.max(Math.hypot(ax, ay, mA[2]) - 1, fa));
+    eB = Math.min(eB, Math.max(Math.hypot(bx, by, mB[2]) - 1, fb));
+    if (k >= 1) eB = Math.min(eB, Math.max(Math.hypot(bx, by, mB[2] - top) - rho, fb));
+  });
+  eA = Math.max(eA, 1 - Math.sqrt(dot(mA, mA))); eB = Math.max(eB, rho - Math.hypot(mB[0], mB[1], mB[2] - top));
+  let free = left < 1 ? Math.min(back(Math.sqrt(rb) - 1, m, W, DF), back(Math.sqrt(rt) - rho, m, W, DF)) : Math.min(back(eA, mA, WA, DFA), back(eB, mB, WB, DFB));
+  // the ring round the circle where the two spheres cross, and the balls that every move carries onto themselves
+  const dz = m[2] - f.zm;
+  const ring = f.ring.on ? (f.dd + q * (2 * f.ring.a - q) - dz * dz) / (f.ring.R + Math.hypot(q - f.ring.a, dz)) : -1;
+  let whole = ring;
+  if (f.ylim >= 0) {
+    const yc = Math.min(f.ylim, Math.max(-f.ylim, ac)), r2 = 0.25 + yc * yc + f.dd;
+    if (r2 > 0) whole = Math.max(whole, Math.sqrt(r2) - Math.hypot(al - 0.5, ac - yc, dz));
+  }
+  if (f.edge > 0) {
+    let ex, ey;
+    if (grid === 0) { ex = m[0] < 0 ? -0.5 : 0.5; ey = m[1] < 0 ? -0.5 : 0.5; }
+    else { const a0 = (Math.floor(Math.atan2(m[1], m[0]) / (Math.PI / 3)) + 0.5) * (Math.PI / 3); ex = Math.cos(a0) / BALLS_S3; ey = Math.sin(a0) / BALLS_S3; }
+    whole = Math.max(whole, f.edge - Math.hypot(m[0] - ex, m[1] - ey, dz));
+  }
+  // the depth of the search
+  const wholeP = left >= f.fan ? back(whole, m, W, DF) * (1 - Math.exp(-f.rhoT * (left - f.fan)))
+    : left >= 0.5 * f.fan + 1 && f.ring.on ? back(Math.min(ring, Math.hypot(q - f.q0, dz)), m, W, DF) : -1;
+  const sideP = back(side, m, W, DF) * (rho > 0.5 ? 1 - Math.exp(-f.rhoT * Math.max(left - f.fanS, 0)) : Math.max(left - 1, 0) / (left + 8));
+  free = Math.max(free, wholeP, sideP);
+  return [free, left >= 1 ? bud : 1e9];
 }
 // The distance the shader hands the ray marcher, in JavaScript (the part that does not depend on the picture: see
 // "free" in GL_BALLS). Negative inside a ball. For the checks. With opts.parts it returns both numbers the estimate is the
 // smaller of: [the true distance to the nearest ball the search met, the length that is certainly free of balls].
-// opts as for ballsInside. (The length that is certainly free is worked out for rho = 1 and for rho <= 1/2 only.)
+// opts as for ballsInside. The length that is certainly free is worked out the way the program for that pair of
+// numbers works it out (ballsKind): GL_BALLS, GL_BALLS_RHO or GL_BALLS_FREE.
 function ballsEstimate(x, y, z, opts) {
   const o = opts || {}, rho = o.rho === undefined ? ballsRho() : +o.rho, r2 = rho * rho;
-  const t = o.t === undefined ? ballsT(S.k.bt, rho) : +o.t, grid = ballsGridId(o.grid === undefined ? S.k.bgrid : o.grid);
+  const tAsk = o.t === undefined ? ballsT() : +o.t, kind = ballsKind(tAsk, rho), t = ballsTOf(kind, tAsk, rho);
+  const grid = ballsGridId(o.grid === undefined ? S.k.bgrid : o.grid);
   const rounds = o.rounds === undefined ? S.k.bit : Math.round(o.rounds), top = 2 * t;
-  const hu = ballsHulls(t, rho), HB = hu.HB, HT = hu.HT;
+  const fr = kind === 'balls3' ? ballsFreeSet(t, rho, grid) : null, hu = fr ? fr.hu : ballsHulls(t, rho), HB = hu.HB, HT = hu.HT;
   // "the rest": how far from a wall the buds reach that do not stand at a whole number (on the top wall of a smaller
   // second sphere: rho^2 HT, for all three grids)
   const restB = grid === 0 ? HB / 2 : grid === 1 ? HB / 3 : HB / 4, restT = rho === 1 ? restB : r2 * HT;
   // (rho < 1: and that rest keeps within rT of the second sphere's centre: see GL_BALLS_RHO)
   const rT = Math.min(rho, 2 * r2 / (1 + Math.sqrt(Math.max(1 - 4 * r2, 0))) + restT);
   // (rho <= 1/2: and the side spindle, between the second sphere and its copy at the next whole number)
-  const sd = rho <= BALLS_RHO_MAX ? ballsSide(top, rho, grid, HB) : null;
+  const sd = rho <= BALLS_RHO_HALF ? ballsSide(top, rho, grid, HB) : null;
   const pearl = (h, D, kk) => (h > 0 ? 2 * h / (1 + Math.sqrt(1 + kk * h * Math.max(D, 0))) : h);
   const u = [y, z, x - BALLS_K2 / 2], d2 = Math.max(dot(u, u), 1e-300);
   let DF = BALLS_K2 / d2, m = [DF * u[0], DF * u[1], 1 + DF * u[2]], W = [0, 0, 1], best = 1e9;
@@ -5044,6 +5150,11 @@ function ballsEstimate(x, y, z, opts) {
     else if (rt < r2) {
       const s = r2 / Math.max(rt, 1e-300), Wt = [W[0], W[1], W[2] - top], w = r2 / Math.max(dot(Wt, Wt), 1e-300);
       m = [mt[0] * s, mt[1] * s, top + mt[2] * s]; W = [Wt[0] * w, Wt[1] * w, top + Wt[2] * w]; DF *= s;
+    } else if (fr) {
+      // the pairs of numbers that GL_BALLS_FREE draws ([free, the first buds behind the two mirrors])
+      const r = ballsFreeRoom(m, W, DF, fr, rounds - 1 - i);
+      best = Math.min(best, r[1]);
+      return o.parts ? [best, r[0]] : Math.min(best, r[0]);
     } else {
       const cb = Math.hypot(m[0], m[1], hb - HB / 2) - HB / 2, ct = Math.hypot(m[0], m[1], ht - HT / 2) - HT / 2;
       const lo = grid === 2 ? Math.hypot(m[1], hb) : hb, hi = grid === 2 ? Math.hypot(m[1], ht) : ht;
@@ -5057,7 +5168,7 @@ function ballsEstimate(x, y, z, opts) {
 }
 // The start view: the whole chain in the picture, seen from a little above the flat plane so that the buds off the
 // flat picture show. { yaw, pitch, dist (at the starting field of view), h (span of the 2D view), room }.
-const BALLS_FAR = 40;   // rho < 1: a chain that reaches further than this from the middle is not framed whole
+const BALLS_FAR = 40;   // a chain that reaches further than this from the middle is not framed whole
 // From how far (at the starting field of view) the ball of radius r about the picture point c is wholly in a picture
 // `asp` times as wide as high, for an eye that looks at the middle from the direction (yaw, pitch), with 8 % of
 // air round it. Exact for a ball: the eye's four side planes, each kept r away from the centre. (The fixer of
@@ -5071,24 +5182,33 @@ function ballsSee(c, r, asp, yaw, pitch) {
   return dot(c, off) + Math.max((Math.abs(dot(c, up)) + r * Math.hypot(1, f)) / f, (Math.abs(dot(c, right)) + r * Math.hypot(1, g)) / g);
 }
 function ballsCam() {
-  const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight), asp = w / h, rho = ballsRho();
-  if (rho === 1) {
+  const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight), asp = w / h, rho = ballsRho(), t = ballsT();
+  if (rho === 1 && t >= 1) {
     const r = Math.min(ballsReach(), 4.5);
     return { yaw: -1.25, pitch: 0.5, dist: Math.max(3.3, 3.6 * r / asp), h: Math.max(2.1, 2.25 * r / asp), room: Math.min(r + 0.4, 8) };
   }
-  // A smaller second sphere: the neighbours may be larger than the middle ball, so the picture grows taller as well
-  // as longer. `tall` is how far it reaches from the middle line: a neighbour's own radius, or the middle ball with
-  // the largest bud on its waist (measured on lists of balls for rho <= 1/2: out/r28/dials/NOTES.md). A chain longer
-  // than BALLS_FAR (the two spheres touch, or all but) is not framed whole: then the middle ball, its two neighbours
-  // and a stretch of what follows are, and ballsTrouble says that the chain goes on.
-  const t = ballsT(), p = ballsShare(t), reach = ballsReach(t, rho);
+  // Every other pair of numbers: the neighbours may be larger than the middle ball, so the picture grows taller as
+  // well as longer. `tall` is how far it reaches from the middle line: a neighbour's own radius, or the middle ball
+  // with the largest bud on its waist (`waist`; measured on lists of balls for rho <= 1/2: out/r28/dials/NOTES.md).
+  // A chain longer than BALLS_FAR (the two spheres touch, or all but) is not framed whole: then the middle ball, its
+  // two neighbours and a stretch of what follows are, and ballsTrouble says that the chain goes on. The same stretch
+  // is framed where the two spheres cut into each other: there is no end of a chain to frame (ballsReach is
+  // Infinity there).
+  // (Round 29, a second sphere between 1/2 and 1 of the first, the two spheres apart: the chain's reach holds as it
+  //  stands, but the bud on the waist is larger than k^2 / (2 top - 1), by up to an eighth of the whole height in
+  //  the pairs that were measured (out/r29/free/mk/tall29.py). There the hull of that bud is used instead: nothing
+  //  that grows on the bottom wall reaches higher than HB, which the frame carries to k^2 HB / (2 - HB) beyond the
+  //  middle ball.)
+  const p = ballsShare(t), reach = ballsReach(t, rho);
   const whole = reach <= BALLS_FAR, r = whole ? reach : Math.max(4.5, BALLS_K2 * (0.5 + 1.5 * p / 100));
-  const tall = Math.max(BALLS_K2 * p / 200, BALLS_K2 / 2 + BALLS_K2 / (4 * t - 1));
+  const HBw = rho > BALLS_RHO_HALF && 2 * t - 1 - rho > 1e-9 ? ballsHulls(t, rho, true).HB : 0;
+  const waist = BALLS_K2 / 2 + (HBw > 0 ? BALLS_K2 * HBw / (2 - HBw) : BALLS_K2 / (4 * t - 1));
+  const tall = Math.max(BALLS_K2 * p / 200, waist);
   // The balls the picture has to hold, each seen whole (ballsSee): the middle ball with the buds on its waist, the two
   // big neighbours, and, when the chain is framed whole, the ball that holds the rest of the chain at either end.
   // Never nearer than the rule of thumb that was there before, so the views that were right stay as they were.
   const yaw = -1.25, pitch = 0.5, rN = BALLS_K2 * p / 200, xN = BALLS_K2 / 2 + rN, rE = Math.max(0, (reach - xN - rN) / 2);
-  let see = ballsSee([0, 0, 0], BALLS_K2 / 2 + BALLS_K2 / (4 * t - 1), asp, yaw, pitch);
+  let see = ballsSee([0, 0, 0], waist, asp, yaw, pitch);
   for (const sg of [-1, 1]) {
     see = Math.max(see, ballsSee([sg * xN, 0, 0], rN, asp, yaw, pitch));
     if (whole && rE > 0) see = Math.max(see, ballsSee([sg * (reach - rE), 0, 0], rE, asp, yaw, pitch));
@@ -5106,42 +5226,94 @@ function ballsFrame() {
   resetCam();
   touch();
 }
+// Two things the sentences below say only where the two spheres cut into each other, each found by asking the
+// recipe itself (ballsInside) and kept until the numbers it was asked for change.
+// Far out, is everything filled, and is the picture then one lump as large as the Drawing radius? The recipe at
+// fourteen directions and two distances far beyond the Drawing radius (and beyond the two big neighbours): all of
+// them inside. And on the ball of the Drawing radius itself, where the skin of the lump would be, at 120 directions
+// spread evenly: at least three in ten of them inside (a lump may have holes; a band of balls with open sky round it
+// is not a lump, even if far beyond it everything is filled). Where that line lies was measured: with three in ten
+// or more, 97 in 100 rays of the picture or more stopped on something; with fewer, 78 in 100 or fewer
+// (out/r29/free/mk/lump.js, lump2.js).
+const BALLS_ASK = { far: '', farIs: false, flat: '', flatIs: false };
+function ballsFarFilled() {
+  const t = ballsT(), bound = +S.view.bound > 0 ? +S.view.bound : 8, base = Math.max(bound, BALLS_K2 * (0.5 + ballsShare(t) / 100));
+  const key = [t, ballsRho(), S.k.bgrid | 0, S.k.bit, bound, base].join('|');
+  if (BALLS_ASK.far !== key) {
+    let all = true;
+    for (const far of [20, 2000]) for (let i = 0; i < 14 && all; i++) {
+      // (six along the axes, eight along the diagonals, a little off the straight so that no point lies in a mirror)
+      const d = i < 6 ? [[1, 0.03, 0.02], [-1, 0.02, 0.03], [0.03, 1, 0.02], [0.02, -1, 0.03], [0.03, 0.02, 1], [0.02, 0.03, -1]][i]
+        : [i & 1 ? 1 : -1, i & 2 ? 0.9 : -0.9, i & 4 ? 0.8 : -0.8], s = far * base / Math.hypot(d[0], d[1], d[2]);
+      all = ballsInside(s * d[0], s * d[1], s * d[2]);
+    }
+    if (all) {
+      let n = 0;
+      for (let i = 0; i < 120; i++) {
+        const z = 1 - (2 * i + 1) / 120, r = Math.sqrt(1 - z * z), a = 2.399963229728653 * i;
+        if (ballsInside(bound * r * Math.cos(a), bound * r * Math.sin(a), bound * z)) n++;
+      }
+      all = n >= 36;
+    }
+    BALLS_ASK.far = key; BALLS_ASK.farIs = all;
+  }
+  return BALLS_ASK.farIs;
+}
+// Is the flat picture filled completely? The recipe on a grid of the 2D view as it stands, and of the 2D view that
+// Frame it gives (so that a view from deep inside one ball does not count as a filled picture).
+function ballsFlatFilled() {
+  const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight), asp = w / h, v = S.v2, h0 = ballsCam().h;
+  const key = [ballsT(), ballsRho(), S.k.bgrid | 0, S.k.bit, v.x, v.y, v.h, S.cut, asp, h0].join('|');
+  if (BALLS_ASK.flat !== key) {
+    const NX = 60, NY = 40;
+    let all = true;
+    for (const [cx, cy, hh] of [[v.x, v.y, v.h], [0, 0, h0]]) for (let j = 0; j < NY && all; j++) for (let i = 0; i < NX && all; i++) {
+      all = ballsInside(cx + ((i + 0.5) / NX - 0.5) * hh * asp, cy + ((j + 0.5) / NY - 0.5) * hh, +S.cut || 0);
+    }
+    BALLS_ASK.flat = key; BALLS_ASK.flatIs = all;
+  }
+  return BALLS_ASK.flatIs;
+}
 // What the user should know about the picture as the dials stand, in plain sentences (status, not an error), or ''.
 // Where the two spheres touch (at 100 with two equal spheres, at 100 / rho with a smaller second one) the chain is
 // endless, in the 2D view as well: nothing the user does shows all of it, so the sentence says what is on the screen
 // instead of giving advice that cannot be followed. (The depth: each further ball of the chain costs the search one
 // more round, and a point still undecided counts as inside, as in tree.py.)
-// Round 28 adds: what the second sphere is while it is not as large as the first (past 100 it has to be smaller), and
-// what a depth under BALLS_ROUNDS_FEW does to the picture.
+// Round 28 added: what the second sphere is while it is not as large as the first, and what a depth under
+// BALLS_ROUNDS_FEW does to the picture. Round 29: where the two spheres cut into each other (ballsMeet) one sentence
+// says so, in place of the sentences about the chain, and what the picture then is (one lump, or a filled flat picture).
 function ballsTrouble() {
   if (!ballsShown()) return '';
   const rho = ballsRho(), t = ballsT(), p = ballsShare(t), out = [], pc = x => dialFmt(+x.toFixed(2));
-  const what = S.flat ? 'circles' : 'balls', touch = ballsTouchShown(S.k.bt, rho);
+  const what = S.flat ? 'circles' : 'balls', meet = ballsMeet(t, rho), touch = meet === 0, cutting = meet > 0;
+  const lump = cutting && !S.flat && ballsFarFilled();
   // (the fixer of round 28: after a large size is typed the Drawing radius is smaller than the neighbours themselves,
-  //  and one of them shows as a flat wall. That is said, with its cure, in place of "its far ends are not drawn".)
-  const cut = rho < 1 && !S.flat && S.view.bound < BALLS_K2 * (0.5 + p / 100) * (1 - 1e-9);
-  if (touch && rho === 1) {
+  //  and one of them shows as a flat wall. That is said, with its cure, in place of "its far ends are not drawn".
+  //  Not where the picture is one lump anyway: no Drawing radius makes room for that.)
+  const open = (rho < 1 || t < 1) && !lump && !S.flat && S.view.bound < BALLS_K2 * (0.5 + p / 100) * (1 - 1e-9);
+  if (cutting) {
+    out.push('Here the two spheres of the recipe cut into each other, so the balls run into one another. A smaller size or a smaller second sphere parts them again.' +
+      (lump ? ' Far out everything is filled, so the picture is one lump as large as the Drawing radius.' : '') +
+      (S.flat && ballsFlatFilled() ? ' The flat picture is filled completely.' : ''));
+  } else if (touch && rho === 1) {
     const close = S.flat ? ', and the circles stand so close that they read as one band with holes' : ', and the balls stand so close that they read as one bar with round holes';
     out.push('At 100 the chain never ends, so the picture shows a stretch of it' + (!S.flat && S.k.bgrid === 2 ? '' : close) +
       `; where the depth of the search runs out, the far ${what} and the places where two ${what} kiss come out swollen.`);
   } else if (touch) {
     // (a smaller second sphere: the same said in two short sentences. Also where the two shown numbers multiply to
-    //  100 x 100 within their rounding, ballsTouchShown: the chain then leaves the picture as an endless one does.)
+    //  100 x 100 within their rounding, ballsMeet: the chain then leaves the picture as an endless one does.)
     out.push(`At ${pc(p)} the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far ${what} and the places where two ${what} kiss come out swollen.`);
   } else if (rho < 1 && ballsReach(t, rho) > BALLS_FAR) {
     // (not endless, but longer than Frame it shows whole, in the 3D and in the 2D view: ballsCam)
     out.push('Here the chain is too long for one picture, so Frame it shows a stretch of it.');
-  } else if (!cut && !S.flat && ballsReach() > S.view.bound) out.push('The chain of balls runs out past the Drawing radius in the View section, so its far ends are not drawn.');
-  if (cut) out.push('The Drawing radius in the View section cuts the two big neighbours open. Frame it makes room for them.');
+  } else if (!open && !S.flat && ballsReach() > S.view.bound) out.push('The chain of balls runs out past the Drawing radius in the View section, so its far ends are not drawn.');
+  if (open) out.push('The Drawing radius in the View section cuts the two big neighbours open. Frame it makes room for them.');
   if (rho < 1) {
-    // (the size as its dial shows it: a typed 100.004 reads 100 and is not "past 100". While the second sphere
-    //  follows the size, BALLS_DIAL.follows, one more short sentence says so, and how to stop it.)
-    out.push(+p.toFixed(2) > 100 ? `Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now ${pc(100 * rho)} % of the first.` +
-      (BALLS_DIAL.follows ? ' It follows the size until you set it yourself.' : '')
-      : `The second sphere is now ${pc(100 * rho)} % of the first. Reset this section puts it back to 100.`);
+    out.push(`The second sphere is now ${pc(100 * rho)} % of the first. Reset this section puts it back to 100.`);
     // (at 50 the copies of the second sphere at neighbouring whole numbers kiss, and so do the buds on a neighbour:
-    //  the search runs out there as it does where the two spheres touch, which the sentence above then says already)
-    if (!touch && ballsRhoShown() === 100 * BALLS_RHO_MAX) out.push('With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen.');
+    //  the search runs out there as it does where the two spheres touch, which the sentence above then says already.
+    //  Only at exactly 50, and only where the two spheres are apart.)
+    if (meet < 0 && ballsRhoShown() === 100 * BALLS_RHO_HALF) out.push('With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen.');
   }
   // (one round: everything inside either sphere is still undecided, which is most of the picture; seen)
   if (S.k.bit < BALLS_ROUNDS_FEW) out.push('With so few rounds of the search whole balls are still undecided, and they come out as broken shells.' +
@@ -5455,6 +5627,272 @@ float de(vec3 p, int nt, vec3 dir){
   if (d <= 0.0) gEsc = 0.0;
   return d;
 }`;
+// The same program for every pair of numbers the two programs above were not written for (round 29): the two spheres
+// cut into each other (top < 1 + rho), or the second sphere lies between 1/2 and 1 of the first, so that its copies at
+// neighbouring whole numbers cut into each other. A text of its own, under its own key in the cache ('balls3':
+// sceneWant in 40-render.js), so that the two programs above stay exactly what they were. The recipe and "best" are
+// the same lines. What is new is "free", the length that is certainly free of balls at the place m where the recipe
+// ends OUTSIDE. Each piece was put to the recipe alone on a fine grid, and to the true distance taken from that grid,
+// before it was built in (out/r29/free/mk/kit29.py, proto.py; the numbers are in out/r29/free/NOTES.md).
+//
+// A. The two spheres apart or touching, the second between 1/2 and 1 of the first. The hulls of GL_BALLS_RHO hold as
+//   they stand: nothing that grows on the bottom wall reaches higher than HB, nothing on the top wall hangs lower
+//   than HT, and a bud that does not hang at a whole number is the image, by the second sphere's inversion, of
+//   something that hangs OUTSIDE that sphere, so it is no deeper than rho^2 HT whatever rho is. The top wall inside
+//   the cell is covered by the second sphere, so "the rest" is the part of its slab inside that sphere (rT = rho).
+//   The spindle holds too: inside the middle cell only the first and the second sphere act, whatever the copies do.
+//   In place of the side spindle there is the side ring of C below.
+//
+// B. The two spheres cut into each other. Then the hulls are gone, and what is used instead is this.
+//   The verdict of the recipe is the same on both sides of a sphere surface: a point just inside the first sphere is
+//   carried to its mirror image just outside and goes on from there, and the same for the second sphere outside the
+//   first. It is also its own mirror image in every wall of the cell. So seen from m (in the middle cell, between
+//   the walls, outside both spheres) every ball other than the two walls lies inside the first sphere or inside the
+//   second, in the middle cell (a ball beyond a wall of the cell has a twin on this side that is nearer).
+//   Looking through a sphere. What lies inside the first sphere is the mirror image of what lies outside it. So the
+//   first sphere's inversion is applied to m although m is outside ("a round that does not count"), with DF and W
+//   carried along as in a real round. There the point is inside the first sphere and everything that counts is
+//   outside it: the two walls (kpearl gives the true distance; the top wall is the first bud behind the mirror, a
+//   ball of the picture that the recipe's own chain never meets), the second sphere and its copies, each in its
+//   own cell, and (square grid) the copies of the first sphere on the diagonals. The smaller of the distances to
+//   those, or the distance to the first sphere's own surface from inside where that is the longer, is a room, and
+//   it is carried back with e L / ((L + e) DF). The same through the second sphere. The smaller of the two rooms
+//   is free of balls, and it is zero only on the circles where two spheres cross.
+//   Balls that every move carries onto themselves. A ball that crosses both spheres squarely is carried onto itself
+//   by both inversions; if it lies in the middle cell, or its centre lies on a wall of the cell (or on an upright
+//   edge) and it reaches no other wall, the slides carry it onto itself as well. A point in such a ball never leaves
+//   it, so if the ball lies between the two walls nothing in it is ever INSIDE: the whole ball is free. These balls
+//   have their centres at the height zm of the circle where the two spheres cross, and
+//   radius^2 = (distance of the centre from the middle line)^2 - q0^2, q0 the radius of that circle. Used here:
+//   the ring round the circle (all such balls that reach 1/2 from the middle line; the spindle's formula with
+//   d2 = -q0^2), the ball centred on the wall of the cell that m leans towards (as far along the wall as the cell
+//   lets it), and the ball centred on the nearest upright edge of the cell. In the flat picture the round holes
+//   ARE these balls, so there the room is the true distance to the rim of the hole.
+// C. The side ring. Where rho > 1/2 the second sphere and its copy at the next whole number cross in a circle that
+//   stands in the wall of the cell, and beside it the room of B is zero although nothing is near. Both inversions
+//   carry every ring round that circle onto itself and the top wall onto itself; the half ring under the wall holds
+//   no ball as long as it stays clear of the first sphere and of its copy (w <= wA below) and inside the two cells
+//   (|across| <= clip). The side spindle's formula with c2 = 1/4 - rho^2 < 0.
+// D. The depth of the search. A point that is still undecided when the rounds run out counts as INSIDE, and the
+//   rooms of B and C say nothing about that: they are rooms of the object at endless depth. Where the two spheres
+//   cut into each other the holes of the picture are made of many mirror images of one small piece, one round of
+//   the search apart, and with the dial at 16 the far side of a hole is still undecided: the hole comes out smaller
+//   than it is. So those rooms are made smaller by the rounds the search had left when it ended: none at all with
+//   fewer left than the fan round the crossing circle has pieces (pi / the angle between the spheres), and from
+//   there on the share 1 - exp(-rhoT (left - fan)), rhoT the size of one piece as the hole measures it. With no
+//   round left only the two sphere surfaces themselves are trusted. This part is fitted to the reference, not
+//   proved (out/r29/free/NOTES.md says what was measured). Where the spheres are apart (A) nothing is taken off,
+//   as in the two programs above.
+// E. The Drawing radius. With these pairs of numbers the far distance is often INSIDE, and the 3D picture is then
+//   one lump as large as the Drawing radius (ballsTrouble says so). Nothing beyond the Drawing radius is drawn, but
+//   the distance knew nothing of it: the skin of the lump lay inside the solid, no light reached it and it came out
+//   black. So for every query of the 3D picture (gPix > 0: the ray, its slope, its shadow) the solid ends at the
+//   Drawing radius: the larger of the distance above and (distance from the middle - Drawing radius). The lump then
+//   has a round skin that is lit like any other. The 2D view and a 3D model (gPix = 0) are not touched, and neither
+//   is the twin in JavaScript, which does not know the picture.
+const GL_BALLS_FREE = `
+const bool ORBIT_SCENE = false;
+uniform float uBT, uBRho; uniform int uBGrid;
+const float BALLS_K2 = ${BALLS_K2.toFixed(4)};
+float kpearl(float h, float D, float kk){ return h > 0.0 ? 2.0 * h / (1.0 + sqrt(1.0 + kk * h * max(D, 0.0))) : h; }
+// the whole number of the grid nearest to q (what the slide takes away)
+vec2 bnear(vec2 q){
+  if (uBGrid == 2) return vec2(floor(q.x + 0.5), 0.0);
+  if (uBGrid == 0) return floor(q + 0.5);
+  float b0 = floor(q.y / 0.8660254038 + 0.5), bd = 1e30;
+  vec2 best = vec2(0.0);
+  for (int j = -1; j <= 1; j++){
+    float b = b0 + float(j), a = floor(q.x + 0.5 * b + 0.5);
+    vec2 s = vec2(a - 0.5 * b, 0.8660254038 * b), w = q - s;
+    float d = dot(w, w);
+    if (d < bd){ bd = d; best = s; }
+  }
+  return best;
+}
+// the k-th whole number round the middle one: 0 the middle itself, then the ones next to it, then (square grid) the
+// four on the diagonals
+vec2 bround(int k){
+  if (k == 0) return vec2(0.0);
+  if (uBGrid == 2) return vec2(k == 1 ? 1.0 : -1.0, 0.0);
+  if (uBGrid == 0) return k == 1 ? vec2(1.0, 0.0) : k == 2 ? vec2(-1.0, 0.0) : k == 3 ? vec2(0.0, 1.0) : k == 4 ? vec2(0.0, -1.0)
+    : vec2(k < 7 ? 1.0 : -1.0, k == 5 || k == 7 ? 1.0 : -1.0);
+  float a = float(k - 1) * 1.0471975512;
+  return vec2(cos(a), sin(a));
+}
+// a length that is no longer than the distance to the cell of a whole number (d: the point less that number)
+float bcell(vec2 d){
+  if (uBGrid == 2) return max(abs(d.x) - 0.5, 0.0);
+  if (uBGrid == 0) return length(max(abs(d) - 0.5, 0.0));
+  return max(max(abs(d.x), max(abs(0.5 * d.x + 0.8660254038 * d.y), abs(0.5 * d.x - 0.8660254038 * d.y))) - 0.5, 0.0);
+}
+// a room e at the place z, carried back to the picture
+float bback(float e, vec3 z, vec3 W, float DF){ float L = length(z - W), x = max(e, 0.0); return x * L / ((L + x) * DF); }
+float de(vec3 p, int nt, vec3 dir){
+  gEsc = 1.0; gGrad = vec3(0.0, 0.0, 1.0); gOnTrap = false;
+  float top = 2.0 * uBT, rr = uBRho * uBRho;
+  bool apart = top - 1.0 - uBRho >= -1e-6;
+  // A: the two fixed points on the middle line, the two hull balls and the spindle (see above GL_BALLS_RHO)
+  float sD = max(top - 1.0 - uBRho, 0.0) * (top - 1.0 + uBRho) / top, sQ = sqrt(sD * (sD + 4.0));
+  float HB = 1.0 / (1.0 + 0.5 * (sD + sQ)), HT = rr / (top - HB), hzm = 1.0 + 0.5 * sD, d2 = 0.25 * sD * (sD + 4.0);
+  float restB = uBGrid == 0 ? 0.5 * HB : uBGrid == 1 ? HB / 3.0 : 0.25 * HB, restT = rr * HT;
+  float rT = min(uBRho, 2.0 * rr / (1.0 + sqrt(max(1.0 - 4.0 * rr, 0.0))) + restT);
+  float sw = min(0.5, top - hzm + uBRho), sa = (sw * sw - d2) / (2.0 * sw), sR = (sw * sw + d2) / (2.0 * sw);
+  // C: the side spindle (rho <= 1/2) or the side ring (rho > 1/2)
+  float tc2 = 0.25 - rr, tK = top * top - 1.0 + rr, tdisc = tK * tK + 4.0 * (top * top - 1.0) * tc2;
+  float tlim = uBGrid == 2 ? 1e9 : uBGrid == 0 ? 0.5 : 0.2886751346, tclip = 1e9;
+  float tw = (tK + sqrt(max(tdisc, 0.0))) / (2.0 * (top + 1.0));
+  bool sideOn = tdisc >= 0.0;
+  // (asked of rho itself, not of its square: at exactly 1/2 the card's rounding must not choose)
+  bool upto = uBRho <= 0.5;
+  if (upto) tw = min(tw, min(tlim, (uBGrid == 1 ? 0.8660254038 : 1.0) - uBRho));
+  else { sideOn = sideOn && tw * tw > -tc2 * 1.0000001; tclip = tlim * -tc2 / (tw * tw); }
+  sideOn = sideOn && tw > 0.0;
+  float ta = (tw * tw - tc2) / (2.0 * tw), tR = (tw * tw + tc2) / (2.0 * tw);
+  // B: the circle where the two spheres cross (height zm, radius q0), the ring round it, the balls on the walls and
+  // on the upright edges of the cell
+  float zm = (top * top + 1.0 - rr) / (2.0 * top), dd = zm * zm - 1.0, q0 = sqrt(max(-dd, 0.0)), hmin = min(zm, top - zm);
+  float rw = min(0.5, top - zm + uBRho), ra = (rw * rw - dd) / (2.0 * rw), rR = (rw * rw + dd) / (2.0 * rw);
+  bool ringOn = rw * rw + dd > 0.0;
+  // (a ball centred on a wall of the cell stays under the top wall only while its centre is no further along the
+  //  wall than sqrt(rho^2 - 1/4): so there is none for a second sphere of half the first's size or less)
+  float slab = rr - 0.25;
+  float ylim = slab > 1e-5 ? min(uBGrid == 0 ? -dd : uBGrid == 1 ? 2.0 * (q0 - 0.4330127019) : 1e9, sqrt(slab)) : -1.0;
+  float er2 = (uBGrid == 0 ? 0.5 : 1.0 / 3.0) + dd;
+  float edge = uBGrid != 2 && er2 > 0.0 && sqrt(max(er2, 0.0)) <= min(hmin, uBGrid == 0 ? 1.0 : 0.5) ? sqrt(max(er2, 0.0)) : -1.0;
+  // D: the depth of the search
+  float gv = q0 < 0.5 ? 0.5 : uBGrid == 0 ? 0.7071067812 : uBGrid == 1 ? 0.5773502692 : q0 + 0.25;
+  float kap = sqrt(max(gv - q0, 1e-9) / (gv + q0)), rhoT = log((1.0 + kap) / (1.0 - kap));
+  // (a hair under, so that rounding does not decide where the fan has a whole number of pieces)
+  float fan = 3.1415926536 / max(3.1415926536 - acos(clamp((1.0 + rr - top * top) / (2.0 * uBRho), -1.0, 1.0)), 1e-6) - 1e-3;
+  float fanS = !upto ? 3.1415926536 / max(3.1415926536 - acos(clamp((2.0 * rr - 1.0) / (2.0 * rr), -1.0, 1.0)), 1e-6) - 1e-3 : 0.0;
+  // the frame: one sphere inversion about (k^2 / 2, 0, 0), which is the point (0, 0, 1) of the object's own space
+  vec3 u = vec3(p.y, p.z, p.x - 0.5 * BALLS_K2);
+  float DF = BALLS_K2 / max(dot(u, u), 1e-20), it = 0.0, best = 1e9, free = 0.0;
+  vec3 z = vec3(0.0, 0.0, 1.0) + DF * u, W = vec3(0.0, 0.0, 1.0);
+  // The landing length (see gLand in GL_HEAD); none while the trap alone is the solid, because then the balls are
+  // not in the picture. The distances here are lengths of the picture already, so it is used as it comes.
+  bool walls = uTrapSolid < 0.5 || uTrapSolid > 1.5, inside = false, decided = false;
+  float land = walls ? gLand : 0.0;
+  trapStart();
+#if TRAP_SOLIDS
+  bool trapSolid = uTrapSolid > 0.5;
+  float bestT = 1e9;
+#endif
+  for (int i = 0; i < uIter; i++){
+    vec2 n = bnear(z.xy);
+    z.xy -= n; W.xy -= n;
+    // the point as the trap sees it: x along the chain (0 half-way between the walls), z out of the flat plane
+    vec3 zw = z - W, tv = vec3(z.z - uBT, z.x, z.y);
+    float L2 = max(dot(zw, zw), 1e-30), kk = 4.0 / L2, hb = z.z, ht = top - z.z;
+    float cand = min(kpearl(hb, W.z, kk), kpearl(ht, top - W.z, kk)) / DF;
+    best = min(best, cand); it = float(i);
+    // The trap as a solid: every point whose chain, from round uTrapSkip on, comes within uTrapW of the trap shape.
+    // The length is carried back to the picture the way "free" is.
+#if TRAP_SOLIDS
+    if (trapSolid && i >= uTrapSkip){
+      float dq = trapDist(tv), et = dq - uTrapW, L = sqrt(L2);
+      float sc = (et > 0.0 ? et * L / (L + et) : et) / DF;
+      if (sc < bestT){ bestT = sc; gTouch = vec4(tv - uTrapC, dq); gTouchIt = it; gTouchS = sc; gTouchStr = DF; }
+    }
+#endif
+    // a hit's trap colour: the search is over at the first round that lands within the landing length of a ball,
+    // and that point is fed to the trap as a point of the wall itself
+    bool landed = land > 0.0 && cand < land;
+    if (landed){ tv.x = hb < ht ? -uBT : uBT; free = 1e9; }
+    trapAdd(tv, it); gLast = tv;
+    if (landed || hb < 0.0 || ht < 0.0){ inside = hb < 0.0 || ht < 0.0; decided = true; break; }
+    vec3 zt = vec3(z.xy, z.z - top);
+    float rb = dot(z, z), rt = dot(zt, zt);
+    if (rb < 1.0){
+      float s = 1.0 / max(rb, 1e-20);
+      z *= s; W /= max(dot(W, W), 1e-20); DF *= s;
+    } else if (rt < rr){
+      float s = rr / max(rt, 1e-20);
+      vec3 Wt = vec3(W.xy, W.z - top);
+      z = vec3(0.0, 0.0, top) + zt * s; W = vec3(0.0, 0.0, top) + Wt * (rr / max(dot(Wt, Wt), 1e-20)); DF *= s;
+    } else {
+      // OUTSIDE, for good. How much room is certain here (see above this program).
+      float q = length(z.xy);
+      // the whole number next to the middle one that the point leans towards, along it and across it
+      float al = abs(z.x), ac = z.y;
+      if (uBGrid == 0 && abs(z.y) > al){ al = abs(z.y); ac = z.x; }
+      if (uBGrid == 1){
+        float h1 = abs(0.5 * z.x + 0.8660254038 * z.y), h2 = abs(0.5 * z.x - 0.8660254038 * z.y);
+        if (h1 > al){ al = h1; ac = 0.5 * z.y - 0.8660254038 * z.x; }
+        if (h2 > al){ al = h2; ac = 0.5 * z.y + 0.8660254038 * z.x; }
+      }
+      // C: the side spindle or the side ring
+      float side = -1.0;
+      if (sideOn){
+        float tl = al - 0.5, tq = length(vec2(ac, ht));
+        side = min((tc2 - tl * tl + tq * (2.0 * ta - tq)) / (tR + length(vec2(tl, tq - ta))), tclip - abs(ac));
+      }
+      if (apart){
+        // A: the hulls
+        float cb = length(vec3(z.xy, hb - 0.5 * HB)) - 0.5 * HB, ct = length(vec3(z.xy, ht - 0.5 * HT)) - 0.5 * HT;
+        float lo = uBGrid == 2 ? length(vec2(z.y, hb)) : hb, hi = uBGrid == 2 ? length(vec2(z.y, ht)) : ht;
+        float e = max(min(min(cb, ct), min(lo - restB, max(hi - restT, sqrt(rt) - rT))), 0.0), dz = z.z - hzm;
+        if (d2 < 3.0) e = max(e, (d2 + q * (2.0 * sa - q) - dz * dz) / (sR + length(vec2(q - sa, dz))));
+        free = bback(max(e, side), z, W, DF);
+      } else {
+        // B: looking through the first sphere (zA) and through the second (zB)
+        float left = float(uIter - 1 - i), sA = 1.0 / max(rb, 1e-20), sB = rr / max(rt, 1e-20);
+        vec3 C = vec3(0.0, 0.0, top), zA = z * sA, WA = W / max(dot(W, W), 1e-20), Wt = W - C;
+        vec3 zB = C + zt * sB, WB = C + Wt * (rr / max(dot(Wt, Wt), 1e-20)), dA = zA - WA, dB = zB - WB;
+        float DFA = DF * sA, DFB = DF * sB;
+        float bud = min(kpearl(top - zA.z, top - WA.z, 4.0 / max(dot(dA, dA), 1e-30)) / DFA, kpearl(zB.z, WB.z, 4.0 / max(dot(dB, dB), 1e-30)) / DFB);
+        float eA = 0.5, eB = 0.5;
+        int nc = uBGrid == 2 ? 3 : uBGrid == 0 ? 9 : 7;
+        for (int k = 0; k < 9; k++){
+          if (k >= nc) break;
+          vec2 c = bround(k), a2 = zA.xy - c, b2 = zB.xy - c;
+          float fa = bcell(a2), fb = bcell(b2);
+          eA = min(eA, max(length(vec3(a2, zA.z - top)) - uBRho, fa));
+          if (uBGrid == 0 && k >= 5) eA = min(eA, max(length(vec3(a2, zA.z)) - 1.0, fa));
+          eB = min(eB, max(length(vec3(b2, zB.z)) - 1.0, fb));
+          if (k >= 1) eB = min(eB, max(length(vec3(b2, zB.z - top)) - uBRho, fb));
+        }
+        eA = max(eA, 1.0 - length(zA)); eB = max(eB, uBRho - length(zB - C));
+        free = left < 1.0 ? min(bback(sqrt(rb) - 1.0, z, W, DF), bback(sqrt(rt) - uBRho, z, W, DF)) : min(bback(eA, zA, WA, DFA), bback(eB, zB, WB, DFB));
+        // the ring round the crossing circle, the ball on the wall, the ball on the upright edge
+        float dz = z.z - zm;
+        float ring = ringOn ? (dd + q * (2.0 * ra - q) - dz * dz) / (rR + length(vec2(q - ra, dz))) : -1.0, whole = ring;
+        if (ylim >= 0.0){
+          float yc = clamp(ac, -ylim, ylim), r2 = 0.25 + yc * yc + dd;
+          if (r2 > 0.0) whole = max(whole, sqrt(r2) - length(vec3(al - 0.5, ac - yc, dz)));
+        }
+        if (edge > 0.0){
+          vec2 ev = vec2(z.x < 0.0 ? -0.5 : 0.5, z.y < 0.0 ? -0.5 : 0.5);
+          if (uBGrid == 1){ float a0 = (floor(atan(z.y, z.x) / 1.0471975512) + 0.5) * 1.0471975512; ev = vec2(cos(a0), sin(a0)) * 0.5773502692; }
+          whole = max(whole, edge - length(vec3(z.xy - ev, dz)));
+        }
+        // D: the depth of the search
+        float wholeP = left >= fan ? bback(whole, z, W, DF) * (1.0 - exp(-rhoT * (left - fan)))
+          : left >= 0.5 * fan + 1.0 && ringOn ? bback(min(ring, length(vec2(q - q0, dz))), z, W, DF) : -1.0;
+        float sideP = bback(side, z, W, DF) * (!upto ? 1.0 - exp(-rhoT * max(left - fanS, 0.0)) : max(left - 1.0, 0.0) / (left + 8.0));
+        free = max(free, max(wholeP, sideP));
+        if (left >= 1.0) best = min(best, bud);
+      }
+      decided = true; break;
+    }
+  }
+  // In the 3D view the count is reported 8 rounds high, as the other Kleinian program does (see kde).
+  gIt = uFlat > 0.5 ? it : it + 8.0;
+  // undecided when the rounds ran out: that counts as inside, a hair deep
+  // (the hold: two thresholds while a ray takes half of the estimate or less, so that it goes on a threshold a step;
+  //  with a longer ray step less, down to one and a quarter)
+  float d = !decided ? -1e-7 : inside ? best : min(best, max(free, clamp(1.0 / max(uStepK, 0.05), 1.25, 2.0) * uDetail * gPix));
+  // E (see above this program): in the 3D picture the solid ends at the Drawing radius
+  if (gPix > 0.0) d = max(d, length(p) - (uBound > 0.0 ? uBound : 8.0));
+  // (the trap solid: as in GL_BALLS, the page never asks this group for one)
+#if TRAP_SOLIDS
+  if (trapSolid && uTrapSolid < 1.5) bestT = min(bestT, gPix > 0.0 ? max(abs(d), 2.0 * uDetail * gPix) : 0.3);
+  gOnTrap = trapSolid && (uTrapSolid < 1.5 || bestT < d);
+  if (gOnTrap) d = bestT;
+#endif
+  if (d <= 0.0) gEsc = 0.0;
+  return d;
+}`;
 
 // ==================== 40-render.js ====================
 // ---------- WebGL plumbing
@@ -5537,15 +5975,18 @@ function sceneWant(a, eq, z0, n2, klein, needs = colProgramNeeds()) {
   // GL_BALLS_RHO, under a key of its own, so that 'balls' stays exactly the program it was.)
   if (klein === 'balls') return { key: keyOf('balls'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS + GL_TAIL };
   if (klein === 'balls2') return { key: keyOf('balls2'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_RHO + GL_TAIL };
+  // (Round 29: 'balls3' is that group for every other pair of its two numbers, where the two spheres cut into each
+  // other or the second lies between 1/2 and 1 of the first: GL_BALLS_FREE, again a text and a key of its own.)
+  if (klein === 'balls3') return { key: keyOf('balls3'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_FREE + GL_TAIL };
   if (klein) return { key: keyOf('klein'), src: () => GL_HEAD + defs + GL_COLOUR + GL_KLEIN + GL_TAIL };
   const fc = compileFormula(eq, true, n2), zc = compileFormula(z0, false, n2);
   return { key: keyOf([a.id, fc, zc].join('|')), src: () => GL_HEAD + defs + GL_COLOUR + a.glsl + GL_ORBIT.split('__F__').join(fc).split('__Z0__').join(zc) + GL_TAIL };
 }
 // Which Kleinian program the state asks for: false (not the Kleinian view), true (the group that was always
-// there), or 'balls' / 'balls2' (the second group, when its module is part of the page: with two equal spheres, and
-// with a smaller second sphere).
-const sceneKlein = () => (S.mode !== 'k' ? false : typeof GL_BALLS === 'string' && S.k.group === 1 ? (ballsRho() < 1 ? 'balls2' : 'balls') : true);
-const sceneBalls = (kl = sceneKlein()) => kl === 'balls' || kl === 'balls2';
+// there), or 'balls' / 'balls2' / 'balls3' (the second group, when its module is part of the page: with two equal
+// spheres, with a smaller second sphere, and with every other pair of its two numbers; ballsKind in 32-balls.js).
+const sceneKlein = () => (S.mode !== 'k' ? false : typeof GL_BALLS === 'string' && S.k.group === 1 ? ballsKind() : true);
+const sceneBalls = (kl = sceneKlein()) => kl === 'balls' || kl === 'balls2' || kl === 'balls3';
 function sceneNow() {   // what the current settings need; remembered, because the drawing loop asks every frame
   const klein = sceneKlein(), n2 = Math.abs(S.n - 2) < 1e-9, needs = colProgramNeeds();
   const sig = (klein ? (klein === true ? 'k' : 'k-' + klein) : [S.approach, n2, S.eq, S.z0].join('\n')) + '\n' + glNeedsKey(needs);
@@ -5691,9 +6132,10 @@ function sceneUniforms(P, o, b) {
   gl.uniform3fv(L('uAbs'), S.abs); gl.uniform3f(L('uSgn'), 1, S.flip[0] ? -1 : 1, S.flip[1] ? -1 : 1);
   const kl = sceneKlein(), balls = sceneBalls(kl);   // the second Kleinian group: its own depth, and its two numbers (uBT, uBGrid; no other program has them)
   gl.uniform1f(L('uBail'), 64); gl.uniform1i(L('uIter'), balls ? k.bit : S.mode === 'k' ? k.iter : S.iter);
-  // (uBT: the two spheres may touch, never cut into each other, so t is held to (1 + rho) / 2 or more: with two
-  //  equal spheres that is 1, as it always was. uBRho: only the program for a smaller second sphere has it.)
-  if (balls) { gl.uniform1f(L('uBT'), ballsT()); gl.uniform1i(L('uBGrid'), k.bgrid | 0); if (kl === 'balls2') gl.uniform1f(L('uBRho'), ballsRho()); }
+  // (uBT: t as the state holds it, ballsTOf. The program for two equal spheres is only chosen with t at 1 or more,
+  //  as it always was; the one for a smaller second sphere is handed the touching value for a t that is a rounding
+  //  hair under it. uBRho: the two programs for a second sphere of any size have it.)
+  if (balls) { gl.uniform1f(L('uBT'), ballsTOf(kl)); gl.uniform1i(L('uBGrid'), k.bgrid | 0); if (kl !== 'balls') gl.uniform1f(L('uBRho'), ballsRho()); }
   gl.uniform1f(L('uCut'), S.cutOn ? S.cut : 1e9);
   gl.uniform1f(L('uFlat'), S.flat || o.slice ? 1 : 0); gl.uniform2f(L('uFlatC'), v2.x, v2.y); gl.uniform1f(L('uFlatH'), v2.h); gl.uniform1f(L('uSliceZ'), v2.z);
   gl.uniform1f(L('uRaw'), o.raw ? 1 : 0);
@@ -5988,10 +6430,11 @@ function sceneWarm() {
   }
   const n2 = Math.abs(S.n - 2) < 1e-9, a = ap(), list = [];
   const want = (...args) => { try { list.push(sceneWant(...args)); } catch (err) { /* a formula that does not compile is not warmed */ } };
-  // Balls on balls on show: its other program first (the one for a smaller second sphere, or the one for two equal
-  // spheres), so that dragging the size of the neighbours past 100 does not stop to prepare it.
+  // Balls on balls on show: its other two programs first (the one for pairs of numbers whose spheres cut into each
+  // other before the others: that is where the size of the neighbours goes when it is dragged past 100), so that
+  // moving a dial does not stop to prepare one.
   const kl = sceneKlein();
-  if (sceneBalls(kl)) want(a, '', '', false, kl === 'balls' ? 'balls2' : 'balls');
+  if (sceneBalls(kl)) for (const other of ['balls3', 'balls2', 'balls']) if (other !== kl) want(a, '', '', false, other);
   APPROACHES.forEach(x => want(x, S.eq, S.z0, n2, false));
   want(a, S.eq, S.z0, !n2, false);
   want(a, '', '', false, true);
@@ -13985,65 +14428,17 @@ function boot() {
   // view goes to that group's start, as it does for a change of the kind of picture.
   for (const g of [0, 1]) $('kleinGroup' + g).addEventListener('change', () => { K.group = g; resetCam(); syncControls(); refresh(false); });
   $('ballsNote').textContent = BALLS_NOTE;
-  // (two of the dials give way to each other, so after either has moved the other is shown again: ballsSetShare and
-  //  ballsSetRho in 32-balls.js hold the rules. A dial shows itself, and leaves its thumb alone while it is dragged.)
+  // (Round 29: each of the two dials below sets its own number and nothing else: ballsSetShare and ballsSetRho in
+  //  32-balls.js. Version 21 made the second sphere smaller by itself where the size went past 100; the user asked
+  //  for that rule to go, so the picture is whatever the plain recipe gives for the two numbers.)
   const bSet = () => { uiKleinMark(); touch(); };
-  // Round 28: the slider runs to 400 and typed values to 2000 (it stopped at 100). Past 100 the second sphere has to
-  // be smaller than the first; setting the size sees to that. (The box shows the size the picture is drawn with,
-  // ballsT: a t written into the state by hand below the touching value shows as the touching size.)
-  const bSize = addDial('ballsDials', 'ballsSize', 'Size of the neighbours, % of the middle ball', 2, 400, 0.1, () => +ballsShare(ballsT(K.bt)).toFixed(2), v => { ballsSetShare(v); bRho.sync(); bSet(); },
-    { lo: 1, hi: 2000, def: +ballsShare(BALLS_T).toFixed(2), group: 'balls', help: 'How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain, and past 100, where they are larger than the middle ball, the second sphere is made smaller to let them.' });
-  // The second sphere: 2 to 50 % of the first, or 100. The slider and typed values between 50 and 100 go to the
-  // nearer of the two (ballsRhoFrom).
-  const bRho = addDial('ballsDials', 'ballsRho', 'Second sphere, % of the first', 2, 100, 1, ballsRhoShown, v => { ballsSetRho(v); bSize.sync(); bSet(); },
-    { lo: 2, hi: 100, def: 100, group: 'balls', help: 'The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball, and their buds are smaller and stand further apart. Between 50 and 100 the buds on a neighbour would cut into each other, so the dial jumps from 50 to 100.' });
-  // The arrows cannot step through the gap between 50 and 100 (a step up from 50 would land at 51 and come back),
-  // so there one step takes the dial across: up from 50 to 100, down from 100 to 50. For the arrow keys in the
-  // typed box and on the slider, and for the two small step buttons.
-  const bRhoJump = dir => {
-    const v = ballsRhoShown();
-    if (!(dir > 0 ? v >= 50 && v < 100 : v > 50)) return false;
-    if (bRho.play) bRho.play(false);
-    ballsSetRho(dir > 0 ? 100 : 50); bSize.sync(); bRho.sync(); bSet();
-    return true;
-  };
-  const bRhoStop = e => { e.preventDefault(); e.stopImmediatePropagation(); };
-  bRho.el.addEventListener('keydown', e => {
-    if (e.isComposing || e.altKey || e.ctrlKey || e.metaKey) return;
-    const box = e.target.classList.contains('num'), slider = e.target.type === 'range';
-    const dir = (box || slider) && (e.key === 'ArrowUp' || e.key === 'PageUp') ? 1 : (box || slider) && (e.key === 'ArrowDown' || e.key === 'PageDown') ? -1
-      : slider && e.key === 'ArrowRight' ? 1 : slider && e.key === 'ArrowLeft' ? -1 : 0;
-    if (dir && bRhoJump(dir)) bRhoStop(e);
-  }, true);
-  for (const type of ['pointerdown', 'click']) bRho.el.addEventListener(type, e => {
-    const b = e.target.closest ? e.target.closest('.dial-up, .dial-down') : null;
-    if (!b || (type === 'pointerdown' ? e.button !== 0 : e.detail !== 0)) return;   // (a click that follows a press was handled at the press, as in the dial itself)
-    if (bRhoJump(b.classList.contains('dial-up') ? 1 : -1)) bRhoStop(e);
-  }, true);
-  // (The fixer of round 28.) A number typed into the second sphere's own box counts as set by the user also when it
-  // is the number the box already shows. The dial kit takes that as nothing typed, so the second sphere went on
-  // following the size (BALLS_DIAL.follows in 32-balls.js) although the hand had just confirmed it.
-  const bRhoNum = bRho.el.querySelector('.num');
-  let bRhoTyped = false;
-  const bRhoOwn = () => {
-    if (bRhoTyped && BALLS_DIAL.follows && dialParse(bRhoNum.value) === ballsRhoShown()) { BALLS_DIAL.follows = false; uiKleinMark(); }
-    bRhoTyped = false;
-  };
-  bRhoNum.addEventListener('input', () => { bRhoTyped = true; });
-  bRhoNum.addEventListener('keydown', e => { if (e.isComposing) return; if (e.key === 'Enter') bRhoOwn(); else if (e.key === 'Escape') bRhoTyped = false; }, true);
-  bRhoNum.addEventListener('blur', bRhoOwn, true);
-  // The dial kit writes "From 2 to 100" on the box and "to the next whole number" on the two step buttons by itself
-  // (and again whenever its range or its step is repainted). For this dial neither is the whole truth: the values
-  // between 50 and 100 cannot be had, and one step crosses that gap. So its words are put right whenever they change.
-  const bRhoWords = () => {
-    if (bRhoNum.title !== 'From 2 to 50, or 100') bRhoNum.title = 'From 2 to 50, or 100';
-    for (const [sel, tail] of [['.dial-up', ' From 50 one step goes to 100.'], ['.dial-down', ' From 100 one step goes to 50.']]) {
-      const b = bRho.el.querySelector(sel);
-      if (b && b.title && !b.title.endsWith(tail)) b.title += tail;
-    }
-  };
-  bRhoWords();
-  if (typeof MutationObserver === 'function') new MutationObserver(bRhoWords).observe(bRho.el, { attributes: true, attributeFilter: ['title'], subtree: true });
+  // The slider runs to 400 and typed values to 2000 (round 28; it stopped at 100).
+  addDial('ballsDials', 'ballsSize', 'Size of the neighbours, % of the middle ball', 2, 400, 0.1, () => +ballsShare(ballsT(K.bt)).toFixed(2), v => { ballsSetShare(v); bSet(); },
+    { lo: 1, hi: 2000, def: +ballsShare(BALLS_T).toFixed(2), group: 'balls', help: 'How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain. Past 100, with the second sphere at 100, the balls run into one another.' });
+  // The second sphere: any value from 2 to 100 % of the first (the slider in whole numbers, typed values with two
+  // decimals).
+  addDial('ballsDials', 'ballsRho', 'Second sphere, % of the first', 2, 100, 1, ballsRhoShown, v => { ballsSetRho(v); bSet(); },
+    { lo: 2, hi: 100, def: 100, group: 'balls', help: 'The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball before the balls run into one another, and their buds are smaller and stand further apart.' });
   addSelect('ballsDials', 'ballsGrid', 'Whole numbers', BALLS_GRIDS, () => K.bgrid | 0, v => { K.bgrid = +v | 0; bSet(); },
     { def: 0, group: 'balls', help: 'Where the buds sit: four-fold round the chain (square grid), six-fold (honeycomb grid), or only round the flat picture (a line only); the flat cut is the same for all three.' });
   // (Round 28: the dial starts at 1, it started at 5. With fewer than 5 rounds whole balls are still undecided and

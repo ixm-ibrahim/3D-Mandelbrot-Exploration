@@ -1,0 +1,41 @@
+page dist/r29-free.html, 1400x950, light: exit 0, no console errors
+O1   size 55.56 second 100 depth 16 (t 1.400000) | program k-balls | 3D: camera distance 3.765, Drawing radius 8 | Done: 12 passes at 862 × 701
+     3D sentence: (none)
+     2D: view 2.353 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.291 | outline pixels 10178, stray 0 (to two pixels of ink: 12616, stray 7) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: (none)
+O2   size 100 second 100 depth 16 (t 1.000000) | program k-balls | 3D: camera distance 13.174, Drawing radius 8 | Done: 12 passes at 862 × 701
+     3D sentence: At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.166 | outline pixels 28176, stray 1217 (to two pixels of ink: 32424, stray 3865) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: At 100 the chain never ends, so the picture shows a stretch of it, and the circles stand so close that they read as one band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen.
+O3   size 20 second 100 depth 16 (t 3.000000) | program k-balls | 3D: camera distance 3.300, Drawing radius 8 | Done: 12 passes at 862 × 701
+     3D sentence: (none)
+     2D: view 2.100 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.217 | outline pixels 4336, stray 0 (to two pixels of ink: 5574, stray 81) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: (none)
+O4   size 150 second 33.33 depth 16 (t 0.833333) | program k-balls2 | 3D: camera distance 7.043, Drawing radius 8 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 33.33 % of the first. Reset this section puts it back to 100.
+     2D: view 4.402 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.271 | outline pixels 5538, stray 10 (to two pixels of ink: 7068, stray 20) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 33.33 % of the first. Reset this section puts it back to 100.
+O5   size 300 second 16.67 depth 16 (t 0.666667) | program k-balls2 | 3D: camera distance 12.392, Drawing radius 8 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 16.67 % of the first. Reset this section puts it back to 100.
+     2D: view 7.745 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.290 | outline pixels 4256, stray 0 (to two pixels of ink: 5516, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 16.67 % of the first. Reset this section puts it back to 100.
+O6   size 200 second 50 depth 16 (t 0.750000) | program k-balls2 | 3D: camera distance 13.174, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. The second sphere is now 50 % of the first. Reset this section puts it back to 100.
+     2D: view 8.234 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.198 | outline pixels 15194, stray 295 (to two pixels of ink: 18420, stray 1456) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. The second sphere is now 50 % of the first. Reset this section puts it back to 100.
+O7   size 400 second 12.5 depth 16 (t 0.625000) | program k-balls2 | 3D: camera distance 15.948, Drawing radius 9 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 12.5 % of the first. Reset this section puts it back to 100.
+     2D: view 9.968 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.299 | outline pixels 3954, stray 0 (to two pixels of ink: 5120, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 12.5 % of the first. Reset this section puts it back to 100.
+O8   size 1000 second 5 depth 16 (t 0.550000) | program k-balls2 | 3D: camera distance 37.260, Drawing radius 13.126964484903684 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 5 % of the first. Reset this section puts it back to 100.
+     2D: view 23.287 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.325 | outline pixels 3354, stray 0 (to two pixels of ink: 4424, stray 0) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 5 % of the first. Reset this section puts it back to 100.
+O9   size 60 second 40 depth 16 (t 1.333333) | program k-balls2 | 3D: camera distance 3.462, Drawing radius 13.126964484903684 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 40 % of the first. Reset this section puts it back to 100.
+     2D: view 2.164 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.338 | outline pixels 6220, stray 0 (to two pixels of ink: 7964, stray 31) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 40 % of the first. Reset this section puts it back to 100.
+O10  size 80 second 50 depth 16 (t 1.125000) | program k-balls2 | 3D: camera distance 4.308, Drawing radius 13.126964484903684 | Done: 12 passes at 862 × 701
+     3D sentence: The second sphere is now 50 % of the first. Reset this section puts it back to 100. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen.
+     2D: view 2.693 high, 862 x 701 pixels, the middle 701 x 701 measured | inside share 0.301 | outline pixels 7536, stray 0 (to two pixels of ink: 9416, stray 48) | verdict of the shader against the recipe, away from every edge: 0 differ
+     2D sentence: The second sphere is now 50 % of the first. Reset this section puts it back to 100. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen.

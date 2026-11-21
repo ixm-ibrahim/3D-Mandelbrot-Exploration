@@ -1,0 +1,61 @@
+new page dist/r29-free.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 862 × 701 | mode m, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1 0.55 5.2, canvas 862x701, program 0/true/z^n + c/0/, size box 55.56
+   balls-as-the-row-gives-it: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7649, canvas 862x701, program k-balls/, size box 55.56
+   balls-100-square: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 13.1742, canvas 862x701, program k-balls/, size box 100
+   balls-100-honeycomb-kiss: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 1, depth 16, approach mercator, n 2, flat false, cam 1.9 0.9 0.3, canvas 862x701, program k-balls/, size box 100
+   balls-70-line-depth40: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.2142857142857144, rho 1, grid 2, depth 40, approach mercator, n 2, flat false, cam -1.25 0.5 4.9407, canvas 862x701, program k-balls/, size box 70
+   balls-10-depth5-2d: Done: 4 passes at 862 × 701 | mode k, group 1, t 5.5, rho 1, grid 0, depth 5, approach mercator, n 2, flat true, cam -1.25 0.5 3.3, canvas 862x701, program k-balls/, size box 10
+   balls-100-2d: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.25 0.5 13.1742, canvas 862x701, program k-balls/, size box 100
+   balls-35-honeycomb-other-side: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.9285714285714286, rho 1, grid 1, depth 16, approach mercator, n 2, flat false, cam 2.2 -0.35 3.3, canvas 862x701, program k-balls/, size box 35
+   balls-25-depth200: Done: 4 passes at 862 × 701 | mode k, group 1, t 2.5, rho 1, grid 0, depth 200, approach mercator, n 2, flat false, cam -1.25 0.5 3.3, canvas 862x701, program k-balls/, size box 25
+   balls-default-after-a-trip-past-100: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7649, canvas 862x701, program k-balls/, size box 55.56
+   balls-50-second-sphere-there-and-back: Done: 4 passes at 862 × 701 | mode k, group 1, t 0.8333333333333333, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 13.1742, canvas 862x701, program k-balls3/, size box 150
+   k-first-group-as-it-opens: Done: 4 passes at 862 × 701 | mode k, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam 0.35 0.35 7, canvas 862x701, program k/, size box 55.56
+   k-first-group-preset5-2d: Done: 4 passes at 862 × 701 | mode k, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.35 1 6.4, canvas 862x701, program k/, size box 55.56
+   m-quat4-power4: Done: 4 passes at 862 × 701 | mode m, group 0, t 1.4, rho 1, grid 0, depth 16, approach quat4, n 4, flat false, cam -1 0.55 5.2, canvas 862x701, program 10/false/z^n + c/0/, size box 55.56
+   j-turnalong-cut: Done: 4 passes at 862 × 701 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach turnalong, n 2, flat false, cam -1.9 0.55 4.8, canvas 862x701, program 17/true/z^n + c/0/, size box 55.56
+   j-pulledplane-2d: Done: 4 passes at 862 × 701 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach pulledplane, n 2, flat true, cam -1.9 0.55 4.8, canvas 862x701, program 20/true/z^n + c/0/, size box 55.56
+   learn-tab: Done: 4 passes at 862 × 511 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach pulledplane, n 2, flat false, cam -1.9 0.55 4.8, canvas 862x511, program 20/true/z^n + c/0/, size box 55.56
+old page dist/r29-free-base.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 862 × 701 | mode m, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1 0.55 5.2, canvas 862x701, program 0/true/z^n + c/0/, size box 55.56
+   balls-as-the-row-gives-it: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7649, canvas 862x701, program k-balls/, size box 55.56
+   balls-100-square: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 13.1742, canvas 862x701, program k-balls/, size box 100
+   balls-100-honeycomb-kiss: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 1, depth 16, approach mercator, n 2, flat false, cam 1.9 0.9 0.3, canvas 862x701, program k-balls/, size box 100
+   balls-70-line-depth40: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.2142857142857144, rho 1, grid 2, depth 40, approach mercator, n 2, flat false, cam -1.25 0.5 4.9407, canvas 862x701, program k-balls/, size box 70
+   balls-10-depth5-2d: Done: 4 passes at 862 × 701 | mode k, group 1, t 5.5, rho 1, grid 0, depth 5, approach mercator, n 2, flat true, cam -1.25 0.5 3.3, canvas 862x701, program k-balls/, size box 10
+   balls-100-2d: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.25 0.5 13.1742, canvas 862x701, program k-balls/, size box 100
+   balls-35-honeycomb-other-side: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.9285714285714286, rho 1, grid 1, depth 16, approach mercator, n 2, flat false, cam 2.2 -0.35 3.3, canvas 862x701, program k-balls/, size box 35
+   balls-25-depth200: Done: 4 passes at 862 × 701 | mode k, group 1, t 2.5, rho 1, grid 0, depth 200, approach mercator, n 2, flat false, cam -1.25 0.5 3.3, canvas 862x701, program k-balls/, size box 25
+   balls-default-after-a-trip-past-100: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7649, canvas 862x701, program k-balls/, size box 55.56
+   balls-50-second-sphere-there-and-back: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.5, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.4368, canvas 862x701, program k-balls/, size box 50
+   k-first-group-as-it-opens: Done: 4 passes at 862 × 701 | mode k, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam 0.35 0.35 7, canvas 862x701, program k/, size box 55.56
+   k-first-group-preset5-2d: Done: 4 passes at 862 × 701 | mode k, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.35 1 6.4, canvas 862x701, program k/, size box 55.56
+   m-quat4-power4: Done: 4 passes at 862 × 701 | mode m, group 0, t 1.4, rho 1, grid 0, depth 16, approach quat4, n 4, flat false, cam -1 0.55 5.2, canvas 862x701, program 10/false/z^n + c/0/, size box 55.56
+   j-turnalong-cut: Done: 4 passes at 862 × 701 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach turnalong, n 2, flat false, cam -1.9 0.55 4.8, canvas 862x701, program 17/true/z^n + c/0/, size box 55.56
+   j-pulledplane-2d: Done: 4 passes at 862 × 701 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach pulledplane, n 2, flat true, cam -1.9 0.55 4.8, canvas 862x701, program 20/true/z^n + c/0/, size box 55.56
+   learn-tab: Done: 4 passes at 862 × 511 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach pulledplane, n 2, flat false, cam -1.9 0.55 4.8, canvas 862x511, program 20/true/z^n + c/0/, size box 55.56
+m-as-the-page-opens                      picture 862 x 701: pixels that differ 0 (pixels that are not background: 59223)
+balls-as-the-row-gives-it                picture 862 x 701: pixels that differ 0 (pixels that are not background: 153683)
+balls-100-square                         picture 862 x 701: pixels that differ 0 (pixels that are not background: 122775)
+balls-100-honeycomb-kiss                 picture 862 x 701: pixels that differ 0 (pixels that are not background: 577327)
+balls-70-line-depth40                    picture 862 x 701: pixels that differ 0 (pixels that are not background: 97393)
+balls-10-depth5-2d                       picture 862 x 701: pixels that differ 0 (pixels that are not background: 243675)
+balls-100-2d                             picture 862 x 701: pixels that differ 0 (pixels that are not background: 386529)
+balls-35-honeycomb-other-side            picture 862 x 701: pixels that differ 0 (pixels that are not background: 132402)
+balls-25-depth200                        picture 862 x 701: pixels that differ 0 (pixels that are not background: 117206)
+balls-default-after-a-trip-past-100      picture 862 x 701: pixels that differ 0 (pixels that are not background: 153683)
+balls-50-second-sphere-there-and-back    picture 862 x 701: pixels that differ 604262 (pixels that are not background: 597887) in the box (0, 0, 861, 700)
+k-first-group-as-it-opens                picture 862 x 701: pixels that differ 0 (pixels that are not background: 88142)
+k-first-group-preset5-2d                 picture 862 x 701: pixels that differ 0 (pixels that are not background: 579564)
+m-quat4-power4                           picture 862 x 701: pixels that differ 0 (pixels that are not background: 164057)
+j-turnalong-cut                          picture 862 x 701: pixels that differ 0 (pixels that are not background: 66877)
+j-pulledplane-2d                         picture 862 x 701: pixels that differ 0 (pixels that are not background: 451748)
+TOTAL, the picture alone, 16 states: 604262 pixels differ
+m-as-the-page-opens                      whole window 1400 x 950: pixels that differ 0
+k-first-group-as-it-opens                whole window 1400 x 950: pixels that differ 14 in the box (868, 622, 882, 622)
+k-first-group-preset5-2d                 whole window 1400 x 950: pixels that differ 15 in the box (855, 638, 869, 638)
+m-quat4-power4                           whole window 1400 x 950: pixels that differ 24 in the box (855, 607, 882, 607)
+j-turnalong-cut                          whole window 1400 x 950: pixels that differ 0
+j-pulledplane-2d                         whole window 1400 x 950: pixels that differ 0
+learn-tab                                whole window 1400 x 950: pixels that differ 0
+TOTAL, the whole window, 7 states that are not Balls on balls: 53 pixels differ

@@ -546,65 +546,17 @@ function boot() {
   // view goes to that group's start, as it does for a change of the kind of picture.
   for (const g of [0, 1]) $('kleinGroup' + g).addEventListener('change', () => { K.group = g; resetCam(); syncControls(); refresh(false); });
   $('ballsNote').textContent = BALLS_NOTE;
-  // (two of the dials give way to each other, so after either has moved the other is shown again: ballsSetShare and
-  //  ballsSetRho in 32-balls.js hold the rules. A dial shows itself, and leaves its thumb alone while it is dragged.)
+  // (Round 29: each of the two dials below sets its own number and nothing else: ballsSetShare and ballsSetRho in
+  //  32-balls.js. Version 21 made the second sphere smaller by itself where the size went past 100; the user asked
+  //  for that rule to go, so the picture is whatever the plain recipe gives for the two numbers.)
   const bSet = () => { uiKleinMark(); touch(); };
-  // Round 28: the slider runs to 400 and typed values to 2000 (it stopped at 100). Past 100 the second sphere has to
-  // be smaller than the first; setting the size sees to that. (The box shows the size the picture is drawn with,
-  // ballsT: a t written into the state by hand below the touching value shows as the touching size.)
-  const bSize = addDial('ballsDials', 'ballsSize', 'Size of the neighbours, % of the middle ball', 2, 400, 0.1, () => +ballsShare(ballsT(K.bt)).toFixed(2), v => { ballsSetShare(v); bRho.sync(); bSet(); },
-    { lo: 1, hi: 2000, def: +ballsShare(BALLS_T).toFixed(2), group: 'balls', help: 'How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain, and past 100, where they are larger than the middle ball, the second sphere is made smaller to let them.' });
-  // The second sphere: 2 to 50 % of the first, or 100. The slider and typed values between 50 and 100 go to the
-  // nearer of the two (ballsRhoFrom).
-  const bRho = addDial('ballsDials', 'ballsRho', 'Second sphere, % of the first', 2, 100, 1, ballsRhoShown, v => { ballsSetRho(v); bSize.sync(); bSet(); },
-    { lo: 2, hi: 100, def: 100, group: 'balls', help: 'The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball, and their buds are smaller and stand further apart. Between 50 and 100 the buds on a neighbour would cut into each other, so the dial jumps from 50 to 100.' });
-  // The arrows cannot step through the gap between 50 and 100 (a step up from 50 would land at 51 and come back),
-  // so there one step takes the dial across: up from 50 to 100, down from 100 to 50. For the arrow keys in the
-  // typed box and on the slider, and for the two small step buttons.
-  const bRhoJump = dir => {
-    const v = ballsRhoShown();
-    if (!(dir > 0 ? v >= 50 && v < 100 : v > 50)) return false;
-    if (bRho.play) bRho.play(false);
-    ballsSetRho(dir > 0 ? 100 : 50); bSize.sync(); bRho.sync(); bSet();
-    return true;
-  };
-  const bRhoStop = e => { e.preventDefault(); e.stopImmediatePropagation(); };
-  bRho.el.addEventListener('keydown', e => {
-    if (e.isComposing || e.altKey || e.ctrlKey || e.metaKey) return;
-    const box = e.target.classList.contains('num'), slider = e.target.type === 'range';
-    const dir = (box || slider) && (e.key === 'ArrowUp' || e.key === 'PageUp') ? 1 : (box || slider) && (e.key === 'ArrowDown' || e.key === 'PageDown') ? -1
-      : slider && e.key === 'ArrowRight' ? 1 : slider && e.key === 'ArrowLeft' ? -1 : 0;
-    if (dir && bRhoJump(dir)) bRhoStop(e);
-  }, true);
-  for (const type of ['pointerdown', 'click']) bRho.el.addEventListener(type, e => {
-    const b = e.target.closest ? e.target.closest('.dial-up, .dial-down') : null;
-    if (!b || (type === 'pointerdown' ? e.button !== 0 : e.detail !== 0)) return;   // (a click that follows a press was handled at the press, as in the dial itself)
-    if (bRhoJump(b.classList.contains('dial-up') ? 1 : -1)) bRhoStop(e);
-  }, true);
-  // (The fixer of round 28.) A number typed into the second sphere's own box counts as set by the user also when it
-  // is the number the box already shows. The dial kit takes that as nothing typed, so the second sphere went on
-  // following the size (BALLS_DIAL.follows in 32-balls.js) although the hand had just confirmed it.
-  const bRhoNum = bRho.el.querySelector('.num');
-  let bRhoTyped = false;
-  const bRhoOwn = () => {
-    if (bRhoTyped && BALLS_DIAL.follows && dialParse(bRhoNum.value) === ballsRhoShown()) { BALLS_DIAL.follows = false; uiKleinMark(); }
-    bRhoTyped = false;
-  };
-  bRhoNum.addEventListener('input', () => { bRhoTyped = true; });
-  bRhoNum.addEventListener('keydown', e => { if (e.isComposing) return; if (e.key === 'Enter') bRhoOwn(); else if (e.key === 'Escape') bRhoTyped = false; }, true);
-  bRhoNum.addEventListener('blur', bRhoOwn, true);
-  // The dial kit writes "From 2 to 100" on the box and "to the next whole number" on the two step buttons by itself
-  // (and again whenever its range or its step is repainted). For this dial neither is the whole truth: the values
-  // between 50 and 100 cannot be had, and one step crosses that gap. So its words are put right whenever they change.
-  const bRhoWords = () => {
-    if (bRhoNum.title !== 'From 2 to 50, or 100') bRhoNum.title = 'From 2 to 50, or 100';
-    for (const [sel, tail] of [['.dial-up', ' From 50 one step goes to 100.'], ['.dial-down', ' From 100 one step goes to 50.']]) {
-      const b = bRho.el.querySelector(sel);
-      if (b && b.title && !b.title.endsWith(tail)) b.title += tail;
-    }
-  };
-  bRhoWords();
-  if (typeof MutationObserver === 'function') new MutationObserver(bRhoWords).observe(bRho.el, { attributes: true, attributeFilter: ['title'], subtree: true });
+  // The slider runs to 400 and typed values to 2000 (round 28; it stopped at 100).
+  addDial('ballsDials', 'ballsSize', 'Size of the neighbours, % of the middle ball', 2, 400, 0.1, () => +ballsShare(ballsT(K.bt)).toFixed(2), v => { ballsSetShare(v); bSet(); },
+    { lo: 1, hi: 2000, def: +ballsShare(BALLS_T).toFixed(2), group: 'balls', help: 'How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain. Past 100, with the second sphere at 100, the balls run into one another.' });
+  // The second sphere: any value from 2 to 100 % of the first (the slider in whole numbers, typed values with two
+  // decimals).
+  addDial('ballsDials', 'ballsRho', 'Second sphere, % of the first', 2, 100, 1, ballsRhoShown, v => { ballsSetRho(v); bSet(); },
+    { lo: 2, hi: 100, def: 100, group: 'balls', help: 'The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball before the balls run into one another, and their buds are smaller and stand further apart.' });
   addSelect('ballsDials', 'ballsGrid', 'Whole numbers', BALLS_GRIDS, () => K.bgrid | 0, v => { K.bgrid = +v | 0; bSet(); },
     { def: 0, group: 'balls', help: 'Where the buds sit: four-fold round the chain (square grid), six-fold (honeycomb grid), or only round the flat picture (a line only); the flat cut is the same for all three.' });
   // (Round 28: the dial starts at 1, it started at 5. With fewer than 5 rounds whole balls are still undecided and

@@ -1,0 +1,2 @@
+flat X7   size  300.00 second  50.00 grid 0 depth  16 | inside share 0.522 | outside 314633: too long 0 (0.0000 %), worst ratio 0.826 | wrongly under a pixel 1095 (0.348 %) | median est/true 0.44
+flat X9   size  105.00 second 100.00 grid 0 depth  16 | inside share 0.272 | outside 479571: too long 0 (0.0000 %), worst ratio 0.727 | wrongly under a pixel 3680 (0.767 %) | median est/true 0.35

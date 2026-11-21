@@ -1294,3 +1294,17 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
   (00-core, 32-balls, 40-render, 46-mesh, 80-ui) into src/, build, quick look, publish as Version 23, commit, tag.
   Then remove base19a/20a/21a, and move the session to C:\Users\IbrahimMahmoud\Documents\Personal\3D-Mandelbrot-Exploration
   (change_directory; access is already granted) as the LAST thing.
+
+## 2026-11-21, later still: VERSION 23 PUBLISHED (Balls on balls: the two dials are free)
+
+- Version 23 = Version 22 + the free-dials builder's three files (32-balls.js, 40-render.js, 80-ui.js), merged into
+  src/. Version id 1795280082-d883. The checking round was stopped before it began (the user's wish); the builder's
+  own numbers are in out/r29/free/NOTES.md. Mine on the merged page (out/r29/me/own29.py, own29.txt): twin against
+  my recipe 0 differ at 18 states; shader 24 of 815616 differ, all at cutting states (single precision on an edge);
+  no console error; the boxes show the numbers that were set (no dial moved another).
+- Known, from the builder: small blobs of outline in the 2D view beside tiny lens-shaped bodies at second sphere 75
+  and 90; pictures of a filled lump take several times longer to draw (nearly every ray stops on something); the
+  lump is given a lit skin at the Drawing radius.
+- The last frozen copies (base19a, base20a, base21a) are removed. Versions are tags: v21, v22, v23.
+- The session is being moved to C:\Users\IbrahimMahmoud\Documents\Personal\3D-Mandelbrot-Exploration at the end of
+  this turn (the app copies the files). NOTHING IS RUNNING. No candidate rule in hand.
