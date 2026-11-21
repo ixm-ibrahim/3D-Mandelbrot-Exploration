@@ -83,11 +83,16 @@ int lsOrb(vec3 p, int km, bool stop){
   carStart();
 #endif
   int res = km + 1;
-  for (int k = 0; k <= km; k++){
+  // (Version 24.) A Mandelbrot dot starts on its own point: the step that carries it there from the start value comes
+  // before the count (k = -1) and nothing is asked of it. Step 1 is then the first that can throw a dot out, as it is
+  // for a Julia dot. (Still one loop with one call of f.)
+  for (int k = jul ? 0 : -1; k <= km; k++){
     if (k > 0) r = length(z);
-    gR = r;
-    if (stop && !(r <= LS_BALL)){ res = k; break; }
-    if (k == km) break;
+    if (k >= 0){
+      gR = r;
+      if (stop && !(r <= LS_BALL)){ res = k; break; }
+      if (k == km) break;
+    }
     z = f(z, c);
   }
   return res;
@@ -237,12 +242,12 @@ void main(){
     } else cc = cmapJs(id, p, q, false);
     const car = typeof CARRY !== 'undefined' && CARRY[id] ? CARRY[id] : null;
     let st = car ? car.start(q) : null;
-    for (let k = 1; k <= K; k++) {
+    for (let k = jul ? 1 : 0; k <= K; k++) {      // (k = 0: a Mandelbrot dot's step to its own point, of which nothing is asked)
       const v = [ab[0] ? Math.abs(z[0]) : z[0], (ab[1] ? Math.abs(z[1]) : z[1]) * (fl[0] ? -1 : 1), (ab[2] ? Math.abs(z[2]) : z[2]) * (fl[1] ? -1 : 1)];
       let w;
       if (car) { st = car.step(st, v, cc, q); w = car.pw(st, v, n); } else w = MATH[id](v, n, q, cc);
       z = [w[0] + cc[0], w[1] + cc[1], w[2] + cc[2]];
-      if (!(Math.hypot(z[0], z[1], z[2]) <= BALL)) return k;
+      if (k && !(Math.hypot(z[0], z[1], z[2]) <= BALL)) return k;
     }
     return K + 1;
   }
@@ -265,17 +270,18 @@ void main(){
     res.c = [cc[0], cc[1], cc[2]];
     const car = typeof CARRY !== 'undefined' && CARRY[id] ? CARRY[id] : null;
     let st = car ? car.start(q) : null;
-    res.pts.push([z[0], z[1], z[2]]);
-    if (car) res.carry = [st];
+    // (version 24: a Mandelbrot dot's pts[0] is its own point, where the uncounted first step lands it)
+    if (jul) res.pts.push([z[0], z[1], z[2]]);
+    if (car) res.carry = jul ? [st] : [];
     if (jul && !(Math.hypot(z[0], z[1], z[2]) <= BALL)) return res;
-    for (let k = 1; k <= K; k++) {
+    for (let k = jul ? 1 : 0; k <= K; k++) {      // (k = 0: a Mandelbrot dot's step to its own point, of which nothing is asked)
       const v = [ab[0] ? Math.abs(z[0]) : z[0], (ab[1] ? Math.abs(z[1]) : z[1]) * (fl[0] ? -1 : 1), (ab[2] ? Math.abs(z[2]) : z[2]) * (fl[1] ? -1 : 1)];
       let w;
       if (car) { st = car.step(st, v, cc, q); w = car.pw(st, v, n); } else w = MATH[id](v, n, q, cc);
       z = [w[0] + cc[0], w[1] + cc[1], w[2] + cc[2]];
       res.pts.push(z);
       if (car) res.carry.push(st);
-      if (!(Math.hypot(z[0], z[1], z[2]) <= BALL)) { res.out = k; return res; }
+      if (k && !(Math.hypot(z[0], z[1], z[2]) <= BALL)) { res.out = k; return res; }
     }
     res.out = K + 1;
     return res;

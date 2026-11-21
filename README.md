@@ -32,7 +32,7 @@ No rule passes all five yet. `notes/_state.md` is the running log of what was tr
 | --- | --- |
 | `src/` | The lab's source: `head.html`, `body.html`, `css/*.css`, `js/*.js` |
 | `build.py` | Joins `src/` into one page. `python build.py` writes `squaring-lab.html` and `dist/preview.html` |
-| git tags | Every published version is a tag: `git checkout v21` gives Version 21, `v23` is the newest |
+| git tags | Every published version is a tag: `git checkout v21` gives Version 21, the highest number is the newest |
 | `tools/` | Test tools. `tools/shot.py` drives the page in headless Chrome and takes pictures |
 | `docs/` | The brief of each round of work (`ROUND29.md` and `ROUND29-LEARN.md` are the newest) |
 | `notes/` | The log (`_state.md`), reports and small scripts |

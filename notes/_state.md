@@ -1319,3 +1319,27 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
   `build.py` runs.
 - The session moves to `Documents/Personal/3D-Mandelbrot-Exploration` (the app copies the files at the end of the
   turn). A script in `out/` that needs an old cache or picture has to make it again first.
+
+## 2026-11-21, evening: the tour of all attempts, and VERSION 24 (Learn: the dots keep going)
+
+- The project folder is a git repository again (the app does not copy `.git` when a session moves): `git init`,
+  `git fetch --tags origin`, `git reset origin/main`, no file differed. `out/tour/make_sheet.py` draws every attempt
+  for c = -1 into one sheet, `out/tour/user-tour-basilica.png`; the user got the sheet and a written tour of all 21.
+- The user, after trying Learn: no Kleinian entry to be found; twice as many dots at every choice and a fourth
+  choice; the dots should not travel back to their starting places between steps ("aren't each of them orbits?");
+  a checkbox for the whole paths; 3D dots are hard to follow; the surface should move with the dots (a choice
+  dots / surface / both); the first Mandelbrot step does nothing and the Julia shape is one step ahead.
+- Version 24, version id 1795299788-8e84 (all in src/js/67-learn-shape.js unless said):
+  - "Kleinian squaring, one plane / two planes" stand under "Inversions by region (the paper's road)" (group
+    'kleinian', which had no entry and so showed no heading); they were at the foot of the list under "Tried".
+  - A Mandelbrot dot starts on its own point: its first step from the centre comes before the count (2D map, 2D
+    orbit, 3D shader lsOrb, 3D out() and orbit()). Shape k of both kinds has now taken k steps that can throw
+    something out. learnShapeZeroStays and its sentences are gone.
+  - After each step (LEARN_SHAPE.after): 'go' (new, the default) the dots keep going and are never put back, a step
+    is its moves and the throwing out; 'home' the old parts, but going out and coming back are fades, not travel.
+  - Dots: gaps halved, fourth choice 'most'. paths: every dot's whole path. lay (3D): grid | sheets | shells.
+    tint: dir | height | dist. Far dots are smaller and fainter; over 2500 dots are drawn as squares.
+  - Not done, said to the user: new dots in the gaps after a step. With one c for all it would be true, but every
+    step would then look the same (a full disc doubled, stretched, slid and trimmed); the shape only shows when
+    each starting place is asked whether its dot is still in.
+  - One quick look only (no console error; 19,350 dots take 36 ms a frame). The user checks the rest.

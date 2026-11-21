@@ -77,10 +77,10 @@ body.is-learn-shape .learn-space .learn-space-1 + .seg input:checked + span { bo
 /* the third group of the transport's row: it takes a line of its own where the row has no room left */
 .learn-shape-how { flex: 0 1 auto; }
 .learn-shape-dots { display: inline-flex; align-items: center; gap: 6px; flex: none; margin-left: 4px; }
-.learn-shape-dots select, #learnShapeDots { font-family: var(--f-mono); font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
+.learn-shape-dots select, #learnShapeDots, .learn-shape-sel { max-width: 100%; font-family: var(--f-mono); font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
 .learn-shape-dots select { min-height: 40px; padding: 3px 6px; }
 .learn-shape-dots select:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
-.learn-shape-dots select:disabled, #learnShapeDots:disabled { opacity: .45; }
+.learn-shape-dots select:disabled, #learnShapeDots:disabled, .learn-shape-sel:disabled { opacity: .45; }
 /* the names of the parts of one step, under the sentence: the one being played is marked (the look of One point's row of moves) */
 .learn-shape-parts { margin: 0 0 2px; }
 .learn-shape-parts[hidden] { display: none; }

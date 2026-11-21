@@ -1768,7 +1768,7 @@ const APPROACHES = [
     slice: ok => (ok ? RF_SLICE : 'The plane z = 0 does not follow complex arithmetic.'),
   },
   {
-    id: 'kleinsq', name: 'Kleinian squaring, one plane', group: 'tried', glsl: GL_KLEINSQ, axis: () => [0, 0, 1],
+    id: 'kleinsq', name: 'Kleinian squaring, one plane', group: 'kleinian', glsl: GL_KLEINSQ, axis: () => [0, 0, 1],
     tag: KQ_TAG,
     params: [{ type: 'note', text: KQ_NOTE }],
     formula: (p, n) => kqFormula(n, false),
@@ -1779,7 +1779,7 @@ const APPROACHES = [
     slice: () => KQ_SLICE,
   },
   {
-    id: 'kleinsq2', name: 'Kleinian squaring, two planes', group: 'tried', glsl: GL_KLEINSQ2, axis: () => [1, 0, 0],
+    id: 'kleinsq2', name: 'Kleinian squaring, two planes', group: 'kleinian', glsl: GL_KLEINSQ2, axis: () => [1, 0, 0],
     tag: KQ2_TAG,
     params: [{ type: 'note', text: KQ2_NOTE }],
     formula: (p, n) => kqFormula(n, true),
