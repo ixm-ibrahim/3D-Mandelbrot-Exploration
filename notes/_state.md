@@ -1343,3 +1343,21 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
     step would then look the same (a full disc doubled, stretched, slid and trimmed); the shape only shows when
     each starting place is asked whether its dot is still in.
   - One quick look only (no console error; 19,350 dots take 36 ms a frame). The user checks the rest.
+
+## 2026-11-21, evening: VERSION 25 (Learn: the surface as beads, and "the shape starts again")
+
+- Show (LEARN_SHAPE.see): 'dots' | 'skin' | 'both'. The surface of what is left after k steps is drawn as beads
+  (learnShapeSkin): starting places just inside skin k, found on an even grid (300 x 300 on the page, 36^3 in
+  space) by halving between neighbours on different sides, each with its steps kept as a dot's are. The beads are
+  a second dot set and take the same moves as the dots (learnShapeDotsDraw with skin = true).
+- What that shows depends on After each step. While the dots keep going, the beads of a whole step sit on the big
+  circle or ball: skin k is made of the dots that step k + 1 throws out. That is true, and it looks the same at
+  every step.
+- So a third choice of After each step, 'again' ("The shape starts again", learnShapeAgain): every step is one
+  step from the starting places, and a dot is thrown out when it lands outside what is left. For a Julia shape of
+  an approach whose orbit carries nothing this gives the very same shapes (still in after k + 1 steps exactly when
+  one step lands in shape k). There the surface is seen to land on the surface of the shape before. A Mandelbrot
+  picture, and the two carrying approaches, keep to "the dots keep going" inside this choice.
+- One quick look (2D and 3D, c = -1, no console error; the first 3D skin takes about 0.4 s). The user checks.
+- Open, asked of the user: is "the shape starts again" the surface picture they meant. NOTHING IS RUNNING. No
+  candidate rule in hand.
