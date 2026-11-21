@@ -32,7 +32,7 @@ No rule passes all five yet. `notes/_state.md` is the running log of what was tr
 | --- | --- |
 | `src/` | The lab's source: `head.html`, `body.html`, `css/*.css`, `js/*.js` |
 | `build.py` | Joins `src/` into one page. `python build.py` writes `squaring-lab.html` and `dist/preview.html` |
-| `base*/` | Frozen copies of `src/` at earlier versions (`base21a` is Version 21). Test builds are made from them: `python build.py --name x --base base21a --swap js/32-balls.js=path/to/changed.js` writes `dist/x.html` |
+| `base19a/`, `base20a/`, `base21a/` | Frozen copies of `src/` at the last three versions, used by test builds that are still running. Every version is in the git history: `git checkout v21` gives Version 21 |
 | `tools/` | Test tools. `tools/shot.py` drives the page in headless Chrome and takes pictures |
 | `docs/` | The brief of each round of work (`ROUND29.md` is the newest) |
 | `notes/` | The log (`_state.md`), reports and small scripts |

@@ -1,5 +1,0 @@
-/* drawing progress: a thin bar along the bottom edge of the stage while the full-quality picture is drawn
-   (created by initGL in 40-render.js; hidden when the picture is finished or a preview is showing) */
-.draw-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--line); pointer-events: none; z-index: 2; }
-.draw-progress[hidden] { display: none; }
-.draw-progress span { display: block; height: 100%; background: var(--brass); transform-origin: 0 50%; transform: scaleX(0); }
