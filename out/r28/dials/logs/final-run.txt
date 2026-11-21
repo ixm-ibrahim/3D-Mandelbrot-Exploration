@@ -1,0 +1,387 @@
+===== same.py
+new page dist/r28-dials.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 862 × 701 | mode m, group 0, t 1.4, rho 1, grid 0, depth 16, flat false, cam -1 0.55 5.2, canvas 862x701, program 0/true/z^n + c/0/
+   balls-as-the-row-gives-it: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.4, rho 1, grid 0, depth 16, flat false, cam -1.25 0.5 3.7649, canvas 862x701, program k-balls/
+   balls-size-80-typed: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.125, rho 1, grid 0, depth 16, flat false, cam -1.25 0.5 6.3372, canvas 862x701, program k-balls/
+   balls-100-honeycomb: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 1, depth 16, flat false, cam -1.25 0.5 13.1742, canvas 862x701, program k-balls/
+   balls-100-kiss-close-up: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho 1, grid 0, depth 16, flat false, cam -1.25 0.5 0.3, canvas 862x701, program k-balls/
+   balls-90-line-2d: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.0555555555555556, rho 1, grid 2, depth 16, flat true, cam -1.25 0.5 9.3492, canvas 862x701, program k-balls/
+   balls-30-depth-8: Done: 4 passes at 862 × 701 | mode k, group 1, t 2.166666666666667, rho 1, grid 0, depth 8, flat false, cam -1.25 0.5 3.3, canvas 862x701, program k-balls/
+   k-first-group: Done: 4 passes at 862 × 701 | mode k, group 0, t 1.4, rho 1, grid 0, depth 16, flat false, cam 0.35 0.35 7, canvas 862x701, program k/
+   j-rabbit-bulb-cut: Done: 4 passes at 862 × 701 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, flat false, cam -1.9 0.55 4.8, canvas 862x701, program 4/true/z^n + c/0/
+old page dist/r28-base.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 862 × 701 | mode m, group 0, t 1.4, rho undefined, grid 0, depth 16, flat false, cam -1 0.55 5.2, canvas 862x701, program 0/true/z^n + c/0/
+   balls-as-the-row-gives-it: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.4, rho undefined, grid 0, depth 16, flat false, cam -1.25 0.5 3.7649, canvas 862x701, program k-balls/
+   balls-size-80-typed: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.125, rho undefined, grid 0, depth 16, flat false, cam -1.25 0.5 6.3372, canvas 862x701, program k-balls/
+   balls-100-honeycomb: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho undefined, grid 1, depth 16, flat false, cam -1.25 0.5 13.1742, canvas 862x701, program k-balls/
+   balls-100-kiss-close-up: Done: 4 passes at 862 × 701 | mode k, group 1, t 1, rho undefined, grid 0, depth 16, flat false, cam -1.25 0.5 0.3, canvas 862x701, program k-balls/
+   balls-90-line-2d: Done: 4 passes at 862 × 701 | mode k, group 1, t 1.0555555555555556, rho undefined, grid 2, depth 16, flat true, cam -1.25 0.5 9.3492, canvas 862x701, program k-balls/
+   balls-30-depth-8: Done: 4 passes at 862 × 701 | mode k, group 1, t 2.166666666666667, rho undefined, grid 0, depth 8, flat false, cam -1.25 0.5 3.3, canvas 862x701, program k-balls/
+   k-first-group: Done: 4 passes at 862 × 701 | mode k, group 0, t 1.4, rho undefined, grid 0, depth 16, flat false, cam 0.35 0.35 7, canvas 862x701, program k/
+   j-rabbit-bulb-cut: Done: 4 passes at 862 × 701 | mode j, group 0, t 1.4, rho undefined, grid 0, depth 16, flat false, cam -1.9 0.55 4.8, canvas 862x701, program 4/true/z^n + c/0/
+m-as-the-page-opens          picture 862 x 701: pixels that differ 0 (pixels that are not background: 59223)
+balls-as-the-row-gives-it    picture 862 x 701: pixels that differ 0 (pixels that are not background: 153683)
+balls-size-80-typed          picture 862 x 701: pixels that differ 0 (pixels that are not background: 107715)
+balls-100-honeycomb          picture 862 x 701: pixels that differ 0 (pixels that are not background: 129666)
+balls-100-kiss-close-up      picture 862 x 701: pixels that differ 0 (pixels that are not background: 560125)
+balls-90-line-2d             picture 862 x 701: pixels that differ 0 (pixels that are not background: 364428)
+balls-30-depth-8             picture 862 x 701: pixels that differ 0 (pixels that are not background: 125367)
+k-first-group                picture 862 x 701: pixels that differ 0 (pixels that are not background: 88142)
+j-rabbit-bulb-cut            picture 862 x 701: pixels that differ 0 (pixels that are not background: 104204)
+TOTAL over 9 states: 0 pixels differ
+
+exit 0
+===== voices.py
+page dist/r28-dials.html, exit 0, no console errors
+=== rho 0.5, p 150, square (t = 0.833333; box +-3.419 by +-1.275; program k-balls2/; the page holds rho 0.5, t 0.8333333333333333)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 2389, by me 2389, verdicts that differ 0; 60 rounds: inside 2389 / 2389, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 36925 points, worst relative difference 8.63e-04, more than 1 % apart at 0; one says inside and the other outside at 0
+=== rho 0.25, p 300, square (t = 0.666667; box +-5.824 by +-1.875; program k-balls2/; the page holds rho 0.25, t 0.6666666666666666)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 4264, by me 4264, verdicts that differ 0; 60 rounds: inside 4264 / 4264, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 35946 points, worst relative difference 3.48e-03, more than 1 % apart at 0; one says inside and the other outside at 0
+=== rho 1/3, p 150, honeycomb (t = 0.833333; box +-2.706 by +-1.275; program k-balls2/; the page holds rho 0.3333333333333333, t 0.8333333333333333)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 2885, by me 2885, verdicts that differ 0; 60 rounds: inside 2885 / 2885, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 35338 points, worst relative difference 7.73e-04, more than 1 % apart at 0; one says inside and the other outside at 0
+=== rho 1/6, p 300, line (t = 0.666667; box +-4.533 by +-1.875; program k-balls2/; the page holds rho 0.16666666666666666, t 0.6666666666666666)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 5344, by me 5344, verdicts that differ 0; 60 rounds: inside 5344 / 5344, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 34126 points, worst relative difference 9.29e-03, more than 1 % apart at 0; one says inside and the other outside at 0
+=== rho 0.5, p 200 (the spheres touch), square (t = 0.750000; box +-6.300 by +-1.350; program k-balls2/; the page holds rho 0.5, t 0.75)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 5233, by me 5233, verdicts that differ 0; 60 rounds: inside 5232 / 5232, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 37069 points, worst relative difference 5.63e-03, more than 1 % apart at 0; one says inside and the other outside at 0
+=== rho 0.05, p 1000, honeycomb (t = 0.550000; box +-6.300 by +-4.000; program k-balls2/; the page holds rho 0.05, t 0.55)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 14385, by me 14385, verdicts that differ 0; 60 rounds: inside 14385 / 14385, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 17359 points, worst relative difference 1.78e-02, more than 1 % apart at 1; one says inside and the other outside at 0
+=== rho 0.4, p 60, square (t = 1.333333; box +-1.483 by +-1.067; program k-balls2/; the page holds rho 0.4, t 1.3333333333333335)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 1357, by me 1357, verdicts that differ 0; 60 rounds: inside 1357 / 1357, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 36128 points, worst relative difference 5.93e-04, more than 1 % apart at 0; one says inside and the other outside at 0
+=== rho 1, p 55.56 (as the page opens), square (t = 1.400000; box +-1.586 by +-1.053; program k-balls/; the page holds rho 1, t 1.4)
+  twin against my writing, 20000 points in space: 16 rounds: inside by the twin 1285, by me 1285, verdicts that differ 0; 60 rounds: inside 1285 / 1285, differ 0; the twin with nothing passed (read from the page) gives the same as with the numbers passed: True
+  shader (sampleSlice, 16 rounds) against my writing: flat view 20164 points, verdicts that differ 0; in space 20480 points, differ 0
+  shader distance against the twin's ballsEstimate where both say outside: 36536 points, worst relative difference 6.62e-04, more than 1 % apart at 0; one says inside and the other outside at 0
+TOTAL: twin against my writing 0 verdicts differ; shader against my writing: flat 0, in space 0; distances more than 1 % apart 1
+
+exit 0
+===== open1
+step 1 result: page up, 21 entries
+step 1 waited 6.1 s
+step 2 result: ["as the page opens: mode m, brho 1, status \"Done: 12 passes at 862 × 701\"","after the row: mode k, group 1, t 1.4, rho 1, grid 0, depth 16, status \"Done: 12 passes at 862 × 701\", warn \"\"","ballsSize: slider 2 to 400 step 0.1, typed 1 to 2000, shows 55.56","ballsRho: slider 2 to 100 step 1, typed 2 to 100, shows 100","ballsDepth: slider 1 to 100 step 1, typed 1 to 1000, shows 16","labels: Size of the neighbours, % of the middle ball | Second sphere, % of the first | Whole numbers | Depth of the search","help: How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain. Past 100 the neighbours are larger than the middle ball, and the second sphere is made smaller to let them. || The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball, and their buds are smaller and stand further apart. Between 50 and 100 the buds on a neighbour would cut into each other, so the dial jumps from 50 to 100. || Where the buds sit: four-fold round the chain (square grid), six-fold (honeycomb grid), or only round the flat picture (a line only); the flat cut is the same for all three. || How many rounds of the search a point may take before it counts as inside: the larger the neighbours, the more rounds the far balls of the chain need, and with too few they come out swollen.","programs in the cache: k-balls/","typed 150: t 0.8333333333333333, rho 0.3333333333333333, size shows 150, second sphere shows 33.33, sig k-balls2/, status \"Done: 12 passes at 862 × 701\", warn \"Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.\"","reach 2.405852239851817, inside at (1.2, 0, 0): true, estimate at (0, 1.5, 0): 0.4943172424343481","typed 300: t 0.6666666666666666, rho 0.16666666666666666, size shows 300, second sphere shows 16.67, status \"Done: 12 passes at 862 × 701\", warn \"Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.\""]
+step 3 waited 0.0 s
+no console errors
+
+exit 0
+exit 0
+===== dials28.py wide
+page dist/r28-dials.html, window 1400x950
+OK     the row Balls on balls -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+       sliders: size 2 to 400 (typed 1 to 2000), second sphere 2 to 100 (typed 2 to 100), depth 1 to 100 (typed 1 to 1000)
+--- A. typing the size past 100
+OK     typed size 150 -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+OK     typed size 300 (the second sphere follows as 50 / p) -> p 300, second 16.67, depth 16 (t 0.666667, rho 0.166667; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first."
+OK     typed size 101 -> p 101, second 49.5, depth 16 (t 0.99505, rho 0.49505; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 49.5 % of the first."
+OK     typed size 80 (back below 100: the second sphere is not put back) -> p 80, second 50, depth 16 (t 1.125, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     Reset this section -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+--- B. dragging the size slider from where it opens to about 250, then back to about 60
+       on the way: p 76.5 second 100, p 95.7 second 100, p 114.9 second 43.52, p 134.1 second 37.29, p 153.3 second 32.62, p 172.6 second 28.97, p 191.8 second 26.07, p 211 second 23.7, p 230.2 second 21.72, p 249.4 second 20.05
+OK     every step of the drag has the second sphere at 100 up to size 100 and at 50 / p % past it
+OK     let go -> p 249.4, second 20.05, depth 16 (t 0.700481, rho 0.200481; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 20.05 % of the first."
+OK     after letting go the thumb stands at what the dial shows (249.4) and the second sphere is 50 / p
+       on the way back: p 225.4 second 22.18, p 202 second 24.75, p 178.6 second 28, p 155.2 second 32.22, p 131.8 second 37.94, p 108.4 second 46.13, p 85 second 50, p 61.6 second 50
+OK     let go at about 60 -> p 61.6, second 50, depth 16 (t 1.31169, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+--- C. the second sphere set by hand stays until the size would make the spheres cut into each other
+OK     typed second sphere 30 -> p 55.56, second 30, depth 16 (t 1.4, rho 0.3; program k-balls2/) | "The second sphere is now 30 % of the first. Reset this section puts it back to 100."
+OK     typed size 200 (200 x 0.30 = 60: no need to give way) -> p 200, second 30, depth 16 (t 0.75, rho 0.3; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 30 % of the first."
+OK     typed size 400 (400 x 0.30 = 120: gives way) -> p 400, second 12.5, depth 16 (t 0.625, rho 0.125; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first."
+OK     typed size 2000 -> p 2000, second 2.5, depth 16 (t 0.525, rho 0.025; program k-balls2/) | "The chain of balls runs out past the Drawing radius in the View section, so its far ends are not drawn. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first."
+OK     typed size 5000 (past the end: held at 2000) -> p 2000, second 2.5, depth 16 (t 0.525, rho 0.025; program k-balls2/) | "The chain of balls runs out past the Drawing radius in the View section, so its far ends are not drawn. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first."
+OK     typed size 0.2 (past the end: held at 1) -> p 1, second 50, depth 16 (t 50.5, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+--- D. the second sphere moved: the size gives way
+OK     typed size 300 -> p 300, second 16.67, depth 16 (t 0.666667, rho 0.166667; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first."
+OK     typed second sphere 40 (300 x 0.40 = 120: the size becomes 50 / 0.40) -> p 125, second 40, depth 16 (t 0.9, rho 0.4; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 40 % of the first."
+OK     typed second sphere 100 (the size becomes 50) -> p 50, second 100, depth 16 (t 1.5, rho 1; program k-balls/)
+OK     typed second sphere 20 (50 x 0.20 = 10: the size stays) -> p 50, second 20, depth 16 (t 1.5, rho 0.2; program k-balls2/) | "The second sphere is now 20 % of the first. Reset this section puts it back to 100."
+--- E. the jump between 50 and 100
+OK     typed second sphere 60 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 75 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 76 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     typed second sphere 99 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     typed second sphere 51 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 1 -> p 55.56, second 2, depth 16 (t 1.4, rho 0.02; program k-balls2/) | "The second sphere is now 2 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 0 -> p 55.56, second 2, depth 16 (t 1.4, rho 0.02; program k-balls2/) | "The second sphere is now 2 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 250 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     typed second sphere 33.33 -> p 55.56, second 33.33, depth 16 (t 1.4, rho 0.3333; program k-balls2/) | "The second sphere is now 33.33 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 50 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow up in the box at 50 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     arrow down in the box at 100 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow down in the box at 50 -> p 55.56, second 49, depth 16 (t 1.4, rho 0.49; program k-balls2/) | "The second sphere is now 49 % of the first. Reset this section puts it back to 100."
+OK     arrow up in the box at 49 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     the small up button at 50 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     the small down button at 100 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     the small down button at 50 -> p 55.56, second 49, depth 16 (t 1.4, rho 0.49; program k-balls2/) | "The second sphere is now 49 % of the first. Reset this section puts it back to 100."
+OK     a click on the slider thumb at 50 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow right on the slider at 50 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     arrow left on the slider at 100 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow left on the slider at 50 -> p 55.56, second 49, depth 16 (t 1.4, rho 0.49; program k-balls2/) | "The second sphere is now 49 % of the first. Reset this section puts it back to 100."
+       dragging the second sphere from 100 down to about 30: 100 (thumb 93), 100 (thumb 86), 100 (thumb 79), 50 (thumb 72), 50 (thumb 65), 50 (thumb 58), 50 (thumb 51), 44 (thumb 44), 37 (thumb 37), 30 (thumb 30)
+OK     on the way the dial shows 100 while the thumb is above 75, 50 between 50 and 75, the thumb's own value below
+OK     let go at about 30 -> p 55.56, second 30, depth 16 (t 1.4, rho 0.3; program k-balls2/) | "The second sphere is now 30 % of the first. Reset this section puts it back to 100."
+OK     dragged up to about 66 and let go (the nearer of the two is 50) -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     while held the thumb stood at 66 and the dial showed 50; let go, the thumb goes to 50
+OK     dragged up to about 90 and let go -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     the thumb goes to 100
+--- F. where the two spheres touch, and the depth
+OK     second sphere 50, then size 200 (200 x 0.50 = 100: they touch) -> p 200, second 50, depth 16 (t 0.75, rho 0.5; program k-balls2/) | "At 200 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+OK     typed size 200.1 (past touching: gives way) -> p 200.1, second 24.99, depth 16 (t 0.749875, rho 0.249875; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 24.99 % of the first."
+OK     typed size 100 with two equal spheres -> p 100, second 100, depth 16 (t 1, rho 1; program k-balls/) | "At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+OK     typed depth 4 -> p 55.56, second 100, depth 4 (t 1.4, rho 1; program k-balls/) | "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+OK     typed depth 0 (held at 1) -> p 55.56, second 100, depth 1 (t 1.4, rho 1; program k-balls/) | "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+OK     typed depth 5 -> p 55.56, second 100, depth 5 (t 1.4, rho 1; program k-balls/)
+OK     typed depth 5000 (held at 1000) -> p 55.56, second 100, depth 1000 (t 1.4, rho 1; program k-balls/)
+OK     depth slider dragged past its right end -> p 55.56, second 100, depth 100 (t 1.4, rho 1; program k-balls/)
+OK     depth slider dragged past its left end -> p 55.56, second 100, depth 1 (t 1.4, rho 1; program k-balls/) | "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+OK     size slider dragged past its right end -> p 400, second 12.5, depth 16 (t 0.625, rho 0.125; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first."
+OK     size slider dragged past its left end -> p 2, second 50, depth 16 (t 25.5, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     second-sphere slider dragged past its left end -> p 2, second 2, depth 16 (t 25.5, rho 0.02; program k-balls2/) | "The second sphere is now 2 % of the first. Reset this section puts it back to 100."
+OK     second-sphere slider dragged past its right end -> p 2, second 100, depth 16 (t 25.5, rho 1; program k-balls/)
+OK     Reset this section -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+--- G. leaving and coming back, the 2D view, Frame it, Reset everything
+OK     size 150, Frame it -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+       camera 7.04 away, reach 2.406, Drawing radius 8, picture Done: 12 passes at 862 × 701
+       the Mandelbrot view: mode m, Done: 12 passes at 862 × 701, Kleinian panel hidden: true
+OK     back by the row in the Approach list (the dials are as they were left) -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+       the first group: group 0, balls part hidden: true, Done: 12 passes at 862 × 701, program k/
+OK     back by the choice of group -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+OK     the 2D view -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+OK     the 2D view where they touch -> p 200, second 50, depth 16 (t 0.75, rho 0.5; program k-balls2/) | "At 200 the chain never ends, so the picture shows a stretch of it, and the small circles between the large ones stand so close that they read as a band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+OK     the 3D view where they touch -> p 200, second 50, depth 16 (t 0.75, rho 0.5; program k-balls2/) | "At 200 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+       Reset everything: mode m, group 0, t 1.4, rho 1, depth 16, grid 0, Done: 12 passes at 862 × 701
+OK     Reset everything puts all of it back
+--- H. the sentence of a saved 3D model
+OK     before the model: size 150 -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+OK     a model at size 150 (the job ran: True): "Made from: Balls on balls (slides by whole numbers and sphere inversions), neighbours 150 % of the middle ball, second sphere 33.33 % of the first, square grid, depth of search 16."
+console: no errors
+lines marked WRONG: 0
+exit 0
+===== dials28.py phone
+page dist/r28-dials.html, window 390x800
+OK     the row Balls on balls -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+       sliders: size 2 to 400 (typed 1 to 2000), second sphere 2 to 100 (typed 2 to 100), depth 1 to 100 (typed 1 to 1000)
+--- A. typing the size past 100
+OK     typed size 150 -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+OK     typed size 300 (the second sphere follows as 50 / p) -> p 300, second 16.67, depth 16 (t 0.666667, rho 0.166667; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first."
+OK     typed size 101 -> p 101, second 49.5, depth 16 (t 0.99505, rho 0.49505; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 49.5 % of the first."
+OK     typed size 80 (back below 100: the second sphere is not put back) -> p 80, second 50, depth 16 (t 1.125, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     Reset this section -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+--- B. dragging the size slider from where it opens to about 250, then back to about 60
+       on the way: p 76.5 second 100, p 95.7 second 100, p 114.9 second 43.52, p 134.1 second 37.29, p 153.3 second 32.62, p 172.6 second 28.97, p 191.8 second 26.07, p 211 second 23.7, p 230.2 second 21.72, p 249.4 second 20.05
+OK     every step of the drag has the second sphere at 100 up to size 100 and at 50 / p % past it
+OK     let go -> p 249.4, second 20.05, depth 16 (t 0.700481, rho 0.200481; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 20.05 % of the first."
+OK     after letting go the thumb stands at what the dial shows (249.4) and the second sphere is 50 / p
+       on the way back: p 225.4 second 22.18, p 202 second 24.75, p 178.6 second 28, p 155.2 second 32.22, p 131.8 second 37.94, p 108.4 second 46.13, p 85 second 50, p 61.6 second 50
+OK     let go at about 60 -> p 61.6, second 50, depth 16 (t 1.31169, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+--- C. the second sphere set by hand stays until the size would make the spheres cut into each other
+OK     typed second sphere 30 -> p 55.56, second 30, depth 16 (t 1.4, rho 0.3; program k-balls2/) | "The second sphere is now 30 % of the first. Reset this section puts it back to 100."
+OK     typed size 200 (200 x 0.30 = 60: no need to give way) -> p 200, second 30, depth 16 (t 0.75, rho 0.3; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 30 % of the first."
+OK     typed size 400 (400 x 0.30 = 120: gives way) -> p 400, second 12.5, depth 16 (t 0.625, rho 0.125; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first."
+OK     typed size 2000 -> p 2000, second 2.5, depth 16 (t 0.525, rho 0.025; program k-balls2/) | "The chain of balls runs out past the Drawing radius in the View section, so its far ends are not drawn. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first."
+OK     typed size 5000 (past the end: held at 2000) -> p 2000, second 2.5, depth 16 (t 0.525, rho 0.025; program k-balls2/) | "The chain of balls runs out past the Drawing radius in the View section, so its far ends are not drawn. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first."
+OK     typed size 0.2 (past the end: held at 1) -> p 1, second 50, depth 16 (t 50.5, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+--- D. the second sphere moved: the size gives way
+OK     typed size 300 -> p 300, second 16.67, depth 16 (t 0.666667, rho 0.166667; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first."
+OK     typed second sphere 40 (300 x 0.40 = 120: the size becomes 50 / 0.40) -> p 125, second 40, depth 16 (t 0.9, rho 0.4; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 40 % of the first."
+OK     typed second sphere 100 (the size becomes 50) -> p 50, second 100, depth 16 (t 1.5, rho 1; program k-balls/)
+OK     typed second sphere 20 (50 x 0.20 = 10: the size stays) -> p 50, second 20, depth 16 (t 1.5, rho 0.2; program k-balls2/) | "The second sphere is now 20 % of the first. Reset this section puts it back to 100."
+--- E. the jump between 50 and 100
+OK     typed second sphere 60 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 75 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 76 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     typed second sphere 99 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     typed second sphere 51 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 1 -> p 55.56, second 2, depth 16 (t 1.4, rho 0.02; program k-balls2/) | "The second sphere is now 2 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 0 -> p 55.56, second 2, depth 16 (t 1.4, rho 0.02; program k-balls2/) | "The second sphere is now 2 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 250 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     typed second sphere 33.33 -> p 55.56, second 33.33, depth 16 (t 1.4, rho 0.3333; program k-balls2/) | "The second sphere is now 33.33 % of the first. Reset this section puts it back to 100."
+OK     typed second sphere 50 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow up in the box at 50 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     arrow down in the box at 100 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow down in the box at 50 -> p 55.56, second 49, depth 16 (t 1.4, rho 0.49; program k-balls2/) | "The second sphere is now 49 % of the first. Reset this section puts it back to 100."
+OK     arrow up in the box at 49 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     the small up button at 50 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     the small down button at 100 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     the small down button at 50 -> p 55.56, second 49, depth 16 (t 1.4, rho 0.49; program k-balls2/) | "The second sphere is now 49 % of the first. Reset this section puts it back to 100."
+OK     a click on the slider thumb at 50 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow right on the slider at 50 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     arrow left on the slider at 100 -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     arrow left on the slider at 50 -> p 55.56, second 49, depth 16 (t 1.4, rho 0.49; program k-balls2/) | "The second sphere is now 49 % of the first. Reset this section puts it back to 100."
+       dragging the second sphere from 100 down to about 30: 100 (thumb 93), 100 (thumb 86), 100 (thumb 79), 50 (thumb 72), 50 (thumb 65), 50 (thumb 58), 50 (thumb 51), 44 (thumb 44), 37 (thumb 37), 30 (thumb 30)
+OK     on the way the dial shows 100 while the thumb is above 75, 50 between 50 and 75, the thumb's own value below
+OK     let go at about 30 -> p 55.56, second 30, depth 16 (t 1.4, rho 0.3; program k-balls2/) | "The second sphere is now 30 % of the first. Reset this section puts it back to 100."
+OK     dragged up to about 66 and let go (the nearer of the two is 50) -> p 55.56, second 50, depth 16 (t 1.4, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     while held the thumb stood at 66 and the dial showed 50; let go, the thumb goes to 50
+OK     dragged up to about 90 and let go -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     the thumb goes to 100
+--- F. where the two spheres touch, and the depth
+OK     second sphere 50, then size 200 (200 x 0.50 = 100: they touch) -> p 200, second 50, depth 16 (t 0.75, rho 0.5; program k-balls2/) | "At 200 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+OK     typed size 200.1 (past touching: gives way) -> p 200.1, second 24.99, depth 16 (t 0.749875, rho 0.249875; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 24.99 % of the first."
+OK     typed size 100 with two equal spheres -> p 100, second 100, depth 16 (t 1, rho 1; program k-balls/) | "At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+OK     typed depth 4 -> p 55.56, second 100, depth 4 (t 1.4, rho 1; program k-balls/) | "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+OK     typed depth 0 (held at 1) -> p 55.56, second 100, depth 1 (t 1.4, rho 1; program k-balls/) | "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+OK     typed depth 5 -> p 55.56, second 100, depth 5 (t 1.4, rho 1; program k-balls/)
+OK     typed depth 5000 (held at 1000) -> p 55.56, second 100, depth 1000 (t 1.4, rho 1; program k-balls/)
+OK     depth slider dragged past its right end -> p 55.56, second 100, depth 100 (t 1.4, rho 1; program k-balls/)
+OK     depth slider dragged past its left end -> p 55.56, second 100, depth 1 (t 1.4, rho 1; program k-balls/) | "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+OK     size slider dragged past its right end -> p 400, second 12.5, depth 16 (t 0.625, rho 0.125; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first."
+OK     size slider dragged past its left end -> p 2, second 50, depth 16 (t 25.5, rho 0.5; program k-balls2/) | "The second sphere is now 50 % of the first. Reset this section puts it back to 100."
+OK     second-sphere slider dragged past its left end -> p 2, second 2, depth 16 (t 25.5, rho 0.02; program k-balls2/) | "The second sphere is now 2 % of the first. Reset this section puts it back to 100."
+OK     second-sphere slider dragged past its right end -> p 2, second 100, depth 16 (t 25.5, rho 1; program k-balls/)
+OK     Reset this section -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+--- G. leaving and coming back, the 2D view, Frame it, Reset everything
+OK     size 150, Frame it -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+       camera 7.01 away, reach 2.406, Drawing radius 8, picture Done: 12 passes at 356 × 288
+       the Mandelbrot view: mode m, Done: 12 passes at 356 × 288, Kleinian panel hidden: true
+OK     back by the row in the Approach list (the dials are as they were left) -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+       the first group: group 0, balls part hidden: true, Done: 12 passes at 356 × 288, program k/
+OK     back by the choice of group -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+OK     the 2D view -> p 150, second 33.33, depth 16 (t 0.833333, rho 0.333333; program k-balls2/) | "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+OK     the 2D view where they touch -> p 200, second 50, depth 16 (t 0.75, rho 0.5; program k-balls2/) | "At 200 the chain never ends, so the picture shows a stretch of it, and the small circles between the large ones stand so close that they read as a band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+OK     the 3D view where they touch -> p 200, second 50, depth 16 (t 0.75, rho 0.5; program k-balls2/) | "At 200 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+       Reset everything: mode m, group 0, t 1.4, rho 1, depth 16, grid 0, Done: 12 passes at 356 × 288
+OK     Reset everything puts all of it back
+--- H. the sentence of a saved 3D model
+OK     before the model: size 55.56 -> p 55.56, second 100, depth 16 (t 1.4, rho 1; program k-balls/)
+OK     a model at size 55.56 (the job ran: True): "Made from: Balls on balls (slides by whole numbers and sphere inversions), neighbours 55.56 % of the middle ball, square grid, depth of search 16."
+console: no errors
+lines marked WRONG: 0
+exit 0
+===== panel.py
+wide dark (window 1400x950): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors
+wide light (window 1400x950): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors
+phone dark (window 390x800): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors
+phone light (window 390x800): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors
+
+exit 0
+===== looks.py wide dark p150 p300 p101 p400 rho50-p200-touch rho25-p400-touch rho50-p55 p1000 depth3
+page up, 21 entries
+row clicked: Done: 12 passes at 862 × 701
+p150 3D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.043, drawing radius 8, 2D height 4.402 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+stage
+p150 2D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.043, drawing radius 8, 2D height 4.402 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+back in 3D
+p300 3D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.392, drawing radius 8, 2D height 7.745 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+stage
+p300 2D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.392, drawing radius 8, 2D height 7.745 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+back in 3D
+p101 3D: p shows 101, second sphere 49.5, depth 16, t 0.995049504950495, rho 0.49504950495049505, reach 1.806, cam dist 5.286, drawing radius 8, 2D height 3.304 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 49.5 % of the first.
+stage
+p101 2D: p shows 101, second sphere 49.5, depth 16, t 0.995049504950495, rho 0.49504950495049505, reach 1.806, cam dist 5.286, drawing radius 8, 2D height 3.304 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 49.5 % of the first.
+back in 3D
+p400 3D: p shows 400, second sphere 12.5, depth 16, t 0.625, rho 0.125, reach 5.448, cam dist 15.948, drawing radius 8, 2D height 9.968 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first.
+stage
+p400 2D: p shows 400, second sphere 12.5, depth 16, t 0.625, rho 0.125, reach 5.448, cam dist 15.948, drawing radius 8, 2D height 9.968 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first.
+back in 3D
+rho50-p200-touch 3D: p shows 200, second sphere 50, depth 16, t 0.75, rho 0.5, reach Infinity, cam dist 13.174, drawing radius 9, 2D height 8.234 | Done: 12 passes at 862 × 701 | At 200 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first.
+stage
+rho50-p200-touch 2D: p shows 200, second sphere 50, depth 16, t 0.75, rho 0.5, reach Infinity, cam dist 13.174, drawing radius 9, 2D height 8.234 | Done: 12 passes at 862 × 701 | At 200 the chain never ends, so the picture shows a stretch of it, and the small circles between the large ones stand so close that they read as a band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first.
+back in 3D
+rho25-p400-touch 3D: p shows 400, second sphere 25, depth 16, t 0.625, rho 0.25, reach Infinity, cam dist 19.981, drawing radius 13.65, 2D height 12.488 | Done: 12 passes at 862 × 701 | At 400 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 25 % of the first.
+stage
+rho25-p400-touch 2D: p shows 400, second sphere 25, depth 16, t 0.625, rho 0.25, reach Infinity, cam dist 19.981, drawing radius 13.65, 2D height 12.488 | Done: 12 passes at 862 × 701 | At 400 the chain never ends, so the picture shows a stretch of it, and the small circles between the large ones stand so close that they read as a band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 25 % of the first.
+back in 3D
+rho50-p55 3D: p shows 55.56, second sphere 50, depth 16, t 1.4, rho 0.5, reach 1.144, cam dist 3.348, drawing radius 13.65, 2D height 2.1 | Done: 12 passes at 862 × 701 | The second sphere is now 50 % of the first. Reset this section puts it back to 100.
+stage
+rho50-p55 2D: p shows 55.56, second sphere 50, depth 16, t 1.4, rho 0.5, reach 1.144, cam dist 3.348, drawing radius 13.65, 2D height 2.1 | Done: 12 passes at 862 × 701 | The second sphere is now 50 % of the first. Reset this section puts it back to 100.
+back in 3D
+p1000 3D: p shows 1000, second sphere 5, depth 16, t 0.55, rho 0.05, reach 12.727, cam dist 37.26, drawing radius 13.65, 2D height 23.287 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 5 % of the first.
+stage
+p1000 2D: p shows 1000, second sphere 5, depth 16, t 0.55, rho 0.05, reach 12.727, cam dist 37.26, drawing radius 13.65, 2D height 23.287 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 5 % of the first.
+back in 3D
+depth3 3D: p shows 55.56, second sphere 100, depth 3, t 1.4, rho 1, reach 1.286, cam dist 3.765, drawing radius 13.65, 2D height 2.353 | Done: 12 passes at 862 × 701 | With so few rounds of the search whole balls are still undecided, and they come out as broken shells.
+stage
+depth3 2D: p shows 55.56, second sphere 100, depth 3, t 1.4, rho 1, reach 1.286, cam dist 3.765, drawing radius 13.65, 2D height 2.353 | Done: 12 passes at 862 × 701 | With so few rounds of the search whole balls are still undecided, and they come out as broken shells.
+back in 3D
+exit 0 | no console errors
+exit 0
+===== looks.py phone dark p150 p300
+page up, 21 entries
+row clicked: Done: 12 passes at 356 × 288
+p150 3D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.007, drawing radius 8, 2D height 4.379 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+stage
+p150 2D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.007, drawing radius 8, 2D height 4.379 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+back in 3D
+p300 3D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.327, drawing radius 8, 2D height 7.704 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+stage
+p300 2D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.327, drawing radius 8, 2D height 7.704 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+back in 3D
+exit 0 | no console errors
+exit 0
+===== looks.py wide light p150 p300
+page up, 21 entries
+row clicked: Done: 12 passes at 862 × 701
+p150 3D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.043, drawing radius 8, 2D height 4.402 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+stage
+p150 2D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.043, drawing radius 8, 2D height 4.402 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+back in 3D
+p300 3D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.392, drawing radius 8, 2D height 7.745 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+stage
+p300 2D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.392, drawing radius 8, 2D height 7.745 | Done: 12 passes at 862 × 701 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+back in 3D
+exit 0 | no console errors
+exit 0
+===== looks.py phone light p150 p300
+page up, 21 entries
+row clicked: Done: 12 passes at 356 × 288
+p150 3D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.007, drawing radius 8, 2D height 4.379 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+stage
+p150 2D: p shows 150, second sphere 33.33, depth 16, t 0.8333333333333333, rho 0.3333333333333333, reach 2.406, cam dist 7.007, drawing radius 8, 2D height 4.379 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+back in 3D
+p300 3D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.327, drawing radius 8, 2D height 7.704 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+stage
+p300 2D: p shows 300, second sphere 16.67, depth 16, t 0.6666666666666666, rho 0.16666666666666666, reach 4.233, cam dist 12.327, drawing radius 8, 2D height 7.704 | Done: 12 passes at 356 × 288 | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+back in 3D
+exit 0 | no console errors
+exit 0
+===== holes28.py
+page dist/r28-dials.html, exit 0, no console errors
+p150-start         rho 0.3333 t 0.8333 grid 0 depth 16, camera 7.04 away, Drawing radius 8 | picks 37625: stop 8460, stop nowhere 29165 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 2, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.3 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [1.9491, -5.8658, 3.3768], inside a ball: False, nearest ball from the eye 5.03 away (5510 px) | my ray against the stop: at most 0.000 px off | picture: 467950 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+p300-start         rho 0.1667 t 0.6667 grid 0 depth 16, camera 12.39 away, Drawing radius 8 | picks 37625: stop 8976, stop nowhere 28649 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 1, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.4 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [3.429, -10.3199, 5.9409], inside a ball: False, nearest ball from the eye 9.1 away (9960 px) | my ray against the stop: at most 0.000 px off | picture: 459800 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+p150-hex-start     rho 0.3333 t 0.8333 grid 1 depth 16, camera 7.04 away, Drawing radius 8 | picks 37625: stop 8566, stop nowhere 29059 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 3, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.4 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [1.9491, -5.8658, 3.3768], inside a ball: False, nearest ball from the eye 5.03 away (5510 px) | my ray against the stop: at most 0.000 px off | picture: 466111 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+p300-line-start    rho 0.1667 t 0.6667 grid 2 depth 16, camera 12.39 away, Drawing radius 8 | picks 37625: stop 8656, stop nowhere 28969 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 0, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.0 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [3.429, -10.3199, 5.9409], inside a ball: False, nearest ball from the eye 9.1 away (9960 px) | my ray against the stop: at most 0.000 px off | picture: 464829 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+p400-start         rho 0.1250 t 0.6250 grid 0 depth 16, camera 15.95 away, Drawing radius 8 | picks 37625: stop 9254, stop nowhere 28371 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 1, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.4 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [4.4132, -13.2819, 7.646], inside a ball: False, nearest ball from the eye 11.8 away (12900 px) | my ray against the stop: at most 0.000 px off | picture: 455232 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first.
+p150-kiss          rho 0.3333 t 0.8333 grid 0 depth 16, camera 0.30 away, Drawing radius 8 | picks 37625: stop 37226, stop nowhere 399 (399 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 15, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.5 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [0.525, -0.2633, 0.1438], inside a ball: False, nearest ball from the eye 0.0331 away (36.3 px) | my ray against the stop: at most 0.001 px off | picture: 338 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+p300-kiss          rho 0.1667 t 0.6667 grid 0 depth 16, camera 0.30 away, Drawing radius 8 | picks 37625: stop 37422, stop nowhere 203 (203 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 7, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.5 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [0.525, 0.1865, 0.235], inside a ball: False, nearest ball from the eye 0.0234 away (25.6 px) | my ray against the stop: at most 0.001 px off | picture: 1178 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+p150-far-end       rho 0.3333 t 0.8333 grid 0 depth 16, camera 0.60 away, Drawing radius 8 | picks 37625: stop 31728, stop nowhere 5897 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 4, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.4 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [2.3986, -0.465, 0.2337], inside a ball: False, nearest ball from the eye 0.287 away (314 px) | my ray against the stop: at most 0.000 px off | picture: 983 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+p300-far-end-hex   rho 0.1667 t 0.6667 grid 1 depth 16, camera 0.80 away, Drawing radius 8 | picks 37625: stop 37610, stop nowhere 15 (15 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 1, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.6 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [4.3058, 0.4315, 0.2364], inside a ball: False, nearest ball from the eye 0.345 away (378 px) | my ray against the stop: at most 0.001 px off | picture: 805 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+p300-graze         rho 0.1667 t 0.6667 grid 0 depth 16, camera 0.90 away, Drawing radius 8 | picks 37625: stop 16537, stop nowhere 21088 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 0, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.0 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [2.1, -0.8989, 1.645], inside a ball: False, nearest ball from the eye 0.3 away (328 px) | my ray against the stop: at most 0.001 px off | picture: 338094 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first.
+p150-waist         rho 0.3333 t 0.8333 grid 0 depth 16, camera 0.70 away, Drawing radius 8 | picks 37625: stop 33449, stop nowhere 4176 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 3, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.4 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [0, -0.686, 0.7391], inside a ball: False, nearest ball from the eye 0.218 away (238 px) | my ray against the stop: at most 0.000 px off | picture: 67125 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+rho50-p150-start   rho 0.5000 t 0.8333 grid 0 depth 16, camera 9.13 away, Drawing radius 8 | picks 37625: stop 5842, stop nowhere 31783 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 16, further than 2 px 8 (beside a region only the depth calls solid 8, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 3.3 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [2.5265, -7.6036, 4.3772], inside a ball: False, nearest ball from the eye 6.67 away (7300 px) | my ray against the stop: at most 0.000 px off | picture: 509745 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first.
+rho50-p190-start   rho 0.5000 t 0.7632 grid 0 depth 16, camera 23.16 away, Drawing radius 8.310815989225445 | picks 37625: stop 2611, stop nowhere 35014 (320 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 13, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.6 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [6.4088, -19.2878, 11.1034], inside a ball: False, nearest ball from the eye 17.2 away (18800 px) | my ray against the stop: at most 0.000 px off | picture: 561447 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first.
+rho50-p200-kiss    rho 0.5000 t 0.7500 grid 0 depth 16, camera 0.30 away, Drawing radius 9 | picks 37625: stop 37595, stop nowhere 30 (30 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 658, further than 2 px 427 (beside a region only the depth calls solid 421, IN THE OPEN by that measure 6, furthest 3.4 px; of those a ball stands within 2.5 px by 78 probes: 4, NOTHING within 2.5 px: 2, furthest 3.4 px); furthest of all 39.6 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [0.525, -0.2633, 0.1438], inside a ball: False, nearest ball from the eye 0.0139 away (15.2 px) | my ray against the stop: at most 0.001 px off | picture: 3006 of 604262 pixels have the colour of its top left corner | At 200 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first.
+rho25-p300-start   rho 0.2500 t 0.6667 grid 0 depth 16, camera 16.17 away, Drawing radius 8 | picks 37625: stop 5883, stop nowhere 31742 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 1, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.3 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [4.4752, -13.4686, 7.7535], inside a ball: False, nearest ball from the eye 12 away (13100 px) | my ray against the stop: at most 0.000 px off | picture: 509302 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 25 % of the first.
+rho25-p400-kiss    rho 0.2500 t 0.6250 grid 0 depth 16, camera 0.35 away, Drawing radius 13.65 | picks 37625: stop 37611, stop nowhere 14 (14 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 85, further than 2 px 57 (beside a region only the depth calls solid 57, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 12.3 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [0.525, 0.1588, 0.3119], inside a ball: False, nearest ball from the eye 0.0216 away (23.7 px) | my ray against the stop: at most 0.001 px off | picture: 2154 of 604262 pixels have the colour of its top left corner | At 400 the chain never ends, so the picture shows a stretch of it, and the small balls between the large ones stand so close that they read as a bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 25 % of the first.
+rho40-p60-start    rho 0.4000 t 1.3333 grid 0 depth 16, camera 3.46 away, Drawing radius 8 | picks 37625: stop 10872, stop nowhere 26753 (400 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 3, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.3 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [0.9581, -2.8835, 1.66], inside a ball: False, nearest ball from the eye 2.33 away (2550 px) | my ray against the stop: at most 0.000 px off | picture: 429202 of 604262 pixels have the colour of its top left corner | The second sphere is now 40 % of the first. Reset this section puts it back to 100.
+p1000-start        rho 0.0500 t 0.5500 grid 0 depth 16, camera 37.26 away, Drawing radius 13.126964484903684 | picks 37625: stop 10071, stop nowhere 27554 (296 walked: meet a ball 0, HOLES (through a ball for more than 2 px) 0, more than 10 px 0, longest 0.0 px) | stops further than 1.3 px from every ball the search meets 0, further than 2 px 0 (beside a region only the depth calls solid 0, IN THE OPEN by that measure 0, furthest 0.0 px; of those a ball stands within 2.5 px by 78 probes: 0, NOTHING within 2.5 px: 0, furthest 0.0 px); furthest of all 1.0 px; stops with a ball in front of them on the ray (20 px back): 0 | eye [10.3105, -31.0302, 17.8632], inside a ball: False, nearest ball from the eye 27.7 away (30300 px) | my ray against the stop: at most 0.000 px off | picture: 442306 of 604262 pixels have the colour of its top left corner | Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 5 % of the first.
+
+exit 0
+===== speed28.py 3
+new  trial 0: first paint after  920 ms, finished after 1053 ms; group 1, stage [862, 701], programs built 1; Done: 12 passes at 862 × 701
+     then, on the new page: 150 for the first time (programs built 1): finished after 1034 ms; 150 again: 153 ms; 300: 156 ms; back to the default: 164 ms
+base trial 0: first paint after  718 ms, finished after  857 ms; group 1, stage [862, 701], programs built 1; Done: 12 passes at 862 × 701
+base trial 1: first paint after  810 ms, finished after  919 ms; group 1, stage [862, 701], programs built 1; Done: 12 passes at 862 × 701
+new  trial 1: first paint after  771 ms, finished after  892 ms; group 1, stage [862, 701], programs built 1; Done: 12 passes at 862 × 701
+     then, on the new page: 150 for the first time (programs built 1): finished after 902 ms; 150 again: 195 ms; 300: 180 ms; back to the default: 213 ms
+new  trial 2: first paint after  763 ms, finished after  886 ms; group 1, stage [862, 701], programs built 1; Done: 12 passes at 862 × 701
+     then, on the new page: 150 for the first time (programs built 1): finished after 903 ms; 150 again: 158 ms; 300: 170 ms; back to the default: 188 ms
+base trial 2: first paint after  800 ms, finished after 1167 ms; group 1, stage [862, 701], programs built 1; Done: 12 passes at 862 × 701
+new  first paint: median 771 ms (920, 771, 763); finished: median 892 ms (1053, 892, 886)
+base first paint: median 800 ms (718, 810, 800); finished: median 919 ms (857, 919, 1167)
+new page against the frozen page, the default picture: first paint 0.96 x, finished 0.97 x (medians)
+new page, medians: 150 for the first time 903 ms, 150 with its program there 158 ms, 300 170 ms, the default again 188 ms
+runs with console errors or a failure: 0 of 6
+
+exit 0

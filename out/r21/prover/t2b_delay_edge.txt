@@ -1,0 +1,8 @@
+main body of the flat set: 143396 grid points; the closed form says 64734 of them hold against a lift, 78662 do not
+the computer (delay_cov, sheet at 22.5 degrees, lift 1e-9, 700 steps): holds 102473 of the main body
+verdicts that differ inside the main body: 37747 (closed form holds, computer lost: 4; closed form lost, computer holds: 37743)
+after 700 steps, of the main body: back in the sheet (height below 1e-8) 69852 | still bounded but OFF the sheet 32621 | left 40923
+closed form "the lift dies out" against "back in the sheet": 5300 of 143396 differ
+leaving out a thin margin (growth factor squared within 0.03 of 1, or within 0.02 of the edge of the body): 2521 of 123850 differ
+the bounded orbits that stay off the sheet: height between 1.00e-08 and 2.69e+00, median 3.21e-02
+   closed form says dies out, but not back in the sheet: 91 (of these left: 4) | closed form says grows, but back in the sheet: 5209

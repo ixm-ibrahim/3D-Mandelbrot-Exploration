@@ -1,0 +1,21 @@
+new page dist/r27-final-merge.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 862 × 701 | mode m, group 0, approach mercator, flat false, canvas 862x701
+   m-lathe-power3-2d: Done: 4 passes at 862 × 701 | mode m, group 0, approach lathe, flat true, canvas 862x701
+   j-rabbit-bulb-cut: Done: 4 passes at 862 × 701 | mode j, group 0, approach bulb, flat false, canvas 862x701
+   j-alongonce-escape-count: Done: 4 passes at 862 × 701 | mode j, group 0, approach alongonce, flat false, canvas 862x701
+   k-first-group-as-it-opens: Done: 4 passes at 862 × 701 | mode k, group 0, approach alongonce, flat false, canvas 862x701
+   k-first-group-preset3-2d-inside-trap: Done: 4 passes at 862 × 701 | mode k, group 0, approach alongonce, flat true, canvas 862x701
+old page dist/r27-final-r26only.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 862 × 701 | mode m, group 0, approach mercator, flat false, canvas 862x701
+   m-lathe-power3-2d: Done: 4 passes at 862 × 701 | mode m, group 0, approach lathe, flat true, canvas 862x701
+   j-rabbit-bulb-cut: Done: 4 passes at 862 × 701 | mode j, group 0, approach bulb, flat false, canvas 862x701
+   j-alongonce-escape-count: Done: 4 passes at 862 × 701 | mode j, group 0, approach alongonce, flat false, canvas 862x701
+   k-first-group-as-it-opens: Done: 4 passes at 862 × 701 | mode k, group 0, approach alongonce, flat false, canvas 862x701
+   k-first-group-preset3-2d-inside-trap: Done: 4 passes at 862 × 701 | mode k, group 0, approach alongonce, flat true, canvas 862x701
+m-as-the-page-opens                      picture 862 x 701: pixels that differ 0 (pixels that are not background: 59223); the stage with its controls: 0 differ
+m-lathe-power3-2d                        picture 862 x 701: pixels that differ 0 (pixels that are not background: 593344); the stage with its controls: 0 differ
+j-rabbit-bulb-cut                        picture 862 x 701: pixels that differ 0 (pixels that are not background: 104204); the stage with its controls: 0 differ
+j-alongonce-escape-count                 picture 862 x 701: pixels that differ 0 (pixels that are not background: 118624); the stage with its controls: 0 differ
+k-first-group-as-it-opens                picture 862 x 701: pixels that differ 0 (pixels that are not background: 88142); the stage with its controls: 0 differ
+k-first-group-preset3-2d-inside-trap     picture 862 x 701: pixels that differ 0 (pixels that are not background: 587434); the stage with its controls: 0 differ
+TOTAL over 6 states: picture alone 0 pixels differ; stage with its controls 0

@@ -1,0 +1,7 @@
+Random start points, seed 2211 (the first checker used another): how many of 400,000 stay 20 / 30 / 40 / 80 steps (leaving = |v| >= 64; the lab picture asks for 40)
+  rabbit c turned 10 deg about the x-axis    Along once       502 /    10 /     0 /     0
+  rabbit c turned 10 deg about the x-axis    Pulled plane    5863 /   936 /   119 /     0
+  rabbit c turned 10 deg about the x-axis    one plane        973 /    16 /     0 /     0
+  c = (-1, 0, 0.3)                           Along once         3 /     0 /     0 /     0
+  c = (-1, 0, 0.3)                           Pulled plane    1606 /   329 /    70 /     1
+  c = (-1, 0, 0.3)                           one plane         16 /     0 /     0 /     0

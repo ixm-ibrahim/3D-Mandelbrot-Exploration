@@ -1,0 +1,19 @@
+step 1 result: "q-bal-de1"
+step 1 waited 17.3 s
+step 1 wrote out/r4/shaders/misc3/q-bal-de1.png
+step 2 result: "q-bal-de0"
+step 2 waited 1.8 s
+step 2 wrote out/r4/shaders/misc3/q-bal-de0.png
+step 3 result: "q-ultra-de3"
+step 3 waited 0.3 s
+step 3 wrote out/r4/shaders/misc3/q-ultra-de3.png
+step 4 result: "q-ultra-de3-d1"
+step 4 waited 0.3 s
+step 4 wrote out/r4/shaders/misc3/q-ultra-de3-d1.png
+step 5 result: "q-fast"
+step 5 waited 0.5 s
+step 5 wrote out/r4/shaders/misc3/q-fast.png
+step 6 result: "q-fast-ring"
+step 6 waited 1.0 s
+step 6 wrote out/r4/shaders/misc3/q-fast-ring.png
+no console errors

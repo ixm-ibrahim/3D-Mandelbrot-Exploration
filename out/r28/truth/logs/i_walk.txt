@@ -1,0 +1,14 @@
+page dist/r28-truth.html, exit 0, no console errors; a reset button was found: True; program at the end "k-balls2/", failed ""
+   beyond the letter of decision 4: size set to 381.93 while the second sphere was 10.86 %: by the letter it stays/becomes 10.86 %, the page made it 13.09 %
+   beyond the letter of decision 4: size set to 99.99 while the second sphere was 21.49 %: by the letter it stays/becomes 21.49 %, the page made it 50 %
+   beyond the letter of decision 4: size set to 90.32 while the second sphere was 12.5 %: by the letter it stays/becomes 12.5 %, the page made it 50 %
+   beyond the letter of decision 4: size set to 81.80 while the second sphere was 2.786 %: by the letter it stays/becomes 2.786 %, the page made it 50 %
+   beyond the letter of decision 4: size set to 167.70 while the second sphere was 50 %: by the letter it stays/becomes 50 %, the page made it 29.82 %
+   beyond the letter of decision 4: size set to 100.01 while the second sphere was 3.951 %: by the letter it stays/becomes 3.951 %, the page made it 50 %
+   beyond the letter of decision 4: size set to 200.00 while the second sphere was 50 %: by the letter it stays/becomes 50 %, the page made it 25 %
+   beyond the letter of decision 4: size set to 238.61 while the second sphere was 3.256 %: by the letter it stays/becomes 3.256 %, the page made it 20.95 %
+600 moves (reset 16, slideRho 101, slideSize 112, typeRho 166, typeSize 205), 293 different states met.
+States that are NOT an object (second sphere between 50 and 100, or size x second sphere > 100 x 100, or t below (1 + rho) / 2, or a size outside 1..2000): 0
+Moves after which the two boxes do not show the state (to 0.005): 0
+Moves of the size (317) after which the second sphere is not what the letter of decision 4 gives: 78 (the builder's "follows" rule; every one of them is still an object)
+Second spheres met: least 0.02, most below 1: 0.5, and 1: True

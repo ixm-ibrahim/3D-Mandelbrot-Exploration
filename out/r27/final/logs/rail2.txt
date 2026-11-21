@@ -1,0 +1,30 @@
+dist/r27-final.html: exit 0, no console errors; A Done: 12 passes at 862 × 701 | B Done: 4 passes at 862 × 701 | C Done: 4 passes at 862 × 701 mode m | D Done: 4 passes at 862 × 701 scroll 0
+dist/r27-base.html: exit 0, no console errors; A Done: 12 passes at 862 × 701 | B Done: 4 passes at 862 × 701 | C Done: 4 passes at 862 × 701 mode m | D Done: 4 passes at 862 × 701 scroll 0
+new-A against new-B: 34072 pixels differ (x 1 to 862, y 1 to 701)
+new-A against new-C: 34072 pixels differ (x 1 to 862, y 1 to 701)
+new-A against new-D: 36691 pixels differ (x 1 to 862, y 1 to 701)
+new-A against old-A: 0 pixels differ
+new-A against old-B: 34072 pixels differ (x 1 to 862, y 1 to 701)
+new-A against old-C: 34072 pixels differ (x 1 to 862, y 1 to 701)
+new-A against old-D: 36691 pixels differ (x 1 to 862, y 1 to 701)
+new-B against new-C: 0 pixels differ
+new-B against new-D: 2621 pixels differ (x 11 to 852, y 72 to 668)
+new-B against old-A: 34072 pixels differ (x 1 to 862, y 1 to 701)
+new-B against old-B: 0 pixels differ
+new-B against old-C: 0 pixels differ
+new-B against old-D: 2621 pixels differ (x 11 to 852, y 72 to 668)
+new-C against new-D: 2621 pixels differ (x 11 to 852, y 72 to 668)
+new-C against old-A: 34072 pixels differ (x 1 to 862, y 1 to 701)
+new-C against old-B: 0 pixels differ
+new-C against old-C: 0 pixels differ
+new-C against old-D: 2621 pixels differ (x 11 to 852, y 72 to 668)
+new-D against old-A: 36691 pixels differ (x 1 to 862, y 1 to 701)
+new-D against old-B: 2621 pixels differ (x 11 to 852, y 72 to 668)
+new-D against old-C: 2621 pixels differ (x 11 to 852, y 72 to 668)
+new-D against old-D: 0 pixels differ
+old-A against old-B: 34072 pixels differ (x 1 to 862, y 1 to 701)
+old-A against old-C: 34072 pixels differ (x 1 to 862, y 1 to 701)
+old-A against old-D: 36691 pixels differ (x 1 to 862, y 1 to 701)
+old-B against old-C: 0 pixels differ
+old-B against old-D: 2621 pixels differ (x 11 to 852, y 72 to 668)
+old-C against old-D: 2621 pixels differ (x 11 to 852, y 72 to 668)

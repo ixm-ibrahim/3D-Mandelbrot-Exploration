@@ -1,0 +1,92 @@
+step 1 result: 
+PASS  plane z = 0 is complex z^n: mercator {"planes":1}  worst error by n -3, -2, -1, 2, 3, 8: 1.0e-15, 4.2e-16, 1.8e-16, 3.0e-16, 3.5e-16, 1.3e-15
+PASS  plane z = 0 is complex z^n: mercator {"planes":2}  worst error by n -3, -2, -1, 2, 3, 8: 1.4e-15, 6.5e-16, 2.9e-16, 4.5e-16, 4.6e-16, 2.6e-15
+PASS  plane z = 0 is complex z^n: mercator {"planes":3}  worst error by n -3, -2, -1, 2, 3, 8: 7.3e-16, 6.1e-16, 2.3e-16, 4.9e-16, 8.5e-16, 1.4e-15
+PASS  plane z = 0 is complex z^n: mercator {"planes":8}  worst error by n -3, -2, -1, 2, 3, 8: 6.7e-16, 4.9e-16, 3.0e-16, 4.8e-16, 7.1e-16, 2.4e-15
+PASS  plane z = 0 is complex z^n: lathe {"spin":1}  worst error by n -3, -2, -1, 2, 3, 8: 8.1e-16, 3.4e-16, 2.0e-16, 4.7e-16, 6.7e-16, 2.5e-15
+PASS  plane z = 0 is complex z^n: lathe {"spin":3}  worst error by n -3, -2, -1, 2, 3, 8: 7.9e-16, 3.7e-16, 3.4e-16, 2.9e-16, 4.2e-16, 5.1e-16
+PASS  plane z = 0 is complex z^n: lathe {"spin":-5}  worst error by n -3, -2, -1, 2, 3, 8: 7.5e-16, 5.7e-16, 5.0e-16, 4.8e-16, 5.6e-16, 2.3e-15
+PASS  plane z = 0 is complex z^n: bulb {}  worst error by n -3, -2, -1, 2, 3, 8: 6.0e-16, 2.9e-16, 2.0e-16, 2.1e-16, 4.6e-16, 2.0e-15
+PASS  plane z = 0 is complex z^n: split {}  worst error by n -3, -2, -1, 2, 3, 8: 7.6e-16, 3.2e-16, 1.9e-16, 1.8e-16, 2.9e-16, 4.5e-16
+PASS  sum of 5 inversions = Mercator rule, n = -3: unit sphere 2.6e-15, all of space 2.3e-15, |result| − 1 on the sphere 1.0e-15
+PASS  sum of 4 inversions = Mercator rule, n = -2: unit sphere 1.0e-15, all of space 8.9e-16, |result| − 1 on the sphere 8.9e-16
+PASS  sum of 3 inversions = Mercator rule, n = -1: unit sphere 1.2e-15, all of space 7.1e-16, |result| − 1 on the sphere 8.9e-16
+PASS  sum of 3 inversions = Mercator rule, n = 2: unit sphere 1.1e-15, all of space 8.2e-16, |result| − 1 on the sphere 8.9e-16
+PASS  sum of 4 inversions = Mercator rule, n = 3: unit sphere 2.6e-15, all of space 1.9e-15, |result| − 1 on the sphere 1.1e-15
+PASS  sum of 9 inversions = Mercator rule, n = 8: unit sphere 4.1e-9, all of space 4.1e-9, |result| − 1 on the sphere 2.0e-15
+PASS  sum of 5 inversions = Mercator rule, n = 4: unit sphere 1.9e-15, all of space 1.9e-15, |result| − 1 on the sphere 1.1e-15
+PASS  sum of 6 inversions = Mercator rule, n = 5: unit sphere 2.6e-15, all of space 2.2e-15, |result| − 1 on the sphere 1.4e-15
+PASS  sum of 10 inversions = Mercator rule, n = -8: unit sphere 4.1e-9, all of space 4.1e-9, |result| − 1 on the sphere 2.1e-15
+step 2 result: 
+PASS  turn / longitude phase of 37° gives e^{iφ}·z^n in the plane, n = -3: sphere inversions 7.9e-16, Mandelbulb 7.9e-16
+PASS  a lift takes the plane z = 0 off itself, n = -3: z part up to 0.38 of the length
+PASS  classic with θ phase (1 − n)·90° is the equator Mandelbulb, n = -3: 9.1e-16
+PASS  turn / longitude phase of 37° gives e^{iφ}·z^n in the plane, n = -2: sphere inversions 3.8e-16, Mandelbulb 3.8e-16
+PASS  a lift takes the plane z = 0 off itself, n = -2: z part up to 0.37 of the length
+PASS  classic with θ phase (1 − n)·90° is the equator Mandelbulb, n = -2: 4.8e-16
+PASS  turn / longitude phase of 37° gives e^{iφ}·z^n in the plane, n = -1: sphere inversions 3.5e-16, Mandelbulb 3.5e-16
+PASS  a lift takes the plane z = 0 off itself, n = -1: z part up to 0.32 of the length
+PASS  classic with θ phase (1 − n)·90° is the equator Mandelbulb, n = -1: 2.8e-16
+PASS  turn / longitude phase of 37° gives e^{iφ}·z^n in the plane, n = 2: sphere inversions 5.6e-16, Mandelbulb 5.6e-16
+PASS  a lift takes the plane z = 0 off itself, n = 2: z part up to 0.29 of the length
+PASS  classic with θ phase (1 − n)·90° is the equator Mandelbulb, n = 2: 3.1e-16
+PASS  turn / longitude phase of 37° gives e^{iφ}·z^n in the plane, n = 3: sphere inversions 6.1e-16, Mandelbulb 6.1e-16
+PASS  a lift takes the plane z = 0 off itself, n = 3: z part up to 0.32 of the length
+PASS  classic with θ phase (1 − n)·90° is the equator Mandelbulb, n = 3: 8.7e-16
+PASS  turn / longitude phase of 37° gives e^{iφ}·z^n in the plane, n = 8: sphere inversions 2.2e-15, Mandelbulb 2.2e-15
+PASS  a lift takes the plane z = 0 off itself, n = 8: z part up to 0.38 of the length
+PASS  classic with θ phase (1 − n)·90° is the equator Mandelbulb, n = 8: 1.8e-15
+PASS  flat set of e^{iφ}·z^n + c is the usual one turned by −φ/(n − 1), n = 2: 0 of 4000 sample points disagree (edge points only)
+PASS  flat set of e^{iφ}·z^n + c is the usual one turned by −φ/(n − 1), n = 3: 0 of 4000 sample points disagree (edge points only)
+PASS  flat set of e^{iφ}·z^n + c is the usual one turned by −φ/(n − 1), n = 8: 0 of 4000 sample points disagree (edge points only)
+step 3 result: 
+PASS  approach texts: 1035 strings checked for every n and setting, 0 malformed
+PASS  preset compiles: zⁿ + c  (Mandelbrot)  [z^n + c]  start [0] 
+PASS  preset compiles: c·z·(1 − z)  (lambda)  [c*z*(1 - z)]  start [0.5] 
+PASS  preset compiles: |z|ⁿ + c  (burning ship)  [abs(z)^n + c]  start [0] 
+PASS  preset compiles: conj(z)ⁿ + c  (tricorn)  [conj(z)^n + c]  start [0] 
+PASS  preset compiles: z³ − z + c  (cubic)  [z^3 - z + c]  start [0.57735] 
+PASS  preset compiles: zⁿ + c/z  (with a pole)  [z^n + c/z]  start [1] 
+PASS  preset compiles: z⁻ⁿ + c  (negative power)  [z^-n + c]  start [c] 
+PASS  preset compiles: z² + c·z⁻²  (power against pole)  [z^2 + c*z^-2]  start [4*c + 0.25] 
+PASS  “z² + c” means the same as “z^2 + c”: (sqr(z) + c)
+PASS  “z⁻² + c” means the same as “z^-2 + c”: (pw(z, (-2.0)) + c)
+PASS  “c·z·(1 − z)” means the same as “c*z*(1 - z)”: mul(mul(c, z), (vec3(1.0, 0.0, 0.0) - z))
+PASS  “zⁿ + c” means the same as “z^n + c”: (pw(z, uPow) + c)
+PASS  “z⁻ⁿ + c” means the same as “z^-n + c”: (pw(z, (-uPow)) + c)
+PASS  “z^n + c÷z” means the same as “z^n + c/z”: (pw(z, uPow) + mul(c, pw(z, -1.0)))
+PASS  “2π·z” means the same as “2pi*z”: smul((2.0 * 3.141592653589793), z)
+PASS  squares use sqr(), negative powers use pw()
+PASS  “z^c” is refused in words: An exponent has to be a plain number, as in z^3, z^-2 or z^n.
+PASS  “c/0” is refused in words: The formula divides by zero.
+PASS  “z +” is refused in words: The formula stops too early.
+PASS  “foo + z” is refused in words: “foo” is not a name the formula knows. Use z, c, n, i, j, and write products with *, as in c*z.
+PASS  “(z + c” is refused in words: A “)” is missing.
+zⁿ + c  (Mandelbrot)  ->  (pw(z, uPow) + c)   |   start vec3(0.0, 0.0, 0.0)
+c·z·(1 − z)  (lambda)  ->  mul(mul(c, z), (vec3(1.0, 0.0, 0.0) - z))   |   start vec3(0.5, 0.0, 0.0)
+|z|ⁿ + c  (burning ship)  ->  (pw(abs(z), uPow) + c)   |   start vec3(0.0, 0.0, 0.0)
+conj(z)ⁿ + c  (tricorn)  ->  (pw((z * vec3(1.0, -1.0, -1.0)), uPow) + c)   |   start vec3(0.0, 0.0, 0.0)
+z³ − z + c  (cubic)  ->  ((pw(z, 3.0) - z) + c)   |   start vec3(0.57735, 0.0, 0.0)
+zⁿ + c/z  (with a pole)  ->  (pw(z, uPow) + mul(c, pw(z, -1.0)))   |   start vec3(1.0, 0.0, 0.0)
+z⁻ⁿ + c  (negative power)  ->  (pw(z, (-uPow)) + c)   |   start c
+z² + c·z⁻²  (power against pole)  ->  (sqr(z) + mul(c, pw(z, (-2.0))))   |   start (smul(4.0, c) + vec3(0.25, 0.0, 0.0))
+step 4 result: 
+PASS  shader pw() agrees with MATH.mercator: worst relative difference 2.4e-4 over 6 settings × 10 powers × 64 points
+PASS  shader sqr() and mul(v, v) agree with the power 2, mercator: 3.9e-5, 3.9e-5
+PASS  shader results stay finite at the origin, on the axes and at 1e18, mercator: largest component 1.74e+18 
+PASS  shader pw() agrees with MATH.lathe: worst relative difference 1.0e-4 over 3 settings × 10 powers × 64 points
+PASS  shader sqr() and mul(v, v) agree with the power 2, lathe: 4.3e-5, 4.3e-5
+PASS  shader results stay finite at the origin, on the axes and at 1e18, lathe: largest component 1.91e+18 
+PASS  shader pw() agrees with MATH.bulb: worst relative difference 1.1e-4 over 2 settings × 10 powers × 64 points
+PASS  shader sqr() and mul(v, v) agree with the power 2, bulb: 2.2e-5, 2.6e-5
+PASS  shader results stay finite at the origin, on the axes and at 1e18, bulb: largest component 1.74e+18 
+PASS  shader pw() agrees with MATH.classic: worst relative difference 1.2e-4 over 2 settings × 10 powers × 64 points
+PASS  shader sqr() and mul(v, v) agree with the power 2, classic: 2.4e-5, 2.2e-5
+PASS  shader results stay finite at the origin, on the axes and at 1e18, classic: largest component 1.74e+18 
+PASS  shader pw() agrees with MATH.split: worst relative difference 9.2e-5 over 1 settings × 10 powers × 64 points
+PASS  shader sqr() and mul(v, v) agree with the power 2, split: 6.5e-8, 6.5e-8
+PASS  shader results stay finite at the origin, on the axes and at 1e18, split: largest component 1.74e+18 
+step 5 result: 
+76 of 76 checks passed
+step 5 wrote out/approaches/parity.png
+no console errors

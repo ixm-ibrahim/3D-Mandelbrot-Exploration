@@ -1,0 +1,59 @@
+Pictures: the stage as the page shows it, repaired page against base17a, pixel for pixel.
+   mercator   siegel    : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 102853
+   mercator   mandel-cut: 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 66181
+   mercator   flat-offc : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 586035
+   mercator   absx      : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 87452
+   lathe      siegel    : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 139454
+   lathe      mandel-cut: 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 103527
+   lathe      flat-offc : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 586035
+   lathe      absx      : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 122313
+   turnalong  siegel    : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 137667
+   turnalong  mandel-cut: 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 93881
+   turnalong  flat-offc : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 586035
+   turnalong  absx      : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 87118
+   windsq     siegel    : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 181678
+   windsq     mandel-cut: 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 119892
+   windsq     flat-offc : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 586035
+   windsq     absx      : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 98409
+   bulb       siegel    : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 168412
+   bulb       mandel-cut: 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 77638
+   bulb       flat-offc : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 586035
+   bulb       absx      : 864 x 703, pixels that differ 0 (largest difference 0 of 255); pixels brighter than 40: 167740
+   in all: 0 of 12147840 pixels differ
+
+Words: the card (Julia c = (-0.4, 0.3, 0.2), then c = -1 by touch only, Mandelbrot view, power 3) and the formula line.
+   mercator  : julia same, juliaOtherC same, mandel same, power3 same, formula same, cacheKeys same; card unchanged when only c moved: new True, base True
+   lathe     : julia same, juliaOtherC same, mandel same, power3 same, formula same, cacheKeys same; card unchanged when only c moved: new True, base True
+   turnalong : julia same, juliaOtherC same, mandel same, power3 same, formula same, cacheKeys same; card unchanged when only c moved: new True, base True
+   windsq    : julia same, juliaOtherC same, mandel same, power3 same, formula same, cacheKeys same; card unchanged when only c moved: new True, base True
+   bulb      : julia same, juliaOtherC same, mandel same, power3 same, formula same, cacheKeys same; card unchanged when only c moved: new True, base True
+
+Words: the Learn tab, start (0.5, -0.4, 0.3), c = (-0.8, 0.1, 0.2), three times "Next step".
+   mercator  : orbit points 4 / 4, largest difference 0.0e+00; names same; note same; sentences that differ: 2 of 8
+        new : Its length, 0.71, is squared: 0.50. Squared means multiplied by itself, not doubled: 3 would become 9, not 6. A length under 1 gets shorter.
+        base: Its length, 0.71, is squared: 0.50. A length under 1 gets shorter.
+        new : Its length, 1.67, is squared: 2.79. Squared means multiplied by itself, not doubled: 3 would become 9, not 6. A length over 1 gets longer.
+        base: Its length, 1.67, is squared: 2.79. A length over 1 gets longer.
+   lathe     : orbit points 4 / 4, largest difference 0.0e+00; names same; note same; sentences that differ: 2 of 6
+        new : Its length, 0.71, is squared: 0.50. Squared means multiplied by itself, not doubled: 3 would become 9, not 6. A length under 1 gets shorter.
+        base: Its length, 0.71, is squared: 0.50. A length under 1 gets shorter.
+        new : Its length, 1.56, is squared: 2.42. Squared means multiplied by itself, not doubled: 3 would become 9, not 6. A length over 1 gets longer.
+        base: Its length, 1.56, is squared: 2.42. A length over 1 gets longer.
+   turnalong : orbit points 4 / 4, largest difference 0.0e+00; names same; note same; sentences that differ: 2 of 6
+        new : Its length is multiplied by itself, not doubled: 0.71 becomes 0.50, and 3 would become 9, not 6. A length under 1 gets shorter, a length over 1 gets longer.
+        base: Then the length goes from 0.71 to the rule’s length, 0.50.
+        new : Its length is multiplied by itself, not doubled: 1.46 becomes 2.14, and 3 would become 9, not 6. A length under 1 gets shorter, a length over 1 gets longer.
+        base: Then the length goes from 1.46 to the rule’s length, 2.14.
+   windsq    : orbit points 4 / 4, largest difference 0.0e+00; names same; note same; sentences that differ: 2 of 6
+        new : Its length is multiplied by itself, not doubled: 0.71 becomes 0.50, and 3 would become 9, not 6. A length under 1 gets shorter, a length over 1 gets longer.
+        base: Then the length goes from 0.71 to the rule’s length, 0.50.
+        new : Its length is multiplied by itself, not doubled: 2.07 becomes 4.27, and 3 would become 9, not 6. A length under 1 gets shorter, a length over 1 gets longer.
+        base: Then the length goes from 2.07 to the rule’s length, 4.27.
+   bulb      : orbit points 4 / 4, largest difference 0.0e+00; names same; note same; sentences that differ: 2 of 8
+        new : Its length, 0.71, is squared: 0.50. Squared means multiplied by itself, not doubled: 3 would become 9, not 6. A length under 1 gets shorter.
+        base: Its length, 0.71, is squared: 0.50. A length under 1 gets shorter.
+        new : Its length, 2.20, is squared: 4.82. Squared means multiplied by itself, not doubled: 3 would become 9, not 6. A length over 1 gets longer.
+        base: Its length, 2.20, is squared: 4.82. A length over 1 gets longer.
+
+Time to draw (ms, one run each, new / base): mercator siegel 972 / 989; mercator mandel-cut 484 / 487; mercator flat-offc 261 / 258; mercator absx 903 / 901; lathe siegel 2066 / 2171; lathe mandel-cut 547 / 572; lathe flat-offc 256 / 266; lathe absx 593 / 586; turnalong siegel 2058 / 2108; turnalong mandel-cut 423 / 443; turnalong flat-offc 268 / 255; turnalong absx 545 / 523; windsq siegel 2341 / 2287; windsq mandel-cut 519 / 508; windsq flat-offc 262 / 265; windsq absx 653 / 570; bulb siegel 2754 / 2792; bulb mandel-cut 566 / 543; bulb flat-offc 263 / 264; bulb absx 964 / 1002
+   sum: new 17698 ms, base 17790 ms

@@ -1,0 +1,25 @@
+1. ALONG: the cut along a page against the flat set (420 x 390 places)
+   page at 45,   80 steps: flat set holds 34876, the cut holds 34301, verdicts that differ 657 (flat-inside places lost 616)
+   page at 45,  300 steps: flat set holds 33996, the cut holds 32715, verdicts that differ 1601 (flat-inside places lost 1441)
+   page at 45, 1000 steps: flat set holds 33778, the cut holds 32461, verdicts that differ 1721 (flat-inside places lost 1519)
+   page at 90,   80 steps: flat set holds 34876, the cut holds 34876, verdicts that differ 0 (flat-inside places lost 0)
+   page at 90,  300 steps: flat set holds 33996, the cut holds 33996, verdicts that differ 0 (flat-inside places lost 0)
+   page at 90, 1000 steps: flat set holds 33778, the cut holds 33778, verdicts that differ 4 (flat-inside places lost 2)
+   page at  0,   80 steps: flat set holds 34876, the cut holds 34876, verdicts that differ 0 (flat-inside places lost 0)
+   page at  0,  300 steps: flat set holds 33996, the cut holds 33996, verdicts that differ 0 (flat-inside places lost 0)
+   page at  0, 1000 steps: flat set holds 33778, the cut holds 33777, verdicts that differ 1 (flat-inside places lost 1)
+
+2. ALONG: orbits of c started exactly in the slanted page: distance of the orbit from that page (largest so far) after 5, 10, 20, 30, 40, 60, 100, 200 steps
+   middle of the top bud        0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00  stays
+   middle of the period-5 bud   0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00  stays
+   disc at -1, radius 0.2       0.0e+00 2.1e-16 1.8e-15 1.5e-14 1.2e-13 8.4e-12 4.1e-08 5.2e-02  stays
+   heart, radius 0.3            0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00 0.0e+00  stays
+
+3. LIFT TEST (300 steps): the flat-inside places of a cut, moved sideways out of the page by a small distance: how many are still inside
+   along, slanted page          of 33996 flat-inside places, still inside when lifted by 0: 32555, 1e-09: 32196, 1e-06: 32030, 0.001: 31613, 0.01: 30946
+   along, upright page          of 33996 flat-inside places, still inside when lifted by 0: 33996, 1e-09: 33984, 1e-06: 33952, 0.001: 33770, 0.01: 33226
+   along, flat page             of 33996 flat-inside places, still inside when lifted by 0: 33996, 1e-09: 33985, 1e-06: 33952, 0.001: 33770, 0.01: 33226
+   pulled plane, upright page   of 33996 flat-inside places, still inside when lifted by 0: 33844, 1e-09: 33830, 1e-06: 33808, 0.001: 33484, 0.01: 32162
+   one plane, flat page         of 33996 flat-inside places, still inside when lifted by 0: 33996, 1e-09: 33976, 1e-06: 33954, 0.001: 33386, 0.01: 30144
+
+(43 s)

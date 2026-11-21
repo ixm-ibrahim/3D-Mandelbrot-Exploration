@@ -1,0 +1,527 @@
+step 1 waited 1.0 s
+step 2 result:
+=== IN THE PLANE ===
+--- n = -8
+  len: |zⁿ| = |z|ⁿ for every z except 0. A negative n turns the plane inside out: points near the origin land far away, and far points land near it.
+  round: Roundness 100%. A tiny circle lands as a circle, stretched 8× in every direction at |z| = 1.
+  wrap: Wraps the circle of directions 8 times, running the other way round all along. It never doubles back.
+  crush: No point is crushed. The origin is thrown out to infinity, and far-away points are packed in around the origin.
+  smooth: One divided by a polynomial of degree 8, smooth everywhere except the origin.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by −8, so every circle lands as a circle 8 times the size, and the ring of circles runs the other way round. Nothing is squashed or flipped.
+--- n = -3
+  len: |zⁿ| = |z|ⁿ for every z except 0. A negative n turns the plane inside out: points near the origin land far away, and far points land near it.
+  round: Roundness 100%. A tiny circle lands as a circle, stretched 3× in every direction at |z| = 1.
+  wrap: Wraps the circle of directions 3 times, running the other way round all along. It never doubles back.
+  crush: No point is crushed. The origin is thrown out to infinity, and far-away points are packed in around the origin.
+  smooth: One divided by a polynomial of degree 3, smooth everywhere except the origin.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by −3, so every circle lands as a circle 3 times the size, and the ring of circles runs the other way round. Nothing is squashed or flipped.
+--- n = -2
+  len: |zⁿ| = |z|ⁿ for every z except 0. A negative n turns the plane inside out: points near the origin land far away, and far points land near it.
+  round: Roundness 100%. A tiny circle lands as a circle, stretched 2× in every direction at |z| = 1.
+  wrap: Wraps the circle of directions 2 times, running the other way round all along. It never doubles back.
+  crush: No point is crushed. The origin is thrown out to infinity, and far-away points are packed in around the origin.
+  smooth: One divided by a polynomial of degree 2, smooth everywhere except the origin.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by −2, so every circle lands as a circle 2 times the size, and the ring of circles runs the other way round. Nothing is squashed or flipped.
+--- n = -1
+  len: |zⁿ| = |z|ⁿ for every z except 0. A negative n turns the plane inside out: points near the origin land far away, and far points land near it.
+  round: Roundness 100%. A tiny circle lands as a circle of the same size at |z| = 1.
+  wrap: Wraps the circle of directions once, running the other way round all along. It never doubles back.
+  crush: No point is crushed. The origin is thrown out to infinity, and far-away points are packed in around the origin.
+  smooth: One formula, (x, −y)/(x² + y²), smooth everywhere except the origin.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by −1, so every circle lands as a circle of the same size, and the ring of circles runs the other way round. Nothing is squashed or flipped.
+--- n = -0.5
+  len: |zⁿ| = |z|ⁿ for every z except 0. A negative n turns the plane inside out: points near the origin land far away, and far points land near it.
+  round: Roundness 100%. A tiny circle lands as a circle, shrunk to 0.5× its size in every direction at |z| = 1.
+  wrap: Covers only 50% of the circle of directions, running the other way. The two ends do not meet, which leaves a tear along the negative x-axis.
+  crush: No point is crushed. The origin is thrown out to infinity, and far-away points are packed in around the origin.
+  smooth: A power that is not a whole number has to measure the angle of z. The angle jumps across the negative x-axis, so the result is torn along that line.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by −0.5, so every circle lands as a circle 0.5 times the size, and the ring of circles runs the other way round. Nothing is squashed or flipped. Because −0.5 is not a whole number, the angle jumps across the negative x-axis, and the circle sitting on that line is torn in two.
+--- n = 0
+  len: z⁰ = 1 whatever z is, so every length becomes 1.
+  round: Nothing to keep: every circle lands on the single point 1.
+  wrap: Every direction is sent to the same one.
+  crush: Everything is crushed onto the single point 1.
+  smooth: A constant.
+  slice: It is the flat set.
+  caption: The plane. With n = 0 every point is sent to 1, so all the circles shrink onto that one point.
+--- n = 0.5
+  len: |zⁿ| = |z|ⁿ for every z.
+  round: Roundness 100%. A tiny circle lands as a circle, shrunk to 0.5× its size in every direction at |z| = 1.
+  wrap: Covers only 50% of the circle of directions. The two ends do not meet, which leaves a tear along the negative x-axis.
+  crush: Nothing is crushed. At the origin the stretch grows without limit, and far away it fades to nothing.
+  smooth: A power that is not a whole number has to measure the angle of z. The angle jumps across the negative x-axis, so the result is torn along that line.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by 0.5, so every circle lands as a circle 0.5 times the size. Nothing is squashed or flipped. Because 0.5 is not a whole number, the angle jumps across the negative x-axis, and the circle sitting on that line is torn in two.
+--- n = 1
+  len: |zⁿ| = |z|ⁿ for every z.
+  round: Roundness 100%. A tiny circle lands as a circle of the same size at |z| = 1.
+  wrap: Wraps the circle of directions once and never reverses it.
+  crush: Nothing is crushed. With n = 1 the power leaves every point where it is.
+  smooth: A polynomial, the simplest one: (x, y).
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by 1, so every circle lands as a circle of the same size. Nothing is squashed or flipped.
+--- n = 2
+  len: |zⁿ| = |z|ⁿ for every z.
+  round: Roundness 100%. A tiny circle lands as a circle, stretched 2× in every direction at |z| = 1.
+  wrap: Wraps the circle of directions 2 times and never reverses it.
+  crush: Only the origin is crushed. That one critical point is why the orbit of 0 decides everything.
+  smooth: A polynomial: (x² − y², 2xy).
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by 2, so every circle lands as a circle 2 times the size. Nothing is squashed or flipped.
+--- n = 2.5
+  len: |zⁿ| = |z|ⁿ for every z.
+  round: Roundness 100%. A tiny circle lands as a circle, stretched 2.5× in every direction at |z| = 1.
+  wrap: Winds the circle of directions 2.5 times round. The two ends do not meet, which leaves a tear along the negative x-axis.
+  crush: Only the origin is crushed. That one critical point is why the orbit of 0 decides everything.
+  smooth: A power that is not a whole number has to measure the angle of z. The angle jumps across the negative x-axis, so the result is torn along that line.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by 2.5, so every circle lands as a circle 2.5 times the size. Nothing is squashed or flipped. Because 2.5 is not a whole number, the angle jumps across the negative x-axis, and the circle sitting on that line is torn in two.
+--- n = 3
+  len: |zⁿ| = |z|ⁿ for every z.
+  round: Roundness 100%. A tiny circle lands as a circle, stretched 3× in every direction at |z| = 1.
+  wrap: Wraps the circle of directions 3 times and never reverses it.
+  crush: Only the origin is crushed. That one critical point is why the orbit of 0 decides everything.
+  smooth: A polynomial: (x³ − 3xy², 3x²y − y³).
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by 3, so every circle lands as a circle 3 times the size. Nothing is squashed or flipped.
+--- n = 8
+  len: |zⁿ| = |z|ⁿ for every z.
+  round: Roundness 100%. A tiny circle lands as a circle, stretched 8× in every direction at |z| = 1.
+  wrap: Wraps the circle of directions 8 times and never reverses it.
+  crush: Only the origin is crushed. That one critical point is why the orbit of 0 decides everything.
+  smooth: A polynomial of degree 8 in x and y.
+  slice: It is the flat set.
+  caption: The plane. Angles are multiplied by 8, so every circle lands as a circle 8 times the size. Nothing is squashed or flipped.
+=== Mercator ===
+--- n = -8 {"planes":2}  [used 5998, round 0.349, rev 0.500, deg 0.03, sheets 15.09, stretch 0.015..8.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 35%. At |v| = 1 the stretch runs from 0× to 8×, where the plane gives 8× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers the sphere of directions 15.1 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = -3 {"planes":2}  [used 5997, round 0.709, rev 0.500, deg 0.01, sheets 5.03, stretch 0.601..3.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 71%. At |v| = 1 the stretch runs from 0.6× to 3×, where the plane gives 3× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers the sphere of directions 5 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = -2 {"planes":2}  [used 5997, round 0.850, rev 0.500, deg 0.00, sheets 2.97, stretch 0.943..2.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 85%. At |v| = 1 the stretch runs from 0.94× to 2×, where the plane gives 2× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers the sphere of directions 3 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = -1 {"planes":2}  [used 5997, round 1.000, rev 0.500, deg -0.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [no] Covers the sphere of directions once over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = -0.5 {"planes":2}  [used 5997, round 0.951, rev 0.500, deg -0.00, sheets 0.28, stretch 0.500..0.643, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 95%. At |v| = 1 the stretch runs from 0.5× to 0.64×, where the plane gives 0.5× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers about 28% of the sphere of directions, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = 0 {"planes":2}  [used 6000, round 0.000, rev 0.000, deg 0.00, sheets 0.00, stretch 0.000..0.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |v⁰| = 1 for every v.
+  round: [no] Nothing to keep: every direction lands on the same point.
+  wrap: [no] Every direction lands in the same place, so the sphere of directions is not wrapped at all.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = 0.5 {"planes":2}  [used 5997, round 0.951, rev 0.500, deg -0.00, sheets 0.28, stretch 0.500..0.643, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 95%. At |v| = 1 the stretch runs from 0.5× to 0.64×, where the plane gives 0.5× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers about 28% of the sphere of directions, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = 1 {"planes":2}  [used 5997, round 1.000, rev 0.500, deg -0.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [no] Covers the sphere of directions once over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = 2 {"planes":2}  [used 5997, round 0.850, rev 0.500, deg 0.00, sheets 2.97, stretch 0.943..2.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 85%. At |v| = 1 the stretch runs from 0.94× to 2×, where the plane gives 2× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers the sphere of directions 3 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = 2.5 {"planes":2}  [used 5997, round 0.776, rev 0.500, deg 0.00, sheets 4.00, stretch 0.772..2.500, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 78%. At |v| = 1 the stretch runs from 0.77× to 2.5×, where the plane gives 2.5× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers the sphere of directions 4 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = 3 {"planes":2}  [used 5997, round 0.709, rev 0.500, deg 0.01, sheets 5.03, stretch 0.601..3.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 71%. At |v| = 1 the stretch runs from 0.6× to 3×, where the plane gives 3× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers the sphere of directions 5 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+--- n = 8 {"planes":2}  [used 5998, round 0.349, rev 0.500, deg 0.03, sheets 15.09, stretch 0.015..8.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 35%. At |v| = 1 the stretch runs from 0× to 8×, where the plane gives 8× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+  wrap: [no] Covers the sphere of directions 15.1 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] 2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+  crush: [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+  smooth: [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+=== Lathe ===
+--- n = -8 {"spin":1}  [used 6000, round 0.125, rev 0.502, deg -0.00, sheets 8.00, stretch 0.000..8.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 13%. At |v| = 1 the stretch runs from 0× to 8×, where the plane gives 8× throughout. The squash is in the spin direction.
+  wrap: [no] Covers the sphere of directions 8 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -3 {"spin":1}  [used 6000, round 0.333, rev 0.500, deg 1.00, sheets 3.00, stretch 0.000..3.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 33%. At |v| = 1 the stretch runs from 0× to 3×, where the plane gives 3× throughout. The squash is in the spin direction.
+  wrap: [no] Covers the sphere of directions 3 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 1.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -2 {"spin":1}  [used 6000, round 0.500, rev 0.500, deg 0.00, sheets 2.00, stretch 0.000..2.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 50%. At |v| = 1 the stretch runs from 0× to 2×, where the plane gives 2× throughout. The squash is in the spin direction.
+  wrap: [no] Covers the sphere of directions 2 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -1 {"spin":1}  [used 6000, round 1.000, rev 0.000, deg 1.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [ok] Wraps the sphere of directions once and never reverses it.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -0.5 {"spin":1}  [used 6000, round 0.667, rev 0.000, deg 0.50, sheets 0.50, stretch 0.500..46.653, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 67%. At |v| = 1 the stretch runs from 0.5× to no upper limit, where the plane gives 0.5× throughout. The squash is in the spin direction.
+  wrap: [ok] Covers only 50% of the sphere of directions and never reverses it, as in the plane.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 0 {"spin":1}  [used 6000, round 0.000, rev 0.000, deg 0.00, sheets 0.00, stretch 0.000..0.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |v⁰| = 1 for every v.
+  round: [no] Nothing to keep: every direction lands on the same point.
+  wrap: [no] Every direction lands in the same place, so the sphere of directions is not wrapped at all.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 0.5 {"spin":1}  [used 6000, round 0.667, rev 0.000, deg 0.50, sheets 0.50, stretch 0.500..46.653, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 67%. At |v| = 1 the stretch runs from 0.5× to no upper limit, where the plane gives 0.5× throughout. The squash is in the spin direction.
+  wrap: [ok] Covers only 50% of the sphere of directions and never reverses it, as in the plane.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 1 {"spin":1}  [used 6000, round 1.000, rev 0.000, deg 1.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [ok] Wraps the sphere of directions once and never reverses it.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 2 {"spin":1}  [used 6000, round 0.500, rev 0.500, deg 0.00, sheets 2.00, stretch 0.000..2.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 50%. At |v| = 1 the stretch runs from 0× to 2×, where the plane gives 2× throughout. The squash is in the spin direction.
+  wrap: [no] Covers the sphere of directions 2 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 2.5 {"spin":1}  [used 6000, round 0.359, rev 0.559, deg 0.49, sheets 2.49, stretch 0.001..46.588, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 36%. At |v| = 1 the stretch runs from 0× to 46.6×, where the plane gives 2.5× throughout. The squash is in the spin direction.
+  wrap: [no] Covers the sphere of directions 2.5 times over, but 56% of directions land mirror-reversed. Counted with sign, the net wrap is 0.5.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 3 {"spin":1}  [used 6000, round 0.333, rev 0.500, deg 1.00, sheets 3.00, stretch 0.000..3.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 33%. At |v| = 1 the stretch runs from 0× to 3×, where the plane gives 3× throughout. The squash is in the spin direction.
+  wrap: [no] Covers the sphere of directions 3 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 1.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 8 {"spin":1}  [used 6000, round 0.125, rev 0.502, deg -0.00, sheets 8.00, stretch 0.000..8.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 13%. At |v| = 1 the stretch runs from 0× to 8×, where the plane gives 8× throughout. The squash is in the spin direction.
+  wrap: [no] Covers the sphere of directions 8 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+  crush: [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+  smooth: [ok] A polynomial when n is a whole number.
+=== Mandelbulb ===
+--- n = -8 {}  [used 6000, round 0.629, rev 0.510, deg -0.50, sheets 63.50, stretch 0.005..433.448, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 63%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 8× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [no] Covers the sphere of directions 63.5 times over, but 51% of directions land mirror-reversed. Counted with sign, the net wrap is −0.5.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = -3 {}  [used 6000, round 0.597, rev 0.500, deg -3.00, sheets 9.00, stretch 0.002..8.996, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 60%. At |v| = 1 the stretch runs from 0× to 9×, where the plane gives 3× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [no] Covers the sphere of directions 9 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is −3.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = -2 {}  [used 6000, round 0.634, rev 0.293, deg 0.03, sheets 3.97, stretch 0.000..109.475, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 63%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 2× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [no] Covers the sphere of directions 4 times over, but 29% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = -1 {}  [used 6000, round 1.000, rev 0.000, deg 1.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [ok] Wraps the sphere of directions once and never reverses it.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = -0.5 {}  [used 5999, round 0.820, rev 0.000, deg 0.35, sheets 0.35, stretch 0.500..19.542, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 82%. At |v| = 1 the stretch runs from 0.5× to no upper limit, where the plane gives 0.5× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [ok] Covers only 35% of the sphere of directions and never reverses it, as in the plane.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = 0 {}  [used 6000, round 0.000, rev 0.000, deg 0.00, sheets 0.00, stretch 0.000..0.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |v⁰| = 1 for every v.
+  round: [no] Nothing to keep: every direction lands on the same point.
+  wrap: [no] Every direction lands in the same place, so the sphere of directions is not wrapped at all.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = 0.5 {}  [used 5999, round 0.820, rev 0.000, deg 0.35, sheets 0.35, stretch 0.500..19.542, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 82%. At |v| = 1 the stretch runs from 0.5× to no upper limit, where the plane gives 0.5× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [ok] Covers only 35% of the sphere of directions and never reverses it, as in the plane.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = 1 {}  [used 6000, round 1.000, rev 0.000, deg 1.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [ok] Wraps the sphere of directions once and never reverses it.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = 2 {}  [used 6000, round 0.634, rev 0.293, deg 0.03, sheets 3.97, stretch 0.000..109.475, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 63%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 2× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [no] Covers the sphere of directions 4 times over, but 29% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = 2.5 {}  [used 5999, round 0.599, rev 0.412, deg -1.73, sheets 6.73, stretch 0.000..101.145, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 60%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 2.5× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [no] Covers the sphere of directions 6.7 times over, but 41% of directions land mirror-reversed. Counted with sign, the net wrap is −1.7.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = 3 {}  [used 6000, round 0.597, rev 0.500, deg -3.00, sheets 9.00, stretch 0.002..8.996, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 60%. At |v| = 1 the stretch runs from 0× to 9×, where the plane gives 3× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [no] Covers the sphere of directions 9 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is −3.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+--- n = 8 {}  [used 6000, round 0.629, rev 0.510, deg -0.50, sheets 63.50, stretch 0.005..433.448, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 63%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 8× throughout. Exact on the equator, but the stretch grows without limit toward the z-axis.
+  wrap: [no] Covers the sphere of directions 63.5 times over, but 51% of directions land mirror-reversed. Counted with sign, the net wrap is −0.5.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+  crush: [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° for n = 2).
+  smooth: [no] Torn along the z-axis for even n: directions next to the pole are thrown all the way around the equator.
+=== Mandelbulb, classic ===
+--- n = -8 {}  [used 6000, round 0.627, rev 0.500, deg 0.00, sheets 64.00, stretch 0.008..63.764, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 63%. At |v| = 1 the stretch runs from 0× to 63.8×, where the plane gives 8× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [no] Covers the sphere of directions 64 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = -3 {}  [used 6000, round 0.597, rev 0.500, deg -3.00, sheets 9.00, stretch 0.002..8.996, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 60%. At |v| = 1 the stretch runs from 0× to 9×, where the plane gives 3× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [no] Covers the sphere of directions 9 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is −3.
+  slice: [ok] At this n the plane z = 0 happens to follow complex arithmetic.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = -2 {}  [used 6000, round 0.597, rev 0.500, deg 0.00, sheets 4.00, stretch 0.001..3.999, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 60%. At |v| = 1 the stretch runs from 0× to 4×, where the plane gives 2× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [no] Covers the sphere of directions 4 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = -1 {}  [used 6000, round 1.000, rev 1.000, deg -1.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane false, copy true, turn 180]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [ok] Wraps the sphere of directions once, as a mirror image everywhere, and never folds it.
+  slice: [part] The plane z = 0 lands on itself and follows zⁿ turned by 180°.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = -0.5 {}  [used 5999, round 0.667, rev 1.000, deg -0.25, sheets 0.25, stretch 0.250..27.386, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v except the origin.
+  round: [no] Roundness 67%. At |v| = 1 the stretch runs from 0.25× to no upper limit, where the plane gives 0.5× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [ok] Covers only 25% of the sphere of directions, as a mirror image everywhere, and never folds it.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = 0 {}  [used 6000, round 0.000, rev 0.000, deg 0.00, sheets 0.00, stretch 0.000..0.000, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |v⁰| = 1 for every v.
+  round: [no] Nothing to keep: every direction lands on the same point.
+  wrap: [no] Every direction lands in the same place, so the sphere of directions is not wrapped at all.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = 0.5 {}  [used 5999, round 0.667, rev 0.000, deg 0.25, sheets 0.25, stretch 0.250..27.386, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 67%. At |v| = 1 the stretch runs from 0.25× to no upper limit, where the plane gives 0.5× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [ok] Covers only 25% of the sphere of directions and never reverses it, as in the plane.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = 1 {}  [used 6000, round 1.000, rev 0.000, deg 1.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [ok] Wraps the sphere of directions once and never reverses it.
+  slice: [ok] At this n the plane z = 0 happens to follow complex arithmetic.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = 2 {}  [used 6000, round 0.597, rev 0.500, deg -0.00, sheets 4.00, stretch 0.001..3.999, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 60%. At |v| = 1 the stretch runs from 0× to 4×, where the plane gives 2× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [no] Covers the sphere of directions 4 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = 2.5 {}  [used 5999, round 0.624, rev 0.559, deg 1.23, sheets 6.23, stretch 0.001..136.792, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 62%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 2.5× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [no] Covers the sphere of directions 6.2 times over, but 56% of directions land mirror-reversed. Counted with sign, the net wrap is 1.2.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = 3 {}  [used 6000, round 0.597, rev 0.500, deg 3.00, sheets 9.00, stretch 0.002..8.996, len 1.000..1.000, plane false, copy true, turn 180]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 60%. At |v| = 1 the stretch runs from 0× to 9×, where the plane gives 3× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [no] Covers the sphere of directions 9 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 3.
+  slice: [part] The plane z = 0 lands on itself and follows zⁿ turned by 180°. That slice of the Mandelbrot set is a turned copy of the flat set.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+--- n = 8 {}  [used 6000, round 0.627, rev 0.500, deg -0.00, sheets 64.00, stretch 0.008..63.764, len 1.000..1.000, plane false, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [no] Roundness 63%. At |v| = 1 the stretch runs from 0× to 63.8×, where the plane gives 8× throughout. Stretched up to n times too far beside the z-axis, crushed on cones around it.
+  wrap: [no] Covers the sphere of directions 64 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [no] No. This is the one approach here that does not keep the flat set at z = 0.
+  crush: [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+  smooth: [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+=== Split ===
+--- n = -8 {}  [used 2064, round 0.223, rev 0.500, deg -0.00, sheets 22.87, stretch 31.803..3198.673, len 22.627..1.67961600000148e+30, plane false, copy false, turn 0]
+  len: [no] For |v| = 1 the result can have any length from 22.63 upward, with no upper limit.
+  round: [no] Roundness 22%. At |v| = 1 the stretch runs from 31.8× to no upper limit, where the plane gives 8× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [no] Covers the sphere of directions 22.9 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [no] The plane z = 0 does not follow complex arithmetic.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -3 {}  [used 4506, round 0.221, rev 0.000, deg 3.95, sheets 3.95, stretch 3.325..1195.150, len 4.000..216000000000.071, plane false, copy false, turn 0]
+  len: [no] For |v| = 1 the result can have any length from 4 upward, with no upper limit.
+  round: [no] Roundness 22%. At |v| = 1 the stretch runs from 3.3× to no upper limit, where the plane gives 3× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [ok] Wraps the sphere of directions 4 times and never reverses it.
+  slice: [no] The plane z = 0 does not follow complex arithmetic.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -2 {}  [used 5130, round 0.250, rev 0.500, deg -0.00, sheets 2.29, stretch 2.056..798.016, len 2.828..36000000.000, plane false, copy false, turn 0]
+  len: [no] For |v| = 1 the result can have any length from 2.83 upward, with no upper limit.
+  round: [no] Roundness 25%. At |v| = 1 the stretch runs from 2.1× to no upper limit, where the plane gives 2× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [no] Covers the sphere of directions 2.3 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [no] The plane z = 0 does not follow complex arithmetic.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -1 {}  [used 5692, round 0.312, rev 0.000, deg 1.00, sheets 1.00, stretch 1.002..397.348, len 2.000..6000.000, plane false, copy false, turn 0]
+  len: [no] For |v| = 1 the result can have any length from 2 upward, with no upper limit.
+  round: [no] Roundness 31%. At |v| = 1 the stretch runs from 1× to no upper limit, where the plane gives 1× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [ok] Wraps the sphere of directions once and never reverses it.
+  slice: [no] The plane z = 0 does not follow complex arithmetic.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = -0.5 {}  [used 5964, round 0.183, rev 0.503, deg 0.23, sheets 0.23, stretch 0.000..388.444, len 1.000..77.466, plane false, copy false, turn 0]
+  len: [no] For |v| = 1 the result has length anywhere from 1 to 77.47.
+  round: [no] Roundness 18%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 0.5× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [no] Covers about 23% of the sphere of directions, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.2.
+  slice: [no] The plane z = 0 does not follow complex arithmetic.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 0 {}  [used 6000, round 0.000, rev 0.000, deg 0.00, sheets 0.00, stretch 0.000..0.000, len 1.414..1.414, plane false, copy false, turn 0]
+  len: [no] For |v| = 1 the result always has length 1.41.
+  round: [no] Nothing to keep: every direction lands on the same point.
+  wrap: [no] Every direction lands in the same place, so the sphere of directions is not wrapped at all.
+  slice: [no] The plane z = 0 does not follow complex arithmetic.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 0.5 {}  [used 5999, round 0.322, rev 0.500, deg 0.25, sheets 0.25, stretch 0.000..40.825, len 0.135..1.189, plane true, copy false, turn 0]
+  len: [no] For |v| = 1 the result has length anywhere from 0.14 to 1.19.
+  round: [no] Roundness 32%. At |v| = 1 the stretch runs from 0× to no upper limit, where the plane gives 0.5× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [no] Covers about 25% of the sphere of directions, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.2.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 1 {}  [used 6000, round 1.000, rev 0.000, deg 1.00, sheets 1.00, stretch 1.000..1.000, len 1.000..1.000, plane true, copy false, turn 0]
+  len: [ok] |vⁿ| = |v|ⁿ for every v.
+  round: [ok] Roundness 100%. At |v| = 1 the stretch is 1× in every direction, as in the plane.
+  wrap: [ok] Wraps the sphere of directions once and never reverses it.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 2 {}  [used 6000, round 0.467, rev 0.500, deg 0.00, sheets 2.00, stretch 0.000..2.000, len 0.707..1.000, plane true, copy false, turn 0]
+  len: [no] For |v| = 1 the result has length anywhere from 0.71 to 1.
+  round: [no] Roundness 47%. At |v| = 1 the stretch runs from 0× to 2×, where the plane gives 2× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [no] Covers the sphere of directions 2 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 2.5 {}  [used 5999, round 0.182, rev 0.500, deg 1.25, sheets 1.25, stretch 0.000..2.500, len 0.000..1.000, plane true, copy false, turn 0]
+  len: [no] For |v| = 1 the result has length anywhere from 0 to 1.
+  round: [no] Roundness 18%. At |v| = 1 the stretch runs from 0× to 2.5×, where the plane gives 2.5× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [no] Covers the sphere of directions 1.3 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 1.3.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 3 {}  [used 6000, round 0.296, rev 0.000, deg 3.00, sheets 3.00, stretch 0.000..3.000, len 0.500..1.000, plane true, copy false, turn 0]
+  len: [no] For |v| = 1 the result has length anywhere from 0.5 to 1.
+  round: [no] Roundness 30%. At |v| = 1 the stretch runs from 0× to 3×, where the plane gives 3× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [ok] Wraps the sphere of directions 3 times and never reverses it.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+--- n = 8 {}  [used 6000, round 0.099, rev 0.500, deg 0.00, sheets 8.00, stretch 0.000..8.000, len 0.088..1.000, plane true, copy false, turn 0]
+  len: [no] For |v| = 1 the result has length anywhere from 0.09 to 1.
+  round: [no] Roundness 10%. At |v| = 1 the stretch runs from 0× to 8×, where the plane gives 8× throughout. Each factor keeps shapes on its own. Together they do not.
+  wrap: [no] Covers the sphere of directions 8 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+  slice: [ok] The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+  crush: [no] Crushes the plane z = 0 and the z-axis.
+  smooth: [ok] A polynomial when n is a whole number.
+=== BAD TEXTS: 0 ===
+step 2 waited 0.0 s
+no console errors

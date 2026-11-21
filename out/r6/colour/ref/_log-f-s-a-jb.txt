@@ -1,0 +1,272 @@
+step 1 waited 5.1 s
+step 2 result: "f01-flat-m-open"
+step 4 waited 0.1 s
+step 4 wrote out/r6/colour/ref/f01-flat-m-open.png
+step 5 result: "f02-flat-j-minus1"
+step 7 waited 0.1 s
+step 7 wrote out/r6/colour/ref/f02-flat-j-minus1.png
+step 8 result: "f03-flat-j-rabbit"
+step 10 waited 0.0 s
+step 10 wrote out/r6/colour/ref/f03-flat-j-rabbit.png
+step 11 result: "f04-flat-m-slice-03"
+step 13 waited 0.1 s
+step 13 wrote out/r6/colour/ref/f04-flat-m-slice-03.png
+step 14 result: "f05-flat-k"
+step 16 waited 0.8 s
+step 16 wrote out/r6/colour/ref/f05-flat-k.png
+step 17 result: "f06-flat-m-neg2"
+step 19 waited 2.5 s
+step 19 wrote out/r6/colour/ref/f06-flat-m-neg2.png
+step 20 result: "f07-flat-m-mosaic"
+step 22 waited 0.3 s
+step 22 wrote out/r6/colour/ref/f07-flat-m-mosaic.png
+step 23 result: "f08-flat-m-in-settle"
+step 25 waited 3.9 s
+step 25 wrote out/r6/colour/ref/f08-flat-m-in-settle.png
+step 26 result: "f09-flat-j-in-trap"
+step 28 waited 0.3 s
+step 28 wrote out/r6/colour/ref/f09-flat-j-in-trap.png
+step 29 result: "f10-flat-m-cross-bands"
+step 31 waited 0.3 s
+step 31 wrote out/r6/colour/ref/f10-flat-m-cross-bands.png
+step 32 result: "f11-m-escape"
+step 34 waited 0.3 s
+step 34 wrote out/r6/colour/ref/f11-m-escape.png
+step 35 result: "f12-m-depth"
+step 37 waited 0.3 s
+step 37 wrote out/r6/colour/ref/f12-m-depth.png
+step 38 result: "f13-m-surface-dir"
+step 40 waited 0.3 s
+step 40 wrote out/r6/colour/ref/f13-m-surface-dir.png
+step 41 result: "f14-m-clay"
+step 43 waited 0.3 s
+step 43 wrote out/r6/colour/ref/f14-m-clay.png
+step 44 result: "f15-j-escape"
+step 46 waited 0.3 s
+step 46 wrote out/r6/colour/ref/f15-j-escape.png
+step 47 result: "f16-k-escape"
+step 49 waited 0.0 s
+step 49 wrote out/r6/colour/ref/f16-k-escape.png
+step 50 result: "f17-k-depth"
+step 52 waited 0.0 s
+step 52 wrote out/r6/colour/ref/f17-k-depth.png
+step 53 result: "f18-m-neg2-escape"
+step 55 waited 0.8 s
+step 55 wrote out/r6/colour/ref/f18-m-neg2-escape.png
+step 56 result: "f19-m-centre"
+step 58 waited 0.3 s
+step 58 wrote out/r6/colour/ref/f19-m-centre.png
+step 59 result: "f20-m-laststep"
+step 61 waited 0.3 s
+step 61 wrote out/r6/colour/ref/f20-m-laststep.png
+step 62 result: "f21-m-ultra-escape"
+step 64 waited 0.0 s
+step 64 wrote out/r6/colour/ref/f21-m-ultra-escape.png
+step 65 result: "f22-m-fast-depth"
+step 67 waited 0.0 s
+step 67 wrote out/r6/colour/ref/f22-m-fast-depth.png
+step 68 result: "f23-cut-m-hatch-escape"
+step 70 waited 0.0 s
+step 70 wrote out/r6/colour/ref/f23-cut-m-hatch-escape.png
+step 71 result: "f24-cut-j-face-trap-escape"
+step 73 waited 0.3 s
+step 73 wrote out/r6/colour/ref/f24-cut-j-face-trap-escape.png
+step 74 result: "f25-m-mosaic-escape"
+step 76 waited 0.1 s
+step 76 wrote out/r6/colour/ref/f25-m-mosaic-escape.png
+step 77 result: "f26-k-clay"
+step 79 waited 0.0 s
+step 79 wrote out/r6/colour/ref/f26-k-clay.png
+step 80 result: "a-jb-shell1-qB"
+step 82 waited 0.0 s
+step 82 wrote out/r6/colour/ref/a-jb-shell1-qB.png
+step 83 result: "a-jb-shell1-qU"
+step 85 waited 0.0 s
+step 85 wrote out/r6/colour/ref/a-jb-shell1-qU.png
+step 86 result: "a-jb-shell1-qF"
+step 88 waited 0.1 s
+step 88 wrote out/r6/colour/ref/a-jb-shell1-qF.png
+step 89 result: "a-jb-shell1-qN"
+step 91 waited 0.3 s
+step 91 wrote out/r6/colour/ref/a-jb-shell1-qN.png
+step 92 result: "a-jb-shell1-d02"
+step 94 waited 0.1 s
+step 94 wrote out/r6/colour/ref/a-jb-shell1-d02.png
+step 95 result: "a-jb-shell1-d3"
+step 97 waited 0.0 s
+step 97 wrote out/r6/colour/ref/a-jb-shell1-d3.png
+step 98 result: "a-jb-shell1-i24"
+step 100 waited 0.1 s
+step 100 wrote out/r6/colour/ref/a-jb-shell1-i24.png
+step 101 result: "a-jb-shell1-i60"
+step 103 waited 0.0 s
+step 103 wrote out/r6/colour/ref/a-jb-shell1-i60.png
+step 104 result: "a-jb-shell1-i120"
+step 106 waited 0.1 s
+step 106 wrote out/r6/colour/ref/a-jb-shell1-i120.png
+step 107 result: "a-jb-shell1-z2"
+step 109 waited 0.1 s
+step 109 wrote out/r6/colour/ref/a-jb-shell1-z2.png
+step 110 result: "a-jb-shell1-z8"
+step 112 waited 0.1 s
+step 112 wrote out/r6/colour/ref/a-jb-shell1-z8.png
+step 113 result: "a-jb-shell07-qB"
+step 115 waited 0.0 s
+step 115 wrote out/r6/colour/ref/a-jb-shell07-qB.png
+step 116 result: "a-jb-shell07-qU"
+step 118 waited 0.0 s
+step 118 wrote out/r6/colour/ref/a-jb-shell07-qU.png
+step 119 result: "a-jb-shell07-qF"
+step 121 waited 0.0 s
+step 121 wrote out/r6/colour/ref/a-jb-shell07-qF.png
+step 122 result: "a-jb-shell07-qN"
+step 124 waited 0.6 s
+step 124 wrote out/r6/colour/ref/a-jb-shell07-qN.png
+step 125 result: "a-jb-shell07-d02"
+step 127 waited 0.3 s
+step 127 wrote out/r6/colour/ref/a-jb-shell07-d02.png
+step 128 result: "a-jb-shell07-d3"
+step 130 waited 0.3 s
+step 130 wrote out/r6/colour/ref/a-jb-shell07-d3.png
+step 131 result: "a-jb-shell07-i24"
+step 133 waited 0.4 s
+step 133 wrote out/r6/colour/ref/a-jb-shell07-i24.png
+step 134 result: "a-jb-shell07-i60"
+step 136 waited 0.4 s
+step 136 wrote out/r6/colour/ref/a-jb-shell07-i60.png
+step 137 result: "a-jb-shell07-i120"
+step 139 waited 0.3 s
+step 139 wrote out/r6/colour/ref/a-jb-shell07-i120.png
+step 140 result: "a-jb-shell07-z2"
+step 142 waited 0.0 s
+step 142 wrote out/r6/colour/ref/a-jb-shell07-z2.png
+step 143 result: "a-jb-shell07-z8"
+step 145 waited 0.2 s
+step 145 wrote out/r6/colour/ref/a-jb-shell07-z8.png
+step 146 result: "a-jb-cross-qB"
+step 148 waited 0.0 s
+step 148 wrote out/r6/colour/ref/a-jb-cross-qB.png
+step 149 result: "a-jb-cross-qU"
+step 151 waited 0.0 s
+step 151 wrote out/r6/colour/ref/a-jb-cross-qU.png
+step 152 result: "a-jb-cross-qF"
+step 154 waited 0.0 s
+step 154 wrote out/r6/colour/ref/a-jb-cross-qF.png
+step 155 result: "a-jb-cross-qN"
+step 157 waited 0.3 s
+step 157 wrote out/r6/colour/ref/a-jb-cross-qN.png
+step 158 result: "a-jb-cross-d02"
+step 160 waited 0.3 s
+step 160 wrote out/r6/colour/ref/a-jb-cross-d02.png
+step 161 result: "a-jb-cross-d3"
+step 163 waited 0.0 s
+step 163 wrote out/r6/colour/ref/a-jb-cross-d3.png
+step 164 result: "a-jb-cross-i24"
+step 166 waited 0.1 s
+step 166 wrote out/r6/colour/ref/a-jb-cross-i24.png
+step 167 result: "a-jb-cross-i60"
+step 169 waited 0.3 s
+step 169 wrote out/r6/colour/ref/a-jb-cross-i60.png
+step 170 result: "a-jb-cross-i120"
+step 172 waited 0.3 s
+step 172 wrote out/r6/colour/ref/a-jb-cross-i120.png
+step 173 result: "a-jb-cross-z2"
+step 175 waited 0.3 s
+step 175 wrote out/r6/colour/ref/a-jb-cross-z2.png
+step 176 result: "a-jb-cross-z8"
+step 178 waited 0.3 s
+step 178 wrote out/r6/colour/ref/a-jb-cross-z8.png
+step 179 result: "a-jb-planes-qB"
+step 181 waited 0.3 s
+step 181 wrote out/r6/colour/ref/a-jb-planes-qB.png
+step 182 result: "a-jb-planes-qU"
+step 184 waited 0.0 s
+step 184 wrote out/r6/colour/ref/a-jb-planes-qU.png
+step 185 result: "a-jb-planes-qF"
+step 187 waited 0.0 s
+step 187 wrote out/r6/colour/ref/a-jb-planes-qF.png
+step 188 result: "a-jb-planes-qN"
+step 190 waited 0.4 s
+step 190 wrote out/r6/colour/ref/a-jb-planes-qN.png
+step 191 result: "a-jb-planes-d02"
+step 193 waited 0.0 s
+step 193 wrote out/r6/colour/ref/a-jb-planes-d02.png
+step 194 result: "a-jb-planes-d3"
+step 196 waited 0.0 s
+step 196 wrote out/r6/colour/ref/a-jb-planes-d3.png
+step 197 result: "a-jb-planes-i24"
+step 199 waited 0.3 s
+step 199 wrote out/r6/colour/ref/a-jb-planes-i24.png
+step 200 result: "a-jb-planes-i60"
+step 202 waited 0.3 s
+step 202 wrote out/r6/colour/ref/a-jb-planes-i60.png
+step 203 result: "a-jb-planes-i120"
+step 205 waited 0.0 s
+step 205 wrote out/r6/colour/ref/a-jb-planes-i120.png
+step 206 result: "a-jb-planes-z2"
+step 208 waited 0.2 s
+step 208 wrote out/r6/colour/ref/a-jb-planes-z2.png
+step 209 result: "a-jb-planes-z8"
+step 211 waited 0.3 s
+step 211 wrote out/r6/colour/ref/a-jb-planes-z8.png
+step 212 result: "s01-m-shell-bal"
+step 214 waited 5.3 s
+step 214 wrote out/r6/colour/ref/s01-m-shell-bal.png
+step 215 result: "s02-m-shell-fast"
+step 217 waited 0.3 s
+step 217 wrote out/r6/colour/ref/s02-m-shell-fast.png
+step 218 result: "s03-m-shell-ultra"
+step 220 waited 0.0 s
+step 220 wrote out/r6/colour/ref/s03-m-shell-ultra.png
+step 221 result: "s04-j-shell07-bal"
+step 223 waited 0.8 s
+step 223 wrote out/r6/colour/ref/s04-j-shell07-bal.png
+step 224 result: "s05-j-shell07-fast"
+step 226 waited 0.6 s
+step 226 wrote out/r6/colour/ref/s05-j-shell07-fast.png
+step 227 result: "s06-j-shell07-ultra"
+step 229 waited 0.1 s
+step 229 wrote out/r6/colour/ref/s06-j-shell07-ultra.png
+step 230 result: "s07-j-cross-added-bal"
+step 232 waited 0.8 s
+step 232 wrote out/r6/colour/ref/s07-j-cross-added-bal.png
+step 233 result: "s08-j-cross-added-ultra"
+step 235 waited 0.1 s
+step 235 wrote out/r6/colour/ref/s08-j-cross-added-ultra.png
+step 236 result: "s09-k-shell-bal"
+step 238 waited 2.1 s
+step 238 wrote out/r6/colour/ref/s09-k-shell-bal.png
+step 239 result: "s10-k-shell-fast"
+step 241 waited 0.1 s
+step 241 wrote out/r6/colour/ref/s10-k-shell-fast.png
+step 242 result: "s11-k-cross-added-bal"
+step 244 waited 0.1 s
+step 244 wrote out/r6/colour/ref/s11-k-cross-added-bal.png
+step 245 result: "s12-k-shell-added-ultra"
+step 247 waited 0.1 s
+step 247 wrote out/r6/colour/ref/s12-k-shell-added-ultra.png
+step 248 result: "s13-m-cross-added-bal"
+step 250 waited 1.8 s
+step 250 wrote out/r6/colour/ref/s13-m-cross-added-bal.png
+step 251 result: "s14-m-shell-step-fast"
+step 253 waited 0.4 s
+step 253 wrote out/r6/colour/ref/s14-m-shell-step-fast.png
+step 254 result: "s15-j-ring-where-fine"
+step 256 waited 1.1 s
+step 256 wrote out/r6/colour/ref/s15-j-ring-where-fine.png
+step 257 result: "s16-m-shell-skip0-bal"
+step 259 waited 0.4 s
+step 259 wrote out/r6/colour/ref/s16-m-shell-skip0-bal.png
+step 260 result: "s17-j-shell-skip0-bal"
+step 262 waited 0.5 s
+step 262 wrote out/r6/colour/ref/s17-j-shell-skip0-bal.png
+step 263 result: "s18-m-shell-skip2-bal"
+step 265 waited 0.7 s
+step 265 wrote out/r6/colour/ref/s18-m-shell-skip2-bal.png
+step 266 result: "s19-j-shell-added-fine"
+step 268 waited 1.5 s
+step 268 wrote out/r6/colour/ref/s19-j-shell-added-fine.png
+step 269 result: "s20-m-shell-added-ultra"
+step 271 waited 0.0 s
+step 271 wrote out/r6/colour/ref/s20-m-shell-added-ultra.png
+no console errors

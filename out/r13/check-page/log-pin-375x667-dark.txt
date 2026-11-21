@@ -1,0 +1,38 @@
+=== session pin-375x667-dark: dist/r13-check-page.html 375x667 dark mobile=False dsf=1
+  first picture done: [true, 2.4]
+  top: {"y": 0, "ih": 667, "sw": 375, "iw": 375, "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": false, "top": 0, "h": 365, "small": 667}, "cls": "pin-can pin-on", "main": [16, 350, 359, 715], "mainPos": "sticky", "stage": [16, 350, 359, 615], "status": "Done: 12 passes at 341 × 263", "lastTouch": 491, "cv": [341, 263], "toprow": [16, 784, 359, 869], "toprowPos": "static", "pinBtn": [[241, 677, 359, 709], "block", "Unpin picture"], "hintBelow": "none", "pinHint": ["block", "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-cl"], "idle": true}
+  toprow at top: [[16, 784, 359, 869], "static", "0px", ["flat", "extreme", "Collapse all", "Reset everything"]]
+  at Approach: {"y": 851, "ih": 667, "sw": 375, "iw": 375, "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "cls": "pin-can pin-on", "main": [16, 0, 359, 365], "mainPos": "sticky", "stage": [16, 0, 359, 265], "status": "Done: 12 passes at 341 × 263", "lastTouch": 491, "cv": [341, 263], "toprow": [16, -67, 359, 18], "toprowPos": "static", "pinBtn": [[241, 327, 359, 359], "block", "Unpin picture"], "hintBelow": "none", "pinHint": ["block", "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-cl"], "idle": true}
+  cover at Approach: {"bg": "rgb(14, 20, 27)", "paper": "#0e141b", "notMain": [[2, 1, "page"], [2, 91, "page"], [2, 182, "page"], [2, 272, "page"], [2, 363, "page"], [373, 1, "page"], [373, 91, "page"], [373, 182, "page"], [373, 272, "page"], [373, 363, "page"]]}
+  Approach summary box: [16, 378, 359, 420]
+  at last control: {"y": 3743, "ih": 667, "sw": 375, "iw": 375, "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "cls": "pin-can pin-on", "main": [16, 0, 359, 365], "mainPos": "sticky", "stage": [16, 0, 359, 265], "status": "Done: 12 passes at 341 × 263", "lastTouch": 491, "cv": [341, 263], "toprow": [16, -2959, 359, -2874], "toprowPos": "static", "pinBtn": [[241, 327, 359, 359], "block", "Unpin picture"], "hintBelow": "none", "pinHint": ["block", "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-cl"], "idle": true}
+  cover at last control: {"bg": "rgb(14, 20, 27)", "paper": "#0e141b", "notMain": [[2, 1, "page"], [2, 91, "page"], [2, 182, "page"], [2, 272, "page"], [2, 363, "page"], [373, 1, "page"], [373, 91, "page"], [373, 182, "page"], [373, 272, "page"], [373, 363, "page"]]}
+  last control: ["Save a 3D model", [16, 501, 359, 543]]
+  in the closing text: {"y": 6794, "ih": 667, "sw": 375, "iw": 375, "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "cls": "pin-can pin-on", "main": [16, -2872, 359, -2507], "mainPos": "sticky", "stage": [16, -2872, 359, -2607], "status": "Done: 12 passes at 341 × 263", "lastTouch": 491, "cv": [341, 263], "toprow": [16, -6010, 359, -5925], "toprowPos": "static", "pinBtn": [[241, -2545, 359, -2513], "block", "Unpin picture"], "hintBelow": "none", "pinHint": ["block", "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-cl"], "idle": true}
+  scrolling left the solid alone (snapshots): [true, true, true]
+  walk: {"max": 17268, "steps": 288, "positionsWithAControlInViewButNotThePicture": 2, "first": [[4200, 2, -278, -13], [4260, 1, -338, -73]], "sameTouch": true, "sameStatus": true, "sameCanvas": true, "status": "Done: 12 passes at 341 × 263"}
+  power dial before: {"type": "range", "box": [16, 512, 359, 532], "y": 3195, "stage": [16, 0, 359, 265], "n": 2, "range": ["pow", [16, 512, 359, 532], "-8", "10"]}
+  power after the tap: [5.6, 3176]
+  after the dial: {"y": 3176, "ih": 667, "sw": 375, "iw": 375, "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "cls": "pin-can pin-on", "main": [16, 0, 359, 365], "mainPos": "sticky", "stage": [16, 0, 359, 265], "status": "Done: 12 passes at 341 × 263", "lastTouch": 11926, "cv": [341, 263], "toprow": [16, -2392, 359, -2307], "toprowPos": "static", "pinBtn": [[241, 327, 359, 359], "block", "Unpin picture"], "hintBelow": "none", "pinHint": ["block", "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-cl"], "idle": true}
+  picture changed (49 probes differ): [true, 7]
+  Tab forward: stops: 89
+  Tab forward: first stops: ["camFly", "zoomOut", "zoomIn", "reset", "camNear", "camRail", "camFar", "pinToggle", "flat", "extreme", "collapseAll", "resetAll", "mode-m", "SUMMARY"]
+  Tab forward: hidden under the block or outside the window: []
+  Shift+Tab back: stops: 89
+  Shift+Tab back: hidden under the block or outside the window: []
+  scroll-margin on a control: ["377px", "365px"]
+  Collapse all before the tap (x, y, on top, scrollY, row, block): [288.4453125, 521.59375, true, 286, [16, 498, 359, 583], [16, 64, 359, 429]]
+  after Collapse all: {"y": 286, "main": [16, 64, 359, 429], "stage": [16, 64, 359, 329], "toprow": [16, 498, 359, 583], "status": "Done: 12 passes at 341 × 263", "lastTouch": 15091}
+  open sections, label, page height: [0, "Expand all", 15150]
+  open sections after the second tap: [10, "Collapse all"]
+  pin button (x, y, on top at its centre, box): [300.1015625, 342.84375, true, [241, 327, 359, 359]]
+  after Unpin picture: {"y": 359, "cls": "pin-can", "pin": {"want": false, "can": true, "on": false, "free": false, "stuck": false, "top": 0, "h": 0, "small": 667}, "main": [16, 3, 359, 438], "mainPos": "relative", "stage": [16, 3, 359, 293], "toprow": [16, 442, 359, 527], "toprowPos": "sticky", "pinBtn": [[259, 400, 359, 432], "block", "Pin picture"], "status": "Done: 12 passes at 341 × 288", "cv": [341, 288]}
+  stored: 0
+  unpinned, at Approach: {"y": 1245, "pin": {"want": false, "can": true, "on": false, "free": false, "stuck": false, "top": 0, "h": 0, "small": 667}, "cls": "pin-can", "main": [16, -883, 359, -448], "mainPos": "relative", "stage": [16, -883, 359, -593], "status": "Done: 12 passes at 341 × 288", "cv": [341, 288], "toprow": [16, 0, 359, 85], "toprowPos": "sticky", "pinBtn": [[259, -486, 359, -454], "block", "Pin picture"]}
+  after reload (stored unpinned): {"y": 1245, "cls": "pin-can", "pin": {"want": false, "can": true, "on": false, "free": false, "stuck": false, "top": 0, "h": 0, "small": 667}, "main": [16, -883, 359, -448], "mainPos": "relative", "stage": [16, -883, 359, -593], "toprow": [16, 0, 359, 85], "toprowPos": "sticky", "pinBtn": [[259, -486, 359, -454], "block", "Pin picture"], "status": "Done: 12 passes at 341 × 288", "cv": [341, 288]}
+  stored: 0
+  pin button (x, y, on top at its centre, box): [308.8359375, 333.25, true, [259, 317, 359, 349]]
+  after Pin picture: {"y": 442, "cls": "pin-can pin-on", "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "main": [16, 0, 359, 365], "mainPos": "sticky", "stage": [16, 0, 359, 265], "toprow": [16, 342, 359, 427], "toprowPos": "static", "pinBtn": [[241, 327, 359, 359], "block", "Unpin picture"], "status": "Done: 12 passes at 341 × 263", "cv": [341, 263]}
+  stored: 1
+  after reload (stored pinned): {"y": 442, "cls": "pin-can pin-on", "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "main": [16, 0, 359, 365], "mainPos": "sticky", "stage": [16, 0, 359, 265], "toprow": [16, 342, 359, 427], "toprowPos": "static", "pinBtn": [[241, 327, 359, 359], "block", "Unpin picture"], "status": "Done: 12 passes at 341 × 263", "cv": [341, 263]}
+no console errors in pin-375x667-dark

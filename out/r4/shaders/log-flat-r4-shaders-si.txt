@@ -1,0 +1,22 @@
+step 1 result: "m"
+step 1 waited 2.3 s
+step 1 wrote out/r4/shaders/flat/r4-shaders-si-m.png
+step 2 result: "j"
+step 2 waited 0.3 s
+step 2 wrote out/r4/shaders/flat/r4-shaders-si-j.png
+step 3 result: "jcut"
+step 3 waited 0.3 s
+step 3 wrote out/r4/shaders/flat/r4-shaders-si-jcut.png
+step 4 result: "mplanes"
+step 4 waited 0.3 s
+step 4 wrote out/r4/shaders/flat/r4-shaders-si-mplanes.png
+step 5 result: "mesc"
+step 5 waited 0.3 s
+step 5 wrote out/r4/shaders/flat/r4-shaders-si-mesc.png
+step 6 result: "k"
+step 6 waited 1.0 s
+step 6 wrote out/r4/shaders/flat/r4-shaders-si-k.png
+step 7 result: "neg"
+step 7 waited 3.1 s
+step 7 wrote out/r4/shaders/flat/r4-shaders-si-neg.png
+no console errors

@@ -1,0 +1,32 @@
+ta-cut-m       862x701: pixels that differ at all: 2332, by more than 8 levels: 748
+ta-cut-bas     862x701: pixels that differ at all: 119, by more than 8 levels: 0
+ta-cut-rabbit  862x701: pixels that differ at all: 1005, by more than 8 levels: 35
+ta-cut-off     862x701: pixels that differ at all: 118094, by more than 8 levels: 100827
+tl-cut-m       862x701: pixels that differ at all: 1336, by more than 8 levels: 68
+tl-cut-bas     862x701: pixels that differ at all: 48, by more than 8 levels: 0
+tl-cut-rabbit  862x701: pixels that differ at all: 284, by more than 8 levels: 0
+tl-cut-off     862x701: pixels that differ at all: 117782, by more than 8 levels: 99335
+
+"along", power 2: a point of the plane y = z at the angle t from the x-axis, moved sideways by d = 1e-6 rad round the x-axis;
+how far its answer leaves the plane y = z, divided by (d * distance from the x-axis). Formula: 4x - 2r.
+  t =  20 deg: measured +1.7588   formula +1.7588
+  t =  40 deg: measured +1.0642   formula +1.0642
+  t =  55 deg: measured +0.2943   formula +0.2943
+  t =  59 deg: measured +0.0602   formula +0.0602
+  t =  60 deg: measured +0.0000   formula +0.0000
+  t =  61 deg: measured -0.0608   formula -0.0608
+  t =  65 deg: measured -0.3095   formula -0.3095
+  t =  90 deg: measured -2.0000   formula -2.0000
+  t = 120 deg: measured -4.0000   formula -4.0000
+  t = 150 deg: measured -5.4641   formula -5.4641
+  t = 170 deg: measured -5.9392   formula -5.9392
+
+power 3, "away": does the plane at 60 degrees round the x-axis follow the complex cube? largest distance from it, as a share of the length (500 points)
+  the brief's q = -1                     plane at 60 degrees: 1.92e+00;   turn by 60 degrees about the x-axis: off by 2.00e+00 of the length
+  q = 1 - m = -2 (what the entry uses)   plane at 60 degrees: 2.36e-15;   turn by 60 degrees about the x-axis: off by 4.83e-15 of the length
+Rough estimate: ta0-cut-m       pixels that differ at all: 2304, by more than 8 levels: 720; inside colour in one but not the other: 114
+Rough estimate: ta0-cut-bas     pixels that differ at all: 91, by more than 8 levels: 0; inside colour in one but not the other: 2
+Rough estimate: ta0-cut-rabbit  pixels that differ at all: 977, by more than 8 levels: 35; inside colour in one but not the other: 1
+Rough estimate: tl0-cut-m       pixels that differ at all: 1308, by more than 8 levels: 68; inside colour in one but not the other: 9
+Rough estimate: tl0-cut-bas     pixels that differ at all: 20, by more than 8 levels: 0; inside colour in one but not the other: 0
+Rough estimate: tl0-cut-rabbit  pixels that differ at all: 256, by more than 8 levels: 0; inside colour in one but not the other: 0

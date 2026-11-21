@@ -1,0 +1,24 @@
+Five entries that carry nothing: this build against base17a. Window 1400x950, the stage canvas, default quality.
+
+  mercator   rabbit 862 x 701: 0 pixels differ (largest 0 of 255); not background 95846; probes hit 26 / 26 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 1209 / 1375 ms
+  mercator   mandel 862 x 701: 0 pixels differ (largest 0 of 255); not background 42915; probes hit 10 / 10 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 649 / 1158 ms
+  mercator   flat   862 x 701: 0 pixels differ (largest 0 of 255); not background 538488; probes hit 165 / 165 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 12 / 15 ms
+  mercator   pow3   862 x 701: 0 pixels differ (largest 0 of 255); not background 167924; probes hit 45 / 45 | programs handed to the GPU: 1 / 1, after stripping the same text | drawn again in 623 / 563 ms
+  lathe      rabbit 862 x 701: 0 pixels differ (largest 0 of 255); not background 160609; probes hit 44 / 44 | programs handed to the GPU: 1 / 1, after stripping the same text | drawn again in 916 / 870 ms
+  lathe      mandel 862 x 701: 0 pixels differ (largest 0 of 255); not background 207466; probes hit 57 / 57 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 1099 / 727 ms
+  lathe      flat   862 x 701: 0 pixels differ (largest 0 of 255); not background 538221; probes hit 165 / 165 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 14 / 15 ms
+  lathe      pow3   862 x 701: 0 pixels differ (largest 0 of 255); not background 169931; probes hit 45 / 45 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 669 / 683 ms
+  turnalong  rabbit 862 x 701: 0 pixels differ (largest 0 of 255); not background 163676; probes hit 45 / 45 | programs handed to the GPU: 1 / 1, after stripping the same text | drawn again in 874 / 796 ms
+  turnalong  mandel 862 x 701: 0 pixels differ (largest 0 of 255); not background 159408; probes hit 41 / 41 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 883 / 1178 ms
+  turnalong  flat   862 x 701: 0 pixels differ (largest 0 of 255); not background 538471; probes hit 165 / 165 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 14 / 14 ms
+  turnalong  pow3   862 x 701: 0 pixels differ (largest 0 of 255); not background 167056; probes hit 44 / 44 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 490 / 454 ms
+  windsq     rabbit 862 x 701: 0 pixels differ (largest 0 of 255); not background 215836; probes hit 47 / 47 | programs handed to the GPU: 1 / 1, after stripping the same text | drawn again in 1000 / 1069 ms
+  windsq     mandel 862 x 701: 0 pixels differ (largest 0 of 255); not background 230128; probes hit 61 / 61 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 1352 / 1286 ms
+  windsq     flat   862 x 701: 0 pixels differ (largest 0 of 255); not background 538568; probes hit 165 / 165 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 16 / 16 ms
+  windsq     pow3   862 x 701: 0 pixels differ (largest 0 of 255); not background 171316; probes hit 47 / 47 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 577 / 592 ms
+  bulb       rabbit 862 x 701: 0 pixels differ (largest 0 of 255); not background 159328; probes hit 42 / 42 | programs handed to the GPU: 1 / 1, after stripping the same text | drawn again in 1123 / 1084 ms
+  bulb       mandel 862 x 701: 0 pixels differ (largest 0 of 255); not background 76538; probes hit 19 / 19 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 1016 / 949 ms
+  bulb       flat   862 x 701: 0 pixels differ (largest 0 of 255); not background 538487; probes hit 165 / 165 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 13 / 15 ms
+  bulb       pow3   862 x 701: 0 pixels differ (largest 0 of 255); not background 176188; probes hit 47 / 47 | programs handed to the GPU: 0 / 0, after stripping the same text | drawn again in 589 / 640 ms
+
+most pixels that differ in one picture: 0. Time to draw all 20 pictures again: this build 13138 ms, base17a 13499 ms.

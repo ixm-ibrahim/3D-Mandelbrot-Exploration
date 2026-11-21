@@ -1,0 +1,17 @@
+/* "Save a 3D model" (46-mesh.js). The panel lays itself out, so it looks the same whatever wraps it. */
+.mesh-panel { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.sec > .mesh-panel { padding-bottom: 14px; }
+.mesh-kinds { gap: 6px; }
+
+/* the running job and the finished model each sit in a box of their own, apart from the settings above */
+.mesh-run, .mesh-done { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 10px 12px; border: 1px solid var(--line); background: var(--panel); }
+.mesh-bar { height: 6px; background: var(--line); overflow: hidden; }
+.mesh-bar span { display: block; height: 100%; background: var(--brass); transform-origin: 0 50%; transform: scaleX(0); transition: transform .15s linear; }
+@media (prefers-reduced-motion: reduce) { .mesh-bar span { transition: none; } }
+.mesh-step { font-family: var(--f-mono); font-size: 12px; line-height: 1.5; color: var(--ink); min-height: 3em; overflow-wrap: anywhere; }
+
+.mesh-facts { margin: 0; display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); gap: 3px 14px; font-size: 13.5px; }
+.mesh-facts dt { color: var(--ink-2); overflow-wrap: anywhere; }
+.mesh-facts dd { margin: 0; font-family: var(--f-mono); font-size: 12.5px; line-height: 1.65; color: var(--ink); overflow-wrap: anywhere; }
+.mesh-warn { color: var(--warn); }
+.mesh-msg:empty { display: none; }

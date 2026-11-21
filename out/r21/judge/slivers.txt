@@ -1,0 +1,8 @@
+SLIVERS over the skin of the basilica's middle body (c = -1), cut across the x-axis at x = 0.
+Window: 720 x 360 places, round the axis from 25 to 65 degrees, radius 0.44 to 0.62. Counted at 120 and at 600 steps:
+inside places that lie ABOVE a gap (walking outward from the axis, inside again after having been outside).
+along                  120 steps: 31396 places above a gap, in 280 of 720 directions | 600 steps: 31396 places above a gap, in 280 of 720 directions
+oneplane               120 steps:     0 places above a gap, in   0 of 720 directions | 600 steps:     0 places above a gap, in   0 of 720 directions
+sheet.evc005e70k16     120 steps:  1840 places above a gap, in 336 of 720 directions | 600 steps:  1840 places above a gap, in 336 of 720 directions
+sheet.ease             120 steps: 12780 places above a gap, in 382 of 720 directions | 600 steps: 12780 places above a gap, in 382 of 720 directions
+alongmem.c_wake1       120 steps: 34628 places above a gap, in 249 of 720 directions | 600 steps: 34628 places above a gap, in 249 of 720 directions

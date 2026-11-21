@@ -1,0 +1,6 @@
+cut-m            862x701: pixels that differ by more than 8 levels: 0 (0.000 %), by more than 40: 0; inside colour: pillow 94563, one plane 94563, in one but not the other: 0
+cut-j-basilica   862x701: pixels that differ by more than 8 levels: 0 (0.000 %), by more than 40: 0; inside colour: pillow 74016, one plane 74016, in one but not the other: 0
+cut-j-rabbit     862x701: pixels that differ by more than 8 levels: 0 (0.000 %), by more than 40: 0; inside colour: pillow 79148, one plane 79148, in one but not the other: 0
+cut-j-03         862x701: pixels that differ by more than 8 levels: 0 (0.000 %), by more than 40: 0; inside colour: pillow 127544, one plane 127544, in one but not the other: 0
+cut-j-i          862x701: pixels that differ by more than 8 levels: 0 (0.000 %), by more than 40: 0; inside colour: pillow 10210, one plane 10210, in one but not the other: 0
+flat Mandelbrot set (numpy, 14 steps, radius 64) against the inside colour of sp-cut-m.png, away from the controls: set 93381 pixels, picture 94562, in one but not the other 1183 (1.27 % of the set)

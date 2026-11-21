@@ -1,0 +1,5 @@
+mandel prev_keep 14 s
+mandel prev_lag50in 36 s
+mandel prev_lag50P 51 s
+mandel prev_lag25P 66 s
+mandel prev_delay 81 s

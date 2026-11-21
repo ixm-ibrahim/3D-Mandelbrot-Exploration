@@ -1,0 +1,1264 @@
+====================================================================================================
+basilica, c = -1. flat centres: {'right': np.float64(1.0), 'small': np.float64(-1.4142), 'g1': np.complex128(0.6436j), 'g2': np.complex128(-1.0462+0.3076j), 'g3': np.complex128(0.3639+0.4226j), 'g4': np.complex128(1.1815+0.1789j)}
+----------------------------------------------------------------------------------------------------
+ring g1: x = 0.0000, radius 0.6436 (flat bud centre needs 1 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  oneplane  inside   7.4% of the ring, 2 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.0743, outside points down to 0.0756
+      arc at 180.00 deg, width 13.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 13.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  along     inside  26.9% of the ring, 8 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.0653, outside points down to 0.0666
+      arc at  45.00 deg, width 12.12 deg
+          step 1: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width 12.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 135.00 deg, width 12.12 deg
+          step 1: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 180.00 deg, width 12.12 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 225.00 deg, width 12.12 deg
+          step 1: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page  -45.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page  -45.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 12.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 315.00 deg, width 12.12 deg
+          step 1: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page   45.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page   45.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 12.12 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  once      inside  29.0% of the ring, 8 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.0741, outside points down to 0.0666
+      arc at 180.00 deg, width 13.88 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 13.88 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  44.87 deg, width 13.12 deg
+          step 1: page   44.8 off 0.0014 -> x -1.4142, 0.0018 from axis
+          step 2: page    0.0 off 0.0013 -> x  1.0000, 0.0051 from axis
+          step 3: page    0.0 off 0.0036 -> x -0.0001, 0.0102 from axis
+      arc at 135.13 deg, width 13.12 deg
+          step 1: page  -44.8 off 0.0014 -> x -1.4142, 0.0018 from axis
+          step 2: page    0.0 off 0.0013 -> x  1.0000, 0.0051 from axis
+          step 3: page    0.0 off 0.0036 -> x -0.0001, 0.0102 from axis
+      arc at 224.87 deg, width 13.12 deg
+          step 1: page   44.8 off 0.0014 -> x -1.4142, 0.0018 from axis
+          step 2: page    0.0 off 0.0013 -> x  1.0000, 0.0051 from axis
+          step 3: page    0.0 off 0.0036 -> x -0.0001, 0.0102 from axis
+      arc at 315.12 deg, width 13.12 deg
+          step 1: page  -44.8 off 0.0014 -> x -1.4142, 0.0018 from axis
+          step 2: page    0.0 off 0.0013 -> x  1.0000, 0.0051 from axis
+          step 3: page    0.0 off 0.0036 -> x -0.0001, 0.0102 from axis
+      arc at  90.00 deg, width 12.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 12.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  pulled    inside  17.8% of the ring, 4 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.0719, outside points down to 0.0728
+      arc at 180.00 deg, width 17.88 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 17.88 deg
+          step 1: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width 14.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page  -90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page  -90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 14.12 deg
+          step 1: page   90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 2: page   90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 3: page   90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  (0 s)
+----------------------------------------------------------------------------------------------------
+ring g2: x = -1.0462, radius 0.3076 (flat bud centre needs 2 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  oneplane  inside   7.2% of the ring, 2 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.0744, outside points down to 0.0759
+      arc at 180.00 deg, width 12.88 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 12.88 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  along     inside  35.6% of the ring, 16 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.0760, outside points down to 0.0675
+      arc at  90.00 deg, width 12.62 deg
+          step 1: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page  -84.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page   89.5 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 180.00 deg, width 12.62 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    5.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page   -0.5 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 12.62 deg
+          step 1: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page   39.8 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page   29.9 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 12.62 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page   -5.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.5 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  26.87 deg, width  7.62 deg
+          step 1: page   13.2 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page   -0.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page  -89.9 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page   89.9 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at  63.12 deg, width  7.62 deg
+          step 1: page   76.8 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page  -90.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page   -0.1 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page    0.1 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at 116.88 deg, width  7.62 deg
+          step 1: page  -76.8 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page   90.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page    0.1 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page   -0.1 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at 153.12 deg, width  7.62 deg
+          step 1: page  -13.2 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page    0.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page   89.9 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page  -89.9 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at 206.88 deg, width  7.62 deg
+          step 1: page   13.2 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page   -0.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page  -89.9 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page   89.9 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at 243.12 deg, width  7.62 deg
+          step 1: page   76.8 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page  -90.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page   -0.1 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page    0.1 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at 296.88 deg, width  7.62 deg
+          step 1: page  -76.8 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page   90.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page    0.1 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page   -0.1 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at 333.12 deg, width  7.62 deg
+          step 1: page  -13.2 off 0.0726 -> x  0.0008, 0.6423 from axis
+          step 2: page    0.0 off 0.0112 -> x -1.4123, 0.0145 from axis
+          step 3: page   89.9 off 0.0011 -> x  0.9944, 0.0408 from axis
+          step 4: page  -89.9 off 0.0029 -> x -0.0129, 0.0812 from axis
+      arc at  45.00 deg, width  4.12 deg
+          step 1: page   45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page   70.9 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page   89.7 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 135.00 deg, width  4.12 deg
+          step 1: page  -45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page  -90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 225.00 deg, width  4.12 deg
+          step 1: page   45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page  -17.7 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page   -0.1 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 315.00 deg, width  4.12 deg
+          step 1: page  -45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page   83.2 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page  -89.7 off 0.0000 -> x  0.0000, 0.0000 from axis
+  once      inside  17.0% of the ring, 6 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.0761, outside points down to 0.0754
+      arc at 180.00 deg, width 13.88 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 13.88 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  26.75 deg, width  8.38 deg
+          step 1: page   13.1 off 0.0728 -> x  0.0008, 0.6423 from axis
+          step 2: page    0.0 off 0.0135 -> x -1.4122, 0.0173 from axis
+          step 3: page    0.0 off 0.0173 -> x  0.9939, 0.0490 from axis
+          step 4: page    0.0 off 0.0489 -> x -0.0145, 0.0972 from axis
+      arc at 153.25 deg, width  8.38 deg
+          step 1: page  -13.1 off 0.0728 -> x  0.0008, 0.6423 from axis
+          step 2: page    0.0 off 0.0135 -> x -1.4122, 0.0173 from axis
+          step 3: page    0.0 off 0.0173 -> x  0.9939, 0.0490 from axis
+          step 4: page    0.0 off 0.0489 -> x -0.0145, 0.0972 from axis
+      arc at 206.75 deg, width  8.38 deg
+          step 1: page   13.1 off 0.0728 -> x  0.0008, 0.6423 from axis
+          step 2: page    0.0 off 0.0135 -> x -1.4122, 0.0173 from axis
+          step 3: page    0.0 off 0.0173 -> x  0.9939, 0.0490 from axis
+          step 4: page    0.0 off 0.0489 -> x -0.0145, 0.0972 from axis
+      arc at 333.25 deg, width  8.38 deg
+          step 1: page  -13.1 off 0.0728 -> x  0.0008, 0.6423 from axis
+          step 2: page    0.0 off 0.0135 -> x -1.4122, 0.0173 from axis
+          step 3: page    0.0 off 0.0173 -> x  0.9939, 0.0490 from axis
+          step 4: page    0.0 off 0.0489 -> x -0.0145, 0.0972 from axis
+  pulled    inside  15.1% of the ring, 4 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.0723, outside points down to 0.0731
+      arc at 180.00 deg, width 20.38 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 20.38 deg
+          step 1: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width  6.88 deg
+          step 1: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page  -90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width  6.88 deg
+          step 1: page   90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 2: page   90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 3: page   90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 4: page   90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  (0 s)
+----------------------------------------------------------------------------------------------------
+ring g3: x = 0.3639, radius 0.4226 (flat bud centre needs 3 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  oneplane  inside   4.7% of the ring, 2 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.0736, outside points down to 0.0758
+      arc at 180.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  along     inside  33.1% of the ring, 16 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.1046, outside points down to 0.0667
+      arc at  45.00 deg, width  8.38 deg
+          step 1: page   45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page   45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page   45.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page   45.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 135.00 deg, width  8.38 deg
+          step 1: page  -45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page  -45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 225.00 deg, width  8.38 deg
+          step 1: page   45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page   45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page   70.9 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page   89.7 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 315.00 deg, width  8.38 deg
+          step 1: page  -45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page  -45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page  -70.9 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page  -89.7 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width  8.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page  -84.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page   89.5 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 180.00 deg, width  8.12 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    5.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page   -0.5 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width  8.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page   23.8 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    2.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  8.12 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page   -5.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.5 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  20.12 deg, width  6.62 deg
+          step 1: page    6.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page   13.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page   -0.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page    3.6 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page   -0.7 off 0.0143 -> x -0.0532, 0.1809 from axis
+      arc at  69.88 deg, width  6.62 deg
+          step 1: page   84.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page   76.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page  -90.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page   86.4 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page  -89.3 off 0.0143 -> x -0.0532, 0.1809 from axis
+      arc at 110.13 deg, width  6.62 deg
+          step 1: page  -84.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page  -76.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page   90.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page  -86.4 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page   89.3 off 0.0143 -> x -0.0532, 0.1809 from axis
+      arc at 159.88 deg, width  6.62 deg
+          step 1: page   -6.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page  -13.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page    0.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page   -3.6 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page    0.7 off 0.0143 -> x -0.0532, 0.1809 from axis
+      arc at 200.12 deg, width  6.62 deg
+          step 1: page    6.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page   13.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page   -0.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page    3.6 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page   -0.7 off 0.0143 -> x -0.0532, 0.1809 from axis
+      arc at 249.88 deg, width  6.62 deg
+          step 1: page   84.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page   76.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page  -90.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page   86.4 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page  -89.3 off 0.0143 -> x -0.0532, 0.1809 from axis
+      arc at 290.12 deg, width  6.62 deg
+          step 1: page  -84.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page  -76.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page   90.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page  -86.4 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page   89.3 off 0.0143 -> x -0.0532, 0.1809 from axis
+      arc at 339.88 deg, width  6.62 deg
+          step 1: page   -6.0 off 0.1032 -> x -1.0344, 0.3091 from axis
+          step 2: page  -13.5 off 0.0727 -> x -0.0247, 0.6382 from axis
+          step 3: page    0.0 off 0.0074 -> x -1.4066, 0.0329 from axis
+          step 4: page   -3.6 off 0.0075 -> x  0.9774, 0.0925 from axis
+          step 5: page    0.7 off 0.0143 -> x -0.0532, 0.1809 from axis
+  once      inside   4.7% of the ring, 2 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.0733, outside points down to 0.0754
+      arc at 180.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  pulled    inside  13.1% of the ring, 4 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.0737, outside points down to 0.0744
+      arc at 180.00 deg, width 14.62 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 14.62 deg
+          step 1: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width  8.88 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page  -90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width  8.88 deg
+          step 1: page   90.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 2: page   90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 3: page   90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 4: page   90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 5: page   90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  (0 s)
+----------------------------------------------------------------------------------------------------
+ring g4: x = 1.1815, radius 0.1789 (flat bud centre needs 4 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  oneplane  inside   4.7% of the ring, 2 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.0744, outside points down to 0.0767
+      arc at 180.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  along     inside  33.1% of the ring, 16 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.1045, outside points down to 0.0664
+      arc at  45.00 deg, width  8.38 deg
+          step 1: page   45.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page   45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page   45.0 off 0.0000 -> x  0.0000, 0.6436 from axis
+          step 4: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page   31.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page   10.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 135.00 deg, width  8.38 deg
+          step 1: page  -45.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page  -45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page  -45.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page  -90.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 225.00 deg, width  8.38 deg
+          step 1: page   45.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page   45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page   45.0 off 0.0000 -> x  0.0000, 0.6436 from axis
+          step 4: page   45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page   24.7 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    2.6 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 315.00 deg, width  8.38 deg
+          step 1: page  -45.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page  -45.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page  -45.0 off 0.0000 -> x  0.0000, 0.6436 from axis
+          step 4: page  -45.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    1.1 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page   -0.6 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width  8.12 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page  -63.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page  -85.9 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 180.00 deg, width  8.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page   26.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    4.1 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width  8.12 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page  -90.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page  -90.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    4.7 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page   -0.6 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  8.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page  -26.5 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page   -4.1 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  20.00 deg, width  6.62 deg
+          step 1: page    5.9 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page    6.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page   13.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page   -0.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page    2.9 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page   -0.7 off 0.0147 -> x -0.0568, 0.1829 from axis
+      arc at  70.00 deg, width  6.62 deg
+          step 1: page   84.1 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page   84.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page   76.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page  -90.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page   87.1 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page  -89.3 off 0.0147 -> x -0.0568, 0.1829 from axis
+      arc at 110.00 deg, width  6.62 deg
+          step 1: page  -84.1 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page  -84.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page  -76.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page   90.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page  -87.1 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page   89.3 off 0.0147 -> x -0.0568, 0.1829 from axis
+      arc at 160.00 deg, width  6.62 deg
+          step 1: page   -5.9 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page   -6.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page  -13.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page    0.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page   -2.9 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page    0.7 off 0.0147 -> x -0.0568, 0.1829 from axis
+      arc at 200.00 deg, width  6.62 deg
+          step 1: page    5.9 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page    6.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page   13.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page   -0.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page    2.9 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page   -0.7 off 0.0147 -> x -0.0568, 0.1829 from axis
+      arc at 250.00 deg, width  6.62 deg
+          step 1: page   84.1 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page   84.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page   76.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page  -90.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page   87.1 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page  -89.3 off 0.0147 -> x -0.0568, 0.1829 from axis
+      arc at 290.00 deg, width  6.62 deg
+          step 1: page  -84.1 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page  -84.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page  -76.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page   90.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page  -87.1 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page   89.3 off 0.0147 -> x -0.0568, 0.1829 from axis
+      arc at 340.00 deg, width  6.62 deg
+          step 1: page   -5.9 off 0.0436 -> x  0.3640, 0.4224 from axis
+          step 2: page   -6.0 off 0.1031 -> x -1.0341, 0.3090 from axis
+          step 3: page  -13.5 off 0.0726 -> x -0.0252, 0.6377 from axis
+          step 4: page    0.0 off 0.0070 -> x -1.4060, 0.0333 from axis
+          step 5: page   -2.9 off 0.0073 -> x  0.9757, 0.0937 from axis
+          step 6: page    0.7 off 0.0147 -> x -0.0568, 0.1829 from axis
+  once      inside   4.7% of the ring, 2 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.0744, outside points down to 0.0766
+      arc at 180.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  8.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  pulled    inside  10.4% of the ring, 4 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.1789, outside points down to 0.0741
+      arc at 180.00 deg, width 15.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 15.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3639, 0.4226 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.0462, 0.3076 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.6436 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.4142, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  1.0000, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  90.00 deg, width  3.38 deg
+          step 1: page    0.0 off 0.1789 -> x  0.3653, 0.4181 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.0414, 0.3054 from axis
+          step 3: page  -90.0 off 0.0000 -> x -0.0088, 0.6362 from axis
+          step 4: page  -90.0 off 0.0000 -> x -1.4046, 0.0112 from axis
+          step 5: page  -90.0 off 0.0000 -> x  0.9728, 0.0315 from axis
+          step 6: page  -90.0 off 0.0000 -> x -0.0546, 0.0613 from axis
+      arc at 270.00 deg, width  3.38 deg
+          step 1: page    0.0 off 0.1789 -> x  0.3653, 0.4181 from axis
+          step 2: page   90.0 off 0.0000 -> x -1.0414, 0.3054 from axis
+          step 3: page   90.0 off 0.0000 -> x -0.0088, 0.6362 from axis
+          step 4: page   90.0 off 0.0000 -> x -1.4046, 0.0112 from axis
+          step 5: page   90.0 off 0.0000 -> x  0.9728, 0.0315 from axis
+          step 6: page   90.0 off 0.0000 -> x -0.0546, 0.0613 from axis
+  (0 s)
+====================================================================================================
+San Marco, c = -0.75. flat centres: {'right': np.float64(0.866), 'small': np.float64(-1.2712), 'g1': np.complex128(0.722j), 'g2': np.complex128(-0.9463+0.3815j), 'g3': np.complex128(0.3411+0.5592j), 'g4': np.complex128(1.0764+0.2597j)}
+----------------------------------------------------------------------------------------------------
+ring g1: x = 0.0000, radius 0.7220 (flat bud centre needs 1 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  oneplane  inside  10.8% of the ring, 2 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.1207, outside points down to 0.1223
+      arc at 180.00 deg, width 19.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 19.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  along     inside  38.6% of the ring, 8 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.1019, outside points down to 0.1032
+      arc at  45.00 deg, width 17.38 deg
+          step 1: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  90.00 deg, width 17.38 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 135.00 deg, width 17.38 deg
+          step 1: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 180.00 deg, width 17.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 225.00 deg, width 17.38 deg
+          step 1: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page  -45.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page  -45.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 17.38 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 315.00 deg, width 17.38 deg
+          step 1: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page   45.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page   45.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 17.38 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  once      inside  42.8% of the ring, 8 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.1202, outside points down to 0.1044
+      arc at 180.00 deg, width 21.12 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 21.12 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  44.38 deg, width 19.12 deg
+          step 1: page   43.8 off 0.0079 -> x -1.2711, 0.0114 from axis
+          step 2: page    0.0 off 0.0082 -> x  0.8656, 0.0289 from axis
+          step 3: page    0.0 off 0.0209 -> x -0.0016, 0.0500 from axis
+      arc at 135.62 deg, width 19.12 deg
+          step 1: page  -43.8 off 0.0079 -> x -1.2711, 0.0114 from axis
+          step 2: page    0.0 off 0.0082 -> x  0.8656, 0.0289 from axis
+          step 3: page    0.0 off 0.0209 -> x -0.0016, 0.0500 from axis
+      arc at 224.38 deg, width 19.12 deg
+          step 1: page   43.8 off 0.0079 -> x -1.2711, 0.0114 from axis
+          step 2: page    0.0 off 0.0082 -> x  0.8656, 0.0289 from axis
+          step 3: page    0.0 off 0.0209 -> x -0.0016, 0.0500 from axis
+      arc at 315.62 deg, width 19.12 deg
+          step 1: page  -43.8 off 0.0079 -> x -1.2711, 0.0114 from axis
+          step 2: page    0.0 off 0.0082 -> x  0.8656, 0.0289 from axis
+          step 3: page    0.0 off 0.0209 -> x -0.0016, 0.0500 from axis
+      arc at  90.00 deg, width 17.62 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 17.62 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  pulled    inside  25.8% of the ring, 12 arc(s) | farthest from its page in the first 1 step(s): inside points up to 0.1167, outside points down to 0.1057
+      arc at 180.00 deg, width 23.88 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 23.88 deg
+          step 1: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  90.00 deg, width 19.62 deg
+          step 1: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page  -90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 19.62 deg
+          step 1: page   90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 2: page   90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 3: page   90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  79.50 deg, width  1.00 deg
+          step 1: page   70.6 off 0.1118 -> x -1.2468, 0.1577 from axis
+          step 2: page   70.6 off 0.1577 -> x  0.7804, 0.3902 from axis
+          step 3: page   70.6 off 0.3902 -> x -0.2424, 0.5674 from axis
+      arc at 100.50 deg, width  1.00 deg
+          step 1: page  -70.6 off 0.1118 -> x -1.2468, 0.1577 from axis
+          step 2: page  -70.6 off 0.1577 -> x  0.7804, 0.3902 from axis
+          step 3: page  -70.6 off 0.3902 -> x -0.2424, 0.5674 from axis
+      arc at 259.50 deg, width  1.00 deg
+          step 1: page   70.6 off 0.1118 -> x -1.2468, 0.1577 from axis
+          step 2: page   70.6 off 0.1577 -> x  0.7804, 0.3902 from axis
+          step 3: page   70.6 off 0.3902 -> x -0.2424, 0.5674 from axis
+      arc at 280.50 deg, width  1.00 deg
+          step 1: page  -70.6 off 0.1118 -> x -1.2468, 0.1577 from axis
+          step 2: page  -70.6 off 0.1577 -> x  0.7804, 0.3902 from axis
+          step 3: page  -70.6 off 0.3902 -> x -0.2424, 0.5674 from axis
+      arc at  12.50 deg, width  0.50 deg
+          step 1: page    3.7 off 0.1108 -> x -1.2473, 0.1563 from axis
+          step 2: page    3.7 off 0.1563 -> x  0.7820, 0.3869 from axis
+          step 3: page    3.7 off 0.3869 -> x -0.2390, 0.5641 from axis
+      arc at 167.50 deg, width  0.50 deg
+          step 1: page   -3.7 off 0.1108 -> x -1.2473, 0.1563 from axis
+          step 2: page   -3.7 off 0.1563 -> x  0.7820, 0.3869 from axis
+          step 3: page   -3.7 off 0.3869 -> x -0.2390, 0.5641 from axis
+      arc at 192.50 deg, width  0.50 deg
+          step 1: page    3.7 off 0.1108 -> x -1.2473, 0.1563 from axis
+          step 2: page    3.7 off 0.1563 -> x  0.7820, 0.3869 from axis
+          step 3: page    3.7 off 0.3869 -> x -0.2390, 0.5641 from axis
+      arc at 347.50 deg, width  0.50 deg
+          step 1: page   -3.7 off 0.1108 -> x -1.2473, 0.1563 from axis
+          step 2: page   -3.7 off 0.1563 -> x  0.7820, 0.3869 from axis
+          step 3: page   -3.7 off 0.3869 -> x -0.2390, 0.5641 from axis
+  (0 s)
+----------------------------------------------------------------------------------------------------
+ring g2: x = -0.9463, radius 0.3815 (flat bud centre needs 2 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  oneplane  inside  10.1% of the ring, 2 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.1214, outside points down to 0.1230
+      arc at 180.00 deg, width 18.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 18.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  along     inside  52.5% of the ring, 16 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.1029, outside points down to 0.1037
+      arc at  90.00 deg, width 18.88 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 180.00 deg, width 18.88 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page  -90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 18.88 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 18.88 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page  -90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  26.38 deg, width 11.38 deg
+          step 1: page   12.6 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page   -0.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page  -89.9 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page   89.9 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at  63.62 deg, width 11.38 deg
+          step 1: page   77.4 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page  -90.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page   -0.1 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page    0.1 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at 116.38 deg, width 11.38 deg
+          step 1: page  -77.4 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page   90.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page    0.1 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page   -0.1 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at 153.62 deg, width 11.38 deg
+          step 1: page  -12.6 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page    0.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page   89.9 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page  -89.9 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at 206.38 deg, width 11.38 deg
+          step 1: page   12.6 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page   -0.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page  -89.9 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page   89.9 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at 243.62 deg, width 11.38 deg
+          step 1: page   77.4 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page  -90.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page   -0.1 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page    0.1 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at 296.38 deg, width 11.38 deg
+          step 1: page  -77.4 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page   90.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page    0.1 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page   -0.1 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at 333.62 deg, width 11.38 deg
+          step 1: page  -12.6 off 0.0910 -> x  0.0023, 0.7196 from axis
+          step 2: page    0.0 off 0.0283 -> x -1.2662, 0.0408 from axis
+          step 3: page   89.9 off 0.0032 -> x  0.8515, 0.1034 from axis
+          step 4: page  -89.9 off 0.0079 -> x -0.0356, 0.1760 from axis
+      arc at  45.00 deg, width  5.62 deg
+          step 1: page   45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page  -45.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page  -45.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 135.00 deg, width  5.62 deg
+          step 1: page  -45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page  -45.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page  -45.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 225.00 deg, width  5.62 deg
+          step 1: page   45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page  -45.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page  -45.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 315.00 deg, width  5.62 deg
+          step 1: page  -45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page   45.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page   45.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  once      inside  27.4% of the ring, 6 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.1221, outside points down to 0.1224
+      arc at 180.00 deg, width 22.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 22.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  25.75 deg, width 13.50 deg
+          step 1: page   11.8 off 0.0920 -> x  0.0023, 0.7195 from axis
+          step 2: page    0.0 off 0.0403 -> x -1.2645, 0.0578 from axis
+          step 3: page    0.0 off 0.0578 -> x  0.8455, 0.1461 from axis
+          step 4: page    0.0 off 0.1459 -> x -0.0552, 0.2437 from axis
+      arc at 154.25 deg, width 13.50 deg
+          step 1: page  -11.8 off 0.0920 -> x  0.0023, 0.7195 from axis
+          step 2: page    0.0 off 0.0403 -> x -1.2645, 0.0578 from axis
+          step 3: page    0.0 off 0.0578 -> x  0.8455, 0.1461 from axis
+          step 4: page    0.0 off 0.1459 -> x -0.0552, 0.2437 from axis
+      arc at 205.75 deg, width 13.50 deg
+          step 1: page   11.8 off 0.0920 -> x  0.0023, 0.7195 from axis
+          step 2: page    0.0 off 0.0403 -> x -1.2645, 0.0578 from axis
+          step 3: page    0.0 off 0.0578 -> x  0.8455, 0.1461 from axis
+          step 4: page    0.0 off 0.1459 -> x -0.0552, 0.2437 from axis
+      arc at 334.25 deg, width 13.50 deg
+          step 1: page  -11.8 off 0.0920 -> x  0.0023, 0.7195 from axis
+          step 2: page    0.0 off 0.0403 -> x -1.2645, 0.0578 from axis
+          step 3: page    0.0 off 0.0578 -> x  0.8455, 0.1461 from axis
+          step 4: page    0.0 off 0.1459 -> x -0.0552, 0.2437 from axis
+  pulled    inside  24.9% of the ring, 4 arc(s) | farthest from its page in the first 2 step(s): inside points up to 0.1149, outside points down to 0.1122
+      arc at 180.00 deg, width 29.62 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 29.62 deg
+          step 1: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  90.00 deg, width 15.12 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page  -90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 15.12 deg
+          step 1: page   90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 2: page   90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 3: page   90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 4: page   90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  (0 s)
+----------------------------------------------------------------------------------------------------
+ring g3: x = 0.3411, radius 0.5592 (flat bud centre needs 3 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  oneplane  inside  23.1% of the ring, 4 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.5592, outside points down to 0.1225
+      arc at  90.00 deg, width 32.12 deg
+          step 1: page    0.0 off 0.5592 -> x -0.6827, 0.4237 from axis
+          step 2: page    0.0 off 0.4237 -> x -0.3853, 0.5327 from axis
+          step 3: page    0.0 off 0.5327 -> x -0.6604, 0.4229 from axis
+          step 4: page    0.0 off 0.4229 -> x -0.4122, 0.5138 from axis
+          step 5: page    0.0 off 0.5138 -> x -0.6444, 0.4208 from axis
+      arc at 270.00 deg, width 32.12 deg
+          step 1: page    0.0 off 0.5592 -> x -0.6827, 0.4237 from axis
+          step 2: page    0.0 off 0.4237 -> x -0.3853, 0.5327 from axis
+          step 3: page    0.0 off 0.5327 -> x -0.6604, 0.4229 from axis
+          step 4: page    0.0 off 0.4229 -> x -0.4122, 0.5138 from axis
+          step 5: page    0.0 off 0.5138 -> x -0.6444, 0.4208 from axis
+      arc at 180.00 deg, width  9.38 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  9.38 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  along     inside  54.2% of the ring, 16 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.1358, outside points down to 0.1017
+      arc at  45.00 deg, width 23.38 deg
+          step 1: page   45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page   45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page   19.1 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.3 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 135.00 deg, width 23.38 deg
+          step 1: page  -45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page  -45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page   45.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page   45.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 225.00 deg, width 23.38 deg
+          step 1: page   45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page   45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page  -34.2 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page  -16.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 315.00 deg, width 23.38 deg
+          step 1: page  -45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page  -45.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page   75.4 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page   90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width 10.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page  -90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 180.00 deg, width 10.12 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 10.12 deg
+          step 1: page  -90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page  -90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 10.12 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  16.00 deg, width  7.62 deg
+          step 1: page    3.1 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page   13.1 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page   -0.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page   10.1 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page   -0.1 off 0.0133 -> x -0.0559, 0.3177 from axis
+      arc at  74.00 deg, width  7.62 deg
+          step 1: page   86.9 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page   76.9 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page  -90.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page   79.9 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page  -89.9 off 0.0133 -> x -0.0559, 0.3177 from axis
+      arc at 106.00 deg, width  7.62 deg
+          step 1: page  -86.9 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page  -76.9 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page   90.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page  -79.9 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page   89.9 off 0.0133 -> x -0.0559, 0.3177 from axis
+      arc at 164.00 deg, width  7.62 deg
+          step 1: page   -3.1 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page  -13.1 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page    0.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page  -10.1 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page    0.1 off 0.0133 -> x -0.0559, 0.3177 from axis
+      arc at 196.00 deg, width  7.62 deg
+          step 1: page    3.1 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page   13.1 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page   -0.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page   10.1 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page   -0.1 off 0.0133 -> x -0.0559, 0.3177 from axis
+      arc at 254.00 deg, width  7.62 deg
+          step 1: page   86.9 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page   76.9 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page  -90.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page   79.9 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page  -89.9 off 0.0133 -> x -0.0559, 0.3177 from axis
+      arc at 286.00 deg, width  7.62 deg
+          step 1: page  -86.9 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page  -76.9 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page   90.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page  -79.9 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page   89.9 off 0.0133 -> x -0.0559, 0.3177 from axis
+      arc at 344.00 deg, width  7.62 deg
+          step 1: page   -3.1 off 0.1246 -> x -0.9245, 0.3919 from axis
+          step 2: page  -13.1 off 0.0927 -> x -0.0464, 0.7221 from axis
+          step 3: page    0.0 off 0.0209 -> x -1.2685, 0.0734 from axis
+          step 4: page  -10.1 off 0.0180 -> x  0.8536, 0.1861 from axis
+          step 5: page    0.1 off 0.0133 -> x -0.0559, 0.3177 from axis
+  once      inside   5.2% of the ring, 2 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.1184, outside points down to 0.1214
+      arc at 180.00 deg, width  9.38 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  9.38 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  pulled    inside  15.3% of the ring, 4 arc(s) | farthest from its page in the first 3 step(s): inside points up to 0.1118, outside points down to 0.1133
+      arc at 180.00 deg, width 15.62 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 15.62 deg
+          step 1: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page    0.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at  90.00 deg, width 11.88 deg
+          step 1: page  -90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page  -90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page  -90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page  -90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+      arc at 270.00 deg, width 11.88 deg
+          step 1: page   90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 2: page   90.0 off 0.0000 -> x  0.0000, 0.7220 from axis
+          step 3: page   90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 4: page   90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 5: page   90.0 off 0.0000 -> x -0.0000, 0.0000 from axis
+  (0 s)
+----------------------------------------------------------------------------------------------------
+ring g4: x = 1.0764, radius 0.2597 (flat bud centre needs 4 step(s) to reach the x-axis)
+  lathe     inside 100.0% of the ring, 1 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.0000, outside points down to nan
+      arc at   0.00 deg, width 360.00 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  oneplane  inside  37.1% of the ring, 4 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.5452, outside points down to 0.1226
+      arc at  90.00 deg, width 57.62 deg
+          step 1: page    0.0 off 0.2597 -> x  0.3481, 0.5452 from axis
+          step 2: page    0.0 off 0.5452 -> x -0.6791, 0.4124 from axis
+          step 3: page    0.0 off 0.4124 -> x -0.3867, 0.5163 from axis
+          step 4: page    0.0 off 0.5163 -> x -0.6589, 0.4059 from axis
+          step 5: page    0.0 off 0.4059 -> x -0.4096, 0.4927 from axis
+          step 6: page    0.0 off 0.4927 -> x -0.6446, 0.3968 from axis
+      arc at 270.00 deg, width 57.62 deg
+          step 1: page    0.0 off 0.2597 -> x  0.3481, 0.5452 from axis
+          step 2: page    0.0 off 0.5452 -> x -0.6791, 0.4124 from axis
+          step 3: page    0.0 off 0.4124 -> x -0.3867, 0.5163 from axis
+          step 4: page    0.0 off 0.5163 -> x -0.6589, 0.4059 from axis
+          step 5: page    0.0 off 0.4059 -> x -0.4096, 0.4927 from axis
+          step 6: page    0.0 off 0.4927 -> x -0.6446, 0.3968 from axis
+      arc at 180.00 deg, width  9.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  9.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  along     inside  54.2% of the ring, 16 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.1357, outside points down to 0.1013
+      arc at  45.00 deg, width 23.88 deg
+          step 1: page   45.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page   45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page   45.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page   85.3 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page  -89.4 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 135.00 deg, width 23.88 deg
+          step 1: page  -45.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page  -45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page  -45.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page  -70.9 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page  -89.7 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 225.00 deg, width 23.88 deg
+          step 1: page   45.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page   45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page   45.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page   45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page   19.1 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.3 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 315.00 deg, width 23.88 deg
+          step 1: page  -45.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page  -45.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page  -45.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page  -45.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page   85.3 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page  -89.4 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width  9.88 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page  -90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page  -90.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page  -88.9 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page   89.4 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 180.00 deg, width  9.88 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    1.1 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page   -0.6 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width  9.88 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page  -90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page  -90.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page  -90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page   42.4 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page   37.1 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  9.88 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page   -1.1 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.6 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  15.75 deg, width  7.50 deg
+          step 1: page    3.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page    3.2 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page   13.3 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page   -0.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page    7.1 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page   -0.3 off 0.0228 -> x -0.0641, 0.3216 from axis
+      arc at  74.25 deg, width  7.50 deg
+          step 1: page   87.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page   86.8 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page   76.7 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page  -90.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page   82.9 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page  -89.7 off 0.0228 -> x -0.0641, 0.3216 from axis
+      arc at 105.75 deg, width  7.50 deg
+          step 1: page  -87.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page  -86.8 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page  -76.7 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page   90.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page  -82.9 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page   89.7 off 0.0228 -> x -0.0641, 0.3216 from axis
+      arc at 164.25 deg, width  7.50 deg
+          step 1: page   -3.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page   -3.2 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page  -13.3 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page    0.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page   -7.1 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page    0.3 off 0.0228 -> x -0.0641, 0.3216 from axis
+      arc at 195.75 deg, width  7.50 deg
+          step 1: page    3.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page    3.2 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page   13.3 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page   -0.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page    7.1 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page   -0.3 off 0.0228 -> x -0.0641, 0.3216 from axis
+      arc at 254.25 deg, width  7.50 deg
+          step 1: page   87.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page   86.8 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page   76.7 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page  -90.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page   82.9 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page  -89.7 off 0.0228 -> x -0.0641, 0.3216 from axis
+      arc at 285.75 deg, width  7.50 deg
+          step 1: page  -87.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page  -86.8 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page  -76.7 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page   90.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page  -82.9 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page   89.7 off 0.0228 -> x -0.0641, 0.3216 from axis
+      arc at 344.25 deg, width  7.50 deg
+          step 1: page   -3.0 off 0.0574 -> x  0.3415, 0.5585 from axis
+          step 2: page   -3.2 off 0.1249 -> x -0.9234, 0.3918 from axis
+          step 3: page  -13.3 off 0.0924 -> x -0.0483, 0.7211 from axis
+          step 4: page    0.0 off 0.0189 -> x -1.2669, 0.0747 from axis
+          step 5: page   -7.1 off 0.0184 -> x  0.8496, 0.1894 from axis
+          step 6: page    0.3 off 0.0228 -> x -0.0641, 0.3216 from axis
+  once      inside  23.8% of the ring, 4 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.5592, outside points down to 0.1225
+      arc at  90.00 deg, width 33.62 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.5592 -> x -0.6827, 0.4237 from axis
+          step 3: page    0.0 off 0.4237 -> x -0.3853, 0.5327 from axis
+          step 4: page    0.0 off 0.5327 -> x -0.6604, 0.4229 from axis
+          step 5: page    0.0 off 0.4229 -> x -0.4122, 0.5138 from axis
+          step 6: page    0.0 off 0.5138 -> x -0.6444, 0.4208 from axis
+      arc at 270.00 deg, width 33.62 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.5592 -> x -0.6827, 0.4237 from axis
+          step 3: page    0.0 off 0.4237 -> x -0.3853, 0.5327 from axis
+          step 4: page    0.0 off 0.5327 -> x -0.6604, 0.4229 from axis
+          step 5: page    0.0 off 0.4229 -> x -0.4122, 0.5138 from axis
+          step 6: page    0.0 off 0.5138 -> x -0.6444, 0.4208 from axis
+      arc at 180.00 deg, width  9.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width  9.12 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  pulled    inside  11.2% of the ring, 4 arc(s) | farthest from its page in the first 4 step(s): inside points up to 0.1137, outside points down to 0.1141
+      arc at 180.00 deg, width 17.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at   0.00 deg, width 17.38 deg
+          step 1: page    0.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page    0.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page    0.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page    0.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page    0.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page    0.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at  90.00 deg, width  2.88 deg
+          step 1: page  -90.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page  -90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page  -90.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page   90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page   90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page   90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+      arc at 270.00 deg, width  2.88 deg
+          step 1: page   90.0 off 0.0000 -> x  0.3411, 0.5592 from axis
+          step 2: page   90.0 off 0.0000 -> x -0.9463, 0.3815 from axis
+          step 3: page   90.0 off 0.0000 -> x -0.0000, 0.7220 from axis
+          step 4: page   90.0 off 0.0000 -> x -1.2712, 0.0000 from axis
+          step 5: page   90.0 off 0.0000 -> x  0.8660, 0.0000 from axis
+          step 6: page   90.0 off 0.0000 -> x  0.0000, 0.0000 from axis
+  (0 s)

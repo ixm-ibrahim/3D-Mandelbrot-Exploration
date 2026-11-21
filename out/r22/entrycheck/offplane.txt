@@ -1,0 +1,13 @@
+Random start points in the box (-1.8..1.8) x (-1.4..1.4)^2: how many of 400000 stay 10 / 15 / 20 / 30 / 40 steps (leaving = |v| >= 64, the lab picture asks for 40)
+  c = (-1, 0, 0.3)                         Along once    2088 / 98 / 3 / 0 / 0
+  c = (-1, 0, 0.3)                         Pulled plane  10635 / 3755 / 1540 / 329 / 66
+  c = (-1, 0, 0.3)                         one plane     5222 / 285 / 20 / 0 / 0
+  rabbit c turned 10 deg about the x-axis  Along once    13559 / 2503 / 504 / 9 / 0
+  rabbit c turned 10 deg about the x-axis  Pulled plane  20357 / 10918 / 6046 / 889 / 94
+  rabbit c turned 10 deg about the x-axis  one plane     16125 / 4630 / 958 / 26 / 1
+  c = (-0.6, 0.2, 0.15)                    Along once    25443 / 6118 / 633 / 1 / 0
+  c = (-0.6, 0.2, 0.15)                    Pulled plane  35146 / 31637 / 30799 / 30551 / 30322
+  c = (-0.6, 0.2, 0.15)                    one plane     31619 / 12136 / 1139 / 2 / 0
+  rabbit (in the flat plane)               Along once    25889 / 16796 / 12597 / 10073 / 9756
+  rabbit (in the flat plane)               Pulled plane  20820 / 12584 / 9467 / 7609 / 7377
+  rabbit (in the flat plane)               one plane     19140 / 11113 / 8172 / 6649 / 6450

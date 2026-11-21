@@ -1,0 +1,174 @@
+step 1 result: page up, 15 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2
+step 1 waited 3.1 s
+step 2 result: {
+ "entries": [
+  {
+   "id": "quat4",
+   "name": "Quaternions, 4D (slices)",
+   "group": "quaternion",
+   "textsRead": 208,
+   "drawn": true,
+   "failed": "",
+   "formulaShown": "q² = (a² − b² − c² − d², 2ab, 2ac, 2ad)   for a quaternion q = (a, b, c, d). The picture point (x, y, z) stands for q = (x, y, z, 0).",
+   "dials": [
+    "par-quat4-wStep",
+    "par-quat4-w",
+    "par-quat4-tiltStep",
+    "par-quat4-tilt",
+    "par-quat4-cwStep",
+    "par-quat4-cw",
+    "par-quat4-note3"
+   ],
+   "card": [
+    "In the three numbers the orbit is held in, it crushes every direction whose angle from the",
+    "A polynomial: plain quaternion multiplying.",
+    "With the three dials at 0 this is Quaternion square (Lathe): the plane z = 0 follows compl"
+   ],
+   "learn": {
+    "on": true,
+    "moves": [
+     "Turn",
+     "Stretch",
+     "Add c"
+    ],
+    "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The exceptions are “Mandelbulb, classic”, “Rotor square (geometric algebra)”, “Kleinian squaring, one plane” and “Kleinian squaring, two planes”, which do not keep the flat picture.",
+    "sentence": "The point leans 30° from the positive x-axis. Squaring doubles it to 59°: the point turns by 30° abo",
+    "orbitFinite": true
+   },
+   "learnPlanCheck": 1.3877787807814457e-16
+  },
+  {
+   "id": "rotor",
+   "name": "Rotor square (geometric algebra)",
+   "group": "quaternion",
+   "textsRead": 338,
+   "drawn": true,
+   "failed": "",
+   "formulaShown": "v² = (p² − |s|²)·a + 2p·s   with p = a·v the part of v along the reference axis a and s = v − p·a the rest of v. Here a = (0, 0, 1).",
+   "dials": [
+    "par-rotor-lonStep",
+    "par-rotor-lon",
+    "par-rotor-latStep",
+    "par-rotor-lat",
+    "par-rotor-note2"
+   ],
+   "card": [
+    "Crushes every direction whose angle from the reference axis, times n, is a multiple of 180",
+    "A polynomial.",
+    "No. With the reference axis out of the plane z = 0, that plane does not land on itself, an"
+   ],
+   "learn": {
+    "on": true,
+    "moves": [
+     "Turn",
+     "Stretch",
+     "Add c"
+    ],
+    "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The exceptions are “Mandelbulb, classic”, “Rotor square (geometric algebra)”, “Kleinian squaring, one plane” and “Kleinian squaring, two planes”, which do not keep the flat picture.",
+    "sentence": "The point leans 30° from the positive x-axis. Squaring doubles it to 59°: the point turns by 30° abo",
+    "orbitFinite": true
+   },
+   "learnPlanCheck": 3.1401849173675503e-16
+  },
+  {
+   "id": "rotorframe",
+   "name": "Rotor square with a frame",
+   "group": "quaternion",
+   "textsRead": 70,
+   "drawn": true,
+   "failed": "",
+   "formulaShown": "v² = |v| · R(v)   with R the turn that carries the x-axis onto the direction of v: a tip up by the latitude of v, then a turn about the z-axis by its longitude. Written out, v² = (x² − (z²x + |v|y²)/ρ, y·(x(ρ + |v|) − z²)/ρ, z(ρ + x)) with ρ = √(x² + y²).",
+   "dials": [
+    "par-rotorframe-note0"
+   ],
+   "card": [
+    "Crushes the half-plane y = 0, x < 0 onto the positive x-axis (measured), where the plane s",
+    "Torn along the z-axis: directions next to a pole are thrown all the way round the equator ",
+    "The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So does"
+   ],
+   "learn": {
+    "on": true,
+    "moves": [
+     "Turn",
+     "Stretch",
+     "Add c"
+    ],
+    "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The exceptions are “Mandelbulb, classic”, “Rotor square (geometric algebra)”, “Kleinian squaring, one plane” and “Kleinian squaring, two planes”, which do not keep the flat picture.",
+    "sentence": "The point leans 30° from the positive x-axis. Squaring doubles it to 59°: the point turns by 30° abo",
+    "orbitFinite": true
+   },
+   "learnPlanCheck": 3.2159359137519293e-16
+  },
+  {
+   "id": "kleinsq",
+   "name": "Kleinian squaring, one plane",
+   "group": "kleinian",
+   "textsRead": 70,
+   "drawn": true,
+   "failed": "",
+   "formulaShown": "v² = |v|² · H(d)   with d = v/|v| the direction of v. For H, 3 round caps lie side by side round the equator, each reaching 60° from its centre. A direction inside a cap is turned inside out through the sphere that stands on the rim of that cap (one sphere inversion) and then mirrored, y → −y. A direction outside every cap is only mirrored. The three spheres have radius √3 and centres (1, √3, 0), (−2, 0, 0) and (1, −√3, 0), as in the paper.",
+   "dials": [
+    "par-kleinsq-note0"
+   ],
+   "card": [
+    "Nothing but the origin is crushed. The sphere of directions is folded along the rims of th",
+    "No jump was found (measured at n = 2, 3 and 4), but the rule is creased along the rim of e",
+    "The plane z = 0 lands on itself, but it does not follow complex arithmetic: the angle is m"
+   ],
+   "learn": {
+    "on": true,
+    "moves": [
+     "Turn",
+     "Stretch",
+     "Add c"
+    ],
+    "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The exceptions are “Mandelbulb, classic”, “Rotor square (geometric algebra)”, “Kleinian squaring, one plane” and “Kleinian squaring, two planes”, which do not keep the flat picture.",
+    "sentence": "The point leans 30° from the positive x-axis. Squaring doubles it to 59°: the point turns by 30° abo",
+    "orbitFinite": true
+   },
+   "learnPlanCheck": 1.3597399555105182e-16
+  },
+  {
+   "id": "kleinsq2",
+   "name": "Kleinian squaring, two planes",
+   "group": "kleinian",
+   "textsRead": 70,
+   "drawn": true,
+   "failed": "",
+   "formulaShown": "v² = |v|² · H(d)   with d = v/|v| the direction of v. For H, 3 round caps lie side by side round the equator, each reaching 60° from its centre. A direction inside a cap is turned inside out through the sphere that stands on the rim of that cap (one sphere inversion) and then mirrored, y → −y. A direction outside every cap is only mirrored. The three spheres have radius √3 and centres (1, √3, 0), (−2, 0, 0) and (1, −√3, 0), as in the paper. A direction nearer the plane y = 0 than the plane z = 0 uses the same caps laid round the circle of the plane y = 0, with the mirror z → −z.",
+   "dials": [
+    "par-kleinsq2-note0"
+   ],
+   "card": [
+    "Nothing but the origin is crushed. The sphere of directions is folded along the rims of th",
+    "Jumps across the planes y = z and y = −z, where the two families of caps meet (measured at",
+    "The planes z = 0 and y = 0 both land on themselves, but neither follows complex arithmetic"
+   ],
+   "learn": {
+    "on": true,
+    "moves": [
+     "Turn",
+     "Stretch",
+     "Add c"
+    ],
+    "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The exceptions are “Mandelbulb, classic”, “Rotor square (geometric algebra)”, “Kleinian squaring, one plane” and “Kleinian squaring, two planes”, which do not keep the flat picture.",
+    "sentence": "The point leans 30° from the positive x-axis. Squaring doubles it to 59°: the point turns by 30° abo",
+    "orbitFinite": true
+   },
+   "learnPlanCheck": 2.237726045655905e-16
+  }
+ ],
+ "groups": [
+  "inversions: Sphere inversions",
+  "kleinian: Inversions by region (the paper’s road)",
+  "quaternion: Quaternions",
+  "angles: Angle rules",
+  "other: Side by side",
+  "tried: Tried, and kept for the record"
+ ],
+ "order": "mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2",
+ "problems": [],
+ "idleAtEnd": true,
+ "failedAtEnd": ""
+}
+no console errors

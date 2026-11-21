@@ -1,0 +1,15 @@
+step 1 result: "default mandelbrot"
+step 1 waited 8.1 s
+step 2 result: {"res": "0.5", "aa": "1", "steps": "90", "detail": "2", "stepk": "0.8", "smooth": "1", "de": "2", "deText": "Rough (fastest)", "normals": "1", "shadow": false, "ao": false, "sl": "0.5/1/90/2", "marks": "qUltra:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFast:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qBal:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFine:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66)", "status": "Preview while moving", "q": "{\"res\":0.5,\"aa\":1,\"steps\":90,\"detail\":2,\"stepk\":0.8,\"smooth\":1,\"normals\":\"smooth\",\"ao\":false,\"shadow\":false,\"de\":0}"}
+step 2 waited 0.3 s
+step 2 wrote out/verify/p5/mandel-qUltra.png
+step 3 result: {"res": "0.75", "aa": "3", "steps": "160", "detail": "1.25", "stepk": "0.8", "smooth": "1", "de": "0", "deText": "Exact (three neighbouring orbits)", "normals": "0", "shadow": false, "ao": true, "sl": "0.75/3/160/1.25", "marks": "qUltra:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFast:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qBal:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFine:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66)", "status": "Preview while moving", "q": "{\"res\":0.75,\"aa\":3,\"steps\":160,\"detail\":1.25,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":false,\"de\":3}"}
+step 3 waited 0.6 s
+step 3 wrote out/verify/p5/mandel-qFast.png
+step 4 result: {"res": "1", "aa": "12", "steps": "260", "detail": "1", "stepk": "0.8", "smooth": "1", "de": "0", "deText": "Exact (three neighbouring orbits)", "normals": "0", "shadow": true, "ao": true, "sl": "1/12/260/1", "marks": "qUltra:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFast:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qBal:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFine:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66)", "status": "Preview while moving", "q": "{\"res\":1,\"aa\":12,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3}"}
+step 4 waited 3.0 s
+step 4 wrote out/verify/p5/mandel-qBal.png
+step 5 result: {"res": "1.5", "aa": "32", "steps": "450", "detail": "0.7", "stepk": "0.8", "smooth": "1", "de": "0", "deText": "Exact (three neighbouring orbits)", "normals": "0", "shadow": true, "ao": true, "sl": "1.5/32/450/0.7", "marks": "qUltra:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFast:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qBal:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66) | qFine:btn/null/rgb(20, 28, 37)/rgb(42, 53, 66)", "status": "Preview while moving", "q": "{\"res\":1.5,\"aa\":32,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3}"}
+step 5 waited 18.9 s
+step 5 wrote out/verify/p5/mandel-qFine.png
+no console errors

@@ -1,0 +1,14 @@
+rotor-m                          862x701  not background: 27.4 %
+rotor-j-basilica                 862x701  not background: 31.2 %
+rotor-j-rabbit                   862x701  not background: 30.6 %
+rotor-j-off-axis                 862x701  not background: 30.0 %
+rotor-cut-m                      862x701  not background: 97.5 %
+rotor-cut-j-basilica             862x701  not background: 82.0 %
+rotor-m-x                        862x701  not background: 25.5 %
+rotor-m-lon40                    862x701  not background: 24.5 %
+rotor-m-lat30                    862x701  not background: 27.3 %
+rotor-cut-m-x                    862x701  not background: 97.5 %
+rotor-cut-m-lon40                862x701  not background: 97.5 %
+rotor-cut-m-lat30                862x701  not background: 97.5 %
+rotor-j-rabbit-x                 862x701  not background: 26.2 %
+lathe-m                          862x701  not background: 25.5 %

@@ -1,0 +1,47 @@
+A. along turned half-way round the upright axis: is it the same rule? (so that the hinge has no front and back)
+   largest difference 3.59e+01
+B. For c on the x-axis the rule is along (verdicts that differ, 200,000 random start points, 60 steps)
+   c = -1       along inside 5311, hinged inside 5311, differ 0
+   c = -0.75    along inside 11437, hinged inside 11437, differ 0
+   c = -1.7549  along inside 40, hinged inside 40, differ 0
+   c = 0.2      along inside 38744, hinged inside 38744, differ 0
+C. The hinge for some c: the meeting point and its turn
+   basilica       meeting point -0.6180 +0.0000i  turn of the hinge 0.00 degrees
+   rabbit         meeting point -0.2763 +0.4797i  turn of the hinge -60.06 degrees
+   Siegel         meeting point -0.3687 -0.3377i  turn of the hinge 42.49 degrees
+   -1 + 0.2i      meeting point -0.6216 +0.0892i  turn of the hinge -8.16 degrees
+   i              meeting point -0.3002 +0.6248i  turn of the hinge -64.33 degrees
+   -0.12 - 0.74i  meeting point -0.2763 -0.4797i  turn of the hinge 60.06 degrees
+D. Flat check and lift test
+   verdicts that differ: M 0, basilica 0, rabbit 0, Siegel 0 of 20000; strays 1.3e-14
+   lifted 1e-6, basilica   2920 of 2920 stay
+   lifted 1e-6, rabbit     2716 of 2716 stay
+   lifted 1e-6, Siegel     3623 of 3624 stay
+   lifted 1e-6, -1 + 0.2i  2287 of 2287 stay
+E. 72^3 grid: inside blocks at 30 and 80 steps, biggest piece, pieces, dust; rabbit, Siegel, c = -1 + 0.2i, c = -1 + 0.03i
+   rabbit    oneplane    30 steps   4996  80 steps   4856 (2.8 % lost)  biggest 99.4 %  pieces 9  dust 0.58 %  [0 s]
+   rabbit    along       30 steps  18244  80 steps  17960 (1.6 % lost)  biggest 99.5 %  pieces 73  dust 0.48 %  [0 s]
+   rabbit    alonghinge  30 steps   6438  80 steps   6386 (0.8 % lost)  biggest 71.2 %  pieces 127  dust 3.35 %  [1 s]
+   Siegel    oneplane    30 steps  13572  80 steps  13176 (2.9 % lost)  biggest 100.0 %  pieces 1  dust 0.00 %  [1 s]
+   Siegel    along       30 steps  18406  80 steps  17926 (2.6 % lost)  biggest 99.8 %  pieces 37  dust 0.23 %  [2 s]
+   Siegel    alonghinge  30 steps   8128  80 steps   7382 (9.2 % lost)  biggest 98.9 %  pieces 59  dust 1.11 %  [2 s]
+   -1+0.2i   oneplane    30 steps   5140  80 steps   5128 (0.2 % lost)  biggest 77.6 %  pieces 11  dust 0.16 %  [2 s]
+   -1+0.2i   along       30 steps   5954  80 steps   5942 (0.2 % lost)  biggest 86.4 %  pieces 59  dust 1.28 %  [3 s]
+   -1+0.2i   alonghinge  30 steps   5878  80 steps   5870 (0.1 % lost)  biggest 73.9 %  pieces 65  dust 1.29 %  [3 s]
+   -1+0.03i  oneplane    30 steps   7972  80 steps   7968 (0.1 % lost)  biggest 99.3 %  pieces 11  dust 0.20 %  [3 s]
+   -1+0.03i  along       30 steps   7092  80 steps   7092 (0.0 % lost)  biggest 75.9 %  pieces 67  dust 0.96 %  [4 s]
+   -1+0.03i  alonghinge  30 steps   7180  80 steps   7176 (0.1 % lost)  biggest 75.4 %  pieces 66  dust 1.03 %  [4 s]
+F. Rabbit: height after one step / before, straight above the meeting point (the lump section's table)
+   oneplane      1.11   1.10   1.10   1.08   1.06   1.03   1.02   1.06
+   along         1.11   1.07   1.00   0.85   0.52   0.07  -0.33  -0.71
+   lathe        -0.55  -0.55  -0.55  -0.55  -0.55  -0.55  -0.55  -0.55
+   alonghinge   -1.11  -1.11  -1.11  -1.11  -1.11  -1.11  -1.11  -1.11
+   heights       0.005  0.040  0.075  0.120  0.200  0.300  0.400  0.600
+G. Rabbit: share of a box 0.2 wide round the meeting point that is inside, by height band (120 steps)
+   oneplane     66.0 %  58.8 %  34.7 %   4.0 %   0.0 %
+   along        70.8 %  73.1 %  73.7 %  75.3 %  73.4 %
+   alonghinge   68.5 %  54.1 %  21.2 %   0.9 %   0.0 %
+H. Rabbit: which flat cycle point each inside block sits on after 120 steps, and walls between bodies (64^3)
+   oneplane    inside   3400, not near a flat cycle point 0, height at the end at most 8.3e-117, walls 0.4 % of skin (12 faces)
+   along       inside  12434, not near a flat cycle point 0, height at the end at most 2.2e-28, walls 13.7 % of skin (2242 faces)
+   alonghinge  inside   4436, not near a flat cycle point 0, height at the end at most 1.2e-16, walls 5.6 % of skin (320 faces)

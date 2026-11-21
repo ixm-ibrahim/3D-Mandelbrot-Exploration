@@ -1,0 +1,21 @@
+=== C: two equal spheres, neighbours 100 (they touch), honeycomb
+    rho 1, t 1 (top 2.000000, p 100.0000), grid hex, depth 30; HB 1.000000 HT 1.000000, the chain ends at x = +-inf
+    page dist/r28-truth.html, exit 0, no console errors, 13 s in the browser
+    the page: program "k-balls/" (after the slices "k-balls/"), state {"brho": 1, "bt": 1, "bgrid": 1, "bit": 30, "group": 1}, ballsReach() = None
+    the sentence under the dials: "At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+    b. twin against my writing, space: 20000 points, inside by the twin 5748, by me 5748, verdicts that differ 0; the twin with nothing passed says the same: True
+    b. twin against my writing, flat : 20000 points, inside by the twin 13620, by me 13620, verdicts that differ 0; the twin with nothing passed says the same: True
+    my list: 4131687 balls, every one of radius >= 3.0e-04 in the object's own space (finer near the second sphere), 5 levels, 38 s
+    b. shader against my writing: flat cut 20402 points, verdicts that differ 6 (from the twin: 6); in space 20480 points, differ 0 (from the twin: 0)
+         differs at (-1.327870, -1.047675, 0.000000): the shader's number 5.55e-08, the twin's -4.26e-09
+         differs at (0.979556, -1.047675, 0.000000): the shader's number 1.76e-10, the twin's -6.08e-09
+         differs at (-0.819454, -0.930349, 0.000000): the shader's number 8.15e-09, the twin's -3.29e-09
+         differs at (-1.875394, -0.734804, 0.000000): the shader's number -4.08e-08, the twin's 1.2e-08
+         differs at (0.496827, 0.216115, 0.000000): the shader's number -3.4e-09, the twin's 2.77e-09
+         differs at (0.580985, 0.240867, 0.000000): the shader's number 1.27e-09, the twin's -3.87e-08
+       shader's number against the twin's ballsEstimate where both say outside: 18330 points, worst relative difference 1.52e-01, more than 1 % apart at 3
+    c. the shader's own number at its 18334 outside grid points: longer than the true distance to the nearest listed ball at 0; by more than single precision explains (0.2 % of the distance + 4e-7 of the size of the coordinates) at 0
+    c. ballsEstimate, box : 20000 outside points (made 100000, outside by my recipe 48673; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 20000; twice the estimate would still be free at 17932
+    c. ballsEstimate, mid : 20000 outside points (made 97024, outside by my recipe 58179; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 20000; twice the estimate would still be free at 14750
+    c. ballsEstimate, top : 20000 outside points (made 100000, outside by my recipe 75185; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 20000; twice the estimate would still be free at 19371
+    c. ballsEstimate, edge: 20000 outside points (made 100000, outside by my recipe 73840; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 20000; twice the estimate would still be free at 17622

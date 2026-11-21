@@ -1,0 +1,4 @@
+40 steps, the plane y = 0, 720 x 560 points: the flat picture of c = -1 + 0.3i keeps 9302; Pulled plane with c = (-1, 0, 0.3) keeps 9302; they differ at 0
+80 steps, the plane y = 0, 720 x 560 points: the flat picture of c = -1 + 0.3i keeps 1242; Pulled plane with c = (-1, 0, 0.3) keeps 1242; they differ at 0
+Pulled plane, c = (-1, 0, 0.3), 400000 random points of the box: 69 stay 40 steps; their distance from the plane y = 0: median 0.008, largest 0.048; from the plane z = 0: median 0.224
+Pulled plane, rabbit c turned 10 degrees: 99 stay 40 steps; distance from c's own page: median 0.411, largest 0.764; from the flat page: median 0.479

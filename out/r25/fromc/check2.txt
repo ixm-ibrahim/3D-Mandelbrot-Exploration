@@ -1,0 +1,56 @@
+
+== oneplane | sphere inversions, one plane (for comparison)
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0253; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0158; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.2 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0548; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.8 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0424; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.0 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.0138; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 91.0 %
+
+== along | turning plane, along (for comparison)
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0228; changes under a half turn 2.5 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0566; changes under a half turn 62.5 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.6 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0482; changes under a half turn 2.9 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0578; changes under a half turn 46.2 %, under the mirror 0.0 %; kept from 40 to 90 steps 98.4 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.1036; changes under a half turn 47.6 %, under the mirror 0.0 %; kept from 40 to 90 steps 97.6 %
+
+== axis_every | "along" about the line from 0 to the meeting point, at every step
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0228; changes under a half turn 2.5 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0203; changes under a half turn 31.5 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0482; changes under a half turn 2.9 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0253; changes under a half turn 41.7 %, under the mirror 0.0 %; kept from 40 to 90 steps 94.1 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.0140; changes under a half turn 40.3 %, under the mirror 0.0 %; kept from 40 to 90 steps 98.0 %
+
+== axis_once | "along" about the line from 0 to the meeting point at the first step, then one plane
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0245; changes under a half turn 3.2 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0159; changes under a half turn 19.9 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.7 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0532; changes under a half turn 3.3 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0349; changes under a half turn 18.3 %, under the mirror 0.0 %; kept from 40 to 90 steps 98.9 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.0151; changes under a half turn 29.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 91.3 %
+
+== m4 | copy twice round (m = 4, t = -0.2), not turned, length squared
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0199; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0826; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0333; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0637; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.1 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.0393; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 93.5 %
+
+== face4 | copy twice round, turned by c to face the meeting point, length squared
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0199; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0175; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.8 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0333; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0623; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.0396; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 93.8 %
+
+== tri | even spacing on two flat triangles (three corners on the flat circle), not turned
+   c = -1    at the meeting point: stretches 1.236 1.236 0.647, straight up 0.647 (flat stretch 1.236) | inside 0.0548; changes under a half turn 48.4 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0277; changes under a half turn 92.2 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.6 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 0.524, straight up 0.524 (flat stretch 1.000) | inside 0.0922; changes under a half turn 38.3 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   Siegel    at the meeting point: stretches 1.000 1.000 0.954, straight up 0.954 (flat stretch 1.000) | inside 0.0512; changes under a half turn 100.6 %, under the mirror 0.0 %; kept from 40 to 90 steps 96.5 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 0.920, straight up 0.920 (flat stretch 1.061) | inside 0.0354; changes under a half turn 100.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 97.5 %
+
+== face_tri | even spacing on two flat triangles, one corner turned by c onto the meeting point
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0284; changes under a half turn 31.3 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0277; changes under a half turn 92.4 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.6 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0579; changes under a half turn 43.3 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0372; changes under a half turn 102.9 %, under the mirror 0.0 %; kept from 40 to 90 steps 93.2 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.0280; changes under a half turn 105.9 %, under the mirror 0.0 %; kept from 40 to 90 steps 98.2 %

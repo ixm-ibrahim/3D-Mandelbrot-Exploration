@@ -1,0 +1,20 @@
+   idle=True after 2.6 s
+phone-dark-m
+   idle=True after 0.0 s
+   page 10140 px tall, 13 screens, hscroll 0
+phone-dark-j
+   idle=True after 1.3 s
+   page 10814 px tall, 14 screens, hscroll 0
+phone-dark-k
+   idle=True after 0.0 s
+   page 9180 px tall, 12 screens, hscroll 0
+phone-light-m
+   idle=True after 3.6 s
+   page 10140 px tall, 13 screens, hscroll 0
+phone-light-j
+   idle=True after 0.5 s
+   page 10814 px tall, 14 screens, hscroll 0
+phone-light-k
+   idle=True after 0.1 s
+   page 9180 px tall, 12 screens, hscroll 0
+PAGE PROBLEMS: []

@@ -1,0 +1,23 @@
+Only in src/css: 67-learn-shape.css
+diff -r base18a/js/66-learn-view.js src/js/66-learn-view.js
+31a32
+>   follow: 'point',               // 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js draws and paints)
+217a219
+>   if (L.follow === 'shape') { if (typeof learnShapeDraw === 'function') learnShapeDraw(); return; }   // the whole shape has the stage
+422a425
+>   if (L.follow === 'shape') { if (typeof learnShapePaint === 'function') learnShapePaint(); return; }   // and its own words and transport
+526a530
+>   if (typeof learnShapeDefaults === 'function') learnShapeDefaults();   // Follow = One point, and the whole shape as it opens
+539a544
+>   if (typeof learnShapeSync === 'function') learnShapeSync();   // with Follow = A whole shape, its transport and canvas stand in
+602a608
+>     if (L.follow === 'shape') { if (typeof learnShapeWheel === 'function') learnShapeWheel(e); return; }
+732a739
+>   if (typeof learnShapeInit === 'function') learnShapeInit();   // the choice "Follow" and the whole shape (67-learn-shape.js)
+Only in src/js: 67-learn-shape.js
+Only in src/js: 68-learn-shape3d.js
+diff -r base18a/js/90-boot.js src/js/90-boot.js
+31a32,34
+> // Learn, "A whole shape" (round 26): the 3D picture's module, for its own test scripts. The 2D part and the
+> // controls are reached through LEARN.shape.
+> if (typeof learnShape3d !== 'undefined') window.squaringLab.learnShape3d = learnShape3d;

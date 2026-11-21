@@ -1,0 +1,13 @@
+new entry, two planes / v11 Planes 2: Mandelbrot solid 864x703  pixels that differ: 3.2643 % (19827)  over 8 levels: 0.4972 %  largest difference: 93 of 255  picture is 21.4 % not background
+new entry, two planes / v11 Planes 2: Basilica       864x703  pixels that differ: 0.5715 % (3471)  over 8 levels: 0.0115 %  largest difference: 67 of 255  picture is 15.7 % not background
+new entry, two planes / v11 Planes 2: rabbit         864x703  pixels that differ: 12.7753 % (77596)  over 8 levels: 4.0815 %  largest difference: 123 of 255  picture is 33.8 % not background
+new entry, one plane / v11 Planes 1: Mandelbrot solid 864x703  pixels that differ: 0.1096 % (666)  over 8 levels: 0.0000 %  largest difference: 7 of 255  picture is 12.6 % not background
+new entry, one plane / v11 Planes 1: Basilica        864x703  pixels that differ: 0.2777 % (1687)  over 8 levels: 0.0010 %  largest difference: 14 of 255  picture is 16.2 % not background
+new entry, one plane / v11 Planes 1: rabbit          864x703  pixels that differ: 0.2483 % (1508)  over 8 levels: 0.0005 %  largest difference: 23 of 255  picture is 15.7 % not background
+--- how much two drawings of the same thing differ (the first picture drawn again at the end of each run)
+v11 Planes 2 Mandelbrot, drawn twice                 864x703  pixels that differ: 0.0000 % (0)  over 8 levels: 0.0000 %  largest difference: 0 of 255  picture is 21.4 % not background
+new two planes Mandelbrot, drawn twice               864x703  pixels that differ: 0.0000 % (0)  over 8 levels: 0.0000 %  largest difference: 0 of 255  picture is 21.4 % not background
+--- that the test can tell the two rules apart
+new two planes / v11 Planes 1: m                     864x703  pixels that differ: 18.5269 % (112531)  over 8 levels: 17.9306 %  largest difference: 255 of 255  picture is 21.4 % not background
+new two planes / v11 Planes 1: bas                   864x703  pixels that differ: 13.7448 % (83485)  over 8 levels: 12.9330 %  largest difference: 247 of 255  picture is 15.7 % not background
+new two planes / v11 Planes 1: rab                   864x703  pixels that differ: 30.9318 % (187877)  over 8 levels: 30.8356 %  largest difference: 255 of 255  picture is 33.8 % not background

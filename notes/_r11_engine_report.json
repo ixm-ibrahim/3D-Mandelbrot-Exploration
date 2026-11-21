@@ -1,0 +1,101 @@
+{
+ "engine": {
+  "summary": "Engine, round 11 (10:07 to 11:10). Page dist/r11-engine.html (md5 09a0dc00299c9268c28776f65ed99ebe) builds from base11 plus my files; smoke test tools/smoke-v9m.json: 52 steps, exit 0, no console errors (11:03). Notes: notes/r11-engine.md. Everything under out/r11/engine/.\n\nWhat changed for the user:\n1. Models of trap solids now carry the picture's colours (t9-mesh-2): \"Chain of bubbles\" has its rainbow swirl (hue difference 21.5 to 5.9 degrees), arches 6.5 to 4.4, the standard trap solid 6.9 to 5.7. \"Sea urchins\" is no longer confetti (69.1 to 24.9) but its balls are teal where the picture is green, so that part is not done. Shapes are unchanged, the five ordinary standard jobs give the same numbers as on v11.\n2. The fine lines in shadowed folds (t9-solids-4, t9-words-4) are gone. They were drawn by the shadow ray, not by crevice shading and not by the surface. Pictures with the Exact estimate and shadows on change in their shadows only; everything else in the reference list is identical to v11.\n3. Help of \"Orbit steps the trap reads\" reworded (t9-solids-2). Two plain notes added for t9-kleinian-1 and t9-flat-1 (no shader cure for either).\n\nTaken from the earlier engineer after checking: its sample rule \"variant b\" (measured again here), its diagnosis pictures, its scene list, its help wording. Its last unmeasured step measured no better and was left out. Its code had a fault it never ran into: the Kleinian model's program did not build (no Kleinian model at all, nothing in the console, and the smoke test does not make one). Found by running all nine model jobs, cured, measured again.\n\nNot settled: the speed. Another job used the GPU during every later measurement, so the drawing-time rule could not be measured cleanly (see measurements and risks). Not tried: giving samples the picture's thin-layer rule for the shape. Not done: t9-solids-3, t9-export-1.",
+  "files_changed": [
+   "src/js/30-shaders.js",
+   "src/js/25-colour.js",
+   "notes/r11-engine.md"
+  ],
+  "fixed": [
+   {
+    "id": "t9-mesh-2",
+    "what": "Partly fixed (three of the four trap jobs reach the level of ordinary solids; Sea urchins improved but not there, see not_fixed). In the RAW_FIT program only: a sample beside the trap's part of a trap solid takes four more readings round itself for the slope, steps down the slope to the surface, and reads its colour there with the picture's own pixel size, so the colour module picks the touching step as it does for the picture. While it looks for the surface, layers the picture does not draw are pushed away (gThinK, RAW_GONE). The distance a sample hands back is unchanged, so the shape of the model is unchanged. Nothing is needed from src/js/46-mesh.js for this: the blend of the two ends of a grid edge was not what spoiled the colours.",
+    "evidence": "Measured with the mesh tester's drive.py and check.py at 128 cells (out/r11/engine/mesh/check-v11.txt against check-r11-engine.txt, final build, 10:55). Hue difference picture to model, v11 then mine: Chain of bubbles 21.5 to 5.9 deg (58 to 95 % within 30 deg); Arches and hoops 6.5 to 4.4 (85 to 91 %); trapsolid 6.9 to 5.7 (88 to 95 %); Sea urchins 69.1 to 24.9 (26 to 54 %). Standard jobs the same as v11 with the same triangle counts: mandel 3.3, rabbit 2.8, julia1 7.3, cut 6.3, klein 3.5. Pictures looked at: out/r11/engine/mesh/pair-exbubbles.png and pair-exurchins.png (v11 above, new below)."
+   },
+   {
+    "id": "t9-solids-4",
+    "what": "The fans of fine parallel lines in the folds under the rabbit's buds at Fine are gone. Cause, measured: the shadow ray (lines go with Shadows off, stay with Shade crevices off). It asked for its distance with one neighbouring orbit along the ray, which reads too long where the equation stretches space unevenly; the ray strode through the fold. It now asks with all the neighbours the picture has. Cheaper cures tried and looked at, none works: shorter stride, start further off the surface, full estimate for the first 4 or 8 steps only, one neighbour along normal plus light (lines stay); full estimate only where light grazes (lines go, a seam appears).",
+    "evidence": "out/r11/engine/rabbit-crops.png: the tester's three places at 3 times, v11 / new / v11 without shadows; the new column is smooth and keeps its shadows. Variants: out/r11/engine/rabbit-t789.png, rabbit-t1011.png, and the earlier engineer's out/r10/engine/diag-rabbit-a.png. Scene d01 in out/r11/engine/cmp-final.txt."
+   },
+   {
+    "id": "t9-words-4",
+    "what": "The dark hatch lines on the shadowed underside of the rabbit seen from the side (Balanced, Exact estimate) are gone, by the same change to the shadow ray.",
+    "evidence": "out/r11/engine/side-crops.png at 2 times: v11 Exact (hatched), new Exact (smooth), v11 Rough (smooth) for comparison; out/r11/engine/pair-d03.png for the whole view at distance 2.6 and 4.6. Variants: side-t789.png, side-t1011.png."
+   },
+   {
+    "id": "t9-solids-2",
+    "what": "Help of the dial reworded: \"How many steps of each orbit the trap looks at when it colours the surface in the 3D view. At 4, where it starts, a place keeps its colour while you zoom in. A higher number gives finer patterns, but it repaints whole areas as you zoom in: a step whose pattern is too fine for the picture to show is left out, and when the zoom lets it in, the colours there change. A lower number gives broader, calmer areas.\"",
+    "evidence": "Text in src/js/25-colour.js (COLOUR_CONTROLS, key 'reach'); present in the built page (out/r11/engine/notes-check.log). The behaviour it describes is the tester's measurement and the code of colourReach(), not measured again by me."
+   },
+   {
+    "id": "t9-kleinian-1",
+    "what": "No cure in the shader; the tester's second expected outcome instead: a note under the solid choice whenever a Kleinian trap solid has its trap centre off y = 0 (colKleinHigh): \"With the trap centre moved up or down (y not 0) some pieces grow very large. They can fill the picture, or close round the camera so that the picture is black. Put y back to 0, or zoom out a long way.\"",
+    "evidence": "Drawn again on this base: out/r11/engine/sheet-rest.png (y 0.5 black, 0.25 two huge balls, 1 a swirl filling the picture, as the tester saw). out/r11/engine/far.png: with the camera 8 times further out both y 0.5 and y 1 show whole objects, so the advice holds. Note shows at y 0.5 and hides at y 0: out/r11/engine/notes-check.log."
+   }
+  ],
+  "not_fixed": [
+   {
+    "id": "t9-mesh-2 (Sea urchins part)",
+    "why": "Hue difference still 24.9 degrees at 128 cells: the spikes have their colours and the confetti is gone, but the balls of the model are teal where the picture is plain green. Ran out of time to go further.",
+    "learned": "Reasoned, not measured: the balls are the Julia set itself wrapped in layers thinner than a pixel. The picture colours such a place by how near the first few orbit steps come to the trap, which changes within a pixel of height, and a sample that starts up to a cell away does not land on the picture's own surface to within that. Aiming 0.8 pixel above the surface as a ray does (the earlier engineer's last step) measured 24.8, no better. Not tried: one more reading down the slope before the colour is read, and handing the samples the picture's pixel size for the distance they return (the model engineer's clean cure for the shape), which would change the shape and needs the mesh module's thin-layer code looked at together with it."
+   },
+   {
+    "id": "t9-flat-1",
+    "why": "Still there on this base (out/r11/engine/sheet-rest.png, first tile: upper big disc plain yellow-green, lower one banded). No cure at hand in the Kleinian search.",
+    "learned": "Only a note was added beside the inside choice in the Kleinian view: \"In the Kleinian view the trap colours inside the discs do not follow the mirror symmetry of the picture: two discs that mirror each other can come out in different colours.\" It shows in the Kleinian 2D view with inside by orbit trap and not in the Julia view (notes-check.log). The cause was not traced by me; the note states only what the picture shows."
+   },
+   {
+    "id": "t9-solids-3",
+    "why": "No time. Only drawn again and looked at (out/r11/engine/sheet-rest.png, d06 Balanced, d07 Ultra fast, d08 Fine).",
+    "learned": "Balanced and Fine agree by eye; Ultra fast is yellower and its shape visibly smoother, so shape and colour are mixed up in the tester's number. Reasoned from the code: the probe that decides gPowerLaw always runs the same way at every preset, so the number of steps the trap reads is not what differs between presets."
+   },
+   {
+    "id": "t9-export-1",
+    "why": "No time; the tester's export script was not run.",
+    "learned": "Reasoned from the code, not run: the thin-layer rule of a trap solid goes by gPix = pix * t, a pixel of the picture being drawn, so a file twice the size keeps layers half as thick. gPix = pix * t * uPx (a pixel of the page) in main() of 30-shaders.js would make every size agree with the screen, but the moving preview and a high-density screen would then keep or drop other layers than now, so it needs its own round of pictures before it goes in."
+   }
+  ],
+  "names_added": [
+   "gThinK (global float in GL_HEAD, set before a query by the model's sample program only)",
+   "RAW_GONE (const in the orbit code, RAW_FIT only)",
+   "RAW_SLOPE, RAW_THIN (consts in GL_TAIL)",
+   "rawTrap (bool in main()) and the state crawl == 4 (the four readings round a trap solid's sample)",
+   "colKleinHigh (25-colour.js) and two new notes in COLOUR_CONTROLS",
+   "No id, label, uniform, state field or file name changed. src/js/40-render.js is as in base11."
+  ],
+  "needs_from_others": [
+   "Closing text, src/body.html, the answer to \"Why did solids look like a stack of slices, even at Fine?\": nothing in it is now false, but it can gain one sentence: \"A last trace of it, fine lines in shadowed folds with Distance estimate at Exact, came from the shadow and is gone as well.\"",
+   "Closing text, src/body.html, after the sentence \"“Orbit steps the trap reads” starts at 4.\": add \"At 4 a place keeps its colour while you zoom in. A higher number gives finer patterns but repaints whole areas as you zoom in.\"",
+   "Closing text, src/body.html, the sentence about Kleinian trap solids that names only the trap centre off x = 0 and z = 0: add \"With the trap centre off y = 0 some pieces grow so large that they fill the picture or close round the camera; a note beside the choice says so.\"",
+   "Smoke test (tools/smoke-v9m.json, orchestrator): add a step that starts a 3D model in the Kleinian view and checks that files come out. The fault I found (no Kleinian model at all) passed the smoke test with exit 0 and no console errors.",
+   "Speed, orchestrator: run python out/me/perf.py base4 r11-engine v11 base4 r11-engine v11 base4 r11-engine v11 while nothing else uses the GPU, before this goes into a version.",
+   "src/js/46-mesh.js: nothing needed for the colours. Still open for the model engineer if the urchins should come closer: samples that use the picture's pixel size for the distance they return (not tried here)."
+  ],
+  "measurements": [
+   "Reference list: 68 scenes on dist/v11.html (out/r11/engine/ref/, made 10:08 to 10:10 before any source change) against the final page (out/r11/engine/final/, numbers in cmp-final.txt). Largest channel difference 0 in: the 2D view (f01, f02, f05, f09, f10), every Kleinian picture (f16, f17, g03, g11, s20 to s23, d09 to d11, d13), every picture at Ultra fast, Fast or Rough (f21, f22, g08, s12, d05, d07), every scene with shadows off (x01, x03, x05, x07). f23 cut: 1.",
+   "Changed scenes, all with the Exact estimate and shadows on, in the shadows only (largest channel difference; share of pixels that differ at all): opening Mandelbrot g01 55, 0.11 %; f11 67, 0.11 %; f14 63, 0.11 %; Julia c = -1 g02 115, 0.28 %; g04 Fine 133, 0.59 %; rabbit g05 99, 0.48 %; Fine Mandelbrot g12 109, 0.23 %; f27 122, 0.24 %; mosaic g07 127, 1.6 %; power -2 g06 151, 12 %; trap solids s01 87, 0.76 %; s02 207, 2.2 %; s03 121, 0.08 %; s04 126, 0.38 %; s05 163, 1.0 %; s06 205, 3.7 %; s07 184, 0.75 %; s09 164, 0.02 %; s10 60, 0.56 %; s11 14, 0.21 %; s16 83, 0.30 %; s17 82, 1.9 %; d12 Kleinian trap solid y = 1: 19, 0.004 %. Defect scenes: d01 149, 3.9 %; d03 157, 4.6 %; d04 149, 1.1 %; Mandelbulb approach d06 186, 8.2 %; d08 189, 9.4 %. Looked at: pair-ordinary.png (power -2, discs, arches, Mandelbulb approach) and pair-open.png: same pictures by eye.",
+   "The longer shadow strides on top of the fuller shadow query (build new against new2, 68 scenes): identical except power -2 (31, 0.13 %), Mandelbulb approach (40, 0.005 %; 25, 0.01 %), d12 (19, 0.004 %). Final build against the build before the Kleinian cure and the notes: all 68 identical.",
+   "Models at 128 cells, hue difference picture to model, v11 / final: mandel 3.3 / 3.3; rabbit 2.8 / 2.8; julia1 7.3 / 7.3; cut 6.3 / 6.3; klein 3.5 / 3.5; trapsolid 6.9 / 5.7; Chain of bubbles 21.5 / 5.9; Sea urchins 69.1 / 24.9; Arches and hoops 6.5 / 4.4. Overlap and triangle counts unchanged in all nine.",
+   "Speed, quiet GPU, 10:16 to 10:19 (two visits, least): base4 Mandelbrot draw 499 ms, Julia 635; v11 547 and 600; fuller shadow query alone 582 and 700. 10:24 to 10:26 (three visits, least), fuller shadow query alone: Mandelbrot compile 1924 ms, draw 616 against 483 for base4 (1.275, over the quarter); Julia 667 against 647; Kleinian compile 714 ms, draw 194 against 186.",
+   "Speed, final page, 11:04 to 11:08, three visits, least, WITH ANOTHER JOB ON THE GPU: Mandelbrot compile 2253 ms (limit 2600), draw 886 against 930 for base4; Julia draw 468 against 1719; Kleinian compile 878 ms (limit 1100), draw 100 against 221. By the rule as written it passes, but base4 itself drew twice as slowly as at 10:25 and the visits scatter by more than the margin, so this is not a clean measurement (out/r11/engine/perf-final.log, perf-3.log, perf-2.log, perf-1.log).",
+   "Smoke test on the final page: 52 steps, exit 0, no console errors, 11:03 (out/r11/engine/smoke-final.log). New notes and help text checked in the page: out/r11/engine/notes-check.log.",
+   "Only reasoned, not measured: why the urchins' balls stay teal; the cause and cure of t9-export-1; that the probe is not what differs between presets in t9-solids-3; that longer shadow strides in the open cannot change a soft shadow edge (the pictures agree with it: see the third entry)."
+  ],
+  "sheets": [
+   "out/r11/engine/mesh/pair-exbubbles.png : picture and model of Chain of bubbles, v11 above and new below; the model below carries the rainbow swirl, the one above is teal and patchy",
+   "out/r11/engine/mesh/pair-exurchins.png : the same for Sea urchins; confetti above, below the spikes are right but the balls are teal where the picture is green (the part not done)",
+   "out/r11/engine/rabbit-crops.png : the tester's three places on the rabbit at Fine, 3 times; left v11 with fans of lines, middle new and smooth with its shadows kept, right v11 without shadows",
+   "out/r11/engine/side-crops.png : the rabbit from the side at Balanced and Exact, 2 times; left v11 hatched, middle new, right v11 at Rough for comparison",
+   "out/r11/engine/sheet-rest.png : the defects not cured, drawn on this base: the two Kleinian discs that do not mirror, the trap centre moved along y (black, huge balls, swirl), the Mandelbulb approach at Balanced, Ultra fast and Fine"
+  ],
+  "risks": [
+   "Speed not settled. The fuller shadow query costs about a tenth of the drawing time with the Exact estimate (measured on a quiet GPU: 1.275 times base4 on the Mandelbrot view, over the quarter). The longer shadow strides I added to pay for it could only be measured while another job used the GPU. If a clean run shows the drawing over the limit, the cost is one line at PH_SHADOW in src/js/30-shaders.js (qn = min(nt, 1); taken out); putting it back brings the lines back, and no cheaper variant I tried removes them.",
+   "Shadows change a little in every picture drawn with the Exact estimate and shadows on (they are now read with the true distance). By eye the pictures I opened are the same; power -2 (12 % of pixels differ) and the Mandelbulb approach (8 to 9 %) change most and were looked at only at reduced size.",
+   "The sample rule for trap solids was measured on four Julia trap solids at 128 cells only. Not run: 256 and 512 cells, offset 0, a trap added to the solid, Mandelbrot and mosaic trap solids, a Kleinian trap solid's model, the built-in field check. A sample near a trap solid now costs six more readings; job times stayed between 1 and 8 seconds.",
+   "The Kleinian model was broken by the taken-over code and is cured and measured (klein-128 as on v11), but only that one Kleinian model job was run.",
+   "src/js/30-shaders.js now has plain line feeds where base11 has CR LF, so a plain diff shows every line; use diff --strip-trailing-cr. The page was built and tested from the file as it is.",
+   "The two new notes are text only: the black picture with the trap centre off y = 0 and the discs that do not mirror are still there.",
+   "Test pages left in dist/ (r11-eng-b, -p, -b3, -t3, -t7 to -t11) are variants, not the result. Nothing was published and no file outside my three and my notes was changed."
+  ]
+ }
+}

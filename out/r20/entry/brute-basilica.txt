@@ -1,0 +1,13 @@
+step 1 result: page up, 19 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow turnaway turnalong windsq
+step 1 waited 4.5 s
+no console errors
+brute-bas-x0.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.4 wide, 40 steps, 360 x 360 points, in the set: 15.91 %; lobes round the middle: 8 (at 0, 59, 89, 120, 180, 239, 269, 300 degrees)
+brute-bas-neck.png: windsq, n 2, c = [-1, 0, 0], centre [-0.618034, 0, 0], across [0, 1, 0], up [0, 0, 1], 0.2 wide, 40 steps, 360 x 360 points, in the set: 0.00 %
+brute-bas-xm03.png: windsq, n 2, c = [-1, 0, 0], centre [-0.3, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.4 wide, 80 steps, 480 x 480 points, in the set: 8.47 %
+brute-bas-p30.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 0.866, 0.5], 3.6 wide, 40 steps, 360 x 360 points, in the set: 11.41 %
+brute-bas-p60.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 0.5, 0.866], 3.6 wide, 40 steps, 360 x 360 points, in the set: 10.94 %
+brute-bas-p90.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 0.0, 1.0], 3.6 wide, 40 steps, 360 x 360 points, in the set: 11.41 %
+brute-bas-skin-a.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0.45, 0.26], across [0, 1, 0], up [0, 0, 1], 0.5 wide, 80 steps, 480 x 480 points, in the set: 44.35 %
+brute-bas-skin-b.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0.45, 0.26], across [0, 1, 0], up [0, 0, 1], 0.12 wide, 80 steps, 480 x 480 points, in the set: 37.17 %
+brute-bas-bud60-a.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0.3, 0.52], across [0, 1, 0], up [0, 0, 1], 0.5 wide, 80 steps, 480 x 480 points, in the set: 31.11 %
+brute-bas-bud-side.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0.3, 0.52], across [1, 0, 0], up [0, -0.866, 0.5], 0.5 wide, 80 steps, 480 x 480 points, in the set: 5.14 %

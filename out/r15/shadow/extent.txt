@@ -1,0 +1,6 @@
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\r15\shadow\extent.py:15: RuntimeWarning: invalid value encountered in divide
+  u1 = np.clip(d[:, 0] / g, -1, 1); u2 = np.clip(c0 - s0 * d[:, 2] / g, -1, 1); wr = d[:, 1] * (s0 * g + c0 * d[:, 2]) / (g * g)
+power 2: grid 90^3 over +-4.0, cell 0.089: 2984 cells in the solid; x -1.47 to 0.93, y -1.11 to 1.11, z -1.47 to 0.67; share of the volume above the plane 0.24; touches the box wall: False
+power 3: grid 90^3 over +-2.5, cell 0.056: 11904 cells in the solid; x -1.03 to 1.03, y -1.14 to 1.14, z -1.03 to 1.03; share of the volume above the plane 0.50; touches the box wall: False
+power 4: grid 90^3 over +-2.5, cell 0.056: 12276 cells in the solid; x -1.14 to 0.97, y -0.97 to 0.97, z -0.69 to 1.69; share of the volume above the plane 0.59; touches the box wall: False
+power 5: grid 90^3 over +-2.5, cell 0.056: 13312 cells in the solid; x -0.97 to 0.97, y -0.97 to 0.97, z -0.53 to 1.92; share of the volume above the plane 0.67; touches the box wall: False

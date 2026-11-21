@@ -1,0 +1,112 @@
+page dist/r28-final.html, window 1400x950, theme dark, started 17:04:07
+theme as the page took it: colour scheme "dark", background rgb(14, 20, 27), data-theme ""
+the Approach list, open, the mouse over the row Balls on balls: row box [965, 452, 358, 47], wholly in the window True, its text cut False; the explanation beside it [505, -187, 460, 159]: "Balls on ballsa cousin of the flat picture: no c, no powerMade only of slides by whole numbers and sphere inversions, so every body is an exact ball. It is a cousin of the flat picture: its flat cut is a chain of circles. It has no c and no power.One click shows it in the Kleinian view, where its dials are."; the page scrolls sideways by 0 px
+--- every word of the group (as the row gives it)
+{
+ "panelTitle": "Kleinian group",
+ "legend": "Group",
+ "choices": [
+  "Pearls between two walls",
+  "Balls on balls a cousin of the flat picture: no c, no power"
+ ],
+ "note": "Made only of slides by whole numbers and sphere inversions, so every body is an exact ball. It is a cousin of the flat picture: its flat cut is a chain of circles. It has no c and no power.",
+ "size": {
+  "label": "Size of the neighbours, % of the middle ball",
+  "help": "How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain, and past 100, where they are larger than the middle ball, the second sphere is made smaller to let them.",
+  "boxTip": "From 1 to 2000",
+  "boxSaysToAScreenReader": "Size of the neighbours, % of the middle ball, typed value",
+  "up": "Up by 0.1. Hold Shift for ten steps.",
+  "down": "Down by 0.1. Hold Shift for ten steps.",
+  "upName": "Increase Size of the neighbours, % of the middle ball",
+  "stepButton": [
+   "±0.1",
+   "The arrows change the value by 0.1. Press for whole-number steps.",
+   "Size of the neighbours, % of the middle ball: step by whole numbers"
+  ]
+ },
+ "second": {
+  "label": "Second sphere, % of the first",
+  "help": "The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball, and their buds are smaller and stand further apart. Between 50 and 100 the buds on a neighbour would cut into each other, so the dial jumps from 50 to 100.",
+  "boxTip": "From 2 to 50, or 100",
+  "boxSaysToAScreenReader": "Second sphere, % of the first, typed value",
+  "up": "Up to the next whole number. Hold Shift for ten steps. From 50 one step goes to 100.",
+  "down": "Down to the next whole number. Hold Shift for ten steps. From 100 one step goes to 50.",
+  "upName": "Increase Second sphere, % of the first",
+  "stepButton": [
+   "±1",
+   "The arrows move to the next whole number. Press for steps of 0.1.",
+   "Second sphere, % of the first: step by whole numbers"
+  ]
+ },
+ "depth": {
+  "label": "Depth of the search",
+  "help": "How many rounds of the search a point may take before it counts as inside: the larger the neighbours, the more rounds the far balls of the chain need, and with too few they come out swollen.",
+  "boxTip": "Whole numbers from 1 to 1000",
+  "boxSaysToAScreenReader": "Depth of the search, typed value",
+  "up": "Up by 1. Hold Shift for ten steps.",
+  "down": "Down by 1. Hold Shift for ten steps.",
+  "upName": "Increase Depth of the search",
+  "stepButton": null
+ },
+ "grid": {
+  "label": "Whole numbers",
+  "options": [
+   "Square grid (four-fold)",
+   "Honeycomb grid (six-fold)",
+   "A line only (buds only round the flat picture)"
+  ],
+  "help": "Where the buds sit: four-fold round the chain (square grid), six-fold (honeycomb grid), or only round the flat picture (a line only); the flat cut is the same for all three."
+ },
+ "frame": [
+  "Frame it",
+  "Move the camera to a view that shows the whole chain. A zoom limit or a Drawing radius that is in the way is moved as well."
+ ],
+ "reset": "Reset this section",
+ "row": {
+  "heading": "A cousin, not a rule",
+  "text": "Balls on ballsa cousin of the flat picture: no c, no power",
+  "tip": "Shows this object in the Kleinian view, where its dials are."
+ },
+ "status": "Done: 12 passes at 862 × 701",
+ "hint": "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-click a spot to move in on it.",
+ "hintBelow": "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-click a spot to move in on it.",
+ "stageNote": null
+}
+1 as the row gives it: panel 360 px wide in a window of 1400; note 81 px high, status sentences 0 px, the whole part 760 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+2 size 150: panel 360 px wide in a window of 1400; note 81 px high, status sentences 61 px, the whole part 835 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first. It follows the size until you set it yourself."
+3 second sphere 50, size 200, depth 3: three status sentences: panel 360 px wide in a window of 1400; note 81 px high, status sentences 142 px, the whole part 916 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+4 size 1999.9, depth 1000: the longest numbers: panel 360 px wide in a window of 1400; note 81 px high, status sentences 101 px, the whole part 876 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "The Drawing radius in the View section cuts the two big neighbours open. Frame it makes room for them. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first. It follows the size until you set it yourself."
+5 size 300, 2D view: panel 360 px wide in a window of 1400; note 81 px high, status sentences 61 px, the whole part 835 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first. It follows the size until you set it yourself."
+--- the status sentences, in every state I could reach (typed with real keys)
+as the row gives it: ""
+size 100, two equal spheres, 3D, square grid: "At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+the same, honeycomb grid: "At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+the same, a line only: "At 100 the chain never ends, so the picture shows a stretch of it; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+the same, square grid, 2D view: "At 100 the chain never ends, so the picture shows a stretch of it, and the circles stand so close that they read as one band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen."
+size 95 typed after the start view (no Frame it): ""
+the same in the 2D view: ""
+size 150 typed after the start view (no Frame it): "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first. It follows the size until you set it yourself."
+size 150, Frame it: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first. It follows the size until you set it yourself."
+size 400 typed after the start view (no Frame it): "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first. It follows the size until you set it yourself."
+size 400, Frame it: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first. It follows the size until you set it yourself."
+size 150, then back to 80: "The second sphere is now 50 % of the first. Reset this section puts it back to 100. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+second sphere 50, size 200 (touching), 3D, square grid, no Frame it: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+the same after Frame it: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+the same, a line only: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+the same, 2D view: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first."
+second sphere 50, size 199.8 (all but touching), Frame it, 3D: "Here the chain is too long for one picture, so Frame it shows a stretch of it. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+   reach 57.48, Drawing radius 25.25
+the same, 2D view, Frame it: "Here the chain is too long for one picture, so Frame it shows a stretch of it. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+   reach 57.48, half the width of the 2D view 5.06
+depth 4: "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+depth 5: ""
+size 150, depth 2: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first. It follows the size until you set it yourself. With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+second sphere 50, size 200, depth 1 (the longest text): "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With so few rounds of the search whole balls are still undecided, and they come out as broken shells. With a single round most of the picture is one wall of colour."
+   that text is 467 characters, 6 sentences
+status line under the picture at the start view: "Done: 12 passes at 862 × 701"; hint: "Drag to turn. Scroll to zoom. Shift-drag to slide. Double-click a spot to move in on it."
+--- console: no console errors or warnings
+=== 0 thing(s) marked WRONG

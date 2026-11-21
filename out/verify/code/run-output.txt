@@ -1,0 +1,15 @@
+python tools/shot.py --actions out/verify/code/steps.json   (dist/preview.html, one run, 20:58)
+step 2: ms per refresh(true) alone / with view hooks, x3: [[2.19,3.408],[1.793,3.317],[2.126,2.867]]
+step 4: cut on by user: true; after choosing preset 1 (c*z*(1 - z)): cutOn=false, checkbox=false
+step 5: after preset 7: ["z^2 + c*z^-2",true,0]; after Equation reset: eq=z^n + c cutOn=true checkbox=true preset shown=z^n + c (Mandelbrot)
+step 6: near limit 10 -> [zmin, dist] [10,10]; after Reset view: [zmin, dist, label, nearBox, thumbTop] [10,5.2,"5.2","10","0%"]; limits 10..12 then lambda preset: [zmin, zmax, dist, label] [10,20,10,"10"]
+step 7: compileFormula big literal: (pw(z, uPow) + vec3(1000000000000000, 0.0, 0.0))  |  smul(1000000000000000, c)
+step 9: card idle before sweep: true; after 2.5 s of sweeping: {"frames":150,"cardBusy":"true","cardIdle":false,"lenOpacity":"0.45","sliceText":"No. This is the one approach here that does not keep the flat set at z = 0. Sett","theta":112.7,"status":"Preview while moving","pressed":"true"}
+no console errors
+
+python out/verify/code/uniforms.py
+declared 53 set 53
+declared, never set: []
+set, never declared: []
+declared, never used in shader text: ['uA']   (uA is used by the approach shader code in 10-approaches.js)
+blit declared-not-set: [] set-not-declared: []

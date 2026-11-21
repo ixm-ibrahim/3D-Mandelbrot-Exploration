@@ -1,0 +1,8 @@
+Pulled plane, first squaring of an orbit, c = -1 (on the x-axis, so c does not pull). The line y = 0, z = sqrt(0.05) = 0.22361:
+  x = +0.3, points 2e-03 apart on either side: below/above the line the answers lie 0.029 apart; left/right of it 0.027 apart (length of the answers 0.140)
+  x = +0.3, points 2e-06 apart on either side: below/above the line the answers lie 0.028 apart; left/right of it 0.028 apart (length of the answers 0.140)
+  x = +0.3, points 2e-09 apart on either side: below/above the line the answers lie 0.028 apart; left/right of it 0.028 apart (length of the answers 0.140)
+  x = -0.8, points 2e-03 apart on either side: below/above the line the answers lie 0.704 apart; left/right of it 0.704 apart (length of the answers 0.690)
+  x = -0.8, points 2e-06 apart on either side: below/above the line the answers lie 0.704 apart; left/right of it 0.704 apart (length of the answers 0.690)
+  x = -0.8, points 2e-09 apart on either side: below/above the line the answers lie 0.704 apart; left/right of it 0.704 apart (length of the answers 0.690)
+  control at z = 0.5: two points 2e-06 apart give answers 2.33e-06 apart

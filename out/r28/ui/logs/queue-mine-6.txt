@@ -1,0 +1,4 @@
+started 13:19:31
+f1 phone dark, third run: exit 0 13:21:30
+f1 phone light, frame and 2D: exit 0 13:22:15
+exit: all done 13:22:15

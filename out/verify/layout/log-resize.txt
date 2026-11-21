@@ -1,0 +1,32 @@
+   idle=True after 4.6 s
+   idle=True after 0.5 s
+a-800x600 drawing when resized: True
+   mid {"win": [800, 600], "hscroll": 0, "stage": [768, 348], "canvasCss": [766, 346], "canvasPx": [766, 346], "aspectCss": 2.214, "aspectPx": 2.214, "idle": false, "status": "Preview while moving", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 294, 345, 44, true], ["stage-btns", 581, 306, 176, 31, true], ["cam-mode", 648, 47, 109, 27, true], ["cam-zoom", 701, 83, 56, 206, true]]}
+   end {"win": [800, 600], "hscroll": 0, "stage": [768, 348], "canvasCss": [766, 346], "canvasPx": [766, 346], "aspectCss": 2.214, "aspectPx": 2.214, "idle": true, "status": "Done: 12 passes at 766 × 346", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 294, 345, 44, true], ["stage-btns", 581, 306, 176, 31, true], ["cam-mode", 648, 47, 109, 27, true], ["cam-zoom", 701, 83, 56, 206, true]]}
+   idle=True after 2.6 s
+b-1400x950 drawing when resized: True
+   mid {"win": [1400, 950], "hscroll": 0, "stage": [864, 703], "canvasCss": [862, 701], "canvasPx": [862, 701], "aspectCss": 1.23, "aspectPx": 1.23, "idle": false, "status": "Preview while moving", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 649, 345, 44, true], ["stage-btns", 677, 661, 176, 31, true], ["cam-mode", 744, 47, 109, 27, true], ["cam-zoom", 797, 83, 56, 561, true]]}
+   end {"win": [1400, 950], "hscroll": 0, "stage": [864, 703], "canvasCss": [862, 701], "canvasPx": [862, 701], "aspectCss": 1.23, "aspectPx": 1.23, "idle": true, "status": "Done: 12 passes at 862 × 701", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 649, 345, 44, true], ["stage-btns", 677, 661, 176, 31, true], ["cam-mode", 744, 47, 109, 27, true], ["cam-zoom", 797, 83, 56, 561, true]]}
+   idle=True after 0.8 s
+c-1000x500 drawing when resized: True
+   mid {"win": [1000, 500], "hscroll": 0, "stage": [584, 370], "canvasCss": [582, 368], "canvasPx": [582, 368], "aspectCss": 1.582, "aspectPx": 1.582, "idle": false, "status": "Preview while moving", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 316, 345, 44, true], ["stage-btns", 397, 328, 176, 31, true], ["cam-mode", 464, 47, 109, 27, true], ["cam-zoom", 517, 83, 56, 228, true]]}
+   end {"win": [1000, 500], "hscroll": 0, "stage": [584, 370], "canvasCss": [582, 368], "canvasPx": [582, 368], "aspectCss": 1.582, "aspectPx": 1.582, "idle": true, "status": "Done: 12 passes at 582 × 368", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 316, 345, 44, true], ["stage-btns", 397, 328, 176, 31, true], ["cam-mode", 464, 47, 109, 27, true], ["cam-zoom", 517, 83, 56, 228, true]]}
+   idle=True after 1.1 s
+d-375x812 drawing when resized: True
+   mid {"win": [375, 812], "hscroll": 0, "stage": [343, 471], "canvasCss": [341, 469], "canvasPx": [341, 469], "aspectCss": 0.727, "aspectPx": 0.727, "idle": false, "status": "Preview while moving", "kids": [["triad", 9, 9, 72, 72, true], ["stage-btns", 156, 429, 176, 31, true], ["cam-mode", 223, 47, 109, 27, true], ["cam-zoom", 276, 83, 56, 329, true]]}
+   end {"win": [375, 812], "hscroll": 0, "stage": [343, 471], "canvasCss": [341, 469], "canvasPx": [341, 469], "aspectCss": 0.727, "aspectPx": 0.727, "idle": true, "status": "Done: 12 passes at 341 × 469", "kids": [["triad", 9, 9, 72, 72, true], ["stage-btns", 156, 429, 176, 31, true], ["cam-mode", 223, 47, 109, 27, true], ["cam-zoom", 276, 83, 56, 329, true]]}
+   idle=True after 1.3 s
+e-921x700 drawing when resized: True
+   mid {"win": [921, 700], "hscroll": 0, "stage": [505, 518], "canvasCss": [503, 516], "canvasPx": [503, 516], "aspectCss": 0.975, "aspectPx": 0.975, "idle": false, "status": "Preview while moving", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 464, 295, 44, true], ["stage-btns", 318, 476, 176, 31, true], ["cam-mode", 385, 47, 109, 27, true], ["cam-zoom", 438, 83, 56, 376, true]]}
+   end {"win": [921, 700], "hscroll": 0, "stage": [505, 518], "canvasCss": [503, 516], "canvasPx": [503, 516], "aspectCss": 0.975, "aspectPx": 0.975, "idle": true, "status": "Done: 12 passes at 503 × 516", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 464, 295, 44, true], ["stage-btns", 318, 476, 176, 31, true], ["cam-mode", 385, 47, 109, 27, true], ["cam-zoom", 438, 83, 56, 376, true]]}
+   idle=True after 1.0 s
+f-620x700 drawing when resized: True
+   mid {"win": [620, 700], "hscroll": 0, "stage": [588, 406], "canvasCss": [586, 404], "canvasPx": [586, 404], "aspectCss": 1.45, "aspectPx": 1.45, "idle": false, "status": "Preview while moving", "kids": [["triad", 9, 9, 72, 72, true], ["stage-btns", 401, 364, 176, 31, true], ["cam-mode", 468, 47, 109, 27, true], ["cam-zoom", 521, 83, 56, 264, true]]}
+   end {"win": [620, 700], "hscroll": 0, "stage": [588, 406], "canvasCss": [586, 404], "canvasPx": [586, 404], "aspectCss": 1.45, "aspectPx": 1.45, "idle": true, "status": "Done: 12 passes at 586 × 404", "kids": [["triad", 9, 9, 72, 72, true], ["stage-btns", 401, 364, 176, 31, true], ["cam-mode", 468, 47, 109, 27, true], ["cam-zoom", 521, 83, 56, 264, true]]}
+   idle=True after 2.0 s
+g-1920x1080 drawing when resized: True
+   mid {"win": [1920, 1080], "hscroll": 0, "stage": [864, 720], "canvasCss": [862, 718], "canvasPx": [862, 718], "aspectCss": 1.201, "aspectPx": 1.201, "idle": false, "status": "Preview while moving", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 666, 345, 44, true], ["stage-btns", 677, 678, 176, 31, true], ["cam-mode", 744, 47, 109, 27, true], ["cam-zoom", 797, 83, 56, 578, true]]}
+   end {"win": [1920, 1080], "hscroll": 0, "stage": [864, 720], "canvasCss": [862, 718], "canvasPx": [862, 718], "aspectCss": 1.201, "aspectPx": 1.201, "idle": true, "status": "Done: 12 passes at 862 × 718", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 666, 345, 44, true], ["stage-btns", 677, 678, 176, 31, true], ["cam-mode", 744, 47, 109, 27, true], ["cam-zoom", 797, 83, 56, 578, true]]}
+   idle=True after 2.5 s
+after a burst {"win": [1400, 950], "hscroll": 0, "stage": [864, 703], "canvasCss": [862, 701], "canvasPx": [862, 701], "aspectCss": 1.23, "aspectPx": 1.23, "idle": true, "status": "Done: 12 passes at 862 × 701", "kids": [["triad", 9, 9, 72, 72, true], ["hint", 11, 649, 345, 44, true], ["stage-btns", 677, 661, 176, 31, true], ["cam-mode", 744, 47, 109, 27, true], ["cam-zoom", 797, 83, 56, 561, true]]}
+PAGE PROBLEMS: []

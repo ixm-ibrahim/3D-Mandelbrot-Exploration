@@ -1,0 +1,22 @@
+step 1 waited 2.3 s
+step 2 result: 
+default, new shader
+step 2 waited 0.8 s
+step 2 wrote out/approaches/70-s-default.png
+step 3 result: 
+z^n + c, n = -2, z0 = 0, new shader
+step 3 waited 2.8 s
+step 3 wrote out/approaches/71-s-neg2-default.png
+step 4 result: 
+preset z^-n + c from c, new shader
+step 4 waited 8.3 s
+step 4 wrote out/approaches/72-s-neg-preset.png
+step 5 result: 
+devaney, new shader
+step 5 waited 3.0 s
+step 5 wrote out/approaches/73-s-devaney.png
+step 6 result: 
+devaney cut, new shader
+step 6 waited 0.8 s
+step 6 wrote out/approaches/74-s-devaney-cut.png
+no console errors

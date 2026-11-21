@@ -1,0 +1,19 @@
+17:02:36 states written by hand
+17:02:50   exit 0
+17:02:50 speed past 100 (150 and 300), 2 trials
+17:04:07   exit 0
+17:04:07 words and fit: wide dark (with the words), phone light, wide light, phone dark
+17:05:52   exit 0
+17:06:22   exit 0
+17:06:56   exit 0
+17:07:24   exit 0
+17:07:24 rays, light theme wide and phone light, three views each
+17:09:00   exit 0
+17:09:27   exit 0
+17:11:37   walk lw exit 0
+17:11:47   walk lp exit 0
+17:11:47 the frozen page against itself (the whole window)
+17:12:34   exit 0
+17:12:34 3000 random moves of the dials
+17:12:46   exit 0
+17:12:46 exit: queue 3 is done

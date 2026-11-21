@@ -1,0 +1,10 @@
+step 1 waited 5.1 s
+step 2 result: {"at": "grid or flex", "topOfBlockAsFlex": 0, "topOfBlockAsGrid": 0}
+step 3 result: {"at": "learn stand-in", "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 478, "small": 667}, "stageH": 220, "main": [0, 478], "solo": true, "btn": [440, 472], "transport": [228, 378], "overlap": false, "pinH": "478px", "hint": "none"}
+step 3 wrote out/r13/pin/375x667-light-9-learn-stand-in.png
+step 4 result: {"at": "too tall, then back", "tall": {"pin": {"want": true, "can": true, "on": true, "free": true, "stuck": false, "top": 0, "h": 0, "small": 667}, "pos": "relative", "h": 658}, "back": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "stageH": 265}
+step 4 waited 0.0 s
+step 5 result: {"at": "unpinned, reloading", "want": false, "stored": "0"}
+step 6 waited 2.5 s
+step 7 result: {"at": "after reload", "pin": {"want": false, "can": true, "on": false, "free": false, "stuck": false, "top": 0, "h": 0, "small": 667}, "btn": "Pin picture", "cls": "pin-can", "stageH": 290, "blocked": {"threw": "", "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": false, "top": 0, "h": 365, "small": 667}, "btn": "Unpin picture"}}
+no console errors

@@ -1,0 +1,407 @@
+--- space 1 lathe n=2 {} v=-1.2,0,0
+  [turn] Turn: A negative number leans 180° from the positive side. Squaring doubles it to 360°, a full turn: the point swings through a direction the line does not have and lands on the positive side.
+  [stretch] Stretch: Its length, 1.20, is squared: 1.44. A length over 1 gets longer.
+  [shift] Add c: Add c: the point moves by −1.00, from 1.44 to 0.44.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 1 lathe n=2 {} v=0.8,0,0
+  [turn] Turn: A positive number leans 0° from the positive side, and 0° doubled is still 0°. It stays where it is.
+  [stretch] Stretch: Its length, 0.80, is squared: 0.64. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by −1.00, from 0.64 to −0.36.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 1 lathe n=3 {} v=-1.2,0,0
+  [turn] Turn: A negative number leans 180° from the positive side. Cubing triples it to 540° (the same direction as 180°): the point swings through a direction the line does not have and lands on the negative side again.
+  [stretch] Stretch: Its length, 1.20, is cubed: 1.73. A length over 1 gets longer.
+  [shift] Add c: Add c: the point moves by −1.00, from −1.73 to −2.73.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 1 lathe n=3 {} v=0.8,0,0
+  [turn] Turn: A positive number leans 0° from the positive side, and 0° tripled is still 0°. It stays where it is.
+  [stretch] Stretch: Its length, 0.80, is cubed: 0.51. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by −1.00, from 0.51 to −0.49.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 1 lathe n=2.5 {} v=-1.2,0,0
+  [turn] Turn: A negative number leans 180° from the positive side. The power 2.5 multiplies it by 2.5, to 450° (the same direction as 90°): the point swings through a direction the line does not have and ends off the line, 90° round: on a line alone this power of a negative number has no answer.
+  [stretch] Stretch: Its length, 1.20, is raised to the power 2.5: 1.58. A length over 1 gets longer.
+  [shift] Add c: Add c: the point moves by −1.00 along the line, but it is still off the line: 1.58 out in the direction the line does not have.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line.
+--- space 1 lathe n=2.5 {} v=0.8,0,0
+  [turn] Turn: A positive number leans 0° from the positive side, and 0° times 2.5 is still 0°. It stays where it is.
+  [stretch] Stretch: Its length, 0.80, is raised to the power 2.5: 0.57. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by −1.00, from 0.57 to −0.43.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line.
+--- space 1 lathe n=-1 {} v=-1.2,0,0
+  [turn] Turn: A negative number leans 180° from the positive side. The power −1 multiplies it by −1, to −180°: the point swings through a direction the line does not have and lands on the negative side again.
+  [stretch] Stretch: Its length, 1.20, is raised to the power −1: 0.83. A negative power turns short into long and long into short.
+  [shift] Add c: Add c: the point moves by −1.00, from −0.83 to −1.83.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 1 lathe n=-1 {} v=0.8,0,0
+  [turn] Turn: A positive number leans 0° from the positive side, and 0° times −1 is still 0°. It stays where it is.
+  [stretch] Stretch: Its length, 0.80, is raised to the power −1: 1.25. A negative power turns short into long and long into short.
+  [shift] Add c: Add c: the point moves by −1.00, from 1.25 to 0.25.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 1 lathe n=2 {} v=0,0,0
+  [turn] Turn: The point is 0. It has no side to lean to, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by 0.25, from 0.00 to 0.25.
+  note: On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 2 lathe n=2 {} v=0.96,0.72,0
+  [turn] Turn: The point leans 37° from the positive x-axis. Squaring doubles it to 74°: the point turns by 37° about the z-axis.
+  [stretch] Stretch: Its length, 1.20, is squared: 1.44. A length over 1 gets longer.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30), from (0.40, 1.38) to (0.00, 1.68).
+  note: On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 2 classic n=3 {} v=-0.5,0.9,0
+  [turn] Turn: The point leans 119° from the positive x-axis. Cubing triples it to 357° (the same direction as −3°): the point turns by 238° about the z-axis.
+  [stretch] Stretch: Its length, 1.03, is cubed: 1.09. A length over 1 gets longer.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30), from (1.09, −0.05) to (0.69, 0.25).
+  note: On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 2 mercator n=2 {} v=0.3,-0.9,0
+  [mirror] Mirror: The modifier |y| is ticked, so before anything else y goes from −0.90 to 0.90, straight through 0.
+  [turn] Turn: The point leans 72° from the positive x-axis. Squaring doubles it to 143°: the point turns by 72° about the z-axis.
+  [stretch] Stretch: Its length, 0.95, is squared: 0.90. A length under 1 gets shorter.
+  [shift] Add c: c is 0 here, so nothing is added: the point stays at (−0.72, 0.54).
+  note: On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 2 bulb n=2 {} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by (0.10, 0.00), from (0.00, 0.00) to (0.10, 0.00).
+  note: On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.
+--- space 3 mercator n=2 {"turn":-110,"lift":0.7} v=0.5,0.7,0.4
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 54°. Squaring doubles it to 109°: the point turns by 54° about the z-axis.
+  [lean] Lean: Its latitude is 25°, which is 0.45 on the scale a Mercator map uses. Squaring doubles that number to 0.90, which is latitude 46°. On this scale a point can come close to a pole but never pass over it.
+  [phase] Add the turn: The Turn dial adds −110° to the longitude: it goes from 109° to −1°.
+  [phase] Lift: The Lift toward the pole dial adds 0.70 on the Mercator scale: the latitude goes from 46° to 67°.
+  [stretch] Stretch: Its length, 0.95, is squared: 0.90. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.35, −0.01, 0.83) to (−0.05, 0.29, 1.03).
+  note: The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 mercator n=2 {"turn":-110,"lift":0.7} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [lean] Lean: The point is at the origin. It has no direction, so there is nothing to turn.
+  [phase] Add the turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [phase] Lift: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 mercator n=2 {"turn":-110,"lift":0.7} v=-1,0,0
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 180°. Squaring doubles it to 360° (the same direction as 0°): the point turns by 180° about the z-axis.
+  [lean] Lean: The point lies in the flat plane: its latitude is 0°, and any number times 0° is 0°. It does not lean.
+  [phase] Add the turn: The Turn dial adds −110° to the longitude: it goes from 0° to −110°.
+  [phase] Lift: The Lift toward the pole dial adds 0.70 on the Mercator scale: the latitude goes from 0° to 37°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.27, −0.75, 0.60) to (−0.67, −0.45, 0.80).
+  note: The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 mercator n=2 {"turn":-110,"lift":0.7} v=0,0,1
+  [turn] Turn: The point is on the z-axis, where it has no longitude. This turn leaves it where it is.
+  [lean] Lean: The point is on the z-axis, at a pole. On the scale a Mercator map uses a pole is endlessly far away, so the point stays at the pole, to within a hair.
+  [phase] Add the turn: The Turn dial adds −110° to the longitude: it goes from 0° to −110°.
+  [phase] Lift: The Lift toward the pole dial adds 0.70 on the Mercator scale: the latitude goes from 90° to 90°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 1.00) to (−0.40, 0.30, 1.20).
+  note: The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 mercator n=2 {"turn":-110,"lift":0.7} v=0.6,-0.3,0
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is −27°. Squaring doubles it to −53°: the point turns by 27° about the z-axis.
+  [lean] Lean: The point lies in the flat plane: its latitude is 0°, and any number times 0° is 0°. It does not lean.
+  [phase] Add the turn: The Turn dial adds −110° to the longitude: it goes from −53° to −163°.
+  [phase] Lift: The Lift toward the pole dial adds 0.70 on the Mercator scale: the latitude goes from 0° to 37°.
+  [stretch] Stretch: Its length, 0.67, is squared: 0.45. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.34, −0.10, 0.27) to (−0.74, 0.20, 0.47).
+  note: The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 fold n=2 {"planes":5,"lift":-0.6} v=0.5,0.7,0.4
+  [fold] Fold: The fold comes first. Around the x-axis the point sits at 30°, and the fold of 5 planes carries it to 6°.
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 58°. Squaring doubles it to 116°: the point turns by 58° about the z-axis.
+  [lean] Lean: Its latitude is 5°, which is 0.09 on the scale a Mercator map uses. Squaring doubles that number to 0.19, which is latitude 11°. On this scale a point can come close to a pole but never pass over it.
+  [phase] Lift: The Lift toward the pole dial adds −0.60 on the Mercator scale: the latitude goes from 11° to −23°.
+  [stretch] Stretch: Its length, 0.95, is squared: 0.90. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.36, 0.74, −0.35) to (−0.76, 1.04, −0.15).
+  note: The fold is not a turn of space: each point turns about the x-axis by its own amount, and points on two sides of a crease go opposite ways. After it the rule is the one-plane rule. The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 fold n=2 {"planes":5,"lift":-0.6} v=0,0,0
+  [fold] Fold: The fold comes first. The point is at the origin, on the crease of the fold, so it stays.
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [lean] Lean: The point is at the origin. It has no direction, so there is nothing to turn.
+  [phase] Lift: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: The fold is not a turn of space: each point turns about the x-axis by its own amount, and points on two sides of a crease go opposite ways. After it the rule is the one-plane rule. The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 fold n=2 {"planes":5,"lift":-0.6} v=-1,0,0
+  [fold] Fold: The fold comes first. The point is on the x-axis, the crease of the fold, so it stays.
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 180°. Squaring doubles it to 360° (the same direction as 0°): the point turns by 180° about the z-axis.
+  [lean] Lean: The point lies in the flat plane: its latitude is 0°, and any number times 0° is 0°. It does not lean.
+  [phase] Lift: The Lift toward the pole dial adds −0.60 on the Mercator scale: the latitude goes from 0° to −32°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.84, 0.00, −0.54) to (0.44, 0.30, −0.34).
+  note: The fold is not a turn of space: each point turns about the x-axis by its own amount, and points on two sides of a crease go opposite ways. After it the rule is the one-plane rule. The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 fold n=2 {"planes":5,"lift":-0.6} v=0,0,1
+  [fold] Fold: The fold comes first. Around the x-axis the point sits at 90°, and the fold of 5 planes carries it to 162°.
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is −90°. Squaring doubles it to −180°: the point turns by 90° about the z-axis.
+  [lean] Lean: Its latitude is 18°, which is 0.32 on the scale a Mercator map uses. Squaring doubles that number to 0.64, which is latitude 34°. On this scale a point can come close to a pole but never pass over it.
+  [phase] Lift: The Lift toward the pole dial adds −0.60 on the Mercator scale: the latitude goes from 34° to 2°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−1.00, 0.00, 0.04) to (−1.40, 0.30, 0.24).
+  note: The fold is not a turn of space: each point turns about the x-axis by its own amount, and points on two sides of a crease go opposite ways. After it the rule is the one-plane rule. The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 fold n=2 {"planes":5,"lift":-0.6} v=0.6,-0.3,0
+  [fold] Fold: The fold comes first, but it leaves this point alone: at 180° around the x-axis it is already where the fold wants it.
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is −27°. Squaring doubles it to −53°: the point turns by 27° about the z-axis.
+  [lean] Lean: The point lies in the flat plane: its latitude is 0°, and any number times 0° is 0°. It does not lean.
+  [phase] Lift: The Lift toward the pole dial adds −0.60 on the Mercator scale: the latitude goes from 0° to −32°.
+  [stretch] Stretch: Its length, 0.67, is squared: 0.45. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.23, −0.30, −0.24) to (−0.17, 0.00, −0.04).
+  note: The fold is not a turn of space: each point turns about the x-axis by its own amount, and points on two sides of a crease go opposite ways. After it the rule is the one-plane rule. The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.
+--- space 3 lathe n=2 {"spin":-5} v=0.5,0.7,0.4
+  [turn] Turn: The point leans 58° away from the positive x-axis. Squaring doubles it to 116°, in the flat sheet that holds the x-axis and the point.
+  [spin] Spin: The Spin multiplier dial is at −5: the point’s angle round the x-axis, 30°, is multiplied by it and becomes −149°.
+  [stretch] Stretch: Its length, 0.95, is squared: 0.90. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.40, −0.69, −0.42) to (−0.80, −0.39, −0.22).
+  note: The hinge is a different line for every point: the line square to the sheet that holds the x-axis and the point. It is the z-axis exactly when the point lies in the flat plane. A point on the negative x-axis has no side to lean to, and the lab swings it through the y direction.
+--- space 3 lathe n=2 {"spin":-5} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [spin] Spin: The point is on the x-axis, where it has no angle round the axis. The spin leaves it where it is.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: The hinge is a different line for every point: the line square to the sheet that holds the x-axis and the point. It is the z-axis exactly when the point lies in the flat plane. A point on the negative x-axis has no side to lean to, and the lab swings it through the y direction.
+--- space 3 lathe n=2 {"spin":-5} v=-1,0,0
+  [turn] Turn: The point lies on the x-axis, on the far side of the origin: it leans 180° and has no side to lean to, so the lab swings it through the y direction. Squaring doubles it to 360°: it lands on the positive x-axis.
+  [spin] Spin: The Spin multiplier dial is at −5: the point’s angle round the x-axis, 180°, is multiplied by it and becomes −900° (the same direction as 180°).
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.00, 0.00, 0.00) to (0.60, 0.30, 0.20).
+  note: The hinge is a different line for every point: the line square to the sheet that holds the x-axis and the point. It is the z-axis exactly when the point lies in the flat plane. A point on the negative x-axis has no side to lean to, and the lab swings it through the y direction.
+--- space 3 lathe n=2 {"spin":-5} v=0,0,1
+  [turn] Turn: The point leans 90° away from the positive x-axis. Squaring doubles it to 180°, in the flat sheet that holds the x-axis and the point.
+  [spin] Spin: The Spin multiplier dial is at −5: the point’s angle round the x-axis, 90°, is multiplied by it and becomes −450° (the same direction as −90°).
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−1.00, 0.00, 0.00) to (−1.40, 0.30, 0.20).
+  note: The hinge is a different line for every point: the line square to the sheet that holds the x-axis and the point. It is the z-axis exactly when the point lies in the flat plane. A point on the negative x-axis has no side to lean to, and the lab swings it through the y direction.
+--- space 3 lathe n=2 {"spin":-5} v=0.6,-0.3,0
+  [turn] Turn: The point leans 27° away from the positive x-axis. Squaring doubles it to 53°, in the flat sheet that holds the x-axis and the point.
+  [spin] Spin: The Spin multiplier dial is at −5: the point’s angle round the x-axis, 180°, is multiplied by it and becomes −900° (the same direction as 180°).
+  [stretch] Stretch: Its length, 0.67, is squared: 0.45. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.27, −0.36, 0.00) to (−0.13, −0.06, 0.20).
+  note: The hinge is a different line for every point: the line square to the sheet that holds the x-axis and the point. It is the z-axis exactly when the point lies in the flat plane. A point on the negative x-axis has no side to lean to, and the lab swings it through the y direction.
+--- space 3 tilt n=2 {"tilt":-125} v=0.5,0.7,0.4
+  [turn] Turn: Measured from the tilted axis (the Tilt of the axis dial is at −125°), the point leans 72°. Squaring doubles it to 145°, in the flat sheet that holds the tilted axis and the point.
+  [back] Turn back: Then all of space turns back about the z-axis by 125°, the tilt. The point’s longitude goes from −23° to 102°.
+  [stretch] Stretch: Its length, 0.95, is squared: 0.90. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.19, 0.85, 0.23) to (−0.59, 1.15, 0.43).
+  note: The Lathe move, measured from an axis tilted inside the flat plane, and then a turn back about the z-axis. For a point in the flat plane the two turns add up to the plain turn of a page, at every tilt.
+--- space 3 tilt n=2 {"tilt":-125} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [back] Turn back: Then all of space turns back about the z-axis by 125°, the tilt. The point is on that axis, so it stays.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: The Lathe move, measured from an axis tilted inside the flat plane, and then a turn back about the z-axis. For a point in the flat plane the two turns add up to the plain turn of a page, at every tilt.
+--- space 3 tilt n=2 {"tilt":-125} v=-1,0,0
+  [turn] Turn: Measured from the tilted axis (the Tilt of the axis dial is at −125°), the point leans 55°. Squaring doubles it to 110°, in the flat sheet that holds the tilted axis and the point.
+  [back] Turn back: Then all of space turns back about the z-axis by 125°, the tilt. The point’s longitude goes from −125° to 0°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.00, 0.00, 0.00) to (0.60, 0.30, 0.20).
+  note: The Lathe move, measured from an axis tilted inside the flat plane, and then a turn back about the z-axis. For a point in the flat plane the two turns add up to the plain turn of a page, at every tilt.
+--- space 3 tilt n=2 {"tilt":-125} v=0,0,1
+  [turn] Turn: Measured from the tilted axis (the Tilt of the axis dial is at −125°), the point leans 90°. Squaring doubles it to 180°, in the flat sheet that holds the tilted axis and the point.
+  [back] Turn back: Then all of space turns back about the z-axis by 125°, the tilt. The point’s longitude goes from −55° to 70°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.34, 0.94, 0.00) to (−0.06, 1.24, 0.20).
+  note: The Lathe move, measured from an axis tilted inside the flat plane, and then a turn back about the z-axis. For a point in the flat plane the two turns add up to the plain turn of a page, at every tilt.
+--- space 3 tilt n=2 {"tilt":-125} v=0.6,-0.3,0
+  [turn] Turn: Measured from the tilted axis (the Tilt of the axis dial is at −125°), the point leans 152°. Squaring doubles it to 303°, in the flat sheet that holds the tilted axis and the point. That is past the axis, so it ends 57° from the tilted axis, on the far side.
+  [back] Turn back: Then all of space turns back about the z-axis by 125°, the tilt. The point’s longitude goes from −178° to −53°.
+  [stretch] Stretch: Its length, 0.67, is squared: 0.45. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.27, −0.36, 0.00) to (−0.13, −0.06, 0.20).
+  note: The Lathe move, measured from an axis tilted inside the flat plane, and then a turn back about the z-axis. For a point in the flat plane the two turns add up to the plain turn of a page, at every tilt.
+--- space 3 bulb n=2 {"lat":-140,"lon":75} v=0.5,0.7,0.4
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 54°. Squaring doubles it to 109°: the point turns by 54° about the z-axis.
+  [lean] Lean: Its latitude is 25°. Squaring doubles it to 50°. The Latitude phase dial adds −140°: −90°. That is past the pole, so it comes down the far side, at latitude −90°.
+  [phase] Add the phase: The Longitude phase dial adds 75° to the longitude: it goes from −71° to 4°.
+  [stretch] Stretch: Its length, 0.95, is squared: 0.90. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, −0.90) to (−0.40, 0.30, −0.70).
+  note: Two angles are multiplied: the longitude, by a turn about the z-axis, and the latitude, by a lean along the point’s own meridian. The lean may carry the point over a pole. The Latitude phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 bulb n=2 {"lat":-140,"lon":75} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [lean] Lean: The point is at the origin. It has no direction, so there is nothing to turn.
+  [phase] Add the phase: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: Two angles are multiplied: the longitude, by a turn about the z-axis, and the latitude, by a lean along the point’s own meridian. The lean may carry the point over a pole. The Latitude phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 bulb n=2 {"lat":-140,"lon":75} v=-1,0,0
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 180°. Squaring doubles it to 360° (the same direction as 0°): the point turns by 180° about the z-axis.
+  [lean] Lean: The point lies in the flat plane: its latitude is 0°. Any number times 0° is 0°. The Latitude phase dial adds −140°: −140°. That is past the pole, so it comes down the far side, at latitude −40°.
+  [phase] Add the phase: The Longitude phase dial adds 75° to the longitude: it goes from 180° to −105°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.20, −0.74, −0.64) to (−0.60, −0.44, −0.44).
+  note: Two angles are multiplied: the longitude, by a turn about the z-axis, and the latitude, by a lean along the point’s own meridian. The lean may carry the point over a pole. The Latitude phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 bulb n=2 {"lat":-140,"lon":75} v=0,0,1
+  [turn] Turn: The point is on the z-axis, where it has no longitude. This turn leaves it where it is.
+  [lean] Lean: Its latitude is 90°. Squaring doubles it to 180°. The Latitude phase dial adds −140°: 40°.
+  [phase] Add the phase: The Longitude phase dial adds 75° to the longitude: it goes from 0° to 75°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.20, 0.74, 0.64) to (−0.20, 1.04, 0.84).
+  note: Two angles are multiplied: the longitude, by a turn about the z-axis, and the latitude, by a lean along the point’s own meridian. The lean may carry the point over a pole. The Latitude phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 bulb n=2 {"lat":-140,"lon":75} v=0.6,-0.3,0
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is −27°. Squaring doubles it to −53°: the point turns by 27° about the z-axis.
+  [lean] Lean: The point lies in the flat plane: its latitude is 0°. Any number times 0° is 0°. The Latitude phase dial adds −140°: −140°. That is past the pole, so it comes down the far side, at latitude −40°.
+  [phase] Add the phase: The Longitude phase dial adds 75° to the longitude: it goes from 127° to −158°.
+  [stretch] Stretch: Its length, 0.67, is squared: 0.45. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.32, −0.13, −0.29) to (−0.72, 0.17, −0.09).
+  note: Two angles are multiplied: the longitude, by a turn about the z-axis, and the latitude, by a lean along the point’s own meridian. The lean may carry the point over a pole. The Latitude phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 classic n=2 {"theta":60,"phi":-130} v=0.5,0.7,0.4
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 54°. Squaring doubles it to 109°: the point turns by 54° about the z-axis.
+  [lean] Lean: Its angle from the z-axis is 65°. Squaring doubles it to 130°. The θ phase dial adds 60°: 190°. That is past the axis, so it ends 170° from the z-axis, on the far side.
+  [phase] Add the phase: The φ phase dial adds −130° to the longitude: it goes from −71° to 159°.
+  [stretch] Stretch: Its length, 0.95, is squared: 0.90. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.15, 0.06, −0.89) to (−0.55, 0.36, −0.69).
+  note: The angle that is multiplied is measured from the z-axis. A point in the flat plane is 90° from that axis, so the lean throws it out of the plane: this is the one approach that does not keep the flat picture. The θ phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 classic n=2 {"theta":60,"phi":-130} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [lean] Lean: The point is at the origin. It has no direction, so there is nothing to turn.
+  [phase] Add the phase: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin: its length is 0, and 0 squared is still 0. It stays.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: The angle that is multiplied is measured from the z-axis. A point in the flat plane is 90° from that axis, so the lean throws it out of the plane: this is the one approach that does not keep the flat picture. The θ phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 classic n=2 {"theta":60,"phi":-130} v=-1,0,0
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 180°. Squaring doubles it to 360° (the same direction as 0°): the point turns by 180° about the z-axis.
+  [lean] Lean: Its angle from the z-axis is 90°. Squaring doubles it to 180°. The θ phase dial adds 60°: 240°. That is past the axis, so it ends 120° from the z-axis, on the far side. The point leaves the flat plane.
+  [phase] Add the phase: The φ phase dial adds −130° to the longitude: it goes from 180° to 50°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.56, 0.66, −0.50) to (0.16, 0.96, −0.30).
+  note: The angle that is multiplied is measured from the z-axis. A point in the flat plane is 90° from that axis, so the lean throws it out of the plane: this is the one approach that does not keep the flat picture. The θ phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 classic n=2 {"theta":60,"phi":-130} v=0,0,1
+  [turn] Turn: The point is on the z-axis, where it has no longitude. This turn leaves it where it is.
+  [lean] Lean: Its angle from the z-axis is 0°. Squaring doubles it to 0°. The θ phase dial adds 60°: 60°.
+  [phase] Add the phase: The φ phase dial adds −130° to the longitude: it goes from 0° to −130°.
+  [stretch] Stretch: Its length, 1.00, is squared: 1.00. A length of exactly 1 stays 1.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.56, −0.66, 0.50) to (−0.96, −0.36, 0.70).
+  note: The angle that is multiplied is measured from the z-axis. A point in the flat plane is 90° from that axis, so the lean throws it out of the plane: this is the one approach that does not keep the flat picture. The θ phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 classic n=2 {"theta":60,"phi":-130} v=0.6,-0.3,0
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is −27°. Squaring doubles it to −53°: the point turns by 27° about the z-axis.
+  [lean] Lean: Its angle from the z-axis is 90°. Squaring doubles it to 180°. The θ phase dial adds 60°: 240°. That is past the axis, so it ends 120° from the z-axis, on the far side. The point leaves the flat plane.
+  [phase] Add the phase: The φ phase dial adds −130° to the longitude: it goes from 127° to −3°.
+  [stretch] Stretch: Its length, 0.67, is squared: 0.45. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.39, −0.02, −0.23) to (−0.01, 0.28, −0.03).
+  note: The angle that is multiplied is measured from the z-axis. A point in the flat plane is 90° from that axis, so the lean throws it out of the plane: this is the one approach that does not keep the flat picture. The θ phase is shown inside the Lean move: once a point has passed over a pole it no longer shows which way its angle was growing, so the phase cannot be a move of its own.
+--- space 3 split n=2 {} v=0.5,0.7,0.4
+  [turn] Turn: The flat part (x, y) of the point leans 54° from the positive x-axis. Squaring doubles it to 109°: the point turns by 54° about the z-axis.
+  [stretch] Stretch: The length of the flat part, 0.86, is squared: 0.74. A length under 1 gets shorter. The height is not touched.
+  [own] Height: The height, 0.40, is squared on its own, like a number on a line: 0.16.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.24, 0.70, 0.16) to (−0.64, 1.00, 0.36).
+  note: The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.
+--- space 3 split n=2 {} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The flat part of the point is 0, and 0 squared is still 0. It stays. The height is not touched.
+  [own] Height: The height is 0, and 0 squared is 0. The point stays level.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.
+--- space 3 split n=2 {} v=-1,0,0
+  [turn] Turn: The flat part (x, y) of the point leans 180° from the positive x-axis. Squaring doubles it to 360° (the same direction as 0°): the point turns by 180° about the z-axis.
+  [stretch] Stretch: The length of the flat part, 1.00, is squared: 1.00. A length of exactly 1 stays 1. The height is not touched.
+  [own] Height: The height is 0, and 0 squared is 0. The point stays level.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.00, 0.00, 0.00) to (0.60, 0.30, 0.20).
+  note: The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.
+--- space 3 split n=2 {} v=0,0,1
+  [turn] Turn: The point is on the z-axis: its flat part (x, y) is 0, so there is nothing to turn.
+  [stretch] Stretch: The flat part of the point is 0, and 0 squared is still 0. It stays. The height is not touched.
+  [own] Height: The height, 1.00, is squared on its own, like a number on a line: 1.00.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 1.00) to (−0.40, 0.30, 1.20).
+  note: The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.
+--- space 3 split n=2 {} v=0.6,-0.3,0
+  [turn] Turn: The flat part (x, y) of the point leans −27° from the positive x-axis. Squaring doubles it to −53°: the point turns by 27° about the z-axis.
+  [stretch] Stretch: The length of the flat part, 0.67, is squared: 0.45. A length under 1 gets shorter. The height is not touched.
+  [own] Height: The height is 0, and 0 squared is 0. The point stays level.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.27, −0.36, 0.00) to (−0.13, −0.06, 0.20).
+  note: The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.
+--- space 3 softfold n=2 {"planes":4,"blend":0.3,"curve":0,"mix":2} v=0.5,0.7,0.4
+  [own] Turn: The rule sends this direction 44° round the sphere, and the point goes there the short way.
+  [stretch] Stretch: Then the length goes from 0.95 to the rule’s length, 0.90.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.17, 0.84, 0.27) to (−0.57, 1.14, 0.47).
+  note: No simpler moves are written out for “Blended planes”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 softfold n=2 {"planes":4,"blend":0.3,"curve":0,"mix":2} v=0,0,0
+  [own] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin, and it stays there.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: No simpler moves are written out for “Blended planes”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 softfold n=2 {"planes":4,"blend":0.3,"curve":0,"mix":2} v=-1,0,0
+  [own] Turn: The rule sends this direction to the exact opposite one, half way round the sphere. No way round is shorter than another, so one is picked.
+  [stretch] Stretch: Then the length goes from 1.00 to the rule’s length, 1.00.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.00, 0.00, 0.00) to (0.60, 0.30, 0.20).
+  note: No simpler moves are written out for “Blended planes”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 softfold n=2 {"planes":4,"blend":0.3,"curve":0,"mix":2} v=0,0,1
+  [own] Turn: The rule sends this direction 90° round the sphere, and the point goes there the short way.
+  [stretch] Stretch: Then the length goes from 1.00 to the rule’s length, 1.00.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−1.00, 0.00, 0.00) to (−1.40, 0.30, 0.20).
+  note: No simpler moves are written out for “Blended planes”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 softfold n=2 {"planes":4,"blend":0.3,"curve":0,"mix":2} v=0.6,-0.3,0
+  [own] Turn: The rule sends this direction 27° round the sphere, and the point goes there the short way.
+  [stretch] Stretch: Then the length goes from 0.67 to the rule’s length, 0.45.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.27, −0.36, 0.00) to (−0.13, −0.06, 0.20).
+  note: No simpler moves are written out for “Blended planes”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 axisbulb n=2 {"k":-3,"wob":0.4,"reach":30,"pinch":1.5} v=0.5,0.7,0.4
+  [own] Turn: The rule sends this direction 111° round the sphere, and the point goes there the short way. Its length goes from 0.95 to 1.70 on the way.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.76, 0.54, −1.43) to (−1.16, 0.84, −1.23).
+  note: No simpler moves are written out for “Bulbs about the axis”. The point goes the short way round the sphere to the direction the rule sends it to, and its length changes on the way: with these dials the rule’s length depends on the direction, so the two cannot be shown apart.
+--- space 3 axisbulb n=2 {"k":-3,"wob":0.4,"reach":30,"pinch":1.5} v=0,0,0
+  [own] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: No simpler moves are written out for “Bulbs about the axis”. The point goes the short way round the sphere to the direction the rule sends it to, and its length changes on the way: with these dials the rule’s length depends on the direction, so the two cannot be shown apart.
+--- space 3 axisbulb n=2 {"k":-3,"wob":0.4,"reach":30,"pinch":1.5} v=-1,0,0
+  [own] Turn: The rule sends this direction to the exact opposite one, half way round the sphere. No way round is shorter than another, so one is picked. Its length goes from 1.00 to 1.00 on the way.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.00, 0.00, 0.00) to (0.60, 0.30, 0.20).
+  note: No simpler moves are written out for “Bulbs about the axis”. The point goes the short way round the sphere to the direction the rule sends it to, and its length changes on the way: with these dials the rule’s length depends on the direction, so the two cannot be shown apart.
+--- space 3 axisbulb n=2 {"k":-3,"wob":0.4,"reach":30,"pinch":1.5} v=0,0,1
+  [own] Turn: The rule sends this direction 90° round the sphere, and the point goes there the short way. Its length goes from 1.00 to 1.00 on the way.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−1.00, 0.00, 0.00) to (−1.40, 0.30, 0.20).
+  note: No simpler moves are written out for “Bulbs about the axis”. The point goes the short way round the sphere to the direction the rule sends it to, and its length changes on the way: with these dials the rule’s length depends on the direction, so the two cannot be shown apart.
+--- space 3 axisbulb n=2 {"k":-3,"wob":0.4,"reach":30,"pinch":1.5} v=0.6,-0.3,0
+  [own] Turn: The rule sends this direction 27° round the sphere, and the point goes there the short way. Its length goes from 0.67 to 0.45 on the way.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.27, −0.36, 0.00) to (−0.13, −0.06, 0.20).
+  note: No simpler moves are written out for “Bulbs about the axis”. The point goes the short way round the sphere to the direction the rule sends it to, and its length changes on the way: with these dials the rule’s length depends on the direction, so the two cannot be shown apart.
+--- space 3 pillow n=2 {"layout":1} v=0.5,0.7,0.4
+  [own] Turn: The rule sends this direction 71° round the sphere, and the point goes there the short way.
+  [stretch] Stretch: Then the length goes from 0.95 to the rule’s length, 0.90.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.47, 0.76, −0.04) to (−0.87, 1.06, 0.16).
+  note: No simpler moves are written out for “Pillow”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 pillow n=2 {"layout":1} v=0,0,0
+  [own] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin, and it stays there.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, 0.00) to (−0.40, 0.30, 0.20).
+  note: No simpler moves are written out for “Pillow”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 pillow n=2 {"layout":1} v=-1,0,0
+  [own] Turn: The rule sends this direction to the exact opposite one, half way round the sphere. No way round is shorter than another, so one is picked.
+  [stretch] Stretch: Then the length goes from 1.00 to the rule’s length, 1.00.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.00, 0.00, 0.00) to (0.60, 0.30, 0.20).
+  note: No simpler moves are written out for “Pillow”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 pillow n=2 {"layout":1} v=0,0,1
+  [own] Turn: The rule sends this direction to the exact opposite one, half way round the sphere. No way round is shorter than another, so one is picked.
+  [stretch] Stretch: Then the length goes from 1.00 to the rule’s length, 1.00.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, −1.00) to (−0.40, 0.30, −0.80).
+  note: No simpler moves are written out for “Pillow”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 pillow n=2 {"layout":1} v=0.6,-0.3,0
+  [own] Turn: The rule sends this direction 83° round the sphere, and the point goes there the short way.
+  [stretch] Stretch: Then the length goes from 0.67 to the rule’s length, 0.45.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.15, −0.42, 0.00) to (−0.55, −0.12, 0.20).
+  note: No simpler moves are written out for “Pillow”. The point goes the short way round the sphere to the direction the rule sends it to, and then its length goes to the rule’s length.
+--- space 3 split n=-2 {} v=0.5,0.7,-0.4
+  [turn] Turn: The flat part (x, y) of the point leans 54° from the positive x-axis. Squaring doubles it to 109°: the point turns by 54° about the z-axis.
+  [stretch] Stretch: The length of the flat part, 0.86, is squared: 0.74. A length under 1 gets shorter. The height is not touched.
+  [own] Height: The height, −0.40, is squared on its own, like a number on a line: 0.16. On the way it passes through 0: the shadow of a swing through a direction that space does not have.
+  [own] Inside out: A negative power ends by turning space inside out through the sphere of radius 1: the length goes from 0.76 to 1.32, which is 1 divided by it, and y goes to its mirror value, from 0.70 to −1.22.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.42, −1.22, 0.28) to (−0.82, −0.92, 0.48).
+  note: The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own. A negative power is worked as the power 2, followed by one move that turns space inside out. In that move y goes straight through 0 to its mirror value, so a point on the y-axis passes through the origin.
+--- space 3 split n=-2 {} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The flat part of the point is 0, and 0 squared is still 0. It stays. The height is not touched.
+  [own] Height: The height is 0, and 0 squared is 0. The point stays level.
+  [own] Inside out: A negative power ends by turning space inside out. The point is at the origin, which goes as far out as the lab counts: 1.7 × 10¹⁸.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.7 × 10¹⁸, 0.00, 0.00) to (1.7 × 10¹⁸, 0.30, 0.20).
+  note: The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own. A negative power is worked as the power 2, followed by one move that turns space inside out. In that move y goes straight through 0 to its mirror value, so a point on the y-axis passes through the origin.
+--- space 3 lathe n=-1 {} v=0,0,0
+  [turn] Turn: The point is at the origin. It has no direction, so there is nothing to turn.
+  [stretch] Stretch: The point is at the origin, and this power sends it outward: to a length of 1.7 × 10¹⁸.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (1.7 × 10¹⁸, 0.00, 0.00) to (1.7 × 10¹⁸, 0.30, 0.20).
+  note: The hinge is a different line for every point: the line square to the sheet that holds the x-axis and the point. It is the z-axis exactly when the point lies in the flat plane. A point on the negative x-axis has no side to lean to, and the lab swings it through the y direction.
+--- space 3 bulb n=5 {} v=0.5,0.7,0.9
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 54°. The power 5 multiplies it by 5, to 272° (the same direction as −88°): the point turns by 218° about the z-axis.
+  [lean] Lean: Its latitude is 46°. The power 5 multiplies it by 5, to 231°. That is past the pole, so it comes down the far side, at latitude −51°.
+  [stretch] Stretch: Its length, 1.24, is raised to the power 5: 2.99. A length over 1 gets longer.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (−0.08, 1.86, −2.34) to (−0.48, 2.16, −2.14).
+  note: Two angles are multiplied: the longitude, by a turn about the z-axis, and the latitude, by a lean along the point’s own meridian. The lean may carry the point over a pole.
+--- space 3 classic n=2 {} v=0.5,0.7,0
+  [turn] Turn: The point’s longitude, its angle around the z-axis, is 54°. Squaring doubles it to 109°: the point turns by 54° about the z-axis.
+  [lean] Lean: Its angle from the z-axis is 90°. Squaring doubles it to 180°. The point leaves the flat plane.
+  [stretch] Stretch: Its length, 0.86, is squared: 0.74. A length under 1 gets shorter.
+  [shift] Add c: Add c: the point moves by (−0.40, 0.30, 0.20), from (0.00, 0.00, −0.74) to (−0.40, 0.30, −0.54).
+  note: The angle that is multiplied is measured from the z-axis. A point in the flat plane is 90° from that axis, so the lean throws it out of the plane: this is the one approach that does not keep the flat picture.

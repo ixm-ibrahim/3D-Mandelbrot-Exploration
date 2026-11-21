@@ -1,0 +1,10 @@
+[
+  {"wait": "window.dialTests && window.dialTests.done", "timeout": 60},
+  {"js": "return window.dialTests.lines;"},
+  {"js": "return window.dialTests.passed + ' passed, ' + window.dialTests.failed + ' failed';", "shot": "out/dial/tests.png", "clip": "#results"},
+  {"js": "const $ = id => document.getElementById(id); $('s320-nStep').click(); $('s320-turnPlay').click(); const b = $('s320-cxNum'); b.focus(); b.value = 'abc'; b.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })); const n = $('s295-boundNum'); n.focus(); n.value = '1,5'; return 'showcase states: whole-number steps on Power n, Turn sweeping, a refused entry on Turning-out sphere, a box in mid-edit on Drawing radius (295 px column)';", "sleep": 0.3, "shot": "out/dial/showcase.png", "clip": "#showcase"},
+  {"js": "setExtreme(true); return 'showcase with extreme values on: Iterations, Lift and Turning-out sphere carry a wide range and show the tag';", "sleep": 0.3, "shot": "out/dial/showcase-extreme.png", "clip": "#showcase"},
+  {"js": "const root = document.documentElement, dark = matchMedia('(prefers-color-scheme: dark)').matches; root.setAttribute('data-theme', dark ? 'light' : 'dark'); return 'the same in the ' + (dark ? 'light' : 'dark') + ' theme';", "sleep": 0.3, "shot": "out/dial/showcase-extreme-other-theme.png", "clip": "#showcase"},
+  {"js": "document.documentElement.removeAttribute('data-theme'); setExtreme(false); return 'extreme values off again: ' + !isExtreme();"},
+  {"js": "if (window.dialTests.failed) console.error(window.dialTests.failed + ' controls kit checks failed'); return 'verdict: ' + (window.dialTests.failed ? 'FAILED' : 'all ' + window.dialTests.passed + ' checks pass');"}
+]

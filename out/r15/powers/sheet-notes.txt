@@ -1,0 +1,17 @@
+# What came out (all measured on these voxel solids; bodies were counted by shaving the solid and counting what is left, then looked at by eye)
+1. The flat plane is right: the cut at z = 0 is the flat set of z^n + c for every power and every c drawn here (601 x 601 points each, 0 points differ, 10 cases).
+2. The number of bodies follows the power. Julia sets, c at the centre of a period-2 body: n bodies round the main body in the plane, n x n in all.
+     Power 2: 4 (two wings in the plane, two legs below).   Power 3: 9 (3 in the plane, 3 above, 3 below).
+     Power 4: 16 in four rows of four at c = (0.5, 0.866, 0); at c = -1 they have run together into one ridged lump.   Power 5: 25 in five rows of five (23 of them still there at a deeper shave).
+3. Mandelbrot solids: in the plane the flat set's n - 1 lobes. Off the plane there are horns, fins and ridges, not lobes. I found no count there that follows the power.
+4. Power 3 is the best looking: a rounded main body with round bodies on it in several directions and small knobs on those. It is mirror-symmetric above and below
+     (0 voxels differ), and its upright cut at x = 0 is the flat set a second time (0 points differ).
+5. Power 2 is the weak one. It is lopsided (c = -1: volume 0.19 above the plane, 0.61 below; it reaches down to z = -2.4 and up only to 0.66): thin wings and legs, flat faces.
+     Closer looks (part 3) show the same picture at every size: straight smooth wedges where two bodies meet (c = -1), a smooth skin above the middle body,
+     and for the rabbit flat faces with loose thin flakes round them. No smaller round bodies on the bodies at power 2.
+6. The upright cut at y = 0 has straight edges at every power. For powers 3 and 5 the Mandelbrot solid's cut there is a plain square with no buds at all.
+7. One piece or shards: the Mandelbrot solids hold 99.6 to 99.9 % of their volume in one piece at this grid, the Julia sets 97 to 100 %, except c = -1 at power 2 (85 %):
+     its two wings touch the middle body in one point each, which voxels cannot show. The rabbit's flakes are loose at every size I looked at (1,400 to 1,950 pieces in a cube).
+8. Next to the other layout of the same rule (part 4, power 2 only): the other layout gives rounder bodies and is nearly even above and below (c = -1: 0.47 above, 0.46 below).
+9. Shapes under repetition (largest stretch divided by smallest after 6 steps, median / 99 %): this layout 2.9 / 23, the other layout 1.9 / 21, Mandelbulb 1.4 / 53,
+     Sphere inversions one plane 7e14 (grows without end). Both pillow layouts stay bounded; so does the Mandelbulb at power 2, which was not expected.

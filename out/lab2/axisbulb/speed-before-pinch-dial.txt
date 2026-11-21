@@ -1,0 +1,31 @@
+step 1 waited 3.9 s
+step 2 result: 
+timing
+step 2 waited 83.4 s
+step 3 result: 
+lathe round 1: first picture 2.91 s, redraw 1.32 s and 1.01 s
+axisbulb k=1 A=0 (returns early: the lathe itself) round 1: first picture 1.39 s, redraw 0.93 s and 1.47 s
+axisbulb k=1 A=1e-6 (the lathe solid, whole code path) round 1: first picture 1.80 s, redraw 1.77 s and 0.94 s
+axisbulb k=1 A=0.2 (best variant) round 1: first picture 1.37 s, redraw 1.22 s and 1.36 s
+axisbulb k=5 A=0 round 1: first picture 1.45 s, redraw 2.38 s and 2.24 s
+axisbulb k=9 A=0.2 round 1: first picture 2.67 s, redraw 2.05 s and 2.54 s
+lathe round 2: first picture 0.90 s, redraw 1.39 s and 1.32 s
+axisbulb k=1 A=0 (returns early: the lathe itself) round 2: first picture 0.59 s, redraw 0.56 s and 0.82 s
+axisbulb k=1 A=1e-6 (the lathe solid, whole code path) round 2: first picture 1.12 s, redraw 1.48 s and 2.19 s
+axisbulb k=1 A=0.2 (best variant) round 2: first picture 1.45 s, redraw 1.05 s and 1.46 s
+axisbulb k=5 A=0 round 2: first picture 1.50 s, redraw 1.66 s and 1.54 s
+axisbulb k=9 A=0.2 round 2: first picture 3.04 s, redraw 2.32 s and 1.44 s
+lathe round 3: first picture 0.89 s, redraw 1.09 s and 1.32 s
+axisbulb k=1 A=0 (returns early: the lathe itself) round 3: first picture 1.33 s, redraw 0.60 s and 0.55 s
+axisbulb k=1 A=1e-6 (the lathe solid, whole code path) round 3: first picture 0.72 s, redraw 0.71 s and 0.91 s
+axisbulb k=1 A=0.2 (best variant) round 3: first picture 1.98 s, redraw 2.39 s and 1.65 s
+axisbulb k=5 A=0 round 3: first picture 2.21 s, redraw 1.90 s and 1.75 s
+axisbulb k=9 A=0.2 round 3: first picture 2.34 s, redraw 2.37 s and 1.87 s
+m3d-default, Balanced, 12 passes, stage 862x701, median of 3 rounds:
+   lathe: 1.09 s (best 1.01), 1.00 x the lathe
+   axisbulb k=1 A=0 (returns early: the lathe itself): 0.56 s (best 0.55), 0.51 x the lathe
+   axisbulb k=1 A=1e-6 (the lathe solid, whole code path): 0.94 s (best 0.71), 0.87 x the lathe
+   axisbulb k=1 A=0.2 (best variant): 1.22 s (best 1.05), 1.11 x the lathe
+   axisbulb k=5 A=0: 1.75 s (best 1.54), 1.61 x the lathe
+   axisbulb k=9 A=0.2: 1.87 s (best 1.44), 1.71 x the lathe
+no console errors

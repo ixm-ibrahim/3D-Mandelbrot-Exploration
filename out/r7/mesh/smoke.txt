@@ -1,0 +1,115 @@
+step 1 result: "default; sections: mandelPanel juliaPanel kleinPanel secApproach secEq secMod secCut secColour secView secQuality secExport secMesh"
+step 1 waited 1.8 s
+step 1 wrote out/smoke-1-default.png
+step 2 result: "wheel zoom eased 5.2 -> 5.407 -> 5.824"
+step 2 waited 0.5 s
+step 3 result: "classic n=8; busy label seen: Preparing the formula; progress bar seen"
+step 3 waited 0.0 s
+step 3 wrote out/smoke-2-classic8.png
+step 4 result: "{\"spin\":3}"
+step 4 waited 4.4 s
+step 4 wrote out/smoke-3-lathe-spin3.png
+step 5 result: "julia, escape count, ember"
+step 5 waited 1.1 s
+step 5 wrote out/smoke-4-julia.png
+step 6 result: "kleinian"
+step 6 waited 1.1 s
+step 6 wrote out/smoke-5-klein.png
+step 7 result: "50 dials, 18 selects, 12 reset buttons; every closing text is on show and names its controls by their labels"
+step 7 wrote out/smoke-6-page.png
+step 8 result: "2D view on, slice height 0, picture height 3.33; label: 2D view (slice at z = 0.35)"
+step 8 waited 0.3 s
+step 8 wrote out/smoke-7-flat.png
+step 9 result: "mosaic on, cell 0.3, cut open at z = 0"
+step 9 waited 1.6 s
+step 9 wrote out/smoke-8-mosaic.png
+step 10 result: "mosaic in the 2D view"
+step 10 waited 0.3 s
+step 10 wrote out/smoke-9-mosaic-flat.png
+step 11 result: "n = -2, formula: v⁻² = inv(v²): the sum of inversions for the power 2, then o"
+step 11 waited 4.4 s
+step 11 wrote out/smoke-10-negative-power.png
+step 12 result: "{\"planes\":1,\"turn\":40,\"lift\":0.3}"
+step 12 waited 1.4 s
+step 12 wrote out/smoke-11-approach-params.png
+step 13 result: "trap 1, by 4, palette 6"
+step 13 waited 1.1 s
+step 13 wrote out/smoke-12-trap-cross.png
+step 14 result: "ultra fast: {\"res\":0.5,\"aa\":1,\"steps\":90,\"detail\":2,\"stepk\":0.8,\"smooth\":1,\"normals\":\"smooth\",\"ao\":false,\"shadow\":false,\"de\":0}"
+step 14 waited 0.3 s
+step 14 wrote out/smoke-13-ultra-fast.png
+step 15 result: "34 Kleinian entries in 4 groups; an entry leaves camera and depth alone; Frame it moves only the camera"
+step 15 waited 0.3 s
+step 15 wrote out/smoke-14-klein-preset.png
+step 16 result: "26 Julia points in a drop-down; an entry leaves camera, iterations and planes alone; Frame it moves only the camera; saving also works with storage blocked"
+step 16 waited 1.9 s
+step 16 wrote out/smoke-15-julia-preset.png
+step 17 result: "As it was found: 24 iterations for the rabbit, Planes 2 for Cracked Basilica, camera and c untouched, hidden when nothing differs"
+step 17 waited 0.8 s
+step 17 wrote out/smoke-15b-as-it-was-found.png
+step 18 result: "one plane and 17 iterations again"
+step 18 waited 1.5 s
+step 19 result: "fly camera moved 0.699 at speed 1"
+step 19 waited 2.9 s
+step 19 wrote out/smoke-16-fly.png
+step 20 result: "12 reset buttons; view (with zoom limits and drawing radius), quality and Julia resets restore their defaults"
+step 20 waited 1.6 s
+step 20 wrote out/smoke-17-after-resets.png
+step 21 result: "extreme ranges: 42 dials widen (iterations 60 -> 400 on the slider, typed to 4000); switching off pulled the drawing radius from 900 back to 500"
+step 21 waited 0.8 s
+step 21 wrote out/smoke-18-extreme-off.png
+step 22 result: "whole powers: tried on mercator; approaches of this page that are whole-power by themselves: none"
+step 22 waited 2.4 s
+step 22 wrote out/smoke-19-whole-powers.png
+step 23 result: "reset everything: back to the opening state"
+step 23 waited 0.8 s
+step 23 wrote out/smoke-20-reset-everything.png
+step 24 result: "picture job started at 256 x 256"
+step 24 waited 2.3 s
+step 25 result: "picture job delivered squaring-lab-mandelbrot-256x256.png, 256 x 256, 89058 bytes"
+step 26 result: "model job started on the Julia set for c = -1"
+step 26 waited 1.5 s
+step 27 result: "model job delivered squaring-lab-julia-48.zip, 364773 bytes"
+step 27 waited 0.8 s
+step 27 wrote out/smoke-21-after-jobs.png
+step 28 result: "Mandelbrot, the trap is the solid; the plain set was hit by 6 of 49 probes"
+step 28 waited 5.3 s
+step 28 wrote out/smoke-21b-trap-solid-m.png
+step 29 result: "trap solid in the Mandelbrot picture: 20 of 49 probes hit (6 on the plain set)"
+step 29 waited 0.3 s
+step 30 result: "Kleinian, the trap is the solid; the plain set was hit by 10 of 49 probes"
+step 30 waited 2.1 s
+step 30 wrote out/smoke-21c-trap-solid-k.png
+step 31 result: "trap solid in the Kleinian picture: 13 of 49 probes hit (10 on the plain set); 2D view with the inside coloured by how quickly the orbit settles"
+step 31 waited 3.1 s
+step 31 wrote out/smoke-21d-inside-2d.png
+step 32 result: "picture job started at 256 x 256"
+step 32 waited 0.0 s
+step 33 result: "inside colouring drawn: 5 clearly different colours at 7 places inside the set"
+step 33 waited 0.3 s
+step 34 result: "Show Figure 4 from the Kleinian 2D view: Julia, c = (-1, 0, 0), power 2, Sphere inversions with 2 planes, turn 0, lift 0, framed"
+step 34 waited 0.0 s
+step 34 wrote out/smoke-21e-figure-4.png
+step 35 result: "Figure 4 picture: 9 of 49 probes hit; Back to one plane set the planes dial to 1 and nothing else"
+step 35 waited 0.0 s
+step 35 wrote out/smoke-21f-one-plane.png
+step 36 result: "Back to one plane also works from the Kleinian view and another approach"
+step 36 waited 0.5 s
+step 37 result: "Twin of Sphere inversions from the Kleinian 2D view: Mandelbrot, power 2, one plane, flip z ticked"
+step 37 waited 0.3 s
+step 37 wrote out/smoke-21g-twin-inversions.png
+step 38 result: "twin of Sphere inversions drawn (11 of 49 probes hit); Twin of the Lathe from the mosaic"
+step 38 waited 0.0 s
+step 38 wrote out/smoke-21h-twin-lathe.png
+step 39 result: "twin of the Lathe drawn (6 of 49 probes hit); Twin of the Mandelbulb"
+step 39 waited 2.1 s
+step 39 wrote out/smoke-21i-twin-bulb.png
+step 40 result: "twin of the Mandelbulb drawn (8 of 49 probes hit); Back to the plain rule unticked flip z and nothing else"
+step 40 waited 0.5 s
+step 41 result: "10 sections collapsed: Mandelbrot options, Approach, Equation, Modifiers, Slice, Colour and light, View, Quality and speed, Save a picture, Save a 3D model"
+step 41 wrote out/smoke-22-collapsed.png
+step 42 result: "expanded again"
+step 42 waited 0.0 s
+step 42 wrote out/smoke-23-expanded.png
+no console errors
+smoke exit 0

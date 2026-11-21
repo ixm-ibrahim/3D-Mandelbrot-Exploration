@@ -1,0 +1,14 @@
+smaller stretch: median 1.45, 1% 0.071, 0.1% 0.0204, least 0.00101;  larger stretch: median 2.05, 99% 6.14, 99.9% 8.93, most 10.0
+ratio larger / smaller: median 1.64, 90% 3.5, 99% 5.1; share of directions with ratio under 1.1: 10.1 %, under 1.5: 42.3 %, over 3: 15.7 %, over 10: 0.0 %
+the 300 directions with the least stretch: angle from the nearest corner point median 52.7 deg (largest 72.8); from the plane y = 0 median 3.61 deg (largest 60.7); from the plane z = 0 median 86.3 deg; north 287, south 13
+the 300 directions with the most stretch: angle from the nearest corner point median 4.7 deg (largest 6.5); from the plane y = 0 median 2.09 deg (largest 5.3); from the plane z = 0 median 32.9 deg; north 0, south 300
+  north,  0 to  5 degrees from the plane z = 0: stretch ratio median 1.05, smaller stretch median 1.91, larger 2.00
+  south,  0 to  5 degrees from the plane z = 0: stretch ratio median 1.06, smaller stretch median 1.99, larger 2.09
+  north,  5 to 15 degrees from the plane z = 0: stretch ratio median 1.25, smaller stretch median 1.59, larger 1.98
+  south,  5 to 15 degrees from the plane z = 0: stretch ratio median 1.32, smaller stretch median 1.87, larger 2.44
+  north, 15 to 30 degrees from the plane z = 0: stretch ratio median 1.70, smaller stretch median 1.14, larger 1.88
+  south, 15 to 30 degrees from the plane z = 0: stretch ratio median 2.05, smaller stretch median 1.58, larger 3.28
+  north, 30 to 50 degrees from the plane z = 0: stretch ratio median 2.71, smaller stretch median 0.85, larger 2.03
+  south, 30 to 50 degrees from the plane z = 0: stretch ratio median 1.63, smaller stretch median 2.24, larger 3.78
+  north, 50 to 90 degrees from the plane z = 0: stretch ratio median 3.57, smaller stretch median 0.29, larger 1.01
+  south, 50 to 90 degrees from the plane z = 0: stretch ratio median 1.33, smaller stretch median 1.70, larger 2.10

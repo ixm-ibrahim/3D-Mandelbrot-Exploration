@@ -1,0 +1,32 @@
+TOTAL {"cfg": 656, "pts": 1310120, "checkFail": 0, "at0Fail": 0, "jumpMoves": 509620, "jumpFail": 833, "jumpOrigin": 146, "jumpRatio": 684, "jumpOther": 3, "geomN": 196139, "geomFail": 0, "keyFail": 0, "sayN": 1025820, "sayFail": 0}
+axisbulb               jump own       configs with it:   3   e.g. axisbulb n=5 dials#2 {"k":-3,"wob":0.4,"reach":30,"pinch":1.5} || jump own: step 0.000135 of path 0.00230 at a=-0.001,0.002,0.0005 b=-5.534e-14,-4.18e-14,1.781e-14
+axisbulb               jump stretch   configs with it:  12   e.g. axisbulb n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.001771,-0.001336,-0.0005744 b=-4.881e-14,-3.681e-14,-1.583e-14
+bulb                   jump stretch   configs with it:  15   e.g. bulb n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.0007624,-0.0007066,0.002042 b=-2.101e-14,-1.948e-14,5.628e-14
+classic                jump stretch   configs with it:  15   e.g. classic n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.0007624,-0.0007066,0.002042 b=-2.101e-14,-1.948e-14,5.628e-14
+extra                  JUMP-OTHER own configs with it:   1   e.g. extra split n=-3.7 || JUMP-OTHER own: step 1.01e+3 of path 1.91e+4 at a=0.000003227,0.00005231,2.674e-7 b=1175,-19040,97.34
+extra                  jump own       configs with it:   6   e.g. extra split n=0 || jump own: step 0.0505 of path 1.00 at a=1,1.225e-16,1e-9 b=1,1.225e-16,1
+extra                  jump stretch   configs with it:  53   e.g. extra mercator n=0 || jump stretch: step 0.159 of path 1.00 at a=0,0,0 b=1,0,0
+fold                   jump stretch   configs with it:  15   e.g. fold n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.001,-0.0009268,0.001841 b=-2.756e-14,-2.555e-14,5.076e-14
+lathe                  jump stretch   configs with it:  15   e.g. lathe n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.001771,-0.00141,-0.0003526 b=-4.881e-14,-3.888e-14,-9.719e-15
+mercator               jump stretch   configs with it:  15   e.g. mercator n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.001,-0.0009268,0.001841 b=-2.756e-14,-2.555e-14,5.076e-14
+pillow                 jump stretch   configs with it:   9   e.g. pillow n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.00006508,0.002005,0.001107 b=-1.794e-15,5.527e-14,3.051e-14
+softfold               jump stretch   configs with it:  15   e.g. softfold n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.001,-0.0009268,0.001841 b=-2.756e-14,-2.555e-14,5.076e-14
+space 1                jump stretch   configs with it:  40   e.g. space 1 mercator n=5 abs=0,0,0 flip=0,0 || jump stretch: step 0.000273 of path 0.00536 at a=-0.00536,2.626e-18,0 b=-4.425e-12,2.168e-27,0
+space 2                jump stretch   configs with it:  20   e.g. space 2 mercator n=5 abs=0,0,0 flip=0,0 || jump stretch: step 0.000132 of path 0.00224 at a=-0.00164,-0.00152,0 b=-4.1e-14,-3.8e-14,0
+split                  jump own       configs with it:   9   e.g. split n=5 dials#0 {} || jump own: step 0.0000964 of path 0.00154 at a=-5.585,-1.408,-0.001523 b=-5.585,-1.408,-8.201e-15
+split                  jump stretch   configs with it:   3   e.g. split n=5 dials#0 {} || jump stretch: step 0.000132 of path 0.00224 at a=-0.00164,-0.00152,0.0005 b=-4.1e-14,-3.8e-14,0.0005
+tilt                   jump stretch   configs with it:  15   e.g. tilt n=5 dials#0 {} || jump stretch: step 0.000135 of path 0.00229 at a=-0.001952,-0.0008639,0.0008319 b=-5.381e-14,-2.381e-14,2.293e-14
+group       cfg  points  worstrel   chkF at0F   jumpMv    jF origin  ratio  other   geomN  geoF keyF      say  sayF
+mercator     30   60000   3.6e-15      0    0    30000    45     10     35      0   15564     0    0    60000     0
+fold         30   60000   4.7e-15      0    0    33600    45     10     35      0   19164     0    0    67200     0
+lathe        30   60000   3.5e-15      0    0    22800    45     10     35      0    8370     0    0    45600     0
+tilt         30   60000   3.3e-15      0    0    26400    45     10     35      0   11970     0    0    52800     0
+bulb         30   60000   3.5e-15      0    0    27600    45     10     35      0   13170     0    0    55200     0
+classic      30   60000   3.8e-15      0    0    27600    45     10     35      0   13170     0    0    55200     0
+split        18   36000   2.6e-15      0    0    18000    38     12     26      0    3600     0    0    36000     0
+softfold     30   60000   2.4e-15      0    0    20400    45     10     35      0    5463     0    0    40800     0
+axisbulb     30   60000   2.3e-15      0    0    19200    45     10     35      0    5456     0    0    38400     0
+pillow       24   48000   2.5e-15      0    0    16800    27      6     21      0    3979     0    0    33600     0
+space 1     120  238920   1.1e-15      0    0    80220   100      0    100      0   22920     0    0   164220     0
+space 2     120  239200   1.7e-15      0    0    81200    20      0     20      0   23200     0    0   165200     0
+extra       134  268000   9.2e-15      0    0   105800   288     48    237      3   50113     0    0   211600     0

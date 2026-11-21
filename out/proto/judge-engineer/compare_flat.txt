@@ -1,0 +1,12 @@
+m2d-z000 size 864 703 reference inside px 94680
+   base-folded  px differing by >40:      0 (0.00% of picture); inside in baseline but not here:     0; inside here but not baseline:     5
+   base-bulb    px differing by >40:      0 (0.00% of picture); inside in baseline but not here:     0; inside here but not baseline:     0
+   radial       px differing by >40:   7905 (1.30% of picture); inside in baseline but not here:     0; inside here but not baseline:  1404
+   sine         px differing by >40:  15185 (2.50% of picture); inside in baseline but not here:     0; inside here but not baseline:  3619
+   twoplane     px differing by >40:  13426 (2.21% of picture); inside in baseline but not here:     0; inside here but not baseline:  4251
+j-bas-2d-z000 size 864 703 reference inside px 74120
+   base-folded  px differing by >40:      0 (0.00% of picture); inside in baseline but not here:     0; inside here but not baseline:     0
+   base-bulb    px differing by >40:      0 (0.00% of picture); inside in baseline but not here:     0; inside here but not baseline:     0
+   radial       px differing by >40:   4706 (0.77% of picture); inside in baseline but not here:     0; inside here but not baseline:   653
+   sine         px differing by >40:  12599 (2.07% of picture); inside in baseline but not here:     0; inside here but not baseline:  1903
+   twoplane     px differing by >40:  11080 (1.82% of picture); inside in baseline but not here:     0; inside here but not baseline:  4035

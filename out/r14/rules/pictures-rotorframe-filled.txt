@@ -1,0 +1,12 @@
+rotorframe-m                     862x701  not background: 19.7 %
+rotorframe-j-basilica            862x701  not background: 50.3 %
+rotorframe-j-rabbit              862x701  not background: 31.8 %
+rotorframe-j-off-axis            862x701  not background: 33.2 %
+rotorframe-cut-m                 862x701  not background: 97.5 %
+rotorframe-cut-j-basilica        862x701  not background: 85.8 %
+lathe-m                          862x701  not background: 25.5 %
+bulb-m                           862x701  not background: 15.4 %
+lathe-j-rabbit                   862x701  not background: 26.2 %
+bulb-j-rabbit                    862x701  not background: 26.1 %
+rotorframe-m-n3                  862x701  not background: 28.3 %
+rotorframe-m-n8                  862x701  not background: 25.5 %

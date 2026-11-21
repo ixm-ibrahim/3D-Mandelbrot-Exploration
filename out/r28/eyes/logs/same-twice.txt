@@ -1,0 +1,32 @@
+frozen page, second run: exit 0, no console errors
+m-as-the-page-opens                      picture: frozen page run 2 against run 1: 0 pixels differ
+m-as-the-page-opens                      whole window: frozen page run 2 against run 1: 0 pixels differ
+m-as-the-page-opens                      whole window: frozen page run 2 against the NEW page: 0 pixels differ
+balls-as-the-row-gives-it                picture: frozen page run 2 against run 1: 0 pixels differ
+balls-100-square                         picture: frozen page run 2 against run 1: 0 pixels differ
+balls-100-honeycomb-kiss                 picture: frozen page run 2 against run 1: 0 pixels differ
+balls-70-line-depth40                    picture: frozen page run 2 against run 1: 0 pixels differ
+balls-10-depth5-2d                       picture: frozen page run 2 against run 1: 0 pixels differ
+balls-100-2d                             picture: frozen page run 2 against run 1: 0 pixels differ
+balls-35-honeycomb-other-side            picture: frozen page run 2 against run 1: 0 pixels differ
+balls-25-depth200                        picture: frozen page run 2 against run 1: 0 pixels differ
+balls-default-after-a-trip-past-100      picture: frozen page run 2 against run 1: 0 pixels differ
+balls-50-second-sphere-there-and-back    picture: frozen page run 2 against run 1: 0 pixels differ
+k-first-group-as-it-opens                picture: frozen page run 2 against run 1: 0 pixels differ
+k-first-group-as-it-opens                whole window: frozen page run 2 against run 1: 14 pixels differ in the box (868, 622, 882, 622)
+k-first-group-as-it-opens                whole window: frozen page run 2 against the NEW page: 14 pixels differ in the box (868, 622, 882, 622)
+k-first-group-preset5-2d                 picture: frozen page run 2 against run 1: 0 pixels differ
+k-first-group-preset5-2d                 whole window: frozen page run 2 against run 1: 15 pixels differ in the box (855, 638, 869, 638)
+k-first-group-preset5-2d                 whole window: frozen page run 2 against the NEW page: 13 pixels differ in the box (870, 638, 882, 638)
+m-quat4-power4                           picture: frozen page run 2 against run 1: 0 pixels differ
+m-quat4-power4                           whole window: frozen page run 2 against run 1: 24 pixels differ in the box (855, 607, 882, 607)
+m-quat4-power4                           whole window: frozen page run 2 against the NEW page: 24 pixels differ in the box (855, 607, 882, 607)
+j-turnalong-cut                          picture: frozen page run 2 against run 1: 0 pixels differ
+j-turnalong-cut                          whole window: frozen page run 2 against run 1: 12 pixels differ in the box (855, 603, 882, 603)
+j-turnalong-cut                          whole window: frozen page run 2 against the NEW page: 12 pixels differ in the box (855, 603, 882, 603)
+j-pulledplane-2d                         picture: frozen page run 2 against run 1: 0 pixels differ
+j-pulledplane-2d                         whole window: frozen page run 2 against run 1: 28 pixels differ in the box (855, 629, 882, 629)
+j-pulledplane-2d                         whole window: frozen page run 2 against the NEW page: 0 pixels differ
+learn-tab                                whole window: frozen page run 2 against run 1: 0 pixels differ
+learn-tab                                whole window: frozen page run 2 against the NEW page: 0 pixels differ
+TOTAL frozen page against itself: picture alone 0 pixels, whole window 93 pixels

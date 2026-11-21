@@ -1,0 +1,111 @@
+step 1 result: "{\"flat\":true,\"iter\":14,\"res\":1,\"cw\":300,\"ch\":150,\"sw\":682,\"sh\":590,\"params\":{\"mercator\":{\"planes\":2,\"turn\":0,\"lift\":0},\"lathe\":{\"spin\":1},\"bulb\":{\"lat\":0,\"lon\":0},\"classic\":{\"theta\":0,\"phi\":0},\"split\":{}}}"
+step 1 waited 1.9 s
+step 2 result: "{\"ap\":\"bulb\",\"n\":2,\"mode\":\"m\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":-0.5,\"y\":0,\"h\":3.2,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 2 waited 2.5 s
+step 2 wrote out/verify/p9/f_bulb_n2_s0.png
+step 3 result: "{\"ap\":\"bulb\",\"n\":2,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 3 waited 0.3 s
+step 3 wrote out/verify/p9/f_bulb_n2_s1.png
+step 4 result: "{\"ap\":\"bulb\",\"n\":2,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 4 waited 0.3 s
+step 4 wrote out/verify/p9/f_bulb_n2_s2.png
+step 5 result: "{\"ap\":\"bulb\",\"n\":3,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 5 waited 2.1 s
+step 5 wrote out/verify/p9/f_bulb_n3_s0.png
+step 6 result: "{\"ap\":\"bulb\",\"n\":3,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 6 waited 0.3 s
+step 6 wrote out/verify/p9/f_bulb_n3_s1.png
+step 7 result: "{\"ap\":\"bulb\",\"n\":3,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 7 waited 0.3 s
+step 7 wrote out/verify/p9/f_bulb_n3_s2.png
+step 8 result: "{\"ap\":\"bulb\",\"n\":5,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 8 waited 0.5 s
+step 8 wrote out/verify/p9/f_bulb_n5_s0.png
+step 9 result: "{\"ap\":\"bulb\",\"n\":5,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 9 waited 0.3 s
+step 9 wrote out/verify/p9/f_bulb_n5_s1.png
+step 10 result: "{\"ap\":\"bulb\",\"n\":5,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 10 waited 0.3 s
+step 10 wrote out/verify/p9/f_bulb_n5_s2.png
+step 11 result: "{\"ap\":\"bulb\",\"n\":8,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 11 waited 0.5 s
+step 11 wrote out/verify/p9/f_bulb_n8_s0.png
+step 12 result: "{\"ap\":\"bulb\",\"n\":8,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 12 waited 0.3 s
+step 12 wrote out/verify/p9/f_bulb_n8_s1.png
+step 13 result: "{\"ap\":\"bulb\",\"n\":8,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"lat\":0,\"lon\":0}}"
+step 13 waited 0.3 s
+step 13 wrote out/verify/p9/f_bulb_n8_s2.png
+step 14 result: "{\"ap\":\"split\",\"n\":2,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":-0.5,\"y\":0,\"h\":3.2,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 14 waited 1.8 s
+step 14 wrote out/verify/p9/f_split_n2_s0.png
+step 15 result: "{\"ap\":\"split\",\"n\":2,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 15 waited 0.3 s
+step 15 wrote out/verify/p9/f_split_n2_s1.png
+step 16 result: "{\"ap\":\"split\",\"n\":2,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 16 waited 0.3 s
+step 16 wrote out/verify/p9/f_split_n2_s2.png
+step 17 result: "{\"ap\":\"split\",\"n\":3,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 17 waited 2.6 s
+step 17 wrote out/verify/p9/f_split_n3_s0.png
+step 18 result: "{\"ap\":\"split\",\"n\":3,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 18 waited 0.3 s
+step 18 wrote out/verify/p9/f_split_n3_s1.png
+step 19 result: "{\"ap\":\"split\",\"n\":3,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 19 waited 0.3 s
+step 19 wrote out/verify/p9/f_split_n3_s2.png
+step 20 result: "{\"ap\":\"split\",\"n\":5,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 20 waited 0.5 s
+step 20 wrote out/verify/p9/f_split_n5_s0.png
+step 21 result: "{\"ap\":\"split\",\"n\":5,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 21 waited 0.3 s
+step 21 wrote out/verify/p9/f_split_n5_s1.png
+step 22 result: "{\"ap\":\"split\",\"n\":5,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 22 waited 0.3 s
+step 22 wrote out/verify/p9/f_split_n5_s2.png
+step 23 result: "{\"ap\":\"split\",\"n\":8,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 23 waited 0.5 s
+step 23 wrote out/verify/p9/f_split_n8_s0.png
+step 24 result: "{\"ap\":\"split\",\"n\":8,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 24 waited 0.3 s
+step 24 wrote out/verify/p9/f_split_n8_s1.png
+step 25 result: "{\"ap\":\"split\",\"n\":8,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{}}"
+step 25 waited 0.3 s
+step 25 wrote out/verify/p9/f_split_n8_s2.png
+step 26 result: "{\"ap\":\"classic\",\"n\":2,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":-0.5,\"y\":0,\"h\":3.2,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 26 waited 2.3 s
+step 26 wrote out/verify/p9/f_classic_n2_s0.png
+step 27 result: "{\"ap\":\"classic\",\"n\":2,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 27 waited 0.3 s
+step 27 wrote out/verify/p9/f_classic_n2_s1.png
+step 28 result: "{\"ap\":\"classic\",\"n\":2,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 28 waited 0.3 s
+step 28 wrote out/verify/p9/f_classic_n2_s2.png
+step 29 result: "{\"ap\":\"classic\",\"n\":3,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 29 waited 1.8 s
+step 29 wrote out/verify/p9/f_classic_n3_s0.png
+step 30 result: "{\"ap\":\"classic\",\"n\":3,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 30 waited 0.3 s
+step 30 wrote out/verify/p9/f_classic_n3_s1.png
+step 31 result: "{\"ap\":\"classic\",\"n\":3,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 31 waited 0.3 s
+step 31 wrote out/verify/p9/f_classic_n3_s2.png
+step 32 result: "{\"ap\":\"classic\",\"n\":5,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 32 waited 0.5 s
+step 32 wrote out/verify/p9/f_classic_n5_s0.png
+step 33 result: "{\"ap\":\"classic\",\"n\":5,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 33 waited 0.3 s
+step 33 wrote out/verify/p9/f_classic_n5_s1.png
+step 34 result: "{\"ap\":\"classic\",\"n\":5,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 34 waited 0.3 s
+step 34 wrote out/verify/p9/f_classic_n5_s2.png
+step 35 result: "{\"ap\":\"classic\",\"n\":8,\"mode\":\"m\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 35 waited 0.5 s
+step 35 wrote out/verify/p9/f_classic_n8_s0.png
+step 36 result: "{\"ap\":\"classic\",\"n\":8,\"mode\":\"j\",\"c\":[-1,0,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 36 waited 0.3 s
+step 36 wrote out/verify/p9/f_classic_n8_s1.png
+step 37 result: "{\"ap\":\"classic\",\"n\":8,\"mode\":\"j\",\"c\":[-0.122561,0.744862,0],\"flat\":true,\"cut\":0,\"v2\":{\"x\":0,\"y\":0,\"h\":3.6,\"hmin\":0.0005,\"hmax\":40},\"par\":{\"theta\":0,\"phi\":0}}"
+step 37 waited 0.3 s
+step 37 wrote out/verify/p9/f_classic_n8_s2.png
+no console errors

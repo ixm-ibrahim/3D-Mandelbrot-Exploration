@@ -1,0 +1,3 @@
+along     turned: M differs 1.52% (inside 7.6%), basilica differs 0.25% (inside 3.1%) | volume 30/80 steps: basilica 2.71%/2.71%, rabbit 6.75%/6.66%, M 7.81%/7.20%
+oneplane  turned: M differs 1.23% (inside 1.5%), basilica differs 0.34% (inside 3.5%) | volume 30/80 steps: basilica 2.99%/2.99%, rabbit 1.95%/1.89%, M 1.58%/1.44%
+lathe     turned: M differs 0.00% (inside 7.8%), basilica differs 0.00% (inside 3.8%) | volume 30/80 steps: basilica 3.24%/3.24%, rabbit 6.23%/6.10%, M 7.95%/7.32%

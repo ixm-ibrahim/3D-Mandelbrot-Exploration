@@ -1,0 +1,11 @@
+order of the runs: rail3-old-1, rail3-new-1, rail3-new-2, rail3-old-2, rail3-old-3, rail3-new-3, rail3-new-4, rail3-old-4
+all exit 0 and no console errors: True
+rail3-old-1 against rail3-old-1: 0 pixels differ
+rail3-new-1 against rail3-old-1: 106 pixels differ (x 815 to 834, y 392 to 510)
+rail3-new-2 against rail3-old-1: 106 pixels differ (x 815 to 834, y 392 to 510)
+rail3-old-2 against rail3-old-1: 106 pixels differ (x 815 to 834, y 392 to 510)
+rail3-old-3 against rail3-old-1: 106 pixels differ (x 815 to 834, y 392 to 510)
+rail3-new-3 against rail3-old-1: 106 pixels differ (x 815 to 834, y 392 to 510)
+rail3-new-4 against rail3-old-1: 106 pixels differ (x 815 to 834, y 392 to 510)
+rail3-old-4 against rail3-old-1: 106 pixels differ (x 815 to 834, y 392 to 510)
+the other seven among themselves (21 pairs, computed afterwards on the saved pictures): at most 0 pixels differ

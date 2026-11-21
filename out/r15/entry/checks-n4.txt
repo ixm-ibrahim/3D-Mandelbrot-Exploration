@@ -1,0 +1,13 @@
+step 1 result: page up, 16 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow
+step 1 waited 2.0 s
+step 2 result: {"pow":4,"math":{"P":[[-1.5248012997904603,0.314944414544353,-0.05756936857958859],[-0.9938938880096793,0.9848402077912941,0.3628101963086225],[-1.2560177088957187,0.8557772719555902,0.05196490917561687],[0.45682666839292896,1.3336981830146317,-0.6580010180300357],[-1.393946674999291,-0.471653319042 ... (3203710 characters)
+no console errors
+
+MATH.sqpillow at power 4 against the reference, 20,000 points anywhere in a ball: largest difference 1.834e-11 (as a share of the length 3.600e-12), 99.9 % 4.053e-13, median 2.290e-14, over 1e-9: 0
+MATH.sqpillow at power 4 against the reference, 6,000 points crowded beside the plane z = 0, the plane y = 0, the corner points and the poles: largest difference 2.033e-02 (as a share of the length 4.669e-03), 99.9 % 1.052e-03, median 1.987e-15, over 1e-9: 317
+plane z = 0 in MATH: {"points": 4000, "zNotZero": 0, "worstRelative": 1.4248289728606543e-15}
+GPU: True
+shader, pw ball: {"points": 8192, "median": 2.81570124021658e-07, "q99": 1.1084661507008595e-06, "q999": 1.684132458292093e-06, "max": 3.470643306080179e-06, "over1e3": 0, "over1e2": 0, "finite": true}
+shader, pw delicate: {"points": 6000, "median": 3.1680243714885866e-07, "q99": 4.462263094494001e-06, "q999": 8.54266090046193e-06, "max": 1.1448320399671788e-05, "over1e3": 0, "over1e2": 0, "finite": true}
+shader, flat: {"points": 1024, "zNotZero": 0, "worstRelative": 7.207810168903942e-07}
+shader, mul: {"points": 1024, "worstAgainstOnePlane": 0}

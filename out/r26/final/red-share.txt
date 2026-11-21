@@ -1,0 +1,13 @@
+E1: 3D Mandelbrot shape, step 1 held at 0.4                warning colour   0.0 %   body colour  35.3 %  of the picture
+E1: the same at 0.8                                        warning colour   0.0 %   body colour  35.3 %  of the picture
+E1: Both, left picture (Mandelbrot shape) at 0.4           warning colour   0.0 %   body colour  50.0 %  of the picture
+E1: Both, right picture (Julia shape) at 0.4               warning colour  14.0 %   body colour  24.4 %  of the picture
+E1: 2D Both, left picture at 0.4                           warning colour   0.0 %   body colour  55.5 %  of the picture
+E1: 2D Both, right picture at 0.4                          warning colour  28.1 %   body colour  27.2 %  of the picture
+E2: 3D step 3 at 0.15                                      warning colour   0.0 %   body colour  13.3 %  of the picture
+E2: 3D step 3 at 0.4                                       warning colour   3.2 %   body colour   9.1 %  of the picture
+E2: 3D step 3 at 0.7                                       warning colour   1.7 %   body colour   9.4 %  of the picture
+E2: 3D step 5 at 0.4                                       warning colour   0.8 %   body colour   6.4 %  of the picture
+E2: 3D step 7 at 0.4                                       warning colour   0.1 %   body colour   5.3 %  of the picture
+E2: 3D step 10 at 0.4 (the late lump)                      warning colour   0.0 %   body colour   4.4 %  of the picture
+3D after 8 steps, at rest                                  warning colour   0.0 %   body colour   4.9 %  of the picture

@@ -1,0 +1,84 @@
+<<<<
+  // Neighbour i sits at z + dv[i] * exp(-ls[i]) with the constant c + dc[i] * exp(-ls[i]).
+  // With no neighbours, slot 0 holds the running stretch instead: dv[0].x * exp(ls[0]), fed by dc[0].x.
+  vec3 dv[3]; vec3 dc[3]; float ls[3];
+====
+  // Neighbour i (1 to 3) sits at z + dvI * exp(-lsI) with the constant c + dcI * exp(-lsI).
+  // With no neighbours, slot 1 holds the running stretch instead: dv1.x * exp(ls1), fed by dc1.x.
+  // These are separate variables picked with "i == 1" tests, not arrays: an array indexed by a loop
+  // counter lives in memory on the GPU, and these are read and written in the innermost loop.
+  vec3 dv1 = vec3(0.0), dv2 = vec3(0.0), dv3 = vec3(0.0), dc1 = vec3(0.0), dc2 = vec3(0.0), dc3 = vec3(0.0);
+>>>>
+<<<<
+    if (i == 0) v = s;
+    else { dv[i - 1] = s - v; dc[i - 1] = d; ls[i - 1] = -log(h0); }
+  }
+  if (nt == 0){ dv[0] = vec3(jul ? 1.0 : 0.0, 0.0, 0.0); dc[0] = vec3(jul ? 0.0 : 1.0, 0.0, 0.0); ls[0] = 0.0; }
+====
+    if (i == 0) v = s;
+    else if (i == 1){ dv1 = s - v; dc1 = d; }
+    else if (i == 2){ dv2 = s - v; dc2 = d; }
+    else { dv3 = s - v; dc3 = d; }
+  }
+  float ls1 = -log(h0), ls2 = ls1, ls3 = ls1;
+  if (nt == 0){ dv1 = vec3(jul ? 1.0 : 0.0, 0.0, 0.0); dc1 = vec3(jul ? 0.0 : 1.0, 0.0, 0.0); ls1 = 0.0; }
+>>>>
+<<<<
+      float lm = ls[0], den = dv[0].x;
+      if (nt == 3){
+        lm = max(ls[0], max(ls[1], ls[2]));
+        g = vec3(dot(dv[0], vh) * exp(ls[0] - lm), dot(dv[1], vh) * exp(ls[1] - lm), dot(dv[2], vh) * exp(ls[2] - lm));
+        den = length(g);
+      } else if (nt == 1) den = length(dv[0]);
+====
+      float lm = ls1, den = dv1.x;
+      if (nt == 3){
+        lm = max(ls1, max(ls2, ls3));
+        g = vec3(dot(dv1, vh) * exp(ls1 - lm), dot(dv2, vh) * exp(ls2 - lm), dot(dv3, vh) * exp(ls3 - lm));
+        den = length(g);
+      } else if (nt == 1) den = length(dv1);
+>>>>
+<<<<
+      vec3 dz = vec3(0.0), dk = vec3(0.0);
+      if (i > 0){ dz = dv[i - 1]; dk = dc[i - 1]; }
+      vec3 wi = f(v + dz, c + dk);
+====
+      vec3 dz = vec3(0.0), dk = vec3(0.0);
+      if (i == 1){ dz = dv1; dk = dc1; } else if (i == 2){ dz = dv2; dk = dc2; } else if (i == 3){ dz = dv3; dk = dc3; }
+      vec3 wi = f(v + dz, c + dk);
+>>>>
+<<<<
+        if (m > 0.0){
+          float s = clamp(2e-3 * (lw + 1e-3) / m, 1e-8, 1e8);
+          dv[i - 1] = dw * s; dc[i - 1] = dk * s; ls[i - 1] -= log(s);
+        } else dv[i - 1] = vec3(0.0);
+      }
+    }
+    if (pole){   // carry on from the point at infinity; the turn is spent, so one step fewer can follow
+      v = vec3(1e9, 0.0, 0.0); r = 0.0; steps -= 1.0;
+      for (int i = 0; i < nt; i++) dv[i] = vec3(0.0);
+      continue;
+    }
+====
+        // keep the neighbour a fixed small share of |z| away, and remember the factor in ls
+        float lg = 0.0;
+        if (m > 0.0){ float s = clamp(2e-3 * (lw + 1e-3) / m, 1e-8, 1e8); dw *= s; dk *= s; lg = log(s); }
+        else dw = vec3(0.0);
+        if (i == 1){ dv1 = dw; dc1 = dk; ls1 -= lg; } else if (i == 2){ dv2 = dw; dc2 = dk; ls2 -= lg; } else { dv3 = dw; dc3 = dk; ls3 -= lg; }
+      }
+    }
+    if (pole){   // carry on from the point at infinity; the turn is spent, so one step fewer can follow
+      v = vec3(1e9, 0.0, 0.0); r = 0.0; steps -= 1.0;
+      if (nt > 0){ dv1 = vec3(0.0); dv2 = vec3(0.0); dv3 = vec3(0.0); }
+      continue;
+    }
+>>>>
+<<<<
+      float dr = pn * lwc / max(r, 1e-6) * dv[0].x + dc[0].x;
+      if (dr > 1e8){ dr *= 1e-8; dc[0].x *= 1e-8; ls[0] += 18.420681; }
+      dv[0].x = dr;
+====
+      float dr = pn * lwc / max(r, 1e-6) * dv1.x + dc1.x;
+      if (dr > 1e8){ dr *= 1e-8; dc1.x *= 1e-8; ls1 += 18.420681; }
+      dv1.x = dr;
+>>>>

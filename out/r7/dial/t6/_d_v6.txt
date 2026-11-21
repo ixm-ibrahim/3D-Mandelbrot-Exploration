@@ -1,0 +1,83 @@
+pass  Iterations: typed -5 is held at the lowest value 3  :: (3, '3', None)
+pass  Iterations: typed 100000 is held at the typed limit 400  :: (400, '400')
+pass  Iterations: typed 20.6 becomes 21  :: (21, '21')
+pass  Power n: 0.1 up twice is 0.3 exactly (no 0.30000000000000004)  :: (0.3, '0.3')
+pass  Power n: ArrowUp, Shift+ArrowUp, PageDown, ArrowDown from 2.37 give 2.47, 3.47, 2.47, 2.37  :: (2.47, 3.47, 2.47, 2.37)
+pass  Power n: the wheel over the focused box does not change the value  :: 2
+pass  Power n: typed ' 4 ' gives 4 (box '4')  :: (4, '4', None)
+pass  Power n: typed '' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '+4' gives 4 (box '4')  :: (4, '4', None)
+pass  Power n: typed '--2' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '-0' gives 0 (box '0')  :: (0, '0', None)
+pass  Power n: typed '-99' gives -16 (box '-16')  :: (-16, '-16', None)
+pass  Power n: typed '.5' gives 0.5 (box '0.5')  :: (0.5, '0.5', None)
+pass  Power n: typed '0.30000000000000004' gives 0.30000000000000004 (box '0.3')  :: (0.30000000000000004, '0.3', None)
+pass  Power n: typed '0x10' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '1,234.5' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '12abc' is refused (value stays 1e-09, box shows it again, box flagged)  :: (1e-09, '1e-9', 'true')
+pass  Power n: typed '1e-9' gives 1e-09 (box '1e-9')  :: (1e-09, '1e-9', None)
+pass  Power n: typed '1e1' gives 10 (box '10')  :: (10, '10', None)
+pass  Power n: typed '1e999' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '2,5' gives 2.5 (box '2.5')  :: (2.5, '2.5', None)
+pass  Power n: typed '2..5' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '2.123456789' gives 2.123456789 (box '2.123457')  :: (2.123456789, '2.123457', None)
+pass  Power n: typed '2/3' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '3.5' gives 3.5 (box '3.5')  :: (3.5, '3.5', None)
+pass  Power n: typed '5.' gives 5 (box '5')  :: (5, '5', None)
+pass  Power n: typed '99' gives 24 (box '24')  :: (24, '24', None)
+pass  Power n: typed 'Infinity' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed 'NaN' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed 'abc' is refused (value stays 0.30000000000000004, box shows it again, box flagged)  :: (0.30000000000000004, '0.3', 'true')
+pass  Power n: typed '٣' is refused (value stays 1e-09, box shows it again, box flagged)  :: (1e-09, '1e-9', 'true')
+pass  Power n: typed '−3' gives -3 (box '-3')  :: (-3, '-3', None)
+pass  Power n: typed 6 then clicked elsewhere commits 6  :: 6
+pass  Power n: typed 7 then Escape then Tab changes nothing  :: (9, '9')
+pass  dial col-bands [Mandelbrot] 'Colour bands, how many' start 1 toggle ±0.01: up 1.01, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial col-edge [2D view] 'Outline width, pixels' start 1 toggle ±0.1: up 1.1, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial col-edgeGlow [2D view] 'Glow beside the outline, pixels' start 0 toggle ±0.5: up 0.5, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial col-glow [Mandelbrot] 'Glow width' start 1 toggle ±0.01: up 1.01, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial col-radius [Mandelbrot] 'Trap radius' start 1 toggle ±0.01: up 1.01, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial col-shift [Mandelbrot] 'Colour bands, shift' start 0 toggle ±0.005: up 0.005, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial col-skip [trap solid] 'Orbit steps skipped at the start' start 1 toggle None: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial col-thick [trap solid] 'Trap thickness' start 0.05 toggle ±0.005: up 0.055, down 0.05; toggle -> ±1: up 1.0, down 0.0005; typed abc -> box 0.0005 invalid true; typed back -> 0.05
+pass  dial col-tx [Mandelbrot] 'Trap centre, x' start 0 toggle ±0.01: up 0.01, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial col-ty [Mandelbrot] 'Trap centre, y' start 0 toggle ±0.01: up 0.01, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial col-tz [Mandelbrot] 'Trap centre, z' start 0 toggle ±0.01: up 0.01, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial cut [Mandelbrot] 'Height z of the cut or slice' start 0 toggle ±0.01: up 0.01, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial cx [Julia] 'c along x' start -1 toggle ±0.01: up -0.99, down -1.0; toggle -> ±1: up 0.0, down -1.0; typed abc -> box -1 invalid true; typed back -> -1
+pass  dial cy [Julia] 'c along y' start 0 toggle ±0.01: up 0.01, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial cz [Julia] 'c along z' start 0 toggle ±0.01: up 0.01, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial iter [Mandelbrot] 'Iterations' start 14 toggle None: up 15.0, down 14.0; typed abc -> box 14 invalid true; typed back -> 14
+pass  dial kL [Kleinian] 'L, half the step of the third map' start 1 toggle ±0.005: up 1.005, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial kcx [Kleinian] 'Turning-out sphere, centre x' start 1 toggle ±0.005: up 1.005, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial kcy [Kleinian] 'Turning-out sphere, centre y' start 1 toggle ±0.005: up 1.005, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial kcz [Kleinian] 'Turning-out sphere, centre z' start 0 toggle ±0.005: up 0.005, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial kinvr [Kleinian] 'Turning-out sphere, radius' start 1.2 toggle ±0.01: up 1.21, down 1.2; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1.2
+pass  dial kiter [Kleinian] 'Depth of the search' start 150 toggle None: up 151.0, down 150.0; typed abc -> box 150 invalid true; typed back -> 150
+pass  dial kmx [Kleinian] 'μ, real part (lean)' start 0 toggle ±0.001: up 0.001, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial kmy [Kleinian] 'μ, i part (gap between the walls)' start 2 toggle ±0.001: up 2.001, down 2.0; toggle -> ±1: up 3.0, down 2.0; typed abc -> box 2 invalid true; typed back -> 2
+pass  dial kmz [Kleinian] 'μ, j part (lean in depth)' start 0 toggle ±0.001: up 0.001, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial lightAz [Mandelbrot] 'Light, compass direction' start 250 toggle ±1: up 251.0, down 250.0; toggle -> ±0.1: up 250.1, down 250.0; typed abc -> box 250 invalid true; typed back -> 250
+pass  dial lightEl [Mandelbrot] 'Light, height above the horizon' start 48 toggle ±1: up 49.0, down 48.0; toggle -> ±0.1: up 48.1, down 48.0; typed abc -> box 48 invalid true; typed back -> 48
+pass  dial m-mosaicCell [mosaic] 'Mosaic cell size' start 0.3 toggle ±0.01: up 0.31, down 0.3; toggle -> ±1: up 1.0, down 0.03; typed abc -> box 0.03 invalid true; typed back -> 0.3
+pass  dial meshMm [Mandelbrot] 'Longest side, mm' start 100 toggle ±1: up 101.0, down 100.0; toggle -> ±0.1: up 100.1, down 100.0; typed abc -> box 100 invalid true; typed back -> 100
+pass  dial meshOffset [Mandelbrot] 'Surface offset, grid cells' start 0.5 toggle ±0.05: up 0.55, down 0.5; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0.5
+pass  dial par-bulb-lat [approach bulb] 'Latitude phase, degrees' start 0 toggle ±1: up 1.0, down 0.0; toggle -> ±0.1: up 0.1, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial par-bulb-lon [approach bulb] 'Longitude phase, degrees' start 0 toggle ±1: up 1.0, down 0.0; toggle -> ±0.1: up 0.1, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial par-classic-phi [approach classic] 'φ phase, degrees' start 0 toggle ±1: up 1.0, down 0.0; toggle -> ±0.1: up 0.1, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial par-classic-theta [approach classic] 'θ phase, degrees' start 0 toggle ±1: up 1.0, down 0.0; toggle -> ±0.1: up 0.1, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial par-lathe-spin [approach lathe] 'Spin multiplier (odd)' start 1 toggle None: up 3.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial par-mercator-lift [Mandelbrot] 'Lift toward the pole' start 0 toggle ±0.01: up 0.01, down 0.0; toggle -> ±1: up 1.0, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial par-mercator-planes [Mandelbrot] 'Planes (2 or more: earlier version)' start 1 toggle None: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial par-mercator-turn [Mandelbrot] 'Turn, degrees' start 0 toggle ±1: up 1.0, down 0.0; toggle -> ±0.1: up 0.1, down 0.0; typed abc -> box 0 invalid true; typed back -> 0
+pass  dial pow [Mandelbrot] 'Power n' start 2 toggle ±0.1: up 2.1, down 2.0; toggle -> ±1: up 3.0, down 2.0; typed abc -> box 2 invalid true; typed back -> 2
+pass  dial qaa [Mandelbrot] 'Refining passes' start 1 toggle None: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial qdetail [Mandelbrot] 'Surface threshold, pixels' start 2 toggle ±0.05: up 2.05, down 2.0; toggle -> ±1: up 3.0, down 2.0; typed abc -> box 2 invalid true; typed back -> 2
+pass  dial qres [Mandelbrot] 'Resolution, × screen pixels' start 0.5 toggle ±0.05: up 0.55, down 0.5; toggle -> ±1: up 1.0, down 0.1; typed abc -> box 0.1 invalid true; typed back -> 0.5
+pass  dial qsmooth [Mandelbrot] 'Slope sampling width, pixels' start 1 toggle ±0.05: up 1.05, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dial qstepk [Mandelbrot] 'Ray step, share of the distance estimate' start 0.8 toggle ±0.01: up 0.81, down 0.8; toggle -> ±1: up 1.0, down 0.05; typed abc -> box 0.05 invalid true; typed back -> 0.8
+pass  dial qsteps [Mandelbrot] 'Ray steps, at most' start 90 toggle ±10: up 100.0, down 90.0; toggle -> ±1: up 91.0, down 90.0; typed abc -> box 90 invalid true; typed back -> 90
+pass  dial viewBound [Mandelbrot] 'Drawing radius' start 8 toggle ±0.5: up 8.5, down 8.0; toggle -> ±1: up 9.0, down 8.0; typed abc -> box 8 invalid true; typed back -> 8
+pass  dial viewFov [Mandelbrot] 'Field of view, degrees' start 35.49 toggle ±1: up 36.0, down 35.0; toggle -> ±0.1: up 35.59, down 35.49; typed abc -> box 35.49 invalid true; typed back -> 35.49
+pass  dial viewSpeed [Mandelbrot] 'Fly speed, units per second' start 1 toggle ±0.01: up 1.01, down 1.0; toggle -> ±1: up 2.0, down 1.0; typed abc -> box 1 invalid true; typed back -> 1
+pass  dials: no console errors or uncaught exceptions  :: []

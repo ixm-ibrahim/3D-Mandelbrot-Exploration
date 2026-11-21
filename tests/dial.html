@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Controls kit: checks</title>
+<!--
+  Loads the controls kit (src/js/70-dial.js + src/css/70-dial.css) on its own, shows a few sample controls,
+  and checks every rule of the kit in page JavaScript. Run from the workspace root:
+      python tools/shot.py --url tests/dial.html --actions tests/dial.json
+  The page prints one line per check; window.dialTests holds the same list for scripts.
+  There is deliberately no global [hidden] rule here: the kit's own CSS has to hide its controls.
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<link rel="stylesheet" href="../src/css/00-base.css">
+<link rel="stylesheet" href="../src/css/70-dial.css">
+<style>
+  body { margin: 0; padding: 20px 16px 60px; }
+  h1 { font-size: 26px; }
+  h2 { font-size: 15px; margin-bottom: 8px; }
+  .t-top { display: flex; align-items: baseline; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  #summary { font-family: var(--f-mono); font-size: 13px; }
+  #summary.ok { color: var(--ok); } #summary.bad { color: var(--bad); }
+  #showcase { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+  .t-col { box-sizing: content-box; flex: none; }   /* the stated width is the room the controls get */
+  .t-col .sec-body { padding-bottom: 0; }
+  #results { margin: 20px 0 0; padding: 0; list-style: none; columns: 3 300px; column-gap: 28px; font-size: 12.5px; line-height: 1.45; }
+  #results li { break-inside: avoid; display: grid; grid-template-columns: 3.4em minmax(0, 1fr); }
+  #results b { font-family: var(--f-mono); font-weight: 500; }
+  #results .ok b { color: var(--ok); } #results .bad, #results .bad b { color: var(--bad); }
+  #fixture { margin-top: 24px; width: 320px; display: flex; flex-direction: column; gap: 14px; }
+</style>
+</head>
+<body>
+<div class="t-top"><h1>Controls kit: checks</h1><p id="summary">Running the checks</p></div>
+<div id="showcase">
+  <section><h2>320 px column</h2><div class="t-col" style="width: 320px"><div class="sec-body" id="show320"></div></div></section>
+  <section><h2>295 px: the approach panel on a 375 px phone</h2><div class="panel t-col" style="width: 295px"><div class="sec-body" id="show295"></div></div></section>
+  <section><h2>343 px: a sidebar section on a 375 px phone</h2><div class="t-col" style="width: 343px"><div class="sec-body" id="show343"></div></div></section>
+</div>
+<ol id="results"></ol>
+<div id="fixture"></div>
+
+<script>
+// the two helpers the kit takes from 00-core.js
+const $ = id => document.getElementById(id);
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+</script>
+<script src="../src/js/70-dial.js"></script>
+<script>
+(async () => {
+  // ---------- showcase: the controls as the lab uses them, for looking at
+  const demo = { n: 2.37, iter: 14, spin: 1, turn: 40, lift: 0, cx: 1, bound: 24, mode: 1, pal: 'fire', rev: false, r: 0.6 };
+  const demoSpecs = [
+    { type: 'dial', key: 'n', label: 'Power n', min: 2, max: 10, step: 0.1, def: 2, lo: -8, hi: 24 },
+    { type: 'dial', key: 'iter', label: 'Iterations', min: 3, max: 60, step: 1, def: 14, hi: 400, xmax: 2000, xhi: 100000, int: true },
+    { type: 'dial', key: 'spin', label: 'Spin multiplier (odd)', min: -7, max: 9, step: 2, def: 1, odd: true },
+    { type: 'dial', key: 'turn', label: 'Turn, degrees', min: -180, max: 180, step: 1, def: 0, animate: true, help: 'Turns every step about the z-axis. Press play to sweep it.' },
+    { type: 'dial', key: 'lift', label: 'Lift', min: -2, max: 2, step: 0.01, def: 0, xmin: -6, xmax: 6, animate: 'bounce' },
+    { type: 'dial', key: 'cx', label: 'Turning-out sphere, centre x', min: -1.5, max: 1.5, step: 0.005, def: 1, lo: -6, hi: 6, xlo: -60, xhi: 60 },
+    { type: 'dial', key: 'bound', label: 'Drawing radius', min: 2, max: 16, step: 0.5, def: 8, hi: 500, help: 'Nothing is drawn beyond this distance from the centre.' },
+    { type: 'select', key: 'mode', label: 'Colour by', def: 0, options: [[0, 'Escape count'], [1, 'Orbit trap, sphere shell'], [2, 'Plain clay']] },
+    { type: 'dial', key: 'r', label: 'Shell radius', min: 0, max: 2, step: 0.01, def: 0.6, when: o => o.mode === 1 },
+    { type: 'select', key: 'pal', label: 'Palette', def: 'fire', options: [['fire', 'Fire', 'Vivid'], ['neon', 'Neon', 'Vivid'], ['stone', 'Stone', 'Quiet']] },
+    { type: 'check', key: 'rev', label: 'Reverse the palette', def: false, help: 'Swaps the two ends of the palette.' },
+    { type: 'note', text: 'The number of planes is a free choice: p planes give 2p fins around the x-axis.' },
+  ];
+  window.dialShow = {};   // the showcase state, one object per column, for scripts that drive the page
+  for (const w of ['320', '295', '343']) buildControls('show' + w, demoSpecs, window.dialShow[w] = { ...demo }, null, { idPrefix: 's' + w + '-', group: 'show' + w });
+
+  // ---------- checks
+  const results = [], fixture = $('fixture');
+  let seq = 0;
+  // one dial bound to a plain object; st.sets records every call of its setter
+  function mk(o = {}) {
+    const id = 't' + (++seq), st = { v: o.v === undefined ? 2.37 : o.v, sets: [] };
+    const c = addDial(o.host || fixture, id, o.label || 'Check ' + seq, o.min ?? 0, o.max ?? 10, o.step ?? 0.1, () => st.v, v => { st.sets.push(v); st.v = v; }, o.opts || {});
+    return { c, st, id, el: c.el, r: $(id), n: $(id + 'Num'), box: c.el.querySelector('.dial-num'), up: c.el.querySelector('.dial-up'), down: c.el.querySelector('.dial-down'), mode: $(id + 'Step'), play: $(id + 'Play') };
+  }
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const frames = n => new Promise(res => { const f = () => (--n < 0 ? res() : requestAnimationFrame(f)); requestAnimationFrame(f); });
+  const type = (d, text) => { d.n.focus(); d.n.value = text; d.n.dispatchEvent(new Event('input', { bubbles: true })); };
+  const key = (d, k, mods = {}) => d.n.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true, ...mods }));
+  const enter = (d, text) => { type(d, text); key(d, 'Enter'); };
+  // focus leaves the box; if the window itself has no focus the browser sends no blur event, so send one
+  const leave = d => { let fired = false; const f = () => { fired = true; }; d.n.addEventListener('blur', f); d.n.blur(); d.n.removeEventListener('blur', f); if (!fired) d.n.dispatchEvent(new FocusEvent('blur')); };
+  // a real press: pointer down and up, then the click the browser sends after them
+  const down = (btn, mods = {}) => btn.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, cancelable: true, button: 0, pointerId: 1, ...mods }));
+  const release = (btn, mods = {}) => { btn.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, button: 0, pointerId: 1 })); btn.dispatchEvent(new MouseEvent('click', { bubbles: true, detail: 1, ...mods })); };
+  const press = (btn, mods = {}) => { down(btn, mods); release(btn, mods); };
+  const slide = (d, v) => { d.r.value = v; d.r.dispatchEvent(new Event('input', { bubbles: true })); d.r.dispatchEvent(new Event('change', { bubbles: true })); };
+  const show = v => (typeof v === 'number' && Object.is(v, -0) ? '-0' : JSON.stringify(v));
+  const eq = (got, want, what) => { if (!Object.is(got, want)) throw new Error(`${what}: expected ${show(want)}, got ${show(got)}`); };
+  const yes = (cond, what) => { if (!cond) throw new Error(what); };
+  const visible = el => el.getClientRects().length > 0;   // drawn at all: false under display none, here or further up
+  async function check(name, fn) {
+    const made = seq;
+    let ok = true, info = '';
+    try { await fn(); } catch (e) { ok = false; info = e.message; }
+    if (isExtreme()) setExtreme(false);
+    results.push({ name, ok, info });
+    controls.slice().forEach(c => { if (/^t\d+$/.test(c.id) && +c.id.slice(1) > made) c.remove(); });   // tidy this check's dials away
+  }
+
+  // ----- what a dial is made of
+  await check('The typed box is a text input with a decimal keypad and the id id + "Num"; the slider keeps the id', () => {
+    const d = mk();
+    eq(d.n.tagName, 'INPUT', 'box tag'); eq(d.n.type, 'text', 'box type'); eq(d.n.getAttribute('inputmode'), 'decimal', 'inputmode');
+    eq(d.n.id, d.id + 'Num', 'box id'); eq(d.r.type, 'range', 'slider type'); eq(d.r.id, d.id, 'slider id');
+    eq(d.el.querySelector('label').htmlFor, d.id, 'label points at the slider');
+  });
+  await check('Two step buttons (up, down) sit in the box cluster', () => {
+    const d = mk();
+    eq(d.up.tagName, 'BUTTON', 'up'); eq(d.down.tagName, 'BUTTON', 'down');
+    yes(d.up.getAttribute('aria-label') && d.down.getAttribute('aria-label'), 'the buttons need names');
+    yes(d.el.querySelector('.dial-box').contains(d.up), 'the buttons belong to the box cluster');
+  });
+  await check('The step toggle shows the step in use: ±0.1, then ±1 after a press, then ±0.1 again', () => {
+    const d = mk();
+    eq(d.mode.textContent, '±0.1', 'start'); eq(d.mode.getAttribute('aria-pressed'), 'false', 'pressed at start');
+    d.mode.click(); eq(d.mode.textContent, '±1', 'after one press'); eq(d.mode.getAttribute('aria-pressed'), 'true', 'pressed');
+    d.mode.click(); eq(d.mode.textContent, '±0.1', 'after two presses');
+    eq(mk({ step: 0.005 }).mode.textContent, '±0.005', 'a step of 0.005');
+  });
+  await check('Dials that hold whole numbers only and step by 1 (int, odd) have no toggle; every other dial has one', () => {
+    eq(mk({ step: 1, opts: { int: true } }).mode, null, 'int');
+    eq(mk({ step: 2, opts: { odd: true } }).mode, null, 'odd');
+    eq(mk({ step: 10, max: 700, opts: { int: true } }).mode.textContent, '±10', 'a whole-number dial with a step of 10 can switch to 1');
+    const d = mk({ step: 1, max: 120 });
+    eq(d.mode.textContent, '±1', 'a dial with a step of 1 that can hold decimals starts on whole numbers'); eq(d.mode.getAttribute('aria-pressed'), 'true', 'pressed at start');
+    d.mode.click(); eq(d.mode.textContent, '±0.1', 'its finer choice'); eq(d.mode.getAttribute('aria-pressed'), 'false', 'not pressed on the finer step');
+  });
+  await check('A step of 1 means the next whole number on every dial: 35.49 goes up to 36 and 37 and down to 35; after a press on the toggle it moves by 0.1', () => {
+    let d = mk({ v: 35.49, min: 10, max: 120, step: 1, opts: { lo: 2, hi: 150 } });
+    press(d.up); eq(d.st.v, 36, 'up'); eq(d.n.value, '36', 'box'); press(d.up); eq(d.st.v, 37, 'up again');
+    d = mk({ v: 35.49, min: 10, max: 120, step: 1 }); d.n.focus(); key(d, 'ArrowDown'); eq(d.st.v, 35, 'ArrowDown'); key(d, 'ArrowDown', { shiftKey: true }); eq(d.st.v, 25, 'ten down');
+    d = mk({ v: 34.2, min: -180, max: 180, step: 1, opts: { animate: true } }); press(d.up); eq(d.st.v, 35, 'the value a paused sweep leaves, 34.2, goes up to 35');
+    d = mk({ v: 35.49, min: 10, max: 120, step: 1 }); d.mode.click(); press(d.up); eq(d.st.v, 35.59, 'fine step up'); press(d.down); press(d.down); eq(d.st.v, 35.39, 'fine step down twice');
+    slide(d, 60); eq(d.st.v, 60, 'the slider still moves by 1');
+  });
+
+  // ----- stepping in fine mode
+  await check('Fine step, buttons: 2.37 goes up to 2.47 and back down to 2.37, then 2.27', () => {
+    const d = mk();
+    press(d.up); eq(d.st.v, 2.47, 'up'); eq(d.n.value, '2.47', 'box');
+    press(d.down); eq(d.st.v, 2.37, 'down'); press(d.down); eq(d.st.v, 2.27, 'down again');
+  });
+  await check('Fine step, ArrowUp and ArrowDown in the box', () => {
+    const d = mk(); d.n.focus();
+    key(d, 'ArrowUp'); eq(d.st.v, 2.47, 'ArrowUp'); key(d, 'ArrowDown'); key(d, 'ArrowDown'); eq(d.st.v, 2.27, 'ArrowDown twice');
+    eq(d.n.value, '2.27', 'box');
+  });
+  await check('Ten steps: Shift with an arrow key, PageUp and PageDown, Shift with a button', () => {
+    const d = mk(); d.n.focus();
+    key(d, 'ArrowUp', { shiftKey: true }); eq(d.st.v, 3.37, 'Shift+ArrowUp');
+    key(d, 'PageUp'); eq(d.st.v, 4.37, 'PageUp');
+    key(d, 'PageDown'); key(d, 'ArrowDown', { shiftKey: true }); eq(d.st.v, 2.37, 'PageDown, Shift+ArrowDown');
+    press(d.up, { shiftKey: true }); eq(d.st.v, 3.37, 'Shift+press up');
+    press(d.down, { shiftKey: true }); eq(d.st.v, 2.37, 'Shift+press down');
+  });
+  await check('Fine steps never snap to a grid: 0.123 goes to 0.223, 0.3333 to 0.4333, and with a step of 0.005, 1.2 to 1.205', () => {
+    let d = mk({ v: 0.123 }); press(d.up); eq(d.st.v, 0.223, '0.123 + 0.1');
+    d = mk({ v: 0.3333 }); press(d.up); eq(d.st.v, 0.4333, '0.3333 + 0.1');
+    d = mk({ v: 1.2, step: 0.005 }); press(d.up); eq(d.st.v, 1.205, '1.2 + 0.005'); press(d.down); press(d.down); eq(d.st.v, 1.195, '1.205 - 0.01');
+  });
+  await check('Steps carry no floating-point noise: 2.3 + 0.1 is 2.4, twenty steps from 0 are exactly 2, and -0.1 + 0.1 is 0', () => {
+    let d = mk({ v: 2.3 }); press(d.up); eq(d.st.v, 2.4, '2.3 + 0.1'); eq(d.n.value, '2.4', 'box');
+    d = mk({ v: 0.1 }); press(d.up); press(d.up); eq(d.st.v, 0.3, '0.1 + 0.1 + 0.1');
+    d = mk({ v: 0 }); for (let i = 0; i < 20; i++) press(d.up); eq(d.st.v, 2, 'twenty steps');
+    yes(d.st.sets.every(v => String(v).length <= 4), 'every value on the way is short: ' + d.st.sets.join(' '));
+    d = mk({ v: -0.1, min: -1 }); press(d.up); eq(d.st.v, 0, '-0.1 + 0.1'); eq(d.n.value, '0', 'box');
+    d = mk({ v: 0.7, step: 0.1 }); press(d.down, { shiftKey: true }); eq(d.st.v, 0, '0.7 - 1 stops at the limit 0');
+  });
+  await check('Steps stop at the hard limits, not at the ends of the slider, and a step that changes nothing does not call the setter', () => {
+    const d = mk({ v: 10, opts: { lo: -8, hi: 10.15 } });
+    press(d.up); eq(d.st.v, 10.1, 'past the slider end'); press(d.up); eq(d.st.v, 10.15, 'clamped to hi');
+    const calls = d.st.sets.length; press(d.up); eq(d.st.sets.length, calls, 'setter calls at the limit');
+    const e = mk({ v: 0, opts: { lo: -0.25 } }); press(e.down); press(e.down); press(e.down); eq(e.st.v, -0.25, 'clamped to lo');
+  });
+  await check('A step starts from what is typed in the box, when that is a number', () => {
+    const d = mk(); type(d, '5'); key(d, 'ArrowUp'); eq(d.st.v, 5.1, 'typed 5, ArrowUp'); eq(d.n.value, '5.1', 'box');
+    type(d, 'five'); key(d, 'ArrowUp'); eq(d.st.v, 5.2, 'typed nonsense, ArrowUp steps from the old value'); eq(d.n.value, '5.2', 'box');
+  });
+  await check('One press is one step, a scripted click is one step, and holding a button repeats until it is let go', async () => {
+    const d = mk();
+    press(d.up); eq(d.st.sets.length, 1, 'setter calls after one press');
+    d.up.click(); eq(d.st.sets.length, 2, 'setter calls after a scripted click');
+    down(d.up); await sleep(800);
+    const held = d.st.sets.length; yes(held >= 5, 'holding for 0.8 s should repeat, got ' + (held - 2) + ' steps');
+    release(d.up); await sleep(200); eq(d.st.sets.length, held, 'setter calls after letting go');
+    eq(d.st.v, +(2.37 + 0.1 * held).toFixed(2), 'value after the hold');
+  });
+
+  // ----- stepping in whole-number mode
+  await check('Whole-number step: 2.37 goes up to 3, 2.37 goes down to 2, 3 goes to 4, 3 goes down to 2', () => {
+    let d = mk(); d.mode.click(); press(d.up); eq(d.st.v, 3, '2.37 up'); press(d.up); eq(d.st.v, 4, '3 up');
+    d = mk(); d.mode.click(); press(d.down); eq(d.st.v, 2, '2.37 down');
+    d = mk({ v: 3 }); d.mode.click(); press(d.down); eq(d.st.v, 2, '3 down');
+    d = mk(); d.mode.click(); d.n.focus(); key(d, 'ArrowUp'); eq(d.st.v, 3, 'ArrowUp'); key(d, 'ArrowDown'); eq(d.st.v, 2, 'ArrowDown');
+  });
+  await check('Whole-number step below zero: -2.37 goes up to -2 and down to -3', () => {
+    let d = mk({ v: -2.37, min: -10 }); d.mode.click(); press(d.up); eq(d.st.v, -2, 'up');
+    d = mk({ v: -2.37, min: -10 }); d.mode.click(); press(d.down); eq(d.st.v, -3, 'down');
+    d = mk({ v: -0.5, min: -10 }); d.mode.click(); press(d.up); eq(d.st.v, 0, '-0.5 up is 0, not -0'); eq(d.n.value, '0', 'box');
+  });
+  await check('Whole-number step, ten at a time: 2.37 goes up to 12 and down to -7', () => {
+    let d = mk({ min: -20, max: 20 }); d.mode.click(); d.n.focus(); key(d, 'ArrowUp', { shiftKey: true }); eq(d.st.v, 12, 'Shift+ArrowUp');
+    d = mk({ min: -20, max: 20 }); d.mode.click(); d.n.focus(); key(d, 'PageDown'); eq(d.st.v, -7, 'PageDown');
+  });
+  await check('A value a hair under 3 (0.1 × 3 × 10 style noise) counts as 3 in whole-number mode', () => {
+    const d = mk({ v: 2.9999999999999996 }); d.mode.click(); press(d.up); eq(d.st.v, 4, 'up'); press(d.down); press(d.down); eq(d.st.v, 2, 'down twice');
+  });
+  await check('The toggle belongs to one dial: switching one leaves its neighbour on the fine step, and switching back restores it', () => {
+    const a = mk({ v: 3 }), b = mk({ v: 3 });
+    a.mode.click(); press(a.up); press(b.up); eq(a.st.v, 4, 'the switched dial'); eq(b.st.v, 3.1, 'its neighbour');
+    a.mode.click(); press(a.up); eq(a.st.v, 4.1, 'switched back');
+  });
+
+  // ----- whole-number and odd dials
+  await check('int rounds what is typed and steps by whole numbers', () => {
+    const d = mk({ v: 14, min: 3, max: 60, step: 1, opts: { int: true, hi: 400 } });
+    enter(d, '3.6'); eq(d.st.v, 4, '3.6'); enter(d, '2.5'); eq(d.st.v, 3, '2.5'); enter(d, '399.7'); eq(d.st.v, 400, '399.7');
+    enter(d, '7.4'); eq(d.st.v, 7, '7.4'); key(d, 'ArrowUp'); eq(d.st.v, 8, 'up'); key(d, 'ArrowDown', { shiftKey: true }); eq(d.st.v, 3, 'ten down stops at 3');
+    eq(d.n.value, '3', 'box');
+  });
+  await check('odd moves what is typed to the nearest odd whole number, steps from odd to odd, and keeps odd limits', () => {
+    const d = mk({ v: 1, min: -7, max: 9, step: 2, opts: { odd: true, lo: -8, hi: 10 } });
+    for (const [text, want] of [['4', 5], ['2', 3], ['0', 1], ['-2', -1], ['3.9', 3], ['4.1', 5], ['-3.2', -3], ['7', 7], ['100', 9], ['-100', -7]]) { enter(d, text); eq(d.st.v, want, 'typed ' + text); }
+    enter(d, '3'); press(d.up); eq(d.st.v, 5, '3 up'); press(d.down); press(d.down); eq(d.st.v, 1, '5 down twice'); press(d.down); eq(d.st.v, -1, '1 down');
+    key(d, 'ArrowUp', { shiftKey: true }); eq(d.st.v, 9, 'ten up stops at the highest odd number');
+    slide(d, 4); yes(Math.abs(d.st.v) % 2 === 1, 'the slider gives odd numbers too, got ' + d.st.v);
+  });
+
+  // ----- typing
+  await check('Enter commits what is typed and focus stays in the box', () => {
+    const d = mk(); enter(d, '4.5'); eq(d.st.v, 4.5, 'state'); eq(d.n.value, '4.5', 'box'); eq(document.activeElement, d.n, 'focus');
+    eq(d.st.sets.length, 1, 'setter calls');
+  });
+  await check('Leaving the box commits what is typed, once', () => {
+    const d = mk(); type(d, '4.5'); eq(d.st.v, 2.37, 'nothing is written while typing'); leave(d); eq(d.st.v, 4.5, 'state');
+    enter(d, '6'); leave(d); eq(d.st.sets.length, 2, 'Enter followed by leaving commits once');
+  });
+  await check('Escape restores the old value and nothing is written, even on leaving afterwards', () => {
+    const d = mk(); type(d, '9'); key(d, 'Escape'); eq(d.n.value, '2.37', 'box'); leave(d); eq(d.st.v, 2.37, 'state'); eq(d.st.sets.length, 0, 'setter calls');
+  });
+  await check('Typed forms that are accepted: unicode minus, dashes, spaces around, decimal comma, scientific notation, bare signs and points', () => {
+    const d = mk({ min: -10, opts: { lo: -100, hi: 100 } });
+    const cases = [['\u22121.5', -1.5], ['\u20132', -2], ['  3.25  ', 3.25], ['\u00a04\u00a0', 4], ['2,5', 2.5], ['-0,75', -0.75], ['1e-3', 0.001], ['2.5E1', 25], ['1e1', 10],
+      ['\u22122,5e1', -25], ['+4', 4], ['.5', 0.5], ['5.', 5], ['-.25', -0.25], ['007', 7], ['-0', 0], ['3e\u22121', 0.3]];
+    for (const [text, want] of cases) { enter(d, text); eq(d.st.v, want, 'typed "' + text + '"'); eq(d.n.value, dialFmt(want), 'box after "' + text + '"'); }
+  });
+  await check('Anything that is not a number restores the old value, writes nothing, and flags the box', () => {
+    const d = mk();
+    for (const text of ['abc', '', ' ', '1,2,3', '1.2.3', '1,234.5', '0x10', 'Infinity', 'NaN', '1e999', '--5', '5 5', '2/3', '1e', 'e5', '.', '-', '2.3.', '12px']) {
+      enter(d, text);
+      eq(d.n.value, '2.37', 'box after "' + text + '"'); eq(d.st.v, 2.37, 'state after "' + text + '"');
+      eq(d.n.getAttribute('aria-invalid'), 'true', 'aria-invalid after "' + text + '"');
+      leave(d);
+    }
+    eq(d.st.sets.length, 0, 'setter calls');
+  });
+  await check('The invalid flag is brief: it clears by itself, and at once when typing starts again or a good value is entered', async () => {
+    const d = mk(); enter(d, 'abc'); eq(d.n.getAttribute('aria-invalid'), 'true', 'flag set'); eq(d.box.dataset.flag, 'invalid', 'box marked');
+    type(d, '3'); eq(d.n.getAttribute('aria-invalid'), null, 'flag after typing again');
+    key(d, 'Escape'); enter(d, 'abc'); enter(d, '4'); eq(d.n.getAttribute('aria-invalid'), null, 'flag after a good value');
+    enter(d, 'abc'); await sleep(1700); eq(d.n.getAttribute('aria-invalid'), null, 'flag after 1.7 s'); eq(d.box.dataset.flag, undefined, 'box mark after 1.7 s');
+  });
+  await check('Out-of-range values clamp to lo and hi; the slider range does not limit typing', () => {
+    const d = mk({ min: 2, max: 10, opts: { lo: -8, hi: 24 } });
+    enter(d, '99'); eq(d.st.v, 24, '99'); eq(d.n.value, '24', 'box'); enter(d, '-99'); eq(d.st.v, -8, '-99');
+    enter(d, '15'); eq(d.st.v, 15, '15 is beyond the slider but allowed'); enter(d, '1e9'); eq(d.st.v, 24, '1e9');
+    const e = mk({ min: 2, max: 10 }); enter(e, '15'); eq(e.st.v, 10, 'without lo and hi the slider range is the limit'); enter(e, '0'); eq(e.st.v, 2, 'lower end');
+  });
+  await check('Unchanged text writes nothing: a value with more digits than the box shows survives focus, Enter and leaving', () => {
+    const d = mk({ v: 0.123456789 }); eq(d.n.value, '0.123457', 'box');
+    d.n.focus(); key(d, 'Enter'); leave(d); eq(d.st.v, 0.123456789, 'state'); eq(d.st.sets.length, 0, 'setter calls');
+    enter(d, '0.1234567'); eq(d.st.v, 0.1234567, 'a typed value keeps all its digits'); eq(d.n.value, '0.123457', 'box shows six decimals');
+  });
+  await check('Typing the value the dial already holds does not call the setter', () => {
+    const d = mk(); enter(d, '2.370'); eq(d.st.sets.length, 0, 'setter calls'); eq(d.n.value, '2.37', 'box is tidied');
+  });
+  await check('The wheel never changes a value: no wheel handling on the box or the slider, focused or not', () => {
+    const d = mk(); d.n.focus();
+    for (const el of [d.n, d.r, d.up, d.el]) for (const dy of [-120, 120, -3, 3]) el.dispatchEvent(new WheelEvent('wheel', { deltaY: dy, bubbles: true, cancelable: true }));
+    d.r.focus(); d.r.dispatchEvent(new WheelEvent('wheel', { deltaY: -120, bubbles: true, cancelable: true }));
+    eq(d.st.v, 2.37, 'state'); eq(d.st.sets.length, 0, 'setter calls'); eq(d.n.type, 'text', 'a text box has no wheel spin of its own');
+    const ev = new WheelEvent('wheel', { deltaY: 120, bubbles: true, cancelable: true }); d.n.dispatchEvent(ev);
+    eq(ev.defaultPrevented, false, 'the page must still scroll under the pointer');
+  });
+
+  // ----- display
+  await check('Display: at most 6 decimals, trailing zeros trimmed', () => {
+    const cases = [[2.37, '2.37'], [2, '2'], [0.1 + 0.2, '0.3'], [1 / 3, '0.333333'], [2 / 3, '0.666667'], [2.5, '2.5'], [100, '100'], [1200, '1200'], [0.5, '0.5'], [-2.5, '-2.5'],
+      [-0, '0'], [0, '0'], [0.000001, '0.000001'], [0.00001, '0.00001'], [0.1000004, '0.1'], [-0.0000004, '-4e-7'], [1234567.891, '1234567.891'], [2.4000000000000004, '2.4'],
+      [NaN, ''], [undefined, ''], [Infinity, '']];
+    for (const [v, want] of cases) eq(dialFmt(v), want, 'dialFmt(' + show(v) + ')');
+  });
+  await check('Display: never exponent notation for ordinary sizes (a millionth up to a million million)', () => {
+    for (let p = -6; p <= 14; p++) for (const m of [1, -1, 2.5, 9.99, -7.25]) {
+      const v = m * 10 ** p, t = dialFmt(v);
+      yes(!/e/i.test(t), 'dialFmt(' + v + ') gave ' + t);
+      yes((t.split('.')[1] || '').length <= 6, 'too many decimals in ' + t);
+    }
+    eq(dialFmt(1e6), '1000000', 'a million'); eq(dialFmt(123456789012), '123456789012', 'twelve digits'); eq(dialFmt(5e-7), '5e-7', 'too small for six decimals');
+  });
+  await check('Display round-trips: reading back what is shown gives the shown number, minus sign included', () => {
+    for (const v of [2.37, -2.37, 0, -0.5, 1 / 3, -1 / 3, 1e-6, -1e-6, 4e-7, -4e-7, 123456.789, -8, 24, 0.005, 1e15, -3e-9]) {
+      const t = dialFmt(v), back = dialParse(t);
+      eq(dialFmt(back), t, 'round trip of ' + v);
+      yes(Math.abs(back - v) <= 5.000001e-7 * Math.max(1, Math.abs(v)), 'read back ' + back + ' from ' + t + ' for ' + v);
+    }
+    const d = mk({ v: -2.5, min: -10 }); eq(d.n.value, '-2.5', 'box'); type(d, d.n.value + ' '); key(d, 'Enter'); eq(d.st.v, -2.5, 'retyping the shown text keeps the value');
+  });
+
+  // ----- the slider
+  await check('A value beyond the slider shows at the nearest end and is not written back, until the slider is moved', () => {
+    const d = mk({ v: 24, min: 2, max: 10, opts: { lo: -8, hi: 24 } });
+    eq(d.r.value, '10', 'thumb'); eq(d.n.value, '24', 'box'); yes(d.el.classList.contains('is-out'), 'marked as beyond the slider');
+    d.c.sync(); syncControls(); eq(d.st.v, 24, 'state after sync'); eq(d.st.sets.length, 0, 'setter calls');
+    d.st.v = -5; d.c.sync(); eq(d.r.value, '2', 'thumb at the low end'); eq(d.st.v, -5, 'state'); eq(d.n.value, '-5', 'box');
+    slide(d, 7); eq(d.st.v, 7, 'after moving the slider'); yes(!d.el.classList.contains('is-out'), 'mark removed'); eq(d.n.value, '7', 'box');
+  });
+  await check('A value between two slider steps keeps its digits; the thumb only shows the nearest step', () => {
+    const d = mk(); eq(d.r.value, '2.4', 'thumb'); d.c.sync(); eq(d.st.v, 2.37, 'state'); eq(d.n.value, '2.37', 'box'); eq(d.st.sets.length, 0, 'setter calls');
+  });
+  await check('Moving the slider writes clean step values and updates the box', () => {
+    const d = mk();
+    for (const v of [0.3, 0.7, 2.4, 5.1, 8.9, 10]) { slide(d, v); eq(d.st.v, v, 'slider at ' + v); eq(d.n.value, String(v), 'box'); }
+    const e = mk({ min: -1.5, max: 1.5, step: 0.005, v: 0 }); slide(e, 0.035); eq(e.st.v, 0.035, 'step 0.005'); slide(e, -1.495); eq(e.st.v, -1.495, 'negative');
+  });
+  await check('The slider cannot push a value past lo or hi when those are narrower than its range', () => {
+    const d = mk({ min: 0, max: 10, opts: { lo: 1, hi: 9 } }); slide(d, 10); eq(d.st.v, 9, 'top'); slide(d, 0); eq(d.st.v, 1, 'bottom');
+  });
+
+  // ----- the play button
+  await check('animate adds a play button; without it there is none', () => {
+    eq(mk().play, null, 'plain dial');
+    const d = mk({ opts: { animate: true } }); eq(d.play.tagName, 'BUTTON', 'button'); eq(d.play.getAttribute('aria-pressed'), 'false', 'not playing at first');
+  });
+  await check('Play sweeps the value at about one slider range per 8 seconds, calling the setter every frame; pause stops it', async () => {
+    const d = mk({ v: 0, min: -180, max: 180, step: 1, opts: { animate: true } });
+    d.play.click(); eq(d.play.getAttribute('aria-pressed'), 'true', 'playing');
+    await frames(2);
+    const t0 = performance.now(), v0 = d.st.v, c0 = d.st.sets.length;
+    await frames(45);
+    const dt = performance.now() - t0, moved = d.st.v - v0, calls = d.st.sets.length - c0, want = 360 * dt / 8000;
+    yes(Math.abs(moved - want) <= 0.15 * want + 1, `moved ${moved.toFixed(2)} in ${dt.toFixed(0)} ms, expected about ${want.toFixed(2)}`);
+    yes(calls >= 40 && calls <= 48, `the setter ran ${calls} times in 45 frames`);
+    d.play.click(); eq(d.play.getAttribute('aria-pressed'), 'false', 'paused');
+    const v1 = d.st.v; await frames(4); eq(d.st.v, v1, 'value while paused');
+  });
+  await check('The sweep wraps from the top of the slider to the bottom and never leaves the range', async () => {
+    const d = mk({ v: 9.7, min: 0, max: 10, step: 0.1, opts: { animate: 1 } });   // one second per sweep, to keep the check short
+    d.play.click();
+    let wrapped = false, prev = d.st.v;
+    for (let i = 0; i < 90 && !wrapped; i++) { await frames(1); if (d.st.v < prev) wrapped = true; prev = d.st.v; }
+    d.play.click();
+    yes(wrapped, 'the value never came back to the bottom'); yes(d.st.v < 3, 'after wrapping the value is near the bottom, got ' + d.st.v);
+    yes(d.st.sets.every(v => v >= 0 && v <= 10), 'values outside the range: ' + d.st.sets.filter(v => v < 0 || v > 10).join(' '));
+  });
+  await check('The sweep pauses when the control is hidden and when something around it is not displayed, and stays paused when it is shown again', async () => {
+    const d = mk({ v: 0, opts: { animate: true } });
+    d.play.click(); await frames(3); yes(d.st.v > 0, 'it should be moving first');
+    d.el.hidden = true; await frames(3);
+    eq(d.play.getAttribute('aria-pressed'), 'false', 'paused when hidden'); const v1 = d.st.v; await frames(3); eq(d.st.v, v1, 'value while hidden');
+    d.el.hidden = false; await frames(3); eq(d.st.v, v1, 'it stays paused when shown again');
+    const wrap = document.createElement('div'); wrap.innerHTML = '<div></div>'; fixture.appendChild(wrap);
+    const e = mk({ v: 0, host: wrap.lastChild, opts: { animate: true } });
+    e.play.click(); await frames(3); yes(e.st.v > 0, 'the dial in the wrapper should be moving first');
+    wrap.style.display = 'none'; await frames(3); eq(e.play.getAttribute('aria-pressed'), 'false', 'paused when something around it is not displayed');
+    wrap.remove();
+  });
+  await check('Folding a section away does not stop a sweep inside it: it plays on while the section is closed and after it is opened again; hiding the section does stop it', async () => {
+    const sec = document.createElement('details'); sec.open = true; sec.innerHTML = '<summary>Section</summary><div></div>'; fixture.appendChild(sec);
+    const e = mk({ v: 0, host: sec.lastChild, opts: { animate: true } });
+    e.play.click(); await frames(3); yes(e.st.v > 0, 'the dial in the section should be moving first');
+    sec.open = false; await frames(4); eq(e.play.getAttribute('aria-pressed'), 'true', 'still playing in the closed section');
+    const v1 = e.st.v; await frames(4); yes(e.st.v > v1, 'the value keeps moving while the section is closed');
+    sec.open = true; await frames(3); eq(e.play.getAttribute('aria-pressed'), 'true', 'still playing after opening');
+    sec.open = false; await frames(2); sec.hidden = true; await frames(3); eq(e.play.getAttribute('aria-pressed'), 'false', 'paused when the closed section is hidden');
+    sec.remove();
+  });
+  await check('animate: "bounce" sweeps there and back: the value turns round at the top and at the bottom and never jumps from one end to the other', async () => {
+    const d = mk({ v: 9.9, min: 0, max: 10, step: 0.1, opts: { animate: 'bounce' } });
+    const jump = a => a.reduce((m, v, i) => (i ? Math.max(m, Math.abs(v - a[i - 1])) : 0), 0);
+    d.play.click();
+    const high = [d.st.v];
+    for (let i = 0; i < 30; i++) { await frames(1); high.push(d.st.v); }
+    yes(Math.max(...high) > 9.95, 'it should reach the top, got ' + Math.max(...high)); yes(high[high.length - 1] < Math.max(...high) - 0.1, 'after the top it should come down: ' + high.join(' '));
+    d.st.v = 0.1;   // moved from outside on its way down: it carries on down from there
+    const low = [d.st.v];
+    for (let i = 0; i < 30; i++) { await frames(1); low.push(d.st.v); }
+    d.play.click();
+    yes(Math.min(...low) < 0.05, 'it should reach the bottom, got ' + Math.min(...low)); yes(low[low.length - 1] > Math.min(...low) + 0.1, 'after the bottom it should go up: ' + low.join(' '));
+    yes(jump(high) < 0.5 && jump(low) < 0.5, 'largest change between two frames: ' + Math.max(jump(high), jump(low)));
+    yes(d.st.sets.every(v => v >= 0 && v <= 10), 'values outside the range: ' + d.st.sets.filter(v => v < 0 || v > 10).join(' '));
+    yes(/and back/.test(d.play.title), 'the play button says it goes there and back: ' + d.play.title);
+  });
+  await check('The sweep pauses on reset, and the value returns to its default', async () => {
+    const d = mk({ v: 3, opts: { animate: true, def: 1.5, group: 'sweep-reset' } });
+    d.play.click(); await frames(4); d.c.reset();
+    eq(d.play.getAttribute('aria-pressed'), 'false', 'paused'); eq(d.st.v, 1.5, 'default'); await frames(4); eq(d.st.v, 1.5, 'value after reset');
+    d.play.click(); await frames(4); resetGroup('sweep-reset'); eq(d.play.getAttribute('aria-pressed'), 'false', 'paused by resetGroup'); await frames(3); eq(d.st.v, 1.5, 'default after resetGroup');
+  });
+  await check('Changing the value by hand (typing, stepping, the slider) pauses the sweep', async () => {
+    const d = mk({ v: 3, opts: { animate: true } });
+    d.play.click(); await frames(3); enter(d, '5'); eq(d.play.getAttribute('aria-pressed'), 'false', 'typing'); await frames(3); eq(d.st.v, 5, 'value stays as typed');
+    d.play.click(); await frames(3); press(d.up); eq(d.play.getAttribute('aria-pressed'), 'false', 'stepping');
+    d.play.click(); await frames(3); slide(d, 8); eq(d.play.getAttribute('aria-pressed'), 'false', 'slider'); await frames(3); eq(d.st.v, 8, 'value stays where the slider put it');
+  });
+  await check('A sweep on a whole-number dial moves through whole numbers only', async () => {
+    const d = mk({ v: 1, min: 1, max: 8, step: 1, opts: { animate: 1, int: true } });
+    d.play.click(); await frames(30); d.play.click();
+    yes(d.st.sets.length >= 2, 'it should have moved'); yes(d.st.sets.every(Number.isInteger), 'values: ' + d.st.sets.join(' '));
+  });
+
+  // ----- extreme values
+  const xi = { int: true, hi: 400, xmax: 1000, xhi: 100000 };   // Iterations, as the lab might widen it
+  const lim = d => [d.r.min, d.r.max, d.n.getAttribute('aria-valuemin'), d.n.getAttribute('aria-valuemax')].join(' ');
+  await check('Extreme values: setExtreme(true) gives a dial its wide slider range (xmin, xmax) and typed limits (xlo, xhi), a dial without them is left alone, and isExtreme() reports the switch', () => {
+    const d = mk({ v: 14, min: 3, max: 60, step: 1, opts: xi }), plain = mk({ v: 5 });
+    eq(isExtreme(), false, 'off at first'); eq(lim(d), '3 60 3 400', 'normal range');
+    setExtreme(true);
+    eq(isExtreme(), true, 'on'); eq(lim(d), '3 1000 3 100000', 'wide range'); eq(lim(plain), '0 10 0 10', 'a dial without the fields');
+    enter(d, '900'); eq(d.st.v, 900, 'typed 900'); eq(d.r.value, '900', 'thumb'); yes(!d.el.classList.contains('is-out'), '900 lies on the wide slider');
+    enter(d, '250000'); eq(d.st.v, 100000, 'clamped to xhi'); enter(d, '1'); eq(d.st.v, 3, 'there is no xlo, so the normal low limit holds');
+    slide(d, 640); eq(d.st.v, 640, 'the slider reaches 640'); enter(plain, '15'); eq(plain.st.v, 10, 'the plain dial keeps its limits');
+    setExtreme(false); eq(isExtreme(), false, 'off again'); eq(lim(d), '3 60 3 400', 'normal range again');
+  });
+  await check('Extreme values: any of the four fields may be missing; the normal value stays, and a typed limit goes out with the slider when only the slider end is given', () => {
+    const a = mk({ v: 0, min: -2, max: 2, step: 0.01, opts: { lo: -6, hi: 6, xmin: -6, xmax: 6, xlo: -20, xhi: 20 } });
+    const b = mk({ v: 0, min: -2, max: 2, step: 0.01, opts: { lo: -6, hi: 6, xhi: 50 } });
+    const c = mk({ v: 5, min: 0, max: 10, step: 0.5, opts: { xmax: 100 } });
+    const e = mk({ v: 5, min: 0, max: 10, step: 0.5, opts: { lo: 1, hi: 9, xmin: -5 } });
+    const f = mk({ v: 1, min: -7, max: 9, step: 2, opts: { odd: true, xmin: -20, xmax: 20 } });
+    setExtreme(true);
+    eq(lim(a), '-6 6 -20 20', 'all four'); eq(lim(b), '-2 2 -6 50', 'xhi alone'); eq(lim(c), '0 100 0 100', 'xmax alone');
+    eq(lim(e), '-5 10 -5 9', 'xmin alone: only the low side moves'); eq(lim(f), '-20 20 -19 19', 'an odd dial keeps odd limits');
+    enter(f, '18'); eq(f.st.v, 19, 'and odd values');
+    setExtreme(false); eq(lim(a), '-2 2 -6 6', 'back'); eq(lim(c), '0 10 0 10', 'back'); eq(f.st.v, 9, 'the odd dial is pulled back to its highest normal value');
+  });
+  await check('Switching extreme values off brings a value beyond the normal typed limits back to the nearest limit, through the setter, once; a value inside them is left alone even beyond the slider', () => {
+    const d = mk({ v: 14, min: 3, max: 60, step: 1, opts: xi }), f = mk({ v: 14, min: 3, max: 60, step: 1, opts: xi });
+    const e = mk({ v: 0, min: -2, max: 2, step: 0.01, opts: { lo: -6, hi: 6, xmin: -6, xmax: 6, xlo: -20, xhi: 20 } });
+    setExtreme(true); enter(d, '640'); enter(e, '-12.5'); enter(f, '250');
+    const calls = [d, e, f].map(x => x.st.sets.length);
+    setExtreme(false);
+    eq(d.st.v, 400, 'above the limit'); eq(d.n.value, '400', 'box'); eq(d.st.sets.length, calls[0] + 1, 'setter calls'); eq(d.st.sets[calls[0]], 400, 'what the setter was given');
+    eq(e.st.v, -6, 'below the limit'); eq(e.n.value, '-6', 'box'); eq(e.st.sets.length, calls[1] + 1, 'setter calls below');
+    eq(f.st.v, 250, 'inside the typed limits'); eq(f.st.sets.length, calls[2], 'no setter call'); yes(f.el.classList.contains('is-out'), 'beyond the slider, so the thumb waits at its end'); eq(f.r.value, '60', 'thumb');
+    setExtreme(false); eq(d.st.sets.length, calls[0] + 1, 'switching off twice writes nothing more');
+  });
+  await check('A dial made while extreme values are on starts with its wide range', () => {
+    setExtreme(true);
+    const d = mk({ v: 700, min: 3, max: 60, step: 1, opts: xi });
+    eq(lim(d), '3 1000 3 100000', 'range'); eq(d.r.value, '700', 'thumb'); eq(visible($(d.id + 'Wide')), true, 'tag');
+    setExtreme(false); eq(lim(d), '3 60 3 400', 'range after switching off'); eq(d.st.v, 400, 'value pulled back');
+  });
+  await check('A widened dial shows a small tag, "wide", in front of its box, with the range in its tooltip and a colour from the theme; with the switch off, or without a wide range, there is none', () => {
+    const d = mk({ v: 14, min: 3, max: 60, step: 1, opts: xi }), plain = mk(), tag = $(d.id + 'Wide');
+    eq(plain.el.querySelector('.dial-wide'), null, 'plain dial'); yes(tag && d.el.querySelector('.dial-box').contains(tag), 'the tag belongs to the box cluster');
+    eq(visible(tag), false, 'hidden while off'); yes(!d.el.classList.contains('is-wide'), 'class while off');
+    setExtreme(true);
+    eq(visible(tag), true, 'shown while on'); eq(tag.textContent, 'wide', 'text'); yes(d.el.classList.contains('is-wide'), 'class while on');
+    yes(/3 to 1000,/.test(tag.title) && /3 to 100000\./.test(tag.title), 'tooltip: ' + tag.title); yes(/100000/.test(d.n.title), 'the box tooltip states the limits in use: ' + d.n.title);
+    yes(tag.getBoundingClientRect().right <= d.box.getBoundingClientRect().left, 'the tag sits before the box'); yes(parseFloat(getComputedStyle(tag).fontSize) <= 12, 'small type');
+    const root = document.documentElement, was = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', 'dark'); const dark = getComputedStyle(tag).color; root.setAttribute('data-theme', 'light'); const light = getComputedStyle(tag).color;
+    if (was === null) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', was);
+    yes(dark !== light, 'dark ' + dark + ', light ' + light);
+    setExtreme(false); eq(visible(tag), false, 'hidden again');
+  });
+  await check('In both states the step buttons, the whole-number toggle, sync() and reset() work, and steps stop at the limits in use', () => {
+    const d = mk({ v: 5.5, min: 0, max: 10, step: 0.5, opts: { def: 2, lo: 0, hi: 12, xmax: 100, xhi: 1000 } });
+    for (const on of [true, false]) {
+      setExtreme(on);
+      const top = on ? 1000 : 12, s = on ? 'on' : 'off';
+      enter(d, '5.5'); press(d.up); eq(d.st.v, 6, s + ': fine step'); d.mode.click(); press(d.up); eq(d.st.v, 7, s + ': whole step'); d.mode.click();
+      enter(d, String(top - 0.2)); press(d.up); eq(d.st.v, top, s + ': a step stops at the limit'); eq(d.el.dataset.at, 'hi', s + ': marked as at the limit');
+      d.st.v = 9.5; d.c.sync(); eq(d.n.value, '9.5', s + ': sync shows the state'); eq(d.r.value, '9.5', s + ': thumb after sync');
+      d.c.reset(); eq(d.st.v, 2, s + ': reset'); eq(d.n.value, '2', s + ': box after reset'); eq(d.r.max, on ? '100' : '10', s + ': slider top');
+    }
+  });
+  await check('Play sweeps the range in use: across the wide slider while extreme values are on, and on inside the normal one once they are switched off', async () => {
+    const d = mk({ v: 0, min: 0, max: 10, step: 0.1, opts: { animate: 1, xmax: 40 } });
+    setExtreme(true); d.play.click();
+    let top = 0;
+    for (let i = 0; i < 40 && top <= 10; i++) { await frames(1); top = Math.max(top, d.st.v); }
+    yes(top > 10, 'it should pass the normal top of 10, got ' + top); eq(d.play.getAttribute('aria-pressed'), 'true', 'playing');
+    setExtreme(false);
+    const n0 = d.st.sets.length; await frames(12);
+    eq(d.play.getAttribute('aria-pressed'), 'true', 'still playing after switching off'); const after = d.st.sets.slice(n0);
+    yes(after.length >= 6, 'it should keep moving, got ' + after.length + ' values'); yes(d.st.sets.slice(n0 - 1).every(v => v >= 0 && v <= 10), 'values after switching off: ' + after.join(' '));
+    d.play.click();
+  });
+  await check('Specs carry the fields through buildControls, and switching off calls the onChange of a set once, however many of its dials move', () => {
+    const host = document.createElement('div'); host.className = 'sec-body'; fixture.appendChild(host);
+    const obj = { a: 10, b: 20 }, log = [];
+    const built = buildControls(host, [
+      { type: 'dial', key: 'a', label: 'A', min: 0, max: 50, step: 1, def: 10, int: true, xmax: 500 },
+      { type: 'dial', key: 'b', label: 'B', min: 0, max: 50, step: 1, def: 20, int: true, xmax: 500, xhi: 5000 },
+    ], obj, () => log.push({ ...obj }), { idPrefix: 'xs-' });
+    setExtreme(true); eq($('xs-a').max, '500', 'spec xmax'); eq(log.length, 0, 'switching on writes nothing');
+    obj.a = 300; obj.b = 4000; built.sync(); eq($('xs-bNum').value, '4000', 'sync in the wide state');
+    setExtreme(false); eq(JSON.stringify(obj), '{"a":50,"b":50}', 'both pulled back'); eq(log.length, 1, 'onChange calls');
+    built.remove(); host.remove();
+  });
+  await check('Where the page keeps a state, S.extreme is the switch: setExtreme writes it, and changing it from code then calling syncControls() moves the ranges without writing a value', () => {
+    window.S = {};   // stands in for the lab's state object; this page has none of its own
+    try {
+      const d = mk({ v: 14, min: 3, max: 60, step: 1, opts: xi });
+      setExtreme(true); eq(window.S.extreme, true, 'setExtreme writes S.extreme'); eq(lim(d), '3 1000 3 100000', 'wide');
+      d.st.v = 640; window.S.extreme = false; eq(isExtreme(), false, 'isExtreme reads S.extreme'); syncControls();
+      eq(lim(d), '3 60 3 400', 'normal range after syncControls'); eq(d.st.v, 640, 'a sync does not touch the value'); eq(d.st.sets.length, 0, 'setter calls');
+      window.S.extreme = true; d.c.sync(); eq(lim(d), '3 1000 3 100000', 'wide again after sync()');
+      setExtreme(false); eq(d.st.v, 400, 'setExtreme(false) pulls the value back');
+    } finally { delete window.S; setExtreme(false); }
+  });
+
+  // ----- hint
+  await check('help shows as a small note under the dial and describes both inputs', () => {
+    const d = mk({ opts: { help: 'Turns every step about the z-axis.' } }), p = d.el.querySelector('.dial-help');
+    eq(p.textContent, 'Turns every step about the z-axis.', 'text'); yes(p.classList.contains('note'), 'styled as a note');
+    yes(p.getBoundingClientRect().top >= d.r.getBoundingClientRect().bottom - 1, 'the note sits under the slider');
+    eq(d.r.getAttribute('aria-describedby'), p.id, 'slider described'); eq(d.n.getAttribute('aria-describedby'), p.id, 'box described');
+    eq(mk().el.querySelector('.dial-help'), null, 'no note without help');
+  });
+
+  // ----- buildControls, syncControls, resetGroup
+  const specs = [
+    { type: 'select', key: 'mode', label: 'Colour by', def: 0, options: [[0, 'Escape count'], [1, 'Sphere shell'], ['clay', 'Plain clay']] },
+    { type: 'dial', key: 'radius', label: 'Shell radius', min: 0, max: 2, step: 0.01, def: 0.6, lo: 0, hi: 9, when: o => o.mode === 1, help: 'Radius of the trap.' },
+    { type: 'dial', key: 'bands', label: 'Bands', min: 1, max: 9, step: 1, def: 3, int: true },
+    { type: 'check', key: 'rev', label: 'Reverse the palette', def: false, when: o => o.mode !== 'clay' },
+    { type: 'note', text: 'Shown for clay only.', when: o => o.mode === 'clay' },
+    { type: 'note', text: 'Always shown.' },
+  ];
+  function mkSet(group = 'g' + (++seq)) {
+    const host = document.createElement('div'); host.className = 'sec-body'; fixture.appendChild(host);
+    const obj = { mode: 0, radius: 0.6, bands: 3, rev: false }, log = [];
+    const set = buildControls(host, specs, obj, () => log.push({ ...obj }), { idPrefix: group + '-', group });
+    return { host, obj, log, set, group, el: k => $(group + '-' + k), done: () => { set.remove(); host.remove(); } };
+  }
+  const pick = (sel, i) => { sel.value = String(i); sel.dispatchEvent(new Event('change', { bubbles: true })); };
+  await check('buildControls makes a dial, a drop-down, a checkbox and notes, in order, with ids from the prefix and key', () => {
+    const s = mkSet();
+    eq([...s.host.children].map(e => e.className.split(' ')[0]).join(' '), 'field dial dial check note note', 'elements');
+    eq(s.el('mode').tagName, 'SELECT', 'drop-down'); eq(s.el('radius').type, 'range', 'dial slider'); eq(s.el('radiusNum').type, 'text', 'dial box');
+    eq(s.el('rev').type, 'checkbox', 'checkbox'); eq(s.host.children[5].textContent, 'Always shown.', 'note text');
+    eq(s.host.querySelector('.dial-help').textContent, 'Radius of the trap.', 'help passes through'); eq(s.el('bandsStep'), null, 'int passes through');
+    eq(s.set.controls.length, 6, 'controls listed'); s.done();
+  });
+  await check('Spec-built controls read and write obj[key], and onChange runs once after every change', () => {
+    const s = mkSet();
+    slide({ r: s.el('bands') }, 5); eq(s.obj.bands, 5, 'dial'); eq(s.log.length, 1, 'onChange after the dial');
+    s.el('rev').click(); eq(s.obj.rev, true, 'checkbox'); eq(s.log.length, 2, 'onChange after the checkbox');
+    pick(s.el('mode'), 2); eq(s.obj.mode, 'clay', 'the drop-down writes the option value, not its position'); eq(s.log.length, 3, 'onChange after the drop-down');
+    eq(s.log[2].mode, 'clay', 'onChange sees the new value'); s.done();
+  });
+  await check('when hides a control (really hidden, with no global [hidden] rule) and is checked again after every change', () => {
+    const s = mkSet(), radius = s.el('radius').closest('.dial'), rev = s.el('rev').closest('.check'), clay = s.host.children[4];
+    eq(visible(radius), false, 'radius at mode 0'); eq(visible(rev), true, 'reverse at mode 0'); eq(visible(clay), false, 'clay note at mode 0');
+    pick(s.el('mode'), 1); eq(visible(radius), true, 'radius at mode 1'); eq(radius.hidden, false, 'hidden attribute at mode 1');
+    pick(s.el('mode'), 2); eq(visible(radius), false, 'radius at clay'); eq(visible(rev), false, 'reverse at clay'); eq(visible(clay), true, 'clay note at clay');
+    eq(visible(s.host.children[5]), true, 'a note without when'); s.done();
+  });
+  await check('when is checked again on sync() and on syncControls(), after the state was changed from code', () => {
+    const s = mkSet(), radius = s.el('radius').closest('.dial');
+    s.obj.mode = 1; s.obj.radius = 1.25; s.set.sync(); eq(visible(radius), true, 'after sync()'); eq(s.el('radiusNum').value, '1.25', 'box after sync()'); eq(s.el('mode').value, '1', 'drop-down after sync()');
+    s.obj.mode = 0; syncControls(); eq(visible(radius), false, 'after syncControls()'); eq(s.log.length, 0, 'sync must not call onChange'); s.done();
+  });
+  await check('syncControls makes every kind of control show the state', () => {
+    const s = mkSet(), d = mk();
+    Object.assign(s.obj, { mode: 'clay', radius: 0.25, bands: 7, rev: true }); d.st.v = 6.5; syncControls();
+    eq(s.el('mode').selectedOptions[0].text, 'Plain clay', 'drop-down'); eq(s.el('radiusNum').value, '0.25', 'box'); eq(s.el('radius').value, '0.25', 'slider');
+    eq(s.el('bands').value, '7', 'whole-number slider'); eq(s.el('rev').checked, true, 'checkbox'); eq(d.n.value, '6.5', 'a dial made with addDial');
+    s.obj.mode = 'something else'; syncControls(); eq(s.el('mode').selectedIndex, -1, 'a value that is not an option shows as empty'); s.done();
+  });
+  await check('syncControls leaves a box alone while someone is typing in it', () => {
+    const d = mk(); type(d, '7.'); d.st.v = 3; syncControls(); eq(d.n.value, '7.', 'box while typing'); eq(d.r.value, '3', 'the slider still follows');
+    key(d, 'Escape'); eq(d.n.value, '3', 'Escape shows the current value');
+  });
+  await check('resetGroup puts every control of the group back to its default, hidden ones too, and calls onChange once', () => {
+    const s = mkSet(), other = mkSet();
+    Object.assign(s.obj, { mode: 1, radius: 1.5, bands: 8, rev: true }); Object.assign(other.obj, { mode: 1, radius: 1.5 }); syncControls();
+    pick(s.el('mode'), 2); s.log.length = 0;
+    resetGroup(s.group);
+    eq(JSON.stringify(s.obj), JSON.stringify({ mode: 0, radius: 0.6, bands: 3, rev: false }), 'state');
+    eq(s.el('radiusNum').value, '0.6', 'box'); eq(s.el('bands').value, '3', 'slider'); eq(s.el('rev').checked, false, 'checkbox'); eq(s.el('mode').value, '0', 'drop-down');
+    eq(visible(s.el('radius').closest('.dial')), false, 'when follows the reset'); eq(s.log.length, 1, 'onChange calls');
+    eq(other.obj.radius, 1.5, 'another group is untouched'); s.done(); other.done();
+  });
+  await check('resetGroup calls the setter of every control made with addDial, addCheck and addSelect in that group, and takes several groups', () => {
+    const st = { a: 5, b: true, c: 'y', d: 9 }, calls = [], g = 'grp' + (++seq);
+    const A = addDial(fixture, g + 'a', 'A', 0, 10, 0.5, () => st.a, v => { st.a = v; calls.push('a'); }, { def: 2, group: g });
+    const B = addCheck(fixture, g + 'b', 'B', () => st.b, v => { st.b = v; calls.push('b'); }, { def: false, group: g });
+    const C = addSelect(fixture, g + 'c', 'C', [['x', 'X'], ['y', 'Y']], () => st.c, v => { st.c = v; calls.push('c'); }, { def: 'x', group: g });
+    const D = addDial(fixture, g + 'd', 'D', 0, 10, 1, () => st.d, v => { st.d = v; calls.push('d'); }, { group: g + '-two' });   // default: the value at creation
+    st.d = 4; resetGroup(g);
+    eq(JSON.stringify(st), '{"a":2,"b":false,"c":"x","d":4}', 'state'); eq(calls.join(''), 'abc', 'setters');
+    eq($(g + 'aNum').value, '2', 'box'); eq($(g + 'b').checked, false, 'checkbox'); eq($(g + 'c').selectedOptions[0].text, 'X', 'drop-down');
+    st.a = 7; resetGroup([g, g + '-two']); eq(JSON.stringify(st), '{"a":2,"b":false,"c":"x","d":9}', 'two groups at once');
+    for (const c of [A, B, C, D]) { for (const k of ['el', 'sync', 'reset']) yes(c[k], 'a control needs ' + k); c.remove(); }
+    eq(A.group, g, 'group'); yes(!$(g + 'a'), 'remove() takes the element away');
+  });
+  await check('host may be an element or an id, and a drop-down can group its options under headings', () => {
+    const host = document.createElement('div'); host.id = 'hostById'; fixture.appendChild(host);
+    const st = { v: 1, p: 'neon' };
+    addDial('hostById', 'hb1', 'By id', 0, 5, 1, () => st.v, v => { st.v = v; });
+    const sel = addSelect(host, 'hb2', 'Palette', [['fire', 'Fire', 'Vivid'], ['neon', 'Neon', 'Vivid'], ['stone', 'Stone', 'Quiet']], () => st.p, v => { st.p = v; });
+    eq(host.querySelectorAll('.dial').length, 1, 'dial placed by id'); eq(host.querySelectorAll('optgroup').length, 2, 'headings'); eq($('hb2').selectedOptions[0].text, 'Neon', 'selection');
+    sel.setOptions([['fire', 'Fire'], ['mine', 'My palette']]); eq($('hb2').options.length, 2, 'options replaced'); eq($('hb2').selectedIndex, -1, 'neon is gone');
+    pick($('hb2'), 1); eq(st.p, 'mine', 'new option works');
+    controls.slice().forEach(c => { if (host.contains(c.el)) c.remove(); }); host.remove();
+  });
+
+  await check('help also shows under a checkbox and a drop-down, and when hides the hint with its control', () => {
+    const host = document.createElement('div'); host.className = 'sec-body'; fixture.appendChild(host);
+    const obj = { on: true, pick: 'a' };
+    const built = buildControls(host, [
+      { type: 'check', key: 'on', label: 'Shadows', def: true, help: 'Costs one extra march per pixel.' },
+      { type: 'select', key: 'pick', label: 'Estimate', def: 'a', options: [['a', 'Exact'], ['b', 'Rough']], help: 'Rough is faster.', when: o => o.on },
+    ], obj, null, { idPrefix: 'hp-' });
+    eq(host.querySelectorAll('.dial-help').length, 2, 'hints'); eq($('hp-on').getAttribute('aria-describedby'), 'hp-onHelp', 'checkbox described');
+    eq($('hp-pick').getAttribute('aria-describedby'), 'hp-pickHelp', 'drop-down described');
+    $('hp-on').click(); eq(obj.on, false, 'state'); eq(visible($('hp-pickHelp')), false, 'the hint hides with its drop-down');
+    built.remove(); host.remove();
+  });
+  await check('slider: false gives a dial without a slider: label and typed box only, with the same typing and stepping', () => {
+    const d = mk({ v: 24, opts: { slider: false, lo: 0.001, hi: 1000 } });
+    eq(d.r, null, 'no slider'); eq(d.el.querySelector('label').htmlFor, d.id + 'Num', 'the label points at the box');
+    enter(d, '60'); eq(d.st.v, 60, 'typed'); press(d.up); eq(d.st.v, 60.1, 'step'); enter(d, '5000'); eq(d.st.v, 1000, 'clamped to hi');
+    enter(d, '0'); eq(d.st.v, 0.001, 'clamped to lo'); d.st.v = 12; d.c.sync(); eq(d.n.value, '12', 'sync'); d.c.reset(); eq(d.st.v, 24, 'reset');
+  });
+  await check('addReset makes a button that resets its group, then calls o.after', () => {
+    const s = mkSet(); let after = 0;
+    const b = addReset(s.host, s.group, { after: () => { after++; } });
+    Object.assign(s.obj, { mode: 1, radius: 1.5, bands: 8, rev: true }); syncControls();
+    eq(b.textContent, 'Reset this section', 'label'); eq(b.type, 'button', 'type'); b.click();
+    eq(JSON.stringify(s.obj), JSON.stringify({ mode: 0, radius: 0.6, bands: 3, rev: false }), 'state'); eq(after, 1, 'after calls'); eq(s.log.length, 1, 'onChange calls');
+    eq($(s.group + '-radiusNum').value, '0.6', 'box'); b.remove(); s.done();
+  });
+
+  // ----- layout and focus
+  await check('Label, box cluster and slider fit a 320 px column and the widths a 375 px phone leaves (343, 295), and even 240 px', () => {
+    const squeeze = document.createElement('div'); squeeze.className = 'sec-body'; squeeze.style.width = '240px'; fixture.appendChild(squeeze);
+    const built = buildControls(squeeze, demoSpecs, { ...demo }, null, { idPrefix: 'sq-' });
+    for (const on of [false, true]) for (const host of [$('show320'), $('show295'), $('show343'), squeeze]) {
+      setExtreme(on);   // the second round shows the "wide" tags
+      const box = host.getBoundingClientRect();
+      yes(host.scrollWidth <= host.clientWidth, `content is wider than the ${Math.round(box.width)} px column`);
+      for (const el of host.querySelectorAll('.dial, .dial *, .field, .field *, .check, .note')) {
+        const r = el.getBoundingClientRect();
+        if (!r.width && !r.height) continue;
+        yes(r.left >= box.left - 0.5 && r.right <= box.right + 0.5, `${el.className || el.tagName} sticks out of the ${Math.round(box.width)} px column by ${Math.max(box.left - r.left, r.right - box.right).toFixed(1)} px`);
+      }
+      for (const d of host.querySelectorAll('.dial:not([hidden])')) {
+        const cluster = d.querySelector('.dial-box').getBoundingClientRect(), slider = d.querySelector('input[type=range]').getBoundingClientRect(), label = d.querySelector('label').getBoundingClientRect();
+        yes(slider.width >= box.width - 1, 'the slider should span the column'); yes(slider.top >= cluster.bottom - 1, 'the slider sits under the box cluster');
+        yes(label.width >= 60, `the label of "${d.querySelector('label').textContent}" is squeezed to ${label.width.toFixed(0)} px`);
+      }
+    }
+    built.remove(); squeeze.remove();
+  });
+  // A page in a window without focus (headless Chrome, as tools/shot.py runs it) matches no :focus rule, so the rings
+  // can only be observed when the window has focus: in a browser, or under notes/dial_real.py. The line says which ran.
+  const focused = document.hasFocus();
+  await check(focused ? 'Keyboard focus shows a 2 px ring on the box, the slider, the toggle, the play button, a checkbox and a drop-down'
+    : 'Every control can take keyboard focus (this window has no focus, so the rings are checked by notes/dial_real.py and by screenshot)', () => {
+    const d = mk({ opts: { animate: true } }), st = { b: false, s: 0 };
+    const B = addCheck(fixture, 'fb', 'Check', () => st.b, v => { st.b = v; }), Sel = addSelect(fixture, 'fs', 'Pick', [[0, 'A'], [1, 'B']], () => st.s, v => { st.s = v; });
+    for (const [el, what, on] of [[d.n, 'box', d.box], [d.r, 'slider'], [d.mode, 'toggle'], [d.play, 'play'], [$('fb'), 'checkbox'], [$('fs'), 'drop-down']]) {
+      yes(el.tabIndex >= 0, what + ' is not in the tab order');
+      el.focus(); eq(document.activeElement, el, what + ' takes focus');
+      if (!focused) continue;
+      const cs = getComputedStyle(on || el);
+      eq(el.matches(':focus-visible'), true, what + ' matches :focus-visible'); eq(`${cs.outlineStyle} ${cs.outlineWidth}`, 'solid 2px', what + ' ring');
+    }
+    eq(d.up.tabIndex, -1, 'the step buttons stay out of the tab order (the arrow keys do their job)');
+    document.activeElement.blur(); B.remove(); Sel.remove();
+  });
+  await check('Colours come from the theme tokens: the box and its text change with the theme', () => {
+    const d = mk(), root = document.documentElement, was = root.getAttribute('data-theme');
+    const read = () => [getComputedStyle(d.box).backgroundColor, getComputedStyle(d.n).color, getComputedStyle(d.box).borderTopColor, getComputedStyle(d.mode).color].join(' | ');
+    root.setAttribute('data-theme', 'dark'); const dark = read();
+    root.setAttribute('data-theme', 'light'); const light = read();
+    if (was === null) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', was);
+    yes(dark.split(' | ').every((c, i) => c !== light.split(' | ')[i]), 'dark: ' + dark + '; light: ' + light);
+  });
+
+  // ---------- report
+  const failed = results.filter(r => !r.ok).length, passed = results.length - failed;
+  const list = $('results');
+  results.forEach(r => {
+    const li = document.createElement('li');
+    li.className = r.ok ? 'ok' : 'bad';
+    li.innerHTML = `<b>${r.ok ? 'pass' : 'FAIL'}</b><span></span>`;
+    li.lastChild.textContent = r.name + (r.ok ? '' : ': ' + r.info);
+    list.appendChild(li);
+  });
+  $('summary').textContent = failed ? `${failed} of ${results.length} checks failed` : `All ${results.length} checks pass`;
+  $('summary').className = failed ? 'bad' : 'ok';
+  // the same list for scripts, in plain ASCII so that any console can print it
+  const ascii = t => t.replace(/±/g, '+/-').replace(/×/g, 'x').replace(/[^ -~]/g, ch => 'U+' + ch.charCodeAt(0).toString(16).padStart(4, '0'));
+  window.dialTests = { done: true, passed, failed, lines: results.map(r => ascii((r.ok ? 'pass  ' : 'FAIL  ') + r.name + (r.ok ? '' : ' :: ' + r.info))) };
+})().catch(e => {
+  document.getElementById('summary').textContent = 'The checks stopped: ' + e.message;
+  window.dialTests = { done: true, passed: 0, failed: 1, lines: ['FAIL  the checks stopped :: ' + e.stack] };
+});
+</script>
+</body>
+</html>

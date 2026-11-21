@@ -1,0 +1,22 @@
+ter 5 steps. Left: the Mandelbrot shape. Right: the Julia shape for the diamond’s c.", "play": "Play", "slider": 5}
+step 4 wrote out/r28/final/ui/r26/phone-new-2-2d-both-05.png
+step 5 result: {"where": "Step 0 of 16: the start", "say": "Two big circles. Left: each point is tried as the number c; its dot starts at the centre. Right: each point is where a dot starts, all with the diamond’s c.", "play": "Play", "slider": 0}
+step 5 wrote out/r28/final/ui/r26/phone-new-3-2d-both-00.png
+step 6 result: {"side": true, "panes": [{"kind": "m", "x": 0, "y": 0, "w": 178, "h": 240}, {"kind": "j", "x": 178, "y": 0, "w": 178, "h": 240}], "stageButtons": [], "where": "Step 5 of 16: what is left", "say": "What is left after 5 steps. Left: the Mandelbrot shape. Right: the Julia shape for the diamond’s c.", "play": "Play", "slider": 5, "hint": "Drag to turn, scroll or pinch to zoom. Move c with its dials."}
+step 6 wrote out/r28/final/ui/r26/phone-new-4-3d-both-05.png
+step 7 result: {"where": "Step 5 of 16: what is left", "say": "What is left after 5 steps.", "play": "Play", "slider": 5}
+step 7 wrote out/r28/final/ui/r26/phone-new-5-3d-m-05.png
+step 8 result: {"where": "Step 5 of 16: what is left", "say": "What is left after 5 steps.", "play": "Play", "slider": 5}
+step 8 wrote out/r28/final/ui/r26/phone-new-6-3d-j-basilica-05.png
+step 9 result: {"sentences": 48, "mostLines": 3, "over3Lines": [], "longest": "Two big circles. Left: each point is tried as the number c; its dot starts at the centre. Right: each point is where a dot starts, all with the diamond’s c.", "sayBoxHeight": 57, "lineHeight": 18.85, "sayOverflows": false}
+step 10 result: {"zoomBefore": 1, "zoomAfter": 3.13, "resetShown": true, "where": "Step 6 of 16: what is left", "say": "What is left after 6 steps.", "play": "Play", "slider": 6}
+step 10 wrote out/r28/final/ui/r26/phone-new-7-2d-j-rabbit-pinched.png
+step 11 result: {"followBox": [16, 490, 358, 63], "scrollY": 603}
+step 11 wrote out/r28/final/ui/r26/phone-new-8-panel-top.png
+step 12 result: {"named": [["Use the c of the Julia tab", 358, 36], ["the basilica (c at x −1, y 0)", 358, 36], ["the rabbit (c at x −0.12, y 0.74)", 358, 36], ["a bare twig (c at x 0, y 1)", 358, 36], ["a plain disc (c at x 0, y 0)", 358, 36]], "pageScrollWidth": 390}
+step 12 wrote out/r28/final/ui/r26/phone-new-9-panel-lower.png
+step 13 result: {"seconds": 24.68, "frames": 1481, "gapsOver34": 1, "says": ["Two big balls. Left: each point is tried as the number c; its dot starts at the centre. Right: each point is where a dot starts, all with the diamond’s c.", "At each step, in both pictures, every point that is still here takes one more step. The ones that land outside the big ball are thrown out.", "The bites are now too fine to see at this size. Zoom in.", "What is left after 16 steps. The picture stops here. More steps could only take more away."], "pageScrollWidth": 390}
+step 13 wrote out/r28/final/ui/r26/phone-new-10-play-end-3d-both.png
+no console errors
+exit code 0
+

@@ -1,0 +1,15 @@
+
+delay: float64 verdict differs from the lathe on 1184 of 60000 c (80 steps)
+    30 digits: 13 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 1.8e+01  [0 s]
+    60 digits: 25 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 5.0e-17  [0 s]
+   120 digits: 25 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 6.0e-76  [0 s]
+
+lag50: float64 verdict differs from the lathe on 204 of 60000 c (80 steps)
+    30 digits: 23 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 5.7e+00  [0 s]
+    60 digits: 25 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 7.4e-20  [0 s]
+   120 digits: 25 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 7.0e-80  [0 s]
+
+cmid-1: float64 verdict differs from the lathe on 2913 of 60000 c (80 steps)
+    30 digits: 17 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 2.4e+01  [0 s]
+    60 digits: 25 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 5.8e-26  [0 s]
+   120 digits: 25 of 25 re-checked verdicts agree with the flat set spun; largest distance of an orbit from the sheet of c: 9.6e-86  [0 s]

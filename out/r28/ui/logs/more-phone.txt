@@ -1,0 +1,20 @@
+page dist/r28-ui.html, window 390x800, started 12:45:57
+--- G. the sliders moved with a finger (touch events)
+size slider, finger from 55.56 towards 200: mode k, group 1, size 200, second sphere 25, depth 16, program k-balls2 | sentence: Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 25 % of the first.
+   -> OK
+finger past the right end: mode k, group 1, size 400, second sphere 12.5, depth 16, program k-balls2 | sentence: Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 12.5 % of the first.
+   -> OK
+finger past the left end: mode k, group 1, size 2, second sphere 50, depth 16, program k-balls2 | sentence: The second sphere is now 50 % of the first. Reset this section puts it back to 100.
+   -> OK
+second-sphere slider, finger from 100 towards 64: mode k, group 1, size 55.56, second sphere 50, depth 16, program k-balls2 | sentence: The second sphere is now 50 % of the first. Reset this section puts it back to 100.; thumb at 50
+   -> OK
+finger past the left end: mode k, group 1, size 55.56, second sphere 2, depth 16, program k-balls2 | sentence: The second sphere is now 2 % of the first. Reset this section puts it back to 100.
+   -> OK
+finger past the right end: mode k, group 1, size 55.56, second sphere 100, depth 16, program k-balls | no sentence
+   -> OK
+depth slider, finger past the left end: mode k, group 1, size 55.56, second sphere 100, depth 1, program k-balls | sentence: With so few rounds of the search whole balls are still undecided, and they come out as broken shells.
+   -> OK
+depth slider, finger past the right end: mode k, group 1, size 55.56, second sphere 100, depth 100, program k-balls | no sentence
+   -> OK
+--- console: no console errors or warnings
+=== 0 thing(s) marked WRONG

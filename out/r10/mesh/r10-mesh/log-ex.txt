@@ -1,0 +1,26 @@
+subject exurchins: {"mode":"j","c":[-1,0,0],"trap":1,"solid":1,"thick":0.05,"skip":1,"radius":1}
+  picture at rest after 14.3 s (ok)
+  exurchins-128: 6.6 s, facts ['Triangles', '30,264', 'Points', '15,114', 'Size', '100 × 49.3 × 38.7 mm', 'Pieces', 'The largest of 614, with about 83% of the surface that can be seen', 'julia-128.stl', '1.4 MB', 'julia-128.obj', '1.1 MB', 'julia-128.ply', '606 kB', 'Zip to save', '3.2 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-128.zip', 'size': 3336727, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 42 ms (817 turns, 0 over 50 ms, 0 over 100 ms)
+  exurchins-256: 2.1 s, facts ['Triangles', '115,268', 'Points', '57,636', 'Size', '100 × 48.0 × 39.2 mm', 'Pieces', 'The largest of 920, with about 92% of the surface that can be seen', 'julia-256.stl', '5.5 MB', 'julia-256.obj', '4.5 MB', 'julia-256.ply', '2.3 MB', 'Zip to save', '12 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-256.zip', 'size': 12890945, 'type': 'application/zip', 'pulled_s': 0.9} | gap max 43 ms (257 turns, 0 over 50 ms, 0 over 100 ms)
+  exurchins0-128: 0.9 s, facts ['Triangles', '25,400', 'Points', '12,702', 'Size', '100 × 49.0 × 39.2 mm', 'Pieces', 'The largest of 23, with more than 99% of the surface that can be seen', 'julia-128.stl', '1.2 MB', 'julia-128.obj', '974 kB', 'julia-128.ply', '509 kB', 'Zip to save', '2.7 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-128.zip', 'size': 2790702, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 36 ms (114 turns, 0 over 50 ms, 0 over 100 ms)
+subject exbubbles: {"mode":"j","c":[-1,0,0],"trap":5,"solid":1,"thick":0.05,"skip":1,"radius":0.7}
+  picture at rest after 10.4 s (ok)
+  exbubbles-128: 0.8 s, facts ['Triangles', '30,624', 'Points', '15,298', 'Size', '100 × 44.3 × 44.1 mm', 'Pieces', 'The largest of 44, with about 96% of the surface that can be seen', 'julia-128.stl', '1.5 MB', 'julia-128.obj', '1.2 MB', 'julia-128.ply', '613 kB', 'Zip to save', '3.2 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-128.zip', 'size': 3381577, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 35 ms (91 turns, 0 over 50 ms, 0 over 100 ms)
+  exbubbles0-128: 0.8 s, facts ['Triangles', '31,944', 'Points', '15,966', 'Size', '100 × 43.0 × 42.1 mm', 'Pieces', 'The largest of 118, with about 97% of the surface that can be seen', 'julia-128.stl', '1.5 MB', 'julia-128.obj', '1.2 MB', 'julia-128.ply', '640 kB', 'Zip to save', '3.4 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-128.zip', 'size': 3528836, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 37 ms (98 turns, 0 over 50 ms, 0 over 100 ms)
+subject exarches: {"mode":"j","c":[-0.122561,0.744862,0],"trap":4,"solid":1,"thick":0.05,"skip":1,"radius":1}
+  picture at rest after 10.8 s (ok)
+  exarches-128: 1.0 s, facts ['Triangles', '116,780', 'Points', '58,320', 'Size', '100 × 84.7 × 60.3 mm', 'Pieces', 'The largest of 44, with more than 99% of the surface that can be seen', 'julia-128.stl', '5.6 MB', 'julia-128.obj', '4.6 MB', 'julia-128.ply', '2.3 MB', 'Zip to save', '12 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-128.zip', 'size': 13097607, 'type': 'application/zip', 'pulled_s': 0.6} | gap max 35 ms (113 turns, 0 over 50 ms, 0 over 100 ms)
+    exurchins-128: Size '100 × 49.3 × 38.7 mm' | Pieces 'The largest of 614, with about 83% of the surface that can be seen'
+      warn: (none)
+    exurchins-256: Size '100 × 48.0 × 39.2 mm' | Pieces 'The largest of 920, with about 92% of the surface that can be seen'
+      warn: (none)
+    exurchins0-128: Size '100 × 49.0 × 39.2 mm' | Pieces 'The largest of 23, with more than 99% of the surface that can be seen'
+      warn: (none)
+    exbubbles-128: Size '100 × 44.3 × 44.1 mm' | Pieces 'The largest of 44, with about 96% of the surface that can be seen'
+      warn: (none)
+    exbubbles0-128: Size '100 × 43.0 × 42.1 mm' | Pieces 'The largest of 118, with about 97% of the surface that can be seen'
+      warn: (none)
+    exarches-128: Size '100 × 84.7 × 60.3 mm' | Pieces 'The largest of 44, with more than 99% of the surface that can be seen'
+      warn: (none)
+no console errors
+drive exit 0

@@ -1,0 +1,38 @@
+step 1 waited 2.5 s
+step 2 result: "skip 0 | The solid now holds every point whose orbit comes within the trap thickness of the trap sh"
+step 4 waited 5.8 s
+step 4 wrote out/r7/engine/final/repro-solids-1-m-cross-skip0.png
+step 5 result: "thick 0.05"
+step 7 waited 6.9 s
+step 7 wrote out/r7/engine/final/repro-solids-2-j-thick005.png
+step 8 result: "thick 0.005"
+step 10 waited 7.6 s
+step 10 wrote out/r7/engine/final/repro-solids-2-j-thick0005.png
+step 11 result: "thick 0.02"
+step 13 waited 6.9 s
+step 13 wrote out/r7/engine/final/repro-solids-2-j-thick002.png
+step 14 result: "thick 0.01 skip 1"
+step 16 waited 8.6 s
+step 16 wrote out/r7/engine/final/repro-solids-2-m-thick001.png
+step 17 result: "A point, a line and a ray are thin shapes, and as a solid they start as a few small pieces"
+step 19 waited 3.3 s
+step 19 wrote out/r7/engine/final/repro-notes-j-point.png
+step 20 result: "entry 3: cut hint shown 1, lace note for Point 1; entry 0: cut hint shown 0"
+step 22 waited 0.3 s
+step 22 wrote out/r7/engine/final/repro-notes-k-e03.png
+step 23 result: "The Kleinian search has no orbit that settles, so in this view the choice shows how deep i"
+step 25 waited 1.0 s
+step 25 wrote out/r7/engine/final/repro-flat-2-k-settles.png
+step 26 result: "The inside uses the trap shape and the \"Trap colours by\" choice above. With the same palet || outline help: 1"
+step 28 waited 2.6 s
+step 28 wrote out/r7/engine/final/repro-flat-5-m-trap.png
+step 29 result: "cutFace true inMode 3"
+step 31 waited 2.0 s
+step 31 wrote out/r7/engine/final/repro-flat-3-cut-deep.png
+step 32 result: "inMode 3"
+step 34 waited 0.0 s
+step 34 wrote out/r7/engine/final/repro-flat-3-flat-deep.png
+step 35 result: "{\"before\":\"Done: 12 passes at 862 × 701\",\"lost1\":\"The graphics of this page were interrupted. The picture comes back by itself.\",\"lost2\":\"The graphics of this page were interrupted. The picture comes back by itself.\"}"
+step 37 waited 1.8 s
+step 38 result: "after the context came back: Done: 12 passes at 862 × 701"
+no console errors

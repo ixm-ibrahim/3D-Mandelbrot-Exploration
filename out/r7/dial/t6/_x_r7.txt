@@ -1,0 +1,24 @@
+pass  extreme off: depth 300 is inside the usual typed limit (400) and stays  :: 300
+pass  extreme off: iter typed 900 is held at the usual limit 400  :: 400
+pass  extreme off: pow typed 40 is held at the usual limit 24  :: 24
+pass  extreme off: qaa typed 500 is held at the usual limit 400  :: 400
+pass  extreme off: qsteps typed 5000 is held at the usual limit 3000  :: 3000
+pass  extreme off: viewBound typed 800 is held at the usual limit 500  :: 500
+pass  extreme on and off again: values inside the usual limits (Iterations 100, Power 12.5) are left alone  :: {}
+pass  extreme on: iter takes a typed 900  :: 900
+pass  extreme on: pow takes a typed 40  :: 40
+pass  extreme on: qaa takes a typed 500  :: 500
+pass  extreme on: qsteps takes a typed 5000  :: 5000
+pass  extreme on: viewBound takes a typed 800  :: 800
+pass  extreme switched off: iter is pulled back from 900 to its usual limit 400, and its box shows it  :: 400
+pass  extreme switched off: nothing else changes  :: {}
+pass  extreme switched off: pow is pulled back from 40 to its usual limit 24, and its box shows it  :: 24
+pass  extreme switched off: qaa is pulled back from 500 to its usual limit 400, and its box shows it  :: 400
+pass  extreme switched off: qsteps is pulled back from 5000 to its usual limit 3000, and its box shows it  :: 3000
+pass  extreme switched off: viewBound is pulled back from 800 to its usual limit 500, and its box shows it  :: 500
+pass  extreme: Depth of the search goes from slider 150 (typed to 400) to slider 1000, and takes a typed 2000  :: ({'box': '150', 'invalid': None, 'flag': None, 'slider': ['5', '150', '1', '150'], 'toggle': None, 'wide': False, 'title': 'Whole numbers from 5 to 400', 'vis': True, 'label': 'Depth of the search'}, {'box': '150', 'invalid': None, 'flag': None, 'slider': ['5', '1000', '1', '150'], 'toggle': None, 'wide': True, 'title': 'Whole numbers from 5 to 5000', 'vis': True, 'label': 'Depth of the search'}, 2000)
+pass  extreme: Reset everything switches it off and unticks the box
+pass  extreme: every widened dial carries the 'wide' tag  :: []
+pass  extreme: no console errors or uncaught exceptions  :: []
+pass  extreme: no dial carries the tag without being wider  :: []
+pass  extreme: switching it on changes no value (only the switch itself)  :: {'S.extreme': (False, True)}

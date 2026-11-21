@@ -1,0 +1,992 @@
+page dist/r26-checkb.html, size 1400x950, theme dark, actions t6.js
+step 1 waited 3.8 s
+=== step 2
+"ready"
+=== step 3
+{
+ "m2": {
+  "say": [
+   "The big circle: every point no further than N from the centre. Each point is a c of its own, and its dot starts at N.",
+   "Step N: every dot goes from N to its own c. That is still inside the big circle, so nothing is thrown out yet.",
+   "What is left after N step: still the whole big circle, because the first step only takes each dot from N to its own c.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N steps.",
+   "What is left after N steps. After endlessly many steps this becomes the Mandelbrot set."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big circle: every point no further than 2 from the centre. Each point is a c of its own, and its dot starts at 0.",
+   "pos 0.5: Step 1: every dot goes from 0 to its own c. That is still inside the big circle, so nothing is thrown out yet.",
+   "pos 1: What is left after 1 step: still the whole big circle, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. After endlessly many steps this becomes the Mandelbrot set."
+  ],
+  "hint": [
+   "Scroll or pinch to zoom in, then drag to move the picture."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ]
+ },
+ "j2": {
+  "say": [
+   "The big circle. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N step.",
+   "What is left after N steps.",
+   "What is left after N steps. After endlessly many steps this becomes the Julia set of this c."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big circle. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "pos 1: What is left after 1 step.",
+   "pos 16: What is left after 16 steps. After endlessly many steps this becomes the Julia set of this c."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "both2": {
+  "say": [
+   "Two big circles. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N. Left: every dot goes from N to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "What is left after N step. Left: still the whole big circle, because the first step only takes each dot from N to its own c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N steps: on the left for every c, on the right for the one c of the diamond.",
+   "What is left after N steps. After endlessly many steps these become the Mandelbrot set (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big circles. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1. Left: every dot goes from 0 to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "pos 1: What is left after 1 step. Left: still the whole big circle, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. After endlessly many steps these become the Mandelbrot set (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "m3": {
+  "say": [
+   "The big ball: every point no further than N from the centre. Each point is a c of its own, and its dot starts at N.",
+   "Step N: every dot goes from N to its own c. That is still inside the big ball, so nothing is thrown out yet.",
+   "What is left after N step: still the whole big ball, because the first step only takes each dot from N to its own c.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "What is left after N steps.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big ball: every point no further than 2 from the centre. Each point is a c of its own, and its dot starts at 0.",
+   "pos 0.5: Step 1: every dot goes from 0 to its own c. That is still inside the big ball, so nothing is thrown out yet.",
+   "pos 1: What is left after 1 step: still the whole big ball, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ]
+ },
+ "j3": {
+  "say": [
+   "The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "What is left after N step.",
+   "What is left after N steps.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "pos 1: What is left after 1 step.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach and a c in the flat plane, as now, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y | The point c, along z"
+  ]
+ },
+ "both3": {
+  "say": [
+   "Two big balls. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N. Left: every dot goes from N to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "What is left after N step. Left: still the whole big ball, because the first step only takes each dot from N to its own c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "What is left after N steps: on the left for every c, on the right for the one c of the diamond.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big balls. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1. Left: every dot goes from 0 to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "pos 1: What is left after 1 step. Left: still the whole big ball, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach and a c in the flat plane, as now, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y | The point c, along z"
+  ]
+ }
+}
+=== step 4
+{
+ "power3 both2": {
+  "say": [
+   "Two big circles. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N. Left: every dot goes from N to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "What is left after N step. Left: still the whole big circle, because the first step only takes each dot from N to its own c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N steps: on the left for every c, on the right for the one c of the diamond.",
+   "What is left after N steps. After endlessly many steps these become the Mandelbrot set of this rule (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big circles. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1. Left: every dot goes from 0 to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "pos 1: What is left after 1 step. Left: still the whole big circle, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. After endlessly many steps these become the Mandelbrot set of this rule (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "power3 both3": {
+  "say": [
+   "Two big balls. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N. Left: every dot goes from N to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "What is left after N step. Left: still the whole big ball, because the first step only takes each dot from N to its own c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "What is left after N steps: on the left for every c, on the right for the one c of the diamond.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big balls. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1. Left: every dot goes from 0 to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "pos 1: What is left after 1 step. Left: still the whole big ball, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach and a c in the flat plane, as now, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y | The point c, along z"
+  ]
+ },
+ "power2.5 m2": {
+  "say": [
+   "The big circle: every point no further than N from the centre. Each point is a c of its own, and its dot starts at N.",
+   "Step N: every dot goes from N to its own c. That is still inside the big circle, so nothing is thrown out yet.",
+   "What is left after N step: still the whole big circle, because the first step only takes each dot from N to its own c.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N steps.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big circle: every point no further than 2 from the centre. Each point is a c of its own, and its dot starts at 0.",
+   "pos 0.5: Step 1: every dot goes from 0 to its own c. That is still inside the big circle, so nothing is thrown out yet.",
+   "pos 1: What is left after 1 step: still the whole big circle, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Scroll or pinch to zoom in, then drag to move the picture."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ]
+ },
+ "power-2 m2": {
+  "say": [
+   "The big circle: every point no further than N from the centre. Each point is a c of its own, and its dot starts at N.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "After N step nothing is left to see: every point of the picture has been thrown out.",
+   "Step N: there is nothing left to take it. Every point of the picture has already been thrown out.",
+   "After N steps nothing is left to see: every point of the picture has been thrown out."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big circle: every point no further than 2 from the centre. Each point is a c of its own, and its dot starts at 0.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "pos 1: After 1 step nothing is left to see: every point of the picture has been thrown out.",
+   "pos 16: After 16 steps nothing is left to see: every point of the picture has been thrown out."
+  ],
+  "hint": [
+   "Scroll or pinch to zoom in, then drag to move the picture."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ]
+ },
+ "power-2 j2": {
+  "say": [
+   "The big circle. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N step.",
+   "What is left after N steps.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big circle. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "pos 1: What is left after 1 step.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "power-2 both2": {
+  "say": [
+   "Two big circles. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "After N step. Left: nothing is left to see. Right: what is left for the one c of the diamond.",
+   "After N steps. Left: nothing is left to see. Right: what is left for the one c of the diamond."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big circles. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1: in both pictures every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "pos 1: After 1 step. Left: nothing is left to see. Right: what is left for the one c of the diamond.",
+   "pos 16: After 16 steps. Left: nothing is left to see. Right: what is left for the one c of the diamond."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "power-2 m3": {
+  "say": [
+   "The big ball: every point no further than N from the centre. Each point is a c of its own, and its dot starts at N.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "After N step nothing is left to see: every point of the picture has been thrown out.",
+   "Step N: there is nothing left to take it. Every point of the picture has already been thrown out.",
+   "After N steps nothing is left to see: every point of the picture has been thrown out."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big ball: every point no further than 2 from the centre. Each point is a c of its own, and its dot starts at 0.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "pos 1: After 1 step nothing is left to see: every point of the picture has been thrown out.",
+   "pos 16: After 16 steps nothing is left to see: every point of the picture has been thrown out."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ]
+ },
+ "power-2 j3": {
+  "say": [
+   "The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "What is left after N step.",
+   "What is left after N steps.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "pos 1: What is left after 1 step.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach and a c in the flat plane, as now, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y | The point c, along z"
+  ]
+ },
+ "power-2 both3": {
+  "say": [
+   "Two big balls. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "After N step. Left: nothing is left to see. Right: what is left for the one c of the diamond.",
+   "After N steps. Left: nothing is left to see. Right: what is left for the one c of the diamond."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big balls. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1: in both pictures every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "pos 1: After 1 step. Left: nothing is left to see. Right: what is left for the one c of the diamond.",
+   "pos 16: After 16 steps. Left: nothing is left to see. Right: what is left for the one c of the diamond."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach and a c in the flat plane, as now, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y | The point c, along z"
+  ]
+ }
+}
+=== step 5
+{
+ "abs-x both2": {
+  "say": [
+   "Two big circles. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N. Left: every dot goes from N to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "What is left after N step. Left: still the whole big circle, because the first step only takes each dot from N to its own c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N steps: on the left for every c, on the right for the one c of the diamond.",
+   "What is left after N steps. After endlessly many steps these become the Mandelbrot set of this rule (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big circles. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1. Left: every dot goes from 0 to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "pos 1: What is left after 1 step. Left: still the whole big circle, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. After endlessly many steps these become the Mandelbrot set of this rule (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1 | c = −0.1226 + 0.7449i | c = i | c = 0"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "c outside the big circle j2": {
+  "say": [
+   "The big circle. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N step.",
+   "What is left after N steps.",
+   "After N steps nothing is left to see: every point of the picture has been thrown out.",
+   "Step N: there is nothing left to take it. Every point of the picture has already been thrown out."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big circle. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "pos 1: What is left after 1 step.",
+   "pos 16: After 16 steps nothing is left to see: every point of the picture has been thrown out."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "c outside the big circle both2": {
+  "say": [
+   "Two big circles. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N. Left: every dot goes from N to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "What is left after N step. Left: still the whole big circle, because the first step only takes each dot from N to its own c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N steps: on the left for every c, on the right for the one c of the diamond.",
+   "After N steps. Left: what is left for every c. Right: nothing is left to see."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big circles. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1. Left: every dot goes from 0 to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "pos 1: What is left after 1 step. Left: still the whole big circle, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: After 16 steps. Left: what is left for every c. Right: nothing is left to see."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "c outside the Mandelbrot shape both2": {
+  "say": [
+   "Two big circles. Left: every point is a c of its own, and its dot starts at N. Right: every point is a place to start from, all with the diamond’s c.",
+   "Step N. Left: every dot goes from N to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "What is left after N step. Left: still the whole big circle, because the first step only takes each dot from N to its own c.",
+   "Step N: in both pictures every point that is still here takes one more step. The ones that land outside the big circle are thrown out.",
+   "What is left after N steps: on the left for every c, on the right for the one c of the diamond.",
+   "What is left after N steps. After endlessly many steps these become the Mandelbrot set (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: Two big circles. Left: every point is a c of its own, and its dot starts at 0. Right: every point is a place to start from, all with the diamond’s c.",
+   "pos 0.5: Step 1. Left: every dot goes from 0 to its own c, still inside, so nothing is thrown out. Right: the points that land outside are thrown out.",
+   "pos 1: What is left after 1 step. Left: still the whole big circle, because the first step only takes each dot from 0 to its own c.",
+   "pos 16: What is left after 16 steps. After endlessly many steps these become the Mandelbrot set (left) and the Julia set of the diamond’s c (right)."
+  ],
+  "hint": [
+   "Drag the diamond to move c. Scroll or pinch to zoom."
+  ],
+  "notice": [
+   "The circle is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y"
+  ]
+ },
+ "c off the flat plane j3": {
+  "say": [
+   "The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "What is left after N step.",
+   "What is left after N steps.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "pos 1: What is left after 1 step.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y | The point c, along z"
+  ]
+ },
+ "c far outside j3": {
+  "say": [
+   "The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "Step N: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "What is left after N step.",
+   "What is left after N steps.",
+   "What is left after N steps. The picture stops here. More steps could only take more away."
+  ],
+  "where": [
+   "Step N of N: the start",
+   "Step N of N: being taken",
+   "Step N of N: what is left"
+  ],
+  "valuetext": [
+   "The start",
+   "Step N of N, N percent",
+   "What is left after N of N steps"
+  ],
+  "say-exact": [
+   "pos 0: The big ball. Every point is a place to start from, and all of them use the same c, the diamond.",
+   "pos 0.5: Step 1: every point that is still here takes one more step. The ones that land outside the big ball are thrown out.",
+   "pos 1: What is left after 1 step.",
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ],
+  "hint": [
+   "Drag to turn the picture. Scroll or pinch to zoom."
+  ],
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Sphere inversions, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "helpJ": [
+   "One c for everybody, the diamond. Every point of the picture is a place to start from."
+  ],
+  "again": [
+   "Back to the big circle"
+  ],
+  "named": [
+   "Use the c of the Julia tab | c = −1, the basilica | c = −0.1226 + 0.7449i, the rabbit | c = i, a dendrite | c = 0, a plain disc"
+  ],
+  "dials": [
+   "The point c, along x | The point c, along y | The point c, along z"
+  ]
+ }
+}
+=== step 6
+{
+ "classic": {
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Mandelbulb, classic”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "end": [
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ]
+ },
+ "kleinsq": {
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Kleinian squaring, one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer."
+  ],
+  "end": [
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ]
+ },
+ "pillow": {
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Pillow”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "end": [
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ]
+ },
+ "alongonce": {
+  "rule": [
+   "In 3D space a step is taken the way the approach chosen under Approach and equation takes it: “Along once, then one plane”, with its dials and the power as they stand there."
+  ],
+  "notice": [
+   "The ball is not bent into the shape. It is eaten away: each step removes the points that have just landed outside, and the bites get smaller and finer. With this approach, cutting the 3D shape through the middle (at z = 0) gives exactly the 2D shape of the same step."
+  ],
+  "end": [
+   "pos 16: What is left after 16 steps. The picture stops here. More steps could only take more away."
+  ]
+ }
+}
+=== step 7
+{
+ "eqField": "eq",
+ "eqNoteText": "The equation is not zⁿ + c just now. Learn shows the plain rule zⁿ + c."
+}
+no console errors
+exit code 0
+

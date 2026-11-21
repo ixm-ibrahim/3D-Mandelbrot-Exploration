@@ -1,0 +1,274 @@
+<div class="page">
+  <header class="masthead">
+    <p class="eyebrow">z → zⁿ + c, moved from the plane into space</p>
+    <h1>3D Squaring Lab</h1>
+    <p class="lede">In the plane, squaring a point squares its length and doubles its angle. A point in space has two angles and no agreed way to double them, so every 3D Mandelbrot starts by choosing an approach. Choose one here, give it any equation, and check which properties of the flat set (the ordinary 2D Mandelbrot or Julia set) it keeps. For every approach here except the classic Mandelbulb, the slice at z = 0 is exactly the flat set, and the 2D view shows it.</p>
+  </header>
+
+  <div class="bench">
+    <div class="bench-main">
+      <section class="stage" id="stage" aria-label="View of the set">
+        <canvas id="view" tabindex="0" aria-label="The set for the chosen approach. Drag or use arrow keys to turn it, plus and minus to zoom."></canvas>
+        <svg class="triad" id="triad" viewBox="0 0 72 72" aria-hidden="true">
+          <line id="ax0" x1="36" y1="36" x2="60" y2="36"></line><text id="at0" x="66" y="36">x</text>
+          <line id="ax1" x1="36" y1="36" x2="36" y2="12"></line><text id="at1" x="36" y="6">y</text>
+          <line id="ax2" x1="36" y1="36" x2="36" y2="12"></line><text id="at2" x="36" y="6">z</text>
+        </svg>
+        <p class="stage-note" id="stageNote" role="status" hidden>With the power between −1 and 1 there is little or nothing to draw. Try a power of 2 or more, or −2 or less.</p>
+        <div class="stage-bar">
+          <p class="hint">Drag to turn. Scroll to zoom. Shift-drag to slide. Double-click a spot to move in on it.</p>
+          <div class="stage-btns">
+            <button class="btn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+            <button class="btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+            <button class="btn" id="reset" type="button">Reset view</button>
+          </div>
+        </div>
+        <p class="glfail" id="glfail" hidden>This browser could not start WebGL 2, so the picture is unavailable. The step view and the table below still work.</p>
+      </section>
+      <p class="hint-below" id="hintBelow" aria-hidden="true"></p>
+      <p class="status" id="status" role="status"></p>
+    </div>
+
+    <aside class="dials">
+      <div class="toprow" id="toprow">
+        <div class="toprow-checks">
+          <div id="flatHost"></div>
+          <div id="extremeHost"></div>
+        </div>
+        <div class="toprow-btns">
+          <button class="btn" id="collapseAll" type="button" aria-controls="sections">Collapse all</button>
+          <button class="btn" id="resetAll" type="button">Reset everything</button>
+        </div>
+      </div>
+      <p class="note" id="extremeNote"></p>
+
+      <fieldset class="mode">
+        <legend class="label">Show</legend>
+        <label class="seg"><input type="radio" name="mode" id="mode-m" value="m" checked><span>Mandelbrot</span></label>
+        <label class="seg"><input type="radio" name="mode" id="mode-j" value="j"><span>Julia</span></label>
+        <label class="seg"><input type="radio" name="mode" id="mode-k" value="k"><span>Kleinian</span></label>
+      </fieldset>
+
+      <div id="sections" class="sections">
+        <details class="sec" id="mandelPanel" open>
+          <summary class="label">Mandelbrot options</summary>
+          <div class="sec-body">
+            <div id="mandelDials" class="sec-inner"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="juliaPanel" open hidden>
+          <summary class="label">Julia set: the point c</summary>
+          <div class="sec-body">
+            <p class="note">One Julia set belongs to each point c. Set c with the dials, or jump to a point from the list.</p>
+            <div class="pick-row">
+              <div id="juliaPresetHost" class="pick-list"></div>
+              <button class="btn" id="juliaFrame" type="button" title="Move the camera to a good view of this point. Nothing else changes.">Frame it</button>
+            </div>
+            <p class="note" id="juliaNote" aria-live="polite"></p>
+            <div class="save-row">
+              <input type="text" id="juliaName" maxlength="40" placeholder="Name for this point" aria-label="Name for the point to save" autocomplete="off" spellcheck="false">
+              <button class="btn" id="juliaSave" type="button">Save this point</button>
+              <button class="btn" id="juliaDelete" type="button" hidden>Delete this saved point</button>
+            </div>
+            <p class="note" id="juliaSaveNote" role="status" hidden></p>
+            <div id="juliaDials" class="sec-inner"></div>
+            <p class="note">A list entry sets the point c and nothing else. The camera, the iterations, the approach and its dials stay as you left them. Frame it moves the camera to a good view of the chosen entry. The names belong to z² + c. A saved point keeps c and a name, and appears at the top of the list.</p>
+            <div id="juliaReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="kleinPanel" open hidden>
+          <summary class="label">Kleinian group</summary>
+          <div class="sec-body">
+            <p class="note">A true 3D Kleinian group: three shape-keeping maps of space. A point is written as q = x + yi + zj (a quaternion, a number with more than one imaginary part), and the maps are q → q + 2, q → μ + 1/q and, as the third, q → q + 2L·j. The solid is every sphere those maps can carry two flat walls onto. The picture is turned inside out through one sphere so that it fits in view.</p>
+            <div class="pick-row">
+              <div id="kleinPresetHost" class="pick-list"></div>
+              <button class="btn" id="kleinFrame" type="button" title="Move the camera to the recommended view of this entry. Nothing else changes.">Frame it</button>
+            </div>
+            <p class="note" id="kleinNote" aria-live="polite"></p>
+            <p class="note warn-note" id="kleinWarn" role="status" hidden></p>
+            <div id="kleinDials" class="sec-inner"></div>
+            <p class="note">Without the third map the pearls sit along one line. With it they spread in every direction. The quaternion μ sets how far apart the walls are (its i part), how the pearls lean (real part) and how they lean in depth (j part). At a cusp the strings of pearls just touch. Above it they hang apart. Below it they overlap and the picture turns to dust. Each cusp is named by a fraction, the usual way of numbering them. The fraction is a label and sets nothing.</p>
+            <p class="note">Move the centre of the turning-out sphere and the same group gives a different picture. Keep it in a gap between pearls. On a pearl, the solid fills the whole picture.</p>
+            <p class="note">A list entry sets the group and its turning-out sphere and nothing else. The camera and the depth of the search stay as you left them. Frame it moves the camera to the view recommended for the chosen entry.</p>
+            <div id="kleinReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secApproach" open>
+          <summary class="label">Approach</summary>
+          <div class="sec-body"><div class="rules" id="rules"></div><div id="approachReset"></div></div>
+        </details>
+
+        <details class="sec" id="secEq" open>
+          <summary class="label">Equation</summary>
+          <div class="sec-body">
+            <div class="field"><label class="label" for="eqPreset">Start from</label><select id="eqPreset"></select></div>
+            <p class="note" id="eqNote" hidden></p>
+            <div class="field"><label class="label" for="eq">Each step, z becomes</label><input type="text" id="eq" spellcheck="false" autocomplete="off" autocapitalize="off"></div>
+            <div class="field"><label class="label" for="z0">The Mandelbrot set starts z at</label><input type="text" id="z0" spellcheck="false" autocomplete="off" autocapitalize="off"></div>
+            <p class="err" id="eqErr" hidden></p>
+            <p class="note">Use z, c, n, numbers, the units i and j, the signs + − * / ^, and abs( ), conj( ) or len( ). Press Enter to apply. Products and powers follow the chosen approach, so the same formula gives a different solid under each one. The turn, lift and phase dials of an approach act wherever the formula takes a power, a division included.</p>
+            <div id="powHost"></div>
+            <p class="note" id="powWhole" hidden>The chosen approach is only defined for whole powers, so this dial moves in whole numbers. The other approaches take any power.</p>
+            <p class="note">The power n can be negative. Far-away points then never escape, so the roles swap: the solid is made of the points whose path is thrown out past the escape radius. In the plane that is a small star with |n| + 1 arms.</p>
+            <div id="eqDials" class="sec-inner"></div>
+            <div id="eqReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secMod">
+          <summary class="label">Modifiers</summary>
+          <div class="sec-body">
+            <p class="note">Applied to z before every step, whatever the equation says.</p>
+            <div class="checks" id="modChecks"></div>
+            <div class="row-btns">
+              <button class="btn" id="modShip" type="button">Burning ship</button>
+              <button class="btn" id="modBar" type="button">Conjugate</button>
+              <button class="btn" id="modNone" type="button">None</button>
+            </div>
+            <div id="modReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secCut">
+          <summary class="label">Slice</summary>
+          <div class="sec-body">
+            <div id="cutDials" class="sec-inner"></div>
+            <p class="note">In the 2D view this height is the slice that is drawn, whether or not the cut is switched on.</p>
+            <div id="cutReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secColour">
+          <summary class="label">Colour and light</summary>
+          <div class="sec-body">
+            <div id="colDials" class="sec-inner"></div>
+            <p class="note only2d" hidden>The light belongs to the 3D view, so its two dials are put away while the 2D view is on.</p>
+            <div id="colReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secView">
+          <summary class="label">View</summary>
+          <div class="sec-body">
+            <p class="note only2d" hidden>The fly camera, the field of view and the drawing radius belong to the 3D view, so they are put away while the 2D view is on. Drag the picture to slide it and scroll to zoom.</p>
+            <div id="viewDials" class="sec-inner"></div>
+            <p class="note">The slider on the right edge of the picture shows where the zoom sits between its nearest and farthest limit. Type in the box at either end to move that limit. The farthest limit can go up to 1000.</p>
+            <div id="viewReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secQuality">
+          <summary class="label">Quality and speed</summary>
+          <div class="sec-body">
+            <div class="row-btns" role="group" aria-label="Quality presets">
+              <button class="btn" id="qUltra" type="button" aria-pressed="false">Ultra fast</button>
+              <button class="btn" id="qFast" type="button" aria-pressed="false">Fast</button>
+              <button class="btn" id="qBal" type="button" aria-pressed="false">Balanced</button>
+              <button class="btn" id="qFine" type="button" aria-pressed="false">Fine</button>
+            </div>
+            <p class="note" id="qMarkNote">The marked button is the preset in use. The mark goes away when you change a dial below by hand.</p>
+            <p class="note only2d" hidden>Ray steps, the surface threshold, the distance estimate, shadows and crevices belong to the 3D view, so they are put away while the 2D view is on. Resolution and refining passes still count.</p>
+            <div id="qDials" class="sec-inner"></div>
+            <p class="note">While you move, a quick preview is drawn. When you stop, the picture is redrawn at full size and then refined pass by pass. The thin bar under the picture shows how far that has got. More passes smooth edges and remove shimmer. They cost time, and the page stays responsive meanwhile.</p>
+            <div id="qReset"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secExport">
+          <summary class="label">Save a picture</summary>
+          <div class="sec-body">
+            <div id="exportPanel" class="sec-inner"></div>
+          </div>
+        </details>
+
+        <details class="sec" id="secMesh">
+          <summary class="label">Save a 3D model</summary>
+          <div class="sec-body">
+            <div id="meshPanel" class="sec-inner"></div>
+          </div>
+        </details>
+      </div>
+    </aside>
+  </div>
+
+  <div class="lower">
+    <section class="step">
+      <h2>One step, seen on directions</h2>
+      <p>Forget length for a moment and watch where each direction is sent by the power zⁿ. Small circles are drawn around a sample of directions, then pushed through one step.</p>
+      <figure class="fig">
+        <canvas id="step2d" aria-label="Circles on the unit circle before and after one step in the plane"></canvas>
+        <div class="ends"><span>before</span><span>after one step</span></div>
+        <figcaption id="cap2d"></figcaption>
+      </figure>
+      <figure class="fig">
+        <canvas id="step3d" aria-label="Circles on the sphere of directions before and after one step of the chosen approach"></canvas>
+        <div class="ends"><span>before</span><span>after one step</span></div>
+        <figcaption id="cap3d"></figcaption>
+      </figure>
+    </section>
+
+    <section class="score">
+      <h2>What survives the move to 3D</h2>
+      <p>The figures in the right-hand column are measured from the approach’s own power rule at the current n, by testing how it stretches a tiny circle around each of 6,000 directions.</p>
+      <div class="card" id="card"></div>
+    </section>
+  </div>
+
+  <footer class="why">
+    <h2>Why no approach passes every row</h2>
+    <p>In the plane, squaring stretches every direction by the same factor, 2|z|. Doubling the angle stretches the circle of directions by 2, and squaring the length stretches outward by the same amount, so tiny shapes keep their shape. That is the source of the endless clean detail in the flat set.</p>
+    <p>To copy this in space, a rule would have to stretch the sphere of directions by exactly 2 at every point. A sphere cannot be laid over itself that way: a patch magnified 2× is flatter than the sphere it has to land on. Liouville proved the general statement in 1850: in three dimensions the only shape-keeping maps are built from rotations, scalings and sphere inversions, and squaring is not one of them.</p>
+    <p>That is also why Kleinian groups look the way a 3D Julia set ought to. They use sphere inversions one after another, the one family the theorem allows, so they keep their detail in every direction. Quaternions (numbers with more than one imaginary part) enter only as bookkeeping: with them 1/q is a sphere inversion that stays inside 3D, where q² only gives the Lathe approach.</p>
+
+    <h2>Sphere inversions and the flat set</h2>
+    <p>Sphere inversions can give the exact flat set at z = 0. What cannot do it is one inversion after another: a chain of inversions keeps every shape, and no power does that in space. Inversions added together can.</p>
+    <p>In the plane, zⁿ can be written exactly as a sum of circle inversions. Put spheres where the circles were and the same sum gives a power for points in space, and its slice at z = 0 is the flat set. That is the approach called Sphere inversions. Adding is what makes it possible, and adding is also where the perfect shape-keeping is lost.</p>
+
+    <h2>One formula, nothing placed by hand, and the planes are a free choice</h2>
+    <p>Nothing in the Sphere inversions approach is placed or adjusted by hand. Every point goes through the same formula, the sum of sphere inversions described above. Worked out, that sum multiplies two angles of a direction by n: its longitude, and its latitude as a Mercator map stretches it. That is why the approach was called Mercator before. The two forms were checked against each other for n = 2, 3, 4, 5 and 8, and they agree.</p>
+    <p>The number of planes has nothing to do with the power. With p planes the solid has 2p fins around the x-axis, whatever n is. So the fins match the power when p is half of n: 4 planes for n = 8, 3 for n = 6, 2 for n = 4. For n = 2 that would be 1 plane, which gives the inflated set. The 3D figure in Kučera’s paper uses 2 planes at n = 2. No value is the correct one. The dial goes up to 8 planes.</p>
+
+    <h2>Phases that make the solid pulse</h2>
+    <p>The usual Mandelbulb has two phase offsets, one for each angle. Each is added to its angle every time a power is taken. Both Mandelbulbs here have them as dials in the Approach section. Press the play button beside the latitude phase (the θ phase in the classic one) and the solid pulses from its poles. The longitude phase (the φ phase) turns the solid instead.</p>
+    <p>Sphere inversions has a matching pair. Turn is its longitude phase, and it turns the solid. Lift is the nearest thing it has to a latitude phase. Lift is an offset where the phase is an angle, so it runs from one end to the other and does not come back round: at power 8 it slides the ring of bulbs up and down the solid. Turn is offered with one plane only, because with two or more planes a turn tears the solid into sheets.</p>
+
+    <h2>Questions from testing, answered</h2>
+
+    <h3>Why did the Sphere inversions solid come apart when it was sliced away from z = 0?</h3>
+    <p>With two or more planes, that rule folds space onto the nearest plane before every step, and its result jumps where two folds meet. On z = 0 nothing of this shows, which is why that slice looked right. Away from z = 0 the jumps cut the solid into pieces. With one plane there are no folds and no jumps, and the solid is whole at every height.</p>
+    <!-- GAP (page engineer, round 4): the plain-language text about the new approach "pillow" belongs in the next
+         paragraph. It comes from notes/pillow.md, which had not been written when this file was last edited. -->
+    <p data-needs="pillow" id="pillowText" hidden>The approach at the top of the list is the replacement, and the page opens with it. The earlier rule is still in the list as Sphere inversions, so the two can be compared.</p>
+
+    <h3>Should the number of planes be forced by the maths?</h3>
+    <p>In the Sphere inversions approach nothing forces it, which is why it is a dial there, and why its fins do not follow the power. <span data-needs="pillow" hidden>The approach at the top of the list has no such dial.</span></p>
+
+    <h3>Do quaternions or the third map have a part in this?</h3>
+    <p>They belong to the Kleinian picture only. The third map is one of the three maps that build a Kleinian group, and zⁿ + c has nothing that matches it. Squaring a quaternion is in the list too, as the Lathe approach: it gives the flat set turned around the x-axis, like work on a lathe. So where a point starts in space does not settle the rule. Every approach here is one way of deciding what a power does to the second angle, and the table above shows what each choice costs.</p>
+
+    <h3 data-needs="solid" hidden>Why did the orbit trap only recolour the surface in 3D?</h3>
+    <p data-needs="solid" hidden>Because the trap was used for colour only. In renders where the trap changes the shape, the solid is made of the points whose orbit comes close to the trap. Colour and light now has that choice for the 3D view: the trap can colour the surface, be the solid, or be added to the solid, and each trap shape then gives a different object. The 2D view is as it was.</p>
+
+    <h3>Does the 2D view use a distance estimate, and can the inside have colours of its own?</h3>
+    <p>Yes to the first: the outline of the flat picture is drawn from the same distance estimate the 3D rays use, which is why thin threads show as clean lines. <span data-needs="inside" hidden>For the second, Colour and light has controls that appear in the 2D view: the width of the outline, a glow beside it, a choice of how the inside is coloured, and a palette of its own for the inside. Until you move them the 2D picture looks as it did.</span></p>
+
+    <h3>Was the glow around the solid with the rough distance estimate a fault?</h3>
+    <p>Yes, and it has been fixed. A ray that ran alongside the solid crept forward in tiny steps, ran out of steps in mid-air, and was then shaded as if it had hit something. Such rays now get past the solid, and a ray that runs out of steps away from the surface shows the background.</p>
+
+    <h3>Why did solids look like a stack of slices, even at Fine?</h3>
+    <p>Each ray used to stop at the first place where it came within a pixel of the surface, and that place was a little different for the rays beside it. The depth hardly differed, but shadows and crevice shading were worked out from those uneven points and came out in stripes. Every hit is now moved onto one level before it is shaded.</p>
+
+    <h3 data-needs="extreme" hidden>How far can the dials go?</h3>
+    <p data-needs="extreme" hidden>Extreme ranges, at the top of the controls, lets most dials reach five to ten times further: iterations, the depth of the Kleinian search, ray steps, refining passes, the power and more. A dial with a wider range shows the word wide while the switch is on. Switching it off brings every value back inside its usual limits.</p>
+
+    <h3>What does a list entry change?</h3>
+    <p>Only what it is about. A Julia entry sets the point c. A Kleinian entry sets the group and its turning-out sphere. The camera, the iterations, the depth of the search, the quality and the approach stay as you left them. Frame it, beside each list, moves the camera to a good view of the chosen entry.</p>
+
+    <h3 data-needs="export" hidden>How do I get a picture or a 3D model out?</h3>
+    <p data-needs="export" hidden>Save a picture renders the view as it is at that moment, at a size and quality you choose, while you carry on. Changes made afterwards do not reach a picture that is already being made. When it is ready, press Save the file.</p>
+    <p data-needs="mesh" hidden>Save a 3D model turns the solid into a mesh of triangles and saves a zip with STL, OBJ or PLY files, which Blender, Rhino and 3D printing programs open.</p>
+  </footer>
+</div>

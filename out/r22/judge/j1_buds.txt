@@ -1,0 +1,69 @@
+bud centres from preimages: g1 (0.0000, 0.6436) g2 (-1.0462, 0.3076) g3 (0.3639, 0.4226) g4 (1.1815, 0.1789)
+
+== A. ring census, basilica, 2880 places, 80 steps: number of arcs and their widths
+g1 x=0.0000 rad=0.6436 lathe     arcs   1  widths [360.0]   | in the first quarter: 360.0@0.0
+g1 x=0.0000 rad=0.6436 oneplane  arcs   2  widths [13.4]   | in the first quarter: 13.4@0.0
+g1 x=0.0000 rad=0.6436 along     arcs   8  widths [12.1]   | in the first quarter: 12.1@0.0 12.1@45.0 12.1@90.0
+g1 x=0.0000 rad=0.6436 once      arcs   8  widths [12.1, 13.1, 13.9]   | in the first quarter: 13.9@0.0 13.1@44.9 12.1@90.0
+g1 x=0.0000 rad=0.6436 pulled    arcs   4  widths [14.1, 17.9]   | in the first quarter: 17.9@0.0 14.1@90.0
+  0 s
+g2 x=-1.0462 rad=0.3076 lathe     arcs   1  widths [360.0]   | in the first quarter: 360.0@0.0
+g2 x=-1.0462 rad=0.3076 oneplane  arcs   2  widths [12.9]   | in the first quarter: 12.9@0.0
+g2 x=-1.0462 rad=0.3076 along     arcs  16  widths [4.1, 7.6, 12.6]   | in the first quarter: 12.6@0.0 7.6@26.9 4.1@45.0 7.6@63.1 12.6@90.0
+g2 x=-1.0462 rad=0.3076 once      arcs   6  widths [8.4, 13.9]   | in the first quarter: 13.9@0.0 8.4@26.8
+g2 x=-1.0462 rad=0.3076 pulled    arcs   4  widths [6.9, 20.4]   | in the first quarter: 20.4@0.0 6.9@90.0
+  0 s
+g3 x=0.3639 rad=0.4226 lathe     arcs   1  widths [360.0]   | in the first quarter: 360.0@0.0
+g3 x=0.3639 rad=0.4226 oneplane  arcs   2  widths [8.4]   | in the first quarter: 8.4@0.0
+g3 x=0.3639 rad=0.4226 along     arcs  16  widths [6.6, 8.1, 8.4]   | in the first quarter: 8.1@0.0 6.6@20.1 8.4@45.0 6.6@69.9 8.1@90.0
+g3 x=0.3639 rad=0.4226 once      arcs   2  widths [8.4]   | in the first quarter: 8.4@0.0
+g3 x=0.3639 rad=0.4226 pulled    arcs   4  widths [8.9, 14.6]   | in the first quarter: 14.6@0.0 8.9@90.0
+  0 s
+g4 x=1.1815 rad=0.1789 lathe     arcs   1  widths [360.0]   | in the first quarter: 360.0@0.0
+g4 x=1.1815 rad=0.1789 oneplane  arcs   2  widths [8.4]   | in the first quarter: 8.4@0.0
+g4 x=1.1815 rad=0.1789 along     arcs  16  widths [6.6, 8.1, 8.4]   | in the first quarter: 8.1@0.0 6.6@20.0 8.4@45.0 6.6@70.0 8.1@90.0
+g4 x=1.1815 rad=0.1789 once      arcs   2  widths [8.4]   | in the first quarter: 8.4@0.0
+g4 x=1.1815 rad=0.1789 pulled    arcs   4  widths [3.4, 15.4]   | in the first quarter: 15.4@0.0 3.4@90.0
+  0 s
+
+== B. the one-step law on g1: is "inside" the same as "closer to its first page than a fixed distance"? (along, oneplane)
+oneplane  inside: farthest from its page 0.0743 | outside: nearest to its page 0.0756
+along     inside: farthest from its page 0.0653 | outside: nearest to its page 0.0666
+
+== C. a thrown-in bud of along on g2: find the arc near 27 degrees, follow its middle two steps
+arcs of along between 20 and 35 degrees on g2: [(26.875, 7.625)]
+start turn 26.88 deg, squared about the page at 13.21 deg, 0.0726 off it
+  after step 1: x 0.0008, 0.6423 from the x-axis, turn 179.00 deg
+  after step 2: x -1.4123, 0.0145 from the x-axis, turn 94.26 deg
+  after step 3: x 0.9944, 0.0408 from the x-axis, turn -94.13 deg
+
+== D. buds ON a bud: ring round the STALK of the big top bud of the middle body (stalk = the y direction)
+small bud on the top bud, flat picture: (-0.0807, 0.6641); top bud middle (0, 0.6436); offset along x -0.0807
+bud in the page at  0.0, ring radius 0.0807 round its stalk, oneplane   80 steps:  2 arcs,  2 of them 2 degrees or wider: 12.6@0 12.6@180
+bud in the page at  0.0, ring radius 0.0807 round its stalk, oneplane  200 steps:  2 arcs,  2 of them 2 degrees or wider: 12.6@0 12.6@180
+bud in the page at  0.0, ring radius 0.0807 round its stalk, along      80 steps: 20 arcs, 16 of them 2 degrees or wider: 12.6@0 7.8@27 4.4@45 7.6@64 12.1@90 7.8@116 4.8@134 7.6@153 12.6@180 7.6@207 4.8@226 7.8@244 12.1@270 7.6@296 4.4@315 7.8@333
+bud in the page at  0.0, ring radius 0.0807 round its stalk, along     200 steps: 20 arcs, 16 of them 2 degrees or wider: 12.6@0 7.8@27 4.4@45 7.6@64 12.1@90 7.8@116 4.8@134 7.6@153 12.6@180 7.6@207 4.8@226 7.8@244 12.1@270 7.6@296 4.4@315 7.8@333
+bud in the page at  0.0, ring radius 0.0807 round its stalk, once       80 steps:  2 arcs,  2 of them 2 degrees or wider: 12.6@0 12.6@180
+bud in the page at  0.0, ring radius 0.0807 round its stalk, once      200 steps:  2 arcs,  2 of them 2 degrees or wider: 12.6@0 12.6@180
+bud in the page at  0.0, ring radius 0.0807 round its stalk, pulled     80 steps:  8 arcs,  4 of them 2 degrees or wider: 21.1@0 29.9@90 21.1@180 29.9@270
+bud in the page at  0.0, ring radius 0.0807 round its stalk, pulled    200 steps:  8 arcs,  4 of them 2 degrees or wider: 21.1@0 29.9@90 21.1@180 29.9@270
+  0 s
+bud in the page at 45.0, ring radius 0.0807 round its stalk, oneplane   80 steps:  0 arcs,  0 of them 2 degrees or wider: 
+bud in the page at 45.0, ring radius 0.0807 round its stalk, oneplane  200 steps:  0 arcs,  0 of them 2 degrees or wider: 
+bud in the page at 45.0, ring radius 0.0807 round its stalk, along      80 steps: 16 arcs, 16 of them 2 degrees or wider: 5.6@0 9.8@24 14.8@57 7.6@85 3.9@103 6.9@120 10.9@143 6.1@165 3.4@180 6.1@195 10.9@217 6.9@240 3.9@257 7.6@275 14.8@303 9.8@336
+bud in the page at 45.0, ring radius 0.0807 round its stalk, along     200 steps: 16 arcs, 16 of them 2 degrees or wider: 5.6@0 9.8@24 14.8@57 7.6@85 3.9@103 6.9@120 10.9@143 6.1@165 3.4@180 6.1@195 10.9@217 6.9@240 3.9@257 7.6@275 14.8@303 9.8@336
+bud in the page at 45.0, ring radius 0.0807 round its stalk, once       80 steps:  2 arcs,  2 of them 2 degrees or wider: 15.2@57 11.1@217
+bud in the page at 45.0, ring radius 0.0807 round its stalk, once      200 steps:  2 arcs,  2 of them 2 degrees or wider: 15.2@57 11.1@217
+bud in the page at 45.0, ring radius 0.0807 round its stalk, pulled     80 steps:  0 arcs,  0 of them 2 degrees or wider: 
+bud in the page at 45.0, ring radius 0.0807 round its stalk, pulled    200 steps:  0 arcs,  0 of them 2 degrees or wider: 
+  0 s
+bud in the page at 90.0, ring radius 0.0807 round its stalk, oneplane   80 steps:  0 arcs,  0 of them 2 degrees or wider: 
+bud in the page at 90.0, ring radius 0.0807 round its stalk, oneplane  200 steps:  0 arcs,  0 of them 2 degrees or wider: 
+bud in the page at 90.0, ring radius 0.0807 round its stalk, along      80 steps: 20 arcs, 16 of them 2 degrees or wider: 12.6@0 7.8@27 4.4@45 7.6@64 12.1@90 7.8@116 4.8@134 7.6@153 12.6@180 7.6@207 4.8@226 7.8@244 12.1@270 7.6@296 4.4@315 7.8@333
+bud in the page at 90.0, ring radius 0.0807 round its stalk, along     200 steps: 20 arcs, 16 of them 2 degrees or wider: 12.6@0 7.8@27 4.4@45 7.6@64 12.1@90 7.8@116 4.8@134 7.6@153 12.6@180 7.6@207 4.8@226 7.8@244 12.1@270 7.6@296 4.4@315 7.8@333
+bud in the page at 90.0, ring radius 0.0807 round its stalk, once       80 steps:  2 arcs,  2 of them 2 degrees or wider: 12.9@90 12.9@270
+bud in the page at 90.0, ring radius 0.0807 round its stalk, once      200 steps:  2 arcs,  2 of them 2 degrees or wider: 12.9@90 12.9@270
+bud in the page at 90.0, ring radius 0.0807 round its stalk, pulled     80 steps:  2 arcs,  2 of them 2 degrees or wider: 16.9@0 16.9@180
+bud in the page at 90.0, ring radius 0.0807 round its stalk, pulled    200 steps:  2 arcs,  2 of them 2 degrees or wider: 16.9@0 16.9@180
+  0 s
+done 0 s

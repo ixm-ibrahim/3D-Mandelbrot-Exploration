@@ -1,0 +1,1 @@
+negpow-128-off0.5-all negpow-128-off0.5-largest negpow-128-off1-all negpow-128-off1-largest negpow-128-off1.5-all negpow-128-off1.5-largest negpow-256-off0.5-all negpow-256-off0.5-largest negpow-256-off1-all negpow-256-off1-largest negpow-256-off1.5-all negpow-256-off1.5-largest negpow-512-off1-all negpow-512-off1-largest negpow-512-off1.5-all negpow-512-off1.5-largest 

@@ -1,0 +1,50 @@
+page dist/r28-truth.html, exit 0, no console errors, 16 s in the browser
+=== A: as the page opens: two equal spheres, neighbours 55.56 (my list: 481510 balls)
+    cell: 20000 outside points (7425 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 20000; twice the estimate would still be free at 26
+    low : 20000 outside points (0 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 20000; twice the estimate would still be free at 63
+    high: 20000 outside points (8329 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 20000; twice the estimate would still be free at 27
+=== C: two equal spheres, neighbours 100 (they touch), honeycomb (my list: 4131687 balls)
+    cell: 20000 outside points (1808 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 20000; twice the estimate would still be free at 17326
+    low : 20000 outside points (2766 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 20000; twice the estimate would still be free at 17302
+    high: 20000 outside points (2424 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 20000; twice the estimate would still be free at 17191
+=== D: neighbours 150, second sphere 33.33 (what typing 150 gives), square (my list: 608806 balls)
+    cell: 20000 outside points (9371 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 12892; twice the estimate would still be free at 5
+    low : 20000 outside points (274 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 15253; twice the estimate would still be free at 7
+    high: 20000 outside points (17861 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 5579; twice the estimate would still be free at 0
+=== E: neighbours 300, second sphere 16.67 (what typing 300 gives), honeycomb (my list: 1137243 balls)
+    cell: 20000 outside points (7629 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 7598; twice the estimate would still be free at 2
+    low : 20000 outside points (2558 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 10100; twice the estimate would still be free at 5
+    high: 20000 outside points (19450 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 887; twice the estimate would still be free at 0
+=== F: neighbours 190, second sphere 50 (all but touching), square (my list: 1723112 balls)
+    cell: 20000 outside points (6465 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19299; twice the estimate would still be free at 2955
+    low : 20000 outside points (4894 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19803; twice the estimate would still be free at 2230
+    high: 20000 outside points (11654 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19001; twice the estimate would still be free at 3256
+=== G: neighbours 300, second sphere 25, a line only (my list: 128422 balls)
+    cell: 20000 outside points (6813 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 9724; twice the estimate would still be free at 0
+    low : 20000 outside points (3663 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 11758; twice the estimate would still be free at 0
+    high: 20000 outside points (16380 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 8279; twice the estimate would still be free at 0
+=== H: neighbours 400, second sphere 12.5 (the end of the slider), square (my list: 1412484 balls)
+    cell: 20000 outside points (7636 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 7100; twice the estimate would still be free at 4
+    low : 20000 outside points (4693 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 8688; twice the estimate would still be free at 3
+    high: 20000 outside points (19694 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 445; twice the estimate would still be free at 0
+=== I: neighbours 2000, second sphere 2.5 (the largest size that can be typed), square (my list: 2544796 balls)
+    cell: 20000 outside points (5975 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 4018; twice the estimate would still be free at 3
+    low : 20000 outside points (6065 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 3943; twice the estimate would still be free at 1
+    high: 20000 outside points (19989 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 21; twice the estimate would still be free at 0
+=== J: neighbours 150, second sphere 50, honeycomb (my list: 1270222 balls)
+    cell: 20000 outside points (6357 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19856; twice the estimate would still be free at 1131
+    low : 20000 outside points (644 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19962; twice the estimate would still be free at 440
+    high: 20000 outside points (12604 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19766; twice the estimate would still be free at 1809
+=== L: neighbours 1900, second sphere 5 (all but touching), honeycomb (my list: 2748682 balls)
+    cell: 20000 outside points (5734 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 5474; twice the estimate would still be free at 43
+    low : 20000 outside points (5485 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 5377; twice the estimate would still be free at 55
+    high: 20000 outside points (19665 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 1178; twice the estimate would still be free at 151
+=== M: neighbours 200, second sphere 50 (they touch), square (my list: 1992624 balls)
+    cell: 20000 outside points (6175 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19323; twice the estimate would still be free at 10458
+    low : 20000 outside points (5989 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19813; twice the estimate would still be free at 10374
+    high: 20000 outside points (10895 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 19005; twice the estimate would still be free at 10154
+=== O: neighbours 2000, second sphere 2 (the smallest), honeycomb (my list: 2546934 balls)
+    cell: 20000 outside points (5617 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 2967; twice the estimate would still be free at 4
+    low : 20000 outside points (5608 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 2980; twice the estimate would still be free at 1
+    high: 20000 outside points (19994 of them end at once, with no inversion); estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller number at 9; twice the estimate would still be free at 0
+TOTAL: 720000 outside points, estimate longer than the true distance to the nearest listed ball at 0

@@ -1,0 +1,1192 @@
+step 1 result: 
+mercator {"planes":1,"turn":0,"lift":0} n=-3
+   formula: v⁻³ = inv(v³): the sum of inversions for the power 3, then one more inversion.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=-2
+   formula: v⁻² = inv(v²): the sum of inversions for the power 2, then one more inversion.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=-1
+   formula: v⁻¹ = inv(v) = (x, −y, −z)/|v|².
+   round:   At n = −1 the rule is a single sphere inversion with a flip, and inversions keep every shape.
+   crush:   [ok] Crushes nothing: at n = −1 the rule is one sphere inversion. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit beside the z-axis. The origin is sent to infinity.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit beside the z-axis.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=1
+   formula: v¹ = v.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [ok] Crushes nothing: at n = 1 every point stays where it is.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=2
+   formula: v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 1.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=3
+   formula: v³ = |v|³ · [1 + 3·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 2.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":0,"lift":0} n=8
+   formula: v⁸ = |v|⁸ · [1 + 8·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 7.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=-3
+   formula: v⁻³ = inv(v³): the sum of inversions for the power 3, then one more inversion. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=-2
+   formula: v⁻² = inv(v²): the sum of inversions for the power 2, then one more inversion. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=-1
+   formula: v⁻¹ = inv(v) = (x, −y, −z)/|v|². Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   At n = −1 each piece is a sphere inversion with a flip, which keeps every shape. The folds between the pieces still leave creases.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=1
+   formula: v¹ = v. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=2
+   formula: v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 1. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=3
+   formula: v³ = |v|³ · [1 + 3·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 2. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":2,"turn":0,"lift":0} n=8
+   formula: v⁸ = |v|⁸ · [1 + 8·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 7. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=-3
+   formula: v⁻³ = inv(v³): the sum of inversions for the power 3, then one more inversion. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=-2
+   formula: v⁻² = inv(v²): the sum of inversions for the power 2, then one more inversion. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=-1
+   formula: v⁻¹ = inv(v) = (x, −y, −z)/|v|². Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   At n = −1 each piece is a sphere inversion with a flip, which keeps every shape. The folds between the pieces still leave creases.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=1
+   formula: v¹ = v. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=2
+   formula: v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 1. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=3
+   formula: v³ = |v|³ · [1 + 3·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 2. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":4,"turn":30,"lift":0} n=8
+   formula: v⁸ = |v|⁸ · [1 + 8·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 7. Before that, the nearest of 4 planes through the x-axis is folded onto the xy-plane.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  4 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+mercator {"planes":1,"turn":-45,"lift":0} n=-3
+   formula: v⁻³ = inv(v³): the sum of inversions for the power 3, then one more inversion. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −11.25°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −11.25°.
+mercator {"planes":1,"turn":-45,"lift":0} n=-2
+   formula: v⁻² = inv(v²): the sum of inversions for the power 2, then one more inversion. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −15°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −15°.
+mercator {"planes":1,"turn":-45,"lift":0} n=-1
+   formula: v⁻¹ = inv(v) = (x, −y, −z)/|v|². After it, −45° is added to the longitude.
+   round:   At n = −1 the rule is a single sphere inversion with a flip, and inversions keep every shape.
+   crush:   [ok] Crushes nothing: at n = −1 the rule is one sphere inversion. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −22.5°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −22.5°.
+mercator {"planes":1,"turn":-45,"lift":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit beside the z-axis. The origin is sent to infinity.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+mercator {"planes":1,"turn":-45,"lift":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit beside the z-axis.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+mercator {"planes":1,"turn":-45,"lift":0} n=1
+   formula: v¹ = v. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [ok] Crushes nothing: at n = 1 every point stays where it is.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+mercator {"planes":1,"turn":-45,"lift":0} n=2
+   formula: v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 1. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 45°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 45°.
+mercator {"planes":1,"turn":-45,"lift":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ).
+mercator {"planes":1,"turn":-45,"lift":0} n=3
+   formula: v³ = |v|³ · [1 + 3·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 2. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 22.5°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 22.5°.
+mercator {"planes":1,"turn":-45,"lift":0} n=8
+   formula: v⁸ = |v|⁸ · [1 + 8·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 7. After it, −45° is added to the longitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 6.43°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −45° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 6.43°.
+mercator {"planes":2,"turn":0,"lift":0.5} n=-3
+   formula: v⁻³ = inv(v³): the sum of inversions for the power 3, then one more inversion. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=-2
+   formula: v⁻² = inv(v²): the sum of inversions for the power 2, then one more inversion. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=-1
+   formula: v⁻¹ = inv(v) = (x, −y, −z)/|v|². Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   At n = −1 each piece is a sphere inversion with a flip, which keeps every shape. The folds between the pieces still leave creases.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead. The origin is sent to infinity.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=1
+   formula: v¹ = v. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=2
+   formula: v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 1. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=3
+   formula: v³ = |v|³ · [1 + 3·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 2. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":2,"turn":0,"lift":0.5} n=8
+   formula: v⁸ = |v|⁸ · [1 + 8·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 7. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane. After it, 0.5 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Nothing but the origin is crushed. Space is creased where the folds meet instead.
+   smooth:  [no] Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=-3
+   formula: v⁻³ = inv(v³): the sum of inversions for the power 3, then one more inversion. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=-2
+   formula: v⁻² = inv(v²): the sum of inversions for the power 2, then one more inversion. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=-1
+   formula: v⁻¹ = inv(v) = (x, −y, −z)/|v|². After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   At n = −1 the rule is a single sphere inversion with a flip, and inversions keep every shape.
+   crush:   [ok] Crushes nothing: at n = −1 the rule is one sphere inversion. The origin is sent to infinity.
+   smooth:  [part] Smooth everywhere except the origin, which is a pole.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit beside the z-axis. The origin is sent to infinity.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit beside the z-axis.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=1
+   formula: v¹ = v. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [ok] Crushes nothing: at n = 1 every point stays where it is.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=2
+   formula: v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 1. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nφ / cosh nm, sin nφ / cosh nm, tanh nm)   with φ the longitude and m the Mercator latitude. At whole n this is what the sum of inversions gives. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [no] Smooth for whole powers only. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=3
+   formula: v³ = |v|³ · [1 + 3·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 2. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+mercator {"planes":1,"turn":20,"lift":-0.3} n=8
+   formula: v⁸ = |v|⁸ · [1 + 8·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| and k = 0 … 7. After it, 20° is added to the longitude and −0.3 is added to the Mercator latitude.
+   round:   Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+   crush:   [part] Crushes the z-axis only: a line where the plane has a point.
+   smooth:  [part] Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.
+   slice+:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+   slice-:  With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.
+lathe {"spin":1} n=-3
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [part] A polynomial divided by a power of |v|²: smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=-2
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = −2 that is the whole plane x = 0. The origin is sent to infinity.
+   smooth:  [part] A polynomial divided by a power of |v|²: smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=-1
+   formula: v⁻¹ = (x, −y, −z)/|v|²
+   round:   At n = −1 the rule is a single sphere inversion with a flip, and inversions keep every shape.
+   crush:   [ok] Crushes nothing at this power. The origin is sent to infinity.
+   smooth:  [part] A polynomial divided by a power of |v|²: smooth everywhere except the origin, which is a pole.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [ok] Crushes nothing at this power. The origin is sent to infinity.
+   smooth:  [no] A polynomial for whole positive powers only. A power that is not a whole number also tears space along the negative x-axis, the way zⁿ tears the plane there.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [ok] Crushes nothing but the origin at this power.
+   smooth:  [no] A polynomial for whole positive powers only. A power that is not a whole number also tears space along the negative x-axis, the way zⁿ tears the plane there.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=1
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [ok] Crushes nothing but the origin at this power.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=2
+   formula: v² = (x² − y² − z², 2xy, 2xz)
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.
+   smooth:  [no] A polynomial for whole positive powers only. A power that is not a whole number also tears space along the negative x-axis, the way zⁿ tears the plane there.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=3
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":1} n=8
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z)
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=-3
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=-2
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = −2 that is the whole plane x = 0. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=-1
+   formula: v⁻¹ = (x, −y, −z)/|v|², then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [ok] Crushes nothing at this power. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [ok] Crushes nothing at this power. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from. A power that is not a whole number also tears space along the negative x-axis, the way zⁿ tears the plane there.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [ok] Crushes nothing but the origin at this power.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from. A power that is not a whole number also tears space along the negative x-axis, the way zⁿ tears the plane there.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=1
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [ok] Crushes nothing but the origin at this power.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=2
+   formula: v² = (x² − y² − z², 2xy, 2xz), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°. For n = 2 that is the whole plane x = 0.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from. A power that is not a whole number also tears space along the negative x-axis, the way zⁿ tears the plane there.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=3
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+lathe {"spin":3} n=8
+   formula: vⁿ = |v|ⁿ · (cos nα, sin nα · u)   with α the angle from the x-axis and u the direction of (y, z), then the angle of (y, z) is multiplied by 3
+   round:   The squash is in the spin direction.
+   crush:   [no] Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.
+   smooth:  [no] Has a crease along the whole x-axis, where the spin has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=-3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=-2
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° here). The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around the equator.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=-1
+   formula: v⁻¹ = (x, −y, −z)/|v|²
+   round:   At n = −1 the rule is a single sphere inversion with a flip, and inversions keep every shape.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=1
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=2
+   formula: v² = ((ρ² − z²)(x² − y²)/ρ², (ρ² − z²)·2xy/ρ², 2ρz)   with ρ = √(x² + y²)
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° here).
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around the equator.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":0,"lon":0} n=8
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around the equator.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+bulb {"lat":30,"lon":0} n=-3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=-2
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=-1
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=1
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=2
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":30,"lon":0} n=8
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 30° and L = n·longitude
+   round:   With a latitude phase even the equator is squashed, and the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+   slice-:  With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.
+bulb {"lat":0,"lon":60} n=-3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 15°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 15°.
+bulb {"lat":0,"lon":60} n=-2
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° here). The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around the equator.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 20°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 20°.
+bulb {"lat":0,"lon":60} n=-1
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   At n = −1 the rule is a single sphere inversion with a flip, and inversions keep every shape.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 30°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 30°.
+bulb {"lat":0,"lon":60} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+bulb {"lat":0,"lon":60} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+bulb {"lat":0,"lon":60} n=1
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+bulb {"lat":0,"lon":60} n=2
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on (latitude ±45° here).
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around the equator.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −60°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −60°.
+bulb {"lat":0,"lon":60} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ).
+bulb {"lat":0,"lon":60} n=3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −30°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −30°.
+bulb {"lat":0,"lon":60} n=8
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude and L = n·longitude + 60°
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around the equator.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −8.57°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 60° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −8.57°.
+bulb {"lat":180,"lon":0} n=-3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 45°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 45°.
+bulb {"lat":180,"lon":0} n=-2
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 60°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 60°.
+bulb {"lat":180,"lon":0} n=-1
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 90°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 90°.
+bulb {"lat":180,"lon":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+bulb {"lat":180,"lon":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+bulb {"lat":180,"lon":0} n=1
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+bulb {"lat":180,"lon":0} n=2
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 180°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 180°.
+bulb {"lat":180,"lon":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ).
+bulb {"lat":180,"lon":0} n=3
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but beside the z-axis the stretch along the circles of latitude is |n| times too large.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Has a crease along the z-axis, where the longitude has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −90°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −90°.
+bulb {"lat":180,"lon":0} n=8
+   formula: vⁿ = |v|ⁿ · (cos B cos L, cos B sin L, sin B)   with B = n·latitude + 180° and L = n·longitude
+   round:   Exact on the equator, but the stretch grows without limit toward the z-axis.
+   crush:   [no] Crushes the cones where n times the latitude, plus the phase, reaches ±90°, ±270° and so on.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle of latitude.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −25.71°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −25.71°.
+classic {"theta":0,"phi":0} n=-3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Stretched up to |n| times too far beside the z-axis, crushed on cones around it.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+   slice+:  At this n the plane z = 0 happens to follow complex arithmetic.
+   slice-:  At this n the plane z = 0 happens to follow complex arithmetic.
+classic {"theta":0,"phi":0} n=-2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Stretched up to |n| times too far beside the z-axis, crushed on cones around it.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":0,"phi":0} n=-1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   At n = −1 the rule is a single sphere inversion with a mirror, and inversions keep every shape.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 90°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 90°.
+classic {"theta":0,"phi":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":0,"phi":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":0,"phi":0} n=1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Stretched up to |n| times too far beside the z-axis, crushed on cones around it.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+   slice+:  At this n the plane z = 0 happens to follow complex arithmetic.
+   slice-:  At this n the plane z = 0 happens to follow complex arithmetic.
+classic {"theta":0,"phi":0} n=2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Stretched up to |n| times too far beside the z-axis, crushed on cones around it.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+   smooth:  [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":0,"phi":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":0,"phi":0} n=3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Stretched up to |n| times too far beside the z-axis, crushed on cones around it.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+   smooth:  [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −90°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −90°.
+classic {"theta":0,"phi":0} n=8
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Stretched up to |n| times too far beside the z-axis, crushed on cones around it.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n, is a multiple of 180°.
+   smooth:  [no] Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 90° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 90° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=-3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=-2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=-1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −90° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":25,"phi":0} n=8
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 25°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 90° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 90° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=-3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=-2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  With this θ phase the plane z = 0 follows complex arithmetic exactly: the formula has become the Mandelbulb above.
+   slice-:  With this θ phase the plane z = 0 follows complex arithmetic exactly: the formula has become the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=-1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=-0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  With this θ phase the plane z = 0 follows complex arithmetic exactly: the formula has become the Mandelbulb above.
+   slice-:  With this θ phase the plane z = 0 follows complex arithmetic exactly: the formula has become the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=2.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":-90,"phi":0} n=8
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ − 90°, P = n·φ, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −25.71°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 180° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −25.71°.
+classic {"theta":90,"phi":40} n=-3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":90,"phi":40} n=-2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −140° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −46.67°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −140° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −46.67°.
+classic {"theta":90,"phi":40} n=-1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":90,"phi":40} n=-0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [ok] Crushes nothing at these settings. The origin is sent to infinity.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":90,"phi":40} n=0.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [ok] Crushes nothing but the origin at these settings.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 45° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":90,"phi":40} n=1
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 0° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":90,"phi":40} n=2
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −140° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 140°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by −140° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by 140°.
+classic {"theta":90,"phi":40} n=2.5
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to −135° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":90,"phi":40} n=3
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+   slice-:  No. This is the one approach here that does not keep the flat set at z = 0. Setting the θ phase to 180° would put it back: that turns this formula into the Mandelbulb above.
+classic {"theta":90,"phi":40} n=8
+   formula: vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ + 90°, P = n·φ + 40°, θ the angle from the z-axis and φ the angle around it
+   round:   Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.
+   crush:   [no] Crushes every direction whose angle from the z-axis, times n plus the phase, is a multiple of 180°.
+   smooth:  [no] Torn along the z-axis: directions next to a pole are thrown all the way around a circle.
+   slice+:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 40° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −5.71°.
+   slice-:  The plane z = 0 follows complex arithmetic with one change: every power is also turned by 40° (it carries e^{iφ}·zⁿ). For zⁿ + c that slice is the usual flat set turned by −5.71°.
+split {} n=-3
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] The plane z = 0 and the z-axis are its zero divisors, which have no reciprocal: a negative power sends them to infinity. Exactly on the plane the lab keeps the z part at 0, so the flat slice survives.
+   smooth:  [part] One over a polynomial in each factor: smooth away from the plane z = 0 and the z-axis, where it blows up.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, but under a negative power it is a knife edge: any point just off it has its z part sent to infinity.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=-2
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] The plane z = 0 and the z-axis are its zero divisors, which have no reciprocal: a negative power sends them to infinity. Exactly on the plane the lab keeps the z part at 0, so the flat slice survives.
+   smooth:  [part] One over a polynomial in each factor: smooth away from the plane z = 0 and the z-axis, where it blows up.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, but under a negative power it is a knife edge: any point just off it has its z part sent to infinity.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=-1
+   formula: v⁻¹ = (x/ρ², −y/ρ², 1/z)   with ρ² = x² + y²
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] The plane z = 0 and the z-axis are its zero divisors, which have no reciprocal: a negative power sends them to infinity. Exactly on the plane the lab keeps the z part at 0, so the flat slice survives.
+   smooth:  [part] One over a polynomial in each factor: smooth away from the plane z = 0 and the z-axis, where it blows up.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, but under a negative power it is a knife edge: any point just off it has its z part sent to infinity.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=-0.5
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] The plane z = 0 and the z-axis are its zero divisors, which have no reciprocal: a negative power sends them to infinity. Exactly on the plane the lab keeps the z part at 0, so the flat slice survives.
+   smooth:  [no] A polynomial for whole positive powers only. Otherwise the complex factor is torn along the half-plane y = 0, x < 0, and below the plane the real factor keeps only the real part of zⁿ.
+   slice+:  The plane z = 0 follows complex arithmetic exactly, but under a negative power it is a knife edge: any point just off it has its z part sent to infinity.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=0.5
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit at the plane z = 0 and the z-axis.
+   smooth:  [no] A polynomial for whole positive powers only. Otherwise the complex factor is torn along the half-plane y = 0, x < 0, and below the plane the real factor keeps only the real part of zⁿ.
+   slice+:  The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=1
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [part] Crushes nothing at this power, but the stretch has no limit at the plane z = 0 and the z-axis.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=2
+   formula: v² = (x² − y², 2xy, z²)
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] Crushes the plane z = 0 and the z-axis.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=2.5
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] Crushes the plane z = 0 and the z-axis.
+   smooth:  [no] A polynomial for whole positive powers only. Otherwise the complex factor is torn along the half-plane y = 0, x < 0, and below the plane the real factor keeps only the real part of zⁿ.
+   slice+:  The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=3
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] Crushes the plane z = 0 and the z-axis.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+split {} n=8
+   formula: vⁿ = ((x + iy)ⁿ, zⁿ): the complex power and the real power, side by side
+   round:   Each factor keeps shapes on its own. Together they do not.
+   crush:   [no] Crushes the plane z = 0 and the z-axis.
+   smooth:  [ok] A polynomial.
+   slice+:  The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.
+   slice-:  The plane z = 0 does not follow complex arithmetic.
+no console errors

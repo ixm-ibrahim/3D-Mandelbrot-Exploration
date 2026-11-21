@@ -1,0 +1,24 @@
+=== session follow-667x375: dist/r13-check-page.html 667x375 light mobile=True dsf=1
+  opening layout: {"main": [16, 270, 651, 616], "stage": [16, 270, 651, 590], "toprow": [[16, 640, 651, 725], "sticky"], "cls": "", "sw": 667}
+  after a tap on Learn: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  Learn layout at the top of the page: {"y": 0, "main": [16, 270, 651, 632], "stage": [16, 270, 651, 435], "bar": [16, 443, 651, 632], "ih": 375}
+  stage at the top of the window: {"y": 270, "stage": [16, 0, 651, 165], "bar": [16, 173, 651, 362], "toprow": [16, 386, 651, 471], "ih": 375}
+  ring dragged by touch (z before, z after, scrollY before, after): [[0.7, 0.4, 0], [1.16, 0.63, 0], 270, 270]
+  before the tap on Mandelbrot: [[116.6640625, 187.8125, "SPAN:Mandelbrot"], {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}]
+  after the tap on Mandelbrot: {"checked": ["mode-m"], "learn": false, "mode": "m", "cls": ""}
+no console errors in follow-667x375
+=== session follow-375x667: dist/r13-check-page.html 375x667 light mobile=True dsf=1
+  diamond dragged by touch 10 px off its centre (c before, c after, scale): [[-0.4, 0.3, 0], [-0.66, 0.21, 0], 115.804802975993]
+  start: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  after the power dial: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  after flip z: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  after Reset this section in Equation: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  after Extreme ranges: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  after Collapse all twice: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  after every button in Modifiers (Burning ship / Conjugate / None / Reset this section): {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  after the buttons of the chosen approach: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn"}
+  options of Show: [["0", "The point alone"], ["1", "A small circle round the point"], ["2", "All directions at once"]]
+  Show option 0: ["point", 0, []]
+  Show option 1: ["circle", 32, []]
+  Show option 2: ["all", 300, [40, 110, 190, 260]]
+no console errors in follow-375x667

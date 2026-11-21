@@ -1,0 +1,4 @@
+rabbit-128-off0: tris 37264 ... size [100.0, 84.19, 37.34], z0 True | iou 0.935 pic-only 0.065 model-only 0.0 | hue {'compared_px': 98706, 'hue_diff_median_deg': 62.86789945888636, 'hue_diff_within_30deg_share': 0.33914858265961545} | 1 s
+rabbit-128-off0.5: tris 38940 ... size [100.0, 84.77, 37.73], z0 True | iou 0.97 pic-only 0.015 model-only 0.015 | hue {'compared_px': 103615, 'hue_diff_median_deg': 42.56598240469209, 'hue_diff_within_30deg_share': 0.40776914539400666} | 1 s
+rabbit-128-off2: tris 39288 ... size [100.0, 84.73, 38.64], z0 True | iou 0.81 pic-only 0.014 model-only 0.216 | hue {'compared_px': 103854, 'hue_diff_median_deg': 73.34382782676721, 'hue_diff_within_30deg_share': 0.2955013769330021} | 1 s
+negpow-128-def: tris 30044 ... size [47.8, 81.78, 100.0], z0 True | iou 0.231 pic-only 0.748 model-only 0.091 | hue {'compared_px': 31244, 'hue_diff_median_deg': 25.59043598638333, 'hue_diff_within_30deg_share': 0.5491294328511074} | 1 s

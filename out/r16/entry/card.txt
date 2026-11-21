@@ -1,0 +1,182 @@
+step 1 result: page up, 18 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow turnaway turnalong
+step 1 waited 3.0 s
+step 2 result: ===== turnaway | Turning plane, away | group inversions | place in the list 16 of 18
+tag: Square each point by the one-plane rule about a plane that turns against the point. Two planes carry the flat set and nothing tears. For c = −1 it gives separate bodies with buds in four directions, but the ski ... (32556 characters)
+no console errors
+
+===== turnaway | Turning plane, away | group inversions | place in the list 16 of 18
+tag: Square each point by the one-plane rule about a plane that turns against the point. Two planes carry the flat set and nothing tears. For c = −1 it gives separate bodies with buds in four directions, but the skin is streaks and hair, and the Mandelbrot solid is two thin crossed leaves.
+note: Set “Distance estimate”, under Quality and speed, to “Rough” to see this rule in 3D. With “Exact”, the setting the page opens with, the 3D picture of this rule is wrong: it shows a streaked spindle of fog where the solid is a row of bodies (checked against cuts worked point by point). Measured at power 2: the planes z = 0 and y = 0 both follow complex squaring (to 15 digits). No jump was found: for 200,000 pairs of close points the gap between the two answers shrinks in step with their distance, at three distances (also at the powers 3 and 4). The rule gives the same answer mirrored above and below, mirrored front and back, and turned a quarter turn about the x-axis (to 15 digits), and the length of a point is squared exactly. Points with z exactly 0 get exactly the answer of Sphere inversions, one plane. The 2D view draws the same picture as for that entry except along thin edges, where it shades by looking a little to the side of the plane: of 604,262 pixels, 748 differ for the Mandelbrot set, 35 for the rabbit and none for c = −1. At a whole power n the plane turns n − 1 times as fast, and then n planes carry the flat set (measured for the powers 2 to 5). The number of planes in the formula is set to the power, a choice made so that the count round the x-axis follows the power and is not free. A product of two different points is taken from Sphere inversions, one plane.
+about: Sphere inversions, one plane has its fine detail round one plane only, and the entry with two planes tears where its two halves meet. Here every point is squared by the one-plane rule about a reference plane of its own: a flat plane through the x-axis that turns smoothly as the point goes round that axis. Beside the plane z = 0 the reference plane is z = 0, and beside the plane y = 0 it is y = 0. In between it turns against the point, so that half way between the two planes the point stands straight above its reference plane. What the pictures show for c = −1, with the Rough estimate: a row of separate bodies along the x-axis, each with a bud above, below, in front and behind, as in Sphere inversions, two planes. Cut across at the point where two bodies touch, with 40 steps, nothing but that point is left. A bud carries smaller buds to its sides as well as along the row (cuts worked point by point). Where it falls short: the skin is not bodies on bodies. Close up, at three depths, it is combed streaks and hair with small round bumps in between. Cuts worked point by point show thin whiskers standing off the bodies beside the planes y = z and y = −z, which thin to specks when more steps are taken. Those are the places where the point stands above its reference plane, and there the one-plane rule squeezes directions together, which is probably the cause (not tested). Away from c on the x-axis it is worse. The rabbit breaks into curved shards. A c off the plane z = 0 gives a ragged, streaked lump. The Mandelbrot solid is two thin leaves crossed along the x-axis, one in the plane z = 0 and one in the plane y = 0, with feathery shards round them and no round bulbs off those planes. Whole powers: for c on the x-axis the count round the axis follows the power, six sides at power 3 and eight buds at power 4. The Mandelbrot solid of power 3 is three thin leaves crossed.
+--- n = 2
+formula: v² = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 2 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = −(φ − sin 4φ / 4). ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 90°. The 4 in it is twice m = 2, the whole number nearest to the power, so it follows the power and is not a free choice, and neither is the factor −1 in front, which is 1 − m.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 2 planes through the x-axis in all, 90° apart: z = 0 and y = 0.
+crush: part | Half way between the planes that carry the flat set a point stands on the pole line of its reference plane, and beside that line the one-plane rule squeezes directions together without limit (worked out from the formula, not measured).
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 3
+formula: v³ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 3 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = −2·(φ − sin 6φ / 6). ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 60°. The 6 in it is twice m = 3, the whole number nearest to the power, so it follows the power and is not a free choice, and neither is the factor −2 in front, which is 1 − m.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 3 planes through the x-axis in all, 60° apart.
+crush: part | Half way between the planes that carry the flat set a point stands on the pole line of its reference plane, and beside that line the one-plane rule squeezes directions together without limit (worked out from the formula, not measured).
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 4
+formula: v⁴ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 4 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = −3·(φ − sin 8φ / 8). ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 45°. The 8 in it is twice m = 4, the whole number nearest to the power, so it follows the power and is not a free choice, and neither is the factor −3 in front, which is 1 − m.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 4 planes through the x-axis in all, 45° apart.
+crush: part | Half way between the planes that carry the flat set a point stands on the pole line of its reference plane, and beside that line the one-plane rule squeezes directions together without limit (worked out from the formula, not measured).
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 2.5
+formula: vⁿ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 2.5 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = −2·(φ − sin 6φ / 6). ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 60°. The 6 in it is twice m = 3, the whole number nearest to the power, so it follows the power and is not a free choice, and neither is the factor −2 in front, which is 1 − m. P itself is taken at the power 2.5; only the planes follow the whole number 3.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | Half way between the planes that carry the flat set a point stands on the pole line of its reference plane, and beside that line the one-plane rule squeezes directions together without limit (worked out from the formula, not measured).
+smooth: no | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial. A power that is not a whole number takes the planes of the nearest whole number, so the picture jumps between whole powers. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+--- n = 1
+formula: At this power m = 1, the whole number nearest to the power, so the reference plane does not turn (ψ = 0) and the rule is the power 1 of Sphere inversions, one plane itself.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | At this power the reference plane does not turn, and the rule is Sphere inversions, one plane itself: it crushes the z-axis only.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 0
+formula: At this power m = 1, the whole number nearest to the power, so the reference plane does not turn (ψ = 0) and the rule is the power 0 of Sphere inversions, one plane itself.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: no | Everything is crushed onto one point.
+smooth: ok | A constant.
+--- n = -1
+formula: At this power m = 1, the whole number nearest to the power, so the reference plane does not turn (ψ = 0) and the rule is the power −1 of Sphere inversions, one plane itself.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | At this power the reference plane does not turn, and the rule is Sphere inversions, one plane itself: it crushes the z-axis only. The origin is sent to infinity.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = -2
+formula: vⁿ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power −2 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = −(φ − sin 4φ / 4). ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 90°. The 4 in it is twice m = 2, the whole number nearest to the power, so it follows the power and is not a free choice, and neither is the factor −1 in front, which is 1 − m.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | Half way between the planes that carry the flat set a point stands on the pole line of its reference plane, and beside that line the one-plane rule squeezes directions together without limit (worked out from the formula, not measured). The origin is sent to infinity.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- the page's scorecard at n = 2
+PROPERTY
+IN THE PLANE
+TURNING PLANE, AWAY
+Length goes to its nth power
+|zⁿ| = |z|ⁿ for every z.
+HOLDS|vⁿ| = |v|ⁿ for every v.
+Keeps shapes
+Roundness 100%. A tiny circle lands as a circle, stretched 2× in every direction at |z| = 1.
+FAILSRoundness 54%. At |v| = 1 the stretch runs from 0× to 9.9×, where the plane gives 2× throughout. Inside each plane that carries the flat set the rule is the complex power, which keeps shapes. Between those planes, and across them, shapes are squashed.
+Wraps without folding
+Wraps the circle of directions 2 times and never reverses it.
+FAILSCovers the sphere of directions 4 times over, but 4% of directions land mirror-reversed. Counted with sign, the net wrap is 4.
+Crushes only the origin
+Only the origin is crushed. That is why following the single point 0 is enough to decide whether c is in the set.
+PARTLYHalf way between the planes that carry the flat set a point stands on the pole line of its reference plane, and beside that line the one-plane rule squeezes directions together without limit (worked out from the formula, not measured).
+One smooth formula
+A polynomial: (x² − y², 2xy).
+PARTLYOne formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+Contains the flat set
+It is the flat set.
+HOLDSThe plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 2 planes through the x-axis in all, 90° apart: z = 0 and y = 0.
+--- the page's scorecard at n = 3
+PROPERTY
+IN THE PLANE
+TURNING PLANE, AWAY
+Length goes to its nth power
+|zⁿ| = |z|ⁿ for every z.
+HOLDS|vⁿ| = |v|ⁿ for every v.
+Keeps shapes
+Roundness 100%. A tiny circle lands as a circle, stretched 3× in every direction at |z| = 1.
+FAILSRoundness 43%. At |v| = 1 the stretch runs from 0× to 6.7×, where the plane gives 3× throughout. Inside each plane that carries the flat set the rule is the complex power, which keeps shapes. Between those planes, and across them, shapes are squashed.
+Wraps without folding
+Wraps the circle of directions 3 times and never reverses it.
+FAILSCovers the sphere of directions 7.2 times over, but 12% of directions land mirror-reversed. Counted with sign, the net wrap is 7.
+Crushes only the origin
+Only the origin is crushed. That is why following the single point 0 is enough to decide whether c is in the set.
+PARTLYHalf way between the planes that carry the flat set a point stands on the pole line of its reference plane, and beside that line the one-plane rule squeezes directions together without limit (worked out from the formula, not measured).
+One smooth formula
+A polynomial: (x³ − 3xy², 3x²y − y³).
+PARTLYOne formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+Contains the flat set
+It is the flat set.
+HOLDSThe plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 3 planes through the x-axis in all, 60° apart.
+===== turnalong | Turning plane, along | group inversions | place in the list 17 of 18
+tag: Square each point by the one-plane rule about a plane that turns with the point. Four planes carry the flat set and nothing tears. For c = −1 it gives separate bodies with buds in eight directions and smaller buds on those, but the Mandelbrot solid is a lumpy rock with no bulbs.
+note: Measured at power 2: four planes through the x-axis follow complex squaring (to 15 digits): z = 0, y = 0, y = z and y = −z. No jump was found: for 200,000 pairs of close points the gap between the two answers shrinks in step with their distance, at three distances (also at the powers 3 and 4). The rule gives the same answer mirrored above and below, mirrored front and back, and turned a quarter turn about the x-axis (to 15 digits), and the length of a point is squared exactly. Points with z exactly 0 get exactly the answer of Sphere inversions, one plane. The 2D view draws the same picture as for that entry except along thin edges, where it shades by looking a little to the side of the plane: of 604,262 pixels, 68 differ for the Mandelbrot set and none for the rabbit or for c = −1. With “Distance estimate” at “Exact”, the setting the page opens with, the 3D picture can show a thin flat sheet in the planes y = z and y = −z beside the points where two bodies touch. That sheet is not part of the solid (points on it were tested one by one), and “Rough” does not draw it. At a whole power n, 2n planes carry the flat set (measured for the powers 2 to 5). The number of planes in the formula is set to the power, a choice made so that the count round the x-axis follows the power and is not free. A product of two different points is taken from Sphere inversions, one plane.
+about: Sphere inversions, one plane has its fine detail round one plane only, and the entry with two planes tears where its two halves meet. Here every point is squared by the one-plane rule about a reference plane of its own: a flat plane through the x-axis that turns smoothly as the point goes round that axis. Beside the plane z = 0 the reference plane is z = 0, and beside the plane y = 0 it is y = 0. In between it turns with the point: first it lags behind, then it catches up, so that half way between the two planes the point lies in its reference plane again. So four planes carry the flat set, 45° apart. What the pictures show for c = −1: a row of separate bodies along the x-axis, each with eight buds round it, two in each of the four planes. Cut across at the point where two bodies touch, with 40 steps, nothing but that point is left. Close up, at three depths, the bodies are ribbed like a turned chair leg, and a bud carries rings of smaller buds all round it, not only in the flat plane. Cuts worked point by point show the same smaller buds. Where it falls short: the buds are ribbed, with spiky crowns, not smooth round bodies. The rule also folds space over along some lines, which the flat set never does. The rabbit is one swollen lump in layers, with no separate bodies. A c off the plane z = 0 gives a chain of ragged lumps. The Mandelbrot solid is one lumpy rock in layers, with horns on eight corners and the spike of the flat set, and no round bulbs on it. Its cuts at z = 0, at y = 0 and along the planes y = z and y = −z are the flat Mandelbrot set. Whole powers: the count round the x-axis follows the power, twelve horns on the Mandelbrot solid of power 3 and sixteen small buds at power 4 for c = −1, where they sit on one rim of a body shaped like a lens.
+--- n = 2
+formula: v² = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 2 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 4φ / 4. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 90°. The 4 in it is twice m = 2, the whole number nearest to the power, so it follows the power and is not a free choice.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 4 planes through the x-axis in all, 45° apart: z = 0, y = 0, y = z and y = −z.
+crush: part | Nothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 3
+formula: v³ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 3 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 6φ / 6. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 60°. The 6 in it is twice m = 3, the whole number nearest to the power, so it follows the power and is not a free choice.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 6 planes through the x-axis in all, 30° apart.
+crush: part | Nothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 4
+formula: v⁴ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 4 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 8φ / 8. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 45°. The 8 in it is twice m = 4, the whole number nearest to the power, so it follows the power and is not a free choice.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 8 planes through the x-axis in all, 22.5° apart.
+crush: part | Nothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 2.5
+formula: vⁿ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 2.5 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 6φ / 6. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 60°. The 6 in it is twice m = 3, the whole number nearest to the power, so it follows the power and is not a free choice. P itself is taken at the power 2.5; only the planes follow the whole number 3.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | Nothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis.
+smooth: no | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial. A power that is not a whole number takes the planes of the nearest whole number, so the picture jumps between whole powers. A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.
+--- n = 1
+formula: vⁿ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 1 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 2φ / 2. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 180°. The 2 in it is twice m = 1, the whole number nearest to the power, so it follows the power and is not a free choice.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | Nothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = 0
+formula: vⁿ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power 0 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 2φ / 2. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 180°. The 2 in it is twice m = 1, the whole number nearest to the power, so it follows the power and is not a free choice.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: no | Everything is crushed onto one point.
+smooth: ok | A constant.
+--- n = -1
+formula: vⁿ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power −1 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 2φ / 2. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 180°. The 2 in it is twice m = 1, the whole number nearest to the power, so it follows the power and is not a free choice.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | Nothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis. The origin is sent to infinity.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- n = -2
+formula: vⁿ = Rot(ψ)·P(Rot(−ψ)·v)   with P the power −2 of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, φ the angle of v round the x-axis (0 on the side y > 0 of the plane z = 0), and ψ = φ − sin 4φ / 4. ψ is how far the reference plane of v is turned out of the plane z = 0. It stands still where φ is a multiple of 90°. The 4 in it is twice m = 2, the whole number nearest to the power, so it follows the power and is not a free choice.
+slice (ok): The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.
+crush: part | Nothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis. The origin is sent to infinity.
+smooth: part | One formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+--- the page's scorecard at n = 2
+PROPERTY
+IN THE PLANE
+TURNING PLANE, ALONG
+Length goes to its nth power
+|zⁿ| = |z|ⁿ for every z.
+HOLDS|vⁿ| = |v|ⁿ for every v.
+Keeps shapes
+Roundness 100%. A tiny circle lands as a circle, stretched 2× in every direction at |z| = 1.
+FAILSRoundness 60%. At |v| = 1 the stretch runs from 0× to 6×, where the plane gives 2× throughout. Inside each plane that carries the flat set the rule is the complex power, which keeps shapes. Between those planes, and across them, shapes are squashed.
+Wraps without folding
+Wraps the circle of directions 2 times and never reverses it.
+FAILSCovers the sphere of directions 3.2 times over, but 39% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+Crushes only the origin
+Only the origin is crushed. That is why following the single point 0 is enough to decide whether c is in the set.
+PARTLYNothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis.
+One smooth formula
+A polynomial: (x² − y², 2xy).
+PARTLYOne formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+Contains the flat set
+It is the flat set.
+HOLDSThe plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 4 planes through the x-axis in all, 45° apart: z = 0, y = 0, y = z and y = −z.
+--- the page's scorecard at n = 3
+PROPERTY
+IN THE PLANE
+TURNING PLANE, ALONG
+Length goes to its nth power
+|zⁿ| = |z|ⁿ for every z.
+HOLDS|vⁿ| = |v|ⁿ for every v.
+Keeps shapes
+Roundness 100%. A tiny circle lands as a circle, stretched 3× in every direction at |z| = 1.
+FAILSRoundness 61%. At |v| = 1 the stretch runs from 0× to 5×, where the plane gives 3× throughout. Inside each plane that carries the flat set the rule is the complex power, which keeps shapes. Between those planes, and across them, shapes are squashed.
+Wraps without folding
+Wraps the circle of directions 3 times and never reverses it.
+FAILSCovers the sphere of directions 6.1 times over, but 39% of directions land mirror-reversed. Counted with sign, the net wrap is 1.
+Crushes only the origin
+Only the origin is crushed. That is why following the single point 0 is enough to decide whether c is in the set.
+PARTLYNothing but the origin is crushed onto a point, but the rule folds space over. Measured at power 2: in the planes y = z and y = −z the stretch sideways is 4x − 2|v|, where the plane itself stretches by 2|v|. It falls to nothing on the lines 60° from the x-axis and reaches three times the stretch of the plane beside the negative x-axis.
+One smooth formula
+A polynomial: (x³ − 3xy², 3x²y − y³).
+PARTLYOne formula with no seam. No jump was found at the powers 2, 3 and 4. The stretch is largest beside the negative x-axis (measured at power 2: gaps up to 14 times the distance for the rule that turns away, 9 times for the one that turns along). It uses an angle and a sine, so it is not a polynomial.
+Contains the flat set
+It is the flat set.
+HOLDSThe plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. So do 6 planes through the x-axis in all, 30° apart.

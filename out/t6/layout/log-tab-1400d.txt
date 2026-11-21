@@ -1,0 +1,6 @@
+[1400d] opened, idle=True after 4 s
+[1400d] tab walk m3d: 157 stops, not in view 0, under the sticky row 0, no focus ring 26, invisible 2, steps upward inside a section 2
+[1400d] tab walk j3d: 170 stops, not in view 0, under the sticky row 0, no focus ring 29, invisible 2, steps upward inside a section 2
+[1400d] tab walk k3d: 151 stops, not in view 0, under the sticky row 0, no focus ring 30, invisible 1, steps upward inside a section 2
+[1400d] tab walk m2d: 129 stops, not in view 0, under the sticky row 0, no focus ring 19, invisible 2, steps upward inside a section 2
+[1400d] page problems: 0

@@ -1,0 +1,12 @@
+step 1 waited 5.3 s
+step 2 result: 
+drawing every preset under every approach
+step 2 waited 69.5 s
+step 3 result: 
+40 approach and preset pairs drawn, 0 failed
+step 4 result: 
+drawing z^n + c at ten powers, both modes, every approach
+step 4 waited 42.2 s
+step 5 result: 
+100 approach, mode and power combinations drawn (z^n + c, n from -8 to 10), 0 failed
+no console errors

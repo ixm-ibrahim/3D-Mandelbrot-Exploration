@@ -1,0 +1,12 @@
+lag    | basilica circle: arc at 0 deg, law W0/(1-lam) | arc at 90 deg, law W0(2lam-1)/(1-lam) | all arcs || Mandelbrot circle: arc at 0 | arc at 90 | all arcs
+0.00   |   14.1  law   14.1 |    0.0  law    0.0 | 2 arcs, 28 deg inside ||    2.9 |    0.0 | 2 arcs, 6 deg inside
+0.10   |   15.6  law   15.7 |    0.0  law    0.0 | 2 arcs, 31 deg inside ||   16.6 |    0.0 | 2 arcs, 33 deg inside
+0.25   |   18.9  law   18.8 |    0.0  law    0.0 | 2 arcs, 38 deg inside ||   38.4 |    0.0 | 6 arcs, 82 deg inside
+0.40   |   23.6  law   23.5 |    0.0  law    0.0 | 2 arcs, 47 deg inside ||   62.1 |    0.0 | 22 arcs, 137 deg inside
+0.45   |   25.6  law   25.7 |    0.0  law    0.0 | 2 arcs, 51 deg inside ||   13.6 |    0.0 | 226 arcs, 135 deg inside
+0.55   |   27.4  law   31.4 |    2.9  law    3.1 | 4 arcs, 60 deg inside ||    0.1 |    0.0 | 1 arcs, 0 deg inside
+0.60   |   30.9  law   35.3 |    6.4  law    7.1 | 4 arcs, 74 deg inside ||    0.1 |    0.0 | 5 arcs, 1 deg inside
+0.67   |   37.4  law   42.4 |   12.9  law   14.1 | 4 arcs, 100 deg inside ||  360.0 |  360.0 | 1 arcs, 360 deg inside
+0.75   |   51.9  law   56.5 |   27.4  law   28.2 | 4 arcs, 158 deg inside ||  360.0 |  360.0 | 1 arcs, 360 deg inside
+0.90   |  360.0  law  141.3 |  360.0  law  113.0 | 1 arcs, 360 deg inside ||  360.0 |  360.0 | 1 arcs, 360 deg inside
+1.00   |  360.0  law  360.0 |  360.0  law  360.0 | 1 arcs, 360 deg inside ||  360.0 |  360.0 | 1 arcs, 360 deg inside

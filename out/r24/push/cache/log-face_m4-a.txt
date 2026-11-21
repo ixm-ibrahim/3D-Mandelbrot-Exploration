@@ -1,0 +1,8 @@
+face:m4 1/2       2d 1.236 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.115 (block 0.0081) | 21 s
+face:m4 1/2root   2d 1.000 | column: top 0.004, inside length 0.004, lowest escape 0.008 | disc top 0.004 | neck / body: 0.008 / 0.059 (block 0.0081) | 109 s
+face:m4 1/3       2d 1.107 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.088, 0.008 / 0.116 (block 0.0081) | 128 s
+face:m4 1/3near   2d 1.050 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.008 | neck / body: 0.008 / 0.091, 0.008 / 0.108 (block 0.0081) | 184 s
+face:m4 1/4       2d 1.061 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.000 | neck / body: 0.008 / 0.074, 0.008 / 0.080, 0.008 / 0.115 (block 0.0081) | 236 s
+face:m4 in120     2d 0.920 | column: top 0.052, inside length 0.052, lowest escape 0.05600000000000001 | disc top 0.052 |  | 237 s
+face:m4 in180     2d 0.844 | column: top 0.076, inside length 0.480, lowest escape 0.08 | disc top 0.076 |  | 238 s
+done face:m4 238 s

@@ -1,0 +1,71 @@
+1. VERDICTS THAT DIFFER on the 120^3 grid at 80 steps (of 1,728,000; in brackets: as a share of the rule's own inside count)
+rule                   | rabbit: vs one-plane, vs along     | basilica: vs one-plane, vs along  
+along                  |   61408 ( 72.9%)       0 (  0.0%)  |    5672 ( 16.7%)       0 (  0.0%) 
+oneplane               |       0 (  0.0%)   61408 (267.3%)  |       0 (  0.0%)    5672 ( 15.1%) 
+sheet.evc005e70k16     |    3364 ( 12.8%)   58992 (224.2%)  |    4224 ( 12.3%)    2096 (  6.1%) 
+sheet.ease             |   29932 (241.9%)   80864 (653.6%)  |    5184 ( 15.7%)    1296 (  3.9%) 
+alongmem.c_wake1       |   12868 ( 36.8%)   49336 (141.0%)  |    2532 (  6.9%)    3508 (  9.6%) 
+alongmem.c_wake2       |   26976 ( 54.8%)   35208 ( 71.6%)  |    3544 (  9.9%)    2632 (  7.3%) 
+span.c_lag10           |    6042 ( 20.9%)   57030 (196.9%)  |    1184 (  3.2%)    4672 ( 12.8%) 
+span.c_page            |   40624 ( 79.0%)   68976 (134.2%)  |   10352 ( 25.4%)    7056 ( 17.3%) 
+frame.area_1_px        |   12260 ( 34.9%)   53404 (152.0%)  |    5824 ( 15.3%)    8520 ( 22.3%) 
+frame.orb_inf_px       |   26990 ( 88.7%)   66618 (218.9%)  |   10488 ( 23.5%)   12152 ( 27.3%) 
+
+2. FLOATING BODIES of the rabbit, 160^3 grid on the cube -1.5..1.5 (cell 0.0189), 80 steps.
+   For each piece of 200 cells or more: share of the volume, gap to the nearest other inside cell, where its middle is.
+along                  inside 240722 cells, 7 pieces in all, 1 of 200 cells or more; 0.00% of the volume in smaller pieces
+      piece of 100.0%: the only big piece
+oneplane               inside 65716 cells, 17 pieces in all, 1 of 200 cells or more; 0.63% of the volume in smaller pieces
+      piece of  99.4%: the only big piece
+sheet.evc005e70k16     inside 75470 cells, 15 pieces in all, 1 of 200 cells or more; 0.62% of the volume in smaller pieces
+      piece of  99.4%: the only big piece
+alongmem.c_wake1       inside 100122 cells, 26 pieces in all, 3 of 200 cells or more; 0.29% of the volume in smaller pieces
+      piece of  85.2%: gap 0.038 (2.0 cells), middle at (-0.09, 0.10, -0.00)
+      piece of   7.2%: gap 0.038 (2.0 cells), middle at (0.04, -0.30, -0.65)
+      piece of   7.2%: gap 0.038 (2.0 cells), middle at (0.04, -0.30, 0.65)
+alongmem.c_wake2       inside 140830 cells, 38 pieces in all, 5 of 200 cells or more; 0.34% of the volume in smaller pieces
+      piece of  97.8%: gap 0.038 (2.0 cells), middle at (-0.05, 0.00, -0.00)
+      piece of   0.7%: gap 0.042 (2.2 cells), middle at (0.82, -0.63, 0.37)
+      piece of   0.7%: gap 0.042 (2.2 cells), middle at (0.82, -0.63, -0.37)
+      piece of   0.2%: gap 0.042 (2.2 cells), middle at (-0.83, 0.55, -0.48)
+      piece of   0.2%: gap 0.042 (2.2 cells), middle at (-0.83, 0.55, 0.48)
+span.c_lag10           inside 82736 cells, 67 pieces in all, 1 of 200 cells or more; 0.21% of the volume in smaller pieces
+      piece of  99.8%: the only big piece
+frame.area_1_px        inside 100658 cells, 32 pieces in all, 1 of 200 cells or more; 0.06% of the volume in smaller pieces
+      piece of  99.9%: the only big piece
+
+3. SIEGEL DISC and SAN MARCO, 120^3 grid: inside count at 30 / 80 / 200 / 500 steps (kept from 30 to 500)
+along                  | Siegel  86548  84418  83858  83618 ( 96.6%) | San Marco  72616  72600  72600  72600 (100.0%)
+oneplane               | Siegel  63840  62032  62028  62028 ( 97.2%) | San Marco  81872  81112  81096  81096 ( 99.1%)
+sheet.evc005e70k16     | Siegel  81144  72128  68930  68930 ( 84.9%) | San Marco  72272  72232  72232  72232 ( 99.9%)
+sheet.ease             | Siegel  46646  46560  46560  46560 ( 99.8%) | San Marco  70640  70624  70624  70624 (100.0%)
+alongmem.c_wake1       | Siegel  74684  73086  73084  73084 ( 97.9%) | San Marco  79956  79444  79444  79444 ( 99.4%)
+alongmem.c_wake2       | Siegel  81818  80348  80344  80344 ( 98.2%) | San Marco  78088  77680  77680  77680 ( 99.5%)
+span.c_lag10           | Siegel  71690  70954  70844  70828 ( 98.8%) | San Marco  75432  74824  74824  74824 ( 99.2%)
+span.c_page            | Siegel  92728  91788  91696  91684 ( 98.9%) | San Marco  81848  81752  81752  81752 ( 99.9%)
+frame.area_1_px        | Siegel  68564  53822  51524  51254 ( 74.8%) | San Marco  78200  62464  60192  59908 ( 76.6%)
+frame.orb_inf_px       | Siegel  80184  79282  79193  79159 ( 98.7%) | San Marco  86380  86252  86240  86240 ( 99.8%)
+
+4. c JUST OFF THE x-AXIS, in the flat page. 120^3 grid: inside at 30 / 80 / 200 steps (kept 30 -> 200), specks at 80 steps (pieces under 50 cells: count, share of volume)
+along                  | -1 + 0.03i:  33390  33376  33376 (100.0%) specks   24,  0.26% | -1 + 0.1i:  31938  31922  31922 ( 99.9%) specks   34,  0.36% | -0.75 + 0.1i:  67006   8374   1362 (  2.0%) specks  705, 28.95%
+oneplane               | -1 + 0.03i:  37412  37400  37400 (100.0%) specks   10,  0.14% | -1 + 0.1i:  34836  34824  34824 (100.0%) specks   10,  0.15% | -0.75 + 0.1i:  77100  52832  51804 ( 67.2%) specks    0,  0.00%
+sheet.evc005e70k16     | -1 + 0.03i:  33770  33754  33754 (100.0%) specks   10,  0.21% | -1 + 0.1i:  35146  35082  35082 ( 99.8%) specks   13,  0.18% | -0.75 + 0.1i:  72592  38510  33352 ( 45.9%) specks   69,  0.35%
+sheet.ease             | -1 + 0.03i:  31854  31848  31848 (100.0%) specks   17,  0.28% | -1 + 0.1i:  25952  25940  25940 (100.0%) specks   24,  0.37% | -0.75 + 0.1i:  48594  27048  16252 ( 33.4%) specks   34,  0.58%
+alongmem.c_wake1       | -1 + 0.03i:  36386  36368  36368 (100.0%) specks   14,  0.18% | -1 + 0.1i:  34288  34264  34264 ( 99.9%) specks   18,  0.20% | -0.75 + 0.1i:  76518  42408  40924 ( 53.5%) specks    3,  0.04%
+alongmem.c_wake2       | -1 + 0.03i:  35784  35770  35770 (100.0%) specks   16,  0.20% | -1 + 0.1i:  33684  33670  33670 (100.0%) specks   18,  0.24% | -0.75 + 0.1i:  74800  36142  33866 ( 45.3%) specks    9,  0.07%
+span.c_lag10           | -1 + 0.03i:  36468  36454  36454 (100.0%) specks   10,  0.16% | -1 + 0.1i:  33832  33802  33802 ( 99.9%) specks   12,  0.21% | -0.75 + 0.1i:  67258   9932   1252 (  1.9%) specks  230,  9.12%
+span.c_page            | -1 + 0.03i:  40672  40640  40640 ( 99.9%) specks    0,  0.00% | -1 + 0.1i:  39796  39756  39756 ( 99.9%) specks    0,  0.00% | -0.75 + 0.1i:  80312  42532  29924 ( 37.3%) specks  164,  0.98%
+frame.area_1_px        | -1 + 0.03i:  40954  38600  38582 ( 94.2%) specks   26,  0.39% | -1 + 0.1i:  40090  39038  39038 ( 97.4%) specks   38,  0.48% | -0.75 + 0.1i:  77586  44368  28452 ( 36.7%) specks   66,  0.21%
+frame.orb_inf_px       | -1 + 0.03i:  44678  44638  44638 ( 99.9%) specks    4,  0.01% | -1 + 0.1i:  43418  43368  43368 ( 99.9%) specks    3,  0.02% | -0.75 + 0.1i:  83424  52276  41794 ( 50.1%) specks   81,  0.43%
+
+5. THE RABBIT TURNED OUT OF THE PAGE by 0 / 10 / 30 / 45 / 90 degrees: inside count at 80 steps on the 120^3 grid
+along                  |  84180  94706    584   8224  84180
+oneplane               |  22976      0      0      0      0
+sheet.evc005e70k16     |  26316      0      0      0  26336
+sheet.ease             |  12372  13459  10727   9371   7751
+alongmem.c_wake1       |  35000      0      0      0      0
+alongmem.c_wake2       |  49200      0      0      0      0
+span.c_lag10           |  28962     45      0      0      0
+span.c_page            |  51400  51216  51234  51068  51372
+frame.area_1_px        |  35144    123     13     11     88
+frame.orb_inf_px       |  30438  30855  31409  33251  54117

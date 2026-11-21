@@ -1,0 +1,80 @@
+step 1 result: 
+approach pillow, stage 862x701
+step 1 waited 2.7 s
+step 2 result: 
+m3d-default
+step 2 waited 2.4 s
+step 2 wrote out/proto/twoplane/m3d-default.png
+step 3 result: 
+top
+step 3 waited 3.2 s
+step 3 wrote out/proto/twoplane/m3d-top.png
+step 4 result: 
+along x
+step 4 waited 7.0 s
+step 4 wrote out/proto/twoplane/m3d-x.png
+step 5 result: 
+along y
+step 5 waited 14.1 s
+step 5 wrote out/proto/twoplane/m3d-y.png
+step 6 result: 
+cut 0
+step 6 waited 4.3 s
+step 6 wrote out/proto/twoplane/m3d-cut0.png
+step 7 result: 
+cut 0.2
+step 7 waited 6.6 s
+step 7 wrote out/proto/twoplane/m3d-cut02.png
+step 8 result: 
+pillow Mandelbrot n=2 slice z=0: 862x701 px, solid 106210 px (17.6% of the picture); pieces of at least 303 px: 1; largest piece 100.00% of the solid; next largest: none; specks below that size: 4, holding 0.00% of the solid
+step 8 waited 0.3 s
+step 8 wrote out/proto/twoplane/m2d-z000.png
+step 9 result: 
+pillow Mandelbrot n=2 slice z=0.1: 862x701 px, solid 65876 px (10.9% of the picture); pieces of at least 303 px: 1; largest piece 97.40% of the solid; next largest: none; specks below that size: 222, holding 2.60% of the solid
+step 9 waited 0.3 s
+step 9 wrote out/proto/twoplane/m2d-z010.png
+step 10 result: 
+pillow Mandelbrot n=2 slice z=0.25: 862x701 px, solid 27831 px (4.6% of the picture); pieces of at least 303 px: 3; largest piece 94.80% of the solid; next largest: 2.26%, 2.26%; specks below that size: 31, holding 0.68% of the solid
+step 10 waited 0.3 s
+step 10 wrote out/proto/twoplane/m2d-z025.png
+step 11 result: 
+pillow Mandelbrot n=2 slice z=0.5: 862x701 px, solid 20105 px (3.3% of the picture); pieces of at least 303 px: 1; largest piece 97.38% of the solid; next largest: none; specks below that size: 62, holding 2.62% of the solid
+step 11 waited 0.3 s
+step 11 wrote out/proto/twoplane/m2d-z050.png
+step 12 result: 
+julia c = -1,0,0 cam {"yaw":-1.25,"pitch":1,"dist":4.8,"target":[0,0,0]}
+step 12 waited 1.8 s
+step 12 wrote out/proto/twoplane/j-bas-3d.png
+step 13 result: 
+top
+step 13 waited 2.8 s
+step 13 wrote out/proto/twoplane/j-bas-top.png
+step 14 result: 
+along x
+step 14 waited 4.1 s
+step 14 wrote out/proto/twoplane/j-bas-x.png
+step 15 result: 
+along y (extra)
+step 15 waited 7.9 s
+step 15 wrote out/proto/twoplane/j-bas-y.png
+step 16 result: 
+pillow Julia c=(-1, 0, 0) n=2 slice z=0: 862x701 px, solid 88606 px (14.7% of the picture); pieces of at least 303 px: 1; largest piece 100.00% of the solid; next largest: none; specks below that size: 0, holding 0.00% of the solid
+step 16 waited 0.3 s
+step 16 wrote out/proto/twoplane/j-bas-2d-z000.png
+step 17 result: 
+pillow Julia c=(-1, 0, 0) n=2 slice z=0.2: 862x701 px, solid 67784 px (11.2% of the picture); pieces of at least 303 px: 1; largest piece 99.73% of the solid; next largest: none; specks below that size: 94, holding 0.27% of the solid
+step 17 waited 0.3 s
+step 17 wrote out/proto/twoplane/j-bas-2d-z020.png
+step 18 result: 
+julia c = -0.1226,0.7449,0
+step 18 waited 21.7 s
+step 18 wrote out/proto/twoplane/j-rab-3d.png
+step 19 result: 
+mandelbrot n = 3 cam {"yaw":-1,"pitch":0.55,"dist":4.8,"target":[0,0,0]}
+step 19 waited 5.4 s
+step 19 wrote out/proto/twoplane/m3d-n3.png
+step 20 result: 
+mandelbrot n = 8 cam {"yaw":-1,"pitch":0.55,"dist":4.8,"target":[0,0,0]}
+step 20 waited 1.3 s
+step 20 wrote out/proto/twoplane/m3d-n8.png
+no console errors

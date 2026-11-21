@@ -1,0 +1,204 @@
+=== 3D views, dark, wide (1400x950): 43 views
+  with the size past 100: 32 views, 1216512 rays, 768445 stops | HOLES 0 (through a ball: 0; the rest run through what only the depth calls solid) | SEEN THROUGH 9 (through a ball: 0) | IN THE OPEN 0 | stops that stand only on what the depth calls solid: 4995 | picture painted as background where rays stop all round, as a patch: 0; painted where no ray stops all round, as a patch: 0
+     p150-r50-budkiss           (size 150.00, second sphere 50.00 %, grid 0, depth 16) stops 37961 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 1 (ball 0) | open 0 | on depth-only solid 2213 | page's own measure: 2221 stops over 2 px, worst 86.6 px | drawn in 1896 ms
+     p150-r50-budkiss-d100      (size 150.00, second sphere 50.00 %, grid 0, depth 100) stops 37961 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 49 | page's own measure: 49 stops over 2 px, worst 12.0 px | drawn in 671 ms
+     p150-r50-start             (size 150.00, second sphere 50.00 %, grid 0, depth 16) stops  5838 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 5 | page's own measure: 6 stops over 2 px, worst 2.8 px | drawn in 1043 ms
+     p150-auto-along            (size 150.00, second sphere 33.33 %, grid 0, depth 16) stops 18310 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.2 px | drawn in 1196 ms
+     p101-r50-start             (size 101.00, second sphere 50.00 %, grid 0, depth 16) stops  8489 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 4 | page's own measure: 5 stops over 2 px, worst 3.0 px | drawn in 918 ms
+     p199.9-r50-start           (size 199.90, second sphere 50.00 %, grid 0, depth 16) stops  8322 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 93 | page's own measure: 50 stops over 2 px, worst 10.3 px | drawn in 254 ms
+     p200-r50-start             (size 200.00, second sphere 50.00 %, grid 0, depth 16) stops  8337 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 104 | page's own measure: 50 stops over 2 px, worst 7.7 px | drawn in 258 ms
+     p300-r25-start             (size 300.00, second sphere 25.00 %, grid 0, depth 16) stops  5878 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.3 px | drawn in 257 ms
+     p400-r12.5-far-pole        (size 400.00, second sphere 12.50 %, grid 0, depth 16) stops 38016 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.5 px | drawn in 2329 ms
+     p150-r50-depth100          (size 150.00, second sphere 50.00 %, grid 0, depth 100) stops  5838 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.5 px | drawn in 252 ms
+     p300-auto-hex-along        (size 300.00, second sphere 16.67 %, grid 1, depth 16) stops 38016 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 1183 ms
+     p400-r25-hex-start         (size 400.00, second sphere 25.00 %, grid 1, depth 16) stops  9673 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 9 | page's own measure: 1 stops over 2 px, worst 2.1 px | drawn in 945 ms
+     p2000-r2-start             (size 2000.00, second sphere 2.00 %, grid 0, depth 16) stops 11655 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 257 ms
+     p300-r12.5-hex-start       (size 300.00, second sphere 12.50 %, grid 1, depth 16) stops 10246 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 252 ms
+     p400-r12.5-line-start      (size 400.00, second sphere 12.50 %, grid 2, depth 16) stops  9056 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 250 ms
+     p1000-start                (size 1000.00, second sphere 5.00 %, grid 0, depth 16) stops 10076 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 266 ms
+     p300-r25-neighbour         (size 300.00, second sphere 25.00 %, grid 0, depth 16) stops 38016 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.1 px | drawn in 663 ms
+     p400-r25-neighbour         (size 400.00, second sphere 25.00 %, grid 0, depth 16) stops 38016 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 37 | page's own measure: 36 stops over 2 px, worst 21.1 px | drawn in 3606 ms
+     p400-r25-neighbour-d100    (size 400.00, second sphere 25.00 %, grid 0, depth 100) stops 38016 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 1 | page's own measure: 1 stops over 2 px, worst 2.5 px | drawn in 706 ms
+     p200-r50-kiss-near         (size 200.00, second sphere 50.00 %, grid 0, depth 16) stops 38016 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 2 (ball 0) | open 0 | on depth-only solid 733 | page's own measure: 501 stops over 2 px, worst 39.4 px | drawn in 565 ms
+     p390-r25-neighbour         (size 390.00, second sphere 25.00 %, grid 0, depth 16) stops 38016 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 644 ms
+     p199.9-r50-kiss            (size 199.90, second sphere 50.00 %, grid 0, depth 16) stops 37971 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 6 (ball 0) | open 0 | on depth-only solid 957 | page's own measure: 742 stops over 2 px, worst 66.6 px | drawn in 1203 ms
+     p150-r49-budkiss           (size 150.00, second sphere 49.00 %, grid 0, depth 16) stops 37961 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.3 px | drawn in 264 ms
+     p200-r50-hex-neighbour     (size 200.00, second sphere 50.00 %, grid 1, depth 16) stops 37971 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 596 | page's own measure: 449 stops over 2 px, worst 30.2 px | drawn in 401 ms
+     p150-r50-hex-neighbour     (size 150.00, second sphere 50.00 %, grid 1, depth 16) stops 35804 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 163 | page's own measure: 181 stops over 2 px, worst 10.3 px | drawn in 775 ms
+     p200-r50-depth400          (size 200.00, second sphere 50.00 %, grid 0, depth 400) stops  8322 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 3 stops over 2 px, worst 4.5 px | drawn in 1192 ms
+     p200-r50-line-kiss         (size 200.00, second sphere 50.00 %, grid 2, depth 16) stops 37256 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 29 | page's own measure: 15 stops over 2 px, worst 7.3 px | drawn in 257 ms
+     p2000-start                (size 2000.00, second sphere 2.50 %, grid 0, depth 16) stops 10482 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 1774 ms
+     p200-r50-depth400-kiss     (size 200.00, second sphere 50.00 %, grid 0, depth 400) stops 37964 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 2 | page's own measure: 19 stops over 2 px, worst 6.4 px | drawn in 1111 ms
+     p300-r25-graze             (size 300.00, second sphere 25.00 %, grid 0, depth 16) stops 25373 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 257 ms
+     p150-auto-line-start       (size 150.00, second sphere 33.33 %, grid 2, depth 16) stops  7755 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.2 px | drawn in 264 ms
+     p1000-middle               (size 1000.00, second sphere 5.00 %, grid 0, depth 16) stops 37834 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.2 px | drawn in 253 ms
+  small values and long searches (size 2; depth 5, 100, 400; size up to 100): 7 views, 266112 rays, 71143 stops | HOLES 0 (through a ball: 0; the rest run through what only the depth calls solid) | SEEN THROUGH 0 (through a ball: 0) | IN THE OPEN 0 | stops that stand only on what the depth calls solid: 7 | picture painted as background where rays stop all round, as a patch: 0; painted where no ray stops all round, as a patch: 0
+     p2-start                   (size 2.00, second sphere 100.00 %, grid 0, depth 16) stops  6177 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 264 ms
+     p2-r2-start                (size 2.00, second sphere 2.00 %, grid 0, depth 16) stops  6177 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 901 ms
+     p2-close                   (size 2.00, second sphere 100.00 %, grid 0, depth 16) stops 21622 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 569 ms
+     depth5                     (size 55.56, second sphere 100.00 %, grid 0, depth 5) stops  9574 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 7 | page's own measure: 14 stops over 2 px, worst 3.1 px | drawn in 255 ms
+     depth100                   (size 55.56, second sphere 100.00 %, grid 0, depth 100) stops  9570 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.3 px | drawn in 255 ms
+     depth400                   (size 55.56, second sphere 100.00 %, grid 0, depth 400) stops  9570 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.3 px | drawn in 252 ms
+     p150-depth5                (size 150.00, second sphere 33.33 %, grid 0, depth 5) stops  8453 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.4 px | drawn in 252 ms
+  depth 1 and 3 (the page says: broken shells): 4 views, 152064 rays, 82909 stops | HOLES 1162 (through a ball: 0; the rest run through what only the depth calls solid) | SEEN THROUGH 294 (through a ball: 0) | IN THE OPEN 0 | stops that stand only on what the depth calls solid: 69293 | picture painted as background where rays stop all round, as a patch: 0; painted where no ray stops all round, as a patch: 0
+     depth3                     (size 55.56, second sphere 100.00 %, grid 0, depth 3) stops 10834 of 38016 | holes 71 (ball 0, longest 23.5 px) | through 58 (ball 0) | open 0 | on depth-only solid 7506 | page's own measure: 8119 stops over 2 px, worst 76.4 px | drawn in 263 ms
+     depth1                     (size 55.56, second sphere 100.00 %, grid 0, depth 1) stops 32762 of 38016 | holes 583 (ball 0, longest 319.5 px) | through 154 (ball 0) | open 0 | on depth-only solid 32748 | page's own measure: 32756 stops over 2 px, worst 1224.4 px | drawn in 264 ms
+     p150-depth1                (size 150.00, second sphere 33.33 %, grid 0, depth 1) stops 30651 of 38016 | holes 501 (ball 0, longest 219.0 px) | through 77 (ball 0) | open 0 | on depth-only solid 28432 | page's own measure: 28450 stops over 2 px, worst 1358.1 px | drawn in 939 ms
+     p150-depth3                (size 150.00, second sphere 33.33 %, grid 0, depth 3) stops  8662 of 38016 | holes 7 (ball 0, longest 18.5 px) | through 5 (ball 0) | open 0 | on depth-only solid 607 | page's own measure: 714 stops over 2 px, worst 41.6 px | drawn in 253 ms
+=== 3D views, light, wide (1400x950): 4 views
+  with the size past 100: 4 views, 152064 rays, 57596 stops | HOLES 0 (through a ball: 0; the rest run through what only the depth calls solid) | SEEN THROUGH 0 (through a ball: 0) | IN THE OPEN 0 | stops that stand only on what the depth calls solid: 168 | picture painted as background where rays stop all round, as a patch: 0; painted where no ray stops all round, as a patch: 0
+     p1000-start                (size 1000.00, second sphere 5.00 %, grid 0, depth 16) stops 10076 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 265 ms
+     p150-r50-hex-neighbour     (size 150.00, second sphere 50.00 %, grid 1, depth 16) stops 35804 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 163 | page's own measure: 181 stops over 2 px, worst 10.3 px | drawn in 336 ms
+     p150-r50-start             (size 150.00, second sphere 50.00 %, grid 0, depth 16) stops  5838 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 5 | page's own measure: 6 stops over 2 px, worst 2.8 px | drawn in 897 ms
+     p300-r25-start             (size 300.00, second sphere 25.00 %, grid 0, depth 16) stops  5878 of 38016 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.2 px | drawn in 255 ms
+=== 3D views, dark, phone (390x800): 4 views
+  with the size past 100: 4 views, 25632 rays, 9877 stops | HOLES 0 (through a ball: 0; the rest run through what only the depth calls solid) | SEEN THROUGH 0 (through a ball: 0) | IN THE OPEN 0 | stops that stand only on what the depth calls solid: 13 | picture painted as background where rays stop all round, as a patch: 0; painted where no ray stops all round, as a patch: 0
+     p1000-start                (size 1000.00, second sphere 5.00 %, grid 0, depth 16) stops  1748 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 264 ms
+     p150-r50-hex-neighbour     (size 150.00, second sphere 50.00 %, grid 1, depth 16) stops  6067 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 13 | page's own measure: 17 stops over 2 px, worst 4.2 px | drawn in 256 ms
+     p150-r50-start             (size 150.00, second sphere 50.00 %, grid 0, depth 16) stops  1029 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.4 px | drawn in 760 ms
+     p300-r25-start             (size 300.00, second sphere 25.00 %, grid 0, depth 16) stops  1033 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.1 px | drawn in 251 ms
+=== 3D views, light, phone (390x800): 4 views
+  with the size past 100: 4 views, 25632 rays, 9877 stops | HOLES 0 (through a ball: 0; the rest run through what only the depth calls solid) | SEEN THROUGH 0 (through a ball: 0) | IN THE OPEN 0 | stops that stand only on what the depth calls solid: 13 | picture painted as background where rays stop all round, as a patch: 0; painted where no ray stops all round, as a patch: 0
+     p1000-start                (size 1000.00, second sphere 5.00 %, grid 0, depth 16) stops  1748 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.0 px | drawn in 262 ms
+     p150-r50-hex-neighbour     (size 150.00, second sphere 50.00 %, grid 1, depth 16) stops  6067 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 13 | page's own measure: 17 stops over 2 px, worst 4.2 px | drawn in 258 ms
+     p150-r50-start             (size 150.00, second sphere 50.00 %, grid 0, depth 16) stops  1029 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.4 px | drawn in 607 ms
+     p300-r25-start             (size 300.00, second sphere 25.00 %, grid 0, depth 16) stops  1033 of  6408 | holes 0 (ball 0, longest 0.0 px) | through 0 (ball 0) | open 0 | on depth-only solid 0 | page's own measure: 0 stops over 2 px, worst 1.1 px | drawn in 258 ms
+=== 2D views, dark, wide (1400x950): 19 views (GHOSTS = painted inside with nothing solid within about 1.5 px; holes = wholly solid with its 8 neighbours and not painted inside)
+     p150-r50-2d                size 150.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 142 (twin says outside at 142; nearest solid point 2.2 px in the middle, 4.2 px at most) | holes 0
+     p200-r50-2d                size 200.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 388 (twin says outside at 388; nearest solid point 1.8 px in the middle, 4.5 px at most) | holes 0
+     p300-r25-2d                size 300.00, second sphere 25.00 %, grid 1, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p1000-2d                   size 1000.00, second sphere 5.00 %, grid 2, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p199.9-r50-2d-kiss         size 199.90, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 72 (twin says outside at 72; nearest solid point 1.8 px in the middle, 2.8 px at most) | holes 0
+     p400-r25-2d-neighbour      size 400.00, second sphere 25.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p150-r50-2d-budkiss        size 150.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 152 (twin says outside at 152; nearest solid point 2.8 px in the middle, 6.8 px at most) | holes 0
+     p150-r50-2d-budkiss-d100   size 150.00, second sphere 50.00 %, grid 0, depth 100 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 1434 (twin says outside at 1434; nearest solid point 9.5 px in the middle, 26.5 px at most) | holes 0
+     p55-r50-2d                 size 55.56, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p100-r50-2d                size 100.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 77 (twin says outside at 77; nearest solid point 2.0 px in the middle, 3.8 px at most) | holes 0
+     p100-r50-hex-2d            size 100.00, second sphere 50.00 %, grid 1, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 77 (twin says outside at 77; nearest solid point 2.0 px in the middle, 3.8 px at most) | holes 0
+     p101-auto-2d               size 101.00, second sphere 49.50 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p150-r48-2d                size 150.00, second sphere 48.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p150-r40-2d                size 150.00, second sphere 40.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p150-auto-2d               size 150.00, second sphere 33.33 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p55-r100-2d                size 55.56, second sphere 100.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p100-depth400-2d           size 100.00, second sphere 100.00 %, grid 0, depth 400 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p150-r49-2d-budkiss        size 150.00, second sphere 49.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 0 (twin says outside at 0; nearest solid point 0.0 px in the middle, 0.0 px at most) | holes 0
+     p60-r50-2d-budkiss         size 60.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 99 (twin says outside at 99; nearest solid point 3.0 px in the middle, 8.5 px at most) | holes 0
+  second sphere exactly 50: 9 views, GHOSTS 2441, holes 0 | any other second sphere: 10 views, GHOSTS 0, holes 0 | twin against my recipe, all views: 0 of 11480978 pixel centres differ
+=== 2D views, light, wide (1400x950): 2 views (GHOSTS = painted inside with nothing solid within about 1.5 px; holes = wholly solid with its 8 neighbours and not painted inside)
+     p200-r50-2d                size 200.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 29 (twin says outside at 29; nearest solid point 1.5 px in the middle, 2.2 px at most) | holes 0
+     p150-r50-2d                size 150.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 604262 pixel centres differ | GHOSTS 22 (twin says outside at 22; nearest solid point 1.2 px in the middle, 2.2 px at most) | holes 0
+  second sphere exactly 50: 2 views, GHOSTS 51, holes 0 | any other second sphere: 0 views, GHOSTS 0, holes 0 | twin against my recipe, all views: 0 of 1208524 pixel centres differ
+=== 2D views, dark, phone (390x800): 2 views (GHOSTS = painted inside with nothing solid within about 1.5 px; holes = wholly solid with its 8 neighbours and not painted inside)
+     p200-r50-2d                size 200.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 102528 pixel centres differ | GHOSTS 111 (twin says outside at 111; nearest solid point 2.0 px in the middle, 3.0 px at most) | holes 0
+     p150-r50-2d                size 150.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 102528 pixel centres differ | GHOSTS 36 (twin says outside at 36; nearest solid point 2.0 px in the middle, 2.8 px at most) | holes 0
+  second sphere exactly 50: 2 views, GHOSTS 147, holes 0 | any other second sphere: 0 views, GHOSTS 0, holes 0 | twin against my recipe, all views: 0 of 205056 pixel centres differ
+=== 2D views, light, phone (390x800): 2 views (GHOSTS = painted inside with nothing solid within about 1.5 px; holes = wholly solid with its 8 neighbours and not painted inside)
+     p200-r50-2d                size 200.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 102528 pixel centres differ | GHOSTS 5 (twin says outside at 5; nearest solid point 1.2 px in the middle, 2.0 px at most) | holes 0
+     p150-r50-2d                size 150.00, second sphere 50.00 %, grid 0, depth 16 | twin against my recipe: 0 of 102528 pixel centres differ | GHOSTS 7 (twin says outside at 7; nearest solid point 1.2 px in the middle, 1.8 px at most) | holes 0
+  second sphere exactly 50: 2 views, GHOSTS 12, holes 0 | any other second sphere: 0 views, GHOSTS 0, holes 0 | twin against my recipe, all views: 0 of 205056 pixel centres differ
+=== a wider net (mk/fuzz.py)
+  seed 1: views 14, rays 21000, stops 16051: HOLES 0 (in a ball 0), SEEN THROUGH 0 (through a ball 0), IN THE OPEN 0
+  seed 2: views 14, rays 21000, stops 6954: HOLES 0 (in a ball 0), SEEN THROUGH 0 (through a ball 0), IN THE OPEN 0
+  seed 3: views 14, rays 21000, stops 12992: HOLES 0 (in a ball 0), SEEN THROUGH 0 (through a ball 0), IN THE OPEN 0
+  views 42 | eye to the nearest solid point: least -1, quarter 0.0978, middle 0.783, most 5.13 | closer than 0.2: 13, closer than 0.05: 10 | settings where the two spheres touch: 9 | page own measure worst over the views: 26.1 px, views with it over 2 px: 2
+=== old pictures (mk/same.py)
+  same-1400x950-dark.txt: new page dist/r28-eyes.html: exit 0, no console errors
+  same-1400x950-dark.txt: old page dist/r28-base-eyes.html: exit 0, no console errors
+  same-1400x950-dark.txt: TOTAL, the picture alone, 16 states: 0 pixels differ
+  same-1400x950-dark.txt: TOTAL, the whole window, 7 states that are not Balls on balls: 56 pixels differ
+  same-390x800-light.txt: new page dist/r28-eyes.html: exit 0, no console errors
+  same-390x800-light.txt: old page dist/r28-base-eyes.html: exit 0, no console errors
+  same-390x800-light.txt: TOTAL, the picture alone, 16 states: 0 pixels differ
+  same-390x800-light.txt: TOTAL, the whole window, 7 states that are not Balls on balls: 436663 pixels differ
+=== same-twice.txt
+  k-first-group-preset5-2d                 whole window: frozen page run 2 against run 1: 15 pixels differ in the box (855, 638, 869, 638)
+  k-first-group-preset5-2d                 whole window: frozen page run 2 against the NEW page: 13 pixels differ in the box (870, 638, 882, 638)
+  m-quat4-power4                           picture: frozen page run 2 against run 1: 0 pixels differ
+  m-quat4-power4                           whole window: frozen page run 2 against run 1: 24 pixels differ in the box (855, 607, 882, 607)
+  m-quat4-power4                           whole window: frozen page run 2 against the NEW page: 24 pixels differ in the box (855, 607, 882, 607)
+  j-turnalong-cut                          picture: frozen page run 2 against run 1: 0 pixels differ
+  j-turnalong-cut                          whole window: frozen page run 2 against run 1: 12 pixels differ in the box (855, 603, 882, 603)
+  j-turnalong-cut                          whole window: frozen page run 2 against the NEW page: 12 pixels differ in the box (855, 603, 882, 603)
+  j-pulledplane-2d                         picture: frozen page run 2 against run 1: 0 pixels differ
+  j-pulledplane-2d                         whole window: frozen page run 2 against run 1: 28 pixels differ in the box (855, 629, 882, 629)
+  j-pulledplane-2d                         whole window: frozen page run 2 against the NEW page: 0 pixels differ
+  learn-tab                                whole window: frozen page run 2 against run 1: 0 pixels differ
+  learn-tab                                whole window: frozen page run 2 against the NEW page: 0 pixels differ
+  TOTAL frozen page against itself: picture alone 0 pixels, whole window 93 pixels
+=== same-phone-shift.txt
+  k-first-group-as-it-opens    new window = old window scrolled by 700 px: then 35701 pixels differ in the 100 rows both show (unscrolled: 57016 differ)
+  k-first-group-preset5-2d     new window = old window scrolled by 699 px: then 10639 pixels differ in the 101 rows both show (unscrolled: 206662 differ)
+  m-quat4-power4               new window = old window scrolled by -61 px: then 0 pixels differ in the 739 rows both show (unscrolled: 172985 differ)
+=== learn.txt
+  new page, run 0, straight      : Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  new page, run 0, after the walk: Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  old page, run 0, straight      : Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  old page, run 0, after the walk: Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  old page, run 1, straight      : Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  old page, run 1, after the walk: Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  new page, run 1, straight      : Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  new page, run 1, after the walk: Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  new page, run 2, straight      : Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  new page, run 2, after the walk: Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  old page, run 2, straight      : Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+  old page, run 2, after the walk: Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times -> Done: 12 passes at 862 × 701, canvas [862, 701], stage [862, 511], drawn 1 times | no console errors
+=== skin.txt
+  exit 0, no console errors
+  as-drawn: shadow true, crevice shading true, Done: 12 passes at 862 × 701
+  no-shadow: shadow false, crevice shading true, Done: 12 passes at 862 × 701
+  no-crevice: shadow true, crevice shading false, Done: 12 passes at 862 × 701
+  neither: shadow false, crevice shading false, Done: 12 passes at 862 × 701
+  as-drawn    box (355, 598, 445, 678): darkest tenth of the box 95.3, middle of the box 98.7, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 8; steps of 4 or more: 329
+  no-shadow   box (355, 598, 445, 678): darkest tenth of the box 98.7, middle of the box 101.3, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 2; steps of 4 or more: 0
+  no-crevice  box (355, 598, 445, 678): darkest tenth of the box 95.3, middle of the box 98.7, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 8; steps of 4 or more: 329
+  neither     box (355, 598, 445, 678): darkest tenth of the box 98.7, middle of the box 101.3, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 2; steps of 4 or more: 0
+=== speed (mk/speed.py)
+  background preparing ON (as a user has it), new: first paint median 1039 ms (994, 1039, 1092, 968, 1565); finished median 1273 ms (1315, 1259, 1273, 1084, 1684)
+  background preparing ON (as a user has it), old: first paint median 1205 ms (984, 1205, 1438, 1227, 1023); finished median 1324 ms (1172, 1324, 1546, 1324, 1262)
+  background preparing ON (as a user has it): new against old, finished: medians 0.96 x; mean 1.00 x; slowest new against fastest old 1.44 x. First paint: medians 0.86 x
+  background preparing OFF, new: first paint median 942 ms (920, 963, 1210, 863, 942); finished median 1140 ms (1279, 1092, 1331, 981, 1140)
+  background preparing OFF, old: first paint median 918 ms (1376, 1034, 901, 865, 918); finished median 1113 ms (1502, 1311, 1113, 995, 1055)
+  background preparing OFF: new against old, finished: medians 1.02 x; mean 0.97 x; slowest new against fastest old 1.34 x. First paint: medians 1.03 x
+  A at once, trial 0, stage [862, 701]:
+     the row clicked (default picture):      first paint  815 ms, finished  938 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+     150 typed (other program ready: False):  first paint  876 ms, finished 1100 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+     300 typed:                              first paint   14 ms, finished  425 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+     Frame it at 300 (the whole chain):      first paint   14 ms, finished  172 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     150 typed again:                        first paint   10 ms, finished  124 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     Frame it at 150 (the whole chain):      first paint    9 ms, finished  144 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+  B after 5 s, trial 0, stage [862, 701]:
+     the row clicked (default picture):      first paint  914 ms, finished 1093 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+     150 typed (other program ready: False):  first paint   11 ms, finished  320 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+     300 typed:                              first paint   16 ms, finished  371 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+     Frame it at 300 (the whole chain):      first paint   13 ms, finished  159 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     150 typed again:                        first paint   16 ms, finished  121 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     Frame it at 150 (the whole chain):      first paint   15 ms, finished  199 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+  A at once, trial 1, stage [862, 701]:
+     the row clicked (default picture):      first paint  725 ms, finished  972 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+     150 typed (other program ready: False):  first paint  740 ms, finished 1048 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+     300 typed:                              first paint   14 ms, finished  325 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+     Frame it at 300 (the whole chain):      first paint   10 ms, finished  123 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     150 typed again:                        first paint    9 ms, finished  124 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     Frame it at 150 (the whole chain):      first paint   11 ms, finished  123 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+  B after 5 s, trial 1, stage [862, 701]:
+     the row clicked (default picture):      first paint  746 ms, finished  883 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+     150 typed (other program ready: False):  first paint   14 ms, finished  284 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+     300 typed:                              first paint   15 ms, finished  380 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+     Frame it at 300 (the whole chain):      first paint    9 ms, finished  161 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     150 typed again:                        first paint   14 ms, finished  122 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     Frame it at 150 (the whole chain):      first paint   13 ms, finished  213 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+  A at once, trial 2, stage [862, 701]:
+     the row clicked (default picture):      first paint  810 ms, finished  997 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+     150 typed (other program ready: False):  first paint  848 ms, finished 1098 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+     300 typed:                              first paint   14 ms, finished  372 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+     Frame it at 300 (the whole chain):      first paint   10 ms, finished  170 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     150 typed again:                        first paint   14 ms, finished  121 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     Frame it at 150 (the whole chain):      first paint   14 ms, finished  209 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+  B after 5 s, trial 2, stage [862, 701]:
+     the row clicked (default picture):      first paint  761 ms, finished  911 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+     150 typed (other program ready: False):  first paint   16 ms, finished  308 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+     300 typed:                              first paint   11 ms, finished  323 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+     Frame it at 300 (the whole chain):      first paint   15 ms, finished  135 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     150 typed again:                        first paint   17 ms, finished  123 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+     Frame it at 150 (the whole chain):      first paint   15 ms, finished  126 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+  runs with console errors or a failure: 0

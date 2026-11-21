@@ -1,0 +1,34 @@
+plain-m2d-z000: mercator2 against one-plane picture: 11 px differ by more than 24/255 (0.00% of the picture)
+plain-m2d-z000: pillowboth against one-plane picture: 18934 px differ by more than 24/255 (3.12% of the picture)
+plain-m2d-z000: pillowsmooth against one-plane picture: 311003 px differ by more than 24/255 (51.20% of the picture)
+plain-j-bas-2d-z000: mercator2 against one-plane picture: 0 px differ by more than 24/255 (0.00% of the picture)
+plain-j-bas-2d-z000: pillowboth against one-plane picture: 19303 px differ by more than 24/255 (3.18% of the picture)
+plain-j-bas-2d-z000: pillowsmooth against one-plane picture: 332447 px differ by more than 24/255 (54.73% of the picture)
+plain-m2d-z000 inside colour [233, 223, 199] one-plane solid px 94875
+   mercator2: solid px 94887; extra solid 12, missing solid 0 (0.01% / 0.00% of the flat set)
+   pillowboth: solid px 100474; extra solid 5599, missing solid 0 (5.90% / 0.00% of the flat set)
+   pillowsmooth: solid px 101326; extra solid 27651, missing solid 21200 (29.14% / 22.35% of the flat set)
+plain-j-bas-2d-z000 inside colour [233, 223, 199] one-plane solid px 83895
+   mercator2: solid px 83895; extra solid 0, missing solid 0 (0.00% / 0.00% of the flat set)
+   pillowboth: solid px 91109; extra solid 7214, missing solid 0 (8.60% / 0.00% of the flat set)
+   pillowsmooth: solid px 186759; extra solid 108449, missing solid 5585 (129.27% / 6.66% of the flat set)
+   pixels mercator1    plain-m2d-z000       solid  94875 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels mercator1    plain-m2d-z010       solid  49587 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels mercator1    plain-m2d-z025       solid   9419 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels mercator1    plain-j-bas-2d-z000  solid  83895 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels mercator1    plain-j-bas-2d-z020  solid  54837 px, pieces 3, largest 75.9%, next [np.float64(12.1), np.float64(12.1)], specks 0
+   pixels mercator2    plain-m2d-z000       solid  94887 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels mercator2    plain-m2d-z010       solid  72594 px, pieces 1, largest 99.7%, next [], specks 29
+   pixels mercator2    plain-m2d-z025       solid  38254 px, pieces 1, largest 99.8%, next [], specks 3
+   pixels mercator2    plain-j-bas-2d-z000  solid  83895 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels mercator2    plain-j-bas-2d-z020  solid  45601 px, pieces 3, largest 82.2%, next [np.float64(8.9), np.float64(8.9)], specks 0
+   pixels pillowboth   plain-m2d-z000       solid 100474 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels pillowboth   plain-m2d-z010       solid  62450 px, pieces 7, largest 91.9%, next [np.float64(1.3), np.float64(1.3), np.float64(0.7)], specks 55
+   pixels pillowboth   plain-m2d-z025       solid  26623 px, pieces 5, largest 92.8%, next [np.float64(1.8), np.float64(1.7), np.float64(1.7)], specks 23
+   pixels pillowboth   plain-j-bas-2d-z000  solid  91109 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels pillowboth   plain-j-bas-2d-z020  solid  73793 px, pieces 1, largest 99.9%, next [], specks 45
+   pixels pillowsmooth plain-m2d-z000       solid 101326 px, pieces 1, largest 99.8%, next [], specks 84
+   pixels pillowsmooth plain-m2d-z010       solid  68423 px, pieces 1, largest 99.9%, next [], specks 11
+   pixels pillowsmooth plain-m2d-z025       solid  43317 px, pieces 1, largest 99.9%, next [], specks 2
+   pixels pillowsmooth plain-j-bas-2d-z000  solid 186759 px, pieces 1, largest 100.0%, next [], specks 0
+   pixels pillowsmooth plain-j-bas-2d-z020  solid 179645 px, pieces 1, largest 100.0%, next [], specks 0

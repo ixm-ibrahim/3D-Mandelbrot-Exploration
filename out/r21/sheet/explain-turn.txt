@@ -1,0 +1,12 @@
+rule             | 1 - h'(0) | 1 - h'(90) | h(90) | basilica circle: arc at 0, law | arc at 90, law | all arcs
+fixed (h = 0)    |   1.00 |   1.00 |   0.0 |   14.1  law   14.1 |    0.0  law    0.0 | 2 arc(s): 14 wide at 0 (x0.8), 14 wide at 180 (x0.8)
+ease             |   1.00 |  -1.00 |  90.0 |   12.4  law   14.1 |   12.4  law   14.1 | 4 arc(s): 12 wide at 0 (x0.7), 12 wide at 90 (x0.7), 12 wide at 180 (x0.7), 12 wide at 270 (x0.7)
+over             |  -1.00 |   1.00 |  90.0 |   12.4  law   14.1 |   12.4  law   14.1 | 4 arc(s): 12 wide at 0 (x0.7), 12 wide at 90 (x0.7), 12 wide at 180 (x0.7), 12 wide at 270 (x0.7)
+easehalf         |   0.50 |  -0.50 |  90.0 |   25.4  law   28.3 |   25.4  law   28.3 | 4 arc(s): 25 wide at 0 (x1.4), 25 wide at 90 (x1.4), 25 wide at 180 (x1.4), 25 wide at 270 (x1.4)
+ease2            |   2.00 |  -2.00 |  90.0 |    6.1  law    7.1 |    6.1  law    7.1 | 4 arc(s): 6 wide at 0 (x0.3), 6 wide at 90 (x0.3), 6 wide at 180 (x0.3), 6 wide at 270 (x0.3)
+mirror (h = -d)  |   2.00 |   2.00 | -90.0 |    6.1  law    7.1 |    6.1  law    7.1 | 4 arc(s): 6 wide at 0 (x0.3), 6 wide at 90 (x0.3), 6 wide at 180 (x0.3), 6 wide at 270 (x0.3)
+thrice (h = 3d)  |  -2.00 |  -2.00 |  90.0 |    6.1  law    7.1 |    6.1  law    7.1 | 4 arc(s): 6 wide at 0 (x0.3), 6 wide at 90 (x0.3), 6 wide at 180 (x0.3), 6 wide at 270 (x0.3)
+twice (h = 2d)   |  -1.00 |  -1.00 |  -0.0 |   14.1  law   14.1 |    0.0  law    0.0 | 2 arc(s): 14 wide at 0 (x0.8), 14 wide at 180 (x0.8)
+lag 2/3          |   0.33 |  -1.00 |  90.0 |   37.4  law   42.4 |   12.9  law   14.1 | 4 arc(s): 37 wide at 0 (x2.1), 13 wide at 90 (x0.7), 37 wide at 180 (x2.1), 13 wide at 270 (x0.7)
+lag 0.25         |   0.75 |   1.50 |   0.0 |   18.9  law   18.8 |    0.0  law    0.0 | 2 arc(s): 19 wide at 0 (x1.1), 19 wide at 180 (x1.1)
+lag 0.9          |   0.10 |  -0.12 |  90.0 |  360.0  law  141.3 |  360.0  law  113.0 | 1 arc(s): 360 wide at 0 (x20.5)

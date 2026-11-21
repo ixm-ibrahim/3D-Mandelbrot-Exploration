@@ -1,0 +1,5 @@
+step 1 result: page up, 18 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow turnaway turnalong
+step 1 waited 2.1 s
+step 2 result: turnaway: learnPlan gave moves,note,space,id,n,params,c,rule,run,check, end undefined, MATH [0.02729654571224382,0.37821581391584164,0.3258952234939274]
+turnalong: learnPlan gave moves,note,space,id,n,params,c,rule,run,check, end undefined, MATH [-0.31239099208993165,0.28431724777410505,0.26753611098172586]
+no console errors

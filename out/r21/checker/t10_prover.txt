@@ -1,0 +1,36 @@
+S1/S3/K1: Mandelbrot solid, share changed by a turn of 37 degrees (40 steps) | mirror in the flat page | basilica turned 37
+   lag25_cov    0.000% | 0.000% | 0.000%   (inside 7.79%)
+   lag50_cov    0.013% | 0.000% | 0.000%   (inside 7.76%)
+   delay_cov    0.182% | 0.000% | 0.000%   (inside 6.83%)
+   csheet_flat  0.000% | 0.000% | 0.365%   (inside 7.80%)
+   csheet_own   0.000% | 0.000% | 0.000%   (inside 7.80%)
+   twist        0.000% | 0.000% | 0.000%   (inside 7.25%)
+   twist8       0.000% | 0.000% | 0.000%   (inside 8.58%)
+   delay_twist  0.000% | 0.000% | 0.000%   (inside 3.20%)
+   csheet_twist 0.000% | 0.000% | 0.000%   (inside 1.29%)
+S3: rabbit of twist8, share changed by the mirror in the flat page: 5.47%; of lag25_cov: 0.000%
+J2/J3: verdicts that differ of 40,000: rabbit csheet_flat vs one-plane 0; basilica csheet_flat vs one-plane 0; basilica csheet_own vs lathe 0; basilica one-plane vs lathe 319
+F4: Mandelbrot solid at 200 steps against the flat set spun (300,000 points): in the solid %% | in the solid but not in the spun set %% | of the spun set cut away %%
+   first    5.467 | 0.024 | 24
+   first2   4.370 | 0.014 | 39
+   first3   3.645 | 0.014 | 49
+   first8   2.218 | 0.005 | 69
+   delay    3.271 | 0.004 | 54
+   oneplane 1.402 | 0.002 | 80
+   lag75    6.600 | 0.078 | 9
+   lag50    5.978 | 0.385 | 22
+   lag25    3.794 | 0.078 | 48
+   along    6.995 | 0.649 | 12
+F5: the closed form of `first` against the library, cut at each turn, 20,000 random c0, 60 steps: verdicts that differ
+    0.00 degrees: 0
+   11.25 degrees: 0
+   22.50 degrees: 0
+   45.00 degrees: 0
+   67.50 degrees: 0
+   90.00 degrees: 0
+F5 arcs: Mandelbrot period-3 circle, 80 steps
+   first    6 arcs (2.1 at 22, 2.1 at 158, 40.9 at 180, 2.1 at 202, 2.1 at 338, 40.9 at 0), inside 25.1%
+   first2   18 arcs (0.2 at 9, 3.1 at 12, 0.8 at 15, 1.1 at 16, 1.1 at 164, 0.8 at 165 ...), inside 13.0%
+   lag25    6 arcs (0.1 at 21, 0.1 at 159, 40.9 at 180, 0.1 at 201, 0.1 at 339, 40.9 at 0), inside 22.8%
+   delay    2 arcs (0.1 at 180, 0.1 at 0), inside 0.1%
+   away     4 arcs (3.1 at 90, 3.1 at 180, 3.1 at 270, 3.1 at 0), inside 3.5%

@@ -1,0 +1,11 @@
+dist/v14a.html: exit 0 
+dist/r14-rules.html: exit 0 
+before/after mercator m      862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+before/after lathe j         862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+before/after fold j          862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+before/after tilt j          862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+before/after bulb j          862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+before/after split j         862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+lathe / quat4 at 0, m        862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+lathe / quat4 at 0, j        862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0
+lathe / rotor axis x, j      862x701  pixels that differ: 0 (0.0000 %), by more than 8 of 255: 0

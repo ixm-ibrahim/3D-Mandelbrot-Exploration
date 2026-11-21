@@ -1,0 +1,92 @@
+step 1 waited 2.6 s
+step 2 result: "f01-flat-m-open three=true kmx=0 skip=1"
+step 4 waited 0.0 s
+step 4 wrote out/r7/engine/ref/f01-flat-m-open.png
+step 5 result: "f02-flat-j-minus1 three=true kmx=0 skip=1"
+step 7 waited 0.3 s
+step 7 wrote out/r7/engine/ref/f02-flat-j-minus1.png
+step 8 result: "f03-flat-j-rabbit three=true kmx=0 skip=1"
+step 10 waited 0.0 s
+step 10 wrote out/r7/engine/ref/f03-flat-j-rabbit.png
+step 11 result: "f04-flat-m-slice-03 three=true kmx=0 skip=1"
+step 13 waited 0.0 s
+step 13 wrote out/r7/engine/ref/f04-flat-m-slice-03.png
+step 14 result: "f05-flat-k three=true kmx=0 skip=1"
+step 16 waited 1.3 s
+step 16 wrote out/r7/engine/ref/f05-flat-k.png
+step 17 result: "f06-flat-m-neg2 three=true kmx=0 skip=1"
+step 19 waited 2.5 s
+step 19 wrote out/r7/engine/ref/f06-flat-m-neg2.png
+step 20 result: "f07-flat-m-mosaic three=true kmx=0 skip=1"
+step 22 waited 0.0 s
+step 22 wrote out/r7/engine/ref/f07-flat-m-mosaic.png
+step 23 result: "f08-flat-m-in-settle three=true kmx=0 skip=1"
+step 25 waited 3.3 s
+step 25 wrote out/r7/engine/ref/f08-flat-m-in-settle.png
+step 26 result: "f09-flat-j-in-trap three=true kmx=0 skip=1"
+step 28 waited 0.3 s
+step 28 wrote out/r7/engine/ref/f09-flat-j-in-trap.png
+step 29 result: "f10-flat-m-cross-bands three=true kmx=0 skip=1"
+step 31 waited 0.0 s
+step 31 wrote out/r7/engine/ref/f10-flat-m-cross-bands.png
+step 32 result: "f11-m-escape three=true kmx=0 skip=1"
+step 34 waited 0.6 s
+step 34 wrote out/r7/engine/ref/f11-m-escape.png
+step 35 result: "f12-m-depth three=true kmx=0 skip=1"
+step 37 waited 0.5 s
+step 37 wrote out/r7/engine/ref/f12-m-depth.png
+step 38 result: "f13-j-depth three=true kmx=0 skip=1"
+step 40 waited 0.7 s
+step 40 wrote out/r7/engine/ref/f13-j-depth.png
+step 41 result: "f14-m-clay three=true kmx=0 skip=1"
+step 43 waited 0.8 s
+step 43 wrote out/r7/engine/ref/f14-m-clay.png
+step 44 result: "f15-j-escape three=true kmx=0 skip=1"
+step 46 waited 0.5 s
+step 46 wrote out/r7/engine/ref/f15-j-escape.png
+step 47 result: "f16-k-escape three=true kmx=0 skip=1"
+step 49 waited 0.0 s
+step 49 wrote out/r7/engine/ref/f16-k-escape.png
+step 50 result: "f18-m-neg2-escape three=true kmx=0 skip=1"
+step 52 waited 4.4 s
+step 52 wrote out/r7/engine/ref/f18-m-neg2-escape.png
+step 53 result: "f21-m-ultra-escape three=true kmx=0 skip=1"
+step 55 waited 0.0 s
+step 55 wrote out/r7/engine/ref/f21-m-ultra-escape.png
+step 56 result: "f23-cut-m-hatch-escape three=true kmx=0 skip=1"
+step 58 waited 0.6 s
+step 58 wrote out/r7/engine/ref/f23-cut-m-hatch-escape.png
+step 59 result: "f24-cut-j-face-trap-escape three=true kmx=0 skip=1"
+step 61 waited 0.9 s
+step 61 wrote out/r7/engine/ref/f24-cut-j-face-trap-escape.png
+step 62 result: "f25-m-mosaic-escape three=true kmx=0 skip=1"
+step 64 waited 0.8 s
+step 64 wrote out/r7/engine/ref/f25-m-mosaic-escape.png
+step 65 result: "g01-m-open three=true kmx=0 skip=1"
+step 67 waited 0.8 s
+step 67 wrote out/r7/engine/ref/g01-m-open.png
+step 68 result: "g02-j-open three=true kmx=0 skip=1"
+step 70 waited 0.8 s
+step 70 wrote out/r7/engine/ref/g02-j-open.png
+step 71 result: "g03-k-open three=true kmx=0 skip=1"
+step 73 waited 0.0 s
+step 73 wrote out/r7/engine/ref/g03-k-open.png
+step 74 result: "g04-j-fine three=true kmx=0 skip=1"
+step 76 waited 1.6 s
+step 76 wrote out/r7/engine/ref/g04-j-fine.png
+step 77 result: "g05-jr-open three=true kmx=0 skip=1"
+step 79 waited 0.8 s
+step 79 wrote out/r7/engine/ref/g05-jr-open.png
+step 80 result: "g06-m-neg2 three=true kmx=0 skip=1"
+step 82 waited 5.3 s
+step 82 wrote out/r7/engine/ref/g06-m-neg2.png
+step 83 result: "g07-m-mosaic three=true kmx=0 skip=1"
+step 85 waited 1.1 s
+step 85 wrote out/r7/engine/ref/g07-m-mosaic.png
+step 86 result: "g08-j-ultra three=true kmx=0 skip=1"
+step 88 waited 0.3 s
+step 88 wrote out/r7/engine/ref/g08-j-ultra.png
+step 89 result: "g09-k-cross-bands-fast three=true kmx=0 skip=1"
+step 91 waited 0.0 s
+step 91 wrote out/r7/engine/ref/g09-k-cross-bands-fast.png
+no console errors

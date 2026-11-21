@@ -1,0 +1,2 @@
+verd-g0-t1.4-r16-flat        points 20250  inside  3575 | shader/twin differ   0 (largest twin distance there 0.0e+00) | twin/tree.py differ 0 | shader/tree.py   0 | twin/my recipe 0 | this depth/80 rounds 0 | shader distance vs twin: mean 1.5e-06, longest +4.8e-03 | 1195 ms
+verd-g0-t1.4-r16-space       points 22500  inside   818 | shader/twin differ   0 (largest twin distance there 0.0e+00) | twin/tree.py differ 0 | shader/tree.py   0 | twin/my recipe 0 | this depth/80 rounds 0 | shader distance vs twin: mean 2.9e-07, longest +7.8e-04 | 1241 ms

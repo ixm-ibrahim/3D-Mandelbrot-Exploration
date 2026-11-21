@@ -1,0 +1,8 @@
+alongonce    picture 2 against picture 1: 0 of 604262 pixels differ (largest 0 of 255); not background: 80069
+alongonce    picture 3 against picture 1: 0 of 604262 pixels differ (largest 0 of 255); not background: 80069
+alongonce    picture 5 against picture 4: 0 of 604262 pixels differ (largest 0 of 255); not background: 600599
+pulledplane  picture 2 against picture 1: 0 of 604262 pixels differ (largest 0 of 255); not background: 74955
+pulledplane  picture 3 against picture 1: 0 of 604262 pixels differ (largest 0 of 255); not background: 74955
+pulledplane  picture 5 against picture 4: 0 of 604262 pixels differ (largest 0 of 255); not background: 600599
+turnalong    picture 2 against picture 1: 0 of 604262 pixels differ (largest 0 of 255); not background: 85059
+mercator     picture 2 against picture 1: 0 of 604262 pixels differ (largest 0 of 255); not background: 84278

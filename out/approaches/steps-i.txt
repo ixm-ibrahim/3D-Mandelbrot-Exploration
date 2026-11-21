@@ -1,0 +1,15 @@
+step 1 waited 1.0 s
+step 2 result: 
+{"planes":1,"turn":30,"lift":-0.4} turn dial hidden: false
+step 2 waited 1.0 s
+step 2 wrote out/approaches/64-panel-p1-turn.png
+step 3 result: 1
+step 3 wrote out/approaches/65-stage-p1-turn30-liftm04.png
+step 4 result: 
+{"theta":45,"phi":0}
+step 4 waited 4.4 s
+step 4 wrote out/approaches/66-panel-classic.png
+step 5 result: 1
+step 5 waited 4.7 s
+step 5 wrote out/approaches/67-panel-bulb.png
+no console errors

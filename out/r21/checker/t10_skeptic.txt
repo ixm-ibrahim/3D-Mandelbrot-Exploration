@@ -1,0 +1,37 @@
+lag solids against the lathe's Mandelbrot solid (100,000 c, 80 steps): inside | of those outside the lathe's solid
+   lag 0.05: 2147 | 23 (1.1%)
+   lag 0.10: 2614 | 38 (1.5%)
+   lag 0.25: 3838 | 78 (2.0%)
+   lag 0.40: 5325 | 268 (5.0%)
+   lag 0.50: 6364 | 502 (7.9%)
+   lag 0.60: 6046 | 155 (2.6%)
+   lag 0.70: 6645 | 124 (1.9%)
+   lag 0.80: 7140 | 138 (1.9%)
+   lag 0.95: 7479 | 89 (1.2%)
+turned check of lag70 at 40 and 160 steps (random turn, M.spun_check): 0.70% / 0.42%
+noise of the turned check for the lathe and own: 0.0000% / 0.0000% (200,000 pairs, 80 steps)
+basilica upright bud by share: circle x = 0, radius 0.62
+   lag 0.50: 2 arcs (28.4 at 180, 28.4 at 0), inside 15.8%
+   lag 0.55: 4 arcs (2.9 at 90, 27.4 at 180, 2.9 at 270, 27.4 at 0), inside 16.8%
+   lag 0.65: 4 arcs (10.9 at 90, 35.4 at 180, 10.9 at 270, 35.4 at 0), inside 25.7%
+   lag 0.70: 4 arcs (17.4 at 90, 41.9 at 180, 17.4 at 270, 41.9 at 0), inside 32.9%
+   lag 0.80: 4 arcs (45.9 at 90, 70.4 at 180, 45.9 at 270, 70.4 at 0), inside 64.6%
+   lag 0.90: RING
+   lag 0.95: RING
+the 16 attempts of the skeptic: flat check (20,000) and turn of 37 degrees at 40 and 80 steps, Mandelbrot | basilica
+   S1 lag25, no start pag flat 0/0/0/0 | M 0.0000% 0.0925% | basilica 0.0000%
+   S1 lag75, no start pag flat 0/0/0/0 | M 0.0000% 0.0100% | basilica 0.0000%
+   S2 delay, no start pag flat 0/0/0/0 | M 0.1825% 0.0925% | basilica 0.0000%
+   S3 hand 20             flat 860/279/2630/1239 | M 0.0000% 0.0000% | basilica 0.0000%
+   S3 hand 45             flat 1080/329/2715/3770 | M 0.0000% 0.0000% | basilica 0.0000%
+   S4 ahead 1             flat 0/0/0/0 | M 0.3425% 0.0975% | basilica 0.0000%
+   S4 ahead 3             flat 0/0/0/0 | M 0.4250% 0.1900% | basilica 0.0000%
+   S4 behind 0.5          flat 0/0/0/0 | M 0.0125% 0.0650% | basilica 0.0000%
+   S5 c sheet             flat 0/0/0/0 | M 0.0000% 0.0000% | basilica 0.0000%
+   S5 c sheet + 30        flat 2695/281/2715/3770 | M 0.0000% 0.0000% | basilica 0.0000%
+   S5 c mid               flat 0/0/0/0 | M 0.0000% 0.0000% | basilica 0.0000%
+   S5 c lag25             flat 0/0/0/0 | M 0.0000% 0.0925% | basilica 0.0000%
+   S5 c ahead 1           flat 0/0/0/0 | M 0.0025% 0.1900% | basilica 0.0000%
+   S6 span2               flat 0/0/0/0 | M 0.4375% 0.2300% | basilica 0.0000%
+   S7 mean sheet          flat 0/0/0/0 | M 0.0025% 0.0050% | basilica 0.0000%
+   S8 far sheet           flat 0/0/0/0 | M 0.0000% 0.0000% | basilica 0.0000%

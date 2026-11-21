@@ -1,0 +1,29 @@
+A at once, trial 0, stage [862, 701]:
+   the row clicked (default picture):      first paint  992 ms, finished 1284 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+   150 typed (other program ready: False):  first paint 1344 ms, finished 1634 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+   300 typed:                              first paint   14 ms, finished  791 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+   Frame it at 300 (the whole chain):      first paint   14 ms, finished  478 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   150 typed again:                        first paint   14 ms, finished  271 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   Frame it at 150 (the whole chain):      first paint   14 ms, finished  360 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+B after 5 s, trial 0, stage [862, 701]:
+   the row clicked (default picture):      first paint 1413 ms, finished 1876 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+   150 typed (other program ready: False):  first paint   18 ms, finished  851 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+   300 typed:                              first paint   15 ms, finished  645 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+   Frame it at 300 (the whole chain):      first paint   15 ms, finished  415 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   150 typed again:                        first paint   12 ms, finished  249 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   Frame it at 150 (the whole chain):      first paint   13 ms, finished  617 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+A at once, trial 1, stage [862, 701]:
+   the row clicked (default picture):      first paint  984 ms, finished 1208 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+   150 typed (other program ready: False):  first paint 1245 ms, finished 1520 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+   300 typed:                              first paint   15 ms, finished  628 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+   Frame it at 300 (the whole chain):      first paint   16 ms, finished  359 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   150 typed again:                        first paint   16 ms, finished  196 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   Frame it at 150 (the whole chain):      first paint   14 ms, finished  392 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+B after 5 s, trial 1, stage [862, 701]:
+   the row clicked (default picture):      first paint 1010 ms, finished 1313 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls)
+   150 typed (other program ready: False):  first paint   18 ms, finished  994 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.3333
+   300 typed:                              first paint   15 ms, finished  609 ms, programs built 1 (Done: 12 passes at 862 × 701; k-balls2); second sphere now 0.1667
+   Frame it at 300 (the whole chain):      first paint    9 ms, finished  303 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   150 typed again:                        first paint   10 ms, finished  183 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+   Frame it at 150 (the whole chain):      first paint   15 ms, finished  359 ms, programs built 0 (Done: 12 passes at 862 × 701; k-balls2)
+runs with console errors or a failure: 0

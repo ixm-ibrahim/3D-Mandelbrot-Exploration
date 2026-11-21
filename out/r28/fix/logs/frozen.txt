@@ -1,0 +1,8 @@
+GL_BALLS, the program text for two equal spheres (5958 characters): the same to the byte: True
+the comment above it: the same to the byte: True
+GL_BALLS_RHO, the new program text: 6651 characters, after GL_BALLS: True
+00-core.js      148 lines frozen,   149 in the overlay: 1 taken out, 2 put in
+32-balls.js     267 lines frozen,   612 in the overlay: 40 taken out, 385 put in
+40-render.js    757 lines frozen,   768 in the overlay: 4 taken out, 15 put in
+46-mesh.js     1059 lines frozen,  1061 in the overlay: 1 taken out, 3 put in
+80-ui.js        816 lines frozen,   873 in the overlay: 9 taken out, 66 put in

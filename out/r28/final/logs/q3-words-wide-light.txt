@@ -1,0 +1,14 @@
+page dist/r28-final.html, window 1400x950, theme light, started 17:06:22
+theme as the page took it: colour scheme "normal", background rgb(237, 240, 242), data-theme ""
+the Approach list, open, the mouse over the row Balls on balls: row box [965, 452, 358, 47], wholly in the window True, its text cut False; the explanation beside it [505, -187, 460, 159]: "Balls on ballsa cousin of the flat picture: no c, no powerMade only of slides by whole numbers and sphere inversions, so every body is an exact ball. It is a cousin of the flat picture: its flat cut is a chain of circles. It has no c and no power.One click shows it in the Kleinian view, where its dials are."; the page scrolls sideways by 0 px
+1 as the row gives it: panel 360 px wide in a window of 1400; note 81 px high, status sentences 0 px, the whole part 760 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+2 size 150: panel 360 px wide in a window of 1400; note 81 px high, status sentences 61 px, the whole part 835 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first. It follows the size until you set it yourself."
+3 second sphere 50, size 200, depth 3: three status sentences: panel 360 px wide in a window of 1400; note 81 px high, status sentences 142 px, the whole part 916 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+4 size 1999.9, depth 1000: the longest numbers: panel 360 px wide in a window of 1400; note 81 px high, status sentences 101 px, the whole part 876 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "The Drawing radius in the View section cuts the two big neighbours open. Frame it makes room for them. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first. It follows the size until you set it yourself."
+5 size 300, 2D view: panel 360 px wide in a window of 1400; note 81 px high, status sentences 61 px, the whole part 835 px; nothing sticks out, nothing is cut off, nothing overlaps  -> OK
+   status sentences shown: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 16.67 % of the first. It follows the size until you set it yourself."
+--- console: no console errors or warnings
+=== 0 thing(s) marked WRONG

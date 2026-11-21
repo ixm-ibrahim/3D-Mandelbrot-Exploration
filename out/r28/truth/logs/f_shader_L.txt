@@ -1,0 +1,6 @@
+L (neighbours 1900, second sphere 5 (all but touching), honeycomb): 9323 outside grid points, the shader's number above the true distance at 5643; the largest excess is 1.54 last-digit units (4.7e-05, at distance 16.0 from the middle); beyond my first allowance at 3:
+     at (-10.4509, -9.9761, 0.0000): shader 0.00125907, true 0.00123558, too long by 2.35e-05 = 1.90 % = 0.93 last-digit units
+     at (10.6976, -9.9761, 0.0000): shader 0.00308791, true 0.00307159, too long by 1.63e-05 = 0.53 % = 0.70 last-digit units
+     at (-4.9856, -8.3127, 0.0000): shader 0.000515303, true 0.000506864, too long by 8.44e-06 = 1.66 % = 0.74 last-digit units
+I (neighbours 2000, second sphere 2.5 (the largest size that can be typed), square): 7606 outside grid points, the shader's number above the true distance at 1186; the largest excess is 1.02 last-digit units (1.71e-05, at distance 11.8 from the middle); beyond my first allowance at 0:
+O (neighbours 2000, second sphere 2 (the smallest), honeycomb): 9155 outside grid points, the shader's number above the true distance at 1399; the largest excess is 1.06 last-digit units (5.58e-06, at distance 6.6 from the middle); beyond my first allowance at 0:

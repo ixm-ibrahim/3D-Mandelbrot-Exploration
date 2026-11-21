@@ -1,0 +1,23 @@
+<<<<
+  bool esc = false;
+  trapStart();
+  for (int k = 0; k <= its; k++){
+    esc = r > uBail;
+    bool last = esc || k == its;
+====
+  bool esc = false, still = false;
+  trapStart();
+  for (int k = 0; k <= its; k++){
+    esc = r > uBail;
+    bool last = esc || still || k == its;
+>>>>
+<<<<
+    v = w; rp = r; r = lw; it += 1.0;
+    trapAdd(v, it);
+====
+    // An orbit that has come to rest will never escape, and where far points never escape most orbits
+    // come to rest within a few steps: stop there instead of running out the count.
+    still = swap && dot(w - v, w - v) < 1e-12 * lw * lw;
+    v = w; rp = r; r = lw; it += 1.0;
+    trapAdd(v, it);
+>>>>

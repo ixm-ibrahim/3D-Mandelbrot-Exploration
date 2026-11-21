@@ -1,0 +1,5 @@
+from out/r28/final/logs/q4-walk-before.txt
+  mine-p250-r40-kiss           rays 38016, stops 37944 | HOLES 0 | SEEN THROUGH 55 (through a ball: 0) | IN THE OPEN 0 | stops on what only the depth calls solid 8158 | picture against pick: 0 of 36976 painted as background where rays stop, 0 of 4 painted where none stops
+  mine-p120-r50-hex-budkiss    rays 38016, stops 38016 | HOLES 0 | SEEN THROUGH 0 (through a ball: 0) | IN THE OPEN 0 | stops on what only the depth calls solid 1694 | picture against pick: 0 of 37236 painted as background where rays stop, 0 of 0 painted where none stops
+  p150-r50-budkiss             rays 38016, stops 37961 | HOLES 0 | SEEN THROUGH 1 (through a ball: 0) | IN THE OPEN 0 | stops on what only the depth calls solid 2213 | picture against pick: 0 of 37181 painted as background where rays stop, 0 of 21 painted where none stops
+TOTAL: 3 views, 114048 rays: HOLES 0, SEEN THROUGH 56 (through a ball: 0), IN THE OPEN 0

@@ -1,0 +1,20 @@
+1. Turn the flat set about the x-axis by an angle: what share of its points (further than 0.1 from the x-axis) is still in the set?
+   set           steps   0.25 deg    0.5 deg      1 deg      2 deg      4 deg      8 deg     15 deg     30 deg
+   basilica         40     99.3 %     98.5 %     97.3 %     95.3 %     91.0 %     87.5 %     88.3 %     90.8 %   (16912 points)
+   basilica         80     99.3 %     98.5 %     97.3 %     95.3 %     91.0 %     87.5 %     88.3 %     90.8 %   (16912 points)
+   San Marco        40     99.5 %     99.2 %     98.6 %     97.3 %     94.7 %     90.5 %     90.7 %     94.0 %   (29644 points)
+   San Marco        80     99.5 %     99.2 %     98.5 %     97.3 %     94.7 %     90.5 %     90.7 %     93.9 %   (29628 points)
+   rabbit           40     89.7 %     84.5 %     77.5 %     66.3 %     51.7 %     34.9 %     18.9 %     13.7 %   (22372 points)
+   rabbit           80     89.9 %     84.7 %     77.9 %     66.6 %     51.9 %     35.0 %     18.9 %     13.7 %   (22268 points)
+   Siegel disc      40     79.0 %     67.7 %     51.5 %     34.8 %     17.8 %     10.8 %      3.9 %      0.6 %   (29590 points)
+   Siegel disc      80     64.2 %     50.5 %     35.3 %     19.2 %      9.4 %      6.7 %      2.2 %      0.3 %   (29078 points)
+
+2. The cut across the x-axis at x = 0: the outline by direction, and the strongest number of repeats per turn
+   power 2, c = -1          strongest repeats per turn: 6, 12, 18 (strengths 4079, 3773, 2183)
+   power 3, c = 0.3         strongest repeats per turn: 24, 6, 18 (strengths 484, 398, 242)
+   power 4, c = -1          strongest repeats per turn: 10, 20, 4 (strengths 14564, 5864, 85)
+   power 5, c = 0.3         strongest repeats per turn: 10, 20, 4 (strengths 149, 46, 31)
+   power 3, c = i           strongest repeats per turn: 3, 6, 9 (strengths 10701, 9910, 6254)
+   power 4, c = 0.3 + 0.3i  strongest repeats per turn: 10, 20, 6 (strengths 2693, 874, 45)
+   power 2, rabbit          strongest repeats per turn: 6, 12, 18 (strengths 12954, 8178, 2836)
+   power 2, Siegel disc     strongest repeats per turn: 6, 18, 12 (strengths 15538, 3533, 2190)

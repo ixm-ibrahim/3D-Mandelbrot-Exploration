@@ -1,0 +1,34 @@
+page dist/r28-ui.html, window 1400x950, started 12:45:10
+--- A. a saved picture started at 150, the section reset while it is drawn
+Start the picture pressed at 150 (job running: True); then Reset this section (job still running: True): the page now shows mode k, group 1, size 55.56, second sphere 100, depth 16, program k-balls | no sentence
+file 1724 x 1402, 21.9 % of it not background; against the file saved at 150 with nothing changed (first run, same window, same view): 0 of 2417048 pixels differ, 0 by more than 8 of 255
+   -> OK
+afterwards the page shows: mode k, group 1, size 55.56, second sphere 100, depth 16, program k-balls | no sentence
+   -> OK
+--- B. the Learn tab and back, at 150
+Learn pressed: mode k (Learn), group 1, size 150, second sphere 33.33, depth 16, program k-balls2 | no sentence
+Kleinian pressed: mode k, group 1, size 150, second sphere 33.33, depth 16, program k-balls2 | sentence: Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+   -> OK
+   the picture: 133 of 609 probes hit, 0 on the rim
+--- C. the switch Extreme ranges, at 150
+Extreme ranges on (True): mode k, group 1, size 150, second sphere 33.33, depth 16, program k-balls2 | sentence: Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.; ends of the three dials (slider min/max, typed min/max): ['2/400/1/2000', '2/100/2/100', '1/100/1/1000']
+   -> OK
+Extreme ranges off: mode k, group 1, size 150, second sphere 33.33, depth 16, program k-balls2 | sentence: Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+   -> OK
+--- D. Reset view at 400
+size 400, Frame it: camera distance 15.95, 147 probes hit, 0 on the rim; six presses of + : distance 4.18, 63 on the rim; Reset view: distance 15.95, 147 probes hit, 0 on the rim
+   -> OK
+size 2000, Frame it: distance 72.76, 0 on the rim; Reset view: distance 72.76, 0 on the rim
+   -> OK
+--- E. the panel folded and opened, the page's Collapse all
+panel folded (open False, dials seen True) and opened again: mode k, group 1, size 150, second sphere 33.33, depth 16, program k-balls2 | sentence: Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first.
+   -> OK
+--- F. the second sphere's slider at a size past 100
+size 150 (second sphere 33.33); its slider dragged up towards 60, button held; second sphere box / thumb / size box after each move: 37/37/150 40/40/150 43/43/150 47/47/150 50/50/150 50/53/150 50/57/150 50/60/150
+let go: mode k, group 1, size 150, second sphere 50, depth 16, program k-balls2 | sentence: Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first.; thumb at 50
+   -> OK
+dragged on towards 90, held: 50/55/150 50/60/150 50/65/150 50/70/150 50/75/150 100/79/50 100/84/50 100/89/50 100/90/50
+let go: mode k, group 1, size 50, second sphere 100, depth 16, program k-balls | no sentence; thumb at 100
+   -> OK
+--- console: no console errors or warnings
+=== 0 thing(s) marked WRONG

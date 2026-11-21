@@ -1,0 +1,143 @@
+{
+ "A": {
+  "status_before": "Done: 12 passes at 862 × 701",
+  "running": {
+   "busy": true,
+   "msg": "",
+   "step": "Starting. 0%.",
+   "warn": "",
+   "startShown": false,
+   "cancelShown": true,
+   "saveShown": false,
+   "idle": true,
+   "status": "Done: 12 passes at 862 × 701"
+  },
+  "lost": true,
+  "panel_while_lost": {
+   "busy": false,
+   "msg": "The graphics of this page were interrupted, so the model could not be finished. Start it again.",
+   "step": "Starting. 0%.",
+   "warn": "",
+   "startShown": true,
+   "cancelShown": false,
+   "saveShown": false,
+   "idle": true,
+   "status": "The graphics of this page were interrupted. The picture comes back by itself."
+  },
+  "still_lost_after_restore": false,
+  "panel_after_restore": {
+   "busy": false,
+   "msg": "The graphics of this page were interrupted, so the model could not be finished. Start it again.",
+   "step": "Starting. 0%.",
+   "warn": "",
+   "startShown": true,
+   "cancelShown": false,
+   "saveShown": false,
+   "idle": true,
+   "status": "Done: 12 passes at 862 × 701"
+  },
+  "idle_after_restore": true,
+  "second_job": {
+   "busy": false,
+   "msg": "The model is ready.",
+   "step": "Packing the zip. 98%.",
+   "warn": "",
+   "startShown": false,
+   "cancelShown": false,
+   "saveShown": true,
+   "idle": true,
+   "status": "Done: 12 passes at 862 × 701"
+  },
+  "second_job_s": 1.7,
+  "second_facts": [
+   "Triangles",
+   "16,912",
+   "Points",
+   "8,458",
+   "Size",
+   "100 × 91.4 × 25.9 mm",
+   "Pieces",
+   "The largest of 13",
+   "mandelbrot-96.stl",
+   "826 kB",
+   "mandelbrot-96.obj",
+   "636 kB",
+   "mandelbrot-96.ply",
+   "339 kB",
+   "Zip to save",
+   "1.8 MB"
+  ],
+  "problems": []
+ },
+ "B": {
+  "status_before": "Done: 12 passes at 862 × 701",
+  "running": {
+   "busy": true,
+   "msg": "",
+   "step": "Building the mesh, slice 72 of 221. 33%. About 3 seconds left.",
+   "warn": "",
+   "startShown": false,
+   "cancelShown": true,
+   "saveShown": false,
+   "idle": true,
+   "status": "Done: 12 passes at 862 × 701"
+  },
+  "lost": true,
+  "panel_while_lost": {
+   "busy": false,
+   "msg": "The graphics of this page were interrupted, so the model could not be finished. Start it again.",
+   "step": "Building the mesh, slice 72 of 221. 33%. About 3 seconds left.",
+   "warn": "",
+   "startShown": true,
+   "cancelShown": false,
+   "saveShown": false,
+   "idle": true,
+   "status": "The graphics of this page were interrupted. The picture comes back by itself."
+  },
+  "still_lost_after_restore": false,
+  "panel_after_restore": {
+   "busy": false,
+   "msg": "The graphics of this page were interrupted, so the model could not be finished. Start it again.",
+   "step": "Building the mesh, slice 72 of 221. 33%. About 3 seconds left.",
+   "warn": "",
+   "startShown": true,
+   "cancelShown": false,
+   "saveShown": false,
+   "idle": true,
+   "status": "Done: 12 passes at 862 × 701"
+  },
+  "idle_after_restore": true,
+  "second_job": {
+   "busy": false,
+   "msg": "The model is ready.",
+   "step": "Packing the zip. 99%.",
+   "warn": "",
+   "startShown": false,
+   "cancelShown": false,
+   "saveShown": true,
+   "idle": true,
+   "status": "Done: 12 passes at 862 × 701"
+  },
+  "second_job_s": 0.8,
+  "second_facts": [
+   "Triangles",
+   "16,912",
+   "Points",
+   "8,458",
+   "Size",
+   "100 × 91.4 × 25.9 mm",
+   "Pieces",
+   "The largest of 13",
+   "mandelbrot-96.stl",
+   "826 kB",
+   "mandelbrot-96.obj",
+   "636 kB",
+   "mandelbrot-96.ply",
+   "339 kB",
+   "Zip to save",
+   "1.8 MB"
+  ],
+  "problems": []
+ }
+}
+exit 0

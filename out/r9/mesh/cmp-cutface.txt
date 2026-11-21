@@ -1,0 +1,35 @@
+cutm-128
+  v8       tris 25404 closed True oriented True pieces 1 vol 18.98 size [100.0, 91.3, 13.1] | overlap 0.959 pic-only 0.023 model-only 0.019 | hue 6.7 deg, 84% within 30
+  r9-mesh  tris 25404 closed True oriented True pieces 1 vol 18.98 size [100.0, 91.3, 13.1] | overlap 0.959 pic-only 0.023 model-only 0.019 | hue 6.0 deg, 85% within 30
+  same STL bytes: True; same PLY bytes: False
+  share of the picture's plain cut face that is plain in the model: v8 0.917 (82536 px), r9-mesh 0.974 (82536 px)
+cutm-256
+  v8       tris 99816 closed True oriented True pieces 1 vol 17.21 size [100.0, 90.9, 12.7] | overlap 0.954 pic-only 0.046 model-only 0.000 | hue 3.4 deg, 95% within 30
+  r9-mesh  tris 99816 closed True oriented True pieces 1 vol 17.21 size [100.0, 90.9, 12.7] | overlap 0.954 pic-only 0.046 model-only 0.000 | hue 3.3 deg, 96% within 30
+  same STL bytes: True; same PLY bytes: False
+  share of the picture's plain cut face that is plain in the model: v8 0.940 (82333 px), r9-mesh 0.968 (82333 px)
+cutm-128-off0
+  v8       tris 22988 closed True oriented True pieces 1 vol 20.59 size [100.0, 95.6, 13.3] | overlap 0.898 pic-only 0.102 model-only 0.000 | hue 3.3 deg, 87% within 30
+  r9-mesh  tris 22988 closed True oriented True pieces 1 vol 20.59 size [100.0, 95.6, 13.3] | overlap 0.898 pic-only 0.102 model-only 0.000 | hue 2.7 deg, 90% within 30
+  same STL bytes: True; same PLY bytes: False
+  share of the picture's plain cut face that is plain in the model: v8 0.987 (78817 px), r9-mesh 0.945 (78817 px)
+cutm-128-off2
+  v8       tris 28268 closed True oriented True pieces 1 vol 28.40 size [100.0, 91.7, 15.3] | overlap 0.802 pic-only 0.017 model-only 0.226 | hue 16.5 deg, 64% within 30
+  r9-mesh  tris 28268 closed True oriented True pieces 1 vol 28.40 size [100.0, 91.7, 15.3] | overlap 0.802 pic-only 0.017 model-only 0.226 | hue 20.2 deg, 60% within 30
+  same STL bytes: True; same PLY bytes: False
+  share of the picture's plain cut face that is plain in the model: v8 0.784 (82593 px), r9-mesh 0.978 (82593 px)
+cutj-128
+  v8       tris 17656 closed True oriented True pieces 1 vol 13.99 size [100.0, 49.0, 17.1] | overlap 0.948 pic-only 0.023 model-only 0.030 | hue 10.1 deg, 78% within 30
+  r9-mesh  tris 17656 closed True oriented True pieces 1 vol 13.99 size [100.0, 49.0, 17.1] | overlap 0.948 pic-only 0.023 model-only 0.030 | hue 10.2 deg, 77% within 30
+  same STL bytes: True; same PLY bytes: False
+  share of the picture's plain cut face that is plain in the model: v8 0.918 (72861 px), r9-mesh 0.952 (72861 px)
+cutr-128
+  v8       tris 27664 closed True oriented True pieces 1 vol 27.33 size [100.0, 84.5, 19.3] | overlap 0.961 pic-only 0.017 model-only 0.023 | hue 6.2 deg, 85% within 30
+  r9-mesh  tris 27664 closed True oriented True pieces 1 vol 27.33 size [100.0, 84.5, 19.3] | overlap 0.961 pic-only 0.017 model-only 0.023 | hue 5.5 deg, 86% within 30
+  same STL bytes: True; same PLY bytes: False
+  share of the picture's plain cut face that is plain in the model: v8 0.915 (84517 px), r9-mesh 0.973 (84517 px)
+cutp-128
+  v8       tris 25404 closed True oriented True pieces 1 vol 18.98 size [100.0, 91.3, 13.1] | overlap 0.959 pic-only 0.023 model-only 0.019 | hue 12.6 deg, 63% within 30
+  r9-mesh  tris 25404 closed True oriented True pieces 1 vol 18.98 size [100.0, 91.3, 13.1] | overlap 0.959 pic-only 0.023 model-only 0.019 | hue 11.1 deg, 67% within 30
+  same STL bytes: True; same PLY bytes: False
+  share of the picture's plain cut face that is plain in the model: v8 0.061 (165 px), r9-mesh 0.042 (165 px)

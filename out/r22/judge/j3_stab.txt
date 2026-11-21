@@ -1,0 +1,55 @@
+== A. one step under the glass: 200,000 random points of the cube -1.5..1.5
+oneplane  turned inside out 0.0 % | keeps shapes (longest/shortest stretch under 1.25, not inside out) 32.3 % | median ratio 1.55 | length squared to 2e-15
+along     turned inside out 44.5 % | keeps shapes (longest/shortest stretch under 1.25, not inside out) 21.4 % | median ratio 1.69 | length squared to 4e-15
+lathe     turned inside out 49.9 % | keeps shapes (longest/shortest stretch under 1.25, not inside out) 7.4 % | median ratio 1.83 | length squared to 2e-15
+
+== B. one plane: longest / shortest stretch by height angle above the flat page; formula (1 + sin^2 L) / cos L
+height angle  0.0: measured 1.000, formula 1.000
+height angle 22.5: measured 1.241, formula 1.241
+height angle 45.0: measured 2.121, formula 2.121
+height angle 67.5: measured 4.844, formula 4.844
+
+== C. along beside its slanted page: stretch off the page / stretch in the page; formula 2 cos t - 1
+t =  10: slanted page 0.9696 (formula 0.9696) | flat page 1.0000
+t =  40: slanted page 0.5321 (formula 0.5321) | flat page 1.0000
+t =  60: slanted page -0.0000 (formula 0.0000) | flat page 1.0000
+t =  90: slanted page -1.0000 (formula -1.0000) | flat page 1.0000
+t = 120: slanted page -2.0000 (formula -2.0000) | flat page 1.0000
+t = 150: slanted page -2.7321 (formula -2.7321) | flat page 1.0000
+t = 170: slanted page -2.9696 (formula -2.9696) | flat page 1.0000
+
+== D. bud shapes round the left body of the basilica (ring through the side bud, 300 steps): thick round the axis against long along x
+along     bud at   0.00 deg: round the axis 0.0672, along x 0.0612, outward 0.0752 | long : thick 0.91
+along     bud at  26.88 deg: round the axis 0.0408, along x 0.0601, outward 0.0741 | long : thick 1.47
+along     bud at  45.00 deg: round the axis 0.0214, along x 0.0612, outward 0.0752 | long : thick 2.86
+along     bud at  63.12 deg: round the axis 0.0408, along x 0.0601, outward 0.0741 | long : thick 1.47
+along     bud at  90.00 deg: round the axis 0.0672, along x 0.0612, outward 0.0752 | long : thick 0.91
+oneplane  bud at   0.00 deg: round the axis 0.0676, along x 0.0612, outward 0.0752 | long : thick 0.91
+once      bud at   0.00 deg: round the axis 0.0726, along x 0.0612, outward 0.0752 | long : thick 0.84
+once      bud at  26.75 deg: round the axis 0.0449, along x 0.0609, outward 0.0752 | long : thick 1.36
+pulled    bud at   0.00 deg: round the axis 0.1032, along x 0.0612, outward 0.0752 | long : thick 0.59
+pulled    bud at  90.00 deg: round the axis 0.0368, along x 0.0612, outward 0.0752 | long : thick 1.66
+
+== E. the eight buds of the middle body (ring through the top bud): round the axis against along x
+along     bud at   0.0 deg: round the axis 0.1374, along x 0.1329
+along     bud at  45.0 deg: round the axis 0.1353, along x 0.1329
+along     bud at  90.0 deg: round the axis 0.1374, along x 0.1329
+oneplane  bud at   0.0 deg: round the axis 0.1470, along x 0.1329
+once      bud at   0.0 deg: round the axis 0.1524, along x 0.1329
+once      bud at  45.0 deg: round the axis 0.1454, along x 0.1398
+once      bud at  90.0 deg: round the axis 0.1377, along x 0.1461
+pulled    bud at   0.0 deg: round the axis 0.1959, along x 0.1329
+pulled    bud at  90.0 deg: round the axis 0.1557, along x 0.1329
+
+== F. along against the lathe and against one plane as moves: angle between the two images of one point, seen from 0
+along against lathe    : largest 36.6, median 10.9 degrees
+along against oneplane : largest 179.8, median 34.6 degrees
+
+== G. the rabbit: the line straight above the meeting point under along; which heights are inside (300 steps)
+along     inside  869 of 1600 heights; runs longer than 0.01: 0.030..0.107 0.327..0.599
+oneplane  inside    0 of 1600 heights; runs longer than 0.01: 
+lathe     inside 1205 of 1600 heights; runs longer than 0.01: 0.001..0.564 0.737..0.766
+
+== H. rabbit volumes and overlap, 300,000 random points, 100 steps
+inside: along 14951, lathe 13590, one plane 4052 | of along's: in the lathe's 68.6 %, in one plane's 27.0 % | of one plane's in along's 99.7 %
+done 3 s

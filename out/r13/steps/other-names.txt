@@ -1,0 +1,12 @@
+PIN
+PIN_KEY
+PIN_MIN_H
+PIN_MOST
+PIN_ROOM
+pinEditing
+pinInit
+pinSave
+pinSmall
+pinSoon
+pinStuck
+pinUpdate

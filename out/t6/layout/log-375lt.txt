@@ -1,0 +1,13 @@
+[375lt] opened, idle=True after 3 s
+[375lt] m3d: idle=True 0s  vw=375 scrollW=375 pageH=18092  offside=0 cut=0 squeezed=2 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=0 stageClash=0 covered=21.8% bands=26  set=null
+[375lt] j3d: idle=True 1s  vw=375 scrollW=375 pageH=18676  offside=0 cut=0 squeezed=2 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=1 stageClash=0 covered=21.9% bands=27  set=null
+[375lt] k3d: idle=True 0s  vw=375 scrollW=375 pageH=16961  offside=0 cut=0 squeezed=3 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=0 stageClash=0 covered=21.9% bands=25  set=null
+[375lt] m2d: idle=True 0s  vw=375 scrollW=375 pageH=17184  offside=0 cut=1 squeezed=1 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=0 stageClash=0 covered=17.4% bands=25  set=null
+[375lt] j2d: idle=True 0s  vw=375 scrollW=375 pageH=17768  offside=0 cut=1 squeezed=1 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=0 stageClash=0 covered=17.4% bands=26  set=null
+[375lt] k2d: idle=True 0s  vw=375 scrollW=375 pageH=16052  offside=0 cut=1 squeezed=2 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=0 stageClash=0 covered=17.5% bands=24  set=null
+[375lt] jx3d: idle=True 5s  vw=375 scrollW=375 pageH=19464  offside=0 cut=0 squeezed=3 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=1 stageClash=0 covered=21.9% bands=28  set={"del": true, "found": false, "sel": "A point with a fairly long name, to see", "note": "Extreme ranges are on. Dials marked wide reach far past their usual limits, and pictures can get very slow."}
+[375lt] jfound: idle=True 3s  vw=375 scrollW=375 pageH=18802  offside=0 cut=0 squeezed=3 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=1 stageClash=0 covered=21.9% bands=27  set={"found": true, "sel": "Cracked Basilica", "note": "The Basilica pushed a little off the x-axis. With one plane it stays a smooth Basilica. The cracks of the name belong to the earlier version: set Planes to 2 under Sphere inversions."}
+[375lt] kx3d: idle=True 3s  vw=375 scrollW=375 pageH=17886  offside=0 cut=0 squeezed=4 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=0 stageClash=0 covered=21.9% bands=26  set={"sel": "Leaning 30° with the third map, sphere moved across and in depth", "n": 35, "note": "The leaning group with the third map on, turned out from a narrow gap one unit back. One pearl comes out large in front of a disc with round windows.", "warn": ""}
+[375lt] m2dx: idle=True 0s  vw=375 scrollW=375 pageH=17433  offside=0 cut=1 squeezed=1 overlap=0 txt/ctrl=3 txt/txt=5 noName=0 lowContrast=0 stageClash=0 covered=17.4% bands=26  set={"inMode": true, "inPal": true, "inRev": true, "edge": true, "glow": true}
+[375lt] jobs-done: offside=0 cut=0 squeezed=2 overlap=0 lowContrast=0 bands=29
+[375lt] page problems: 0

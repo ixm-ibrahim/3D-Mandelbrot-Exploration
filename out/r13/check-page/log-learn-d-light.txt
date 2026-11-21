@@ -1,0 +1,66 @@
+=== session learn-d-light: dist/r13-check-page.html 1400x950 light mobile=False dsf=1
+  PASS  Learn on by a click: S.learn, class, radio, S.mode kept  | {"learn": true, "mode": "m", "cls": "is-learn", "radio": true}
+  PASS  Learn panel is first among the sections  | learnPanel
+  PASS  what should be put away is put away  | []
+  PASS  what should stay is on show  | []
+  PASS  picture and transport fit in the window  | [[76, 173, 940, 872], [76, 173, 940, 686], [76, 694, 940, 872], 950, 1400]
+  PASS  opens on the 2D page with moves Turn, Stretch, Add c  | ["Turn", "Stretch", "Add c"]
+  PASS  Play starts the move and the button reads Pause  | [true, 0.44085000000596036, "Pause"]
+  PASS  Pause holds the place  | [0.6825500000059603, [0.6825500000059603, false, "Play"]]
+  PASS  Play runs through all moves and stops  | [3.3, 2, 1, "Step 1 is done: z went from (0.70, 0.40) to (−0.07, 0.86). Press Next step to go on from there."]
+  PASS  Next step goes on from the new point  | [1, [-0.07000000000000006, 0.8599999999999999, 0], [-0.07000000000000006, 0.8599999999999999, 0]]
+  PASS  Back one move from the end stands at the start of the last move  | [2, 0, false]
+  PASS  Back again goes one move further back  | [1, 0]
+  PASS  Forward plays one move and stops at its end  | [2, 1, 1]
+  PASS  Start again goes back to the first point  | [0, 0, 0]
+  PASS  dragging the slider to the middle stands in the second move  | [1, 0.5, [1930850748, 97912], [916503615, 22502]]
+  PASS  dragging the slider back goes back  | [0, 0.585]
+  PASS  arrow keys on the slider move it  | [0.585, 0.595]
+  PASS  pressing a move name under the slider plays that move  | [2, 1]
+  PASS  1D: space 1, hidden direction ticked at first, only the x dials  | {"space": 1, "hidden": true, "box": true, "dials": ["learn-zx", "learn-cx"], "moves": ["Turn", "Stretch", "Add c"], "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture.", "hn": "The line is seen at a slant, lying in the faint sheet the number swings through. The line itself does not have that direction. The dashed line standing on the sheet is the hinge of the swing.", "notice": "On a line a number leans one of two ways from the positive side: 0° or 180°. Doubling 180° gives 360°, which is 0° again. That is why a negative number times itself is positive. To get there the point swings through a direction the line does not have."}
+  PASS  1D mid-turn: the negative number is off the line (hidden direction)  | [[-7.347880794884119e-17, -1.2, 0], "A negative number leans 180° from the positive side. Squaring doubles it to 360°, a full turn: the point swings through a direction the line does not have and lands on the positive side."]
+  PASS  unticking the box gives the flat line  | [false, "This is all the line can show: the number slides to 0 and comes out on the other side. Tick the box to see the swing that does it."]
+  PASS  1D: dragging the ring moves z along the line, the dial follows  | [[-1.2, 0, 0], [[-0.98, 0, 0], "-0.98"], 267.86354623470254]
+  PASS  2D flat: dragging the ring moves z  | [[0.7, 0.4, 0], [[0.95, 0.6, 0], "0.95", "0.6"], 202.5433241850303]
+  PASS  2D flat: dragging the diamond moves c  | [[-0.4, 0.3, 0], [[-0.63, 0.15, 0], "-0.63", "0.15"]]
+  PASS  the dials set z and c  | [[0.5, -0.25, 0], [0.1, 0.15, 0]]
+  PASS  Start at 0 puts z at 0 and the sentences still read  | [[0, 0, 0], ["The point is at the origin. It has no direction, so there is nothing to turn.", "The point is at the origin: its length is 0, and 0 squared is still 0. It stays.", "Add c: the point moves by (0.10, 0.15), from (0.00, 0.00) to (0.10, 0.15)."]]
+  PASS  Use the c of the Julia tab copies it (flat part)  | [[-1, 0, 0], [-1, 0, 0]]
+  FAIL  Show: all directions gives dots on the unit circle  | ["point", 0]
+  PASS  Show: the point alone  | ["point", 0]
+  PASS  a move button in the panel plays that move  | [[true, 1], 2]
+  PASS  tipped 2D: a drag turns the view and moves no point  | [[-0.5, 0.55, 1, false], [-1.3, 0.8499999999999999, [0.7, 0.4, 0], true]]
+  PASS  the wheel zooms the Learn picture, not the solid behind it, and does not scroll  | [[1.4333294145603401, 5.2, 0], [5.2, 0]]
+  PASS  Reset view puts the view back and the button goes  | [-0.5, 1, false]
+  PASS  keys on the picture: arrow turns, plus zooms, space plays and pauses  | [[-0.4, 1.15, true], false]
+  PASS  3D: no hidden direction box, three dials per point  | {"space": 3, "box": false, "dials": 6, "hn": "In space no direction is hidden: the hinge of a turn is a line you can see. The ", "moves": ["Turn", "Lean", "Stretch", "Add c"]}
+  PASS  3D: a drag turns the view  | [[-0.2709341496011341, 0.4], [0.429065850398866, 0.19999999999999993, [0.6, 0.3, 0.4]]]
+  PASS  Reset this section puts Learn's settings back and stays in Learn  | [true, 2, [0.7, 0.4, 0], [-0.4, 0.3, 0], "circle", 0, "normal", {"1": true, "2": false}]
+  PASS  Learn off: the solid, its camera and its status line are as before  | ["Done: 12 passes at 862 × 701", "Done: 12 passes at 862 × 701", "-0.4,0.45,5.2", "-0.4,0.45,5.2", [false, "", true, true, false]]
+  PASS  3D Sphere inversions, one plane (mercator): moves Turn, Lean, Stretch, Add c  | {"check": 2.6766507790745728e-16, "bad": [], "inks": [16593, 49171]}
+  PASS  3D Sphere inversions, two planes (fold): moves Fold, Turn, Lean, Stretch, Add c  | {"check": 1.1102230246251565e-16, "bad": [], "inks": [17464, 52489]}
+  PASS  3D Quaternion square (Lathe) (lathe): moves Turn, Stretch, Add c  | {"check": 0, "bad": [], "inks": [17265, 89949]}
+  PASS  3D Quaternion square, twisted (tilt): moves Turn, Turn back, Stretch, Add c  | {"check": 3.3306690738754696e-16, "bad": [], "inks": [17411, 83487]}
+  PASS  3D Mandelbulb (bulb): moves Turn, Lean, Stretch, Add c  | {"check": 2.3714374201337736e-16, "bad": [], "inks": [16208, 75396]}
+  PASS  3D Mandelbulb, classic (classic): moves Turn, Lean, Stretch, Add c  | {"check": 1.2412670766236366e-16, "bad": [], "inks": [21357, 78094]}
+  PASS  3D Split (split): moves Turn, Stretch, Height, Add c  | {"check": 2.7755575615628914e-16, "bad": [], "inks": [17043, 43692]}
+  PASS  3D Blended planes (softfold): moves Turn, Stretch, Add c  | {"check": 1.594436429147036e-16, "bad": [], "inks": [16442, 75452]}
+  PASS  3D Bulbs about the axis (axisbulb): moves Turn, Stretch, Add c  | {"check": 0, "bad": [], "inks": [16350, 77376]}
+  PASS  3D Pillow (pillow): moves Turn, Stretch, Add c  | {"check": 1.1102230246251565e-16, "bad": [], "inks": [17148, 75095]}
+  PASS  power 3 while Learn is on: the sentence and the result change  | ["The point’s longitude, its angle around the z-axis, is 27°. Squaring doubles it to 53°: the point turns by 27° about the z-axis.", "The point’s longitude, its angle around the z-axis, is 27°. Cubing triples it to 80°: the point turns by 53° about the z-axis."]
+  PASS  an approach dial (Latitude phase 30) changes the result  | [[-0.3036, 0.1802, 0.576], [-0.34569242574522, -0.051308341598709895, 0.5021657863026436], ["Turn", "Lean", "Stretch", "Add c"]]
+  PASS  the modifier flip z adds a first move Mirror  | [["Mirror", "Turn", "Lean", "Stretch", "Add c"], [0, 1], "The modifier flip z is ticked, so before anything else z goes from 0.40 to −0.40, straight through 0."]
+  PASS  a point that runs away says so and Next step is off  | [true, "Step 1 is done: z went from (2.50, 2.00) to (3.25, 11.00). The point has run away: it is now more than 8 from the centre. Press Start again, or pick another point.", true]
+  PASS  with another equation the Learn panel says it shows the plain rule  | ["z^n + c", "z^n + c + 0.1", true, "The equation is not zⁿ + c just now. Learn shows the plain rule zⁿ + c."]
+  PASS  keyboard: arrow left from Learn chooses Kleinian and leaves Learn  | ["mode-k", "k", false, "", true]
+  PASS  keyboard: arrow right from Kleinian chooses Learn; Approach, Equation, Modifiers show although Kleinian hides them  | ["mode-l", "k", true, true, true, true, true, false, ["Turn", "Stretch", "Add c"]]
+  PASS  keyboard: arrow right from Learn wraps to Mandelbrot  | ["mode-m", "m", false]
+  PASS  keyboard: Julia  | ["mode-j", "j", false]
+  PASS  keyboard: back round to Learn  | ["mode-l", "m", true]
+  PASS  Reset everything leaves Learn, resets it and the lab, and draws the solid  | [false, "m", "", 2, "circle", 0, [0.7, 0.4, 0], 2, "z^n + c", "mercator", true, true, "Done: 12 passes at 862 × 701"]
+  PASS  Julia by click still works  | ["j", false, true]
+  PASS  Kleinian by click still works  | ["k", false, true]
+  PASS  Mandelbrot by click still works  | ["m", false, true]
+  resetAll() from code while Learn is on (typeof, S.learn, class): ["function", true, "is-learn"]
+FAILS (1): ["Show: all directions gives dots on the unit circle"]
+no console errors in learn-d-light

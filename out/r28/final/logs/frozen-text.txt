@@ -1,0 +1,5 @@
+GL_BALLS in base20a: 5938 characters, md5 363b6d5da23db5ad265c80c07e98a04b
+GL_BALLS in the overlay: 5938 characters, md5 363b6d5da23db5ad265c80c07e98a04b
+the same to the byte: True
+GL_BALLS_RHO (the program for a smaller second sphere): 6626 characters
+GL_BALLS text found in the frozen page: True; in the final page: True

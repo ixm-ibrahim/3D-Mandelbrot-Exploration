@@ -1,0 +1,1 @@
+views 42 | eye to the nearest solid point: least -1, quarter 0.0978, middle 0.783, most 5.13 | closer than 0.2: 13, closer than 0.05: 10 | settings where the two spheres touch: 9 | page own measure worst over the views: 26.1 px, views with it over 2 px: 2

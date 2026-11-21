@@ -1,0 +1,41 @@
+<<<<
+    // With no neighbouring orbits the estimate can read many times too short. That mode therefore trusts
+    // only its sign: a hit is a crossing, and gauge (how much too short, measured at the hit) scales the
+    // estimate back up for the shadow and crevice queries.
+====
+    // With no neighbouring orbits the estimate can read many times too short, by a factor nobody knows.
+    // That mode therefore trusts the sign of the estimate and how fast it falls along the ray, not its
+    // size: "ahead" is where the straight line through the last two points outside reaches zero. And gauge
+    // (how much too short, measured at the hit) scales the estimate back up for the shadow and crevice queries.
+>>>>
+<<<<
+        float tol = rough ? 0.0 : e;
+        bool conv = false;
+====
+        float tol = rough ? 0.0 : e, ahead = d;
+        if (rough) ahead = dOut > d && dOut < 4.0 * d ? d * (t - tOut) / (dOut - d) : 1e9;
+        bool conv = false;
+>>>>
+<<<<
+        } else if (d < tol) conv = true;
+        else {
+          float stride = d * uStepK;
+          if (rough){
+            // the straight line through the last two points outside says how far the surface really is
+            if (dOut > d) stride = clamp(0.9 * d * (t - tOut) / (dOut - d), stride, (d < 2.0 * e ? 8.0 : 3.0) * stride);
+            stride = max(stride, 0.5 * e);
+          }
+          tOut = t; dOut = d; t += empty ? leave : min(stride, leave);
+        }
+====
+        } else if (d < tol || ahead < e) conv = true;
+        else {
+          float stride = d * uStepK;
+          if (rough){
+            // stride toward where the surface seems to be, within limits: a long stride can jump a thin sheet
+            if (ahead < 1e8) stride = clamp(0.9 * ahead, stride, (d < 2.0 * e ? 8.0 : 3.0) * stride);
+            stride = max(stride, 0.5 * e);
+          }
+          tOut = t; dOut = d; t += empty ? leave : min(stride, leave);
+        }
+>>>>

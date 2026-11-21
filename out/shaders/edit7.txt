@@ -1,0 +1,17 @@
+<<<<
+    // The centre of a mosaic cell, asked as a point of the ordinary picture. A looser test than the picture's
+    // own (half the steps) also keeps the cells just outside, whose Julia sets have only begun to fall apart.
+    q = gCell; n = 0;
+    if (!swap) its = max(2, (uIter + 1) / 2);
+====
+    // The centre of a mosaic cell, asked as a point of the ordinary picture. A looser test than the picture's
+    // own (half the steps) also keeps the cells just outside, whose Julia sets have only begun to fall apart.
+    // The flat view can afford to be looser still: nothing hides anything there, and dust is cheap to draw.
+    q = gCell; n = 0;
+    if (!swap) its = uFlat > 0.5 ? min(3, uIter) : max(2, (uIter + 1) / 2);
+>>>>
+<<<<
+      float skip = 0.5 * d - 1.4 * uMosaic;
+====
+      float skip = gPowerLaw ? 0.5 * d - 1.4 * uMosaic : 0.0;
+>>>>

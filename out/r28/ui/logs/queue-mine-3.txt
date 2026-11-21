@@ -1,0 +1,6 @@
+waiting 12:47:09
+started 12:49:29
+again6b: exit 0 12:52:29
+f1 wide dark, whole, second run: exit 0 12:56:50
+f1 phone dark, second run: exit 1 13:14:16
+exit: all done 13:14:18

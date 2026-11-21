@@ -1,0 +1,38 @@
+step 1 waited 1.5 s
+step 2 result: "s01-m-shell-glow-bal"
+step 4 waited 3.0 s
+step 4 wrote out/r5/speed/sol-i/s01-m-shell-glow-bal.png
+step 5 result: "s02-m-shell-glow-fast"
+step 7 waited 0.0 s
+step 7 wrote out/r5/speed/sol-i/s02-m-shell-glow-fast.png
+step 8 result: "s03-m-shell-glow-ultra"
+step 10 waited 0.0 s
+step 10 wrote out/r5/speed/sol-i/s03-m-shell-glow-ultra.png
+step 11 result: "s04-j-shell-glow-fast"
+step 13 waited 0.0 s
+step 13 wrote out/r5/speed/sol-i/s04-j-shell-glow-fast.png
+step 14 result: "s05-j-shell-glow-ultra"
+step 16 waited 0.0 s
+step 16 wrote out/r5/speed/sol-i/s05-j-shell-glow-ultra.png
+step 17 result: "s06-j-cross-added-bal"
+step 19 waited 0.3 s
+step 19 wrote out/r5/speed/sol-i/s06-j-cross-added-bal.png
+step 20 result: "s07-j-cross-added-fast"
+step 22 waited 0.3 s
+step 22 wrote out/r5/speed/sol-i/s07-j-cross-added-fast.png
+step 23 result: "s08-j-cross-bands-ultra"
+step 25 waited 0.0 s
+step 25 wrote out/r5/speed/sol-i/s08-j-cross-bands-ultra.png
+step 26 result: "s13-j-ring-blend-fine"
+step 28 waited 1.0 s
+step 28 wrote out/r5/speed/sol-i/s13-j-ring-blend-fine.png
+step 29 result: "s14-m-shell-step-fast"
+step 31 waited 0.0 s
+step 31 wrote out/r5/speed/sol-i/s14-m-shell-step-fast.png
+step 32 result: "s15-j-shell-glow-bal"
+step 34 waited 0.3 s
+step 34 wrote out/r5/speed/sol-i/s15-j-shell-glow-bal.png
+step 35 result: "s16-j-shell-added-ultra"
+step 37 waited 0.0 s
+step 37 wrote out/r5/speed/sol-i/s16-j-shell-added-ultra.png
+no console errors

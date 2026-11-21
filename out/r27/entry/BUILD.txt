@@ -1,0 +1,10 @@
+Round 27, entry: how the test page is built (run from the project root; put your own name after --name).
+
+python build.py --name r27-entry --base base18a --swap js/00-core.js=out/r27/entry/overlay/js/00-core.js js/25-colour.js=out/r27/entry/overlay/js/25-colour.js js/32-balls.js=out/r27/entry/overlay/js/32-balls.js js/40-render.js=out/r27/entry/overlay/js/40-render.js js/46-mesh.js=out/r27/entry/overlay/js/46-mesh.js js/50-camera.js=out/r27/entry/overlay/js/50-camera.js js/75-presets.js=out/r27/entry/overlay/js/75-presets.js js/80-ui.js=out/r27/entry/overlay/js/80-ui.js js/90-boot.js=out/r27/entry/overlay/js/90-boot.js css/86-balls.css=out/r27/entry/overlay/css/86-balls.css body.html=out/r27/entry/overlay/body.html
+
+The frozen page to compare with:
+
+python build.py --name r27-base --base base18a
+
+Overlay files (11): js/00-core.js, js/25-colour.js, js/32-balls.js (new), js/40-render.js, js/46-mesh.js, js/50-camera.js,
+js/75-presets.js, js/80-ui.js, js/90-boot.js (from src/, lines added only), css/86-balls.css (new), body.html.

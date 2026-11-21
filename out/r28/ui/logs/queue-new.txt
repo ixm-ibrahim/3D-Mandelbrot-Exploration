@@ -1,0 +1,10 @@
+set new, started 12:04:38
+r26 use.js                 exit 0, 43 s, no console errors
+r26 spot.js                exit 0, 17 s, no console errors
+r26 phone.js               exit 0, 56 s, no console errors
+r27 verd.py                exit 0, 12 s, no console errors
+r27 shape.py               exit 0, 22 s, no console errors
+r27 same6.py               exit 0, 58 s, no console errors
+r27 flat.py                exit 0, 13 s, no console errors
+r27 holes.py               exit 0, 564 s, no console errors
+exit: the set is done at 12:17:41

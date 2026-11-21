@@ -1,0 +1,16 @@
+1. Pulled plane rabbit against the one-plane rabbit, 300000 random points, 80 steps: inside 5362 and 4654, in one but not the other 718 = one in 7.5 of the Pulled plane inside (13.4 % of the union)
+2. Pulled plane, Siegel disc: stay 30 / 200 / 400 steps: 16760 / 14309 / 14309; lost between 30 and 200: 14.6 %; between 200 and 400: 0.0 %
+3. rabbit c turned 10 degrees: Pulled plane stay 40 / 80 / 300: 73 / 0 / 0; Along once: 1 / 0 / 0
+3. rabbit c turned 30 degrees: Pulled plane stay 40 / 80 / 300: 0 / 0 / 0; Along once: 0 / 0 / 0
+3. rabbit c turned 45 degrees: Pulled plane stay 40 / 80 / 300: 0 / 0 / 0; Along once: 0 / 0 / 0
+3. rabbit c turned 90 degrees: Pulled plane stay 40 / 80 / 300: 5446 / 5426 / 5426; Along once: 0 / 0 / 0
+4. Pulled plane, c = (-1.0, 0.2, 0.0), the plane y = 0 (264000 points): stay 80 steps 23392; of them off the x-axis by more than 0.02: 21684
+4. Pulled plane, c = (-1.0, 0.0, 0.0), the plane y = 0 (264000 points): stay 80 steps 40128; of them off the x-axis by more than 0.02: 37012
+4. Pulled plane, c = (-1.0, 0.05, 0.0), the plane y = 0 (264000 points): stay 80 steps 36152; of them off the x-axis by more than 0.02: 33304
+5. Pulled plane, Mandelbrot, 60 steps, 84000 places: the plane y = 0 against the flat set: 104 differ (flat inside 19742); the plane z = 0: 0 differ
+5. Pulled plane, Mandelbrot, 200 steps, 84000 places: the plane y = 0 against the flat set: 92 differ (flat inside 19094); the plane z = 0: 0 differ
+6. Pulled plane rabbit, second dial at 1: inside 4917 against 5362 with the dials where they start (92 % of it)
+6. Pulled plane rabbit, second dial at 0.5: inside 5569 against 5362 with the dials where they start (104 % of it)
+6. Pulled plane rabbit, third dial at 4: inside 6423 against 5362 with the dials where they start (120 % of it)
+7. Along once, c = -1: "one step of along, then in the one-plane solid" against the entry itself, 300000 points: 0 differ (inside 7504)
+7. Along once, rabbit: "one step of along, then in the one-plane solid" against the entry itself, 300000 points: 0 differ (inside 7126)

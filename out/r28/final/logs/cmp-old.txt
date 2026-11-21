@@ -1,0 +1,32 @@
+ROUND 26
+use.js on the final page: 13 result lines, exit 0: True, "no console errors": True
+   against the lines kept for Version 20: 11 of 13 result lines the same word for word
+      step 3 differs from character 43:
+         final page: ...{"afterSpace": {"playing": true, "pos": 0.73}, "afterSecondSpace": {"playing": false, "pos": 0.73}, "cBefore": [-0.4, 0.3, 0], "cAfterRightAndU
+         other:      ...{"afterSpace": {"playing": true, "pos": 0.74}, "afterSecondSpace": {"playing": false, "pos": 0.74}, "cBefore": [-0.4, 0.3, 0], "cAfterRightAndU
+      step 6 differs from character 39:
+         final page: ...{"during": {"playing": true, "pos": 1.2}, "away": {"learnOn": false, "shapeOn": false, "barHidden": true, "glHidden": true, "bodyClass": ""
+         other:      ...{"during": {"playing": true, "pos": 1.21}, "away": {"learnOn": false, "shapeOn": false, "barHidden": true, "glHidden": true, "bodyClass": "
+   against the dial checker's run before the repairs: 12 of 13 result lines the same word for word
+      step 3 differs from character 43:
+         final page: ...{"afterSpace": {"playing": true, "pos": 0.73}, "afterSecondSpace": {"playing": false, "pos": 0.73}, "cBefore": [-0.4, 0.3, 0], "cAfterRightAndU
+         other:      ...{"afterSpace": {"playing": true, "pos": 0.71}, "afterSecondSpace": {"playing": false, "pos": 0.71}, "cBefore": [-0.4, 0.3, 0], "cAfterRightAndU
+spot.js on the final page: 3 result lines, exit 0: True, "no console errors": True
+   against the lines kept for Version 20: 3 of 3 result lines the same word for word
+   against the dial checker's run before the repairs: 3 of 3 result lines the same word for word
+phone.js on the final page: 12 result lines, exit 0: True, "no console errors": True
+   against the lines kept for Version 20: 11 of 12 result lines the same word for word
+      step 13 differs from character 16:
+         final page: ...{"seconds": 24.68, "frames": 1481, "gapsOver34": 1, "says": ["Two big balls. Left: each point is tried as the number
+         other:      ...{"seconds": 24.65, "frames": 1374, "gapsOver34": 1, "says": ["Two big balls. Left: each point is tried as the number
+   against the dial checker's run before the repairs: 11 of 12 result lines the same word for word
+      step 13 differs from character 16:
+         final page: ...{"seconds": 24.68, "frames": 1481, "gapsOver34": 1, "says": ["Two big balls. Left: each point is tried as the number
+         other:      ...{"seconds": 24.62, "frames": 1478, "gapsOver34": 0, "says": ["Two big balls. Left: each point is tried as the number
+
+ROUND 27
+verd.py on the final page: 10 lines; the dial checker's run before the repairs: 10 lines; the same letter for letter (page names apart): 10; "no console errors" in mine: True
+shape.py on the final page: 17 lines; the dial checker's run before the repairs: 17 lines; the same letter for letter (page names apart): 17; "no console errors" in mine: True
+same6.py on the final page: 21 lines; the dial checker's run before the repairs: 21 lines; the same letter for letter (page names apart): 21; "no console errors" in mine: True
+flat.py on the final page: 5 lines; the dial checker's run before the repairs: 5 lines; the same letter for letter (page names apart): 5; "no console errors" in mine: True
+holes.py on the final page: 12 lines; the dial checker's run before the repairs: 12 lines; the same letter for letter (page names apart): 12; "no console errors" in mine: True

@@ -1,0 +1,8 @@
+face:m6 1/2       2d 1.236 | column: top 0.000, inside length 0.008, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.087 (block 0.0081) | 26 s
+face:m6 1/2root   2d 1.000 | column: top 0.000, inside length 0.016, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.042 (block 0.0081) | 124 s
+face:m6 1/3       2d 1.107 | column: top 0.000, inside length 0.020, lowest escape 0.004 | disc top 0.020 | neck / body: 0.011 / 0.098, 0.011 / 0.134 (block 0.0081) | 177 s
+face:m6 1/3near   2d 1.050 | column: top 0.000, inside length 0.032, lowest escape 0.004 | disc top 0.020 | neck / body: 0.056 / 0.110, 0.063 / 0.130 (block 0.0081) | 291 s
+face:m6 1/4       2d 1.061 | column: top 0.000, inside length 0.188, lowest escape 0.004 | disc top 0.016 | neck / body: 0.018 / 0.076, 0.016 / 0.083, 0.016 / 0.115 (block 0.0081) | 336 s
+face:m6 in120     2d 0.920 | column: top 0.040, inside length 0.452, lowest escape 0.044 | disc top 0.108 |  | 337 s
+face:m6 in180     2d 0.844 | column: top 0.056, inside length 0.252, lowest escape 0.06 | disc top 0.180 |  | 337 s
+done face:m6 337 s

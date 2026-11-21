@@ -1,0 +1,5 @@
+Round 28, truth, 1.4 b and c (first half): 3 settings run. Details: logs/bc_<key>.txt
+
+D  neighbours 150, second sphere 33.33 (what typing 150 gives), square            | console clean | twin against my recipe: 0 of 40000 differ | shader against my recipe: flat 0 of 20402, in space 0 of 20480 | shader number > true: 0 of 21278 | ballsEstimate > true: box 0 of 20000, mid 0 of 20000, top 0 of 20000, edge 0 of 20000
+J  neighbours 150, second sphere 50, honeycomb                                    | console clean | twin against my recipe: 0 of 40000 differ | shader against my recipe: flat 0 of 20402, in space 0 of 20480 | shader number > true: 0 of 18681 | ballsEstimate > true: box 0 of 20000, mid 0 of 20000, top 0 of 20000, edge 0 of 20000
+M  neighbours 200, second sphere 50 (they touch), square                          | console clean | twin against my recipe: 0 of 40000 differ | shader against my recipe: flat 0 of 20402, in space 0 of 20480 | shader number > true: 0 of 18726 | ballsEstimate > true: box 0 of 20000, mid 0 of 20000, top 0 of 20000, edge 0 of 20000

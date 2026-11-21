@@ -1,0 +1,24 @@
+1400x950 dark: exit 0; no console errors
+   open menu fits, the row is whole, the list above it shows 14 whole approaches | menu 964,247,1324,938, row 965,886,1323,933
+   Balls on balls on show, Done: 12 passes at 862 × 701; right after the click: picture top 12, choice of group 140, first dial 380 (window 950 high)
+   panel in view
+   fits: 7 new pieces inside the window, none overlapping, no text cut off | window 1400 x 950, stage 862 x 701
+   2D view
+1400x950 light: exit 0; no console errors
+   open menu fits, the row is whole, the list above it shows 14 whole approaches | menu 964,247,1324,938, row 965,886,1323,933
+   Balls on balls on show, Done: 12 passes at 862 × 701; right after the click: picture top 12, choice of group 140, first dial 380 (window 950 high)
+   panel in view
+   fits: 7 new pieces inside the window, none overlapping, no text cut off | window 1400 x 950, stage 862 x 701
+   2D view
+390x800 dark: exit 0; no console errors
+   open menu fits, the row is whole, the list above it shows 7 whole approaches | menu 16,444,374,788, row 17,739,373,785
+   Balls on balls on show, Done: 12 passes at 356 × 288; right after the click: picture top 0, choice of group 442, first dial 682 (window 800 high)
+   panel in view
+   fits: 7 new pieces inside the window, none overlapping, no text cut off | window 390 x 800, stage 356 x 288
+   2D view
+390x800 light: exit 0; no console errors
+   open menu fits, the row is whole, the list above it shows 7 whole approaches | menu 16,444,374,788, row 17,739,373,785
+   Balls on balls on show, Done: 12 passes at 356 × 288; right after the click: picture top 0, choice of group 442, first dial 682 (window 800 high)
+   panel in view
+   fits: 7 new pieces inside the window, none overlapping, no text cut off | window 390 x 800, stage 356 x 288
+   2D view

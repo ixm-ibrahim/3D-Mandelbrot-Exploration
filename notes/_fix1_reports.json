@@ -1,0 +1,733 @@
+{
+ "fix:maths": {
+  "summary": "Maths group: 13 of the 16 items are fixed in my three files, 2 are partly fixed, and p10-1 was left alone as instructed. The final build passes the smoke test (exit 0, no console errors), my own 10-step page check, and the approaches parity page (76 of 76).\n\nWorkspace root for every path below: C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1\n\n- **Split at negative powers (p15-4, p15-3):** the cause was in my files. The old rule took 1/(x + iy) and 1/z side by side, and 1/z has no value on the plane z = 0. That gave the endless floor in Mandelbrot mode, and in Julia mode it made the shader pick the opposite side as solid. A negative power is now the positive power followed by one sphere inversion with a mirror, as in the other four approaches. The solid is bounded, and the 2D slice matches the other approaches pixel for pixel.\n- **The split solid is no longer a prism at negative powers.** That is the price of a bounded picture: side by side, the thrown-out set is unbounded whatever is done at the plane.\n- **Sphere inversions panel:** wording only; the rule and its parameters are untouched. It now says plainly that the slice at z = 0 is the ordinary 2D set. I also added one sentence nobody asked for: \"Slices at other heights are different shapes\", in answer to the user's new remark. Drop or change it when the replacement approach lands.\n- **Scorecard (p15-7):** the card and both step figures now describe the power the equation actually takes, with a one-line note when that differs from the dial. This needed a small addition to the formula parser (`formulaPowers`).\n- **Presets:** the comment above `PRESETS` and notes/fix-maths.md mark `name`, `eq`, `z0`, `note` as the preset and `target`, `dist`, `yaw`, `pitch`, `cut`, `julia` as suggestions only.\n\nNot fixed inside my files: the Julia-mode framing of `z² + c·z⁻²` needs the camera file, and the Julia-mode noise of `z⁻ⁿ + c` is engine defect p15-2.\n\nNotes are in notes/fix-maths.md; scripts, logs and pictures are in out/fix/maths/.",
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/js/10-approaches.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/js/20-formula.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/js/60-measure.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/notes/fix-maths.md"
+  ],
+  "fixed": [
+   {
+    "id": "p15-4",
+    "what": "Split approach at negative powers. Cause: the rule took 1/(x + iy)^n and 1/z^n side by side, and 1/z^n blows up near the plane z = 0, so the whole slab |z| < 1/8 counted as thrown out (the floor). MATH.split and the shader pw in GL_SPLIT now take the positive power and then one sphere inversion with a mirror for n < 0: finite except at the origin, continuous across z = 0, still complex z^n on that plane. Split texts (formula, about, roundNote, crush, smooth, slice) rewritten to match.",
+    "evidence": "Reproduced first: out/fix/maths/before-split-m-n-2.png shows the floor with towers. After: out/fix/maths/after-split-m-n-2.png and sheet-split.png show a bounded solid at n = -2 and -3; Julia n = -3 shows solid pieces where there were hairlines. checks.json step 1: z = 0 against complex z^n for six negative powers, worst relative error 1.8e-15; stepping to z = ±1e-6 moves the result by at most 1.1e-5. tests/approaches.json: 76 of 76, including shader pw() against MATH.split at 9.2e-5 and finite at the origin. Pictures were looked at at Fast quality only."
+   },
+   {
+    "id": "p15-3",
+    "what": "Split 2D slice inverted in Julia mode at n = -3 and -2.5. The cause was in my files: under the old split rule the shader's far-away test point was thrown out after two steps (its z part goes tiny, then huge), so the shader chose the opposite side as solid. With the new rule far points come back to c as under every other approach.",
+    "evidence": "2D slice, Julia c = (-1,0,0), n = -3, split against sphere inversions: 92.9% of pixels differed before (before-split-j-n-3-flat.png vs before-merc-j-n-3-flat.png), 0 differ after (after-split-j-n-3-flat.png vs after-merc-j-n-3-flat.png). n = -2.5 was not rendered."
+   },
+   {
+    "id": "p15-7",
+    "what": "The scorecard and both step figures now describe the power the equation takes, not always the dial's n. 20-formula.js reports the powers a formula takes of z (formulaPowers); 60-measure.js uses cardPower() in updateCard, powerF, drawStep2d and buildStep3d, and shows a note at the top of the card when that power differs from the dial. drawStep3d (already on hooks.view) notices an equation change, since the page does not call refresh() for one.",
+    "evidence": "checks.json steps 2 to 5 on dist/fix-maths.html: under the preset z^-n + c at n = 2 the card reads 'A negative n turns the plane inside out', the note reads 'The equation takes z to the power −2 ... The dial shows n = 2.', the 2D caption says 'Angles are multiplied by −2'; back on z^n + c the note hides and the n = 2 card returns. Picture: out/fix/maths/card-preset-neg.png."
+   },
+   {
+    "id": "text-1",
+    "what": "Sphere inversions 'about' rewritten without symbols: n + 1 inversions about points spaced evenly round the unit circle, added, then one more; Mercator explained in a clause; Kučera kept and shortened.",
+    "evidence": "Panel text printed in out/fix/maths/checks.log step 6 and shown in out/fix/maths/panel-mercator.png (that picture was taken one trim earlier; the log has the final text). checks.json step 1 scans all approach texts for 'n-th roots', 'fold symmetry', braces and dashes: clean."
+   },
+   {
+    "id": "p9-3",
+    "what": "The panel now says: 'Cut the solid at z = 0 and the slice is exactly the ordinary 2D Mandelbrot or Julia set of the same power (the 2D view shows it).' I also added 'Slices at other heights are different shapes.' because of the user's new remark.",
+    "evidence": "out/fix/maths/checks.log step 6."
+   },
+   {
+    "id": "text-2",
+    "what": "Formula line names every symbol on the line (d, inv, ωₖ, Rₖ); 'Mercator latitude' became 'the latitude as a Mercator map stretches it' in the fractional form and in the lift suffix.",
+    "evidence": "checks.log step 6: 'v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))] with d = v/|v| the direction of v, inv a sphere inversion, ωₖ the 2 points spaced evenly round the unit circle, and Rₖ the turn about the z-axis that reaches the k-th of them.' The approaches' own text test (1,035 strings) passes."
+   },
+   {
+    "id": "text-3",
+    "what": "Planes note in plain words with the user's own cases (4 planes for n = 8, 3 for 6, 2 for 4) and 'No value is the correct one'. Merged with p10-2.",
+    "evidence": "checks.log step 6; smoke step 6 still passes (planes dial to 8, play buttons present)."
+   },
+   {
+    "id": "p10-2",
+    "what": "Planes note now says 'Fins come in pairs, so an odd power has no exact match.' The same sentence in the footer belongs to the page group.",
+    "evidence": "checks.log step 6."
+   },
+   {
+    "id": "text-6",
+    "what": "Lift hint says it is this approach's version of the Mandelbulb's latitude phase and to press play; Turn hint says it is the version of the longitude phase.",
+    "evidence": "checks.log step 6 (lift hint visible with two planes). The turn hint is hidden at the default two planes and was read in source only."
+   },
+   {
+    "id": "maths-1",
+    "what": "Turn hint (Sphere inversions) and Longitude phase hint (Mandelbulb) now end with 'Away from 0 the slice at z = 0 is no longer the plain 2D picture: it is that picture turned (Mandelbrot) or a different set (Julia).' The classic Mandelbulb's φ hint was left alone on purpose: its z = 0 slice is not the 2D picture to begin with, and its panel says so.",
+    "evidence": "Shared constant APR_SLICE_TURNS in src/js/10-approaches.js; texts pass the scan in checks.json step 1. Not looked at on screen with one plane."
+   },
+   {
+    "id": "text-7",
+    "what": "aprTurned() no longer prints '(it carries e^{iφ}·zⁿ)'.",
+    "evidence": "checks.json step 1 fails on any brace in any approach text: clean. The sentence itself was not rendered on the card with a turn set."
+   },
+   {
+    "id": "text-11",
+    "what": "Preset names 'zⁿ + c/z (with a division by z)' and 'z² + c·z⁻² (square against division)'; both notes rewritten without 'pole', 'orbit', 'critical orbit'.",
+    "evidence": "Names appear in out/fix/maths/parity.log (preset compile lines); all 8 presets compile (checks.json step 1)."
+   },
+   {
+    "id": "text-12",
+    "what": "Scorecard: 'Only the origin is crushed. That is why following the single point 0 is enough to decide whether c is in the set.' Split about and crush no longer use ℂ × ℝ, commutative or zero divisors. Lathe about says 'the power of a quaternion (a number with three imaginary parts) with one part held at zero'.",
+    "evidence": "out/fix/maths/panel-split.png and card-split-n-2.png; text scan in checks.json step 1 rejects 'critical point', 'zero divisor', 'ℂ', 'commutative'."
+   },
+   {
+    "id": "code-5",
+    "what": "At n = 0 every approach's crush() returns ['no', 'Everything is crushed onto one point.'] and smooth() returns ['ok', 'A constant.'], matching the plane column.",
+    "evidence": "checks.json step 1 (all five approaches, by calling the functions) and steps 9 to 10 on the page for Split: '[fails] Everything is crushed onto one point.' beside 'Everything is crushed onto the single point 1.'"
+   },
+   {
+    "id": "code-6",
+    "what": "flt() writes whole numbers of 1e15 and more as a float literal (1e+15). A typed number above 1e30, or one that overflows, is refused with a plain message.",
+    "evidence": "checks.json step 1: compileFormula('z^n + 1e15') gives '(pw(z, uPow) + vec3(1e+15, 0.0, 0.0))', '1000000000000000*c' gives 'smul(1e+15, c)', and 1e40 gives 'The number 1e40 is too large. Numbers up to 1e30 work.' The shader compile of such a formula was not run."
+   }
+  ],
+  "not_fixed": [
+   {
+    "id": "p10-1",
+    "why": "Ruled out for this round by the task: a replacement rule is being prototyped under out/proto/, and the present approach is kept as an earlier version. Nothing was restructured. The planes note still says the count is a free choice, because in this rule it is."
+   },
+   {
+    "id": "p15-8",
+    "why": "Partly done; the rest cannot be fixed inside my files. The preset z² + c·z⁻² now carries julia: { dist: 4.8 }, and rendered at that distance its Julia set is framed (out/fix/maths/sheet-presets.png, top left, with cam.dist set by hand). Applying it needs src/js/50-camera.js, which still uses the Mandelbrot distance 1.7 in Julia mode. The speckled lump of z⁻ⁿ + c in Julia mode is engine defect p15-2 and fills the frame at any distance, so it has no Julia hint. If the page stops applying camera hints, as the user asked, the framing half goes away by itself."
+   }
+  ],
+  "names_added": [
+   "APR_MIRROR (10-approaches.js): the n = -1 sentence for a rule that is one sphere inversion with a mirror; used by Split",
+   "aprNone() (10-approaches.js): the crush cell at n = 0, ['no', 'Everything is crushed onto one point.']",
+   "aprConstant() (10-approaches.js): the smooth cell at n = 0, ['ok', 'A constant.']",
+   "APR_SLICE_TURNS (10-approaches.js): the sentence the turn and longitude-phase hints end with",
+   "MATH.split(v, n) and shader pw in GL_SPLIT (changed, same names and signatures): for n < 0, the positive power then one sphere inversion with a mirror, (X, -Y, Z)/(X² + Y² + Z²)",
+   "Split roundNote (changed): now a function (p, n), as the contract allows",
+   "aprParse(text, allowZ, n2) -> { code, powers } (20-formula.js): the formula parser; powers holds one function of n, or null, per power taken of z",
+   "formulaPowers(text, n) -> number[] (20-formula.js): the exponents a formula applies to z, as numbers; empty when there are none or it does not parse",
+   "compileFormula (changed, same signature and output): now aprParse(...).code; refuses typed numbers above 1e30",
+   "PRESETS[i].julia (20-formula.js): optional { dist }, a suggested camera distance for Julia mode; only z² + c·z⁻² has one (4.8)",
+   "PRESETS names (changed): 'zⁿ + c/z  (with a division by z)' and 'z² + c·z⁻²  (square against division)'",
+   "cardPower() (60-measure.js): the power the scorecard and step figures describe (first power the equation takes of z, else S.n)",
+   "cardPow (60-measure.js): cache for cardPower, { key, n, several }",
+   "cardRun.pow (60-measure.js): the power the card last described",
+   "#cardPowNote (element created by buildCard): the line saying which power is described when it differs from the dial"
+  ],
+  "needs_from_others": [
+   "src/js/50-camera.js, resetCam(preset): in Julia mode do not apply an equation preset's dist, yaw or pitch (they are tuned for the Mandelbrot solid); use preset.julia.dist when the preset has one. Not needed if the page stops applying camera hints from presets.",
+   "src/js/80-ui.js, the eqPreset change handler: decide which suggestion fields to apply. name, eq, z0 and note are the preset; target, dist, yaw, pitch, cut and julia are suggestions only (table in notes/fix-maths.md section 7).",
+   "src/js/80-ui.js, refresh(): optionally pass cardPower() instead of S.n to x.formula(S.param[x.id], ...) so the approach panel's formula line matches the scorecard under a preset such as z^-n + c.",
+   "src/js/90-boot.js, window.squaringLab: optionally add formulaPowers and cardPower so tests can reach them.",
+   "src/body.html, footer paragraph on planes (about line 193): add 'Fins come in pairs, so an odd power has no exact match.' (the footer half of p10-2).",
+   "src/body.html, about line 176: 'at the current n' could read 'at the power the equation takes'. The card's own note already covers the difference.",
+   "tools/smoke.json (orchestrator): no change needed; it passes as it is."
+  ],
+  "answers_for_user": [
+   "Slicing the Sphere inversions solid away from z = 0: the rule is built so that the slice at z = 0 is exactly the 2D set, and nothing in it promises the same at other heights. I did not change the rule this round, because a replacement is being prototyped separately and will be added as a new approach, with this one kept as an earlier version. The panel now says plainly that z = 0 is the ordinary 2D set and that slices at other heights are different shapes.",
+   "Whether the number of planes should be forced: in this rule it is not. The planes come from a fold added on top of the inversion sum, and the count only sets the number of fins (two per plane), whatever the power is. So it is a free choice here, which is the weakness you spotted; the panel says so and lists your own cases (4 planes for n = 8, 3 for 6, 2 for 4). The replacement approach is where a forced answer would come from.",
+   "Quaternions and the \"use third map\" checkbox: the reciprocal inside the inversion sum is the quaternion reciprocal, but that does not fix a number of planes. The third-map checkbox belongs to the Kleinian view only and has no effect on this approach.",
+   "Presets independent of camera and other settings: for the equation presets, only the formula, its start value and its note are the preset. Camera position and the cut height are now marked as suggestions only, and no preset carries an iteration count, power, quality or colour. Whether the page still applies the suggestions is the page engineer's decision.",
+   "Negative powers under the Split approach: the endless floor and the nearly empty Julia pictures are gone. A negative power there now ends with one sphere inversion, as it does in the other approaches, which gives a bounded solid whose z = 0 slice is still the exact 2D picture. It is no longer a straight extrusion at negative powers."
+  ],
+  "risks": [
+   "The Split solid at negative powers is a new shape. I looked at Mandelbrot n = -2 and -3 and Julia n = -2, -3, -4 at Fast quality in a 1100x800 window only. Julia n = -2 and -4 show the same speckle and dust as the other approaches (engine defect p15-2). Fractional negative powers were checked numerically, not rendered.",
+   "The scorecard and step figures now follow the equation's power for every formula. Only z^-n + c and the return to z^n + c were checked on the page; for z^3 - z + c the card now describes cubing whatever the dial says (with the note), and that was not looked at.",
+   "The new note line sits inside #card as a p.note. Seen at 1400 px wide in the dark theme only; phone width and light theme not checked.",
+   "drawStep3d now rebuilds the figures and restarts the card when the equation's power changes. The measure module's own timing and behaviour scripts (out/measure/) were not rerun.",
+   "formulaPowers decides 'holds z' by the bare name z in the generated shader code. If another module ever emits a bare z in a formula's code for something else, it would over-report.",
+   "compileFormula now refuses numbers above 1e30. Such a formula used to compile or fail on the GPU; now it gets a plain message.",
+   "The Sphere inversions panel is long even after trimming (about 75 words for the about text, 75 for the planes note). Not checked at 375 px. The picture panel-mercator.png predates the last trim.",
+   "The Turn hint and the scorecard sentence for a turned slice were verified as strings, not on screen with one plane and a turn set.",
+   "notes/approaches.md still describes the old Split rule at negative powers in its 'Decisions worth knowing' section; I did not edit that file.",
+   "Running tests/approaches.json rewrote out/approaches/parity.png, and the smoke runs rewrote out/smoke-*.png, as the tools are built to do."
+  ]
+ },
+ "fix:dial": {
+  "summary": "Dial group: the kit's side of \"extreme values\" is in, two of the three tester defects are fixed on the test page, and the major one (Lift snapping) is fixed in the kit but still shows on the page until one word changes in the approaches file.\n\nChecks run on the final files:\n- Kit checks (tests/dial.html): 71 of 71 pass (59 before; 2 rewritten, 12 new).\n- Real mouse, keyboard and touch (notes/dial_real.py --lab=dist/fix-dial.html): 42 of 42 lines pass, including the 71 checks in a focused desktop window and on an emulated 375 px touch phone.\n- Smoke test on dist/fix-dial.html: exit 0, 20 steps, no console errors.\n\nTwo things you should know before merging:\n- I edited the kit's own regression tests (tests/dial.html, tests/dial.json, notes/dial_real.py) although they are not in my two owned source files. Two old checks asserted exactly the behaviour that p2-1 and p13-4 report as defects, so they had to change. Copies of the originals are in out/fix/dial/ (dial.html.before, dial.json.before).\n- 00-core.js in src/ already has S.extreme, so I made that the single copy of the switch: setExtreme writes it and isExtreme reads it. Setting S.extreme from code and calling syncControls() also moves the ranges, but only setExtreme(false) pulls values back.\n\nOne deliberate departure from the brief's wording: when xmin or xmax is given without xlo or xhi and reaches past the normal typed limit, the typed limit moves out with the slider. Otherwise { xmax: 1000 } on a dial with a typed limit of 400 would leave most of the slider dead.\n\nBecause the functions sit inside the page's closure, I tried extreme values and the there-and-back sweep inside the lab on a second page, dist/fix-dial-x.html. It uses throwaway copies of 10-approaches.js, 80-ui.js and 90-boot.js kept under out/fix/dial/; nothing in src/ beyond my two files was touched.\n\nEverything is in C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1; notes/fix-dial.md has the full write-up, and scripts, logs and screenshots are under out/fix/dial/.",
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/js/70-dial.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/css/70-dial.css",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/tests/dial.html",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/tests/dial.json",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/notes/dial_real.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/notes/dial.md",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/notes/fix-dial.md"
+  ],
+  "fixed": [
+   {
+    "id": "new-extreme (user's new item, kit side)",
+    "what": "Dials can carry a wider range (xmin, xmax, xlo, xhi). setExtreme(on) switches every present and future dial that has one, and isExtreme() reports the switch. Switching off pulls a value beyond the normal typed limits back to the nearest limit through the dial's setter. A widened dial shows a small brass tag, \"wide\", in front of its box. Typing, steps, the step toggle, the slider, sync(), reset() and play all work on the range in use.",
+    "evidence": "Nine new checks in tests/dial.html, all passing, on desktop and on an emulated touch phone. In the lab with the other side filled in (dist/fix-dial-x.html, out/fix/dial/lab-x.json): Iterations slider 3..60 becomes 3..1000 and typed 3..400 becomes 3..100000; typed 250000 clamps to 100000; switching off pulls Iterations 640 to 400 and Julia c 55.5 to 8, and leaves Ray steps 2500 alone. Tag seen in out/fix/dial/lab-x-eq-dark.png, lab-x-approach-dark.png, lab-x-phone-light.png (375 px, 0 px sideways overflow), out/dial/showcase-extreme.png and showcase-extreme-other-theme.png."
+   },
+   {
+    "id": "p14-1 (kit half)",
+    "what": "New sweep mode animate: 'bounce': the value goes to the top of the slider, turns round and comes back, with no jump. animate: true and animate: <seconds> still wrap as before.",
+    "evidence": "With the Lift spec set to animate: 'bounce' on dist/fix-dial-x.html, the largest change between 30 ms samples is 0.017 (it was 3.983) and the value turns round at 2: 1.909, 1.975, 1.958, 1.891. A new check in tests/dial.html covers both turning points."
+   },
+   {
+    "id": "p2-1",
+    "what": "A dial whose own step is 1 but which can hold decimals now has the step toggle, with the choices ±1 (next whole number) and ±0.1, and starts on ±1. Affects viewFov, lightAz, lightEl, par-mercator-turn, par-bulb-lat, par-bulb-lon, par-classic-theta, par-classic-phi.",
+    "evidence": "out/fix/dial/repro.json on dist/fix-dial.html: Field of view went 35.49, 36.49, 37.49, 38.49 with no toggle before; now 35.49, 36, 37, 38 with toggle ±1. Two checks in tests/dial.html (one rewritten, one new) cover it, including 34.2 going to 35 and the 0.1 step after a press on the toggle."
+   },
+   {
+    "id": "p13-4",
+    "what": "A playing sweep no longer stops when its section is only folded shut. It still stops when the dial is hidden for real: the hidden attribute or display none on it or anything above it (a when rule, another approach's panel, another mode's section).",
+    "evidence": "out/fix/dial/repro.json on dist/fix-dial.html: before, play went from true to false at Collapse all and Lift froze at 0.308; now it stays true and Lift keeps moving 0.308, 0.708, 1.008, 1.308 through Collapse all and Expand all. One check rewritten and one added in tests/dial.html. The smoke test, which switches approaches and modes, still passes."
+   }
+  ],
+  "not_fixed": [
+   {
+    "id": "p14-1 (as seen on the page)",
+    "why": "Cannot be finished inside my files. The Lift spec lives in src/js/10-approaches.js and still says animate: true, so on dist/fix-dial.html Lift still jumps from 1.98 to -1.95 once per sweep. The kit half is done and verified; the remaining change is one word, given under needs_from_others."
+   }
+  ],
+  "names_added": [
+   "setExtreme(on): top-level function in 70-dial.js. Switches extreme values on or off for every dial, present and future; writes S.extreme when the page state exists; switching off pulls values beyond the normal typed limits back through each dial's setter (one onChange per spec-built set).",
+   "isExtreme(): top-level function. Returns the switch: S.extreme when the page state has it, otherwise the kit's own copy.",
+   "dialExtremeOwn: private top-level variable, the kit's copy of the switch for pages without S.extreme (the kit's test page, base2).",
+   "dialGone(el): private top-level function, true when an element is hidden by the hidden attribute or display none on it or any ancestor; a closed details does not count. Replaces dialVisible, which is removed (no other module used it).",
+   "xmin, xmax (dial spec or addDial opts): the slider's range while extreme values are on. Missing: the normal min or max.",
+   "xlo, xhi (dial spec or addDial opts): the typed limits while extreme values are on. Missing: the normal lo or hi, except that the limit moves out with the slider when xmin or xmax is given and reaches beyond it.",
+   "animate: 'bounce' (dial spec or addDial opts): the play button sweeps there and back, 8 seconds each way, instead of wrapping.",
+   "rerange(pull) on a dial's control object: re-reads the switch and applies the matching range; with pull true a value beyond the typed limits in use goes back to the nearest one. Called by setExtreme; not meant for page code.",
+   "S.extreme (state field, already added to src/js/00-core.js by the orchestrator): now read and written by the kit.",
+   "<span class=\"dial-wide\" id=\"<id>Wide\">: the \"wide\" tag, present only on dials that have a wide range, hidden while it is not in use.",
+   "is-wide: class on the .dial element while its wide range is in use.",
+   "<id>Step toggle: now also present on dials with step 1 that can hold decimals (it reads ±1 at first, ±0.1 after a press)."
+  ],
+  "needs_from_others": [
+   "approaches, src/js/10-approaches.js, APPROACHES entry with id 'mercator', params, the spec with key 'lift': change animate: true to animate: 'bounce'. Leave the five degree dials (turn, lat, lon, theta, phi) and the colour shift on animate: true. Until this lands, p14-1 is still visible.",
+   "ui, src/js/80-ui.js: add the switch, for example in the top row beside the 2D view box: addCheck('flatHost', 'extreme', 'Extreme values', isExtreme, setExtreme, { def: false });",
+   "ui, src/js/80-ui.js: give wide ranges to the dials that should have them by adding fields to their opts. Values tried on dist/fix-dial-x.html: iter { xmax: 1000, xhi: 100000 }, kiter { xmax: 2000, xhi: 100000 }, qsteps { xmax: 5000 }, Julia c dials { xlo: -100, xhi: 100 }. The numbers are the page's choice; nobody measured how slow very high counts are. Spec-built dials (approach params, colour) take the same fields in their specs.",
+   "ui, src/js/90-boot.js: add setExtreme, isExtreme to the window.squaringLab object so test scripts can reach them.",
+   "ui, any code that must leave extreme mode (a reset, a preset): call setExtreme(false), not S.extreme = false alone. Only setExtreme pulls out-of-range values back; S.extreme = x followed by syncControls() moves the ranges without writing values.",
+   "ui, optional, src/js/80-ui.js: UI_FOV_DEG is 35.49, so Field of view starts on a fraction. With the new step rule the first arrow press lands on 35 or 36; a whole default would look tidier (the tester's side remark in p2-1)."
+  ],
+  "answers_for_user": [
+   "Extreme values: the controls are ready for it, and the button itself arrives with the next page update. When it is on, the sliders that have a wider range (for example iterations and the Kleinian search depth) stretch to that range, their number boxes accept much larger values, and each of them shows a small \"wide\" tag so you can see which ones changed. When you switch it off, any value that is too large for the normal range goes back to the normal limit and the picture follows."
+  ],
+  "risks": [
+   "Eight more dials now have a step toggle and their arrows go to the next whole number. Any script of another group that expected those arrows to add exactly 1 to a fraction, or expected no <id>Step element there, would now differ. The smoke test passes.",
+   "A sweep in a folded section keeps calling its setter every frame. For approach parameters that means refresh(true) every frame while the section is closed. This is the intended fix for p13-4, but its cost with the section closed was not measured.",
+   "Everything was tested against base2 only, not against the files the other five engineers are editing now. The src/ copy of 00-core.js (with S.extreme: false) was not in any page I ran; the S.extreme path was exercised through setExtreme on base2 and through a stand-in S object in the kit checks.",
+   "The extreme switch was tried in the lab only with my throwaway copies of 80-ui.js, 90-boot.js and 10-approaches.js. The real button, the real ranges and their effect on drawing time are untested.",
+   "With a very wide slider range the slider keeps its step, so one pixel covers several steps (Iterations 3 to 1000). The typed box and arrows still reach every value.",
+   "Only Chrome was run. The tag and the there-and-back sweep were not tried in Firefox or Safari or on a real phone (phone checks used Chrome's touch emulation).",
+   "The step toggle is still not put back by \"Reset this section\" (a tester noted it without filing it); not changed."
+  ]
+ },
+ "fix:colour": {
+  "summary": "Colour group, 43 minutes (22:06 to 22:49). Only src/js/25-colour.js was edited. The page now opens with the colours the user asked for, and 5 of the 9 listed defects are fixed, 3 partly, 1 not in the form reported.\n\nSmoke test on dist/fix-colour.html, run after the last source edit: 20 steps, exit 0, no console errors (out/fix/colour/smoke.log).\n\nPictures are under C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/fix/colour/ :\n- sheet-open-dark.png: how the page opens now, on the Mandelbrot, three Julia presets, two Kleinian views and four 2D views.\n- sheet-open-balanced-dark.png: the same at Balanced quality (Mandelbrot, Basilica, Kleinian, 2D).\n- sheet-open-light.png: light theme.\n- sheet-user-base-dark.png: the same settings on the old build, for comparison.\n- sheet-tuneA-dark.png and sheet-tuneK-dark.png: the radius and glow-width trials.\n- sheet-glow-all-before.png and sheet-glow-all-after.png: glow with every trap shape.\n- sheet-minor-all.png: side, ray, three tones, preset 16 in 2D, and the old default colours.\n- sheet-far.png, sheet-more-dark.png, panel-open.png.\n\nThe user's new items:\n1. Defaults are orbit trap, sphere shell, glow, Rainbow reversed. I raised the shell radius from 0.7 to 1 and kept the centre at the origin and the glow width at 1. At 0.7 the rounder Julia sets (Cauliflower) were one flat blue; at 1 the Mandelbrot, Basilica, rabbit, Cauliflower and the classic bulb at n = 8 all show rings and seams. The 2D views are vivid. In the Kleinian view the pearls are rainbow but the two wall spheres stay plain violet, as they were when the user chose these settings.\n2. The 2D view was not restyled. With the old colours at height 40 it is pixel-identical to base2 (largest channel difference 0).\n3. trapDist(vec3 v) is now a pure function of the orbit point, and trapAdd uses it.\n\nNot as good as asked: Point plus glow on a Julia set with the trap at the origin is still nearly one colour, three tones is still dull in 3D and flat on the Kleinian set, and the Julia mosaic opens as mostly violet balls.\n\nNotes for the next person: notes/fix-colour.md.",
+  "files_changed": [
+   "src/js/25-colour.js",
+   "notes/fix-colour.md",
+   "out/fix/colour/sheet.py",
+   "out/fix/colour/panel.json",
+   "out/fix/colour/far-after.json",
+   "out/fix/colour/far-before.json",
+   "out/fix/colour/smoke.log",
+   "out/fix/colour/*.png and out/fix/colour/tiles/* (screenshots)",
+   "dist/fix-colour.html",
+   "dist/fix-colour-base.html",
+   "out/smoke-*.png (rewritten by the smoke run)"
+  ],
+  "fixed": [
+   {
+    "id": "user-new-1 (opening colours)",
+    "what": "COLOUR_CONTROLS defaults are now mode 0 (orbit trap), trap 5 (sphere shell), by 4 (glow), pal 8 (Rainbow), rev true. Shell radius default went from 0.7 to 1 after trials; centre stays at the origin and glow width at 1.",
+    "evidence": "The page reports S.colour = {mode:0, trap:5, by:4, glow:1, ray:0, radius:1, tx:0, ty:0, tz:0, pal:8, rev:true, bands:1, shift:0} on load and again after 'Reset this section'. Pictures: sheet-open-dark.png, sheet-open-balanced-dark.png, sheet-open-light.png against sheet-user-base-dark.png (old build, same settings). Trials: sheet-tuneA-dark.png (radius 0.7 and 1.0, glow 1 and 2.5, on four scenes). Looked at: Mandelbrot, Basilica, rabbit and Cauliflower show rings and seams; 2D Mandelbrot, Julia and Kleinian are vivid; Kleinian wall spheres stay violet."
+   },
+   {
+    "id": "user-new-3 (trapDist)",
+    "what": "trapDist(vec3 v) now takes the orbit point itself and applies the trap centre, radius and axis inside. It reads only v and uniforms and writes nothing. trapAdd calls it.",
+    "evidence": "Pictures that do not use the new glow profile are unchanged: 2D planes, bands, Sunset at height 40 is pixel-identical to base2 (max channel difference 0). Smoke test exit 0."
+   },
+   {
+    "id": "p3-1",
+    "what": "Partly fixed. Cause: one fixed glow width, right for traps the orbits keep crossing and already faded at the distances a thin trap is passed at. Added a 'Glow width' dial (S.colour.glow, default 1). Thin traps (point anywhere; line, ray, cross, ring in 3D) get width times 1.5 and a steadier fall-off, exp(-2.4 (d/w)^0.75). Planes and shell in 3D, and everything but the point in the flat slice, keep the old formula exactly.",
+    "evidence": "sheet-glow-all-before.png against sheet-glow-all-after.png, and sheet-glow-2d-before-dark.png against sheet-glow-2d-after-dark.png. Mandelbrot Point, Line, Ray and Ring went from flat magenta to orange-to-magenta gradients. 2D Point went from a flat purple field to an orange halo. Kleinian Cross, Line and Ring gained cyan and white highlights. Still nearly one colour: Julia Basilica Point plus glow (see not_fixed). Judged by eye only; I did not re-measure the tester's hue spreads."
+   },
+   {
+    "id": "p3-2",
+    "what": "Ray default direction is +x instead of -x, so Ray differs from Line as soon as it is chosen.",
+    "evidence": "sheet-minor-all.png, third row: Line against Ray on the Mandelbrot and on the Basilica. The Julia pair is clearly different (purple against pink and orange); the Mandelbrot pair differs visibly on the left half. Panel check reports ray 0."
+   },
+   {
+    "id": "p3-3",
+    "what": "A note in the Colour section, shown in the 2D view when the trap is Planes or Ring, says they coincide with Cross and Shell while slice and trap centre are at height 0, and how to separate them. The picture is untouched.",
+    "evidence": "Panel check through the real drop-downs (out/fix/colour/panel.json): note count 0 for Ring in 3D, 1 for Ring in 2D, 1 for Planes in 2D, 0 for Shell in 2D."
+   },
+   {
+    "id": "p3-5",
+    "what": "Cause: the side was read from the whole offset to the trap centre, which for a line is mostly the position along it. New colSide(): beside a line or ray the side is the angle round the axis, seamless over one palette period.",
+    "evidence": "sheet-minor-all.png, first two rows: Basilica with Line plus side and Ray plus side are now patches of purple, yellow and orange where they were one flat cream; Mandelbrot Line and Ray show bold sectors."
+   },
+   {
+    "id": "p3-7",
+    "what": "PAL_MENU reordered so warm and cool alternate at the top: Sunset, Electric, Fire, Ocean, Aurora, Ember, then as before. Palette numbers unchanged.",
+    "evidence": "Code change only; the menu is built from PAL_MENU. Smoke step 13 still picks 'Electric' by name and reports palette 6. Not re-measured as picture differences."
+   },
+   {
+    "id": "p8c-3",
+    "what": "flatColour fades the outside colour into the stage between 40 and 120 units from the centre. The 2D view's default range ends before that.",
+    "evidence": "sheet-far.png: at height 400 with planes, bands, Sunset the old build is a full screen of square stripes and the new one a round patch fading into the dark stage. At height 40 old and new are pixel-identical. Height 2000 itself was not rendered."
+   },
+   {
+    "id": "p3-4",
+    "what": "Partly fixed. The fourth tone no longer takes over outside the unit ball (0.5 * smoothstep(0, 2, w) in place of 0.85 * w^4 clamped).",
+    "evidence": "sheet-minor-all.png, rows four and five: the 2D Mandelbrot and Julia now show orange, mauve and olive with rays where they were one flat orange. 3D Mandelbrot and Julia are still a muted mauve and the Kleinian set still one orange (see not_fixed)."
+   },
+   {
+    "id": "p3-6",
+    "what": "Note only, as the tester's fallback suggested: on a solid, 'Direction of the last step' now carries a note saying it looks speckled there and works best in the 2D view and on the Kleinian set. The colouring is unchanged.",
+    "evidence": "Panel check: choosing 'Direction of the last step' in 3D Mandelbrot mode shows 1 such note (mode 5)."
+   }
+  ],
+  "not_fixed": [
+   {
+    "id": "p3-1 (remainder): Point plus glow on a Julia set, trap at the origin",
+    "why": "Still close to one colour on the Basilica (sheet-glow-all-after.png, second block, first tile). The picture is flat at every width I tried, so width is not the cause. My reading, not measured: every orbit on that solid makes its nearest pass to the origin at about the same distance, roughly 0.62. A real cure is to measure the range of nearest distances in the picture and stretch the glow over it, which needs a read-back in the renderer (40-render.js). Likely remedies for the user, not tested: move the trap centre (x = -1), or raise 'Colour bands, how many'."
+   },
+   {
+    "id": "p3-4 (remainder): three tones on 3D solids and on the Kleinian set",
+    "why": "Still muted mauve in 3D and one flat orange on the Kleinian set. The mix's thresholds assume orbits that circle the origin; Kleinian orbits sit near y = 2. It needs a redesign of the mix, which I did not start in the time."
+   },
+   {
+    "id": "p8b-6",
+    "why": "Not fixed in the form reported. With the new opening colours the 2D view of 'Leaning 30 degrees, seen across' is blue to violet with rainbow arcs against the cream solid (sheet-minor-all.png, sixth row, first tile). With the old colours (planes, bands, Sunset) it is still pale yellow on cream (same row, second tile). The cause was not traced: the colour is the palette's last stop, which is what a nearest distance of zero gives, so the orbits in the open gaps seem to end on a trap plane. I left that combination alone because the user asked for the 2D view to stay as it is."
+   },
+   {
+    "id": "p3-6 (remainder)",
+    "why": "The colouring itself is still speckle on a solid. Reading the direction from an earlier step would give structure but would no longer be 'the last step'; I added the note and did not change the meaning."
+   },
+   {
+    "id": "Kleinian wall spheres under the opening colours",
+    "why": "Not a listed defect, but short of 'really good': the two wall spheres are plain violet. A shell around the origin is far from the points their orbits are recorded at (near y = 2). Setting 'Trap centre, y' to 1 brings colour onto them (sheet-tuneK-dark.png). I did not make that the default because the centre dials are shared by all three kinds of picture, and shifting the centre only in Kleinian mode would also move the planes trap there."
+   }
+  ],
+  "names_added": [
+   "S.colour.glow: number, default 1. Glow width; the trap distance is divided by it before the glow fall-off. Missing or non-positive is read as 1.",
+   "COLOUR_CONTROLS, new dial spec key 'glow' (control ids col-glow, col-glowNum): label 'Glow width', slider 0.1 to 8, typed 0.01 to 100, shown only when 'Trap colours by' is glow.",
+   "COLOUR_CONTROLS, three new note specs: last-step speckle on a solid; planes = cross and ring = shell in the 2D view; (the existing notes are unchanged).",
+   "COLOUR_CONTROLS changed defaults: trap 5 (was 4), by 4 (was 0), ray 0 (was 1), radius 1 (was 0.7), pal 8 Rainbow (was 7 Sunset), rev true (was false).",
+   "PAL_MENU: order changed to [7, 6, 5, 9, 13, 1, 2, 12, 15, 8, 14, 10, 11, 16, 18, 0, 3, 17, 4]; palette indices unchanged.",
+   "colGlowOn(c): 'when' test, true when a shaped trap is coloured as a glow.",
+   "colOrbitsFlat(): true when every orbit stays in the plane z = 0 (2D view, slice height 0, and in Kleinian mode k.cz === 0 && k.mz === 0).",
+   "COL_GLOW_THIN = 1.5: how much wider the glow of a thin trap is drawn.",
+   "uniform float uGlowK: 1 / sqrt(glow width, times COL_GLOW_THIN for a thin trap). Set in setColourUniforms.",
+   "uniform float uGlowP: power applied to (uGlowK * sqrt(distance)) in the glow; 1 = the old fall-off, 1.5 = thin traps. Set in setColourUniforms.",
+   "GLSL float colSide(vec3 q): private. The side an orbit passed the trap on; beside a line or ray it is the angle round the axis divided by pi, otherwise colDir(q).",
+   "GLSL float trapDist(vec3 v): CHANGED MEANING, now public. The plain distance from the orbit point v (the same point the renderer passes to trapAdd) to the trap shape in use. Reads only v and uTrap, uTrapC, uTrapR, uTrapAx, uTrapOff; writes nothing; valid in every colour mode. With q = v - trap centre (tx, ty, tz): Point = |q|. Cross = distance to the nearest of the three lines through the centre along x, y, z. Line = distance to the line through the centre along the chosen axis. Ray = distance to the half line from the centre in the chosen direction (behind its start, the distance to the centre). Planes = distance to the nearest of the three planes through the centre parallel to the coordinate planes. Sphere shell = | |q| - radius |. Ring = distance to the circle of that radius about the centre, parallel to the xy-plane. Three tones = no shape of its own: the three coordinate planes through the ORIGIN, centre ignored. In 3D uTrapOff is zero; in the 2D view of the slice z = 0 with trap centre z = 0 it removes the plane z = 0 from Planes and Three tones, as before.",
+   "GLSL trapAdd(v, it): same signature; now calls trapDist(v) and stores v - uTrapC in gNear.xyz. It still returns at once when the colour mode is not orbit trap."
+  ],
+  "needs_from_others": [
+   "Nothing is required for these fixes to work on the page: no new markup, no state the page must set, and the two new uniforms are set inside setColourUniforms.",
+   "docs/CONTRACT.md, section '25-colour.js' (orchestrator): add trapDist(vec3 v) to the promised shader names with the meaning in notes/fix-colour.md, and mention S.colour.glow.",
+   "src/js/30-shaders.js, next round (trap shapes the solid): call trapDist(v) yourself inside the orbit loops, next to the existing trapAdd(v, it) calls in orbitDE and kde, and keep your own running minimum. Do not read gNear: trapAdd fills it only when the colour mode is orbit trap. The minimum is a distance in orbit space, so divide by the orbit's stretch to get a step length.",
+   "Any module that saves or restores S.colour (history, presets, links): restore with Object.assign(specDefaults(COLOUR_CONTROLS), saved) so that older snapshots get glow = 1; the shader copes with a missing value but the dial would have nothing to show.",
+   "src/js/40-render.js, only if Point plus glow on Julia sets must be cured properly: a small read-back of nearest trap distances over the picture, so the colour module can stretch the glow over the range that occurs. I can specify the uniform pair (lowest and highest distance) on request.",
+   "src/js/75-presets.js or 80-ui.js, optional and only if the user wants livelier Kleinian walls: applying a Kleinian preset could set S.colour.ty = k.my / 2 (sheet-tuneK-dark.png shows the effect). Not needed otherwise."
+  ],
+  "answers_for_user": [
+   "Opening colours: the page now opens coloured by orbit trap, with the sphere shell as the trap, shown as a glow, in the rainbow palette reversed. I made the shell slightly larger (radius 1 instead of 0.7) because the rounder Julia sets were coming out one flat blue; everything else is what you picked.",
+   "3D orbit traps changing the shape: today a trap only paints the surface, which is why the shape never changed. Nothing in this round changes that yet. I prepared the one piece the next step needs, a single function that gives the distance from an orbit point to whichever trap shape is chosen, so the solid can be carved from the trap in the next round.",
+   "Colouring the inside in 2D, and separate choices for inside and outside: yes, that can be done. At the moment the inside of the 2D set is one plain colour. The trap colourings could be applied to the inside as well, with a separate menu for it. I did not build it this round because you asked for the 2D view to stay as it is.",
+   "Crisper 2D edges from distance estimation: the 2D view already uses the distance estimate to draw the edge of the set one pixel wide. Using the same estimate as a colouring of its own, which makes thin filaments stand out, would be a new 'Colour by' choice and is not built yet.",
+   "A new 'Glow width' dial appears whenever the trap is shown as a glow. If a trap shape gives a picture that is all one colour, try another width."
+  ],
+  "risks": [
+   "Shell radius default changed from 0.7 to 1: the opening picture is not exactly the one the user saw when choosing these settings (compare sheet-user-base-dark.png with sheet-open-dark.png).",
+   "Glow with Point, Cross, Line, Ray or Ring in 3D, and with Point in 2D, looks different from the old build (brighter, wider). The smoke picture 'trap-cross' (Cross, glow, Electric) therefore changed; I did not look at it after the change beyond the Kleinian row of sheet-glow-all-after.png.",
+   "Three tones changed in every view, including 2D.",
+   "The 2D far fade applies to anything more than 40 units from the centre, so a 2D picture panned that far, or a Kleinian slice larger than that, loses its outside colour there. Not tested on such a picture.",
+   "Julia mosaic under the opening colours: most cells are plain violet balls (sheet-more-dark.png). I think these are cells cut off by their ball, whose points lie inside the set, but I did not confirm it or compare with the old colours.",
+   "Not looked at: phone layout of the Colour section with the new dial and notes, Fine and Ultra fast quality, the glow dial moved by real mouse input, trap shapes with glow in the light theme, and most smoke pictures by eye (the smoke run was judged by its output).",
+   "All pictures except sheet-open-balanced-dark.png were taken at the page's Fast quality in a 1000x640 window, on base2 plus my file only, so they do not show other engineers' changes."
+  ]
+ },
+ "fix:shaders": {
+  "summary": "Time ran out after the user's two new items: the glow with the rough estimate is fixed, the slices at Fine are not, and none of the testers' shader items was started.\n\nOnly `src/js/30-shaders.js` changed, and only the ray march in `main()` of `GL_TAIL`. `dist/fix-shaders.html` builds, and the smoke test exits 0 with no console errors (`out/fix/shaders/smoke.log`).\n\n- **(a) Glow around the rabbit with the rough estimate: fixed.** It was a bug. Rays running alongside the solid crawled at half a pixel per step, ran out of steps in mid-air and were shaded as hits. They now lengthen their stride while crawling, and an out-of-steps ray counts as a hit only when the surface is within a few pixels. Before and after pictures at Balanced confirm it, from the default camera and close up.\n- **(b) Slices at Fine: not fixed.** With the exact estimate no ray lands inside the solid or runs out of steps, so both suggested causes are ruled out. Rays stopped anywhere between 0.2 and 1 pixel under the threshold; I brought every hit onto one level at no extra query cost. The chequered patches in the rabbit's shaded hollows look the same afterwards. The rings on smooth flanks with the rough estimate also remain.\n- **Speed, old against new in one page, least of 3 passes:**\n\n| Scene | old ms | new ms | new / old |\n|---|---|---|---|\n| Rabbit, Balanced | 75.1 | 72.4 | 0.96 |\n| Rabbit, Balanced, rough estimate | 75.7 | 56.7 | 0.75 |\n| Rabbit, Balanced, close up | 267.9 | 244.0 | 0.91 |\n| Default Mandelbrot, Balanced | 60.5 | 63.9 | 1.06 |\n| Default Mandelbrot, Ultra fast | 8.9 | 6.9 | 0.78 |\n\n  These were measured one edit before the final file; the last edit only changed where a rough-estimate hit ends, and was not re-timed.\n- **Checked on the final build:** Basilica and the classic Mandelbulb at power 8 at Balanced, and the default Kleinian view, draw as clean solids. The default Mandelbrot at Ultra fast looks dustier round the edge than the testers' picture (taken at another window size).\n\nEverything is written up in `notes/fix-shaders.md`; scripts and pictures are in `out/fix/shaders/` (`dbg.py` tints pixels by how the march ended, `ab.py` builds the timing page).",
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/js/30-shaders.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/notes/fix-shaders.md"
+  ],
+  "fixed": [
+   {
+    "id": "user-a (glow around the solid with the rough estimate)",
+    "what": "Rays that run alongside the solid no longer run out of steps in mid-air and get shaded as hits. Each stride in a row held at the least stride lets the next be longer (counter `crawl`), never past where the surface seems to be. An out-of-steps ray is a hit only when the surface is within a few pixels (`near`); otherwise it shows the background.",
+    "evidence": "Debug tint before: red out-of-steps band hugging the silhouette (out/fix/shaders/t2-balrough-close.png). After: no red (t4-balrough-close.png). Real pictures at Balanced with the rough estimate: purple band present in c-b0-default.png and c-b0-close.png, gone in c-n1-default.png, c-n1-close.png and c-f-rabbit.png (final build). Rough estimate 22 to 25% faster in the timing table. Not looked at separately at the Fast preset."
+   }
+  ],
+  "not_fixed": [
+   {
+    "id": "user-b (slices at Fine and Balanced)",
+    "why": "Not cured. Experiments ruled out both suggested causes for the exact estimate: at Fine and Balanced no ray lands inside the solid and none runs out of steps (debug tint all blue, t2-fine-close.png). I put every hit on one level (estimate reads 0.8 pixel, slid along the line between the last two samples), but the chequered patches in the shaded hollows are unchanged (c-b0-terr.png before, c-f-terr.png after). They sit only in shadow, so the next thing to test is the shadow and crevice queries: switch each off on the close-up. With the rough estimate, rings on smooth flanks remain (c-f-rabbit.png): hits declared from outside and hits closed in from both sides alternate in bands. Removing the `ahead < e` rule would even them out but lose more thin parts (p5-1), so I kept it."
+   },
+   {
+    "id": "p5-1",
+    "why": "Not started (time). Learned: the rough estimate only stops inside the solid, so sheets thinner than a stride are lost; the exact estimate reads many times too short near them, which is what keeps them fat at Fine."
+   },
+   {
+    "id": "p5-2",
+    "why": "Not started (time). Not re-run on the classic Mandelbulb or the mosaic at Ultra fast. The default Mandelbrot at Ultra fast is still grainy, and looks dustier round the edge than the testers' picture."
+   },
+   {
+    "id": "p5-3",
+    "why": "Not re-run. Probably helped by the new out-of-steps rule (stray dots were rays out of steps far from the surface), but unverified."
+   },
+   {
+    "id": "p5-6",
+    "why": "Not started (time)."
+   },
+   {
+    "id": "p5-7",
+    "why": "Not started (time)."
+   },
+   {
+    "id": "p8b-1",
+    "why": "Not started (time). notes/klein-kde-exact.glsl was not adopted or tested, so the 0.5 cap on the step share in 40-render.js must stay."
+   },
+   {
+    "id": "p8b-2",
+    "why": "Not started (time)."
+   },
+   {
+    "id": "p9-1",
+    "why": "Seams with planes = 2 are ruled out by the task (the rule is discontinuous). Sphere inversions with planes = 1 was not rendered on its own in Mandelbrot mode; the rabbit and Basilica Julia sets do draw as clean solids at Balanced."
+   },
+   {
+    "id": "p9-2",
+    "why": "Same as p9-1: not checked at n = 3 with planes = 1."
+   },
+   {
+    "id": "p11-1",
+    "why": "Not started (time). 2D mosaic ground is still painted with full colour bands."
+   },
+   {
+    "id": "p15-2",
+    "why": "Not started (time)."
+   },
+   {
+    "id": "p15-3",
+    "why": "Not started (time)."
+   },
+   {
+    "id": "p15-5",
+    "why": "Not started (time)."
+   },
+   {
+    "id": "perf-1",
+    "why": "Belongs to render (band sizing in 40-render.js)."
+   },
+   {
+    "id": "perf-2",
+    "why": "Belongs to render (the 170 ms wait)."
+   },
+   {
+    "id": "perf-3",
+    "why": "Belongs to render (preview hand-off)."
+   },
+   {
+    "id": "perf-4",
+    "why": "Belongs to render (busy label timing)."
+   },
+   {
+    "id": "perf-5",
+    "why": "Belongs to render (when warming starts)."
+   },
+   {
+    "id": "perf-6",
+    "why": "Belongs to render (preview estimate and size)."
+   },
+   {
+    "id": "p4-3",
+    "why": "Belongs to render (preview drawn without shadows and crevice shading)."
+   },
+   {
+    "id": "p1-1",
+    "why": "Belongs to render or core (busy label priority)."
+   },
+   {
+    "id": "text-17",
+    "why": "Belongs to render (message text in sceneFail)."
+   }
+  ],
+  "names_added": [
+   "LEVEL (constant in GL_TAIL, 0.8): with neighbouring orbits, the distance estimate in pixels at which a ray counts as having hit",
+   "crawl (int in main()): strides in a row held at the least stride; lets the next stride be longer (rough estimate only)",
+   "near (bool in main(), per march step): the surface is within a few pixels of this sample, so an out-of-steps ray may count as a hit"
+  ],
+  "needs_from_others": [
+   "None for what was changed: no new uniform, state field or control.",
+   "src/js/40-render.js, setScene(): keep `uStepK` at `Math.min(S.q.stepk, 0.5)` in Kleinian mode. The exact Kleinian estimate was not adopted, so the cap is still needed."
+  ],
+  "answers_for_user": [
+   "Glow around the fractal with the rough distance estimate (Douady rabbit): this was a bug, not a natural limit, and it is fixed. Rays that skim past the solid were moving half a pixel at a time, ran out of steps in empty space, and were then painted as if they had hit something. They now speed up while skimming, and a ray that never reaches the surface shows the background. The rough setting still draws the rabbit thinner and more ragged than Balanced or Fine.",
+   "The 'set of slices' look at Fine: not fixed yet. On the rabbit I can see it as chequered and striped patches in the shaded hollows at Fine, and as faint rings on smooth sides with the rough setting. The two likely causes I was given turned out not to apply: at Fine no ray lands inside the solid and none runs out of steps. I made every ray stop at exactly the same depth, and the patches did not change. They only appear in shadow, so the shadow and crevice shading are the next suspects. I cannot yet say whether it is a bug or a natural limit."
+  ],
+  "risks": [
+   "The final edit (where a rough-estimate hit ends, `if (!rough) t = tOut`) passed the smoke test, but its pictures were only looked at briefly and it was not re-timed.",
+   "Ultra fast (90 steps): rays that run out of steps away from the surface now show the background where they used to be filled in. The default Mandelbrot at Ultra fast looks dustier round the edge than the testers' picture (different window size, not like for like). If judged worse, loosen `near` for the rough estimate.",
+   "The moving preview (at most 120 steps) uses the same out-of-steps rule and was not looked at.",
+   "The one-level change for the exact and one-neighbour estimates (`LEVEL`) showed no visible benefit. It is harmless in the pictures and timings I checked, but can be taken out, leaving `crawl` and `near`.",
+   "Not re-tested with the new march: Fast preset, Fine away from the rabbit, the one-neighbour estimate, mosaic (3D), cut plane and its hatching, negative powers, picking by double-click, Kleinian presets other than the default. The smoke test covers several of these for errors only, not for looks.",
+   "Timings were taken on a GPU shared with other engineers; each figure is the least of 3 runs alternating old and new."
+  ]
+ },
+ "fix:camera": {
+  "summary": "All 12 camera defects (11 after merging code-2 with p8c-1) are fixed in src/js/50-camera.js and src/css/50-camera.css, plus the framing work the user's new remark asks for. Checks on dist/fix-camera.html (base2 + my two files): 54 page-script checks for the defects pass, real-input checks for the two majors pass (13 of 13), the module's own regression suite passes (148 checks, expectations updated where behaviour changed on purpose), notes/camera_real.py passes 41 of 41, and tools/smoke.json exits 0 with no console errors. Not built: automatic re-framing when the picture is empty or off the frame, and a size-aware Kleinian start distance for settings that are not on a list entry. Notes are in notes/fix-camera.md. Time used: about 49 minutes (22:06 to 22:55).",
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/js/50-camera.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/css/50-camera.css",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/notes/fix-camera.md",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/camera/tests.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/fix/camera/verify-body.js",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/fix/camera/real_fix.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/fix/camera/run.sh",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/fix/camera/report.py"
+  ],
+  "fixed": [
+   {
+    "id": "user-new (lists no longer move the camera) + p15-1",
+    "what": "Framing is one function, camHome(preset), used by resetCam() and the Reset view button. Negative powers start further back with the target at the centre (distance 3.8 x (1.3 + 1/max(1, -n)): n=-2 gives 6.84, -3 gives 6.21, -8 gives 5.42, -1 gives 8.74) and the 2D span follows (4.38 at n=-2). With no preset passed, resetCam() uses the camera of the Julia or Kleinian list entry the dials stand on (looked up through juliaPresetAt / kleinPresetAt with typeof guards; saved points skipped), so Reset view frames a list entry once the lists stop moving the camera. Nothing moves the camera unasked.",
+    "evidence": "Solid sizes measured by probing with pick() from four sides (out/fix/camera/probe2.log). Screenshots after Reset view show the whole solid in the frame: out/fix/camera/a1-n-3-reset.png, a2-n-2-reset.png, a3-n-8-reset.png, a4-n-1-reset.png, a5-n-2-flat.png (all three arms in the 2D view). I looked at a1 to a5; a6 (Mandelbulb, n=-3) was written but not opened. verify step 1: 3 of 3 pass."
+   },
+   {
+    "id": "p7-1",
+    "what": "A pointer click on Reset view, + or - hands keyboard focus to the picture (as Arcball/Fly already did); keyboard presses of those buttons keep focus.",
+    "evidence": "Real input (out/fix/camera/real_fix.py): after a real click on #reset, #zoomIn, #zoomOut in fly mode, holding W moved 0.496, 0.503, 0.490 units with focus on the canvas. Before: moved 0.000."
+   },
+   {
+    "id": "p4-1",
+    "what": "One wheel listener on the whole stage replaces the canvas and rail listeners, so the wheel zooms over every control on the picture and the page does not scroll. In 2D the spot under the pointer is held only over the picture; over a control the zoom is about the middle. The wheel is left to the page when WebGL failed.",
+    "evidence": "Real wheel, three notches each over #zoomIn, #zoomOut, #reset, #camFar, #camNear, #camArc, #camFly, #camRail, #view: scrollY 0 and distance x1.4049 (1.12 cubed) in all nine. Before: scrollY 300 or 100."
+   },
+   {
+    "id": "code-2 + p8c-1 (same defect)",
+    "what": "resetCam() holds the start distance to the user's zoom limits, for mode defaults, equation presets and camera presets. resetZoomLimits() now also holds the view that is not on screen.",
+    "evidence": "verify step 14, 10 of 10: near limit 10 then Reset view gives dist 10 with the thumb at 0%; far limit 4 then Reset view, Kleinian, an equation preset and a camera preset all give 4; scrolling out at the limit no longer moves the camera in."
+   },
+   {
+    "id": "p7-2",
+    "what": "resetCam() in fly mode applies the same speed rule as entering fly mode (shared helper camFitSpeed).",
+    "evidence": "verify step 15: entering fly at distance 0.05 sets speed 0.0125; after Reset view the speed is 1.3 at distance 5.2 and W moves."
+   },
+   {
+    "id": "p4-2",
+    "what": "One constant CAM_STEP = 0.8 for the + and - buttons and keys.",
+    "evidence": "verify step 16: button x0.8 and key x0.8; minus key and button undo them."
+   },
+   {
+    "id": "p8c-2",
+    "what": "A typed limit on the wrong side of the other one is refused: old value back, box flagged, and a note on the stage says why. Values outside the hard range are still held to the range, now flagged with a note. Box tooltips state the factor-two rule.",
+    "evidence": "verify step 17, 8 of 8, and out/fix/camera/b1-limit-note.png. Near 500 with far 60 is refused and the camera stays where it was (it used to be carried to 150)."
+   },
+   {
+    "id": "p12-2",
+    "what": "The Reset view button resets only the view on screen (new resetView()): the flat picture in 2D, the camera in 3D. resetCam() still resets both.",
+    "evidence": "verify step 19: after Reset view in 2D the 3D camera JSON is identical to before; after Reset view in 3D the 2D pan and zoom are unchanged."
+   },
+   {
+    "id": "p12-4",
+    "what": "A note appears on the stage when the zoom is asked to go past a limit it already rests on, when the 2D zoom passes below 0.0005, and when the closest-zoom limit is typed below 0.0005; the tooltip says it too. A limit under the hard minimum is held, flagged and explained.",
+    "evidence": "verify step 19: one more notch at 0.0005 shows 'This is the closest the zoom may go...'; typing 0.000001 gives 0.00001 with flag and note; typing 0.0001 is taken with the sharpness warning."
+   },
+   {
+    "id": "text-18",
+    "what": "The 2D zoom is called 'span' in the slider tooltip, the spoken value and both box tooltips; 'height' no longer appears there.",
+    "evidence": "verify step 19: rail title 'Zoom: how tall a piece of the slice fits in the picture', aria-valuetext 'Span 3.33', no 'height' in the three titles."
+   },
+   {
+    "id": "perf-7",
+    "what": "CAM_EASE raised from 0.035 to 0.07 s as the tester suggested.",
+    "evidence": "verify step 20 (wheel events sent from page script, per animation frame): one notch 2.46% worst frame, five notches 60 ms apart 4.33% (tester measured 4.35% and 5.04%). Totals exact. Regression trace: 90% at 159 ms, 95% at 209 ms."
+   }
+  ],
+  "not_fixed": [
+   {
+    "id": "auto re-framing when the picture is empty or wholly off the frame (optional part of the new instruction)",
+    "why": "Not built, for time. The camera cannot tell an empty picture without the renderer: pick() returns null both for 'nothing hit' and for 'shader not ready', and a probe of about 100 pick() calls costs 1 to 1.5 ms each on this GPU. It needs either a 'nothing was hit' signal from the renderer or a sliced probe after renderIdle()."
+   },
+   {
+    "id": "Kleinian start framing for settings that are not on a list entry",
+    "why": "Still the fixed distance 7. The solid's size is the square of the turning-out radius divided by the gap between the sphere's centre and the nearest pearl, which needs the shader's distance estimate. All 19 shipped entries fit at 4 to 7, and on a list entry Reset view uses that entry's own camera. A JavaScript port of kde() would give the size for any setting."
+   }
+  ],
+  "names_added": [
+   "resetView(): what the Reset view button does. Fresh framing of the view on screen only (2D picture or 3D camera), then touch(). A 'Frame it' control should call this.",
+   "resetCam(preset, only): new optional second argument '3d' or '2d' resets just that view; without it both, as before. The start distance is now held to the zoom limits.",
+   "camHome(preset): returns the start framing { yaw, pitch, dist, target, h } for what is on show, without applying it.",
+   "CAM_STEP = 0.8: one press of a zoom button or of the plus and minus keys.",
+   "CAM_SHARP = 0.0005: 2D span below which the picture loses sharpness.",
+   "CAM_FOV0 = 0.32 and CAM_FIT0: the field of view the start framings were chosen at, and the sine of its half angle.",
+   "CAM_EASE changed from 0.035 to 0.07 (seconds).",
+   "Private helpers: camFit, camListed (asks the page's lists for the entry the dials stand on), camHoldDist, camFitSpeed, camNote.",
+   "CV.noteTmr and CV.ui.note: timer and element of the stage note.",
+   "CAM_TEXT fields: names and stop (arc and flat), soft (flat); flat.word is now 'Span'.",
+   "Element #camNote (class cam-note, role status) inside #stage, bottom left above the hint line; CSS class .cam-note in 50-camera.css."
+  ],
+  "needs_from_others": [
+   "src/js/75-presets.js, applyJuliaPreset() and applyKleinPreset(): when the lists stop moving the camera, drop the resetCam({ cam: ... }) calls and the S.view.fly = false lines. Nothing else is needed for Reset view to frame a list entry: resetCam() and resetView() find the entry themselves through juliaPresetAt() and KLEIN_PRESETS[kleinPresetAt()] and read its cam { yaw, pitch, dist }. Keep those two functions and the cam field under these names, or tell the camera owner the new names.",
+   "src/js/75-presets.js, kleinPresetAt(): if it keeps comparing iter (depth of the search), a list entry stops being recognised as soon as the user changes the depth, and Reset view then falls back to the plain Kleinian framing (distance 7). Leave iter out of the comparison if entries become independent of depth.",
+   "src/js/80-ui.js (optional): a 'Frame it' button only needs to call resetView(). To reset just one view from page code, use resetCam(undefined, '3d') or resetCam(undefined, '2d').",
+   "src/js/80-ui.js, the 'pow' dial setter: no change needed. The camera deliberately does not re-frame when the power changes sign; Reset view does it.",
+   "src/css/00-base.css (optional): the stage note #camNote sits at left 10px, bottom 62px inside the stage. Keep that corner free of other overlays."
+  ],
+  "answers_for_user": [
+   "Presets and the camera: the camera no longer needs the lists to move it. Pressing Reset view now gives a fresh framing of whatever is on show. For a Julia or Kleinian list entry it uses the view that was chosen for that entry; for a negative power it backs off far enough to show the whole solid. The lists themselves stop moving the camera once the page side removes its two calls (listed for the page engineer).",
+   "Reset view now only resets what you are looking at. Pressed in the 2D view it re-centres the flat picture and leaves your 3D camera where it was, and the other way round."
+  ],
+  "risks": [
+   "Reset view in Julia mode with c on a shipped list entry now gives that entry's camera instead of the plain Julia default; the mode switch does too, because the page calls resetCam(). Checked only that the lookup is guarded and that the smoke test passes; I did not look at each of the 26 Julia entries after Reset view.",
+   "Start distances are now scaled for the field of view (unchanged at the default 0.32). Checked by numbers at a field of view of 1 for one case; not looked at as pictures.",
+   "The negative-power distances fit what the shader draws today. If the engine group changes negative-power solids this round, the one line in camHome needs re-checking against out/fix/camera/a*.png. Julia mode at negative powers was not framed separately; it uses the same distances and the pictures there are still noise (an engine defect).",
+   "The zoom easing is slower (a notch settles in about 330 ms instead of about 165 ms). This follows the tester's 5% per frame bar and departs from the spec's 'roughly 120 ms'. The per-frame figures were measured with wheel events sent from page script, not with the perf tester's real-wheel script.",
+   "The stage note (#camNote) is new. It was looked at in the dark theme at 1400 px only; not checked in the light theme or at 375 px, where it could overlap the stage buttons if the text wraps to three lines.",
+   "Typed limits on the wrong side of the other limit are now refused rather than adjusted. The 2D boxes share the code, but the refusal wording there ('closest zoom', 'widest zoom') was only checked for the hard-range case.",
+   "Light theme, phone width and touch were not re-run with my own new checks; the older suite (notes/camera_real.py, which includes tablet and phone touch) passes 41 of 41 on the fixed page.",
+   "out/smoke-*.png were overwritten by my smoke runs, as expected for a shared path."
+  ]
+ },
+ "fix:render": {
+  "summary": "Renderer scheduling fixed in src/js/40-render.js (CSS untouched). On the shared GPU, base2 against the new file back to back: Balanced default picture 2.1 to 4.7 s before, 0.8 to 2.0 s now; Ultra fast finished 61 to 66 ms after a move (tester: 200 to 300 ms); dragging at Fast and Balanced 59 to 60 pictures a second. tools/smoke.json on dist/fix-render.html exits 0 with no console errors, and 18 of 19 smoke pictures are pixel-identical to base2 (the other is the fly-camera step, which moves by the clock). One thing is not proven: the 20 to 30 times slowdown the tester saw on a quiet GPU never appeared here, so that fix rests on reasoning plus the measured speed-up. Notes: notes/fix-render.md; scripts and logs: out/fix/render/.",
+  "files_changed": [
+   "src/js/40-render.js",
+   "notes/fix-render.md"
+  ],
+  "fixed": [
+   {
+    "id": "perf-1",
+    "what": "Band schedule can no longer collapse or starve the GPU: a band has at least height/32 rows also when timed by the GPU, shrinks by at most 0.6 per band (was 0.2, down to 2 rows), two half-frame bands are kept in flight when they are GPU-timed and cheap, and the first band is sized with a factor learnt from each first pass instead of a fixed 3.",
+    "evidence": "Default view, Balanced, one small move, alternating pages (out/fix/render/e2.js): base2 2.97, 4.70, 2.05, 3.81 s; new 1.69, 2.00, 0.77, 1.24 s. The GPU's own count for the same 12 passes fell from 1.4-2.8 s to 0.4-0.7 s. The stuck-at-2-rows collapse itself was NOT reproduced on this busy GPU (baseline rows wandered 2 to 250 but recovered), so that part is by reasoning."
+   },
+   {
+    "id": "perf-2",
+    "what": "The fixed 170 ms wait is now clamp(estimated first pass, max(30 ms, 2.2 frames), 170 ms), ended by a timer rather than the next frame; a cheap picture is drawn as one band; in the 2D view a full-size preview is drawn with the final settings and kept as the first pass.",
+    "evidence": "Ultra fast, one small move from rest, 3 runs: finished after 61, 62, 66 ms, the whole 431x351 picture in one band. 2D view at Ultra fast after a drag: 33 ms (base2 here: 182 ms). 2D smoke pictures 7 and 9 are pixel-identical to base2, so the kept preview equals a first pass."
+   },
+   {
+    "id": "perf-3",
+    "what": "A finished preview is now looked for every 3 ms between frames (as bands were), and the preview is sized to 55% of a frame (at least 8 ms) instead of 70%, so drawing plus hand-over fits inside one frame.",
+    "evidence": "base2 traces here: previews noticed after about 33 ms for 11.5 ms of GPU work (every second frame). New: noticed after about 14 ms for 9.2 ms. Drag (out/fix/render/e1.js): 3D Fast 59 to 59.5 and Balanced 60 to 60.5 pictures/s, Ultra fast 56, 2D view 49.5 to 59.5 (the low figures while three of my own test pages ran at once). The tester's 27/s in the 2D view did not reproduce on base2 here (59.5/s), so that exact case is unconfirmed."
+   },
+   {
+    "id": "perf-4",
+    "what": "The 'Preparing the formula' label stays up until the first picture drawn with the new program has come back, not until the program is merely ready.",
+    "evidence": "out/fix/render/e3.js, switch to the classic approach with warming off: label 13 to 1711 ms, first preview on the canvas at 1705 ms, 0 ms with neither label nor bar, worst frame gap 18 ms. One run; the tester's half-second presentation stall happened once in three loads, so its absence here is not proof."
+   },
+   {
+    "id": "perf-5",
+    "what": "Programs are prepared ahead from 500 ms after the first pass of any picture and during refining (it used to need a finished picture); it stands back while the picture moves or its own program is compiling.",
+    "evidence": "out/fix/render/e5.js: during a Fine drawing still at pass 26 of 32 after 9 s, compiles went from 3 to 7 with worst frame gap 17 ms; after warming (15 programs) an approach switch needed 0 compiles and showed no label."
+   },
+   {
+    "id": "p1-1",
+    "what": "While the picture waits for a program, the renderer puts its label back in front whenever another task's label has displaced it (00-core.js is frozen, so this is done from the render loop).",
+    "evidence": "out/fix/render/e3.js approach switch: the only label texts seen frame by frame were 'Preparing the formula' then none. The tester's 2 s Power-slider drag was not rerun."
+   },
+   {
+    "id": "p4-3",
+    "what": "The ray-marched preview is now lit like the finished picture (shadows and crevice shading when the quality has them), and a first pass estimated under about 250 ms replaces the preview in one go instead of strip by strip.",
+    "evidence": "out/fix/render/e4.js, mean canvas brightness preview / finished: Balanced 40.4 / 36.9 before, 38.2 / 36.9 now (gap 9.5% to 3.5%); Fast 41.0 / 38.8 before, 40.5 / 38.8 now. Partial: a 3.5 to 4.4% gap remains, and a slow first pass still wipes in band by band. The notch-by-notch wheel recording was not rerun."
+   },
+   {
+    "id": "text-17",
+    "what": "Failure texts reworded as the tester suggested: 'This combination of approach and equation could not be prepared on this device. Try another approach or equation.' and status 'Nothing drawn: these settings could not be prepared'.",
+    "evidence": "Source change in sceneFail(); the failure path was not triggered."
+   }
+  ],
+  "not_fixed": [
+   {
+    "id": "perf-6",
+    "why": "Not fixed, and slightly worse in one respect. The preview still uses the chosen distance estimate, as the spec decides. A cheaper estimate for the moving picture is one value in preview() (nt), but it changes the outline while moving and depends on the rough and one-neighbour estimates being repaired in 30-shaders.js first. Lighting the preview for p4-3 made it 19 to 25% smaller across at Fast and Balanced (for example 161x131 against 214x174 of 862x701)."
+   },
+   {
+    "id": "p9-1",
+    "why": "Belongs to shaders or maths: torn surface of the sphere-inversion solid at n = 2 (distance estimate or the rule itself)."
+   },
+   {
+    "id": "p9-2",
+    "why": "Belongs to shaders: black streaks at n = 3 (distance estimate across the fold)."
+   },
+   {
+    "id": "p11-1",
+    "why": "Belongs to shaders or colour: what the 2D mosaic paints outside each Julia shape."
+   },
+   {
+    "id": "p5-1",
+    "why": "Belongs to shaders: the rough estimate loses thin parts."
+   },
+   {
+    "id": "p5-2",
+    "why": "Belongs to shaders: speckle with the rough estimate at a 2-pixel threshold."
+   },
+   {
+    "id": "p5-3",
+    "why": "Belongs to shaders: stray dots when the ray runs out of steps."
+   },
+   {
+    "id": "p5-6",
+    "why": "Belongs to shaders: Kleinian colour taken at the stopping point."
+   },
+   {
+    "id": "p5-7",
+    "why": "Belongs to shaders: the one-neighbour estimate."
+   },
+   {
+    "id": "p8b-1",
+    "why": "Belongs to shaders: kde() in GL_KLEIN. The 0.5 step cap in setScene() is kept as it was; a lower cap would be one line in setScene() if the shader owner wants it."
+   },
+   {
+    "id": "p8b-2",
+    "why": "Belongs to shaders or preset data: pearls the search never meets."
+   },
+   {
+    "id": "p15-2",
+    "why": "Belongs to shaders: distance estimate for the swapped solid at negative powers."
+   },
+   {
+    "id": "p15-3",
+    "why": "Belongs to shaders: the decision which side is solid is made inside the shader (the probe); the renderer passes nothing for it."
+   },
+   {
+    "id": "p15-5",
+    "why": "Belongs to shaders: same swap rule at n = 1. The 48 s the tester waited there was not re-timed."
+   }
+  ],
+  "names_added": [
+   "R.pend2: a second band handed to the GPU behind R.pend",
+   "R.pipe: bands are GPU-timed and cheap, so two may be in flight",
+   "R.quick: the first pass will be over within about 250 ms and is shown whole, not band by band",
+   "R.gain: cost of a full-size row over a preview row, learnt from each first pass (starts at 3)",
+   "R.rowPrev: cost of a full-size row at the preview's settings, from the last preview",
+   "R.p0: the first pass under way { ms, rows, row }, used to learn R.gain",
+   "R.busyP: the program whose first picture the busy label is waiting for",
+   "bandFloor(): fewest rows a band may have (height/32, at least 2)",
+   "busyOff(): clear the renderer's busy label",
+   "warmSoon(ms): schedule preparing programs ahead",
+   "drawDone(): status 'Done', hide the bar, schedule warming",
+   "jobDone(job, cost): what happens when a preview or band comes back from the GPU",
+   "prevTarget(exact): now one argument (the 2D allowance is gone); 55% of a frame, 8 to 20 ms",
+   "bandTarget(exact): now 50% of a frame (6 to 20 ms) when GPU-timed, 0.7 frame + 4 ms by the clock",
+   "fence(job): files the job as R.pend or R.pend2; jobs carry P, and bands also rows, p0, last, show, behind",
+   "Status and failure texts changed: 'Nothing drawn: these settings could not be prepared' and the #glfail sentence 'This combination of approach and equation could not be prepared on this device. Try another approach or equation.'"
+  ],
+  "needs_from_others": [
+   "None required: no new state in S, no new uniforms, no new markup.",
+   "Optional, src/js/80-ui.js UI_QUALITY (ui owner): the tester's idea of Fast with aa 2 and de 1 was not evaluated; the renderer needs nothing for it.",
+   "For the next round's background picture job (whoever builds it): setScene(P, o) in src/js/40-render.js is still the one place uniforms are set, but it reads S, theme, basis() and apVec() directly. A frozen-settings job needs those passed in as an argument; nothing in this round's change stands in the way."
+  ],
+  "answers_for_user": [
+   "On speed ('even fast is still slow', 'the zoom steps are jumpy'): the picture now updates on every frame while you drag or zoom instead of every second frame, Ultra fast shows its finished picture about 60 ms after you stop instead of 200 to 300 ms, and Balanced finished in 0.8 to 2.0 s here against 2.1 to 4.7 s before. One caution: a tester saw the old build sometimes take 20 to 30 times longer on a quiet machine; I could not make that happen on the shared test machine, so the fix for it is reasoned rather than observed and is worth one check on your own machine.",
+   "While moving, the quick picture is now lit like the finished one, so it no longer pops about 10% darker each time the zoom rests (the gap is now about 3.5%). The price is that the moving picture is a little softer at Fast and Balanced."
+  ],
+  "risks": [
+   "The quiet-GPU slow mode (perf-1) was never reproduced, so its fix is unverified. Check on a quiet GPU with: python out/fix/render/run.py dist/<page>.html out/fix/render/e2.js --argfile out/fix/render/arg-lambda-fast.json (prints rows, GPU ms and wall ms per band).",
+   "The band floor of height/32 means a very heavy setting (Fine on a slow GPU) can hold the GPU longer than a frame per band, so the first preview after you start dragging during such a drawing may come later than before. Not measured.",
+   "With two bands in flight the first preview after a touch waits for up to two bands (about one frame) instead of one. Not measured separately.",
+   "Warming now runs during refining. One run showed no frame gap above 17 ms; the tester's one-off 516 ms presentation stall after a compile could now fall during refining. Not measured over many loads.",
+   "Timings were taken on a GPU shared with five other engineers, some while my own test pages ran in parallel; absolute figures are noisy and only the back-to-back comparisons are meaningful.",
+   "Not re-tested after the change: context loss and restore, the path without parallel compile (R.par = null), picking, stage resize mid-drawing, light theme, phone width, high-refresh displays, and real mouse or wheel input (drags were simulated in page script).",
+   "Clock-only path (no GPU timer, as in Firefox and Safari) was run once with R.tq = null: 56 pictures/s dragging, Balanced finished in 4.6 s. Real Firefox or Safari not tried.",
+   "The 2D view's preview no longer gets a double time allowance, so a 2D picture costing more than about 9 ms is shown slightly reduced while moving (and then is not kept as the first pass)."
+  ]
+ }
+}

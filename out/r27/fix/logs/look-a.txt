@@ -1,0 +1,103 @@
+dist/r27-fix.html 1400x950 dark: exit 0, no console errors
+page up, 21 entries
+  K_overMandelbulb: MandelbulbMultiply the latitude and the longitude.v² = ((ρ² 
+  K_overTheRow: Balls on ballsa cousin of the flat picture: no c, no powerMade only of slides by whole numbers and sphere inversions, so every body is an exact ball. It is a cousin of the flat picture: its flat cut is a chain of circles. It has no c and no power.One click shows it in the Kleinian view, where its three dials are.
+  shown: True
+  K_afterLeaving_boxGone: True
+  mode: k
+  group: 1
+  approachSectionShown: False
+  bodyClass: balls-on
+  E_scoreSectionSays: [
+ "What survives the move to 3D",
+ "Balls on balls is not a rule that takes a point to a power and adds c, so it has no rows in this table."
+]
+  cardShown: False
+  CD_solidChoiceShown: False
+  examplesShown: False
+  notes: [
+ "A trap is a shape left in the path of the orbit. Each point is coloured by how its own orbit passed that shape.",
+ "Balls on balls has no trap solid, and so none of the examples, which are all trap solids: in this view the trap only colours the balls.",
+ "How far from the trap its glow reaches. Try another width if the picture comes out one colour."
+]
+  withSolidSetFromElsewhere: [
+ "A trap is a shape left in the path of the orbit. Each point is coloured by how its own orbit passed that shape.",
+ "Balls on balls has no trap solid, and so none of the examples, which are all trap solids: in this view the trap only colours the balls.",
+ "How far from the trap its glow reaches. Try another width if the picture comes out one colour."
+]
+  solidChoiceShownThen: False
+  thicknessShown: False
+  withThreeTones: [
+ "A trap is a shape left in the path of the orbit. Each point is coloured by how its own orbit passed that shape.",
+ "Balls on balls has no trap solid, and so none of the examples, which are all trap solids: in this view the trap only colours the balls."
+]
+  I_notes3D: []
+  I_notes2D: [
+ "The outline is drawn from the distance estimate, so threads thinner than a pixel still show. 0 leaves it out. Deep in a spiral the set is a web of such threads: each is drawn about a pixel wide, and where they crowd together they run into soft shapes. More iterations do not change that.",
+ "How far the outline fades out into the colours around the set. 0 is no glow."
+]
+  J_notes: [
+ "A trap is a shape left in the path of the orbit. Each point is coloured by how its own orbit passed that shape.",
+ "How far from the trap its glow reaches. Try another width if the picture comes out one colour.",
+ "The outline is drawn from the distance estimate, so threads thinner than a pixel still show. 0 leaves it out. Deep in a spiral the set is a web of such threads: each is drawn about a pixel wide, and where they crowd together they run into soft shapes. More iterations do not change that.",
+ "How far the outline fades out into the colours around the set. 0 is no glow.",
+ "The inside uses the trap shape and the \"Trap colours by\" choice above. With the same palette inside and outside, the inside starts half-way round the palette, so that the set does not look like a hole in the picture.",
+ "In the Kleinian view the trap colours inside the discs do not follow the mirror symmetry of the picture: two discs that mirror each other can come out in different colours."
+]
+  F_warn3D_square: At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.
+  status: Done: 12 passes at 862 × 701
+panel at 100
+  F_warn3D_line: At 100 the chain never ends, so the picture shows a stretch of it; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.
+  F_warn2D: At 100 the chain never ends, so the picture shows a stretch of it, and the circles stand so close that they read as one band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen.
+  F_warn3D_hex: At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.
+  at98: 
+  shown: False
+  G_sliderMin: 5
+  sliderMax: 40
+  typed1Gives: 5
+  atSliderMin: 5
+  L_helps: [
+ "How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain, and at 100 the chain never ends.",
+ "Where the buds sit: four-fold round the chain (square grid), six-fold (honeycomb grid), or only round the flat picture (a line only); the flat cut is the same for all three.",
+ "How many rounds of the search a point may take before it counts as inside: the larger the neighbours, the more rounds the far balls of the chain need, and with too few they come out swollen."
+]
+  N_frameTitle: Move the camera to a view that shows the whole chain. A zoom limit or a Drawing radius that is in the way is moved as well.
+  stepHelp: [
+ "The most steps one ray may take. Raise it when far or thin parts go missing. (Balls on balls may take twice this number.)",
+ "Each ray step covers this share of the estimated distance to the surface. Lower is safer and slower. Higher is faster and can punch holes; the dial stops at 1.2 because beyond it the rays step over the solid and the picture goes empty. In the Kleinian view anything above 0.5 counts as 0.5 (for Balls on balls: anything above 0.9 counts as 0.9)."
+]
+  O: {
+ "learnFromBalls": {
+  "approachHiddenAttr": true,
+  "approachShown": true,
+  "name": "Sphere inversions, one plane",
+  "tableShown": true,
+  "tableNote": false
+ },
+ "backToBalls": {
+  "group": 1,
+  "learn": false,
+  "tableNote": true
+ },
+ "firstGroup": {
+  "approachHiddenAttr": true,
+  "approachShown": false,
+  "name": "Sphere inversions, one plane",
+  "tableShown": true,
+  "tableNote": false
+ },
+ "learnFromFirstGroup": {
+  "approachHiddenAttr": true,
+  "approachShown": true,
+  "name": "Sphere inversions, one plane",
+  "tableShown": true,
+  "tableNote": false
+ },
+ "ballsAgain": {
+  "approachHiddenAttr": true,
+  "approachShown": false,
+  "name": "Sphere inversions, one plane",
+  "tableShown": false,
+  "tableNote": true
+ }
+}

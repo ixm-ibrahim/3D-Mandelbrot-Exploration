@@ -1,0 +1,7 @@
+mercator   10 runs: general points worst 3.6e-05, over 2e-3: 0;  z=0 points worst 3.0e-05, over: 0, leak out of the plane (pw, sqr) 1.2e+01;  y=0 points worst 3.8e-06, over: 0
+lathe      10 runs: general points worst 4.6e-05, over 2e-3: 0;  z=0 points worst 3.0e-05, over: 0, leak out of the plane (pw, sqr) 0.0e+00;  y=0 points worst 3.0e-05, over: 0
+fold       18 runs: general points worst 8.4e-05, over 2e-3: 0;  z=0 points worst 3.0e-05, over: 0, leak out of the plane (pw, sqr) 1.7e+01;  y=0 points worst 3.0e-05, over: 0
+tilt       48 runs: general points worst 5.6e-05, over 2e-3: 0;  z=0 points worst 5.6e-05, over: 0, leak out of the plane (pw, sqr) 0.0e+00;  y=0 points worst 5.5e-05, over: 0
+softfold   42 runs: general points worst 6.3e-04, over 2e-3: 0;  z=0 points worst 5.5e-05, over: 0, leak out of the plane (pw, sqr) 0.0e+00;  y=0 points worst 5.4e-05, over: 0
+axisbulb   30 runs: general points worst 8.7e-05, over 2e-3: 0;  z=0 points worst 5.5e-05, over: 0, leak out of the plane (pw, sqr) 0.0e+00;  y=0 points worst 5.4e-05, over: 0
+pillow     14 runs: general points worst 4.9e-04, over 2e-3: 0;  z=0 points worst 9.2e-05, over: 0, leak out of the plane (pw, sqr) 0.0e+00;  y=0 points worst 2.1e-04, over: 0

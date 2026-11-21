@@ -1,0 +1,484 @@
+--- step 1
+loaded
+--- step 2
+{
+ "latheVsQuaternionSquare": 2.035173072474509e-15,
+ "mercatorVsClosedFormSquare": 1.1011071277085243e-15
+}
+--- step 3
+{
+ "space": 1,
+ "cfg": 390,
+ "runs": 778200,
+ "fails": 0,
+ "worst": 2.6830378540729227e-15,
+ "skipped": 1800,
+ "firstFail": null,
+ "noteWrong": [
+  {
+   "id": "tilt",
+   "q": {
+    "tilt": -75
+   },
+   "n": 2.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "tilt",
+   "q": {
+    "tilt": -75
+   },
+   "n": 0.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "tilt",
+   "q": {
+    "tilt": -75
+   },
+   "n": -0.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {},
+   "n": 2.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {},
+   "n": 0.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {},
+   "n": -0.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 3
+   },
+   "n": 2.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 3
+   },
+   "n": 0.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 3
+   },
+   "n": -0.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": -2,
+    "wob": 0.5,
+    "reach": 20,
+    "pinch": 1.5
+   },
+   "n": 2.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": -2,
+    "wob": 0.5,
+    "reach": 20,
+    "pinch": 1.5
+   },
+   "n": 0.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 2,
+    "wob": 0
+   },
+   "n": 2.5,
+   "bad": 2,
+   "of": 1954,
+   "note": "On a line a number can lean only two ways from the positive side: 0° or 180°. The turn is the same turn as on a page, so a negative number has to swing through a direction the line does not have. With a whole power and the dials at their starting values, every approach in the list does this on the x-axis. The one exception is “Mandelbulb, classic”, which does not keep the flat picture. With a power that is not a whole number a negative number does not come back to the line."
+  }
+ ],
+ "noteWrongCount": 16,
+ "claimBroken": []
+}
+--- step 4
+{
+ "space": 2,
+ "cfg": 390,
+ "runs": 776520,
+ "fails": 0,
+ "worst": 3.7348962992913385e-15,
+ "skipped": 3480,
+ "firstFail": null,
+ "noteWrong": [
+  {
+   "id": "axisbulb",
+   "q": {},
+   "n": 2.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {},
+   "n": 0.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {},
+   "n": -0.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 3
+   },
+   "n": 2.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 3
+   },
+   "n": 0.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 3
+   },
+   "n": -0.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 1,
+    "wob": 0,
+    "reach": 0,
+    "pinch": 0.5
+   },
+   "n": 2.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 1,
+    "wob": 0,
+    "reach": 0,
+    "pinch": 0.5
+   },
+   "n": 0.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  },
+  {
+   "id": "axisbulb",
+   "q": {
+    "k": 1,
+    "wob": 0,
+    "reach": 0,
+    "pinch": 0.5
+   },
+   "n": -0.5,
+   "bad": 1,
+   "of": 1981,
+   "note": "On a page the point is turned and then stretched. That is ordinary multiplication of complex numbers. With a whole power and the dials at their starting values, every approach in the list does this in the plane z = 0. The one exception is “Mandelbulb, classic”, which does not keep the flat picture."
+  }
+ ],
+ "noteWrongCount": 9,
+ "claimBroken": []
+}
+--- step 5
+{
+ "id": "mercator",
+ "cfg": 325,
+ "runs": 650000,
+ "fails": 150,
+ "worst": 2,
+ "nonfinite": 0,
+ "firstFail": {
+  "n": 3,
+  "q": {},
+  "mod": 0,
+  "c": [
+   0.31,
+   -0.27,
+   0.19
+  ],
+  "v": [
+   0,
+   0,
+   -1
+  ],
+  "got": [
+   0.3100000041223072,
+   -0.27,
+   -0.81
+  ],
+  "ref": [
+   0.3099999958776928,
+   -0.27,
+   -0.81
+  ],
+  "rel": 9.076471692571191e-09
+ }
+}
+--- step 6
+{
+ "id": "fold",
+ "cfg": 260,
+ "runs": 520000,
+ "fails": 0,
+ "worst": 1.863943625125053e-14,
+ "nonfinite": 0,
+ "firstFail": null
+}
+--- step 7
+{
+ "id": "lathe",
+ "cfg": 325,
+ "runs": 650000,
+ "fails": 60,
+ "worst": 2.4523729759256994,
+ "nonfinite": 0,
+ "firstFail": {
+  "n": 2.5,
+  "q": {},
+  "mod": 0,
+  "c": [
+   0.31,
+   -0.27,
+   0.19
+  ],
+  "v": [
+   -1,
+   0,
+   0
+  ],
+  "got": [
+   0.31000000000000033,
+   0.73,
+   0.19
+  ],
+  "ref": [
+   0.31000000000000033,
+   -1.27,
+   0.1900000000000001
+  ],
+  "rel": 1.5139789483447823
+ }
+}
+--- step 8
+{
+ "id": "tilt",
+ "cfg": 325,
+ "runs": 650000,
+ "fails": 31,
+ "worst": 2.452372975925699,
+ "nonfinite": 0,
+ "firstFail": {
+  "n": -1,
+  "q": {
+   "tilt": 123
+  },
+  "mod": 0,
+  "c": [
+   0.31,
+   -0.27,
+   0.19
+  ],
+  "v": [
+   0,
+   0,
+   0
+  ],
+  "got": [
+   -947277025775543300,
+   1458678703018242600,
+   0.19
+  ],
+  "ref": [
+   947277025775543400,
+   -1458678703018242600,
+   0.19
+  ],
+  "rel": 2
+ }
+}
+--- step 9
+{
+ "id": "bulb",
+ "cfg": 260,
+ "runs": 520000,
+ "fails": 105,
+ "worst": 2.614658336320376,
+ "nonfinite": 0,
+ "firstFail": {
+  "n": 3,
+  "q": {
+   "lat": 30,
+   "lon": -45
+  },
+  "mod": 0,
+  "c": [
+   0.31,
+   -0.27,
+   0.19
+  ],
+  "v": [
+   0,
+   0,
+   -1
+  ],
+  "got": [
+   -0.04355339059327351,
+   0.08355339059327344,
+   1.0560254037844388
+  ],
+  "ref": [
+   0.6635533905932737,
+   -0.6235533905932745,
+   1.0560254037844383
+  ],
+  "rel": 0.7171616667464299
+ }
+}
+--- step 10
+{
+ "id": "classic",
+ "cfg": 195,
+ "runs": 390000,
+ "fails": 60,
+ "worst": 2.290332933207199,
+ "nonfinite": 0,
+ "firstFail": {
+  "n": 3,
+  "q": {
+   "theta": 25,
+   "phi": 60
+  },
+  "mod": 0,
+  "c": [
+   0.31,
+   -0.27,
+   0.19
+  ],
+  "v": [
+   0,
+   0,
+   -1
+  ],
+  "got": [
+   0.0986908691296498,
+   -0.6359981507706676,
+   -0.7163077870366497
+  ],
+  "ref": [
+   0.5213091308703492,
+   0.09599815077066615,
+   -0.7163077870366503
+  ],
+  "rel": 0.9485217673438496
+ }
+}
+--- step 11
+{
+ "id": "split",
+ "cfg": 65,
+ "runs": 130000,
+ "fails": 0,
+ "worst": 6.948151738094632e-15,
+ "nonfinite": 0,
+ "firstFail": null
+}
+--- step 12
+{
+ "id": "softfold",
+ "cfg": 260,
+ "runs": 520000,
+ "fails": 0,
+ "worst": 6.753934185993028e-15,
+ "nonfinite": 0,
+ "firstFail": null
+}
+--- step 13
+{
+ "id": "axisbulb",
+ "cfg": 325,
+ "runs": 650000,
+ "fails": 0,
+ "worst": 1.7110926298573947e-14,
+ "nonfinite": 0,
+ "firstFail": null
+}
+--- step 14
+{
+ "id": "pillow",
+ "cfg": 130,
+ "runs": 260000,
+ "fails": 0,
+ "worst": 5.351138038377578e-15,
+ "nonfinite": 0,
+ "firstFail": null
+}
+no console errors
+exit 0

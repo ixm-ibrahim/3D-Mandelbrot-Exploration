@@ -1,0 +1,134 @@
+step 1 waited 1.8 s
+step 2 result: "f01-flat-m-open mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":12,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=true"
+step 4 waited 0.3 s
+step 4 wrote out/r11/engine/ref/f01-flat-m-open.png
+step 5 result: "f02-flat-j-minus1 mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":12,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=true"
+step 7 waited 0.3 s
+step 7 wrote out/r11/engine/ref/f02-flat-j-minus1.png
+step 8 result: "f05-flat-k mode=k c=-1,0,0 dist=7.0866 q={\"res\":1,\"aa\":12,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=true"
+step 10 waited 1.0 s
+step 10 wrote out/r11/engine/ref/f05-flat-k.png
+step 11 result: "f09-flat-j-in-trap mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":12,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=true"
+step 13 waited 2.5 s
+step 13 wrote out/r11/engine/ref/f09-flat-j-in-trap.png
+step 14 result: "f10-flat-m-cross-bands mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":12,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=true"
+step 16 waited 0.3 s
+step 16 wrote out/r11/engine/ref/f10-flat-m-cross-bands.png
+step 17 result: "f11-m-escape mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 19 waited 0.3 s
+step 19 wrote out/r11/engine/ref/f11-m-escape.png
+step 20 result: "f13-j-depth mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 22 waited 0.5 s
+step 22 wrote out/r11/engine/ref/f13-j-depth.png
+step 23 result: "f14-m-clay mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 25 waited 0.3 s
+step 25 wrote out/r11/engine/ref/f14-m-clay.png
+step 26 result: "f15-jr-clay mode=j c=-0.123,0.745,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 28 waited 0.8 s
+step 28 wrote out/r11/engine/ref/f15-jr-clay.png
+step 29 result: "f16-k-escape mode=k c=-1,0,0 dist=7.0866 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 31 waited 0.0 s
+step 31 wrote out/r11/engine/ref/f16-k-escape.png
+step 32 result: "f17-k-clay mode=k c=-1,0,0 dist=7.0866 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 34 waited 0.0 s
+step 34 wrote out/r11/engine/ref/f17-k-clay.png
+step 35 result: "f18-m-neg2-escape mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 37 waited 2.8 s
+step 37 wrote out/r11/engine/ref/f18-m-neg2-escape.png
+step 38 result: "f21-m-ultra-escape mode=m c=-1,0,0 dist=5.2000 q={\"res\":0.5,\"aa\":1,\"steps\":90,\"detail\":2,\"stepk\":0.8,\"smooth\":1,\"normals\":\"smooth\",\"ao\":false,\"shadow\":false,\"de\":0} solid=0 flat=false"
+step 40 waited 0.0 s
+step 40 wrote out/r11/engine/ref/f21-m-ultra-escape.png
+step 41 result: "f22-m-fast-clay mode=m c=-1,0,0 dist=5.2000 q={\"res\":0.75,\"aa\":3,\"steps\":160,\"detail\":1.25,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":false,\"de\":3} solid=0 flat=false"
+step 43 waited 0.0 s
+step 43 wrote out/r11/engine/ref/f22-m-fast-clay.png
+step 44 result: "f23-cut-m-hatch-escape mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 46 waited 0.3 s
+step 46 wrote out/r11/engine/ref/f23-cut-m-hatch-escape.png
+step 47 result: "f25-m-mosaic-escape mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 49 waited 0.3 s
+step 49 wrote out/r11/engine/ref/f25-m-mosaic-escape.png
+step 50 result: "f27-m-fine-clay mode=m c=-1,0,0 dist=5.2000 q={\"res\":1.5,\"aa\":4,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 52 waited 0.3 s
+step 52 wrote out/r11/engine/ref/f27-m-fine-clay.png
+step 53 result: "g01-m-open mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 55 waited 0.3 s
+step 55 wrote out/r11/engine/ref/g01-m-open.png
+step 56 result: "g02-j-open mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 58 waited 0.3 s
+step 58 wrote out/r11/engine/ref/g02-j-open.png
+step 59 result: "g03-k-open mode=k c=-1,0,0 dist=7.0866 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 61 waited 0.0 s
+step 61 wrote out/r11/engine/ref/g03-k-open.png
+step 62 result: "g04-j-fine mode=j c=-1,0,0 dist=4.8594 q={\"res\":1.5,\"aa\":4,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 64 waited 0.8 s
+step 64 wrote out/r11/engine/ref/g04-j-fine.png
+step 65 result: "g05-jr-open mode=j c=-0.123,0.745,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 67 waited 0.3 s
+step 67 wrote out/r11/engine/ref/g05-jr-open.png
+step 68 result: "g06-m-neg2 mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 70 waited 1.0 s
+step 70 wrote out/r11/engine/ref/g06-m-neg2.png
+step 71 result: "g07-m-mosaic mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 73 waited 0.3 s
+step 73 wrote out/r11/engine/ref/g07-m-mosaic.png
+step 74 result: "g08-j-ultra mode=j c=-1,0,0 dist=4.8594 q={\"res\":0.5,\"aa\":1,\"steps\":90,\"detail\":2,\"stepk\":0.8,\"smooth\":1,\"normals\":\"smooth\",\"ao\":false,\"shadow\":false,\"de\":0} solid=0 flat=false"
+step 76 waited 0.0 s
+step 76 wrote out/r11/engine/ref/g08-j-ultra.png
+step 77 result: "g11-k-e33-fine mode=k c=-1,0,0 dist=6.4000 q={\"res\":1.5,\"aa\":4,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 79 waited 0.3 s
+step 79 wrote out/r11/engine/ref/g11-k-e33-fine.png
+step 80 result: "g12-m-fine mode=m c=-1,0,0 dist=5.2000 q={\"res\":1.5,\"aa\":4,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
+step 82 waited 0.8 s
+step 82 wrote out/r11/engine/ref/g12-m-fine.png
+step 83 result: "s01-ex0-m-coral mode=m c=-1,0,0 dist=5.2643 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 85 waited 3.5 s
+step 85 wrote out/r11/engine/ref/s01-ex0-m-coral.png
+step 86 result: "s02-ex1-m-discs mode=m c=-1,0,0 dist=5.2643 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 88 waited 0.8 s
+step 88 wrote out/r11/engine/ref/s02-ex1-m-discs.png
+step 89 result: "s03-ex2-m-rings mode=m c=-1,0,0 dist=5.9730 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=2 flat=false"
+step 91 waited 0.8 s
+step 91 wrote out/r11/engine/ref/s03-ex2-m-rings.png
+step 92 result: "s04-ex3-j-bubbles mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 94 waited 0.8 s
+step 94 wrote out/r11/engine/ref/s04-ex3-j-bubbles.png
+step 95 result: "s05-ex4-j-urchins mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 97 waited 1.3 s
+step 97 wrote out/r11/engine/ref/s05-ex4-j-urchins.png
+step 98 result: "s06-ex5-jr-arches mode=j c=-0.122561,0.744862,0 dist=5.3656 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 100 waited 0.5 s
+step 100 wrote out/r11/engine/ref/s06-ex5-jr-arches.png
+step 101 result: "s07-m-shell-is mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 103 waited 0.3 s
+step 103 wrote out/r11/engine/ref/s07-m-shell-is.png
+step 104 result: "s09-j-shell1-is mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 106 waited 0.5 s
+step 106 wrote out/r11/engine/ref/s09-j-shell1-is.png
+step 107 result: "s10-jr-ring-added mode=j c=-0.123,0.745,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=2 flat=false"
+step 109 waited 0.8 s
+step 109 wrote out/r11/engine/ref/s10-jr-ring-added.png
+step 110 result: "s11-j-bubbles-fine mode=j c=-1,0,0 dist=4.8594 q={\"res\":1.5,\"aa\":4,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 112 waited 0.8 s
+step 112 wrote out/r11/engine/ref/s11-j-bubbles-fine.png
+step 113 result: "s12-j-bubbles-ultra mode=j c=-1,0,0 dist=4.8594 q={\"res\":0.5,\"aa\":1,\"steps\":90,\"detail\":2,\"stepk\":0.8,\"smooth\":1,\"normals\":\"smooth\",\"ao\":false,\"shadow\":false,\"de\":0} solid=1 flat=false"
+step 115 waited 0.0 s
+step 115 wrote out/r11/engine/ref/s12-j-bubbles-ultra.png
+step 116 result: "s16-j-bubbles-cut mode=j c=-1,0,0 dist=4.8594 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 118 waited 0.5 s
+step 118 wrote out/r11/engine/ref/s16-j-bubbles-cut.png
+step 119 result: "s17-m-mosaic-shell mode=m c=-1,0,0 dist=5.2000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 121 waited 1.0 s
+step 121 wrote out/r11/engine/ref/s17-m-mosaic-shell.png
+step 122 result: "s20-k-e00-is mode=k c=-1,0,0 dist=7.0000 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 124 waited 2.3 s
+step 124 wrote out/r11/engine/ref/s20-k-e00-is.png
+step 125 result: "s21-k-ex6-pearls mode=k c=-1,0,0 dist=7.0866 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=2 flat=false"
+step 127 waited 0.3 s
+step 127 wrote out/r11/engine/ref/s21-k-ex6-pearls.png
+step 128 result: "s22-k-ex7-rings mode=k c=-1,0,0 dist=7.0866 q={\"res\":1,\"aa\":4,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=1 flat=false"
+step 130 waited 0.0 s
+step 130 wrote out/r11/engine/ref/s22-k-ex7-rings.png
+step 131 result: "s23-k-ex8-discs-fine mode=k c=-1,0,0 dist=7.0866 q={\"res\":1.5,\"aa\":4,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=2 flat=false"
+step 133 waited 0.3 s
+step 133 wrote out/r11/engine/ref/s23-k-ex8-discs-fine.png
+no console errors

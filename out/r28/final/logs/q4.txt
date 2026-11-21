@@ -1,0 +1,4 @@
+17:12:51 the same rays on the page before the fixer, three views
+17:15:14   exit 0
+17:20:26   walk exit 0
+17:20:26 exit: queue 4 is done

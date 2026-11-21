@@ -1,0 +1,42 @@
+A. The rule in JavaScript (L.CARRY) against the library. 10,000 orbits each, 50 steps, leaving = |v| >= 6.
+   alongonce    bas: stay all 50: lab   383, library   383 | verdicts that differ 0, stay counts that differ 0
+   alongonce    rab: stay all 50: lab   363, library   363 | verdicts that differ 0, stay counts that differ 0
+   alongonce    smk: stay all 50: lab   828, library   828 | verdicts that differ 0, stay counts that differ 0
+   alongonce    off: stay all 50: lab     0, library     0 | verdicts that differ 0, stay counts that differ 0
+   alongonce    man: stay all 50: lab   150, library   150 | verdicts that differ 0, stay counts that differ 0
+   pulledplane  bas: stay all 50: lab   360, library   360 | verdicts that differ 0, stay counts that differ 0
+   pulledplane  rab: stay all 50: lab   267, library   267 | verdicts that differ 0, stay counts that differ 0
+   pulledplane  smk: stay all 50: lab   761, library   761 | verdicts that differ 0, stay counts that differ 0
+   pulledplane  off: stay all 50: lab  1236, library  1236 | verdicts that differ 0, stay counts that differ 0
+   pulledplane  man: stay all 50: lab   480, library   480 | verdicts that differ 0, stay counts that differ 0
+   (100000 orbits in all)
+
+B. The shader point by point (sampleSlice, three neighbour orbits beside each point), level slices of 144 x 144.
+   Same number of squarings as the page (Julia: Iterations; Mandelbrot: started at c, Iterations - 1), leaving = |v| >= 64.
+   alongonce    rab z = 0    : inside lab  3036, library  3036; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   alongonce    rab z = -0.18: inside lab  1669, library  1669; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   alongonce    smk z = 0    : inside lab  4268, library  4268; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   alongonce    smk z = 0.22 : inside lab  3286, library  3286; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   alongonce    air z = 0    : inside lab    72, library    72; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   alongonce    air z = 0.12 : inside lab     0, library     0; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   alongonce    off z = 0.05 : inside lab     0, library     0; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   alongonce    man z = 0    : inside lab  4464, library  4464; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   alongonce    man z = -0.15: inside lab  1154, library  1154; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   pulledplane  rab z = 0    : inside lab  3036, library  3036; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   pulledplane  rab z = -0.18: inside lab  1589, library  1589; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   pulledplane  smk z = 0    : inside lab  4268, library  4268; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   pulledplane  smk z = 0.22 : inside lab  3044, library  3044; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   pulledplane  air z = 0    : inside lab    72, library    72; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   pulledplane  air z = 0.12 : inside lab     0, library     0; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   pulledplane  off z = 0.05 : inside lab  4855, library  4855; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   pulledplane  man z = 0    : inside lab  4464, library  4464; differ    0 (on an edge    0); lab reads 0 or NaN: 0 | the flat (complex) picture: lab differs 0
+   pulledplane  man z = -0.15: inside lab  2834, library  2834; differ    0 (on an edge    0); lab reads 0 or NaN: 0
+   (373248 points in all, 0 differ)
+
+C. The 3D picture (the page caps these entries at Rough), 36 x 27 probes per camera, against the library along the same lines of sight (a test every 0.004).
+   alongonce   bas : lab stops  138, library  138, both  138, lab only   0, library only   0 of 972; lab stops -1.5 px (median) from the library's first point, |.| 95 %: 2.1 px; stops off the lines of sight: 5.5e-07 at most
+   alongonce   rab : lab stops  165, library  162, both  162, lab only   3, library only   0 of 972; lab stops -1.1 px (median) from the library's first point, |.| 95 %: 2.4 px; stops off the lines of sight: 4.7e-07 at most
+   alongonce   man : lab stops  148, library  119, both  119, lab only  29, library only   0 of 972; lab stops -0.8 px (median) from the library's first point, |.| 95 %: 1.6 px; stops off the lines of sight: 4.3e-07 at most
+   pulledplane bas : lab stops  131, library  130, both  130, lab only   1, library only   0 of 972; lab stops -0.9 px (median) from the library's first point, |.| 95 %: 2.7 px; stops off the lines of sight: 5.4e-07 at most
+   pulledplane rab : lab stops  122, library  121, both  121, lab only   1, library only   0 of 972; lab stops -1.1 px (median) from the library's first point, |.| 95 %: 2.4 px; stops off the lines of sight: 4.3e-07 at most
+   pulledplane man : lab stops  135, library  130, both  130, lab only   5, library only   0 of 972; lab stops -1.2 px (median) from the library's first point, |.| 95 %: 2.3 px; stops off the lines of sight: 3.5e-07 at most

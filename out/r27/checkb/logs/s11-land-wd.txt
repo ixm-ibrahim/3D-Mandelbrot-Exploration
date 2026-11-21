@@ -1,0 +1,9 @@
+s11-land  1400x950 dark  page dist/r27-checkb.html
+step 1 waited 2.0 s
+step 2 result: {"before": {"scrollY": 0, "win": [1400, 950], "menuBtn": [683, 721], "kleinGroup": [0, 0], "ballsNote": [0, 0], "ballsSize": [0, 0], "ballsFrame": [0, 0], "stage": [173, 876]}, "menuOpen": {"scrollY": 478, "win": [1400, 950], "menuBtn": [205, 243], "kleinGroup": [0, 0], "ballsNote": [0, 0], "ballsSize": [0, 0], "ballsFrame": [0, 0], "stage": [12, 715]}}
+step 3 wrote out/r27/checkb/shots/s11-wd-0-menu-as-the-user-opens-it.png
+step 4 result: {"afterRow": {"scrollY": 1013, "win": [1400, 950], "menuBtn": [204, 242], "kleinGroup": [-568, -475], "ballsNote": [-461, -380], "ballsSize": [-328, -308], "ballsFrame": [48, 79], "stage": [-175, 528]}, "mode": "k", "group": 1}
+step 5 wrote out/r27/checkb/shots/s11-wd-1-right-after-the-row.png
+no console errors
+
+exit 0, 6.4 s

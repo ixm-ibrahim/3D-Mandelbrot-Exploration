@@ -1,0 +1,37 @@
+reference: unit ball, c = 0  c = ( 0.000000,  0.000000,  0.000000)  1 pl  14 it  volume  4.19  pieces    1  largest 100.0%  extent 0.98 0.98 0.98
+Basilica                     c = (-1.000000,  0.000000,  0.000000)  2 pl  14 it  volume  0.70  pieces    3  largest  99.9%  extent 1.53 0.68 0.68
+San Marco                    c = (-0.750000,  0.000000,  0.000000)  2 pl  14 it  volume  1.45  pieces    1  largest 100.0%  extent 1.42 0.79 0.79
+Douady rabbit                c = (-0.122561,  0.744862,  0.000000)  1 pl  24 it  volume  0.50  pieces    1  largest 100.0%  extent 1.24 0.98 0.39
+Airplane                     c = (-1.754878,  0.000000,  0.000000)  2 pl  14 it  volume  0.01  pieces    5  largest  84.0%  extent 1.35 0.09 0.09
+Cauliflower                  c = ( 0.250000,  0.000000,  0.000000)  2 pl  14 it  volume  4.64  pieces    1  largest 100.0%  extent 0.79 1.05 1.05
+Siegel disc                  c = (-0.390541, -0.586788,  0.000000)  1 pl  14 it  volume  1.56  pieces    1  largest 100.0%  extent 1.35 0.94 0.61
+Dendrite                     c = ( 0.000000,  1.000000,  0.000000)  1 pl  14 it  volume  0.01  pieces   14  largest  19.0%  extent 0.68 0.76 0.02
+Kokopelli                    c = (-0.156520,  1.032247,  0.000000)  1 pl  14 it  volume  0.02  pieces    7  largest  63.5%  extent 1.20 0.83 0.13
+Fat rabbit                   c = (-0.125000,  0.649519,  0.000000)  1 pl  14 it  volume  1.62  pieces    1  largest 100.0%  extent 1.24 1.02 0.61
+Feigenbaum point             c = (-1.401155,  0.000000,  0.000000)  2 pl  14 it  volume  0.05  pieces    7  largest  81.5%  extent 1.39 0.46 0.46
+Golden ratio                 c = (-0.618034,  0.000000,  0.000000)  2 pl  14 it  volume  1.95  pieces    1  largest 100.0%  extent 1.39 0.87 0.87
+−0.8 + 0.156i                c = (-0.800000,  0.156000,  0.000000)  1 pl  24 it  volume  1.04  pieces    1  largest 100.0%  extent 1.46 0.79 0.54
+0.285 + 0.01i                c = ( 0.285000,  0.010000,  0.000000)  2 pl  14 it  volume  4.64  pieces    1  largest 100.0%  extent 0.79 1.05 1.05
+−0.4 + 0.6i                  c = (-0.400000,  0.600000,  0.000000)  1 pl  14 it  volume  1.41  pieces    1  largest 100.0%  extent 1.35 0.94 0.57
+−0.70176 − 0.3842i           c = (-0.701760, -0.384200,  0.000000)  1 pl  24 it  volume  0.25  pieces   34  largest  40.4%  extent 1.39 0.83 0.28
+−0.835 − 0.2321i             c = (-0.835000, -0.232100,  0.000000)  1 pl  24 it  volume  0.12  pieces   19  largest  94.4%  extent 1.42 0.72 0.20
+−0.7269 + 0.1889i            c = (-0.726900,  0.188900,  0.000000)  1 pl  14 it  volume  1.69  pieces    1  largest 100.0%  extent 1.46 0.83 0.65
+0.45 + 0.1428i               c = ( 0.450000,  0.142800,  0.000000)  1 pl  24 it  volume  0.00  pieces    4  largest  33.3%  extent 0.35 0.94 0.02
+Cracked Basilica             c = (-1.000000,  0.045000,  0.026000)  2 pl  14 it  volume  0.66  pieces    2  largest  99.9%  extent 1.57 0.76 0.76
+Thorn crystal                c = (-1.250000,  0.030000,  0.020000)  2 pl  14 it  volume  0.18  pieces    9  largest  99.7%  extent 1.68 0.65 0.65
+Split conch                  c = (-0.750000,  0.097000,  0.026000)  2 pl  14 it  volume  1.39  pieces    1  largest 100.0%  extent 1.46 0.83 0.83
+Flint                        c = (-0.400000,  0.130000,  0.075000)  2 pl  14 it  volume  2.65  pieces    1  largest 100.0%  extent 1.28 0.94 0.94
+Plated egg                   c = (-0.200000,  0.130000,  0.075000)  2 pl  14 it  volume  3.45  pieces    1  largest 100.0%  extent 1.16 0.98 0.98
+Plated ball                  c = ( 0.000000,  0.087000,  0.050000)  2 pl  14 it  volume  4.15  pieces    1  largest 100.0%  extent 1.02 1.02 1.02
+Cracked gourd                c = ( 0.250000,  0.097000,  0.026000)  2 pl  14 it  volume  4.60  pieces    1  largest 100.0%  extent 0.87 1.05 1.05
+Pitted gourd                 c = ( 0.350000,  0.050000,  0.030000)  2 pl  14 it  volume  3.30  pieces    1  largest 100.0%  extent 0.79 1.09 1.09
+
+explored presets at higher iteration counts (96^3 grid): volume, pieces, share of the largest piece
+Cracked Basilica   14 it: 0.66,   2, 100%   30 it: 0.60,  13,  78%   60 it: 0.59,  13,  78%
+Thorn crystal      14 it: 0.18,  11,  80%   30 it: 0.01,  32,  20%   60 it: 0.00,   6,  25%
+Split conch        14 it: 1.39,   1, 100%   30 it: 1.20,   1, 100%   60 it: 0.42,  46,  97%
+Flint              14 it: 2.66,   1, 100%   30 it: 2.61,   1, 100%   60 it: 2.61,   1, 100%
+Plated egg         14 it: 3.45,   1, 100%   30 it: 3.44,   1, 100%   60 it: 3.44,   1, 100%
+Plated ball        14 it: 4.16,   1, 100%   30 it: 4.15,   1, 100%   60 it: 4.15,   1, 100%
+Cracked gourd      14 it: 4.60,   1, 100%   30 it: 4.59,   1, 100%   60 it: 4.59,   1, 100%
+Pitted gourd       14 it: 3.28,   1, 100%   30 it: 1.18, 135,  87%   60 it: 0.45, 380,  24%

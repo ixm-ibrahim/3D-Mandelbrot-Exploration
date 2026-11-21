@@ -1,0 +1,23 @@
+# Preview builds: build.py makes them again
+dist/
+
+# Research output. The scripts, notes and logs are kept; the heavy files they made are not
+# (about 15 GB of pictures, 3D models and number caches).
+out/**
+!out/**/
+!out/**/*.py
+!out/**/*.js
+!out/**/*.glsl
+!out/**/*.md
+!out/**/*.txt
+!out/**/*.diff
+# the pictures that were made to be shown
+!out/**/user-*.png
+
+# The text of the paper this work started from is not ours to republish (see README.md for the reference)
+notes/paper-kucera.txt
+
+# Python and editor leftovers
+__pycache__/
+*.pyc
+.claude/

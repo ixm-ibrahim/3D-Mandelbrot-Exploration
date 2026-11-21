@@ -1,0 +1,92 @@
+<<<<
+// not a number, infinite, or too large to take the length of
+bool isWild(vec3 a){ a = abs(a); return !(a.x < 1e18 && a.y < 1e18 && a.z < 1e18) || any(isnan(a)); }
+====
+>>>>
+<<<<
+    vec3 w = vec3(0.0); float lw = 0.0, st = 0.0; bool pole = false;
+    for (int i = 0; i <= nt; i++){
+      vec3 dz = vec3(0.0), dk = vec3(0.0);
+      if (i > 0){ dz = dv[i - 1]; dk = dc[i - 1]; }
+      vec3 wi = f(v + dz, c + dk);
+      if (i == 0){
+        bool wild = isWild(wi);
+        if (k == 0 && r < 1e-3 && (wild || length(wi) > 1e3 * (uBail + length(c)))){ pole = true; break; }
+        if (wild) wi = vec3(1e18, 0.0, 0.0);
+        w = wi; lw = length(w);
+        float lwc = length(w - c);   // the part of the step that came from z
+        st = pn * lwc / max(r, 1e-6);
+        if (gAsk == ASK_PROBE && !wild && r > 1e-3){
+          float pr = pow(r, uPow);
+          if (abs(lwc - pr) > 0.005 * max(lwc, pr) + 4e-7 * (lw + length(c))) gPowerLaw = false;
+        }
+      } else {
+        vec3 dw = wi - w;
+        float m = length(dw), was = length(dz) + length(dk);
+        // the neighbour landed across a seam (or on a pole): assume an ordinary stretch instead
+        if (!(m <= 8.0 * was * (pn * (lw + 1.0) / (r + 0.01) + st))){ dw = dz * max(st, 1e-3); m = length(dw); }
+        if (m > 0.0){
+          float s = clamp(2e-3 * (lw + 1e-3) / m, 1e-8, 1e8);
+          dv[i - 1] = dw * s; dc[i - 1] = dk * s; ls[i - 1] -= log(s);
+        } else dv[i - 1] = vec3(0.0);
+      }
+    }
+    if (pole){   // carry on from the point at infinity; the turn is spent, so one step fewer can follow
+      v = vec3(1e9, 0.0, 0.0); r = 0.0; steps -= 1.0;
+      for (int i = 0; i < nt; i++) dv[i] = vec3(0.0);
+      continue;
+    }
+    if (nt == 0){
+      float dr = st * dv[0].x + dc[0].x;
+      if (dr > 1e8){ dr *= 1e-8; dc[0].x *= 1e-8; ls[0] += 18.420681; }
+      dv[0].x = dr;
+    }
+====
+    vec3 w = vec3(0.0); float lw = 0.0; bool pole = false;
+    for (int i = 0; i <= nt; i++){
+      vec3 dz = vec3(0.0), dk = vec3(0.0);
+      if (i > 0){ dz = dv[i - 1]; dk = dc[i - 1]; }
+      vec3 wi = f(v + dz, c + dk);
+      if (i == 0){
+        float w2 = dot(wi, wi);
+        bool wild = !(w2 < 1e36);   // not a number, infinite, or too large to work with
+        if (k == 0){
+          float big = 1e3 * (uBail + length(c));
+          if (r < 1e-3 && (wild || w2 > big * big)){ pole = true; break; }
+        }
+        if (wild){ wi = vec3(1e18, 0.0, 0.0); w2 = 1e36; }
+        w = wi; lw = sqrt(w2);
+      } else {
+        vec3 dw = wi - w;
+        float m = length(dw), was = length(dz) + length(dk);
+        if (!(m <= 8.0 * pn * was * (lw + 1.0) / (r + 0.01))){
+          // the neighbour landed across a seam (or on a pole): give it the stretch of a pure power instead
+          dw = dz * max(pn * length(w - c) / max(r, 1e-6), 1e-3); m = length(dw);
+        }
+        if (m > 0.0){
+          float s = clamp(2e-3 * (lw + 1e-3) / m, 1e-8, 1e8);
+          dv[i - 1] = dw * s; dc[i - 1] = dk * s; ls[i - 1] -= log(s);
+        } else dv[i - 1] = vec3(0.0);
+      }
+    }
+    if (pole){   // carry on from the point at infinity; the turn is spent, so one step fewer can follow
+      v = vec3(1e9, 0.0, 0.0); r = 0.0; steps -= 1.0;
+      for (int i = 0; i < nt; i++) dv[i] = vec3(0.0);
+      continue;
+    }
+    if (nt == 0){
+      float lwc = length(w - c);   // the part of the step that came from z
+      if (gAsk == ASK_PROBE && lw < 1e17 && r > 1e-3){
+        float pr = pow(r, uPow);
+        if (abs(lwc - pr) > 0.005 * max(lwc, pr) + 4e-7 * (lw + length(c))) gPowerLaw = false;
+      }
+      float dr = pn * lwc / max(r, 1e-6) * dv[0].x + dc[0].x;
+      if (dr > 1e8){ dr *= 1e-8; dc[0].x *= 1e-8; ls[0] += 18.420681; }
+      dv[0].x = dr;
+    }
+>>>>
+<<<<
+  float cap = 0.5 * length(p) + 0.5;
+====
+  float cap = 0.75 * length(p) + 0.5;
+>>>>

@@ -1,0 +1,63 @@
+step 1 result: page up, 18 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow turnaway turnalong
+step 1 waited 3.6 s
+step 2 result: turnalong y -0.05 z 1.0e-7: |shader - MATH| 4.43e-8  atan off 1.80e-7  sin(4phi) off 7.28e-7  psi off 8.74e-8
+turnalong y -0.05 z 1.0e-6: |shader - MATH| 4.43e-8  atan off 6.03e-8  sin(4phi) off 2.48e-7  psi off 8.74e-8
+turnalong y -0.05 z 1.0e-5: |shader - MATH| 4.42e-8  atan off 5.42e-8  sin(4phi) ... (4551 characters)
+no console errors
+
+turnalong y -0.05 z 1.0e-7: |shader - MATH| 4.43e-8  atan off 1.80e-7  sin(4phi) off 7.28e-7  psi off 8.74e-8
+turnalong y -0.05 z 1.0e-6: |shader - MATH| 4.43e-8  atan off 6.03e-8  sin(4phi) off 2.48e-7  psi off 8.74e-8
+turnalong y -0.05 z 1.0e-5: |shader - MATH| 4.42e-8  atan off 5.42e-8  sin(4phi) off 2.15e-7  psi off 8.74e-8
+turnalong y -0.05 z 1.0e-4: |shader - MATH| 3.61e-8  atan off 4.68e-7  sin(4phi) off 1.88e-6  psi off 1.09e-7
+turnalong y -0.05 z 1.0e-3: |shader - MATH| 2.15e-8  atan off 2.69e-6  sin(4phi) off 1.07e-5  psi off -5.23e-8
+turnalong y -0.05 z 1.0e-2: |shader - MATH| 3.25e-6  atan off 8.18e-6  sin(4phi) off 2.31e-5  psi off 2.46e-6
+turnalong y -0.05 z 3.0e-2: |shader - MATH| 2.25e-6  atan off 1.02e-5  sin(4phi) off -2.28e-5  psi off 1.60e-5
+turnaway y -0.05 z 1.0e-7: |shader - MATH| 4.43e-8
+turnaway y -0.05 z 1.0e-6: |shader - MATH| 4.43e-8
+turnaway y -0.05 z 1.0e-5: |shader - MATH| 4.42e-8
+turnaway y -0.05 z 1.0e-4: |shader - MATH| 3.61e-8
+turnaway y -0.05 z 1.0e-3: |shader - MATH| 3.92e-8
+turnaway y -0.05 z 1.0e-2: |shader - MATH| 3.24e-6
+turnaway y -0.05 z 3.0e-2: |shader - MATH| 2.23e-6
+turnalong y -0.05 z -1.0e-7: |shader - MATH| 4.43e-8  atan off -1.80e-7  sin(4phi) off -7.28e-7  psi off -8.74e-8
+turnalong y -0.05 z -1.0e-6: |shader - MATH| 4.43e-8  atan off -6.03e-8  sin(4phi) off -2.48e-7  psi off -8.74e-8
+turnalong y -0.05 z -1.0e-5: |shader - MATH| 4.42e-8  atan off -5.42e-8  sin(4phi) off -2.15e-7  psi off -8.74e-8
+turnalong y -0.05 z -1.0e-4: |shader - MATH| 3.61e-8  atan off -4.68e-7  sin(4phi) off -1.88e-6  psi off -1.09e-7
+turnalong y -0.05 z -1.0e-3: |shader - MATH| 2.15e-8  atan off -2.69e-6  sin(4phi) off -1.07e-5  psi off 5.23e-8
+turnalong y -0.05 z -1.0e-2: |shader - MATH| 3.25e-6  atan off -8.18e-6  sin(4phi) off -2.31e-5  psi off -2.46e-6
+turnalong y -0.05 z -3.0e-2: |shader - MATH| 2.25e-6  atan off -1.02e-5  sin(4phi) off 2.28e-5  psi off -1.60e-5
+turnaway y -0.05 z -1.0e-7: |shader - MATH| 4.43e-8
+turnaway y -0.05 z -1.0e-6: |shader - MATH| 4.43e-8
+turnaway y -0.05 z -1.0e-5: |shader - MATH| 4.42e-8
+turnaway y -0.05 z -1.0e-4: |shader - MATH| 3.61e-8
+turnaway y -0.05 z -1.0e-3: |shader - MATH| 3.92e-8
+turnaway y -0.05 z -1.0e-2: |shader - MATH| 3.24e-6
+turnaway y -0.05 z -3.0e-2: |shader - MATH| 2.23e-6
+turnalong y 0.05 z 1.0e-7: |shader - MATH| 4.19e-8  atan off -2.68e-10  sin(4phi) off -1.29e-8  psi off 2.95e-9
+turnalong y 0.05 z 1.0e-6: |shader - MATH| 4.19e-8  atan off -2.68e-9  sin(4phi) off -1.29e-7  psi off 2.95e-8
+turnalong y 0.05 z 1.0e-5: |shader - MATH| 4.18e-8  atan off -2.68e-8  sin(4phi) off -2.15e-7  psi off 2.68e-8
+turnalong y 0.05 z 1.0e-4: |shader - MATH| 3.20e-8  atan off -2.68e-7  sin(4phi) off -1.16e-6  psi off 2.22e-8
+turnalong y 0.05 z 1.0e-3: |shader - MATH| 2.44e-8  atan off -2.65e-6  sin(4phi) off -1.06e-5  psi off -7.46e-9
+turnalong y 0.05 z 1.0e-2: |shader - MATH| 3.25e-6  atan off -8.19e-6  sin(4phi) off -2.31e-5  psi off -2.42e-6
+turnalong y 0.05 z 3.0e-2: |shader - MATH| 2.20e-6  atan off -1.00e-5  sin(4phi) off 2.24e-5  psi off -1.56e-5
+turnaway y 0.05 z 1.0e-7: |shader - MATH| 4.19e-8
+turnaway y 0.05 z 1.0e-6: |shader - MATH| 4.19e-8
+turnaway y 0.05 z 1.0e-5: |shader - MATH| 4.18e-8
+turnaway y 0.05 z 1.0e-4: |shader - MATH| 3.20e-8
+turnaway y 0.05 z 1.0e-3: |shader - MATH| 4.09e-8
+turnaway y 0.05 z 1.0e-2: |shader - MATH| 3.24e-6
+turnaway y 0.05 z 3.0e-2: |shader - MATH| 2.18e-6
+turnalong y 0.05 z -1.0e-7: |shader - MATH| 4.19e-8  atan off 2.68e-10  sin(4phi) off 1.29e-8  psi off -2.95e-9
+turnalong y 0.05 z -1.0e-6: |shader - MATH| 4.19e-8  atan off 2.68e-9  sin(4phi) off 1.29e-7  psi off -2.95e-8
+turnalong y 0.05 z -1.0e-5: |shader - MATH| 4.18e-8  atan off 2.68e-8  sin(4phi) off 2.15e-7  psi off -2.68e-8
+turnalong y 0.05 z -1.0e-4: |shader - MATH| 3.20e-8  atan off 2.68e-7  sin(4phi) off 1.16e-6  psi off -2.22e-8
+turnalong y 0.05 z -1.0e-3: |shader - MATH| 2.44e-8  atan off 2.65e-6  sin(4phi) off 1.06e-5  psi off 7.46e-9
+turnalong y 0.05 z -1.0e-2: |shader - MATH| 3.25e-6  atan off 8.19e-6  sin(4phi) off 2.31e-5  psi off 2.42e-6
+turnalong y 0.05 z -3.0e-2: |shader - MATH| 2.20e-6  atan off 1.00e-5  sin(4phi) off -2.24e-5  psi off 1.56e-5
+turnaway y 0.05 z -1.0e-7: |shader - MATH| 4.19e-8
+turnaway y 0.05 z -1.0e-6: |shader - MATH| 4.19e-8
+turnaway y 0.05 z -1.0e-5: |shader - MATH| 4.18e-8
+turnaway y 0.05 z -1.0e-4: |shader - MATH| 3.20e-8
+turnaway y 0.05 z -1.0e-3: |shader - MATH| 4.09e-8
+turnaway y 0.05 z -1.0e-2: |shader - MATH| 3.24e-6
+turnaway y 0.05 z -3.0e-2: |shader - MATH| 2.18e-6

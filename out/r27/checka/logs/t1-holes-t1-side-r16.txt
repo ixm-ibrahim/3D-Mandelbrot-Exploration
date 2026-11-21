@@ -1,0 +1,4 @@
+t1-side-r16: grid points where the lab stops nowhere: 4961 of 151281; 300 of them walked with the exact inside test (quarter-pixel steps, 67634 steps at most)
+   rays that meet a ball on the way: 1 of 300; chord of the first ball met: median 11.8 px, 90% under 11.8 px, largest 11.8 px; with a chord over 2 px: 1, over 10 px: 1, over 50 px: 0
+   distance from the eye to that first ball: smallest 2.85e+00, median 2.85e+00, largest 2.85e+00
+      pixel (412, 142): first ball met 2.849e+00 from the eye, the ray stays in it for 11.8 px

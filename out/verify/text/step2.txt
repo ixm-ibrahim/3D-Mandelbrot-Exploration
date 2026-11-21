@@ -1,0 +1,282 @@
+== title ==
+3D Squaring Lab
+== all ==
+z → zⁿ + c, moved from the plane into space
+
+3D Squaring Lab
+
+In the plane, squaring a point squares its length and doubles its angle. A point in space has two angles and no agreed way to double them, so every 3D Mandelbrot starts by choosing an approach. Choose one here, give it any equation, and check which properties of the flat set it keeps. The first approach is built by adding sphere inversions together, and its slice at z = 0 is exactly the flat set.
+
+x
+y
+z
+
+Drag to turn. Scroll to zoom. Shift-drag to slide. Double-click a spot to move in on it.
+
+−
++
+RESET VIEW
+ARCBALL
+FLY
+NEAR
+5.2
+FAR
+
+Done: 12 passes at 862 × 718
+
+2D view (the slice at height z only)
+COLLAPSE ALL
+SHOW
+MANDELBROT
+JULIA
+KLEINIAN
+MANDELBROT OPTIONS
+Julia mosaic
+
+Fills space with a grid of small Julia sets. Each cell shows the Julia set of the point at its centre, so together they trace the Mandelbrot solid.
+
+RESET THIS SECTION
+APPROACH
+Sphere inversions
+Add up sphere inversions, the way circle inversions add up to zⁿ in the plane.
+v² = |v|² · [1 + 2·inv(Σₖ Rₖ·inv(d − ωₖ))] with d = v/|v| and k = 0 … 1. Before that, the nearest of 2 planes through the x-axis is folded onto the xy-plane.
+
+In the plane, zⁿ is exactly a sum of circle inversions: zⁿ = 1 + n / Σₖ ωₖ/(z − ωₖ), with ωₖ the n-th roots of 1. Swap the circles for spheres and the same sum works on directions in space, where inv(q) = (x, −y, −z)/|q|² is a sphere inversion with a flip and Rₖ turns about the z-axis by the angle of ωₖ. Worked out, it multiplies the longitude and the Mercator latitude by n. It reproduces the Julia sets in Václav Kučera’s paper (Bridges 2019): one plane gives his inflated sets, two planes his truly 3D figure (Julia set at c = (−1, 0, 0), seen straight down).
+
+PLANES THAT CARRY THE FLAT SET
+
+Planes are a free choice, separate from the power: p planes give 2p fins around the x-axis whatever n is, so the fins match the power when p = n/2. Kučera’s 3D figure is 2 planes at n = 2. The flat set’s own (n − 1)-fold symmetry is a turn about the z-axis, a different thing.
+
+With one plane there is also a turn dial. The folds need the flat set’s mirror symmetry, which a turn would break.
+
+LIFT TOWARD THE POLE
+±0.01
+
+Added to the Mercator latitude each time a power is taken. Away from 0 the flat set leaves the plane z = 0.
+
+Lathe
+Multiply the angle from the x-axis. Leave the spin around it alone, or multiply that too.
+Mandelbulb
+Multiply the latitude and the longitude.
+Mandelbulb, classic
+Multiply the angle from the z-axis and the angle around it.
+Split
+Treat x + iy as a complex number and z as a real number, each on its own.
+RESET THIS SECTION
+EQUATION
+START FROM
+zⁿ + c (Mandelbrot)
+c·z·(1 − z) (lambda)
+|z|ⁿ + c (burning ship)
+conj(z)ⁿ + c (tricorn)
+z³ − z + c (cubic)
+zⁿ + c/z (with a pole)
+z⁻ⁿ + c (negative power)
+z² + c·z⁻² (power against pole)
+My own formula
+EACH STEP, Z BECOMES
+THE MANDELBROT SET STARTS Z AT
+
+Use z, c, n, numbers, the units i and j, the signs + − * / ^, and abs( ), conj( ) or len( ). Press Enter to apply. Products and powers follow the chosen approach, so the same formula gives a different solid under each one. The turn, lift and phase dials of an approach act wherever the formula takes a power, a division included.
+
+POWER N
+±0.1
+ITERATIONS
+
+The power n can be negative. A negative power throws points near the centre far out, so the picture shows the bounded piece that is left.
+
+RESET THIS SECTION
+MODIFIERS
+
+Applied to z before every step, whatever the equation says.
+
+|x|
+|y|
+|z|
+flip y
+flip z
+BURNING SHIP
+CONJUGATE
+NONE
+RESET THIS SECTION
+SLICE
+Cut the solid open at height z
+HEIGHT Z OF THE CUT OR SLICE
+±0.01
+
+In the 2D view this height is the slice that is drawn, whether or not the cut is switched on.
+
+RESET THIS SECTION
+COLOUR AND LIGHT
+COLOUR BY
+Orbit trap
+Escape count
+Distance from the centre
+Depth from the camera
+Direction of the last step
+Surface direction
+Plain clay
+TRAP SHAPE
+Point
+Cross: the three axis lines
+Line: one axis
+Ray: half of one axis
+Planes: the three coordinate planes
+Sphere shell
+Ring in the xy-plane
+Three tones, one for each plane
+
+A trap is a shape left in the path of the orbit. Each point is coloured by how its own orbit passed that shape.
+
+TRAP COLOURS BY
+How near the orbit came, in bands
+How near it came, as a glow
+The step at which it came nearest
+Nearness blended with the escape count
+The side it came nearest on
+TRAP CENTRE, X
+±0.01
+TRAP CENTRE, Y
+±0.01
+TRAP CENTRE, Z
+±0.01
+PALETTE
+Sunset
+Fire
+Ember
+Electric
+Ocean
+Glacier
+Aurora
+Viridis
+Peacock
+Rainbow
+Candy
+Neon
+Classic blue and gold
+Ice and fire
+Orchid
+Brass and verdigris
+Moss and rust
+Porcelain
+Stone
+Reverse the palette
+COLOUR BANDS, HOW MANY
+±0.01
+COLOUR BANDS, SHIFT
+±0.005
+LIGHT, COMPASS DIRECTION
+LIGHT, HEIGHT ABOVE THE HORIZON
+RESET THIS SECTION
+VIEW
+Fly camera
+
+Same as the Arcball and Fly buttons on the picture. Flying moves the camera itself: drag to look, W A S D to move.
+
+FLY SPEED, UNITS PER SECOND
+±0.01
+DRAWING RADIUS
+±0.5
+
+Nothing is drawn outside a ball of this radius around the centre. Raise it when a picture is cut off far out.
+
+FIELD OF VIEW, DEGREES
+
+The slider on the right edge of the picture shows where the zoom sits between its nearest and farthest limit. Type in the box at either end to move that limit. The farthest limit can go up to 1000.
+
+RESET THIS SECTION
+QUALITY AND SPEED
+ULTRA FAST
+FAST
+BALANCED
+FINE
+RESOLUTION, × SCREEN PIXELS
+±0.05
+REFINING PASSES
+RAY STEPS, AT MOST
+±10
+SURFACE THRESHOLD, PIXELS
+±0.05
+STEP SIZE, SHARE OF THE ESTIMATE
+±0.01
+SLOPE SAMPLING WIDTH, PIXELS
+±0.05
+DISTANCE ESTIMATE
+Exact (three neighbouring orbits)
+One neighbour (faster)
+Rough (fastest)
+
+How the distance to the surface is worked out for each ray step. Rough is the quickest and the least careful.
+
+SURFACE DETAIL FROM
+Exact slope (sharp)
+Sampled slope (softer, can show rings)
+
+The exact slope needs the exact distance estimate. With the other two the slope is always sampled.
+
+Shadows
+Shade crevices
+
+While you move, a quick preview is drawn. When you stop, the picture is redrawn at full size and then refined pass by pass. The thin bar under the picture shows how far that has got. More passes smooth edges and remove shimmer. They cost time, not responsiveness.
+
+RESET THIS SECTION
+One step, seen on directions
+
+Forget length for a moment and watch where each direction is sent by the power zⁿ. Small circles are drawn around a sample of directions, then pushed through one step.
+
+before
+after one step
+The plane. Angles are multiplied by 2, so every circle lands as a circle 2 times the size. Nothing is squashed or flipped.
+before
+after one step
+Sphere inversions. A shape-keeping rule would turn each circle into a circle 2 times the size. Dashed outlines have landed mirror-reversed, and the brass stubs mark the axis this approach singles out. Drag to turn.
+What survives the move to 3D
+
+The figures in the right-hand column are measured from the approach’s own power rule at the current n, by sampling its derivative over 6,000 directions.
+
+PROPERTY
+IN THE PLANE
+SPHERE INVERSIONS
+Length goes to its nth power
+|zⁿ| = |z|ⁿ for every z.
+HOLDS|vⁿ| = |v|ⁿ for every v.
+Keeps shapes
+Roundness 100%. A tiny circle lands as a circle, stretched 2× in every direction at |z| = 1.
+FAILSRoundness 85%. At |v| = 1 the stretch runs from 0.94× to 2×, where the plane gives 2× throughout. Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.
+Wraps without folding
+Wraps the circle of directions 2 times and never reverses it.
+FAILSCovers the sphere of directions 3 times over, but 50% of directions land mirror-reversed. Counted with sign, the net wrap is 0.
+Crushes only the origin
+Only the origin is crushed. That one critical point is why the orbit of 0 decides everything.
+PARTLYNothing but the origin is crushed. Space is creased where the folds meet instead.
+One smooth formula
+A polynomial: (x² − y², 2xy).
+FAILSPieces of the one-plane rule joined by mirror folds. The folds leave creases, and a jump whose effect cancels only when c is on the x-axis.
+Contains the flat set
+It is the flat set.
+HOLDS2 planes through the x-axis follow complex arithmetic exactly, z = 0 among them.
+Why no approach passes every row
+
+In the plane, squaring stretches every direction by the same factor, 2|z|. Doubling the angle stretches the circle of directions by 2, and squaring the length stretches outward by the same amount, so tiny shapes keep their shape. That is the source of the endless clean detail in the flat set.
+
+To copy this in space, a rule would have to stretch the sphere of directions by exactly 2 at every point. A sphere cannot be laid over itself that way: a patch magnified 2× is flatter than the sphere it has to land on. Liouville proved the general statement in 1850: in three dimensions the only shape-keeping maps are built from rotations, scalings and sphere inversions, and squaring is not one of them.
+
+That is also why Kleinian groups look the way a 3D Julia set ought to. They use sphere inversions one after another, the one family the theorem allows, so they keep their detail in every direction. Quaternions enter as bookkeeping: 1/q is a sphere inversion that stays inside 3D, where q² only gives a lathe.
+
+Sphere inversions and the flat set
+
+An earlier version of this page said that inversions cannot give the exact flat set at z = 0. That was wrong as worded. One inversion after another cannot do it: a chain of inversions keeps every shape, and no power does that in space. Inversions added together can.
+
+In the plane, zⁿ can be written exactly as a sum of circle inversions. Put spheres where the circles were and the same sum gives a power for points in space, and its slice at z = 0 is the flat set. That is the first approach in the list, Sphere inversions. Adding is what makes it possible, and adding is also where the perfect shape-keeping is lost.
+
+Nothing is drawn by eye, and the planes are a free choice
+
+The page used to say this approach was rebuilt by eye. It is a formula, and it is now worked out step by step. The sum of inversions comes to the same thing as multiplying the longitude and the Mercator latitude of a direction by n, which is why the approach used to be called Mercator. The two were checked against each other for n = 2, 3, 4, 5 and 8.
+
+The number of planes has nothing to do with the power. With p planes the solid has 2p fins around the x-axis, whatever n is. So the fins match the power when p is half of n: 4 planes for n = 8, 3 for n = 6, 2 for n = 4. For n = 2 that would be 1 plane, which gives the inflated set. The 3D figure in Kučera’s paper uses 2 planes at n = 2, and that is the starting value here. No value is the correct one. The dial goes up to 8 planes.
+
+Phases that make the solid pulse
+
+The usual Mandelbulb has two phase offsets, one for each angle. Each is added to its angle every time a power is taken. Both Mandelbulbs here have them as dials. Press the play button beside a phase dial to sweep it, and the solid pulses from its poles.
+
+Sphere inversions has the same pair. Lift does what the pole phase does. Turn is the phase of the longitude, and it is offered with one plane only, because with two or more planes a turn tears the solid into sheets.

@@ -1,0 +1,27 @@
+step 1 result: page up, 19 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow turnaway turnalong windsq
+step 1 waited 5.5 s
+no console errors
+brute-n2-cm1-x0.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 30 steps, 360 x 360 points, in the set: 13.56 %; lobes round the middle: 13 (at 0, 29, 59, 89, 120, 150, 179, 209, 239, 269, 300, 330, 359 degrees)
+brute-n2-cm1-flat.png: windsq, n 2, c = [-1, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 15.62 %
+brute-n2-cm1-flatref.png: complex, n 2, c = [-1, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 15.62 %
+brute-n3-c03-x0.png: windsq, n 3, c = [0.3, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 30 steps, 360 x 360 points, in the set: 45.10 %; lobes round the middle: 0 (at  degrees)
+brute-n3-c03-flat.png: windsq, n 3, c = [0.3, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 33.53 %
+brute-n3-c03-flatref.png: complex, n 3, c = [0.3, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 33.53 %
+brute-n4-cm1-x0.png: windsq, n 4, c = [-1, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 30 steps, 360 x 360 points, in the set: 31.41 %; lobes round the middle: 10 (at 36, 71, 108, 143, 179, 216, 251, 288, 323, 359 degrees)
+brute-n4-cm1-flat.png: windsq, n 4, c = [-1, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 19.50 %
+brute-n4-cm1-flatref.png: complex, n 4, c = [-1, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 19.50 %
+brute-n5-c03-x0.png: windsq, n 5, c = [0.3, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 30 steps, 360 x 360 points, in the set: 45.00 %; lobes round the middle: 0 (at  degrees)
+brute-n5-c03-flat.png: windsq, n 5, c = [0.3, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 34.21 %
+brute-n5-c03-flatref.png: complex, n 5, c = [0.3, 0, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 34.21 %
+brute-n3-ci-x0.png: windsq, n 3, c = [0, 1, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 30 steps, 360 x 360 points, in the set: 19.20 %; lobes round the middle: 12 (at 8, 48, 71, 111, 127, 168, 191, 232, 248, 288, 311, 351 degrees)
+brute-n3-ci-flat.png: windsq, n 3, c = [0, 1, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 17.82 %
+brute-n3-ci-flatref.png: complex, n 3, c = [0, 1, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 17.82 %
+brute-n4-c03p03i-x0.png: windsq, n 4, c = [0.3, 0.3, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 30 steps, 360 x 360 points, in the set: 41.44 %; lobes round the middle: 10 (at 17, 54, 87, 125, 162, 197, 234, 267, 305, 342 degrees)
+brute-n4-c03p03i-flat.png: windsq, n 4, c = [0.3, 0.3, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 33.03 %
+brute-n4-c03p03i-flatref.png: complex, n 4, c = [0.3, 0.3, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 1, 0], 3 wide, 30 steps, 400 x 400 points, in the set: 33.03 %
+flat cut n2-cm1-flat against plain complex arithmetic: 0 of 160000 points differ (in the set: 24996 and 24996)
+flat cut n3-c03-flat against plain complex arithmetic: 0 of 160000 points differ (in the set: 53656 and 53656)
+flat cut n4-cm1-flat against plain complex arithmetic: 0 of 160000 points differ (in the set: 31204 and 31204)
+flat cut n5-c03-flat against plain complex arithmetic: 0 of 160000 points differ (in the set: 54732 and 54732)
+flat cut n3-ci-flat against plain complex arithmetic: 0 of 160000 points differ (in the set: 28506 and 28506)
+flat cut n4-c03p03i-flat against plain complex arithmetic: 0 of 160000 points differ (in the set: 52856 and 52856)

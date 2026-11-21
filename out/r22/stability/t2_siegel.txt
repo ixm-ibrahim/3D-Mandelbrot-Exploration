@@ -1,0 +1,41 @@
+siegel    oneplane  across       0: inside  11240 px | of the inside: keeps  31.4 %, squeezes  34.0 %, hard  34.6 %, inside out   0.0 %
+siegel    oneplane  across    -0.3: inside   8046 px | of the inside: keeps  42.0 %, squeezes  55.8 %, hard   2.2 %, inside out   0.0 %
+siegel    oneplane  across     0.3: inside   8046 px | of the inside: keeps  42.0 %, squeezes  55.8 %, hard   2.2 %, inside out   0.0 %
+siegel    oneplane  page         0: inside  17506 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+siegel    oneplane  page     11.25: inside  16480 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+siegel    oneplane  page      22.5: inside  15064 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+siegel    oneplane  page     33.75: inside  13686 px | of the inside: keeps  60.1 %, squeezes  39.9 %, hard   0.0 %, inside out   0.0 %
+siegel    oneplane  page        45: inside  12514 px | of the inside: keeps  44.9 %, squeezes  55.1 %, hard   0.0 %, inside out   0.0 %
+siegel    oneplane  page        90: inside  11144 px | of the inside: keeps  28.5 %, squeezes  38.2 %, hard  33.3 %, inside out   0.0 %
+oneplane 1 s
+siegel    along     across       0: inside  17218 px | of the inside: keeps  20.7 %, squeezes  18.1 %, hard  11.3 %, inside out  49.9 %
+siegel    along     across    -0.3: inside  10198 px | of the inside: keeps  14.8 %, squeezes  15.1 %, hard   7.4 %, inside out  62.7 %
+siegel    along     across     0.3: inside   9306 px | of the inside: keeps  40.3 %, squeezes  36.1 %, hard  17.3 %, inside out   6.3 %
+siegel    along     page         0: inside  17506 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+siegel    along     page     11.25: inside  17266 px | of the inside: keeps  38.5 %, squeezes  61.5 %, hard   0.0 %, inside out   0.0 %
+siegel    along     page      22.5: inside  17131 px | of the inside: keeps  23.9 %, squeezes  16.4 %, hard   9.3 %, inside out  50.3 %
+siegel    along     page     33.75: inside  16406 px | of the inside: keeps  16.7 %, squeezes  14.5 %, hard   5.2 %, inside out  63.7 %
+siegel    along     page        45: inside  14948 px | of the inside: keeps  16.2 %, squeezes  12.8 %, hard   4.6 %, inside out  66.4 %
+siegel    along     page        90: inside  14128 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+along 3 s
+siegel    lathe     across       0: inside  17584 px | of the inside: keeps   0.0 %, squeezes   0.0 %, hard 100.0 %, inside out   0.0 %
+siegel    lathe     across    -0.3: inside   9508 px | of the inside: keeps   0.0 %, squeezes   0.0 %, hard   0.0 %, inside out 100.0 %
+siegel    lathe     across     0.3: inside   9508 px | of the inside: keeps  17.0 %, squeezes  83.0 %, hard   0.0 %, inside out   0.0 %
+siegel    lathe     page         0: inside  17506 px | of the inside: keeps  27.1 %, squeezes  13.1 %, hard   9.8 %, inside out  50.0 %
+siegel    lathe     page     11.25: inside  17316 px | of the inside: keeps  26.8 %, squeezes  13.3 %, hard   9.9 %, inside out  50.0 %
+siegel    lathe     page      22.5: inside  16906 px | of the inside: keeps  25.8 %, squeezes  14.0 %, hard  10.2 %, inside out  50.0 %
+siegel    lathe     page     33.75: inside  16302 px | of the inside: keeps  24.4 %, squeezes  15.2 %, hard  10.5 %, inside out  50.0 %
+siegel    lathe     page        45: inside  15264 px | of the inside: keeps  22.9 %, squeezes  15.9 %, hard  11.2 %, inside out  50.0 %
+siegel    lathe     page        90: inside  13692 px | of the inside: keeps  24.8 %, squeezes  14.7 %, hard  10.5 %, inside out  50.0 %
+lathe 4 s
+siegel    away      across       0: inside   4040 px | of the inside: keeps  61.4 %, squeezes  31.3 %, hard   7.3 %, inside out   0.0 %
+siegel    away      across    -0.3: inside    650 px | of the inside: keeps  31.1 %, squeezes  13.5 %, hard  55.4 %, inside out   0.0 %
+siegel    away      across     0.3: inside    396 px | of the inside: keeps  83.8 %, squeezes  12.6 %, hard   2.0 %, inside out   1.5 %
+siegel    away      page         0: inside  17506 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+siegel    away      page     11.25: inside   2448 px | of the inside: keeps  45.0 %, squeezes  55.0 %, hard   0.0 %, inside out   0.0 %
+siegel    away      page      22.5: inside   1551 px | of the inside: keeps  44.2 %, squeezes  55.8 %, hard   0.0 %, inside out   0.0 %
+siegel    away      page     33.75: inside   1259 px | of the inside: keeps  35.5 %, squeezes  16.0 %, hard  48.5 %, inside out   0.0 %
+siegel    away      page        45: inside   1370 px | of the inside: keeps  28.5 %, squeezes   6.6 %, hard  55.7 %, inside out   9.2 %
+siegel    away      page        90: inside   1660 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+away 6 s
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\r22\stability\own-zones-siegel.png (3020, 1200)

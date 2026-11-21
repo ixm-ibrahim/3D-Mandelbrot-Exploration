@@ -1,0 +1,90 @@
+twoplane    J1:pass J2:pass J3:pass J4:pass J5:pass J6:FAIL J7:pass J8:pass   known: the look the user liked; tears on |y| = |z| (must fail J6 only)
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 pass  a turn about the x-axis changes 6.0 % of it; 0 rings come off the middle body
+      J4 pass  12 buds on the middle body, 6 off the flat plane (6 of them round); on one bud 9 smaller ones (8 round, 4 off its own plane); on one of those 9 (9 round)
+      J5 pass  biggest piece holds 100.000 % (a one-voxel gap allowed; 99.99 % with none allowed, 41 pieces); loose matter in the two close-ups 0.00 % and 0.00 %
+      J6 FAIL  largest jump found 4.3e+00 over a gap of 4e-10
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 pass  at 3 sizes: what comes off is round to 0.74, 0.71, 0.74 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.21, 0.04, 0.05 % of the radius (over 0.45 = ribbed; none = could not be measured)
+oneplane    J1:pass J2:pass J3:pass J4:FAIL J5:pass J6:pass J7:pass J8:pass   known: buds only in the flat plane (must fail J4)
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 pass  a turn about the x-axis changes 6.7 % of it; 0 rings come off the middle body
+      J4 FAIL  6 buds on the middle body, 0 off the flat plane (0 of them round); on one bud 5 smaller ones (4 round, 0 off its own plane); on one of those 5 (5 round)
+      J5 pass  biggest piece holds 100.000 % (a one-voxel gap allowed; 99.99 % with none allowed, 21 pieces); loose matter in the two close-ups 0.00 % and 0.00 %
+      J6 pass  largest jump found 4.0e-09 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 pass  at 3 sizes: what comes off is round to 0.76, 0.72, 0.73 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.00, 0.00, 0.00 % of the radius (over 0.45 = ribbed; none = could not be measured)
+lathe       J1:pass J2:pass J3:FAIL J4:FAIL J5:pass J6:pass J7:pass J8:FAIL   known: the flat set spun round the x-axis (must fail J3)
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 FAIL  a turn about the x-axis changes 0.0 % of it; 7 rings come off the middle body
+      J4 FAIL  0 buds on the middle body, 0 off the flat plane (0 of them round); on one bud 16 smaller ones (0 round, 2 off its own plane); on one of those 4 (0 round)
+      J5 pass  biggest piece holds 100.000 % (a one-voxel gap allowed; 100.00 % with none allowed, 1 pieces); loose matter in the two close-ups 0.00 % and 0.00 %
+      J6 pass  largest jump found 4.0e-09 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 FAIL  at 3 sizes: what comes off is round to 0.07, 0.03, 0.02 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.00, none, none % of the radius (over 0.45 = ribbed; none = could not be measured)
+pillow      J1:pass J2:FAIL J3:FAIL J4:FAIL J5:pass J6:pass J7:FAIL J8:FAIL   known: bodies joined, lopsided, streaks (must fail J2 and J7)
+      J1 pass  0 of 73901 points differ
+      J2 FAIL  even a ball of radius 0.32 at the touching point does not part the bodies; length of solid on the upright line within 0.2 of the touching point 0.400; the cut there is 56.98 % full within 0.15 of the axis
+      J3 FAIL  a turn about the x-axis changes 30.0 % of it; 1 rings come off the middle body
+      J4 FAIL  6 buds on the middle body, 6 off the flat plane (0 of them round); on one bud 5 smaller ones (0 round, 2 off its own plane); on one of those 9 (0 round)
+      J5 pass  biggest piece holds 99.999 % (a one-voxel gap allowed; 99.90 % with none allowed, 465 pieces); loose matter in the two close-ups 0.00 % and 0.00 %
+      J6 pass  largest jump found 1.1e-08 over a gap of 1e-09
+      J7 FAIL  mirror above/below changes 32.54 %, front/back 0.00 %
+      J8 FAIL  at 3 sizes: what comes off is round to 0.15, 0.23, 0.14 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.04, none, none % of the radius (over 0.45 = ribbed; none = could not be measured)
+kleinian    J1:FAIL J2:pass J3:pass J4:FAIL J5:FAIL J6:pass J7:pass J8:pass   known: cut at z = 0 is not the flat set (must fail J1)
+      J1 FAIL  33432 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 pass  a turn about the x-axis changes 11.0 % of it; 0 rings come off the middle body
+      J4 FAIL  6 buds on the middle body, 0 off the flat plane (0 of them round); on one bud 1 smaller ones (1 round, 0 off its own plane); on one of those 8 (1 round)
+      J5 FAIL  biggest piece holds 99.507 % (a one-voxel gap allowed; 99.34 % with none allowed, 61 pieces); loose matter in the two close-ups 0.00 % and 0.38 %
+      J6 pass  largest jump found 4.9e-09 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 pass  at 3 sizes: what comes off is round to 0.73, 0.54, 0.57 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.00, 0.00, 0.00 % of the radius (over 0.45 = ribbed; none = could not be measured)
+mandelbulb  J1:pass J2:pass J3:pass J4:FAIL J5:FAIL J6:pass J7:pass J8:FAIL   known: smear
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 pass  a turn about the x-axis changes 17.3 % of it; 0 rings come off the middle body
+      J4 FAIL  24 buds on the middle body, 18 off the flat plane (0 of them round); on one bud 1 smaller ones (0 round, 1 off its own plane); on one of those 25 (3 round)
+      J5 FAIL  biggest piece holds 99.943 % (a one-voxel gap allowed; 98.57 % with none allowed, 1445 pieces); loose matter in the two close-ups 0.08 % and 0.06 %
+      J6 pass  largest jump found 3.4e-07 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 FAIL  at 3 sizes: what comes off is round to 0.23, 0.27, 0.20 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.29, 0.18, none % of the radius (over 0.45 = ribbed; none = could not be measured)
+latlon3     J1:pass J2:pass J3:FAIL J4:FAIL J5:FAIL J6:pass J7:pass J8:FAIL   known from the scout: falls apart (must fail J5)
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 FAIL  a turn about the x-axis changes 61.8 % of it; 1 rings come off the middle body
+      J4 FAIL  58 buds on the middle body, 42 off the flat plane (4 of them round); on one bud 18 smaller ones (0 round, 9 off its own plane); on one of those 23 (0 round)
+      J5 FAIL  biggest piece holds 82.577 % (a one-voxel gap allowed; 80.98 % with none allowed, 2417 pieces); loose matter in the two close-ups 2.41 % and 0.18 %
+      J6 pass  largest jump found 9.0e-09 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 FAIL  at 3 sizes: what comes off is round to 0.34, 0.09, 0.06 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 2.43, 2.14, none % of the radius (over 0.45 = ribbed; none = could not be measured)
+wind2       J1:pass J2:pass J3:pass J4:FAIL J5:pass J6:pass J7:pass J8:FAIL   
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 pass  a turn about the x-axis changes 9.1 % of it; 0 rings come off the middle body
+      J4 FAIL  12 buds on the middle body, 10 off the flat plane (0 of them round); on one bud 16 smaller ones (0 round, 6 off its own plane); on one of those 20 (1 round)
+      J5 pass  biggest piece holds 100.000 % (a one-voxel gap allowed; 99.70 % with none allowed, 573 pieces); loose matter in the two close-ups 0.01 % and 0.00 %
+      J6 pass  largest jump found 8.4e-09 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 FAIL  at 3 sizes: what comes off is round to 0.32, 0.32, 0.38 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.70, 1.24, 1.28 % of the radius (over 0.45 = ribbed; none = could not be measured)
+away        J1:pass J2:pass J3:pass J4:pass J5:pass J6:pass J7:pass J8:FAIL   
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 pass  a turn about the x-axis changes 11.5 % of it; 0 rings come off the middle body
+      J4 pass  28 buds on the middle body, 22 off the flat plane (6 of them round); on one bud 14 smaller ones (8 round, 10 off its own plane); on one of those 17 (9 round)
+      J5 pass  biggest piece holds 99.998 % (a one-voxel gap allowed; 99.64 % with none allowed, 701 pieces); loose matter in the two close-ups 0.00 % and 0.00 %
+      J6 pass  largest jump found 1.3e-08 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 FAIL  at 3 sizes: what comes off is round to 0.58, 0.64, 0.67 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.69, 1.38, 1.31 % of the radius (over 0.45 = ribbed; none = could not be measured)
+along       J1:pass J2:pass J3:pass J4:pass J5:pass J6:pass J7:pass J8:pass   
+      J1 pass  0 of 73901 points differ
+      J2 pass  taking out a ball of radius 0.02 at the touching point parts the bodies; length of solid on the upright line within 0.2 of the touching point 0.000; the cut there is 0.02 % full within 0.15 of the axis
+      J3 pass  a turn about the x-axis changes 2.5 % of it; 0 rings come off the middle body
+      J4 pass  36 buds on the middle body, 26 off the flat plane (26 of them round); on one bud 29 smaller ones (24 round, 24 off its own plane); on one of those 30 (19 round)
+      J5 pass  biggest piece holds 100.000 % (a one-voxel gap allowed; 99.89 % with none allowed, 161 pieces); loose matter in the two close-ups 0.00 % and 0.00 %
+      J6 pass  largest jump found 8.0e-09 over a gap of 1e-09
+      J7 pass  mirror above/below changes 0.00 %, front/back 0.00 %
+      J8 pass  at 3 sizes: what comes off is round to 0.74, 0.56, 0.52 (1 = balls; under 0.45 = streaks, sheets, tubes); ribs on the outline 0.04, 0.06, 0.04 % of the radius (over 0.45 = ribbed; none = could not be measured)

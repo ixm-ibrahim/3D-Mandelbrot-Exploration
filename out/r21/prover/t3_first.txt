@@ -1,0 +1,51 @@
+A. The cut of "first" along the sheet turned theta: closed form against the library (420 x 390 points, 60 steps)
+   theta =  0.00: inside  35270 (library)  35270 (closed form), verdicts that differ 0 | points of the cut outside the flat set: 0, points of the flat set missing: 0 (flat set: 35270)
+   theta = 11.25: inside  33860 (library)  33860 (closed form), verdicts that differ 0 | points of the cut outside the flat set: 494, points of the flat set missing: 1904 (flat set: 35270)
+   theta = 22.50: inside  32794 (library)  32794 (closed form), verdicts that differ 0 | points of the cut outside the flat set: 442, points of the flat set missing: 2918 (flat set: 35270)
+   theta = 33.75: inside  31298 (library)  31298 (closed form), verdicts that differ 0 | points of the cut outside the flat set: 322, points of the flat set missing: 4294 (flat set: 35270)
+   theta = 45.00: inside  29832 (library)  29832 (closed form), verdicts that differ 0 | points of the cut outside the flat set: 310, points of the flat set missing: 5748 (flat set: 35270)
+   theta = 67.50: inside  27232 (library)  27232 (closed form), verdicts that differ 0 | points of the cut outside the flat set: 198, points of the flat set missing: 8236 (flat set: 35270)
+   theta = 90.00: inside  26570 (library)  26570 (closed form), verdicts that differ 0 | points of the cut outside the flat set: 128, points of the flat set missing: 8828 (flat set: 35270)
+B. The cut at 90 degrees with complex numbers only:
+   verdicts that differ from the library: 0 of 163800
+(6 s)
+
+C. Is the solid a part of the flat set spun round the x-axis?  300,000 random points c of the box, c0 = (x, distance from the x-axis)
+   60 steps; the flat set spun holds 7.562% of the box
+   rule          inside inside, NOT in the spun  in the spun, cut away
+   own           7.562%           0.000% (     0)           0.000% (     0)
+   first         5.692%           0.088% (   264)           1.958% (  5874)
+   first2        4.450%           0.051% (   152)           3.163% (  9489)
+   first3        3.719%           0.036% (   109)           3.879% ( 11638)
+   first5        2.847%           0.020% (    60)           4.735% ( 14206)
+   first8        2.261%           0.013% (    40)           5.315% ( 15945)
+   delay         3.655%           0.014% (    41)           3.921% ( 11764)
+   lag75         7.032%           0.188% (   563)           0.718% (  2153)
+   lag50         6.552%           0.583% (  1749)           1.594% (  4781)
+   lag25         3.903%           0.106% (   318)           3.765% ( 11296)
+   fixed         1.493%           0.001% (     3)           6.071% ( 18212)
+   along         7.400%           0.697% (  2091)           0.860% (  2579)
+   (10 s)
+   200 steps; the flat set spun holds 7.224% of the box
+   rule          inside inside, NOT in the spun  in the spun, cut away
+   own           7.224%           0.000% (     0)           0.000% (     0)
+   first         5.532%           0.023% (    70)           1.716% (  5147)
+   first2        4.359%           0.013% (    39)           2.878% (  8635)
+   first3        3.649%           0.008% (    23)           3.583% ( 10748)
+   first5        2.810%           0.007% (    22)           4.422% ( 13265)
+   first8        2.238%           0.004% (    11)           4.990% ( 14970)
+   delay         3.295%           0.005% (    16)           3.934% ( 11802)
+   lag75         6.679%           0.082% (   245)           0.627% (  1880)
+   lag50         6.074%           0.379% (  1138)           1.529% (  4588)
+   lag25         3.791%           0.068% (   205)           3.501% ( 10504)
+   fixed         1.445%           0.002% (     6)           5.781% ( 17344)
+   along         7.026%           0.623% (  1868)           0.821% (  2462)
+   (17 s)
+
+D. The lathe with a start point off the sheet of c: 200,000 random start points with |z| up to 1.2, 400 steps
+   rabbit                                 stay:  13281 (6.64%); their height above the page after 400 steps: largest 0.00e+00, median 0.00e+00
+   basilica                               stay:   7004 (3.50%); their height above the page after 400 steps: largest 0.00e+00, median 0.00e+00
+   Siegel disc                            stay:  14777 (7.39%); their height above the page after 400 steps: largest 1.43e-53, median 4.41e-92
+   c = -0.4 + 0.3i (in the main body)     stay:  24970 (12.48%); their height above the page after 400 steps: largest 3.93e-72, median 1.20e-75
+   c = 0.3 + 0.5i (outside the flat set)  stay:  18779 (9.39%); their height above the page after 400 steps: largest 3.12e-145, median 2.77e-152
+   dendrite c = i                         stay: 0

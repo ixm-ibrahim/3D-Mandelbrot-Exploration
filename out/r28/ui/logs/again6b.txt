@@ -1,0 +1,12 @@
+new page, run 0: exit 0, no console errors; status when step 8 ended: "Done: 3 passes at 862 × 701"; after waiting: "Done: 3 passes at 862 × 701"
+new page, run 1: exit 0, no console errors; status when step 8 ended: "Done: 3 passes at 862 × 701"; after waiting: "Done: 3 passes at 862 × 701"
+new page, run 2: exit 0, no console errors; status when step 8 ended: "Done: 3 passes at 862 × 701"; after waiting: "Done: 3 passes at 862 × 701"
+frozen page, run 0: exit 0, no console errors; status when step 8 ended: "Drawing at full size"; after waiting: "Done: 3 passes at 862 × 701"
+frozen page, run 1: exit 0, no console errors; status when step 8 ended: "Done: 3 passes at 862 × 701"; after waiting: "Done: 3 passes at 862 × 701"
+frozen page, run 2: exit 0, no console errors; status when step 8 ended: "Done: 3 passes at 862 × 701"; after waiting: "Done: 3 passes at 862 × 701"
+new 0: the picture as step 8 took it differs from frozen run 0 at 35759 pixels; the picture after the wait differs from frozen run 0 (after its wait) at 0 pixels
+new 1: the picture as step 8 took it differs from frozen run 0 at 37296 pixels; the picture after the wait differs from frozen run 0 (after its wait) at 0 pixels
+new 2: the picture as step 8 took it differs from frozen run 0 at 37296 pixels; the picture after the wait differs from frozen run 0 (after its wait) at 0 pixels
+frozen 0: the picture as step 8 took it differs from frozen run 0 at 0 pixels; the picture after the wait differs from frozen run 0 (after its wait) at 0 pixels
+frozen 1: the picture as step 8 took it differs from frozen run 0 at 37296 pixels; the picture after the wait differs from frozen run 0 (after its wait) at 0 pixels
+frozen 2: the picture as step 8 took it differs from frozen run 0 at 37296 pixels; the picture after the wait differs from frozen run 0 (after its wait) at 0 pixels

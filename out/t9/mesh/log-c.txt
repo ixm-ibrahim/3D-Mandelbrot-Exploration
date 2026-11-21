@@ -1,0 +1,24 @@
+subject mandel: the opening picture
+  picture at rest after 0.6 s (ok)
+  mandel-512: 11.4 s, facts ['Triangles', '484,020', 'Points', '242,012', 'Size', '100 × 90.9 × 24.7 mm', 'Pieces', 'The largest of 77', 'mandelbrot-512.stl', '23 MB', 'mandelbrot-512.obj', '20 MB', 'mandelbrot-512.ply', '9.5 MB', 'Zip to save', '53 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-512.zip', 'size': 55175667, 'type': 'application/zip', 'pulled_s': 4.2} | gap max 37 ms (2132 turns, 0 over 50 ms, 0 over 100 ms) | peak memory 1172 MB working set, 774 MB private (before: 1038 MB)
+subject rabbit: c = [-0.122561,0.744862,0]
+  picture at rest after 1.9 s (ok)
+  rabbit-512: 7.1 s, facts ['Triangles', '638,084', 'Points', '319,044', 'Size', '100 × 84.1 × 37.2 mm', 'Pieces', '1', 'julia-512.stl', '30 MB', 'julia-512.obj', '27 MB', 'julia-512.ply', '12 MB', 'Zip to save', '70 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-512.zip', 'size': 73099127, 'type': 'application/zip', 'pulled_s': 3.5} | gap max 44 ms (1931 turns, 0 over 50 ms, 0 over 100 ms) | peak memory 1119 MB working set, 777 MB private (before: 1102 MB)
+subject julia1: c = [-1,0,0]
+  picture at rest after 1.5 s (ok)
+  julia1-512: 7.8 s, facts ['Triangles', '401,056', 'Points', '200,530', 'Size', '100 × 48.7 × 32.8 mm', 'Pieces', '1', 'julia-512.stl', '19 MB', 'julia-512.obj', '17 MB', 'julia-512.ply', '7.8 MB', 'Zip to save', '43 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-512.zip', 'size': 45591920, 'type': 'application/zip', 'pulled_s': 2.2} | gap max 47 ms (2156 turns, 0 over 50 ms, 0 over 100 ms) | peak memory 963 MB working set, 679 MB private (before: 952 MB)
+subject cut: cutOn true at z = 0
+  picture at rest after 0.9 s (ok)
+  cut-512: 3.9 s, facts ['Triangles', '390,588', 'Points', '195,296', 'Size', '100 × 90.9 × 12.4 mm', 'Pieces', 'The largest of 21', 'mandelbrot-512.stl', '19 MB', 'mandelbrot-512.obj', '16 MB', 'mandelbrot-512.ply', '7.6 MB', 'Zip to save', '42 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-512.zip', 'size': 44381349, 'type': 'application/zip', 'pulled_s': 3.6} | gap max 72 ms (1131 turns, 3 over 50 ms, 0 over 100 ms) | peak memory 893 MB working set, 588 MB private (before: 859 MB)
+subject trapsolid: solid = 1, c = [-1,0,0]
+  picture at rest after 12.0 s (ok)
+  trapsolid-512: 13.7 s, facts ['Triangles', '683,032', 'Points', '341,462', 'Size', '100 × 48.6 × 46.2 mm', 'Pieces', 'The largest of 1,006', 'julia-512.stl', '33 MB', 'julia-512.obj', '29 MB', 'julia-512.ply', '13 MB', 'Zip to save', '75 MB'] | warn 'This solid has parts thinner than one cell of the grid. They came out as 1,006 l' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-512.zip', 'size': 78251025, 'type': 'application/zip', 'pulled_s': 3.5} | gap max 60 ms (2432 turns, 1 over 50 ms, 0 over 100 ms) | peak memory 1064 MB working set, 763 MB private (before: 936 MB)
+subject negpow: power -2
+  picture at rest after 5.6 s (ok)
+  negpow-512: 19.9 s, facts ['Triangles', '113,956', 'Points', '55,312', 'Size', '64.9 × 100 × 27.0 mm', 'Pieces', 'The largest of 12,795, with about 6% of the surface', 'mandelbrot-512.stl', '5.4 MB', 'mandelbrot-512.obj', '4.4 MB', 'mandelbrot-512.ply', '2.2 MB', 'Zip to save', '12 MB'] | warn 'This solid has parts thinner than one cell of the grid. They came out as 12,795 ' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-512.zip', 'size': 12604482, 'type': 'application/zip', 'pulled_s': 1.4} | gap max 180 ms (3447 turns, 3 over 50 ms, 1 over 100 ms) | peak memory 1138 MB working set, 855 MB private (before: 911 MB)
+  negpow-256: 6.9 s, facts ['Triangles', '100,140', 'Points', '48,682', 'Size', '68.6 × 64.2 × 100 mm', 'Pieces', 'The largest of 5,870, with about 16% of the surface', 'mandelbrot-256.stl', '4.8 MB', 'mandelbrot-256.obj', '3.9 MB', 'mandelbrot-256.ply', '1.9 MB', 'Zip to save', '11 MB'] | warn 'This solid has parts thinner than one cell of the grid. They came out as 5,870 l' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-256.zip', 'size': 11094141, 'type': 'application/zip', 'pulled_s': 1.0} | gap max 55 ms (798 turns, 2 over 50 ms, 0 over 100 ms)
+subject klein: opening Kleinian view, depth 150
+  picture at rest after 0.9 s (ok)
+  klein-512: 11.5 s, facts ['Triangles', '1,686,844', 'Points', '842,264', 'Size', '99.8 × 100 × 50.1 mm', 'Pieces', 'The largest of 109', 'kleinian-512.stl', '80 MB', 'kleinian-512.obj', '72 MB', 'kleinian-512.ply', '33 MB', 'Zip to save', '185 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-kleinian-512.zip', 'size': 194423164, 'type': 'application/zip', 'pulled_s': 12.1} | gap max 116 ms (2454 turns, 1 over 50 ms, 1 over 100 ms) | peak memory 1482 MB working set, 1235 MB private (before: 1121 MB)
+no console errors
+exit 0

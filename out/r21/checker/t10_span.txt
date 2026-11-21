@@ -1,0 +1,40 @@
+flat check of all 21 rules (20,000 points): 0 with a count or stray not 0
+claim 2: 2(a.v)v - |v|^2 a against (L(v) + |v|^2 n_x n)/sqrt(1 - n_x^2): largest difference / |v|^2 = 8.1e-14 (planes with |n_x| < 0.999)
+claim 3: against the bench lathe, verdicts that differ of 60,000 for c = -1 / -0.75 / -1.7549
+   c_lathe    0 / 0 / 0
+   c_page     0 / 0 / 0
+   prev_lathe 0 / 0 / 0
+   prev_page  598 / 1141 / 9
+claim 4 (fan): rabbit of c_page in the plane through the line of c turned t from the flat page, against the flat Julia set of gamma = |c| e^(i alpha): verdicts that differ of 20,000
+   t =  0: gamma = -0.1226+0.7449i (length 0.7549, angle 99.3): 0 differ (inside 2534)
+   t = 30: gamma = -0.1409+0.7416i (length 0.7549, angle 100.8): 0 differ (inside 2548)
+   t = 50: gamma = -0.1872+0.7313i (length 0.7549, angle 104.4): 0 differ (inside 2498)
+   t = 60: gamma = -0.2360+0.7170i (length 0.7549, angle 108.2): 0 differ (inside 418)
+   t = 75: gamma = -0.4050+0.6370i (length 0.7549, angle 122.4): 0 differ (inside 204)
+   t = 90: gamma = -0.7549+0.0000i (length 0.7549, angle 180.0): 0 differ (inside 4044)
+claims 5 to 7: Mandelbrot solid turned by a random angle (M.spun_check), and swept formula for c_page
+   c_lathe    M 0.00% (inside 7.80%)
+   c_page     M 3.46% (inside 9.14%)
+   c_Pfirst   M 1.77% (inside 5.78%)
+   prev_lathe M 0.34% (inside 7.35%)
+   prev_page  M 3.72% (inside 8.76%)
+   prev_keep  M 3.73% (inside 8.77%)
+   c_page against "|c| e^(i theta(c)) in the flat set": 0 of 40,000 differ
+claim 8: c in the spun heart-shaped main body (flat c0 inside the cardioid, any turn): share thrown out at 240 steps
+   prev_lathe  30 steps: 2.5% of 8000 thrown out
+   prev_lathe 240 steps: 19.6% of 8000 thrown out
+   prev_page   30 steps: 3.9% of 8000 thrown out
+   prev_page  240 steps: 19.1% of 8000 thrown out
+   prev_keep   30 steps: 3.9% of 8000 thrown out
+   prev_keep  240 steps: 19.1% of 8000 thrown out
+   c_page      30 steps: 2.1% of 8000 thrown out
+   c_page     240 steps: 2.4% of 8000 thrown out
+   c_lathe     30 steps: 0.0% of 8000 thrown out
+   c_lathe    240 steps: 0.0% of 8000 thrown out
+claim 11: rabbit volume %% at 30 / 80 steps
+   c_lag10      2.40 / 2.21
+   c_lag25      2.55 / 2.15
+   c_lag50      3.30 / 2.82
+   prev_lag10P  2.13 / 0.32
+   prev_lag25P  1.19 / 0.01
+   prev_lag50P  0.22 / 0.00

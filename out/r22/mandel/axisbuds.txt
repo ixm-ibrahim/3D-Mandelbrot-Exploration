@@ -1,0 +1,117 @@
+A. THE ORBIT OF c ON A CIRCLE ROUND THE x-AXIS INSIDE A BUD THAT SITS ON THE AXIS. 600 steps. Steps written own>used.
+
+ big disc at -1 (the orbit hops between two spots), circle of radius 0.2
+  lathe (Quaternion square (Lathe))
+   tilt  0: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 5>5 5>5 5>5 5>5 5>5 5>5 5>5 5>5
+   tilt 10: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 10>10 10>10 10>10 10>10 10>10 10>10 10>10 10>10
+   tilt 20: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 20>20 20>20 20>20 20>20 20>20 20>20 20>20 20>20
+   tilt 30: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 30>30 30>30 30>30 30>30 30>30 30>30 30>30 30>30
+   tilt 45: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 45>45 45>45 45>45 45>45 45>45 45>45 45>45 45>45
+   tilt 60: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 60>60 60>60 60>60 60>60 60>60 60>60 60>60 60>60
+   tilt 80: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 80>80 80>80 80>80 80>80 80>80 80>80 80>80 80>80
+   tilt 90: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 90>90 90>90 90>90 90>90 90>90 90>90 90>90 90>90
+  oneplane (Sphere inversions, one plane)
+   tilt  0: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: leaves after 45 steps                                              | 5>0 165>0 10>0 158>0 19>0 142>0 23>0 134>0
+   tilt 10: leaves after 17 steps                                              | 10>0 152>0 19>0 141>0 31>0 125>0 38>0 118>0
+   tilt 20: leaves after 10 steps                                              | 20>0 132>0 36>0 120>0 52>0 108>0 65>0 100>0
+   tilt 30: leaves after 8 steps                                               | 30>0 119>0 51>0 108>0 67>0 99>0 79>0 92>0
+   tilt 45: leaves after 6 steps                                               | 45>0 108>0 67>0 99>0 79>0 93>0 87>0
+   tilt 60: leaves after 5 steps                                               | 60>0 100>0 77>0 94>0 85>0 91>0
+   tilt 80: leaves after 5 steps                                               | 80>0 93>0 86>0 91>0 89>0 90>0
+   tilt 90: leaves after 5 steps                                               | 90>0 90>0 90>0 90>0 90>0 90>0
+  wake (Along once, then one plane)
+   tilt  0: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: leaves after 45 steps                                              | 5>0 165>0 10>0 158>0 18>0 142>0 23>0 134>0
+   tilt 10: leaves after 17 steps                                              | 10>1 155>0 19>0 142>0 31>0 126>0 38>0 118>0
+   tilt 20: leaves after 11 steps                                              | 20>6 148>0 30>0 125>0 49>0 109>0 62>0 102>0
+   tilt 30: leaves after 9 steps                                               | 30>18 164>0 34>0 120>0 60>0 102>0 73>0 96>0
+   tilt 45: leaves after 9 steps                                               | 45>45 45>0 35>0 114>0 64>0 100>0 77>0 94>0
+   tilt 60: leaves after 8 steps                                               | 60>72 106>0 50>0 103>0 74>0 96>0 83>0 92>0
+   tilt 80: leaves after 7 steps                                               | 80>89 115>0 78>0 93>0 85>0 91>0 88>0 90>0
+   tilt 90: leaves after 7 steps                                               | 90>90 90>0 90>0 90>0 90>0 90>0 90>0 90>0
+  evc (Pulled plane)
+   tilt  0: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: STAYS, near of length 2, off its page by up to 16, at most 0.199 from the x-axis | 5>1 171>2 9>2 168>2 14>2 157>2 17>3 149>3
+   tilt 10: leaves after 55 steps                                              | 10>3 163>4 17>4 158>5 26>5 145>5 29>5 138>5
+   tilt 20: leaves after 16 steps                                              | 20>7 151>8 32>10 146>10 43>10 135>10 51>11 128>10
+   tilt 30: leaves after 12 steps                                              | 30>12 147>14 45>16 143>16 58>17 134>16 69>17 127>16
+   tilt 45: leaves after 11 steps                                              | 45>24 154>26 62>28 151>28 76>30 143>29 89>30 135>28
+   tilt 60: leaves after 12 steps                                              | 60>41 174>43 76>45 170>45 89>46 162>45 101>47 154>45
+   tilt 80: leaves after 35 steps                                              | 80>72 49>73 88>74 44>74 97>74 31>74 101>75 25>74
+   tilt 90: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 90>90 90>90 90>90 90>90 90>90 90>90 90>90 90>90
+  along (Turning plane, along)
+   tilt  0: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 0>0 0>0 180>0 0>0 0>0 0>0 180>0 0>0
+   tilt  5: STAYS, cycle of length 2, off its page by up to 14, at most 0.210 from the x-axis | 5>0 165>178 9>1 162>176 15>2 157>171 16>3 153>167
+   tilt 10: STAYS, cycle of length 2, off its page by up to 14, at most 0.222 from the x-axis | 10>1 155>169 14>2 156>170 22>8 160>174 25>11 159>173
+   tilt 20: STAYS, near of length 2, off its page by up to 13, at most 0.219 from the x-axis | 20>6 148>160 21>7 156>170 36>28 21>6 13>2 126>117
+   tilt 30: STAYS, cycle of length 4, off its page by up to 14, at most 0.223 from the x-axis | 30>18 164>177 33>22 178>180 36>28 10>1 35>26 173>180
+   tilt 45: STAYS, cycle of length 2, off its page by up to 13, at most 0.185 from the x-axis | 45>45 45>45 45>45 45>45 45>45 45>45 45>45 45>45
+   tilt 60: STAYS, cycle of length 4, off its page by up to 14, at most 0.223 from the x-axis | 60>72 106>93 57>68 92>90 54>62 80>89 55>64 97>90
+   tilt 80: STAYS, cycle of length 2, off its page by up to 14, at most 0.222 from the x-axis | 80>89 115>101 76>88 114>100 68>82 110>96 65>79 111>97
+   tilt 90: STAYS, cycle of length 2, off its page by up to 0, at most 0.187 from the x-axis | 90>90 90>90 90>90 90>90 90>90 90>90 90>90 90>90
+
+ bud at -1.3107 (four spots), circle of radius 0.04
+  lathe (Quaternion square (Lathe))
+   tilt  0: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 5>5 5>5 5>5 5>5 5>5 5>5 5>5 5>5
+   tilt 10: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 10>10 10>10 10>10 10>10 10>10 10>10 10>10 10>10
+   tilt 20: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 20>20 20>20 20>20 20>20 20>20 20>20 20>20 20>20
+   tilt 30: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 30>30 30>30 30>30 30>30 30>30 30>30 30>30 30>30
+   tilt 45: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 45>45 45>45 45>45 45>45 45>45 45>45 45>45 45>45
+   tilt 60: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 60>60 60>60 60>60 60>60 60>60 60>60 60>60 60>60
+   tilt 80: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 80>80 80>80 80>80 80>80 80>80 80>80 80>80 80>80
+   tilt 90: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 90>90 90>90 90>90 90>90 90>90 90>90 90>90 90>90
+  oneplane (Sphere inversions, one plane)
+   tilt  0: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: leaves after 64 steps                                              | 5>0 169>0 132>0 27>0 11>0 160>0 125>0 37>0
+   tilt 10: leaves after 28 steps                                              | 10>0 158>0 114>0 46>0 22>0 144>0 108>0 58>0
+   tilt 20: leaves after 17 steps                                              | 20>0 141>0 102>0 65>0 44>0 120>0 96>0 76>0
+   tilt 30: leaves after 14 steps                                              | 30>0 128>0 97>0 74>0 61>0 107>0 92>0 83>0
+   tilt 45: leaves after 11 steps                                              | 45>0 114>0 94>0 81>0 75>0 99>0 90>0 88>0
+   tilt 60: leaves after 10 steps                                              | 60>0 104>0 92>0 85>0 82>0 94>0 89>0 89>0
+   tilt 80: leaves after 9 steps                                               | 80>0 95>0 90>0 89>0 88>0 91>0 90>0 90>0
+   tilt 90: leaves after 9 steps                                               | 90>0 90>0 90>0 90>0 90>0 90>0 90>0 90>0
+  wake (Along once, then one plane)
+   tilt  0: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: leaves after 64 steps                                              | 5>0 169>0 133>0 27>0 11>0 160>0 125>0 37>0
+   tilt 10: leaves after 28 steps                                              | 10>1 161>0 117>0 44>0 21>0 145>0 108>0 57>0
+   tilt 20: leaves after 18 steps                                              | 20>6 157>0 113>0 53>0 37>0 126>0 99>0 72>0
+   tilt 30: leaves after 16 steps                                              | 30>18 171>0 127>0 45>0 43>0 119>0 97>0 77>0
+   tilt 45: leaves after 15 steps                                              | 45>45 45>0 47>0 9>0 45>0 115>0 95>0 80>0
+   tilt 60: leaves after 14 steps                                              | 60>72 99>0 143>0 17>0 60>0 104>0 91>0 86>0
+   tilt 80: leaves after 13 steps                                              | 80>89 109>0 154>0 167>0 82>0 93>0 90>0 89>0
+   tilt 90: leaves after 13 steps                                              | 90>90 90>0 90>0 90>0 90>0 90>0 90>0 90>0
+  evc (Pulled plane)
+   tilt  0: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 0>0
+   tilt  5: STAYS, near of length 4, off its page by up to 21, at most 0.067 from the x-axis | 5>1 171>1 136>1 26>1 10>2 166>2 135>2 31>2
+   tilt 10: STAYS, near of length 4, off its page by up to 23, at most 0.068 from the x-axis | 10>1 162>2 118>2 45>3 20>4 155>4 118>4 51>5
+   tilt 20: leaves after 25 steps                                              | 20>3 147>3 106>4 67>8 42>9 140>8 111>8 74>12
+   tilt 30: leaves after 17 steps                                              | 30>4 138>5 103>7 79>14 62>16 135>13 113>13 86>23
+   tilt 45: leaves after 13 steps                                              | 45>9 130>10 104>13 95>27 87>30 142>23 125>21 93>50
+   tilt 60: leaves after 12 steps                                              | 60>14 127>17 107>25 115>46 111>53 166>34 150>27 82>51
+   tilt 80: leaves after 10 steps                                              | 80>15 116>48 107>64 14>49 124>52 153>44 143>33 101>79
+   tilt 90: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 90>0 90>90 90>90 90>90 90>90 90>90 90>90 90>90
+  along (Turning plane, along)
+   tilt  0: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 0>0 0>0 0>0 0>0 0>0 0>0 0>0 180>0
+   tilt  5: STAYS, cycle of length 4, off its page by up to 12, at most 0.070 from the x-axis | 5>0 169>179 133>131 156>170 1>0 175>180 155>169 4>0
+   tilt 10: STAYS, cycle of length 4, off its page by up to 14, at most 0.085 from the x-axis | 10>1 161>175 117>103 124>114 8>0 163>176 128>121 139>144
+   tilt 20: STAYS, near of length 36, off its page by up to 14, at most 0.127 from the x-axis | 20>6 157>171 113>99 110>96 16>3 156>170 120>108 117>103
+   tilt 30: STAYS, cloud, off its page by up to 14, at most 0.125 from the x-axis | 30>18 171>179 127>120 140>145 26>12 162>176 122>111 123>112
+   tilt 45: STAYS, cloud, off its page by up to 14, at most 0.394 from the x-axis | 45>45 45>45 45>45 45>45 45>45 45>45 45>45 45>45
+   tilt 60: STAYS, cloud, off its page by up to 14, at most 0.122 from the x-axis | 60>72 99>91 143>150 130>125 64>78 108>94 148>159 147>158
+   tilt 80: STAYS, cycle of length 4, off its page by up to 14, at most 0.085 from the x-axis | 80>89 109>95 153>167 146>156 82>90 107>94 142>149 131>126
+   tilt 90: STAYS, cycle of length 4, off its page by up to 0, at most 0.066 from the x-axis | 90>90 90>90 90>90 90>90 90>90 90>90 90>90 90>90
+
+B. ALONG: c walked from the flat page (0) to the slanted page (45), every 1.5 degrees. Cycle length at each stop (0 = never repeats in 600 steps, x = leaves, ~ = nearly settled):
+   heart, x = -0.12, radius 0.55  1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 ~2 ~62 ~18 0 0 0 0 0 0 ~22 2 2 1
+   big disc at -1, radius 0.2     2 2 2 2 2 2 2 2 2 2 2 8 ~2 ~2 ~2 ~8 8 ~16 ~16 4 4 4 0 24 0 0 ~4 4 2 2 2
+   big disc at -1, radius 0.24    ~2 2 2 2 2 ~2 ~58 0 16 8 8 0 x x x x x x x x x x 0 x x x x x ~6 x 0
+                                  the ones that leave take 17 to 289 steps (median 39)
+   bud at -1.3107, radius 0.04    4 4 8 8 4 0 ~4 4 ~16 ~16 ~8 8 0 0 0 0 0 0 0 0 0 0 ~4 4 4 4 ~64 x x x 0
+                                  the ones that leave take 97 to 282 steps (median 107)
+   period-3 bud, radius 0.7449    3 3 3 3 3 3 3 ~3 ~3 x x x x x x x x x x x x x x x x x x x x x 3
+                                  the ones that leave take 8 to 345 steps (median 15)
+
+(2 s)

@@ -1,0 +1,46 @@
+flat check of all 62 rules (20,000 points): 0 rules with a count or a stray not 0
+end points (claim 2), verdicts that differ of 60,000: basilica / rabbit / Mandelbrot
+   a_fixed against along: 0 / 0 / 0
+   a_own against lathe: 0 / 0 / 0
+groups A and D (claim 4): rabbit volume at 80 steps (x box volume), basilica bud circle
+   a_fixed      rabbit 1.59 | 8 arcs (12.6 at 45, 12.6 at 90, 12.6 at 135, 12.6 at 180, 12.6 at 225, 12.6 at 270 ...), inside 28.1%
+   a_lag10      rabbit 1.54 | 8 arcs (11.4 at 45, 14.1 at 90, 11.4 at 135, 14.1 at 180, 11.4 at 225, 14.1 at 270 ...), inside 28.3%
+   a_lag25      rabbit 1.52 | 8 arcs (8.6 at 45, 16.9 at 90, 8.6 at 135, 16.9 at 180, 8.6 at 225, 16.9 at 270 ...), inside 28.3%
+   a_lag50      rabbit 1.41 | 8 arcs (0.1 at 45, 25.4 at 90, 0.1 at 135, 25.4 at 180, 0.1 at 225, 25.4 at 270 ...), inside 28.3%
+   a_lag75      rabbit 1.44 | RING
+   a_lag25p     rabbit 1.54 | 8 arcs (12.6 at 45, 12.6 at 90, 12.6 at 135, 12.6 at 180, 12.6 at 225, 12.6 at 270 ...), inside 28.1%
+   a_delay      rabbit 1.34 | 8 arcs (12.6 at 45, 12.6 at 90, 12.6 at 135, 12.6 at 180, 12.6 at 225, 12.6 at 270 ...), inside 28.1%
+   a_first      rabbit 1.39 | 8 arcs (12.6 at 45, 12.6 at 90, 12.6 at 135, 12.6 at 180, 12.6 at 225, 12.6 at 270 ...), inside 28.1%
+   a_own        rabbit 1.45 | RING
+   a_votes90    rabbit 1.53 | 8 arcs (1.6 at 45, 26.9 at 90, 1.6 at 135, 26.9 at 180, 1.6 at 225, 26.9 at 270 ...), inside 31.7%
+   a_votes50    rabbit 1.50 | 8 arcs (16.6 at 45, 42.1 at 90, 16.6 at 135, 42.1 at 180, 16.6 at 225, 42.1 at 270 ...), inside 65.3%
+   a_votes100   rabbit 1.51 | 8 arcs (0.1 at 45, 25.4 at 90, 0.1 at 135, 25.4 at 180, 0.1 at 225, 25.4 at 270 ...), inside 28.3%
+   a_mean25     rabbit 1.46 | 8 arcs (17.4 at 45, 17.4 at 90, 17.4 at 135, 17.4 at 180, 17.4 at 225, 17.4 at 270 ...), inside 38.6%
+   a_mean50     rabbit 1.44 | 8 arcs (29.4 at 45, 29.4 at 90, 29.4 at 135, 29.4 at 180, 29.4 at 225, 29.4 at 270 ...), inside 65.3%
+   a_settle     rabbit 1.50 | 8 arcs (0.1 at 45, 25.4 at 90, 0.1 at 135, 25.4 at 180, 0.1 at 225, 25.4 at 270 ...), inside 28.3%
+   a_wake1      rabbit 1.39 | 8 arcs (12.6 at 45, 12.6 at 90, 12.6 at 135, 12.6 at 180, 12.6 at 225, 12.6 at 270 ...), inside 28.1%
+   a_wake3      rabbit 1.46 | 8 arcs (12.6 at 45, 12.6 at 90, 12.6 at 135, 12.6 at 180, 12.6 at 225, 12.6 at 270 ...), inside 28.1%
+   a_lagaxis50  rabbit 1.46 | 8 arcs (0.1 at 45, 25.4 at 90, 0.1 at 135, 25.4 at 180, 0.1 at 225, 25.4 at 270 ...), inside 28.3%
+   d_lag2525    rabbit 1.47 | 8 arcs (8.6 at 45, 16.9 at 90, 8.6 at 135, 16.9 at 180, 8.6 at 225, 16.9 at 270 ...), inside 28.3%
+   d_lag5025    rabbit 1.43 | 8 arcs (0.1 at 45, 25.4 at 90, 0.1 at 135, 25.4 at 180, 0.1 at 225, 25.4 at 270 ...), inside 28.3%
+   d_conly50    rabbit 1.59 | 8 arcs (12.6 at 45, 12.6 at 90, 12.6 at 135, 12.6 at 180, 12.6 at 225, 12.6 at 270 ...), inside 28.1%
+   a_keep       rabbit 0.68 | RING
+claims 9, 10, 11, 17: volumes x box at 30 / 80 / 200 / 500 steps
+   c_lag25  rabbit 1.69 / 0.63 / 0.44 / 0.44; Siegel 1.81 / 1.77 / 1.77
+   b_delay  rabbit 0.01 / 0.00 / 0.00 / 0.00; Siegel 0.09 / 0.09 / 0.09
+   c_delay  rabbit 0.01 / 0.00 / 0.00 / 0.00; Siegel 0.11 / 0.09 / 0.09
+   a_delay  rabbit 1.39 / 1.34 / 1.34 / 1.34; Siegel 1.22 / 0.62 / 0.45
+   a_first  rabbit 1.42 / 1.39 / 1.39 / 1.39; Siegel 1.68 / 1.62 / 1.61
+   c_wake1  rabbit 0.66 / 0.64 / 0.64 / 0.64; Siegel 1.40 / 1.37 / 1.37
+   c_keep   rabbit 0.78 / 0.77 / 0.77 / 0.77; Siegel 0.85 / 0.84 / 0.84
+   a_keep   rabbit 1.07 / 0.68 / 0.57 / 0.53; Siegel 1.60 / 1.39 / 1.23
+claim 16: Mandelbrot solid, share of verdicts changed by a random turn (M.spun_check)
+   a_fixed  M 1.52%, basilica 0.250%
+   a_lag25  M 1.31%, basilica 0.290%
+   a_lag50  M 0.84%, basilica 0.253%
+   a_lag75  M 0.39%, basilica 0.137%
+   a_own    M 0.00%, basilica 0.000%
+   a_keep   M 0.00%, basilica 0.000%
+claim 17: c_keep basilica circle: 2 arcs (12.4 at 180, 12.4 at 0), inside 6.9%
+claim 14: sign of along's Jacobian (central differences), 200,000 random points of the cube -1.5..1.5:
+   negative at 44.4% of points; within 10 degrees of the 45-degree sheets: 73.7%; one-plane rule: 0.0%

@@ -1,0 +1,51 @@
+configuration                                                              moves                                pts worst rel  fail  at0   jump mv  fail   worst    say  fail
+lathe n=2 dials#0 {}                                                       turn stretch shift                  2000   9.8e-16     0    0       600     0   1.51%   1200     0
+lathe n=2 dials#1 {"spin":3}                                               turn spin stretch shift             2000   1.8e-15     0    0       800     0   1.51%   1600     0
+lathe n=2 dials#2 {"spin":-5}                                              turn spin stretch shift             2000   2.7e-15     0    0       800     0   1.51%   1600     0
+lathe n=2 modifiers abs=1,0,1 flip=1,0                                     mirror turn stretch shift           2000   9.1e-16     0    0       800     0   1.51%   1600     0
+lathe n=2 modifiers abs=0,1,0 flip=0,1                                     mirror turn stretch shift           2000   9.1e-16     0    0       800     0   1.51%   1600     0
+lathe n=3 dials#0 {}                                                       turn stretch shift                  2000   1.3e-15     0    0       600     0   2.99%   1200     0
+lathe n=3 dials#1 {"spin":3}                                               turn spin stretch shift             2000   1.6e-15     0    0       800     0   2.99%   1600     0
+lathe n=3 dials#2 {"spin":-5}                                              turn spin stretch shift             2000   3.3e-15     0    0       800     0   2.99%   1600     0
+lathe n=3 modifiers abs=1,0,1 flip=1,0                                     mirror turn stretch shift           2000   1.3e-15     0    0       800     0   2.99%   1600     0
+lathe n=3 modifiers abs=0,1,0 flip=0,1                                     mirror turn stretch shift           2000   1.4e-15     0    0       800     0   2.99%   1600     0
+lathe n=5 dials#0 {}                                                       turn stretch shift                  2000   2.0e-15     0    0       600     1   5.90%   1200     0
+      ! jump stretch: step 0.000135 of path 0.00229 at a=-0.001771,-0.00141,-0.0003526 b=-4.881e-14,-3.888e-14,-9.719e-15
+lathe n=5 dials#1 {"spin":3}                                               turn spin stretch shift             2000   2.2e-15     0    0       800     1   5.90%   1600     0
+      ! jump stretch: step 0.000135 of path 0.00229 at a=-0.001771,-0.001079,-0.0009749 b=-4.881e-14,-2.973e-14,-2.687e-14
+lathe n=5 dials#2 {"spin":-5}                                              turn spin stretch shift             2000   3.5e-15     0    0       800     1   5.90%   1600     0
+      ! jump stretch: step 0.000135 of path 0.00229 at a=-0.001771,-0.0004929,0.001368 b=-4.881e-14,-1.359e-14,3.77e-14
+lathe n=5 modifiers abs=1,0,1 flip=1,0                                     mirror turn stretch shift           2000   1.9e-15     0    0       800     1   5.90%   1600     0
+      ! jump stretch: step 0.000135 of path 0.00229 at a=0.001771,0.00141,-0.0003526 b=4.881e-14,3.888e-14,-9.719e-15
+lathe n=5 modifiers abs=0,1,0 flip=0,1                                     mirror turn stretch shift           2000   1.9e-15     0    0       800     1   5.90%   1600     0
+      ! jump stretch: step 0.000135 of path 0.00229 at a=-0.001771,-0.00141,0.0003526 b=-4.881e-14,-3.888e-14,9.719e-15
+lathe n=-1 dials#0 {}                                                      turn stretch shift                  2000   7.7e-16     0    0       600     4  24.25%   1200     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-1 dials#1 {"spin":3}                                              turn spin stretch shift             2000   1.6e-15     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-1 dials#2 {"spin":-5}                                             turn spin stretch shift             2000   2.3e-15     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-1 modifiers abs=1,0,1 flip=1,0                                    mirror turn stretch shift           2000   8.5e-16     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-1 modifiers abs=0,1,0 flip=0,1                                    mirror turn stretch shift           2000   7.1e-16     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-2 dials#0 {}                                                      turn stretch shift                  2000   1.1e-15     0    0       600     4  24.25%   1200     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-2 dials#1 {"spin":3}                                              turn spin stretch shift             2000   1.8e-15     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-2 dials#2 {"spin":-5}                                             turn spin stretch shift             2000   3.4e-15     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-2 modifiers abs=1,0,1 flip=1,0                                    mirror turn stretch shift           2000   1.2e-15     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=-2 modifiers abs=0,1,0 flip=0,1                                    mirror turn stretch shift           2000   1.1e-15     0    0       800     4  24.25%   1600     0
+      ! jump stretch: step 4.22e+17 of path 1.74e+18 at a=0,0,0 b=1739000000000000000,0,0
+lathe n=2.5 dials#0 {}                                                     turn stretch shift                  2000   1.3e-15     0    0       600     0   2.25%   1200     2
+      ! say turn: angle 337° not measured | The point leans 135° away from the positive x-axis. The power 2.5 multiplies it by 2.5, to 337°, in the flat sheet that holds the x-axis and the point. That is past the axis, so it ends 23° from the positive x-axis, on the far side. | a=-0.6,0.6,0
+lathe n=2.5 dials#1 {"spin":3}                                             turn spin stretch shift             2000   1.8e-15     0    0       800     0   2.25%   1600     2
+      ! say turn: angle 337° not measured | The point leans 135° away from the positive x-axis. The power 2.5 multiplies it by 2.5, to 337°, in the flat sheet that holds the x-axis and the point. That is past the axis, so it ends 23° from the positive x-axis, on the far side. | a=-0.6,0.6,0
+lathe n=2.5 dials#2 {"spin":-5}                                            turn spin stretch shift             2000   2.4e-15     0    0       800     0   2.25%   1600     2
+      ! say turn: angle 337° not measured | The point leans 135° away from the positive x-axis. The power 2.5 multiplies it by 2.5, to 337°, in the flat sheet that holds the x-axis and the point. That is past the axis, so it ends 23° from the positive x-axis, on the far side. | a=-0.6,0.6,0
+lathe n=2.5 modifiers abs=1,0,1 flip=1,0                                   mirror turn stretch shift           2000   1.1e-15     0    0       800     0   2.25%   1600     0
+lathe n=2.5 modifiers abs=0,1,0 flip=0,1                                   mirror turn stretch shift           2000   1.3e-15     0    0       800     0   2.25%   1600     2
+      ! say turn: angle 337° not measured | The point leans 135° away from the positive x-axis. The power 2.5 multiplies it by 2.5, to 337°, in the flat sheet that holds the x-axis and the point. That is past the axis, so it ends 23° from the positive x-axis, on the far side. | a=-0.6,0.6,0
+TOTAL {"cfg": 30, "pts": 60000, "checkFail": 0, "at0Fail": 0, "jumpMoves": 22800, "jumpFail": 45, "sayN": 45600, "sayFail": 8}

@@ -1,0 +1,136 @@
+step 1 result: page up, 15 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2
+step 1 waited 3.3 s
+step 2 result: {
+ "rotorframe_gapAcrossHalfPlane": {
+  "n2": {
+   "step0.0001": 0.0018917814606896745,
+   "step0.000001": 0.00001973592962986356,
+   "step1e-8": 1.8780857474573636e-7
+  },
+  "n3": {
+   "step0.0001": 0.0025596908735103126,
+   "step0.000001": 0.0000257043432483158,
+   "step1e-8": 2.6091998469235047e-7
+  },
+  "n4": {
+   "step0.0001": 0.003774004890449547,
+   "step0.000001": 0.000037891471074587474,
+   "step1e-8": 3.8695272428650835e-7
+  },
+  "n2.5": {
+   "step0.0001": 1.9999997719497653,
+   "step0.000001": 1.9999999942088824,
+   "step1e-8": 1.9999999998968543
+  }
+ },
+ "rotorframe_turnedOver": {
+  "shareByLongitudeBandOf30Deg_fromXAxis": [
+   0.138,
+   0.138,
+   0.133,
+   0.137,
+   0.134,
+   0.136
+  ],
+  "share": 0.13596666666666668,
+  "meanAbsLatitudeDeg": 70.15723040072842
+ },
+ "rotorframe_slices": {
+  "points": 6000,
+  "sliceZ0DiffersFromFlat": 0,
+  "planeY0DiffersFromFlat": 506,
+  "planeY0Inside": 784,
+  "flatInside": 1044
+ },
+ "kleinsq_shape": {
+  "n2": {
+   "directions": 40000,
+   "median": 7.320496883931909e-7,
+   "p999": 9.424529194834719e-7,
+   "offByMoreThan1Percent": 0
+  },
+  "n3": {
+   "directions": 40000,
+   "median": 0.0000012671217046733574,
+   "p999": 0.0000019982254159313955,
+   "offByMoreThan1Percent": 0
+  },
+  "n4": {
+   "directions": 40000,
+   "median": 1.2671674820552425e-10,
+   "p999": 0.000003303718300928793,
+   "offByMoreThan1Percent": 0
+  }
+ },
+ "kleinsq_juliaBasilicaSlice": {
+  "points": 30000,
+  "inSlice": 3398,
+  "inFlat": 4834,
+  "inBoth": 3002
+ },
+ "quat4_emptyBeyond": [
+  {
+   "w": 0.9,
+   "insideOf200000": 39
+  },
+  {
+   "w": 1,
+   "insideOf200000": 52
+  },
+  {
+   "w": 1.1,
+   "insideOf200000": 7
+  },
+  {
+   "w": 1.12,
+   "insideOf200000": 0
+  },
+  {
+   "w": 1.13,
+   "insideOf200000": 0
+  },
+  {
+   "w": 1.2,
+   "insideOf200000": 0
+  }
+ ],
+ "quat4_juliaRabbit_cw03_sliceZ0": {
+  "points": 20000,
+  "inSlice": 1667,
+  "inFlat": 2559,
+  "differ": 1204
+ },
+ "quat4_pageAgainst4D": [
+  {
+   "mode": "m",
+   "q": "{\"w\":0.3,\"tilt\":25,\"cw\":0}",
+   "c": "",
+   "steps": 14,
+   "points": 12288,
+   "inside4D": 1788,
+   "pageDisagrees": 0,
+   "ofThoseWithin0p01OfTheSurface": 0
+  },
+  {
+   "mode": "j",
+   "q": "{\"w\":0.1,\"tilt\":30,\"cw\":0.4}",
+   "c": "-1,0.15,0.1",
+   "steps": 14,
+   "points": 12288,
+   "inside4D": 52,
+   "pageDisagrees": 0,
+   "ofThoseWithin0p01OfTheSurface": 0
+  },
+  {
+   "mode": "j",
+   "q": "{\"w\":0,\"tilt\":0,\"cw\":0.3}",
+   "c": "-0.1226,0.7449,0",
+   "steps": 14,
+   "points": 12288,
+   "inside4D": 1282,
+   "pageDisagrees": 0,
+   "ofThoseWithin0p01OfTheSurface": 0
+  }
+ ]
+}
+no console errors

@@ -1,0 +1,75 @@
+rule-set               tiles    thin  film %   over half-planes skin points     pairs     old 12  pass chance if ONE (half-plane, skin point) pair were looked at
+along-airplane           120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+along-bas_yz             120   0.541    2.07     20      7 of 8      5 of 5  16 of 40  not clean   60 %
+along-bas_zy             120   0.541    2.07     22      8 of 8      5 of 5  18 of 40  not clean   55 %
+along-basilica           120   0.810    1.99     24      6 of 8      5 of 5  18 of 40  not clean   55 %
+along-cauliflower        120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+along-rab_up             120   2.879    8.45    115      8 of 8      5 of 5  40 of 40  not clean    0 %
+along-rabbit             120   4.276    7.48    118      8 of 8      5 of 5  40 of 40  not clean    0 %
+along-sanmarco           120   0.424    0.91     12      2 of 8      4 of 5   8 of 40  not clean   80 %
+along-siegel             120   3.574    9.49    113      8 of 8      5 of 5  40 of 40  not clean    0 %
+along-sm_yz              120   0.826    1.74     23      6 of 8      5 of 5  14 of 40      clean   65 %
+away-airplane            120   0.133    0.15      2      2 of 8      1 of 5   2 of 40      clean   95 %
+away-bas_yz              120   0.444   11.37     38      8 of 8      5 of 5  24 of 40  not clean   40 %
+away-bas_zy              120   0.444   11.37     36      8 of 8      5 of 5  23 of 40  not clean   42 %
+away-basilica            120   1.243   24.43     82      6 of 8      5 of 5  30 of 40  not clean   25 %
+away-cauliflower         120   0.058    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+away-rab_up              120   1.457    4.11     74      8 of 8      5 of 5  35 of 40  not clean   12 %
+away-rabbit              120   1.552    4.24     65      8 of 8      5 of 5  33 of 40  not clean   18 %
+away-sanmarco            120   1.880   42.78     88      6 of 8      5 of 5  30 of 40  not clean   25 %
+away-siegel              120  18.255   62.30    101      7 of 8      5 of 5  35 of 40  not clean   12 %
+away-sm_yz               120   3.631   46.27    117      8 of 8      5 of 5  40 of 40  not clean    0 %
+flat-airplane             45   0.000    0.00      0      0 of 1     0 of 15   0 of 15          -  100 %
+flat-basilica             45   0.000    0.00      0      0 of 1     0 of 15   0 of 15          -  100 %
+flat-cauliflower          45   0.000    0.00      0      0 of 1     0 of 15   0 of 15          -  100 %
+flat-sanmarco             45   0.000    0.00      0      0 of 1     0 of 15   0 of 15          -  100 %
+lathe-bas_yz             120   0.324    0.22      3      2 of 8      2 of 5   3 of 40      clean   92 %
+lathe-bas_zy             120   0.465    0.50      4      2 of 8      2 of 5   3 of 40  not clean   92 %
+lathe-rab_up             120   4.266   10.27     75      7 of 8      5 of 5  29 of 40      clean   28 %
+oneplane-airplane        120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-bas_yz          120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-basilica        120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-cauliflower     120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-rab_up          120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-rabbit          120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-sanmarco        120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-siegel          120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+oneplane-sm_yz           120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+p_cot-airplane           120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+p_cot-bas_yz             120   0.402    0.28      7      6 of 8      2 of 5   6 of 40      clean   85 %
+p_cot-bas_zy             120   0.402    0.28      6      5 of 8      2 of 5   5 of 40      clean   88 %
+p_cot-basilica           120   0.484    0.49     14      6 of 8      4 of 5  10 of 40  not clean   75 %
+p_cot-cauliflower        120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+p_cot-sanmarco           120   0.374    0.65      4      4 of 8      1 of 5   4 of 40      clean   90 %
+p_h4-airplane            120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+p_h4-basilica            120   2.014    4.73     47      7 of 8      5 of 5  27 of 40  not clean   32 %
+p_h4-cauliflower         120   0.117    0.50      4      4 of 8      2 of 5   4 of 40      clean   90 %
+p_ss-airplane            120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+p_ss-bas_yz              120   1.254    0.90     19      7 of 8      5 of 5  14 of 40  not clean   65 %
+p_ss-basilica            120   0.753    0.67     16      6 of 8      4 of 5  14 of 40  not clean   65 %
+p_ss-cauliflower         120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+p_tt1024-airplane        120   1.128    6.40      3      1 of 8      3 of 5   3 of 40      clean   92 %
+p_tt1024-bas_yz          120   1.361    5.63     44      8 of 8      5 of 5  27 of 40  not clean   32 %
+p_tt1024-bas_zy          120   1.361    5.63     39      8 of 8      5 of 5  25 of 40  not clean   38 %
+p_tt1024-basilica        120   0.719   12.23     15      5 of 8      4 of 5   8 of 40      clean   80 %
+p_tt1024-cauliflower     120   0.856    6.90     18      7 of 8      5 of 5  15 of 40  not clean   62 %
+p_tt1024-rab_up          120   1.771    2.00     92      8 of 8      5 of 5  37 of 40  not clean    8 %
+p_tt1024-rabbit          120   1.635    4.05     71      8 of 8      5 of 5  37 of 40  not clean    8 %
+p_tt1024-sanmarco        120   1.024   14.37     28      7 of 8      5 of 5  18 of 40  not clean   55 %
+p_tt1024-sm_yz           120   1.154    5.98     37      8 of 8      5 of 5  24 of 40  not clean   40 %
+p_tt16-airplane          120   0.075    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+p_tt16-basilica          120   0.959    8.41     46      7 of 8      5 of 5  29 of 40  not clean   28 %
+p_tt256-airplane         120   0.110    0.10      1      1 of 8      1 of 5   1 of 40      clean   98 %
+p_tt256-basilica         120   0.849    8.94     28      7 of 8      5 of 5  22 of 40  not clean   45 %
+p_tt256-cauliflower      120   0.311    0.98     13      7 of 8      4 of 5  13 of 40  not clean   68 %
+p_tt256-sanmarco         120   0.993   17.02     35      7 of 8      5 of 5  20 of 40  not clean   50 %
+twoplane-airplane        120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+twoplane-bas_yz          120   1.026    0.69     15      5 of 8      5 of 5  11 of 40      clean   72 %
+twoplane-bas_zy          120   0.454    0.69     16      5 of 8      5 of 5  13 of 40  not clean   68 %
+twoplane-basilica        120   0.038    0.10      0      0 of 8      0 of 5   0 of 40      clean  100 %
+twoplane-cauliflower     120   0.000    0.00      0      0 of 8      0 of 5   0 of 40      clean  100 %
+twoplane-rab_up          120   1.339    1.99     92      8 of 8      5 of 5  38 of 40  not clean    5 %
+twoplane-rabbit          120   1.646    4.04     72      8 of 8      5 of 5  38 of 40  not clean    5 %
+twoplane-sanmarco        120   1.360    0.00     10      5 of 8      3 of 5  10 of 40  not clean   75 %
+twoplane-siegel          120   0.346    3.54     52      8 of 8      5 of 5  30 of 40  not clean   25 %
+twoplane-sm_yz           120   0.733    0.49     12      6 of 8      5 of 5  10 of 40      clean   75 %

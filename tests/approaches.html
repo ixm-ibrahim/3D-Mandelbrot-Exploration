@@ -1,0 +1,263 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Approaches: parity checks</title>
+<style>body{font:13px/1.5 ui-monospace,Consolas,monospace;margin:16px;background:#0d1117;color:#d6dbe3}.bad{color:#ff7b72}.ok{color:#7ee787}</style>
+</head><body>
+<h1 style="font-size:15px">Approaches: parity checks</h1>
+<p>Loads the approach and formula modules on their own (with the frozen core and the baseline shader header) and
+checks the power rules. Run with: <code>python tools/shot.py --url tests/approaches.html --actions tests/approaches.json</code></p>
+<pre id="out"></pre>
+<script src="../src/js/00-core.js"></script>
+<script src="../src/js/10-approaches.js"></script>
+<script src="../src/js/20-formula.js"></script>
+<script src="../base/js/30-shaders.js"></script>
+<script>
+// Everything below is test code. It reads the modules' top-level names directly (classic scripts share them).
+const T = (() => {
+  const N_SET = [-3, -2, -1, 2, 3, 8];
+  const lines = [];
+  let failed = 0;
+  function report(ok, text) {
+    if (!ok) failed++;
+    lines.push((ok ? 'PASS  ' : 'FAIL  ') + text);
+    const el = document.createElement('div');
+    el.className = ok ? 'ok' : 'bad'; el.textContent = (ok ? 'PASS  ' : 'FAIL  ') + text;
+    document.getElementById('out').appendChild(el);
+    if (!ok) console.error('FAIL ' + text);
+  }
+  // a small repeatable random source
+  let seed = 12345;
+  const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const gauss = () => Math.sqrt(-2 * Math.log(rnd() + 1e-12)) * Math.cos(2 * PI * rnd());
+  const onSphere = () => norm([gauss(), gauss(), gauss()]);
+  const dist = (a, b) => len(sub(a, b));
+  const cpow = (x, y, n) => { const r = Math.pow(Math.hypot(x, y), n), a = Math.atan2(y, x) * n; return [r * Math.cos(a), r * Math.sin(a), 0]; };
+  const defaults = id => specDefaults(APPROACHES.find(a => a.id === id).params || []);
+  const variants = {
+    mercator: [{ planes: 1 }, { planes: 2 }, { planes: 3 }, { planes: 8 }],
+    lathe: [{ spin: 1 }, { spin: 3 }, { spin: -5 }],
+    bulb: [{}], classic: [{}], split: [{}],
+  };
+
+  // 1. the plane z = 0 follows complex z^n (offsets zero; classic is the stated exception)
+  function plane() {
+    for (const a of APPROACHES) {
+      if (a.id === 'classic') continue;
+      for (const v of variants[a.id]) {
+        const q = { ...defaults(a.id), ...v };
+        const worst = N_SET.map(n => {
+          let w = 0;
+          for (let i = 0; i < 400; i++) {
+            const r = 0.2 + 1.6 * rnd(), t = 2 * PI * rnd(), x = r * Math.cos(t), y = r * Math.sin(t);
+            w = Math.max(w, dist(MATH[a.id]([x, y, 0], n, q), cpow(x, y, n)) / (1 + Math.pow(r, n)));
+          }
+          return w;
+        });
+        report(Math.max(...worst) < 1e-9, `plane z = 0 is complex z^n: ${a.id} ${JSON.stringify(v)}  worst error by n ${N_SET.join(', ')}: ${worst.map(w => w.toExponential(1)).join(', ')}`);
+      }
+    }
+  }
+  // 2. the literal sum of sphere inversions is the Mercator rule, on the unit sphere and everywhere else
+  function inversions() {
+    const q = { planes: 1, turn: 0, lift: 0 };
+    for (const n of [...N_SET, 4, 5, -8]) {
+      let ws = 0, wv = 0, wl = 0;
+      for (let i = 0; i < 2000; i++) {
+        const d = onSphere();
+        if (Math.abs(d[2]) > 0.999) continue;   // MATH.mercator clamps the last sliver beside the poles
+        const g = inversionPower(d, n);
+        ws = Math.max(ws, dist(g, MATH.mercator(d, n, q)));
+        wl = Math.max(wl, Math.abs(len(g) - 1));
+        const v = scl(d, 0.3 + 2 * rnd()), R = Math.pow(len(v), n);
+        wv = Math.max(wv, dist(inversionPower(v, n), MATH.mercator(v, n, q)) / (1 + R));
+      }
+      report(ws < 1e-6 && wv < 1e-6 && wl < 1e-9, `sum of ${Math.abs(n) + (n < 0 ? 2 : 1)} inversions = Mercator rule, n = ${n}: unit sphere ${ws.toExponential(1)}, all of space ${wv.toExponential(1)}, |result| − 1 on the sphere ${wl.toExponential(1)}`);
+    }
+  }
+  // 3. offsets: a turn multiplies the plane by e^{i phi}; the classic bulb with a theta phase of (1 - n) 90 degrees is the equator bulb
+  function offsets() {
+    for (const n of N_SET) {
+      let wt = 0, wc = 0, wb = 0, lifted = 0;
+      const phi = 37, cs = Math.cos(phi * PI / 180), sn = Math.sin(phi * PI / 180);
+      for (let i = 0; i < 300; i++) {
+        const r = 0.2 + 1.6 * rnd(), t = 2 * PI * rnd(), x = r * Math.cos(t), y = r * Math.sin(t), z = cpow(x, y, n);
+        const want = [cs * z[0] - sn * z[1], sn * z[0] + cs * z[1], 0], sc = 1 + Math.pow(r, n);
+        wt = Math.max(wt, dist(MATH.mercator([x, y, 0], n, { planes: 1, turn: phi, lift: 0 }), want) / sc);
+        wb = Math.max(wb, dist(MATH.bulb([x, y, 0], n, { lat: 0, lon: phi }), want) / sc);
+        lifted = Math.max(lifted, Math.abs(MATH.mercator([x, y, 0], n, { planes: 1, turn: 0, lift: 0.4 })[2]) / sc);
+        const v = scl(onSphere(), 0.3 + 1.5 * rnd());
+        wc = Math.max(wc, dist(MATH.classic(v, n, { theta: (1 - n) * 90, phi: 0 }), MATH.bulb(v, n, { lat: 0, lon: 0 })) / (1 + Math.pow(len(v), n)));
+      }
+      report(wt < 1e-9 && wb < 1e-9, `turn / longitude phase of 37° gives e^{iφ}·z^n in the plane, n = ${n}: sphere inversions ${wt.toExponential(1)}, Mandelbulb ${wb.toExponential(1)}`);
+      report(lifted > 0.05, `a lift takes the plane z = 0 off itself, n = ${n}: z part up to ${lifted.toFixed(2)} of the length`);
+      report(wc < 1e-9, `classic with θ phase (1 − n)·90° is the equator Mandelbulb, n = ${n}: ${wc.toExponential(1)}`);
+    }
+  }
+  // 4. the flat set of e^{i phi} z^n + c is the usual one turned by -phi / (n - 1)
+  function turned() {
+    const inM = (cx, cy, n, phi) => {
+      let x = 0, y = 0;
+      for (let k = 0; k < 200; k++) {
+        const p = cpow(x, y, n), cs = Math.cos(phi), sn = Math.sin(phi);
+        x = cs * p[0] - sn * p[1] + cx; y = sn * p[0] + cs * p[1] + cy;
+        if (x * x + y * y > 1e6) return false;
+      }
+      return true;
+    };
+    for (const n of [2, 3, 8]) {
+      const phi = 50 * PI / 180, back = phi / (n - 1);
+      let differ = 0, total = 0;
+      for (let i = 0; i < 4000; i++) {
+        const cx = -1.6 + 3.2 * rnd(), cy = -1.6 + 3.2 * rnd();
+        // c is in the turned set exactly when c turned back by +phi/(n-1) is in the usual set
+        const ux = Math.cos(back) * cx - Math.sin(back) * cy, uy = Math.sin(back) * cx + Math.cos(back) * cy;
+        total++; if (inM(cx, cy, n, phi) !== inM(ux, uy, n, 0)) differ++;
+      }
+      report(differ <= total * 0.003, `flat set of e^{iφ}·z^n + c is the usual one turned by −φ/(n − 1), n = ${n}: ${differ} of ${total} sample points disagree (edge points only)`);
+    }
+  }
+  // 5. every text reads as a sentence for every n and every setting
+  function texts(show) {
+    const NS = [-3, -2, -1, -0.5, 0.5, 1, 2, 2.5, 3, 8], dump = [];
+    const sets = {
+      mercator: [{ planes: 1, turn: 0, lift: 0 }, { planes: 2, turn: 0, lift: 0 }, { planes: 4, turn: 30, lift: 0 }, { planes: 1, turn: -45, lift: 0 }, { planes: 2, turn: 0, lift: 0.5 }, { planes: 1, turn: 20, lift: -0.3 }],
+      lathe: [{ spin: 1 }, { spin: 3 }],
+      bulb: [{ lat: 0, lon: 0 }, { lat: 30, lon: 0 }, { lat: 0, lon: 60 }, { lat: 180, lon: 0 }],
+      classic: [{ theta: 0, phi: 0 }, { theta: 25, phi: 0 }, { theta: -90, phi: 0 }, { theta: 90, phi: 40 }],
+      split: [{}],
+    };
+    let bad = 0, count = 0;
+    for (const a of APPROACHES) for (const q of sets[a.id]) for (const n of NS) {
+      const rn = typeof a.roundNote === 'function' ? a.roundNote(q, n) : a.roundNote;
+      const c = a.crush(q, n), s = a.smooth(q, n);
+      const all = [a.formula(q, n), rn, c[1], s[1], a.slice(true, q, n), a.slice(false, q, n)];
+      for (const t of all) {
+        count++;
+        if (typeof t !== 'string' || !t.trim() || /undefined|NaN|=>|function|\[object/.test(t) || /[!]/.test(t) || /  [a-z]/.test(t.replace(/ {3}with/g, ''))) { bad++; dump.push('BAD: ' + a.id + ' ' + JSON.stringify(q) + ' n=' + n + ': ' + t); }
+      }
+      if (!['ok', 'part', 'no'].includes(c[0]) || !['ok', 'part', 'no'].includes(s[0])) { bad++; dump.push('BAD state: ' + a.id); }
+      if (show) dump.push(`${a.id} ${JSON.stringify(q)} n=${n}\n   formula: ${all[0]}\n   round:   ${rn}\n   crush:   [${c[0]}] ${c[1]}\n   smooth:  [${s[0]}] ${s[1]}\n   slice+:  ${all[4]}\n   slice-:  ${all[5]}`);
+    }
+    for (const a of APPROACHES) for (const k of ['name', 'tag', 'about']) { count++; if (typeof a[k] !== 'string' || !a[k].trim() || /by eye/i.test(a[k])) { bad++; dump.push('BAD ' + k + ': ' + a.id); } }
+    report(bad === 0, `approach texts: ${count} strings checked for every n and setting, ${bad} malformed`);
+    return dump.join('\n');
+  }
+  // 6. formulas: every preset compiles, pasted glyphs are understood, mistakes are reported in words
+  function formulas() {
+    const out = [];
+    for (const p of PRESETS) {
+      let msg = '';
+      try { out.push(p.name + '  ->  ' + compileFormula(p.eq, true, false) + '   |   start ' + compileFormula(p.z0, false, false)); compileFormula(p.eq, true, true); compileFormula(p.z0, false, true); }
+      catch (e) { msg = e.message; }
+      report(!msg, `preset compiles: ${p.name}  [${p.eq}]  start [${p.z0}] ${msg}`);
+    }
+    const same = [['z² + c', 'z^2 + c'], ['z⁻² + c', 'z^-2 + c'], ['c·z·(1 − z)', 'c*z*(1 - z)'], ['zⁿ + c', 'z^n + c'], ['z⁻ⁿ + c', 'z^-n + c'], ['z^n + c÷z', 'z^n + c/z'], ['2π·z', '2pi*z']];
+    for (const [a, b] of same) {
+      let x = 'x', y = 'y';
+      try { x = compileFormula(a, true, false); y = compileFormula(b, true, false); } catch (e) { x = e.message; }
+      report(x.replace(/[()]/g, '') === y.replace(/[()]/g, ''), `“${a}” means the same as “${b}”: ${x}`);
+    }
+    report(compileFormula('z^2 + c', true, false).includes('sqr(z)') && compileFormula('z^n + c', true, true).includes('sqr(z)') && compileFormula('z^-n + c', true, true).includes('pw(z, (-uPow))'), 'squares use sqr(), negative powers use pw()');
+    const wrong = [['z^c', 'exponent'], ['c/0', 'zero'], ['z +', 'early'], ['foo + z', 'not a name'], ['(z + c', 'missing']];
+    for (const [f, word] of wrong) {
+      let msg = 'no error';
+      try { compileFormula(f, true, false); } catch (e) { msg = e.message; }
+      report(msg.includes(word), `“${f}” is refused in words: ${msg}`);
+    }
+    return out.join('\n');
+  }
+
+  // 7. the shader code agrees with MATH, and stays finite at the origin and far away
+  let glc = null;
+  const progs = {};
+  function glSetup() {
+    if (glc) return glc;
+    const cv = document.createElement('canvas'); cv.width = 64; cv.height = 1;
+    const gl = cv.getContext('webgl2');
+    if (!gl || !gl.getExtension('EXT_color_buffer_float')) return null;
+    const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, 64, 1, 0, gl.RGBA, gl.FLOAT, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    const fbo = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) return null;
+    gl.viewport(0, 0, 64, 1);
+    return (glc = gl);
+  }
+  const MAIN = `
+uniform vec3 uP[64], uQ[64]; uniform int uOp; uniform float uN;
+void main(){
+  int i = int(gl_FragCoord.x);
+  vec3 v = uP[i], r;
+  if (uOp == 0) r = pw(v, uN); else if (uOp == 1) r = sqr(v); else if (uOp == 2) r = mul(v, uQ[i]); else r = cmap(v);
+  o = vec4(r, 1.0);
+}`;
+  function glProgram(a) {
+    if (progs[a.id]) return progs[a.id];
+    const gl = glc, sh = (type, src) => {
+      const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(a.id + ': ' + gl.getShaderInfoLog(s));
+      return s;
+    };
+    const p = gl.createProgram();
+    gl.attachShader(p, sh(gl.VERTEX_SHADER, VERT)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, GL_HEAD + a.glsl + MAIN));
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(a.id + ': ' + gl.getProgramInfoLog(p));
+    return (progs[a.id] = p);
+  }
+  // run one of pw / sqr / mul / cmap in the shader on up to 64 points
+  function glRun(a, q, op, n, P, Q) {
+    const gl = glc, p = glProgram(a), L = name => gl.getUniformLocation(p, name);
+    gl.useProgram(p);
+    const uA = [0, 0, 0, 0];
+    (a.params || []).filter(s => s.key !== undefined).forEach((s, i) => { uA[i] = +q[s.key]; });
+    gl.uniform4fv(L('uA'), uA); gl.uniform1f(L('uPow'), n); gl.uniform1f(L('uN'), n); gl.uniform1i(L('uOp'), op);
+    const flat = pts => { const f = new Float32Array(192); (pts || []).forEach((v, i) => f.set(v, 3 * i)); return f; };
+    gl.uniform3fv(L('uP[0]'), flat(P)); gl.uniform3fv(L('uQ[0]'), flat(Q));
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    const out = new Float32Array(256); gl.readPixels(0, 0, 64, 1, gl.RGBA, gl.FLOAT, out);
+    return P.map((_, i) => [out[4 * i], out[4 * i + 1], out[4 * i + 2]]);
+  }
+  function shader() {
+    if (!glSetup()) { report(true, 'shader checks skipped: this browser cannot render to float textures'); return; }
+    const sets = {
+      mercator: [{ planes: 1, turn: 0, lift: 0 }, { planes: 2, turn: 0, lift: 0 }, { planes: 5, turn: 0, lift: 0 }, { planes: 2, turn: 40, lift: 0 }, { planes: 1, turn: -70, lift: 0.6 }, { planes: 3, turn: 15, lift: -1.2 }],
+      lathe: [{ spin: 1 }, { spin: 3 }, { spin: -5 }],
+      bulb: [{ lat: 0, lon: 0 }, { lat: 35, lon: -80 }],
+      classic: [{ theta: 0, phi: 0 }, { theta: -60, phi: 25 }],
+      split: [{}],
+    };
+    const NS = [-8, -3, -2, -1, -0.5, 0.5, 2, 2.5, 3, 8];
+    const P = [], Q = [];
+    for (let i = 0; i < 64; i++) { P.push([3.2 * rnd() - 1.6, 3.2 * rnd() - 1.6, 3.2 * rnd() - 1.6]); Q.push([3.2 * rnd() - 1.6, 3.2 * rnd() - 1.6, 3.2 * rnd() - 1.6]); }
+    for (let i = 0; i < 12; i++) P[i][2] = 0;                       // some points in the plane z = 0
+    const edge = [[0, 0, 0], [1e-12, 0, 0], [0, 0, 1e-9], [0, 1e-25, 0], [1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -2], [0, 3, 0], [50, -40, 30], [64, 0, 0], [0, 0, 64], [1e9, 2e9, -1e9], [1e18, 0, 0], [0, 1e18, 1e18], [-1e18, 1e18, 1e18]];
+    const fin = v => v.every(Number.isFinite), big = v => Math.max(...v.map(Math.abs));
+    for (const a of APPROACHES) {
+      let worst = 0, where = '', worstSq = 0, worstMul = 0, finite = true, cap = 0, note = '';
+      for (const q of sets[a.id]) {
+        for (const n of NS) {
+          const got = glRun(a, q, 0, n, P);
+          got.forEach((g, i) => {
+            const want = MATH[a.id](P[i], n, q), e = dist(g, want) / (1 + len(want));
+            if (!(e <= worst)) { worst = fin(g) ? e : Infinity; where = `n=${n} ${JSON.stringify(q)} v=${P[i].map(x => x.toFixed(3))}`; }
+          });
+          for (const g of glRun(a, q, 0, n, edge)) { if (!fin(g)) { finite = false; note = `pw n=${n} ${JSON.stringify(q)} -> ${g}`; } cap = Math.max(cap, big(g)); }
+        }
+        // the fast square and the product: sqr(v) = pw(v, 2) always; mul(v, v) = pw(v, 2) when the offsets are zero
+        const two = P.map(v => MATH[a.id](v, 2, q));
+        glRun(a, q, 1, 2, P).forEach((g, i) => { worstSq = Math.max(worstSq, fin(g) ? dist(g, two[i]) / (1 + len(two[i])) : Infinity); });
+        const plain = !['turn', 'lift', 'lat', 'lon', 'theta', 'phi'].some(k => q[k]);
+        if (plain) glRun(a, q, 2, 2, P, P).forEach((g, i) => { worstMul = Math.max(worstMul, fin(g) ? dist(g, two[i]) / (1 + len(two[i])) : Infinity); });
+        for (const op of [1, 2]) for (const g of glRun(a, q, op, 2, edge, edge.slice().reverse())) { if (!fin(g)) { finite = false; note = `op ${op} ${JSON.stringify(q)} -> ${g}`; } cap = Math.max(cap, big(g)); }
+        for (const g of glRun(a, q, 2, 2, P, Q)) if (!fin(g)) { finite = false; note = 'mul'; }
+      }
+      report(worst < 2e-3, `shader pw() agrees with MATH.${a.id}: worst relative difference ${worst.toExponential(1)} over ${sets[a.id].length} settings × ${NS.length} powers × 64 points${worst < 2e-3 ? '' : '  at ' + where}`);
+      report(worstSq < 2e-3 && worstMul < 2e-3, `shader sqr() and mul(v, v) agree with the power 2, ${a.id}: ${worstSq.toExponential(1)}, ${worstMul.toExponential(1)}`);
+      report(finite && cap < 3.1e18, `shader results stay finite at the origin, on the axes and at 1e18, ${a.id}: largest component ${cap.toExponential(2)} ${note}`);
+    }
+  }
+  return { plane, inversions, offsets, turned, texts, formulas, shader, summary: () => ({ failed, total: lines.length }), lines };
+})();
+window.T = T;
+</script>
+</body></html>

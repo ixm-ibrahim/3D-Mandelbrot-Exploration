@@ -1,0 +1,99 @@
+(a) the page follows the point by a dial: psi = phi - a sin(4 phi) / 4. Ring through the top bud (x = 0, radius 0.6436).
+   a = 0     inside 100.0% of the ring,  1 arcs | width at flat/upright [360.] | at the slanted pages [] | law (edge where the point is 0.066 off its page): inf deg
+   a = 0.125 inside 100.0% of the ring,  1 arcs | width at flat/upright [360.] | at the slanted pages [] | law (edge where the point is 0.066 off its page): 45.0 deg
+   a = 0.25  inside 100.0% of the ring,  1 arcs | width at flat/upright [360.] | at the slanted pages [] | law (edge where the point is 0.066 off its page): 45.0 deg
+   a = 0.35  inside 100.0% of the ring,  1 arcs | width at flat/upright [360.] | at the slanted pages [] | law (edge where the point is 0.066 off its page): 45.0 deg
+   a = 0.5   inside  61.9% of the ring,  8 arcs | width at flat/upright [27.9] | at the slanted pages [27.9] | law (edge where the point is 0.066 off its page): 27.6 deg
+   a = 0.75  inside  37.2% of the ring,  8 arcs | width at flat/upright [16.9] | at the slanted pages [16.6] | law (edge where the point is 0.066 off its page): 16.6 deg
+   a = 1     inside  26.9% of the ring,  8 arcs | width at flat/upright [12.1] | at the slanted pages [12.1] | law (edge where the point is 0.066 off its page): 12.1 deg
+   a = 1.5   inside  17.8% of the ring,  8 arcs | width at flat/upright [8.1] | at the slanted pages [7.9] | law (edge where the point is 0.066 off its page): 7.9 deg
+   a = 2     inside  13.1% of the ring,  8 arcs | width at flat/upright [5.9] | at the slanted pages [5.9] | law (edge where the point is 0.066 off its page): 5.9 deg
+   a = 3     inside   8.9% of the ring,  8 arcs | width at flat/upright [4.1] | at the slanted pages [3.9] | law (edge where the point is 0.066 off its page): 3.9 deg
+
+(b) bud sizes on the rings, and what the steps to the x-axis do to a small move outward / round the axis / along x
+    size = length of the inside run through the bud centre (negative: the run left the scan, i.e. joined to something)
+   g1 oneplane bud at   0.00 deg: size round the axis 0.1502, outward -0.5290, along x 0.1335 | 1 step(s) stretch a move outward x1.29, round the axis x1.29, along x x1.29; largest/smallest 1.00; not mirrored
+   g1 along    bud at   0.00 deg: size round the axis 0.1362, outward -0.5290, along x 0.1335 | 1 step(s) stretch a move outward x1.29, round the axis x1.29, along x x1.29; largest/smallest 1.00; not mirrored
+   g1 along    bud at  45.00 deg: size round the axis 0.1362, outward -0.5290, along x 0.1335 | 1 step(s) stretch a move outward x1.29, round the axis x1.29, along x x1.29; largest/smallest 1.00; mirrored
+   g1 once     bud at   0.00 deg: size round the axis 0.1559, outward -0.5290, along x 0.1335 | 1 step(s) stretch a move outward x1.29, round the axis x1.29, along x x1.29; largest/smallest 1.00; not mirrored
+   g1 once     bud at  44.87 deg: size round the axis 0.1474, outward 0.1892, along x 0.1400 | 1 step(s) stretch a move outward x1.29, round the axis x1.29, along x x1.29; largest/smallest 1.00; mirrored
+   g1 once     bud at  90.00 deg: size round the axis 0.1362, outward -0.5290, along x 0.1465 | 1 step(s) stretch a move outward x1.29, round the axis x1.29, along x x1.29; largest/smallest 1.00; not mirrored
+   g1 pulled   bud at   0.00 deg: size round the axis 0.2008, outward -0.5290, along x 0.1335 | 1 step(s) stretch a move outward x1.29, round the axis x0.94, along x x1.29; largest/smallest 1.37; not mirrored
+   g1 pulled   bud at  90.00 deg: size round the axis 0.1587, outward -0.5290, along x 0.1335 | 1 step(s) stretch a move outward x1.29, round the axis x1.20, along x x1.29; largest/smallest 1.07; mirrored
+   (0 s)
+   g2 oneplane bud at   0.00 deg: size round the axis 0.0691, outward 0.0757, along x 0.0615 | 2 step(s) stretch a move outward x2.81, round the axis x2.81, along x x2.81; largest/smallest 1.00; not mirrored
+   g2 along    bud at   0.00 deg: size round the axis 0.0678, outward 0.0757, along x 0.0615 | 2 step(s) stretch a move outward x2.81, round the axis x2.81, along x x2.81; largest/smallest 1.00; not mirrored
+   g2 along    bud at  26.87 deg: size round the axis 0.0409, outward 0.0741, along x 0.0600 | 2 step(s) stretch a move outward x2.78, round the axis x4.31, along x x2.80; largest/smallest 1.55; mirrored
+   g2 along    bud at  45.00 deg: size round the axis 0.0221, outward 0.0757, along x 0.0615 | 2 step(s) stretch a move outward x2.81, round the axis x8.19, along x x2.81; largest/smallest 2.92; not mirrored
+   g2 once     bud at   0.00 deg: size round the axis 0.0745, outward 0.0757, along x 0.0615 | 2 step(s) stretch a move outward x2.81, round the axis x2.81, along x x2.81; largest/smallest 1.00; not mirrored
+   g2 once     bud at  26.75 deg: size round the axis 0.0450, outward 0.0754, along x 0.0610 | 2 step(s) stretch a move outward x2.78, round the axis x4.28, along x x2.80; largest/smallest 1.54; mirrored
+   g2 pulled   bud at   0.00 deg: size round the axis 0.1094, outward 0.0757, along x 0.0615 | 2 step(s) stretch a move outward x2.81, round the axis x1.75, along x x2.81; largest/smallest 1.60; not mirrored
+   g2 pulled   bud at  90.00 deg: size round the axis 0.0369, outward 0.0757, along x 0.0615 | 2 step(s) stretch a move outward x2.81, round the axis x5.33, along x x2.81; largest/smallest 1.90; mirrored
+   (0 s)
+   g3 oneplane bud at   0.00 deg: size round the axis 0.0618, outward 0.0617, along x 0.0580 | 3 step(s) stretch a move outward x3.13, round the axis x3.13, along x x3.13; largest/smallest 1.00; not mirrored
+   g3 along    bud at   0.00 deg: size round the axis 0.0599, outward 0.0617, along x 0.0580 | 3 step(s) stretch a move outward x3.13, round the axis x3.13, along x x3.13; largest/smallest 1.00; not mirrored
+   g3 along    bud at  20.12 deg: size round the axis 0.0489, outward 0.0579, along x 0.0590 | 3 step(s) stretch a move outward x3.04, round the axis x3.38, along x x3.03; largest/smallest 1.38; mirrored
+   g3 along    bud at  45.00 deg: size round the axis 0.0618, outward 0.0617, along x 0.0580 | 3 step(s) stretch a move outward x3.13, round the axis x2.79, along x x3.13; largest/smallest 1.12; not mirrored
+   g3 once     bud at   0.00 deg: size round the axis 0.0618, outward 0.0617, along x 0.0580 | 3 step(s) stretch a move outward x3.13, round the axis x3.13, along x x3.13; largest/smallest 1.00; not mirrored
+   g3 pulled   bud at   0.00 deg: size round the axis 0.1079, outward 0.0617, along x 0.0580 | 3 step(s) stretch a move outward x3.13, round the axis x1.82, along x x3.13; largest/smallest 1.72; not mirrored
+   g3 pulled   bud at  90.00 deg: size round the axis 0.0655, outward 0.0617, along x 0.0580 | 3 step(s) stretch a move outward x3.13, round the axis x2.99, along x x3.13; largest/smallest 1.05; mirrored
+   (0 s)
+
+(c) fins of along: cut at 22.5 degrees from the flat page, window x -0.40..-0.20, height 0.34..0.46, 80 steps
+   inside 32.1% of the window; of that, not joined to the body below (fins, flakes, small buds): 0.12% of the window
+   loose runs up the columns: 92 in all, 57 at most 3 pixels tall (pixel = 0.00013), 2 at least 12 pixels
+   thin (fin) at x -0.2792, height 0.3925 (1 px):
+       step 1: page    8.2, point 0.0971 off it -> x -1.0640, 0.2230 from the axis, at  164.4 deg | so far: largest/smallest stretch 1.8 (largest x1.0, smallest x0.54)
+       step 2: page   -2.9, point 0.0490 off it -> x  0.0827, 0.4740 from the axis, at   10.1 deg | so far: largest/smallest stretch 27.1 (largest x2.1, smallest x0.08)
+       step 3: page    0.8, point 0.0762 off it -> x -1.2069, 0.1040 from the axis, at   44.3 deg | so far: largest/smallest stretch 35.0 (largest x2.0, smallest x0.06)
+       step 4: page   43.5, point 0.0013 off it -> x  0.4457, 0.2510 from the axis, at -137.2 deg | so far: largest/smallest stretch 48.1 (largest x9.3, smallest x0.19)
+       step 5: page   40.6, point 0.0096 off it -> x -0.8643, 0.2237 from the axis, at -136.9 deg | so far: largest/smallest stretch 38.4 (largest x7.3, smallest x0.19)
+       step 6: page   41.3, point 0.0073 off it -> x -0.3031, 0.3867 from the axis, at   39.3 deg | so far: largest/smallest stretch 94.1 (largest x34.9, smallest x0.37)
+       step 7: page   33.8, point 0.0372 off it -> x -1.0560, 0.2348 from the axis, at -155.1 deg | so far: largest/smallest stretch 197.3 (largest x71.5, smallest x0.36)
+       step 8: page   10.8, point 0.0573 off it -> x  0.0602, 0.4952 from the axis, at   -3.7 deg | so far: largest/smallest stretch 257.5 (largest x201.9, smallest x0.78)
+   thin (fin) at x -0.3426, height 0.3513 (2 px):
+       step 1: page    8.2, point 0.0869 off it -> x -0.9986, 0.2408 from the axis, at  168.1 deg | so far: largest/smallest stretch 1.5 (largest x1.0, smallest x0.66)
+       step 2: page   -1.3, point 0.0442 off it -> x -0.0607, 0.4805 from the axis, at    9.6 deg | so far: largest/smallest stretch 4.0 (largest x2.0, smallest x0.50)
+       step 3: page    0.7, point 0.0740 off it -> x -1.2167, 0.0899 from the axis, at  129.5 deg | so far: largest/smallest stretch 5.5 (largest x1.9, smallest x0.35)
+       step 4: page  -55.9, point 0.0085 off it -> x  0.4722, 0.2187 from the axis, at  -61.3 deg | so far: largest/smallest stretch 9.8 (largest x10.2, smallest x1.04)
+       step 5: page  -74.4, point 0.0493 off it -> x -0.8240, 0.2058 from the axis, at  -60.1 deg | so far: largest/smallest stretch 9.1 (largest x9.5, smallest x1.04)
+       step 6: page  -72.5, point 0.0443 off it -> x -0.3632, 0.3388 from the axis, at   94.7 deg | so far: largest/smallest stretch 16.6 (largest x30.3, smallest x1.83)
+       step 7: page  -89.9, point 0.0272 off it -> x -0.9822, 0.2460 from the axis, at  -96.2 deg | so far: largest/smallest stretch 15.1 (largest x27.3, smallest x1.80)
+       step 8: page   89.8, point 0.0257 off it -> x -0.0957, 0.4831 from the axis, at   96.0 deg | so far: largest/smallest stretch 12.5 (largest x45.3, smallest x3.64)
+   thin (fin) at x -0.2445, height 0.4083 (1 px):
+       step 1: page    8.2, point 0.1010 off it -> x -1.0926, 0.2067 from the axis, at  161.7 deg | so far: largest/smallest stretch 2.0 (largest x1.0, smallest x0.47)
+       step 2: page   -4.6, point 0.0490 off it -> x  0.1512, 0.4513 from the axis, at    9.4 deg | so far: largest/smallest stretch 4.7 (largest x2.1, smallest x0.45)
+       step 3: page    0.7, point 0.0684 off it -> x -1.1726, 0.1468 from the axis, at   26.4 deg | so far: largest/smallest stretch 5.6 (largest x2.0, smallest x0.36)
+       step 4: page   12.7, point 0.0350 off it -> x  0.3535, 0.3440 from the axis, at  178.8 deg | so far: largest/smallest stretch 4.4 (largest x4.8, smallest x1.11)
+       step 5: page   -0.0, point 0.0074 off it -> x -0.9934, 0.2432 from the axis, at  178.3 deg | so far: largest/smallest stretch 4.4 (largest x4.8, smallest x1.09)
+       step 6: page   -0.0, point 0.0073 off it -> x -0.0724, 0.4832 from the axis, at    1.8 deg | so far: largest/smallest stretch 4.4 (largest x9.7, smallest x2.21)
+       step 7: page    0.0, point 0.0149 off it -> x -1.2278, 0.0713 from the axis, at  168.3 deg | so far: largest/smallest stretch 4.4 (largest x9.4, smallest x2.15)
+       step 8: page   -1.3, point 0.0130 off it -> x  0.5024, 0.1752 from the axis, at    9.2 deg | so far: largest/smallest stretch 7.9 (largest x23.0, smallest x2.91)
+   thin (fin) at x -0.2679, height 0.3961 (1 px):
+       step 1: page    8.2, point 0.0980 off it -> x -1.0725, 0.2168 from the axis, at  163.7 deg | so far: largest/smallest stretch 1.9 (largest x1.0, smallest x0.51)
+       step 2: page   -3.3, point 0.0488 off it -> x  0.1034, 0.4646 from the axis, at   10.0 deg | so far: largest/smallest stretch 11.4 (largest x2.1, smallest x0.18)
+       step 3: page    0.8, point 0.0741 off it -> x -1.1950, 0.1154 from the axis, at   37.4 deg | so far: largest/smallest stretch 14.4 (largest x2.0, smallest x0.14)
+       step 4: page   30.2, point 0.0145 off it -> x  0.4147, 0.2757 from the axis, at -157.1 deg | so far: largest/smallest stretch 15.4 (largest x7.6, smallest x0.49)
+       step 5: page    8.6, point 0.0682 off it -> x -0.9013, 0.2275 from the axis, at -154.4 deg | so far: largest/smallest stretch 13.0 (largest x6.2, smallest x0.48)
+       step 6: page   11.6, point 0.0550 off it -> x -0.2391, 0.4094 from the axis, at   -2.8 deg | so far: largest/smallest stretch 15.9 (largest x15.1, smallest x0.95)
+       step 7: page   -0.0, point 0.0196 off it -> x -1.1099, 0.1961 from the axis, at -174.6 deg | so far: largest/smallest stretch 15.5 (largest x13.9, smallest x0.90)
+       step 8: page    0.1, point 0.0180 off it -> x  0.1934, 0.4352 from the axis, at   -5.2 deg | so far: largest/smallest stretch 13.9 (largest x27.5, smallest x1.98)
+   fat (bud) at x -0.2852, height 0.3955 (14 px):
+       step 1: page    8.2, point 0.0979 off it -> x -1.0630, 0.2293 from the axis, at  164.6 deg | so far: largest/smallest stretch 1.8 (largest x1.0, smallest x0.55)
+       step 2: page   -2.8, point 0.0500 off it -> x  0.0776, 0.4870 from the axis, at   10.1 deg | so far: largest/smallest stretch 43.1 (largest x2.1, smallest x0.05)
+       step 3: page    0.8, point 0.0784 off it -> x -1.2194, 0.1048 from the axis, at   46.9 deg | so far: largest/smallest stretch 55.9 (largest x2.1, smallest x0.04)
+       step 4: page   48.7, point 0.0034 off it -> x  0.4760, 0.2556 from the axis, at -129.4 deg | so far: largest/smallest stretch 82.1 (largest x10.0, smallest x0.12)
+       step 5: page   56.0, point 0.0242 off it -> x -0.8385, 0.2432 from the axis, at -130.2 deg | so far: largest/smallest stretch 70.5 (largest x8.8, smallest x0.12)
+       step 6: page   54.6, point 0.0201 off it -> x -0.3560, 0.4077 from the axis, at   59.5 deg | so far: largest/smallest stretch 168.6 (largest x39.8, smallest x0.24)
+       step 7: page   71.7, point 0.0859 off it -> x -1.0313, 0.2913 from the axis, at  -90.2 deg | so far: largest/smallest stretch 256.3 (largest x63.9, smallest x0.25)
+       step 8: page   90.0, point 0.0010 off it -> x -0.0213, 0.6007 from the axis, at   90.2 deg | so far: largest/smallest stretch 256.3 (largest x137.0, smallest x0.53)
+   fat (bud) at x -0.2859, height 0.3966 (14 px):
+       step 1: page    8.2, point 0.0981 off it -> x -1.0634, 0.2305 from the axis, at  164.6 deg | so far: largest/smallest stretch 1.8 (largest x1.0, smallest x0.55)
+       step 2: page   -2.8, point 0.0503 off it -> x  0.0779, 0.4896 from the axis, at   10.1 deg | so far: largest/smallest stretch 42.5 (largest x2.1, smallest x0.05)
+       step 3: page    0.8, point 0.0789 off it -> x -1.2218, 0.1059 from the axis, at   46.9 deg | so far: largest/smallest stretch 55.2 (largest x2.1, smallest x0.04)
+       step 4: page   48.8, point 0.0035 off it -> x  0.4817, 0.2587 from the axis, at -129.3 deg | so far: largest/smallest stretch 81.2 (largest x10.1, smallest x0.12)
+       step 5: page   56.2, point 0.0250 off it -> x -0.8347, 0.2491 from the axis, at -130.0 deg | so far: largest/smallest stretch 69.8 (largest x9.0, smallest x0.13)
+       step 6: page   54.8, point 0.0211 off it -> x -0.3653, 0.4156 from the axis, at   59.9 deg | so far: largest/smallest stretch 166.4 (largest x40.5, smallest x0.24)
+       step 7: page   72.2, point 0.0889 off it -> x -1.0307, 0.3047 from the axis, at  -89.4 deg | so far: largest/smallest stretch 247.8 (largest x65.1, smallest x0.26)
+       step 8: page  -90.0, point 0.0030 off it -> x -0.0306, 0.6280 from the axis, at   89.4 deg | so far: largest/smallest stretch 247.4 (largest x139.8, smallest x0.56)
+   (5 s)

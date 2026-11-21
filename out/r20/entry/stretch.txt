@@ -1,0 +1,60 @@
+===== power 2, wound k = 3 times
+directions 90 degrees from +x in the 6 half-planes: sent to [-1.0, 0.0, 0.0]; stretches (1 = as the flat plane): smallest 1.000000, largest 1.000000
+directions at right angles to the x-axis half way between them (30, 90, 150 degrees ...): sent to [0.0, 1e-06, 1.0]; stretches: [1.0, 0.0, 0.0]
+   10 degrees away from such a direction (toward +x): stretches [1.0, 0.44077, 0.08815]
+   3 degrees away from such a direction (toward +x): stretches [1.0, 0.13102, 0.0262]
+   1 degrees away from such a direction (toward +x): stretches [1.0, 0.04364, 0.00873]
+   0.3 degrees away from such a direction (toward +x): stretches [1.0, 0.01309, 0.00262]
+400,000 random directions: largest stretch 4.998 (at 0.4 degrees from +x, 29.6 degrees round the axis); mirror-reversed (det < 0): 0
+   largest / smallest stretch: median 3.00; under 1.25 for 16.2 % of directions, under 2 for 33.4 %, over 5 for 4.3 %, over 20 for 0.3 %
+   within 2 degrees of a carrying half-plane (20 to 160 degrees from +x): largest / smallest stretch median 1.01, 90 % under 1.04
+   within 5 degrees (20 to 160 degrees from +x): largest / smallest stretch median 1.07, 90 % under 1.22
+   5 to 15 degrees from one (20 to 160 degrees from +x): largest / smallest stretch median 2.00, 90 % under 2.79
+   within 5 degrees of half way (20 to 160 degrees from +x): largest / smallest stretch median 4.96, 90 % under 8.55
+   slope of the winding g: 1 at the carrying half-planes, 5 half way between them, 3 on average
+
+===== power 3, wound k = 3 times
+directions 60 degrees from +x in the 6 half-planes: sent to [-1.0, 0.0, 0.0]; stretches (1 = as the flat plane): smallest 1.000000, largest 1.000000
+directions at right angles to the x-axis half way between them (30, 90, 150 degrees ...): sent to [-0.0, 0.0, 1.0]; stretches: [1.00001, 0.01877, 0.01374]
+   10 degrees away from such a direction (toward +x): stretches [1.0, 0.03856, 0.00771]
+   3 degrees away from such a direction (toward +x): stretches [1.0, 0.00343, 0.00069]
+   1 degrees away from such a direction (toward +x): stretches [1.0, 0.00038, 8e-05]
+   0.3 degrees away from such a direction (toward +x): stretches [1.0, 3e-05, 1e-05]
+400,000 random directions: largest stretch 4.995 (at 179.3 degrees from +x, -30.4 degrees round the axis); mirror-reversed (det < 0): 0
+   largest / smallest stretch: median 2.99; under 1.25 for 16.1 % of directions, under 2 for 33.4 %, over 5 for 18.4 %, over 20 for 5.6 %
+   within 2 degrees of a carrying half-plane (20 to 160 degrees from +x): largest / smallest stretch median 1.01, 90 % under 1.04
+   within 5 degrees (20 to 160 degrees from +x): largest / smallest stretch median 1.07, 90 % under 1.22
+   5 to 15 degrees from one (20 to 160 degrees from +x): largest / smallest stretch median 2.00, 90 % under 2.79
+   within 5 degrees of half way (20 to 160 degrees from +x): largest / smallest stretch median 11.68, 90 % under 74.96
+   slope of the winding g: 1 at the carrying half-planes, 5 half way between them, 3 on average
+
+===== power 4, wound k = 5 times
+directions 45 degrees from +x in the 10 half-planes: sent to [-1.0, 0.0, 0.0]; stretches (1 = as the flat plane): smallest 1.000000, largest 1.000000
+directions at right angles to the x-axis half way between them (18, 54, 90 degrees ...): sent to [-0.0, 0.0, 1.0]; stretches: [1.0, 0.0, 0.0]
+   10 degrees away from such a direction (toward +x): stretches [1.0, 0.00607, 0.00067]
+   3 degrees away from such a direction (toward +x): stretches [1.0, 0.00016, 2e-05]
+   1 degrees away from such a direction (toward +x): stretches [1.0, 1e-05, 0.0]
+   0.3 degrees away from such a direction (toward +x): stretches [1.0, 1e-05, 0.0]
+400,000 random directions: largest stretch 8.980 (at 179.3 degrees from +x, 17.6 degrees round the axis); mirror-reversed (det < 0): 0
+   largest / smallest stretch: median 5.01; under 1.25 for 11.2 % of directions, under 2 for 23.0 %, over 5 for 50.1 %, over 20 for 12.9 %
+   within 2 degrees of a carrying half-plane (20 to 160 degrees from +x): largest / smallest stretch median 1.06, 90 % under 1.20
+   within 5 degrees (20 to 160 degrees from +x): largest / smallest stretch median 1.38, 90 % under 2.17
+   5 to 15 degrees from one (20 to 160 degrees from +x): largest / smallest stretch median 5.70, 90 % under 13.16
+   within 5 degrees of half way (20 to 160 degrees from +x): largest / smallest stretch median 19.47, 90 % under 264.02
+   slope of the winding g: 1 at the carrying half-planes, 9 half way between them, 5 on average
+
+===== power 5, wound k = 5 times
+directions 36 degrees from +x in the 10 half-planes: sent to [-1.0, 0.0, 0.0]; stretches (1 = as the flat plane): smallest 1.000000, largest 1.000000
+directions at right angles to the x-axis half way between them (18, 54, 90 degrees ...): sent to [-0.0, -0.0, 1.0]; stretches: [1.00001, 0.01039, 0.00824]
+   10 degrees away from such a direction (toward +x): stretches [1.0, 0.00053, 6e-05]
+   3 degrees away from such a direction (toward +x): stretches [1.0, 0.0, 0.0]
+   1 degrees away from such a direction (toward +x): stretches [1.0, 0.0, 0.0]
+   0.3 degrees away from such a direction (toward +x): stretches [1.0, 1e-05, 0.0]
+400,000 random directions: largest stretch 8.968 (at 1.0 degrees from +x, 125.9 degrees round the axis); mirror-reversed (det < 0): 2
+   largest / smallest stretch: median 5.01; under 1.25 for 11.4 % of directions, under 2 for 23.0 %, over 5 for 50.0 %, over 20 for 20.0 %
+   within 2 degrees of a carrying half-plane (20 to 160 degrees from +x): largest / smallest stretch median 1.06, 90 % under 1.20
+   within 5 degrees (20 to 160 degrees from +x): largest / smallest stretch median 1.37, 90 % under 2.17
+   5 to 15 degrees from one (20 to 160 degrees from +x): largest / smallest stretch median 5.70, 90 % under 33.24
+   within 5 degrees of half way (20 to 160 degrees from +x): largest / smallest stretch median 55.13, 90 % under 1745.02
+   slope of the winding g: 1 at the carrying half-planes, 9 half way between them, 5 on average
+

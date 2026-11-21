@@ -1,0 +1,54 @@
+spin-V against the Lathe, c = -1   : verdicts that differ 0 of 200000 (inside: spin 5519, lathe 5519)
+spin-V against the Lathe, c = -0.75: verdicts that differ 0 of 200000 (inside: spin 11226, lathe 11226)
+spin-V against the Lathe, rabbit   : verdicts that differ 10337 of 200000 (inside: spin 0, lathe 10337)
+one plane  c = -1: the upright axis stays up to height 0.511
+holo       c = -1: the upright axis stays up to height 0.248
+rabbit: the point c squared is (-0.540, -0.183, 0)
+   start 1e-02 from the origin, latitude  0.0, longitude  20.0: after c, the next square is (-0.540, -0.182, 0.000)
+   start 1e-02 from the origin, latitude  0.0, longitude 110.0: after c, the next square is (-0.540, -0.183, 0.000)
+   start 1e-02 from the origin, latitude  1.0, longitude  20.0: after c, the next square is (-0.540, -0.182, -0.017)
+   start 1e-02 from the origin, latitude  1.0, longitude 110.0: after c, the next square is (-0.539, -0.183, -0.030)
+   start 1e-02 from the origin, latitude 10.0, longitude  20.0: after c, the next square is (-0.514, -0.178, -0.170)
+   start 1e-02 from the origin, latitude 10.0, longitude 110.0: after c, the next square is (-0.463, -0.170, -0.284)
+   start 1e-02 from the origin, latitude 45.0, longitude  20.0: after c, the next square is (-0.057, -0.103, -0.558)
+   start 1e-02 from the origin, latitude 45.0, longitude 110.0: after c, the next square is (0.241, -0.054, -0.514)
+   start 1e-04 from the origin, latitude  0.0, longitude  20.0: after c, the next square is (-0.540, -0.183, 0.000)
+   start 1e-04 from the origin, latitude  0.0, longitude 110.0: after c, the next square is (-0.540, -0.183, 0.000)
+   start 1e-04 from the origin, latitude  1.0, longitude  20.0: after c, the next square is (-0.540, -0.183, -0.017)
+   start 1e-04 from the origin, latitude  1.0, longitude 110.0: after c, the next square is (-0.539, -0.182, -0.030)
+   start 1e-04 from the origin, latitude 10.0, longitude  20.0: after c, the next square is (-0.514, -0.178, -0.170)
+   start 1e-04 from the origin, latitude 10.0, longitude 110.0: after c, the next square is (-0.464, -0.170, -0.284)
+   start 1e-04 from the origin, latitude 45.0, longitude  20.0: after c, the next square is (-0.057, -0.103, -0.558)
+   start 1e-04 from the origin, latitude 45.0, longitude 110.0: after c, the next square is (0.241, -0.054, -0.514)
+   start 1e-08 from the origin, latitude  0.0, longitude  20.0: after c, the next square is (-0.540, -0.183, 0.000)
+   start 1e-08 from the origin, latitude  0.0, longitude 110.0: after c, the next square is (-0.540, -0.183, 0.000)
+   start 1e-08 from the origin, latitude  1.0, longitude  20.0: after c, the next square is (-0.540, -0.183, -0.017)
+   start 1e-08 from the origin, latitude  1.0, longitude 110.0: after c, the next square is (-0.539, -0.182, -0.030)
+   start 1e-08 from the origin, latitude 10.0, longitude  20.0: after c, the next square is (-0.514, -0.178, -0.170)
+   start 1e-08 from the origin, latitude 10.0, longitude 110.0: after c, the next square is (-0.464, -0.170, -0.284)
+   start 1e-08 from the origin, latitude 45.0, longitude  20.0: after c, the next square is (-0.057, -0.103, -0.558)
+   start 1e-08 from the origin, latitude 45.0, longitude 110.0: after c, the next square is (0.241, -0.054, -0.514)
+c = -1: 29995 flat points inside
+   one plane  share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 0.995 0.971 0.907
+   holo       share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 0.999 0.978 0.886 0.639
+   lathe      share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 1.000 0.994 0.939
+   spin-V     share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 1.000 0.994 0.939
+   spin-up    share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 1.000 0.997 0.964
+rabbit: 27594 flat points inside
+   one plane  share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 0.999 0.984 0.935 0.811
+   holo       share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 0.997 0.952 0.798 0.462
+   lathe      share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 1.000 0.995 0.966
+   spin-V     share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 0.000 0.000 0.000 0.000 0.000
+   spin-up    share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 0.000 0.000 0.000 0.000 0.000
+c = -0.12+0.6i (rabbit bulb, not the centre): 46815 flat points inside
+   one plane  share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 0.999 0.991 0.964
+   holo       share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 0.987 0.920 0.708
+   lathe      share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 1.000 0.999 0.992
+   spin-V     share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 0.000 0.000 0.000 0.000 0.000
+   spin-up    share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 0.000 0.000 0.000 0.000 0.000
+Siegel disc: 36912 flat points inside
+   one plane  share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 0.999 0.992 0.973 0.923
+   holo       share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 0.986 0.851 0.545 0.000
+   lathe      share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 1.000 1.000 0.999 0.990 0.954
+   spin-V     share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 0.008 0.000 0.000 0.000 0.000
+   spin-up    share still inside at height 1e-8, 1e-5, 1e-3, 1e-2, 5e-2: 0.015 0.000 0.000 0.000 0.000

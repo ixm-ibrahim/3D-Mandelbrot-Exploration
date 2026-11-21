@@ -1,0 +1,15 @@
+step 1 waited 3.3 s
+step 2 result: 
+timing
+step 2 waited 75.4 s
+step 3 result: 
+pillow round 1: first picture 2.58 s, redraw 3.40 s and 3.48 s; parameters {}
+mercator round 1: first picture 4.57 s, redraw 1.70 s and 2.64 s; parameters {"planes":2,"turn":0,"lift":0}
+pillow round 2: first picture 3.16 s, redraw 3.98 s and 3.02 s; parameters {}
+mercator round 2: first picture 2.04 s, redraw 1.46 s and 2.19 s; parameters {"planes":2,"turn":0,"lift":0}
+pillow round 3: first picture 3.75 s, redraw 4.80 s and 3.98 s; parameters {}
+mercator round 3: first picture 2.39 s, redraw 2.03 s and 2.91 s; parameters {"planes":2,"turn":0,"lift":0}
+pillow round 4: first picture 3.87 s, redraw 2.22 s and 3.31 s; parameters {}
+mercator round 4: first picture 3.37 s, redraw 4.17 s and 4.13 s; parameters {"planes":2,"turn":0,"lift":0}
+m3d-default, Balanced, 12 passes, stage 862x701: pillow median 3.21 s (best 2.22), mercator median 1.87 s (best 1.46), ratio pillow / mercator = 1.72
+no console errors

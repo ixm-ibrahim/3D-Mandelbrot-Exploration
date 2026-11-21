@@ -1,0 +1,41 @@
+rabbit    oneplane  across       0: inside   5732 px | of the inside: keeps  28.5 %, squeezes  35.7 %, hard  35.9 %, inside out   0.0 %
+rabbit    oneplane  across    -0.3: inside   2496 px | of the inside: keeps  69.2 %, squeezes  30.8 %, hard   0.0 %, inside out   0.0 %
+rabbit    oneplane  across     0.3: inside   2496 px | of the inside: keeps  69.2 %, squeezes  30.8 %, hard   0.0 %, inside out   0.0 %
+rabbit    oneplane  page         0: inside  12998 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+rabbit    oneplane  page     11.25: inside   8526 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+rabbit    oneplane  page      22.5: inside   5820 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+rabbit    oneplane  page     33.75: inside   4872 px | of the inside: keeps  45.0 %, squeezes  55.0 %, hard   0.0 %, inside out   0.0 %
+rabbit    oneplane  page        45: inside   4788 px | of the inside: keeps  33.3 %, squeezes  66.7 %, hard   0.0 %, inside out   0.0 %
+rabbit    oneplane  page        90: inside   4668 px | of the inside: keeps  22.6 %, squeezes  36.9 %, hard  40.4 %, inside out   0.0 %
+oneplane 1 s
+rabbit    along     across       0: inside  16872 px | of the inside: keeps  19.3 %, squeezes  18.4 %, hard  11.6 %, inside out  50.7 %
+rabbit    along     across    -0.3: inside   9908 px | of the inside: keeps  14.5 %, squeezes  16.2 %, hard   7.8 %, inside out  61.6 %
+rabbit    along     across     0.3: inside  11330 px | of the inside: keeps  33.0 %, squeezes  37.7 %, hard  17.6 %, inside out  11.7 %
+rabbit    along     page         0: inside  12998 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+rabbit    along     page     11.25: inside  14376 px | of the inside: keeps  34.9 %, squeezes  65.1 %, hard   0.0 %, inside out   0.0 %
+rabbit    along     page      22.5: inside  14737 px | of the inside: keeps  13.0 %, squeezes  26.1 %, hard  12.1 %, inside out  48.7 %
+rabbit    along     page     33.75: inside  12764 px | of the inside: keeps   7.2 %, squeezes  15.5 %, hard   8.3 %, inside out  69.0 %
+rabbit    along     page        45: inside  11126 px | of the inside: keeps   6.6 %, squeezes  12.9 %, hard   7.7 %, inside out  72.8 %
+rabbit    along     page        90: inside  11392 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+along 3 s
+rabbit    lathe     across       0: inside  15312 px | of the inside: keeps   0.0 %, squeezes   0.0 %, hard 100.0 %, inside out   0.0 %
+rabbit    lathe     across    -0.3: inside   9160 px | of the inside: keeps   0.0 %, squeezes   0.0 %, hard   0.0 %, inside out 100.0 %
+rabbit    lathe     across     0.3: inside   9160 px | of the inside: keeps  18.5 %, squeezes  78.8 %, hard   2.7 %, inside out   0.0 %
+rabbit    lathe     page         0: inside  12998 px | of the inside: keeps  16.6 %, squeezes  21.7 %, hard  11.6 %, inside out  50.0 %
+rabbit    lathe     page     11.25: inside  12998 px | of the inside: keeps  16.4 %, squeezes  21.8 %, hard  11.8 %, inside out  50.0 %
+rabbit    lathe     page      22.5: inside  12790 px | of the inside: keeps  15.8 %, squeezes  22.1 %, hard  12.1 %, inside out  50.0 %
+rabbit    lathe     page     33.75: inside  11126 px | of the inside: keeps  13.5 %, squeezes  22.5 %, hard  14.1 %, inside out  50.0 %
+rabbit    lathe     page        45: inside  10368 px | of the inside: keeps  11.6 %, squeezes  23.3 %, hard  15.1 %, inside out  50.0 %
+rabbit    lathe     page        90: inside  10100 px | of the inside: keeps  12.5 %, squeezes  25.2 %, hard  12.3 %, inside out  50.0 %
+lathe 4 s
+rabbit    away      across       0: inside   6974 px | of the inside: keeps  36.0 %, squeezes  36.0 %, hard  28.0 %, inside out   0.0 %
+rabbit    away      across    -0.3: inside   2732 px | of the inside: keeps  11.3 %, squeezes  16.6 %, hard  72.1 %, inside out   0.0 %
+rabbit    away      across     0.3: inside   1864 px | of the inside: keeps  57.0 %, squeezes  25.4 %, hard  10.8 %, inside out   6.8 %
+rabbit    away      page         0: inside  12998 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+rabbit    away      page     11.25: inside   6243 px | of the inside: keeps  47.6 %, squeezes  52.4 %, hard   0.0 %, inside out   0.0 %
+rabbit    away      page      22.5: inside   3917 px | of the inside: keeps  24.5 %, squeezes  75.5 %, hard   0.0 %, inside out   0.0 %
+rabbit    away      page     33.75: inside   3872 px | of the inside: keeps  12.0 %, squeezes  16.8 %, hard  71.3 %, inside out   0.0 %
+rabbit    away      page        45: inside   4370 px | of the inside: keeps   8.4 %, squeezes   9.1 %, hard  56.2 %, inside out  26.3 %
+rabbit    away      page        90: inside   4040 px | of the inside: keeps 100.0 %, squeezes   0.0 %, hard   0.0 %, inside out   0.0 %
+away 6 s
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\r22\stability\own-zones-rabbit.png (3020, 1200)

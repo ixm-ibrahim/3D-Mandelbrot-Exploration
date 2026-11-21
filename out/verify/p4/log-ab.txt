@@ -1,0 +1,58 @@
+--- A: arcball wheel
+      document height 4640, window 950, scrollY 0; stage box [76, 260.9375, 864, 703]
+pass  wheel up (deltaY -100) moves IN, by one 12% notch  :: 5.2000 -> 4.6429 ratio 0.89286
+pass  one notch is eased over several frames and never passes its goal  :: 12 moving frames, min 4.64286 goal 4.64286
+      one notch: first change at 48 ms, goal reached at 227.40000000596046 ms after trace start
+pass  the zoom slider follows the wheel (thumb and value label)  :: (['73.96%', '5.2'], ['72.76%', '4.64', 'Distance 4.64'], 72.75517162921251)
+pass  the slider thumb moves along with the easing, frame by frame, one way only  :: 12 distinct positions
+pass  wheel down moves OUT by the same notch (back to the start exactly)  :: 5.2
+pass  five notches out add up to 1.12^5 = 1.762  :: 1.762341683200001
+pass  five notches: no overshoot, no step back  :: largest single frame 10.1% of the whole change, 36 moving frames
+      frame gaps (loaded GPU): median 16.7 ms longest 108.2 ms
+pass  a fast flick of 20 notches in lands on 1/1.12^20 (0.5391) with no overshoot  :: (0.5390671784195791, 0.5390671784195791)
+pass  six in then six out returns exactly to the start  :: 5.200000000000001
+pass  trackpad stream (60 x 4 px) adds up to the same as 2.4 notches (x0.7619) and is monotone  :: dist 3.9617; 66 moving frames; largest frame step 0.57%, median 0.16%
+pass  fractional deltas (40 x 0.5 px) are not lost  :: 1.0229245566260337
+pass  trackpad pinch (ctrl+wheel, 10 x -5) zooms in x0.636 and the browser's own zoom stays put  :: (0.635518078404831, [[-5, 0, True, True], [-5, 0, True, True]])
+      one event of deltaY 240 gives x1.3126 (2.4 notches would be 1.3126)
+      then one event of deltaY 1200 gives x1.8441 in total (clamped at 3 notches per event: 1.8441)
+pass  zooming in hard stops exactly at the near limit 0.005, with no bounce  :: (0.005, 0.005)
+pass  more wheel at the near limit does nothing and leaves nothing running  :: [None, 0, 0.005]
+pass  one notch back out from the near limit answers at once (no dead zone)  :: 0.005600000000000001
+      thumb at near limit + 1 notch: 1.21%
+pass  zooming out hard stops exactly at the far limit 60, with no bounce  :: (60, 60)
+FAIL  thumb sits at the bottom end at the far limit  :: 100%
+pass  one notch back in from the far limit answers at once  :: 53.57142857142857
+pass  the page itself never scrolled during all of this  :: 0
+FAIL  wheel with the pointer on #zoomIn (hits zoomIn): picture zooms, page stays  :: scrollY 300, dist x1.0000
+FAIL  wheel with the pointer on #zoomOut (hits zoomOut): picture zooms, page stays  :: scrollY 300, dist x1.0000
+FAIL  wheel with the pointer on #reset (hits reset): picture zooms, page stays  :: scrollY 300, dist x1.0000
+FAIL  wheel with the pointer on #camArc (hits camArc): picture zooms, page stays  :: scrollY 100, dist x1.2544
+FAIL  wheel with the pointer on #camFly (hits camFly): picture zooms, page stays  :: scrollY 100, dist x1.2544
+FAIL  wheel with the pointer on #camNear (hits camNear): picture zooms, page stays  :: scrollY 100, dist x1.2544
+FAIL  wheel with the pointer on #camFar (hits camFar): picture zooms, page stays  :: scrollY 300, dist x1.0000
+pass  wheel with the pointer on #camRail (hits camRail): picture zooms, page stays  :: scrollY 0, dist x1.4049
+pass  wheel with the pointer on #camEndA (hits view): picture zooms, page stays  :: scrollY 0, dist x1.4049
+pass  wheel with the pointer on .hint (hits view): picture zooms, page stays  :: scrollY 0, dist x1.4049
+pass  wheel with the pointer on #triad (hits view): picture zooms, page stays  :: scrollY 0, dist x1.4049
+pass  wheel with the pointer on #camVal (hits view): picture zooms, page stays  :: scrollY 0, dist x1.4049
+--- B: + and - buttons, keys
+pass  the + button moves in, eased, no overshoot  :: x0.8000 = 1.97 wheel notches
+pass  the - button undoes the + button exactly  :: 1.0
+pass  five quick + clicks add up (0.8^5)  :: 0.32768
+pass  the + key moves in and the - key undoes it  :: + key x0.8500
+      step sizes: wheel notch x0.8929, + button x0.8000, + key x0.8500
+FAIL  the + key and the + button take the same step  :: button x0.800, key x0.850
+pass  + near the limit stops on the limit, no bounce  :: 0.005
+pass  a wheel notch and a + click in quick succession multiply (no lost or doubled step)  :: 0.7142857142857142
+pass  no console errors or uncaught exceptions  :: []
+30 passed, 9 failed
+   failed: thumb sits at the bottom end at the far limit
+   failed: wheel with the pointer on #zoomIn (hits zoomIn): picture zooms, page stays
+   failed: wheel with the pointer on #zoomOut (hits zoomOut): picture zooms, page stays
+   failed: wheel with the pointer on #reset (hits reset): picture zooms, page stays
+   failed: wheel with the pointer on #camArc (hits camArc): picture zooms, page stays
+   failed: wheel with the pointer on #camFly (hits camFly): picture zooms, page stays
+   failed: wheel with the pointer on #camNear (hits camNear): picture zooms, page stays
+   failed: wheel with the pointer on #camFar (hits camFar): picture zooms, page stays
+   failed: the + key and the + button take the same step

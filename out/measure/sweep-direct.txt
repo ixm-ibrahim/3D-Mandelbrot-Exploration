@@ -1,0 +1,12 @@
+step 1 waited 0.0 s
+step 2 result:
+quick render
+step 2 waited 0.0 s
+step 3 result:
+direct calls
+step 3 waited 0.0 s
+step 4 result:
+224 cases, 415 different sentences, 0 problems
+longest buildStep3d + drawStep2d + updateCard + drawStep3d call 5.4 ms, longest measuring slice 4.4 ms, longest gap between frames 18.0 ms (and 17 ms in the frames where the baseline renderer compiles the next approach's shader)
+step 4 waited 0.3 s
+no console errors

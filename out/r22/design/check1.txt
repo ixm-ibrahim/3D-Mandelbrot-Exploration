@@ -1,0 +1,54 @@
+A. Length squared, and the flat page against complex squaring (20,000 random points)
+  oneplane     length 3.6e-15  flat page 0.0e+00
+  along        length 5.3e-15  flat page 4.5e-15
+  lathe        length 3.6e-15  flat page 0.0e+00
+  away         length 1.1e-14  flat page 4.5e-15
+  capfold45    length 1.2e-14  flat page 0.0e+00
+  capfold30    length 1.1e-14  flat page 0.0e+00
+  capfold45x2  length 1.2e-14  flat page 0.0e+00
+  caphump45    length 1.1e-14  flat page 0.0e+00
+  preturn      length 7.1e-15  flat page 6.5e-31
+B. Turning the point round the UPRIGHT axis by a, does the square turn by 2a? (largest miss, 20,000 points, |v| = 1)
+  oneplane     largest 6.21e-16  median 1.11e-16
+  along        largest 2.00e+00  median 5.90e-01
+  lathe        largest 2.00e+00  median 6.44e-01
+  away         largest 2.00e+00  median 6.31e-01
+  capfold45    largest 1.30e-15  median 1.36e-16
+  capfold30    largest 1.27e-15  median 1.62e-16
+  capfold45x2  largest 1.32e-15  median 1.39e-16
+  caphump45    largest 1.12e-14  median 1.57e-16
+  preturn      largest 2.00e+00  median 6.98e-01
+C. Directions above the page that one squaring puts ON or BELOW the page (share of 400,000 directions with z > 0),
+   and how many places one squaring sends onto one spot of the flat page (counted on a fine grid of directions)
+  oneplane     share thrown onto or below the page 0.000   places above the page landing on the flat direction 100 deg: 0  (+ 2 in the page itself)
+  along        share thrown onto or below the page 0.321   places above the page landing on the flat direction 100 deg: 1  (+ 2 in the page itself)
+  lathe        share thrown onto or below the page 0.498   places above the page landing on the flat direction 100 deg: 0  (+ 2 in the page itself)
+  away         share thrown onto or below the page 0.168   places above the page landing on the flat direction 100 deg: 1  (+ 2 in the page itself)
+  capfold45    share thrown onto or below the page 0.057   places above the page landing on the flat direction 100 deg: 2  (+ 2 in the page itself)
+  capfold30    share thrown onto or below the page 0.199   places above the page landing on the flat direction 100 deg: 2  (+ 2 in the page itself)
+  capfold45x2  share thrown onto or below the page 0.055   places above the page landing on the flat direction 100 deg: 4  (+ 2 in the page itself)
+  caphump45    share thrown onto or below the page 0.008   places above the page landing on the flat direction 100 deg: 2  (+ 2 in the page itself)
+  preturn      share thrown onto or below the page 0.250   places above the page landing on the flat direction 100 deg: 1  (+ 2 in the page itself)
+D. Flat check and lift test (a film would lose every lifted point)
+  capfold45    verdicts that differ: M 0, basilica 0, rabbit 0, Siegel 0 of 20000; strays 0.0e+00 | lifted 1e-6: basilica 2920 of 2920 stay, rabbit 2716 of 2716
+  capfold30    verdicts that differ: M 0, basilica 0, rabbit 0, Siegel 0 of 20000; strays 0.0e+00 | lifted 1e-6: basilica 2920 of 2920 stay, rabbit 2716 of 2716
+  capfold45x2  verdicts that differ: M 0, basilica 0, rabbit 0, Siegel 0 of 20000; strays 0.0e+00 | lifted 1e-6: basilica 2920 of 2920 stay, rabbit 2716 of 2716
+  caphump45    verdicts that differ: M 0, basilica 0, rabbit 0, Siegel 0 of 20000; strays 0.0e+00 | lifted 1e-6: basilica 2920 of 2920 stay, rabbit 2716 of 2716
+  preturn      verdicts that differ: M 0, basilica 0, rabbit 0, Siegel 0 of 20000; strays 2.4e-30 | lifted 1e-6: basilica 2920 of 2920 stay, rabbit 2716 of 2716
+  oneplane     lifted 1e-6: basilica 2920 of 2920 stay, rabbit 2716 of 2716
+  along        lifted 1e-6: basilica 2920 of 2920 stay, rabbit 2716 of 2716
+E. Volumes and pieces, 72^3 grid, 30 against 80 steps (inside blocks; biggest piece; pieces; share in pieces under 8 blocks)
+  basilica  oneplane     30 steps   8040  80 steps   8032 (0.1 % lost)  biggest 77.2 %  pieces 5  dust 0.00 %   [0 s]
+  basilica  along        30 steps   7144  80 steps   7144 (0.0 % lost)  biggest 75.9 %  pieces 57  dust 0.90 %   [0 s]
+  basilica  capfold45    30 steps   8920  80 steps   8912 (0.1 % lost)  biggest 68.9 %  pieces 173  dust 3.41 %   [1 s]
+  basilica  capfold30    30 steps  10336  80 steps  10336 (0.0 % lost)  biggest 60.2 %  pieces 185  dust 2.40 %   [1 s]
+  basilica  capfold45x2  30 steps   8896  80 steps   8888 (0.1 % lost)  biggest 69.0 %  pieces 165  dust 3.15 %   [2 s]
+  basilica  caphump45    30 steps   8304  80 steps   8304 (0.0 % lost)  biggest 76.2 %  pieces 9  dust 0.00 %   [3 s]
+  basilica  preturn      30 steps   7404  80 steps   7400 (0.1 % lost)  biggest 75.9 %  pieces 56  dust 1.00 %   [3 s]
+  rabbit    oneplane     30 steps   4996  80 steps   4856 (2.8 % lost)  biggest 99.4 %  pieces 9  dust 0.58 %   [3 s]
+  rabbit    along        30 steps  18244  80 steps  17960 (1.6 % lost)  biggest 99.5 %  pieces 73  dust 0.48 %   [4 s]
+  rabbit    capfold45    30 steps  10280  80 steps   7952 (22.6 % lost)  biggest 69.1 %  pieces 841  dust 16.80 %   [4 s]
+  rabbit    capfold30    30 steps  11036  80 steps   9996 (9.4 % lost)  biggest 94.8 %  pieces 263  dust 3.68 %   [4 s]
+  rabbit    capfold45x2  30 steps  10316  80 steps   7972 (22.7 % lost)  biggest 67.7 %  pieces 879  dust 17.36 %   [5 s]
+  rabbit    caphump45    30 steps   6820  80 steps   5452 (20.1 % lost)  biggest 96.3 %  pieces 73  dust 2.57 %   [5 s]
+  rabbit    preturn      30 steps   7378  80 steps   7316 (0.8 % lost)  biggest 42.9 %  pieces 352  dust 7.41 %   [6 s]

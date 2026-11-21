@@ -1,0 +1,7 @@
+Walk round the x-axis at x = 0 (c = -1), 2,880 places, 80 steps, leaving = |v| >= 6: separate stretches inside / share inside
+  radius 0.58: Along once 8 (27%); Pulled plane 16 (18%); one plane 2 (7%); along 8 (24%)
+  radius 0.60: Along once 8 (30%); Pulled plane 4 (17%); one plane 2 (8%); along 8 (28%)
+  radius 0.62: Along once 8 (31%); Pulled plane 4 (18%); one plane 2 (8%); along 8 (28%)
+  radius 0.64: Along once 8 (30%); Pulled plane 4 (18%); one plane 2 (8%); along 8 (28%)
+rabbit, Along once, 120^3 grid in the cube -1.5..1.5, 80 steps: inside 42968 cells, pieces 18; shares of the largest: 75.4%, 10.0%, 7.2%, 7.2%, 0.0%; middles of the three largest: (-0.19, 0.19, 0.00); (0.65, -0.55, 0.00); (0.04, -0.30, 0.65)
+rabbit, Pulled plane, 120^3 grid in the cube -1.5..1.5, 80 steps: inside 32454 cells, pieces 7; shares of the largest: 100.0%, 0.0%, 0.0%, 0.0%, 0.0%; middles of the three largest: (-0.02, 0.03, 0.00); (-0.41, 0.02, 0.00); (0.41, -0.02, 0.00)

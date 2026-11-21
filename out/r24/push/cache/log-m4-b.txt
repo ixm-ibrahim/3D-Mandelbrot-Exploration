@@ -1,0 +1,7 @@
+m4     2/5       2d 1.040 | column: top 0.568, inside length 0.652, lowest escape 0.5720000000000001 | disc top 0.568 | neck / body: 0.059 / 0.059, 0.086 / 0.086, 0.077 / 0.077, 0.091 / 0.091 (block 0.0081) | 64 s
+m4     1/5       2d 1.040 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.054, 0.008 / 0.052, 0.008 / 0.061, 0.008 / 0.093 (block 0.0081) | 91 s
+m4     1/6       2d 1.028 | column: top 0.276, inside length 0.340, lowest escape 0.28 | disc top 0.284 | neck / body: 0.050 / 0.050, 0.047 / 0.047, 0.041 / 0.041, 0.052 / 0.052, 0.083 / 0.083 (block 0.0081) | 141 s
+m4     3/7       2d 1.021 | column: top 0.264, inside length 0.496, lowest escape 0.268 | disc top 0.264 | neck / body: 0.044 / 0.044, 0.054 / 0.054, 0.041 / 0.041, 0.062 / 0.062, 0.057 / 0.057, 0.057 / 0.057 (block 0.0081) | 222 s
+m4     siegel    2d 1.000 | column: top 0.624, inside length 0.648, lowest escape 0.628 | disc top 0.624 |  | 224 s
+m4     airplane  2d 1.832 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.000 |  | 224 s
+done m4 224 s

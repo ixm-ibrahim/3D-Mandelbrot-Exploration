@@ -1,0 +1,148 @@
+<div class="page">
+  <header class="masthead">
+    <p class="eyebrow">z → zⁿ + c, moved from the plane into space</p>
+    <h1>3D Squaring Lab</h1>
+    <p class="lede">In the plane, squaring a point squares its length and doubles its angle. A point in space has two angles and no agreed way to double them, so every 3D Mandelbrot starts by choosing an approach. Choose one here, give it any equation, and check which properties of the flat set it keeps.</p>
+  </header>
+
+  <div class="bench">
+    <div class="bench-main">
+      <section class="stage" id="stage" aria-label="3D view of the set">
+        <canvas id="view" tabindex="0" aria-label="The set for the chosen approach. Drag or use arrow keys to turn it, plus and minus to zoom."></canvas>
+        <svg class="triad" id="triad" viewBox="0 0 72 72" aria-hidden="true">
+          <line id="ax0" x1="36" y1="36" x2="60" y2="36"></line><text id="at0" x="66" y="36">x</text>
+          <line id="ax1" x1="36" y1="36" x2="36" y2="12"></line><text id="at1" x="36" y="6">y</text>
+          <line id="ax2" x1="36" y1="36" x2="36" y2="12"></line><text id="at2" x="36" y="6">z</text>
+        </svg>
+        <div class="stage-bar">
+          <p class="hint">Drag to turn. Scroll to zoom. Shift-drag to slide. Double-click a spot to move in on it.</p>
+          <div class="stage-btns">
+            <button class="btn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+            <button class="btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+            <button class="btn" id="reset" type="button">Reset view</button>
+          </div>
+        </div>
+        <p class="glfail" id="glfail" hidden>This browser could not start WebGL 2, so the 3D view is unavailable. The step view and the table below still work.</p>
+      </section>
+      <p class="status" id="status" role="status"></p>
+    </div>
+
+    <aside class="dials">
+      <fieldset class="mode">
+        <legend class="label">Show</legend>
+        <label class="seg"><input type="radio" name="mode" id="mode-m" value="m" checked><span>Mandelbrot</span></label>
+        <label class="seg"><input type="radio" name="mode" id="mode-j" value="j"><span>Julia</span></label>
+        <label class="seg"><input type="radio" name="mode" id="mode-k" value="k"><span>Kleinian</span></label>
+      </fieldset>
+      <div class="panel" id="juliaPanel" hidden>
+        <p class="note">One Julia set belongs to each point c of the Mandelbrot set. Kučera’s paper draws c = (−1, 0, 0), the Basilica, seen straight down the z-axis.</p>
+        <div id="juliaDials" class="sec-body"></div>
+      </div>
+      <div class="panel" id="kleinPanel" hidden>
+        <p class="note">A true 3D Kleinian group: three shape-keeping maps of space, written with quaternions as q → q + 2, q → q + 2L·j and q → μ + 1/q, where q = x + yi + zj. The solid is every sphere those maps can carry two flat walls onto. The picture is turned inside out through one sphere so that it fits on the stage.</p>
+        <div id="kleinDials" class="sec-body"></div>
+        <label class="check"><input type="checkbox" id="k3" checked> Use the third map, q → q + 2L·j</label>
+        <p class="note">Without the third map the pearls sit along one line, as in the paper’s “inflated” figure. With it they spread in every direction. The quaternion μ sets how far apart the walls are (its i part), how the pearls lean (real part) and how they lean in depth (j part). Only some values of μ give a clean set. Elsewhere the pearls overlap and the picture turns to dust.</p>
+      </div>
+
+      <details class="sec" id="secApproach" open>
+        <summary class="label">Approach</summary>
+        <div class="sec-body"><div class="rules" id="rules"></div></div>
+      </details>
+
+      <details class="sec" id="secEq" open>
+        <summary class="label">Equation</summary>
+        <div class="sec-body">
+          <div class="field"><label class="label" for="eqPreset">Start from</label><select id="eqPreset"></select></div>
+          <div class="field"><label class="label" for="eq">Each step, z becomes</label><input type="text" id="eq" spellcheck="false" autocomplete="off" autocapitalize="off"></div>
+          <div class="field"><label class="label" for="z0">The Mandelbrot set starts z at</label><input type="text" id="z0" spellcheck="false" autocomplete="off" autocapitalize="off"></div>
+          <p class="err" id="eqErr" hidden></p>
+          <p class="note">Use z, c, n, numbers, the units i and j, the signs + − * / ^, and abs( ) or conj( ). Press Enter to apply. Products and powers follow the chosen approach, so the same formula gives a different solid under each one.</p>
+          <div id="eqDials" class="sec-body"></div>
+        </div>
+      </details>
+
+      <details class="sec" id="secMod">
+        <summary class="label">Modifiers</summary>
+        <div class="sec-body">
+          <p class="note">Applied to z before every step, whatever the equation says.</p>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="absx"> |x|</label>
+            <label class="check"><input type="checkbox" id="absy"> |y|</label>
+            <label class="check"><input type="checkbox" id="absz"> |z|</label>
+            <label class="check"><input type="checkbox" id="flipy"> flip y</label>
+            <label class="check"><input type="checkbox" id="flipz"> flip z</label>
+          </div>
+          <div class="row-btns">
+            <button class="btn" id="modShip" type="button">Burning ship</button>
+            <button class="btn" id="modBar" type="button">Conjugate</button>
+            <button class="btn" id="modNone" type="button">None</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="sec" id="secCut">
+        <summary class="label">Slice</summary>
+        <div class="sec-body">
+          <label class="check"><input type="checkbox" id="cutOn"> Cut the solid open at height z</label>
+          <div id="cutDials" class="sec-body"></div>
+        </div>
+      </details>
+
+      <details class="sec" id="secColour">
+        <summary class="label">Colour and light</summary>
+        <div class="sec-body">
+          <div id="colDials" class="sec-body"></div>
+        </div>
+      </details>
+
+      <details class="sec" id="secQuality">
+        <summary class="label">Quality and speed</summary>
+        <div class="sec-body">
+          <div class="row-btns">
+            <button class="btn" id="qFast" type="button">Fast</button>
+            <button class="btn" id="qBal" type="button">Balanced</button>
+            <button class="btn" id="qFine" type="button">Fine</button>
+          </div>
+          <div id="qDials" class="sec-body"></div>
+          <div class="field"><label class="label" for="normals">Surface detail from</label><select id="normals"><option value="sharp">Exact slope (sharp)</option><option value="smooth">Sampled slope (softer, can show rings)</option></select></div>
+          <div class="checks">
+            <label class="check"><input type="checkbox" id="qShadow" checked> Shadows</label>
+            <label class="check"><input type="checkbox" id="qAO" checked> Shade crevices</label>
+          </div>
+          <p class="note">While you move, a quick preview is drawn. When you stop, the picture is redrawn at full size and then refined pass by pass. More passes smooth edges and remove shimmer; they cost time, not responsiveness.</p>
+        </div>
+      </details>
+    </aside>
+  </div>
+
+  <div class="lower">
+    <section class="step">
+      <h2>One step, seen on directions</h2>
+      <p>Forget length for a moment and watch where each direction is sent by the power zⁿ. Small circles are drawn around a sample of directions, then pushed through one step.</p>
+      <figure class="fig">
+        <canvas id="step2d" aria-label="Circles on the unit circle before and after one step in the plane"></canvas>
+        <div class="ends"><span>before</span><span>after one step</span></div>
+        <figcaption id="cap2d"></figcaption>
+      </figure>
+      <figure class="fig">
+        <canvas id="step3d" aria-label="Circles on the sphere of directions before and after one step of the chosen approach"></canvas>
+        <div class="ends"><span>before</span><span>after one step</span></div>
+        <figcaption id="cap3d"></figcaption>
+      </figure>
+    </section>
+
+    <section class="score">
+      <h2>What survives the move to 3D</h2>
+      <p>The figures in the right-hand column are measured from the approach’s own power rule at the current n, by sampling its derivative over 6,000 directions.</p>
+      <div class="card" id="card"></div>
+    </section>
+  </div>
+
+  <footer class="why">
+    <h2>Why no approach passes every row</h2>
+    <p>In the plane, squaring stretches every direction by the same factor, 2|z|. Doubling the angle stretches the circle of directions by 2, and squaring the length stretches outward by the same amount, so tiny shapes keep their shape. That is the source of the endless clean detail in the flat set.</p>
+    <p>To copy this in space, a rule would have to stretch the sphere of directions by exactly 2 at every point. A sphere cannot be laid over itself that way: a patch magnified 2× is flatter than the sphere it has to land on. Liouville proved the general statement in 1850: in three dimensions the only shape-keeping maps are built from rotations, scalings and sphere inversions, and squaring is not one of them.</p>
+    <p>That is also why Kleinian groups look the way a 3D Julia set ought to. They are built from sphere inversions alone, the one family the theorem allows, so they keep their detail in every direction. Quaternions enter as bookkeeping: 1/q is a sphere inversion that stays inside 3D, where q² only gives a lathe. An approach that must contain the exact flat set at z = 0 cannot be built from inversions near that plane, which is why the inversion pictures live under Kleinian and not in the list of approaches.</p>
+  </footer>
+</div>

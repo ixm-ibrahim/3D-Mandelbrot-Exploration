@@ -1,0 +1,13 @@
+files written after 15:31:30 (my build was at 15:32:22) outside out/r28/final and dist/r28-final*.html / dist/r28-base-final.html:
+(end of list)
+23:00:57 build.py
+08:43:56 dist/preview.html
+08:43:56 squaring-lab.html
+overlay now:
+3a94ad0816b72c524635322612c6ea9c *out/r28/dials/overlay/js/00-core.js
+eb74b63349626a348d6332e13efa8a6e *out/r28/dials/overlay/js/32-balls.js
+6b3fd5ad84e5ae612eed92e0acf92f75 *out/r28/dials/overlay/js/40-render.js
+34c41bfd731c237347dc119e6d181359 *out/r28/dials/overlay/js/46-mesh.js
+dddc99414a23faac82b7442b277468d2 *out/r28/dials/overlay/js/80-ui.js
+4b03c1dc02fae5d5ccd1083db984589c *dist/r28-final.html
+e741102e879d532207790fcf659a96f1 *dist/r28-base-final.html

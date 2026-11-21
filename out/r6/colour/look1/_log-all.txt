@@ -1,0 +1,164 @@
+step 1 waited 2.0 s
+step 2 result: "l-m-r1-g1-k04"
+step 4 waited 0.0 s
+step 4 wrote out/r6/colour/look1/l-m-r1-g1-k04.png
+step 5 result: "l-m-r1-g1-k06"
+step 7 waited 0.0 s
+step 7 wrote out/r6/colour/look1/l-m-r1-g1-k06.png
+step 8 result: "l-m-r1-g1-k12"
+step 10 waited 0.0 s
+step 10 wrote out/r6/colour/look1/l-m-r1-g1-k12.png
+step 11 result: "l-m-r1-g2-k04"
+step 13 waited 0.0 s
+step 13 wrote out/r6/colour/look1/l-m-r1-g2-k04.png
+step 14 result: "l-m-r1-g2-k06"
+step 16 waited 0.3 s
+step 16 wrote out/r6/colour/look1/l-m-r1-g2-k06.png
+step 17 result: "l-m-r1-g2-k12"
+step 19 waited 0.3 s
+step 19 wrote out/r6/colour/look1/l-m-r1-g2-k12.png
+step 20 result: "l-m-r1-g3-k04"
+step 22 waited 0.3 s
+step 22 wrote out/r6/colour/look1/l-m-r1-g3-k04.png
+step 23 result: "l-m-r1-g3-k06"
+step 25 waited 0.3 s
+step 25 wrote out/r6/colour/look1/l-m-r1-g3-k06.png
+step 26 result: "l-m-r1-g3-k12"
+step 28 waited 0.3 s
+step 28 wrote out/r6/colour/look1/l-m-r1-g3-k12.png
+step 29 result: "l-m-r07-g1-k04"
+step 31 waited 0.3 s
+step 31 wrote out/r6/colour/look1/l-m-r07-g1-k04.png
+step 32 result: "l-m-r07-g1-k06"
+step 34 waited 0.3 s
+step 34 wrote out/r6/colour/look1/l-m-r07-g1-k06.png
+step 35 result: "l-m-r07-g1-k12"
+step 37 waited 0.3 s
+step 37 wrote out/r6/colour/look1/l-m-r07-g1-k12.png
+step 38 result: "l-m-r07-g2-k04"
+step 40 waited 0.3 s
+step 40 wrote out/r6/colour/look1/l-m-r07-g2-k04.png
+step 41 result: "l-m-r07-g2-k06"
+step 43 waited 0.3 s
+step 43 wrote out/r6/colour/look1/l-m-r07-g2-k06.png
+step 44 result: "l-m-r07-g2-k12"
+step 46 waited 0.3 s
+step 46 wrote out/r6/colour/look1/l-m-r07-g2-k12.png
+step 47 result: "l-m-r07-g3-k04"
+step 49 waited 0.3 s
+step 49 wrote out/r6/colour/look1/l-m-r07-g3-k04.png
+step 50 result: "l-m-r07-g3-k06"
+step 52 waited 0.3 s
+step 52 wrote out/r6/colour/look1/l-m-r07-g3-k06.png
+step 53 result: "l-m-r07-g3-k12"
+step 55 waited 0.3 s
+step 55 wrote out/r6/colour/look1/l-m-r07-g3-k12.png
+step 56 result: "l-jb-r1-g1-k04"
+step 58 waited 0.3 s
+step 58 wrote out/r6/colour/look1/l-jb-r1-g1-k04.png
+step 59 result: "l-jb-r1-g1-k06"
+step 61 waited 0.0 s
+step 61 wrote out/r6/colour/look1/l-jb-r1-g1-k06.png
+step 62 result: "l-jb-r1-g1-k12"
+step 64 waited 0.3 s
+step 64 wrote out/r6/colour/look1/l-jb-r1-g1-k12.png
+step 65 result: "l-jb-r1-g2-k04"
+step 67 waited 0.0 s
+step 67 wrote out/r6/colour/look1/l-jb-r1-g2-k04.png
+step 68 result: "l-jb-r1-g2-k06"
+step 70 waited 0.3 s
+step 70 wrote out/r6/colour/look1/l-jb-r1-g2-k06.png
+step 71 result: "l-jb-r1-g2-k12"
+step 73 waited 0.3 s
+step 73 wrote out/r6/colour/look1/l-jb-r1-g2-k12.png
+step 74 result: "l-jb-r1-g3-k04"
+step 76 waited 0.3 s
+step 76 wrote out/r6/colour/look1/l-jb-r1-g3-k04.png
+step 77 result: "l-jb-r1-g3-k06"
+step 79 waited 0.3 s
+step 79 wrote out/r6/colour/look1/l-jb-r1-g3-k06.png
+step 80 result: "l-jb-r1-g3-k12"
+step 82 waited 0.3 s
+step 82 wrote out/r6/colour/look1/l-jb-r1-g3-k12.png
+step 83 result: "l-jb-r07-g1-k04"
+step 85 waited 0.3 s
+step 85 wrote out/r6/colour/look1/l-jb-r07-g1-k04.png
+step 86 result: "l-jb-r07-g1-k06"
+step 88 waited 0.3 s
+step 88 wrote out/r6/colour/look1/l-jb-r07-g1-k06.png
+step 89 result: "l-jb-r07-g1-k12"
+step 91 waited 0.3 s
+step 91 wrote out/r6/colour/look1/l-jb-r07-g1-k12.png
+step 92 result: "l-jb-r07-g2-k04"
+step 94 waited 0.3 s
+step 94 wrote out/r6/colour/look1/l-jb-r07-g2-k04.png
+step 95 result: "l-jb-r07-g2-k06"
+step 97 waited 0.3 s
+step 97 wrote out/r6/colour/look1/l-jb-r07-g2-k06.png
+step 98 result: "l-jb-r07-g2-k12"
+step 100 waited 0.3 s
+step 100 wrote out/r6/colour/look1/l-jb-r07-g2-k12.png
+step 101 result: "l-jb-r07-g3-k04"
+step 103 waited 0.3 s
+step 103 wrote out/r6/colour/look1/l-jb-r07-g3-k04.png
+step 104 result: "l-jb-r07-g3-k06"
+step 106 waited 0.3 s
+step 106 wrote out/r6/colour/look1/l-jb-r07-g3-k06.png
+step 107 result: "l-jb-r07-g3-k12"
+step 109 waited 0.3 s
+step 109 wrote out/r6/colour/look1/l-jb-r07-g3-k12.png
+step 110 result: "l-jr-r1-g1-k04"
+step 112 waited 0.3 s
+step 112 wrote out/r6/colour/look1/l-jr-r1-g1-k04.png
+step 113 result: "l-jr-r1-g1-k06"
+step 115 waited 0.3 s
+step 115 wrote out/r6/colour/look1/l-jr-r1-g1-k06.png
+step 116 result: "l-jr-r1-g1-k12"
+step 118 waited 0.3 s
+step 118 wrote out/r6/colour/look1/l-jr-r1-g1-k12.png
+step 119 result: "l-jr-r1-g2-k04"
+step 121 waited 0.3 s
+step 121 wrote out/r6/colour/look1/l-jr-r1-g2-k04.png
+step 122 result: "l-jr-r1-g2-k06"
+step 124 waited 0.3 s
+step 124 wrote out/r6/colour/look1/l-jr-r1-g2-k06.png
+step 125 result: "l-jr-r1-g2-k12"
+step 127 waited 0.3 s
+step 127 wrote out/r6/colour/look1/l-jr-r1-g2-k12.png
+step 128 result: "l-jr-r1-g3-k04"
+step 130 waited 0.3 s
+step 130 wrote out/r6/colour/look1/l-jr-r1-g3-k04.png
+step 131 result: "l-jr-r1-g3-k06"
+step 133 waited 0.3 s
+step 133 wrote out/r6/colour/look1/l-jr-r1-g3-k06.png
+step 134 result: "l-jr-r1-g3-k12"
+step 136 waited 0.3 s
+step 136 wrote out/r6/colour/look1/l-jr-r1-g3-k12.png
+step 137 result: "l-jr-r07-g1-k04"
+step 139 waited 0.3 s
+step 139 wrote out/r6/colour/look1/l-jr-r07-g1-k04.png
+step 140 result: "l-jr-r07-g1-k06"
+step 142 waited 0.3 s
+step 142 wrote out/r6/colour/look1/l-jr-r07-g1-k06.png
+step 143 result: "l-jr-r07-g1-k12"
+step 145 waited 0.3 s
+step 145 wrote out/r6/colour/look1/l-jr-r07-g1-k12.png
+step 146 result: "l-jr-r07-g2-k04"
+step 148 waited 0.3 s
+step 148 wrote out/r6/colour/look1/l-jr-r07-g2-k04.png
+step 149 result: "l-jr-r07-g2-k06"
+step 151 waited 0.3 s
+step 151 wrote out/r6/colour/look1/l-jr-r07-g2-k06.png
+step 152 result: "l-jr-r07-g2-k12"
+step 154 waited 0.3 s
+step 154 wrote out/r6/colour/look1/l-jr-r07-g2-k12.png
+step 155 result: "l-jr-r07-g3-k04"
+step 157 waited 0.3 s
+step 157 wrote out/r6/colour/look1/l-jr-r07-g3-k04.png
+step 158 result: "l-jr-r07-g3-k06"
+step 160 waited 0.3 s
+step 160 wrote out/r6/colour/look1/l-jr-r07-g3-k06.png
+step 161 result: "l-jr-r07-g3-k12"
+step 163 waited 0.3 s
+step 163 wrote out/r6/colour/look1/l-jr-r07-g3-k12.png
+no console errors

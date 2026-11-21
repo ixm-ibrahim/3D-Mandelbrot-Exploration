@@ -1,0 +1,4 @@
+started 12:34:49
+holes, frozen page, 4 views: exit 0 12:37:29
+smoke, frozen page: exit 0 12:45:06
+exit: all done 12:45:07

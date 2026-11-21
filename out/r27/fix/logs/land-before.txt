@@ -1,0 +1,16 @@
+dist/r27-fix-before.html 1400x950: exit 0, no console errors
+  before: {"scrollY": 0, "win": [1400, 950], "pictureColumn": [173, 902], "show": [322, 385], "menuBtn": [683, 721], "pop": "not shown", "list": "not shown", "listHeight": 0, "cousin": "not shown", "row": "not shown", "approachesWhollyInTheList": 21, "kleinPanel": "not shown", "kleinGroup": "not shown", "ballsNote": "not shown", "ballsSize": "not shown", "ballsGrid": "not shown", "ballsDepth": "not shown", "ballsFrame": "not shown", "stage": [173, 876], "secApproach": [616, 1863], "card": [2365, 2912]}
+  menuOpen: {"scrollY": 478, "win": [1400, 950], "pictureColumn": [12, 741], "show": [-156, -93], "menuBtn": [205, 243], "pop": [247, 938], "list": [248, 856], "listHeight": 608, "cousin": [856, 937], "row": [886, 933], "approachesWhollyInTheList": 14, "kleinPanel": "not shown", "kleinGroup": "not shown", "ballsNote": "not shown", "ballsSize": "not shown", "ballsGrid": "not shown", "ballsDepth": "not shown", "ballsFrame": "not shown", "stage": [12, 715], "secApproach": [138, 1385], "card": [1887, 2434]}
+  rowBeforeTheClick: [886, 933]
+  pop: [247, 938]
+  afterRow: {"scrollY": 1013, "win": [1400, 950], "pictureColumn": [-175, 554], "show": [-691, -628], "menuBtn": [204, 242], "pop": "not shown", "list": "not shown", "listHeight": 0, "cousin": "not shown", "row": "not shown", "approachesWhollyInTheList": 21, "kleinPanel": [-612, 132], "kleinGroup": [-568, -475], "ballsNote": [-461, -380], "ballsSize": [-328, -308], "ballsGrid": [-214, -180], "ballsDepth": [-61, -41], "ballsFrame": [48, 79], "stage": [-175, 528], "secApproach": [138, 256], "card": [708, 1255]}
+  mode: "k"
+  group: 1
+dist/r27-fix-before.html 390x800: exit 0, no console errors
+  before: {"scrollY": 715, "win": [390, 800], "pictureColumn": [0, 390], "show": [221, 284], "menuBtn": [582, 620], "pop": "not shown", "list": "not shown", "listHeight": 0, "cousin": "not shown", "row": "not shown", "approachesWhollyInTheList": 21, "kleinPanel": "not shown", "kleinGroup": "not shown", "ballsNote": "not shown", "ballsSize": "not shown", "ballsGrid": "not shown", "ballsDepth": "not shown", "ballsFrame": "not shown", "stage": [0, 290], "secApproach": [515, 1763], "card": [2959, 4028]}
+  menuOpen: {"scrollY": 895, "win": [390, 800], "pictureColumn": [0, 390], "show": [41, 104], "menuBtn": [402, 440], "pop": [444, 788], "list": [445, 534], "listHeight": 89, "cousin": [534, 615], "row": [564, 611], "approachesWhollyInTheList": 1, "kleinPanel": "not shown", "kleinGroup": "not shown", "ballsNote": "not shown", "ballsSize": "not shown", "ballsGrid": "not shown", "ballsDepth": "not shown", "ballsFrame": "not shown", "stage": [0, 290], "secApproach": [335, 1583], "card": [2779, 3848]}
+  rowBeforeTheClick: [564, 611]
+  pop: [444, 788]
+  afterRow: {"scrollY": 895, "win": [390, 800], "pictureColumn": [0, 390], "show": [41, 104], "menuBtn": [936, 974], "pop": "not shown", "list": "not shown", "listHeight": 0, "cousin": "not shown", "row": "not shown", "approachesWhollyInTheList": 21, "kleinPanel": [120, 864], "kleinGroup": [164, 257], "ballsNote": [271, 352], "ballsSize": [404, 424], "ballsGrid": [518, 552], "ballsDepth": [671, 691], "ballsFrame": [780, 811], "stage": [0, 290], "secApproach": [870, 988], "card": [2136, 3205]}
+  mode: "k"
+  group: 1

@@ -1,0 +1,20 @@
+<<<<
+          float stride = d * uStepK;
+          if (rough){
+            // stride toward where the surface seems to be, within limits: a long stride can jump a thin sheet
+            if (ahead < 1e8) stride = clamp(0.9 * ahead, stride, (d < 2.0 * e ? 8.0 : 3.0) * stride);
+            stride = max(stride, 0.5 * e);
+          }
+          tOut = t; dOut = d; t += empty ? leave : min(stride, leave);
+        }
+====
+          float stride = d * uStepK;
+          if (rough){
+            // stride toward where the surface seems to be, within limits: a long stride can jump a thin sheet
+            if (ahead < 1e8 && !mosaic) stride = clamp(0.9 * ahead, stride, (d < 2.0 * e ? 8.0 : 3.0) * stride);
+            stride = max(stride, 0.5 * e);
+          }
+          // a stride that ends in the next mosaic cell starts afresh there: the two estimates do not belong together
+          tOut = t; dOut = empty || stride > leave ? 0.0 : d; t += empty ? leave : min(stride, leave);
+        }
+>>>>

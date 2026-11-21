@@ -1,0 +1,68 @@
+(a) basilica, circle x = 0, radius 0.62, 80 steps, 2,880 places; widths in degrees (a round bud 0.19 tall would be about 17.6 degrees)
+   oneplane       inside 7.8% of the circle; 2 arcs: 14.1 wide at 180, 14.1 wide at 0
+   along          inside 28.1% of the circle; 8 arcs: 12.6 wide at 45, 12.6 wide at 90, 12.6 wide at 135, 12.6 wide at 180, 12.6 wide at 225, 12.6 wide at 270, 12.6 wide at 315, 12.6 wide at 0
+   lathe          inside 100.0% of the circle; RING (inside all the way round)
+   ease           inside 13.8% of the circle; 4 arcs: 12.4 wide at 90, 12.4 wide at 180, 12.4 wide at 270, 12.4 wide at 0
+   evc005e70k16   inside 18.5% of the circle; 4 arcs: 14.6 wide at 90, 18.6 wide at 180, 14.6 wide at 270, 18.6 wide at 0
+   evc005e70      inside 18.5% of the circle; 4 arcs: 14.6 wide at 90, 18.6 wide at 180, 14.6 wide at 270, 18.6 wide at 0
+   vote4          inside 8.5% of the circle; 2 arcs: 15.4 wide at 180, 15.4 wide at 0
+   c_wake1        inside 30.8% of the circle; 8 arcs: 14.0 wide at 45, 12.6 wide at 90, 14.0 wide at 135, 14.9 wide at 180, 14.0 wide at 225, 12.6 wide at 270, 14.0 wide at 315, 14.9 wide at 0
+   c_wake2        inside 30.6% of the circle; 8 arcs: 13.8 wide at 45, 12.6 wide at 90, 13.8 wide at 135, 14.9 wide at 180, 13.8 wide at 225, 12.6 wide at 270, 13.8 wide at 315, 14.9 wide at 0
+   b_keep         inside 33.1% of the circle; 8 arcs: 14.9 wide at 45, 14.9 wide at 90, 14.9 wide at 135, 14.9 wide at 180, 14.9 wide at 225, 14.9 wide at 270, 14.9 wide at 315, 14.9 wide at 0
+   lag0.1         inside 8.7% of the circle; 2 arcs: 15.6 wide at 180, 15.6 wide at 0
+   lag0.7         inside 32.9% of the circle; 4 arcs: 17.4 wide at 90, 41.9 wide at 180, 17.4 wide at 270, 41.9 wide at 0
+   first2         inside 7.6% of the circle; 6 arcs: 0.6 wide at 60, 0.6 wide at 120, 12.4 wide at 180, 0.6 wide at 240, 0.6 wide at 300, 12.4 wide at 0
+   c_lag10        inside 8.5% of the circle; 2 arcs: 15.4 wide at 180, 15.4 wide at 0
+   c_page         inside 100.0% of the circle; RING (inside all the way round)
+   area_1_px      inside 12.0% of the circle; 2 arcs: 21.6 wide at 180, 21.6 wide at 0
+   orb_inf_px     inside 16.7% of the circle; 18 arcs: 1.0 wide at 13, 0.2 wide at 14, 0.5 wide at 61, 1.4 wide at 62, 1.4 wide at 118, 0.5 wide at 119, 0.2 wide at 166, 1.0 wide at 167, 23.9 wide at 180, 1.0 wide at 193, 0.2 wide at 194, 0.5 wide at 241 ...
+   pt_1_tr        inside 100.0% of the circle; RING (inside all the way round)
+
+(b) lag family, same circle: bud at the page / at the upright sheet, measured, against the law 14.1/(1-lam) and 14.1 (2 lam - 1)/(1-lam)
+   lam 0.10: page [15.62] (law 15.7); upright [] (law none); arcs in all 2, inside 8.7%
+   lam 0.25: page [18.88] (law 18.8); upright [] (law none); arcs in all 2, inside 10.5%
+   lam 0.40: page [23.62] (law 23.5); upright [] (law none); arcs in all 2, inside 13.1%
+   lam 0.45: page [25.62] (law 25.7); upright [] (law none); arcs in all 2, inside 14.2%
+   lam 0.55: page [27.38] (law 31.4); upright [2.88] (law 3.1); arcs in all 4, inside 16.8%
+   lam 0.60: page [30.88] (law 35.3); upright [6.38] (law 7.1); arcs in all 4, inside 20.7%
+   lam 0.67: page [37.38] (law 42.4); upright [12.88] (law 14.1); arcs in all 4, inside 27.9%
+   lam 0.70: page [41.88] (law 47.1); upright [17.38] (law 18.8); arcs in all 4, inside 32.9%
+   lam 0.75: page [51.88] (law 56.5); upright [27.38] (law 28.2); arcs in all 4, inside 44.0%
+   lam 0.80: page [70.38] (law 70.6); upright [45.88] (law 42.4); arcs in all 4, inside 64.6%
+   lam 0.90: RING
+
+(c) Mandelbrot solid, circle x = -0.1226, radius 0.7449 (through the period-3 bud), 80 steps
+   oneplane       inside 1.6%; 2 arcs: 2.9 wide at 180, 2.9 wide at 0
+   along          inside 38.6%; 72 arcs: 1.0 wide at 15, 0.1 wide at 16, 0.5 wide at 16, 0.1 wide at 17, 0.1 wide at 17, 0.1 wide at 18, 0.1 wide at 18, 0.2 wide at 19, 2.4 wide at 45, 0.2 wide at 71, 0.1 wide at 72, 0.1 wide at 72 ...
+   lathe          inside 100.0%; RING (inside all the way round)
+   ease           inside 9.9%; 164 arcs: 0.1 wide at 1, 0.1 wide at 2, 0.1 wide at 2, 0.5 wide at 6, 0.2 wide at 7, 0.1 wide at 8, 0.2 wide at 8, 0.1 wide at 9, 0.2 wide at 9, 0.4 wide at 11, 0.1 wide at 11, 0.2 wide at 11 ...
+   evc005e70k16   inside 9.6%; 4 arcs: 8.6 wide at 90, 8.6 wide at 180, 8.6 wide at 270, 8.6 wide at 0
+   evc005e70      inside 18.2%; 4 arcs: 15.4 wide at 90, 17.4 wide at 180, 15.4 wide at 270, 17.4 wide at 0
+   vote4          inside 7.6%; 2 arcs: 13.6 wide at 180, 13.6 wide at 0
+   c_wake1        inside 1.6%; 2 arcs: 2.9 wide at 180, 2.9 wide at 0
+   c_wake2        inside 1.6%; 2 arcs: 2.9 wide at 180, 2.9 wide at 0
+   b_keep         inside 6.4%; 8 arcs: 2.9 wide at 45, 2.9 wide at 90, 2.9 wide at 135, 2.9 wide at 180, 2.9 wide at 225, 2.9 wide at 270, 2.9 wide at 315, 2.9 wide at 0
+   lag0.1         inside 9.2%; 2 arcs: 16.6 wide at 180, 16.6 wide at 0
+   lag0.7         inside 100.0%; RING (inside all the way round)
+   first2         inside 13.0%; 18 arcs: 0.2 wide at 9, 3.1 wide at 12, 0.8 wide at 15, 1.1 wide at 16, 1.1 wide at 164, 0.8 wide at 165, 3.1 wide at 168, 0.2 wide at 171, 12.9 wide at 180, 0.2 wide at 189, 3.1 wide at 192, 0.8 wide at 195 ...
+   c_lag10        inside 2.0%; 6 arcs: 1.0 wide at 2, 1.0 wide at 178, 1.6 wide at 180, 1.0 wide at 182, 1.0 wide at 358, 1.6 wide at 0
+   c_page         inside 95.8%; 20 arcs: 0.2 wide at 85, 0.2 wide at 87, 0.4 wide at 88, 1.0 wide at 89, 0.1 wide at 90, 1.0 wide at 91, 0.4 wide at 92, 0.2 wide at 93, 0.2 wide at 95, 168.6 wide at 180, 0.2 wide at 265, 0.2 wide at 267 ...
+   area_1_px      inside 5.6%; 2 arcs: 10.1 wide at 180, 10.1 wide at 0
+   orb_inf_px     inside 29.7%; 42 arcs: 0.1 wide at 44, 0.1 wide at 49, 0.4 wide at 50, 0.5 wide at 53, 0.1 wide at 54, 0.1 wide at 54, 0.2 wide at 54, 0.5 wide at 55, 0.2 wide at 56, 0.6 wide at 57, 0.6 wide at 123, 0.2 wide at 124 ...
+   pt_1_tr        inside 73.8%; 88 arcs: 0.1 wide at 58, 0.2 wide at 59, 0.2 wide at 60, 0.1 wide at 73, 0.1 wide at 73, 0.1 wide at 74, 0.4 wide at 74, 2.5 wide at 79, 0.1 wide at 82, 0.1 wide at 82, 0.1 wide at 82, 1.1 wide at 84 ...
+   lag0.25        inside 22.8%; 6 arcs: 0.1 wide at 21, 0.1 wide at 159, 40.9 wide at 180, 0.1 wide at 201, 0.1 wide at 339, 40.9 wide at 0
+   lag0.4         inside 38.5%; 26 arcs: 0.1 wide at 31, 0.8 wide at 32, 0.5 wide at 33, 0.8 wide at 40, 0.1 wide at 41, 1.4 wide at 42, 1.4 wide at 138, 0.1 wide at 139, 0.8 wide at 140, 0.5 wide at 147, 0.8 wide at 148, 0.1 wide at 149 ...
+   lag0.45        inside 36.2%; 250 arcs: 0.6 wide at 6, 1.1 wide at 7, 0.9 wide at 8, 0.1 wide at 9, 0.6 wide at 10, 0.2 wide at 10, 0.1 wide at 10, 0.4 wide at 11, 0.8 wide at 12, 0.9 wide at 12, 0.1 wide at 14, 0.1 wide at 14 ...
+   lag0.55        inside 0.1%; 4 arcs: 0.1 wide at 90, 0.1 wide at 180, 0.1 wide at 270, 0.1 wide at 0
+   lag0.6         inside 0.1%; 4 arcs: 0.1 wide at 90, 0.1 wide at 180, 0.1 wide at 270, 0.1 wide at 0
+   lag0.666667    inside 100.0%; RING (inside all the way round)
+
+(d) size of the basilica bud at the turn phi (centre on the circle x = 0, radius 0.62): along x / along the radius / round the axis (as a length)
+   oneplane       phi 0: 0.132 / 0.666 / 0.153 | phi 45: not inside | phi 90: not inside | phi 22.5: not inside
+   along          phi 0: 0.132 / 0.666 / 0.137 | phi 45: 0.132 / 0.666 / 0.137 | phi 90: 0.132 / 0.666 / 0.137 | phi 22.5: not inside
+   ease           phi 0: 0.132 / 0.666 / 0.134 | phi 45: not inside | phi 90: 0.132 / 0.666 / 0.134 | phi 22.5: not inside
+   evc005e70k16   phi 0: 0.132 / 0.666 / 0.202 | phi 45: not inside | phi 90: 0.132 / 0.666 / 0.156 | phi 22.5: not inside
+   c_wake1        phi 0: 0.132 / 0.666 / 0.160 | phi 45: 0.144 / 0.666 / 0.151 | phi 90: 0.152 / 0.666 / 0.137 | phi 22.5: not inside
+   b_keep         phi 0: 0.132 / 0.666 / 0.160 | phi 45: 0.132 / 0.666 / 0.160 | phi 90: 0.132 / 0.666 / 0.160 | phi 22.5: not inside
+   lag0.7         phi 0: 0.132 / 0.666 / 0.451 | phi 45: not inside | phi 90: 0.132 / 0.666 / 0.187 | phi 22.5: not inside
+   lag0.666667    phi 0: 0.132 / 0.666 / 0.401 | phi 45: not inside | phi 90: 0.132 / 0.666 / 0.139 | phi 22.5: not inside

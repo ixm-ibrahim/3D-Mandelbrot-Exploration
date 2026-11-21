@@ -1,0 +1,179 @@
+/* Layout: an instrument bench. The solid sits on a stage at left and stays in view while the
+   dials at right scroll past it; below, the chosen approach is examined one step at a time. */
+:root {
+  --paper: #edf0f2;
+  --panel: #f7f9fa;
+  --stage: #dce2e7;
+  --ink: #16202b;
+  --ink-2: #4c5a69;
+  --line: #c3ccd5;
+  --brass: #8a5d0c;
+  --cut: #1c2a3c;
+  --cut-ink: #5b7190;
+  --ok: #1c7448;
+  --warn: #99610a;
+  --bad: #b03a33;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-cond: "IBM Plex Sans Condensed", "Roboto Condensed", "Arial Narrow", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e141b; --panel: #141c25; --stage: #080c11; --ink: #e2e8ee; --ink-2: #98a6b4;
+    --line: #2a3542; --brass: #dcae5a; --cut: #e7dcc3; --cut-ink: #9a8c6c;
+    --ok: #5fc48f; --warn: #e0a94a; --bad: #ef7f76; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e141b; --panel: #141c25; --stage: #080c11; --ink: #e2e8ee; --ink-2: #98a6b4;
+  --line: #2a3542; --brass: #dcae5a; --cut: #e7dcc3; --cut-ink: #9a8c6c;
+  --ok: #5fc48f; --warn: #e0a94a; --bad: #ef7f76; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+/* several classes below set a display of their own, which would otherwise beat the hidden attribute */
+[hidden] { display: none !important; }
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+.page {
+  max-width: 1280px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 32px;
+}
+p { margin: 0; }
+.masthead { display: flex; flex-direction: column; gap: 8px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12.5px; color: var(--brass); }
+h1 { margin: 0; font-family: var(--f-cond); font-weight: 600; font-size: clamp(30px, 4.2vw, 44px); line-height: 1.05; text-wrap: balance; }
+h2 { margin: 0; font-family: var(--f-cond); font-weight: 600; font-size: 23px; line-height: 1.15; text-wrap: balance; }
+.lede { max-width: 66ch; color: var(--ink-2); font-size: 16px; }
+.label { font-family: var(--f-cond); font-weight: 600; font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2); }
+.label .asis { text-transform: none; }
+.note { font-size: 13.5px; color: var(--ink-2); }
+
+/* bench: stage + dials */
+.bench { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start; }
+.bench-main { display: flex; flex-direction: column; gap: 8px; min-width: 0; position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)); }
+.stage { position: relative; height: clamp(340px, 74vh, 720px); background: var(--stage); border: 1px solid var(--line); overflow: hidden; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+.stage canvas:active { cursor: grabbing; }
+.stage canvas:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+/* the rim in the stage colour keeps the axes readable where the pale inside of a 2D picture passes behind them */
+.triad { position: absolute; left: 8px; top: 8px; width: 72px; height: 72px; pointer-events: none; filter: drop-shadow(0 0 1px var(--stage)) drop-shadow(0 0 1px var(--stage)); }
+.triad line { stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+.triad text { fill: var(--ink); font-family: var(--f-mono); font-size: 11px; text-anchor: middle; dominant-baseline: central; }
+.stage-bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; padding: 10px; pointer-events: none; }
+.hint { font-size: 12.5px; color: var(--ink-2); background: var(--stage); padding: 3px 7px; max-width: 46ch; }
+.stage-btns, .row-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.stage-btns { pointer-events: auto; flex: none; }
+.btn { font-family: var(--f-cond); font-weight: 500; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); background: var(--panel); border: 1px solid var(--line); padding: 6px 10px; min-width: 34px; cursor: pointer; }
+.btn:hover { border-color: var(--ink-2); }
+/* a button that shows a state: the quality preset in use */
+.btn.is-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn:focus-visible, .dial input:focus-visible, .field input:focus-visible, .field select:focus-visible, .sec > summary:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.glfail { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: var(--ink-2); background: var(--stage); }
+.status { font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); min-height: 1.5em; }
+
+.dials { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+/* The top row stays in reach while the long column scrolls. Each tick box has a line of its own and both buttons
+   share one width, so nothing in it moves when a label changes ("Collapse all" / "Expand all", the slice height). */
+.toprow { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.toprow-checks, .toprow-btns { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.toprow-btns .btn { width: 100%; white-space: nowrap; }
+.flat-z { color: var(--ink-2); font-size: 13px; white-space: nowrap; }
+#extremeNote { margin-top: -8px; }
+/* what the browser scrolls a focused control to must clear the sticky row */
+.dials .sec > summary, .dials .dial, .dials .field, .dials .check, .dials .btn { scroll-margin-top: 96px; }
+.sections { display: flex; flex-direction: column; gap: 6px; min-width: 0; border-bottom: 1px solid var(--line); }
+.mode { border: 0; margin: 0; padding: 0; min-inline-size: 0; display: grid; grid-template-columns: repeat(3, 1fr); }
+.mode legend { padding: 0; margin-bottom: 8px; }
+.seg { position: relative; }
+.seg input, .rule-head input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; text-align: center; padding: 7px 4px; border: 1px solid var(--line); background: var(--panel); font-family: var(--f-cond); font-weight: 500; font-size: 13.5px; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; }
+.seg + .seg span { border-left: 0; }
+.seg input:checked + span { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.seg input:focus-visible + span { outline: 2px solid var(--brass); outline-offset: 2px; }
+.panel { display: flex; flex-direction: column; gap: 12px; padding: 12px 14px; border: 1px solid var(--line); background: var(--panel); }
+.sec { border-top: 1px solid var(--line); }
+.sec > summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+.sec > summary::-webkit-details-marker { display: none; }
+.sec > summary::after { content: "+"; font-family: var(--f-mono); font-size: 15px; color: var(--ink-2); }
+.sec[open] > summary::after { content: "−"; }
+.sec-body { display: flex; flex-direction: column; gap: 14px; padding-bottom: 14px; }
+.sec-inner { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.sec-inner:empty { display: none; }
+.panel .sec-body, .rule-body .sec-body { padding-bottom: 0; }
+.rules { display: flex; flex-direction: column; }
+.rule { margin-top: -1px; border: 1px solid transparent; border-top-color: var(--line); border-bottom-color: var(--line); }
+.rule-head { position: relative; display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 1px 10px; padding: 8px 12px; cursor: pointer; }
+.rule .mark { grid-row: 1 / 3; width: 12px; height: 12px; margin-top: 5px; border: 1.5px solid var(--ink-2); border-radius: 50%; }
+.rule .name { font-weight: 600; }
+.rule .tag { grid-column: 2; color: var(--ink-2); font-size: 13.5px; line-height: 1.35; }
+.rule-body { display: none; flex-direction: column; gap: 10px; padding: 2px 12px 12px 34px; }
+.rule-body code { display: block; font-family: var(--f-mono); font-size: 12.5px; line-height: 1.5; overflow-wrap: anywhere; white-space: normal; }
+.rule.is-on { background: var(--panel); border-color: var(--ink); position: relative; z-index: 1; }
+.rule.is-on .mark { background: var(--brass); border-color: var(--brass); }
+.rule.is-on .rule-body { display: flex; }
+.rule.is-focus { outline: 2px solid var(--brass); outline-offset: 2px; z-index: 2; }
+.field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.field input[type=text], .field select { font-family: var(--f-mono); font-size: 13.5px; padding: 6px 8px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); width: 100%; min-width: 0; }
+.err { color: var(--bad); font-size: 13.5px; }
+.checks { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.check { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; cursor: pointer; }
+.check input { accent-color: var(--brass); margin: 0; }
+
+/* a drop-down of entries to jump to, with its "Frame it" button, and the row that saves the current point */
+.pick-row { display: flex; gap: 6px; align-items: flex-end; }
+.pick-list { flex: 1 1 auto; min-width: 0; }
+.pick-row > .btn { flex: none; }
+.save-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.save-row input { flex: 1 1 9em; min-width: 0; font-family: var(--f-mono); font-size: 13.5px; padding: 6px 8px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
+.save-row input:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
+@media (pointer: coarse) { .save-row input { font-size: 16px; } }
+.warn-note { color: var(--warn); }
+/* a sentence on the stage for the cases where there is nothing to draw */
+.stage-note { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: max-content; max-width: min(36ch, 80%); text-align: center; font-size: 14px; color: var(--ink); background: var(--stage); border: 1px solid var(--line); padding: 8px 12px; pointer-events: none; }
+/* the copy of the stage hint that narrow screens show under the picture */
+.hint-below { display: none; font-size: 12.5px; color: var(--ink-2); }
+
+/* lower: one step + scorecard */
+.lower { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px 40px; align-items: start; }
+.step, .score { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.step > p, .score > p { color: var(--ink-2); max-width: 62ch; }
+.fig { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.fig canvas { width: 100%; max-width: 100%; aspect-ratio: 2.15 / 1; display: block; background: var(--panel); border: 1px solid var(--line); }
+#step3d { touch-action: none; cursor: grab; }
+.fig .ends { display: grid; grid-template-columns: 1fr 1fr; text-align: center; font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); }
+.fig figcaption { font-size: 13.5px; color: var(--ink-2); }
+.card { display: flex; flex-direction: column; border-top: 1px solid var(--ink); }
+.row { display: grid; grid-template-columns: 10rem minmax(0, 1fr) minmax(0, 1.4fr); gap: 6px 20px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.row.head { padding: 8px 0; }
+.row .prop { font-weight: 600; }
+.row .cell { font-size: 14px; min-width: 0; }
+.cell .k { display: none; margin-bottom: 2px; }
+.pill { display: inline-block; font-family: var(--f-cond); font-weight: 600; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; padding: 0 7px; border: 1px solid currentColor; border-radius: 999px; margin-right: 7px; }
+.pill.ok { color: var(--ok); }
+.pill.part { color: var(--warn); }
+.pill.no { color: var(--bad); }
+.why { max-width: 70ch; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 24px; }
+.why p { color: var(--ink-2); }
+.why h2:not(:first-child) { margin-top: 18px; }
+.why h3 { margin: 8px 0 0; font-family: var(--f-body); font-weight: 600; font-size: 15.5px; line-height: 1.35; color: var(--ink); text-wrap: balance; }
+
+@media (max-width: 920px) {
+  .bench, .lower { grid-template-columns: minmax(0, 1fr); }
+  .bench-main { position: static; }
+  .stage { height: clamp(320px, 58vh, 560px); }
+}
+@media (max-width: 620px) {
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .row.head { display: none; }
+  .cell .k { display: block; }
+  .hint { display: none; }
+  .hint-below { display: block; }
+  .stage-bar { justify-content: flex-end; }
+  /* tightened so that the top row of the controls is on the first screen of a phone */
+  .stage { height: clamp(290px, 40vh, 560px); }
+  .page { gap: 20px; padding-block: 16px 48px; }
+  .lede { font-size: 15px; }
+  .bench { gap: 16px; }
+}

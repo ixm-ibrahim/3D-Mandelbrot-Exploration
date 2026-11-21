@@ -1,0 +1,61 @@
+new page dist/r28-eyes.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 356 × 288 | mode m, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1 0.55 5.2, canvas 356x288, program 0/true/z^n + c/0/, size box 55.56
+   balls-as-the-row-gives-it: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7452, canvas 356x288, program k-balls/, size box 55.56
+   balls-100-square: Done: 4 passes at 356 × 288 | mode k, group 1, t 1, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 13.1056, canvas 356x288, program k-balls/, size box 100
+   balls-100-honeycomb-kiss: Done: 4 passes at 356 × 288 | mode k, group 1, t 1, rho 1, grid 1, depth 16, approach mercator, n 2, flat false, cam 1.9 0.9 0.3, canvas 356x288, program k-balls/, size box 100
+   balls-70-line-depth40: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.2142857142857144, rho 1, grid 2, depth 40, approach mercator, n 2, flat false, cam -1.25 0.5 4.915, canvas 356x288, program k-balls/, size box 70
+   balls-10-depth5-2d: Done: 4 passes at 356 × 288 | mode k, group 1, t 5.5, rho 1, grid 0, depth 5, approach mercator, n 2, flat true, cam -1.25 0.5 3.3, canvas 356x288, program k-balls/, size box 10
+   balls-100-2d: Done: 4 passes at 356 × 288 | mode k, group 1, t 1, rho 1, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.25 0.5 13.1056, canvas 356x288, program k-balls/, size box 100
+   balls-35-honeycomb-other-side: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.9285714285714286, rho 1, grid 1, depth 16, approach mercator, n 2, flat false, cam 2.2 -0.35 3.3, canvas 356x288, program k-balls/, size box 35
+   balls-25-depth200: Done: 4 passes at 356 × 288 | mode k, group 1, t 2.5, rho 1, grid 0, depth 200, approach mercator, n 2, flat false, cam -1.25 0.5 3.3, canvas 356x288, program k-balls/, size box 25
+   balls-default-after-a-trip-past-100: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7452, canvas 356x288, program k-balls/, size box 55.56
+   balls-50-second-sphere-there-and-back: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.5, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.4189, canvas 356x288, program k-balls/, size box 50
+   k-first-group-as-it-opens: Done: 4 passes at 356 × 288 | mode k, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat false, cam 0.35 0.35 7, canvas 356x288, program k/, size box 55.56
+   k-first-group-preset5-2d: Done: 4 passes at 356 × 288 | mode k, group 0, t 1.4, rho 1, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.35 1 6.4, canvas 356x288, program k/, size box 55.56
+   m-quat4-power4: Done: 4 passes at 356 × 288 | mode m, group 0, t 1.4, rho 1, grid 0, depth 16, approach quat4, n 4, flat false, cam -1 0.55 5.2, canvas 356x288, program 10/false/z^n + c/0/, size box 55.56
+   j-turnalong-cut: Done: 4 passes at 356 × 288 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach turnalong, n 2, flat false, cam -1.9 0.55 4.8, canvas 356x288, program 17/true/z^n + c/0/, size box 55.56
+   j-pulledplane-2d: Done: 4 passes at 356 × 288 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach pulledplane, n 2, flat true, cam -1.9 0.55 4.8, canvas 356x288, program 20/true/z^n + c/0/, size box 55.56
+   learn-tab: Done: 4 passes at 356 × 288 | mode j, group 0, t 1.4, rho 1, grid 0, depth 16, approach pulledplane, n 2, flat false, cam -1.9 0.55 4.8, canvas 356x288, program 20/true/z^n + c/0/, size box 55.56
+old page dist/r28-base-eyes.html: exit 0, no console errors
+   m-as-the-page-opens: Done: 12 passes at 356 × 288 | mode m, group 0, t 1.4, rho undefined, grid 0, depth 16, approach mercator, n 2, flat false, cam -1 0.55 5.2, canvas 356x288, program 0/true/z^n + c/0/, size box 55.56
+   balls-as-the-row-gives-it: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.4, rho undefined, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7452, canvas 356x288, program k-balls/, size box 55.56
+   balls-100-square: Done: 4 passes at 356 × 288 | mode k, group 1, t 1, rho undefined, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 13.1056, canvas 356x288, program k-balls/, size box 100
+   balls-100-honeycomb-kiss: Done: 4 passes at 356 × 288 | mode k, group 1, t 1, rho undefined, grid 1, depth 16, approach mercator, n 2, flat false, cam 1.9 0.9 0.3, canvas 356x288, program k-balls/, size box 100
+   balls-70-line-depth40: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.2142857142857144, rho undefined, grid 2, depth 40, approach mercator, n 2, flat false, cam -1.25 0.5 4.915, canvas 356x288, program k-balls/, size box 70
+   balls-10-depth5-2d: Done: 4 passes at 356 × 288 | mode k, group 1, t 5.5, rho undefined, grid 0, depth 5, approach mercator, n 2, flat true, cam -1.25 0.5 3.3, canvas 356x288, program k-balls/, size box 10
+   balls-100-2d: Done: 4 passes at 356 × 288 | mode k, group 1, t 1, rho undefined, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.25 0.5 13.1056, canvas 356x288, program k-balls/, size box 100
+   balls-35-honeycomb-other-side: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.9285714285714286, rho undefined, grid 1, depth 16, approach mercator, n 2, flat false, cam 2.2 -0.35 3.3, canvas 356x288, program k-balls/, size box 35
+   balls-25-depth200: Done: 4 passes at 356 × 288 | mode k, group 1, t 2.5, rho undefined, grid 0, depth 200, approach mercator, n 2, flat false, cam -1.25 0.5 3.3, canvas 356x288, program k-balls/, size box 25
+   balls-default-after-a-trip-past-100: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.4, rho undefined, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.7452, canvas 356x288, program k-balls/, size box 55.56
+   balls-50-second-sphere-there-and-back: Done: 4 passes at 356 × 288 | mode k, group 1, t 1.5, rho undefined, grid 0, depth 16, approach mercator, n 2, flat false, cam -1.25 0.5 3.4189, canvas 356x288, program k-balls/, size box 50
+   k-first-group-as-it-opens: Done: 4 passes at 356 × 288 | mode k, group 0, t 1.4, rho undefined, grid 0, depth 16, approach mercator, n 2, flat false, cam 0.35 0.35 7, canvas 356x288, program k/, size box 55.56
+   k-first-group-preset5-2d: Done: 4 passes at 356 × 288 | mode k, group 0, t 1.4, rho undefined, grid 0, depth 16, approach mercator, n 2, flat true, cam -1.35 1 6.4, canvas 356x288, program k/, size box 55.56
+   m-quat4-power4: Done: 4 passes at 356 × 288 | mode m, group 0, t 1.4, rho undefined, grid 0, depth 16, approach quat4, n 4, flat false, cam -1 0.55 5.2, canvas 356x288, program 10/false/z^n + c/0/, size box 55.56
+   j-turnalong-cut: Done: 4 passes at 356 × 288 | mode j, group 0, t 1.4, rho undefined, grid 0, depth 16, approach turnalong, n 2, flat false, cam -1.9 0.55 4.8, canvas 356x288, program 17/true/z^n + c/0/, size box 55.56
+   j-pulledplane-2d: Done: 4 passes at 356 × 288 | mode j, group 0, t 1.4, rho undefined, grid 0, depth 16, approach pulledplane, n 2, flat true, cam -1.9 0.55 4.8, canvas 356x288, program 20/true/z^n + c/0/, size box 55.56
+   learn-tab: Done: 4 passes at 356 × 288 | mode j, group 0, t 1.4, rho undefined, grid 0, depth 16, approach pulledplane, n 2, flat false, cam -1.9 0.55 4.8, canvas 356x288, program 20/true/z^n + c/0/, size box 55.56
+m-as-the-page-opens                      picture 356 x 288: pixels that differ 0 (pixels that are not background: 11200)
+balls-as-the-row-gives-it                picture 356 x 288: pixels that differ 0 (pixels that are not background: 27158)
+balls-100-square                         picture 356 x 288: pixels that differ 0 (pixels that are not background: 22040)
+balls-100-honeycomb-kiss                 picture 356 x 288: pixels that differ 0 (pixels that are not background: 102184)
+balls-70-line-depth40                    picture 356 x 288: pixels that differ 0 (pixels that are not background: 17227)
+balls-10-depth5-2d                       picture 356 x 288: pixels that differ 0 (pixels that are not background: 41854)
+balls-100-2d                             picture 356 x 288: pixels that differ 0 (pixels that are not background: 67873)
+balls-35-honeycomb-other-side            picture 356 x 288: pixels that differ 0 (pixels that are not background: 23092)
+balls-25-depth200                        picture 356 x 288: pixels that differ 0 (pixels that are not background: 20349)
+balls-default-after-a-trip-past-100      picture 356 x 288: pixels that differ 0 (pixels that are not background: 27158)
+balls-50-second-sphere-there-and-back    picture 356 x 288: pixels that differ 0 (pixels that are not background: 28933)
+k-first-group-as-it-opens                picture 356 x 288: pixels that differ 0 (pixels that are not background: 15330)
+k-first-group-preset5-2d                 picture 356 x 288: pixels that differ 0 (pixels that are not background: 98349)
+m-quat4-power4                           picture 356 x 288: pixels that differ 0 (pixels that are not background: 28403)
+j-turnalong-cut                          picture 356 x 288: pixels that differ 0 (pixels that are not background: 11341)
+j-pulledplane-2d                         picture 356 x 288: pixels that differ 0 (pixels that are not background: 76281)
+TOTAL, the picture alone, 16 states: 0 pixels differ
+m-as-the-page-opens                      whole window 390 x 800: pixels that differ 0
+k-first-group-as-it-opens                whole window 390 x 800: pixels that differ 57016 in the box (16, 390, 373, 799)
+k-first-group-preset5-2d                 whole window 390 x 800: pixels that differ 206662 in the box (0, 0, 389, 799)
+m-quat4-power4                           whole window 390 x 800: pixels that differ 172985 in the box (16, 0, 373, 799)
+j-turnalong-cut                          whole window 390 x 800: pixels that differ 0
+j-pulledplane-2d                         whole window 390 x 800: pixels that differ 0
+learn-tab                                whole window 390 x 800: pixels that differ 0
+TOTAL, the whole window, 7 states that are not Balls on balls: 436663 pixels differ

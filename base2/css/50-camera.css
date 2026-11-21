@@ -1,0 +1,38 @@
+/* Camera overlays on the stage, built by bindView() in 50-camera.js. Down the right edge, top to bottom:
+   the busy indicator's place (05-core.css), the camera switch, the zoom slider with a limit box at each end,
+   then the stage buttons. */
+.cam-mode { position: absolute; right: 10px; top: 46px; z-index: 2; display: flex; }
+.cam-mode[hidden], .cam-lim[hidden] { display: none; }
+.cam-mode button { font-family: var(--f-cond); font-weight: 500; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; line-height: 1.4; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; padding: 4px 9px; margin: 0; cursor: pointer; }
+.cam-mode button + button { border-left: 0; }
+.cam-mode button:hover { border-color: var(--ink-2); }
+.cam-mode button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.cam-mode button:focus-visible, .cam-lim:focus-visible, .cam-rail:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; position: relative; z-index: 1; }
+
+.cam-zoom { position: absolute; right: 10px; top: 82px; bottom: 58px; width: 56px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 3px; pointer-events: none; user-select: none; -webkit-user-select: none; }
+.cam-zoom > * { pointer-events: auto; }
+.cam-end { font-family: var(--f-cond); font-weight: 600; font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; line-height: 1.3; color: var(--ink-2); background: var(--stage); padding: 0 4px; pointer-events: none; }
+.cam-lim { width: 100%; min-width: 0; font-family: var(--f-mono); font-size: 11.5px; line-height: 1.3; text-align: center; padding: 2px 1px; margin: 0; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; user-select: text; -webkit-user-select: text; }
+.cam-lim:hover { border-color: var(--ink-2); }
+.cam-lim[aria-invalid="true"] { border-color: var(--bad); color: var(--bad); }
+/* the rail keeps a margin of half a thumb at each end, so the thumb never covers a limit box; the line runs through the margin */
+.cam-rail { position: relative; flex: 1 1 0; min-height: 40px; width: 30px; margin: 5px 0; cursor: ns-resize; touch-action: none; }
+/* line and ticks carry a rim in the stage colour, so they stay readable when the solid passes behind them */
+.cam-rail::before { content: ""; position: absolute; left: calc(50% - 1px); top: -5px; bottom: -5px; width: 2px; background: var(--ink-2); box-shadow: 0 0 0 1px var(--stage); }
+.cam-tick { position: absolute; left: calc(50% - 5px); width: 10px; height: 1px; background: var(--ink-2); box-shadow: 0 0 0 1px var(--stage); }
+.cam-tick.is-one { left: calc(50% - 9px); width: 18px; }
+.cam-thumb { position: absolute; left: calc(50% - 11px); width: 22px; height: 8px; margin-top: -4px; background: var(--brass); box-shadow: 0 0 0 1.5px var(--stage); }
+.cam-val { position: absolute; right: calc(100% + 7px); top: 50%; transform: translateY(-50%); font-family: var(--f-mono); font-size: 11px; line-height: 1.4; color: var(--ink); background: var(--stage); padding: 0 4px; white-space: nowrap; pointer-events: none; }
+.stage[data-cam="fly"] canvas { cursor: crosshair; }
+
+/* nothing to steer when the 3D view could not start */
+.glfail:not([hidden]) ~ .cam-mode, .glfail:not([hidden]) ~ .cam-zoom { display: none; }
+
+/* fingers: bigger targets, and 16 px text in the boxes so a phone does not zoom the page when one takes focus */
+@media (pointer: coarse) {
+  .cam-mode button { padding: 7px 11px; }
+  .cam-zoom { width: 72px; }
+  .cam-lim { font-size: 16px; padding: 3px 1px; }
+  .cam-rail { width: 44px; }
+  .cam-thumb { left: calc(50% - 14px); width: 28px; height: 10px; margin-top: -5px; }
+}

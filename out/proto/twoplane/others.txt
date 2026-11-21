@@ -1,0 +1,7 @@
+step 1 waited 4.3 s
+step 2 result: 
+drawing
+step 2 waited 36.1 s
+step 3 result: 
+first approach in the list: Pillow; 36 combinations drawn (every approach at its defaults; every equation preset under the pillow; z^n + c at eleven powers in both modes under the pillow), 0 failed; card: len = holds | |vⁿ| = |v|ⁿ for every v. || round = fails | Roundness 34%. At |v| = 1 the stretch runs from 0.36× to 11.5×, where the plane gives 2× throughout. The stretch is uneven across the pillow. It is worst beside the corner directions at 120° and 240° on the equator, and beside the directions that land on a corner. || wrap = holds | Wraps the sphere of directions 4 times and never reverses it. || crush = holds | Nothing but the origin is crushed. || smooth = fails | One rule with no jumps, but not a smooth one: it has creases along the three half-planes from the z-axis through the corner directions, and along every surface that the power lays onto one of them. || slice = holds | The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. The plane y = 0 does the same. || formula: v² = |v|² · Φ(2 · Φ⁻¹(v/|v|))   with Φ the flat pillow laid on the sphere of directions.
+no console errors

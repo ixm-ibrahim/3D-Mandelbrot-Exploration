@@ -1,0 +1,22 @@
+along                grid 160^3 (cell 0.0189): inside 240722, 7 pieces, 1 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+along                grid 240^3 (cell 0.0126): inside 817548, 45 pieces, 1 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+oneplane             grid 160^3 (cell 0.0189): inside 65716, 17 pieces, 1 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+oneplane             grid 240^3 (cell 0.0126): inside 223464, 43 pieces, 1 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+sheet.evc005e70k16   grid 160^3 (cell 0.0189): inside 75470, 15 pieces, 1 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+sheet.evc005e70k16   grid 240^3 (cell 0.0126): inside 256332, 31 pieces, 1 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+alongmem.c_wake1     grid 160^3 (cell 0.0189): inside 100122, 26 pieces, 3 of them hold 0.5 % or more; after bridging gaps of two cells: 3 big pieces
+      piece of  85.2%: gap to the nearest other big piece 0.110 (5.8 cells), middle at (-0.09, 0.10, -0.00)
+      piece of   7.2%: gap to the nearest other big piece 0.110 (5.8 cells), middle at (0.04, -0.30, -0.65)
+      piece of   7.2%: gap to the nearest other big piece 0.110 (5.8 cells), middle at (0.04, -0.30, 0.65)
+alongmem.c_wake1     grid 240^3 (cell 0.0126): inside 340348, 58 pieces, 3 of them hold 0.5 % or more; after bridging gaps of two cells: 3 big pieces
+      piece of  85.4%: gap to the nearest other big piece 0.107 (8.5 cells), middle at (-0.09, 0.10, 0.00)
+      piece of   7.2%: gap to the nearest other big piece 0.107 (8.5 cells), middle at (0.04, -0.30, 0.65)
+      piece of   7.2%: gap to the nearest other big piece 0.107 (8.5 cells), middle at (0.04, -0.30, -0.65)
+alongmem.c_wake2     grid 160^3 (cell 0.0189): inside 140830, 38 pieces, 3 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+      piece of  97.8%: gap to the nearest other big piece 0.065 (3.5 cells), middle at (-0.05, 0.00, -0.00)
+      piece of   0.7%: gap to the nearest other big piece 0.065 (3.5 cells), middle at (0.82, -0.63, 0.37)
+      piece of   0.7%: gap to the nearest other big piece 0.065 (3.5 cells), middle at (0.82, -0.63, -0.37)
+alongmem.c_wake2     grid 240^3 (cell 0.0126): inside 478556, 88 pieces, 3 of them hold 0.5 % or more; after bridging gaps of two cells: 1 big pieces
+      piece of  97.9%: gap to the nearest other big piece 0.061 (4.9 cells), middle at (-0.05, 0.00, 0.00)
+      piece of   0.8%: gap to the nearest other big piece 0.061 (4.9 cells), middle at (0.82, -0.63, 0.37)
+      piece of   0.8%: gap to the nearest other big piece 0.061 (4.9 cells), middle at (0.82, -0.63, -0.37)

@@ -1,0 +1,42 @@
+GL_HEAD  as written: identical; with comments out and APR_CARRY not defined: identical (23 lines)
+GL_ORBIT as written: DIFFERS; with comments out and APR_CARRY not defined: identical (163 lines)
+GL_KLEIN as written: identical; with comments out and APR_CARRY not defined: identical (68 lines)
+GL_TAIL  as written: identical; with comments out and APR_CARRY not defined: identical (264 lines)
+VERT     as written: identical; with comments out and APR_CARRY not defined: identical (5 lines)
+BLIT     as written: identical; with comments out and APR_CARRY not defined: identical (13 lines)
+GLSL of the 19 old entries (hash and length of approach.glsl in the two pages): 19 identical; new in this build: alongonce pulledplane
+
+Pictures of five untouched entries, this build against base17a (1400x950 window, the canvas of the stage):
+  mercator   julia  862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 92015 | time to draw, first / again: this build 1432 / 958 ms, base17a 1180 / 1183 ms
+  mercator   mandel 862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 57211 | time to draw, first / again: this build 1112 / 1016 ms, base17a 1292 / 1219 ms
+  mercator   flat   862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 487517 | time to draw, first / again: this build 259 / 267 ms, base17a 263 / 263 ms
+  lathe      julia  862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 110358 | time to draw, first / again: this build 2823 / 708 ms, base17a 2764 / 764 ms
+  lathe      mandel 862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 138228 | time to draw, first / again: this build 1241 / 1083 ms, base17a 1245 / 1191 ms
+  lathe      flat   862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 487517 | time to draw, first / again: this build 259 / 267 ms, base17a 255 / 267 ms
+  turnalong  julia  862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 92713 | time to draw, first / again: this build 2676 / 799 ms, base17a 2882 / 749 ms
+  turnalong  mandel 862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 119465 | time to draw, first / again: this build 1149 / 934 ms, base17a 1479 / 1401 ms
+  turnalong  flat   862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 487517 | time to draw, first / again: this build 260 / 266 ms, base17a 262 / 266 ms
+  windsq     julia  862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 103974 | time to draw, first / again: this build 3298 / 715 ms, base17a 2994 / 783 ms
+  windsq     mandel 862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 183680 | time to draw, first / again: this build 1579 / 1215 ms, base17a 1330 / 1217 ms
+  windsq     flat   862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 487517 | time to draw, first / again: this build 259 / 265 ms, base17a 259 / 263 ms
+  bulb       julia  862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 168475 | time to draw, first / again: this build 3794 / 1217 ms, base17a 3044 / 1201 ms
+  bulb       mandel 862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 77411 | time to draw, first / again: this build 1277 / 951 ms, base17a 1420 / 1026 ms
+  bulb       flat   862 x 701 pixels: 0 differ (largest difference 0 of 255; by more than 2: 0); not background: 487517 | time to draw, first / again: this build 263 / 263 ms, base17a 254 / 266 ms
+
+Time to draw again (ms, the second drawing of the same settings), this build / base17a, per run:
+  mercator   julia   1649 /   774     958 /  1183
+  mercator   mandel   927 /   649    1016 /  1219
+  mercator   flat     266 /   264     267 /   263
+  lathe      julia    767 /   632     708 /   764
+  lathe      mandel  1200 /   752    1083 /  1191
+  lathe      flat     265 /   262     267 /   267
+  turnalong  julia    731 /   610     799 /   749
+  turnalong  mandel   933 /   755     934 /  1401
+  turnalong  flat     266 /   268     266 /   266
+  windsq     julia    670 /   630     715 /   783
+  windsq     mandel  1045 /  1067    1215 /  1217
+  windsq     flat     266 /   268     265 /   263
+  bulb       julia   1023 /  1005    1217 /  1201
+  bulb       mandel   629 /   837     951 /  1026
+  bulb       flat     264 /   263     263 /   266
+  all 15 together   10901 /  9036   10924 / 12059

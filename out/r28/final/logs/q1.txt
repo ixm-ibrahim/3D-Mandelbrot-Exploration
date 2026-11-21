@@ -1,0 +1,14 @@
+15:37:45 speed, first picture at the default, 5 trials each page
+15:43:13   exit 0
+15:43:13 old pictures, wide dark
+15:45:21   exit 0
+15:45:21 three voices and the estimate, six settings
+15:52:51   exit 0
+15:52:51 rays, ten views past 100
+16:02:37   exit 0
+16:02:37 the 2D view, twelve views
+16:05:27   exit 0
+16:05:27 walk of the rays (no browser)
+16:17:16 (the walk is numpy only and still runs; the browser is free) exit: queue 1 is done
+16:19:35   exit 0
+16:19:35 exit: queue 1 is done

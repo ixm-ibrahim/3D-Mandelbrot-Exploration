@@ -1,0 +1,4 @@
+subject mandel: the opening picture
+  picture at rest after 0.6 s (ok)
+  mandel-96: 0.3 s, facts ['Triangles', '18,292', 'Points', '9,148', 'Size', '100 × 91.3 × 28.5 mm', 'Pieces', '1', 'mandelbrot-96.stl', '893 kB', 'mandelbrot-96.obj', '689 kB', 'mandelbrot-96.ply', '367 kB', 'Zip to save', '1.9 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-96.zip', 'size': 1997546, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 43 ms (35 turns, 0 over 50 ms, 0 over 100 ms)
+no console errors

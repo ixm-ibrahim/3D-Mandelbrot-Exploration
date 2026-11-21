@@ -1,0 +1,5 @@
+step 1 waited 3.1 s
+step 2 result: drawing
+step 2 waited 84.1 s
+step 3 result: 45 drawings, 0 failed. Equation presets: zⁿ + c (Mandelbrot) | c·z·(1 − z) (lambda) | |z|ⁿ + c (burning ship) | conj(z)ⁿ + c (tricorn) | z³ − z + c (cubic) | zⁿ + c/z (with a division by z) | z⁻ⁿ + c (negative power) | z² + c·z⁻² (square against division)
+no console errors

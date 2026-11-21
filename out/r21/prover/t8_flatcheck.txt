@@ -1,0 +1,20 @@
+flat page: verdicts that differ from the flat orbit (of 20000 each), and how far one squaring throws a flat point off the page
+first1        Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+first2        Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+first3        Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+first8        Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+delay_cov     Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+lag50_cov     Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+lag25_cov     Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+csheet_flat   Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+csheet_own    Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+lathe_x       Mandelbrot     0  basilica     0  rabbit     0  Siegel     0  off the page 0.0e+00
+twist         Mandelbrot   702  basilica   281  rabbit  2715  Siegel  1466  off the page 6.7e+01
+twist8        Mandelbrot   495  basilica   247  rabbit  1120  Siegel   858  off the page 2.4e+01
+delay_twist   Mandelbrot  1749  basilica   312  rabbit  2715  Siegel  3770  off the page 6.7e+01
+csheet_twist  Mandelbrot  2695  basilica   281  rabbit  2715  Siegel  3770  off the page 6.7e+01
+
+share of the box inside at 30 / 80 / 200 steps (a slow leak shows as a falling number)
+first1  Mandelbrot 5.841% 5.550% 5.449% | basilica 3.071% 3.068% 3.068% | rabbit 6.351% 6.240% 6.240%
+first2  Mandelbrot 4.591% 4.401% 4.351% | basilica 3.084% 3.082% 3.082% | rabbit 4.961% 4.868% 4.868%
+first3  Mandelbrot 3.793% 3.676% 3.647% | basilica 2.979% 2.977% 2.977% | rabbit 4.381% 4.273% 4.273%

@@ -1,0 +1,27 @@
+step 1 result: 
+page up, approach pillow
+step 1 waited 2.1 s
+step 2 result: 
+1. Exactness on z = 0 (500 points; worst relative error |F - z^n| / |z^n|, and worst |F.z| / |z^n|)
+   n = 2: 2.09e-15  (z part 0.0e+0)  ok
+   n = 3: 4.59e-15  (z part 0.0e+0)  ok
+   n = 4: 4.02e-15  (z part 0.0e+0)  ok
+   n = 5: 5.56e-15  (z part 0.0e+0)  ok
+   n = 8: 7.28e-15  (z part 0.0e+0)  ok
+   n = -1: 1.62e-15  (z part 0.0e+0)  ok
+   n = -2: 1.92e-15  (z part 0.0e+0)  ok
+   n = -3: 4.66e-15  (z part 0.0e+0)  ok
+2. Continuity: 274000 pairs of unit directions about 1e-5 apart (200000 random, plus {"equator":20000,"meridians":20000,"poles":10000,"corners":12000,"midedges":12000}); ratio |F(d1) - F(d2)| / |d1 - d2|
+   n = 2: max 11.29 (at lon -141.60°, lat 90.00°), 99.9th percentile of the random pairs 6.27, median 2.28; special pairs: max 11.29, 99.9th 5.07  bounded; rule against the reference built from the task text: 3.4e-15
+   n = 3: max 11.73 (at lon -141.60°, lat 90.00°), 99.9th percentile of the random pairs 9.74, median 3.67; special pairs: max 11.73, 99.9th 6.92  bounded; rule against the reference built from the task text: 5.9e-15
+   n = -2: max 11.29 (at lon -141.60°, lat 90.00°), 99.9th percentile of the random pairs 6.27, median 2.28; special pairs: max 11.29, 99.9th 5.07  bounded; rule against the reference built from the task text: 4.2e-15
+3. Round trips over 20000 samples: |Phi(PhiInv(d)) - d| max 7.0e-15; PhiInv(Phi(u)) against u: weights differ by at most 1.6e-15, wrong triangle type 0 times; Phi of that copy against Phi(u): 5.2e-15  ok
+4. GLSL against JavaScript, 20480 values (8 powers × 2560 points, 12 of every 64 in the plane z = 0, 12 just beside it): worst |glsl - js| / (1 + |js|) = 2.87e-4 at n=8 v=-1.5374,-1.5390,-0.0027; 0 values differ by more than 2e-3; sqr() against the JavaScript square 5.0e-5; mul(a, b) against the Sphere inversions shader with one plane 1.7e-6; largest |z| the shader returns for a point of the plane z = 0: 0.0e+0; finite at the origin, on the axes and at 1e18: yes, largest component 1.74e+18
+5. Distortion of D = Phi o (times n) o PhiInv, 20000 random directions, singular values s1 >= s2 of the derivative divided by |n|
+   n = 2: s1/s2 median 3.991, 95th 7.590, 99.9th 11.14, max 12.1;  s1*s2 median 1.000, 5th 1.000, 95th 1.000, 99.9th 1.00, min 0.881, max 1.00
+      median s1/s2 (and median s1*s2) by |latitude| band: 0–10°: 1.37 (1.00), 10–25°: 1.75 (1.00), 25–45°: 5.02 (1.00), 45–65°: 5.62 (1.00), 65–80°: 5.16 (1.00), 80–90°: 4.54 (1.00)
+      median s1/s2 by longitude from the nearest corner meridian: 0–10°: 1.30, 10–25°: 1.87, 25–35°: 2.71, 35–50°: 4.50, 50–60°: 6.16
+      the 40 worst s1/s2 sit at (longitude from the nearest corner meridian, |latitude|): (60°, 1°) 12.1, (60°, 2°) 11.9, (0°, 69°) 11.8, (1°, 70°) 11.8, (60°, 2°) 11.8, (1°, 69°) 11.7, (60°, 2°) 11.7, (60°, 2°) 11.7, (60°, 3°) 11.7, (1°, 69°) 11.6, (60°, 3°) 11.6, (60°, 3°) 11.5; of the 40, 21 are within 15° of a mid-edge meridian, 19 within 15° of a corner meridian, 19 above 60° latitude, 21 below 20°
+      the 8 worst s1*s2 sit at: (41°, 47°) 0.88, (1°, 48°) 1.00, (2°, 48°) 1.00, (14°, 90°) 1.00, (1°, 48°) 1.00, (1°, 48°) 1.00, (0°, 48°) 1.00, (3°, 48°) 1.00
+   n = 3: s1/s2 median 3.826, 95th 8.748, 99.9th 11.69, max 12.8;  s1*s2 median 1.000, 5th 1.000, 95th 1.000, 99.9th 1.00, min 1.000, max 1.00
+no console errors

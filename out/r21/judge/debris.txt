@@ -1,0 +1,11 @@
+rule                   | basilica, 80 steps                             | rabbit, 80 steps (then 200 steps)              | Siegel disc, 200 steps                        
+along                  |    0 loose,  0.00% of   56128, biggest     0 |    0 loose,  0.00% of  139326, biggest     0 ;    0 loose,  0.00% of  139326, biggest     0 |    0 loose,  0.00% of  138754, biggest     0
+oneplane               |    0 loose,  0.00% of   62520, biggest     0 |    0 loose,  0.00% of   38080, biggest     0 ;    0 loose,  0.00% of   38080, biggest     0 |    0 loose,  0.00% of  102636, biggest     0
+sheet.evc005e70k16     |    0 loose,  0.00% of   56760, biggest     0 |    0 loose,  0.00% of   43736, biggest     0 ;    0 loose,  0.00% of   43736, biggest     0 |    0 loose,  0.00% of  114326, biggest     0
+sheet.ease             |    0 loose,  0.00% of   54664, biggest     0 |    2 loose,  0.01% of   20612, biggest     1 ;  183 loose, 65.08% of    1535, biggest   394 |    0 loose,  0.00% of   76794, biggest     0
+alongmem.c_wake1       |    0 loose,  0.00% of   60588, biggest     0 |    2 loose, 14.48% of   57922, biggest  4193 ;    2 loose, 14.48% of   57922, biggest  4193 |    0 loose,  0.00% of  120898, biggest     0
+alongmem.c_wake2       |    0 loose,  0.00% of   59560, biggest     0 |    0 loose,  0.00% of   81528, biggest     0 ;    0 loose,  0.00% of   81528, biggest     0 |    0 loose,  0.00% of  133050, biggest     0
+span.c_lag10           |    0 loose,  0.00% of   60680, biggest     0 |    0 loose,  0.00% of   47908, biggest     0 ;    2 loose,  0.01% of   47842, biggest     2 |    0 loose,  0.00% of  117260, biggest     0
+span.c_page            |    0 loose,  0.00% of   67408, biggest     0 |    0 loose,  0.00% of   84404, biggest     0 ;    6 loose,  0.04% of   80259, biggest    16 |    0 loose,  0.00% of  152124, biggest     0
+frame.area_1_px        |   16 loose,  0.10% of   63384, biggest    13 |    4 loose,  0.01% of   58310, biggest     1 ;    4 loose,  0.01% of   58276, biggest     1 |   12 loose,  0.02% of   85286, biggest     2
+frame.orb_inf_px       |    0 loose,  0.00% of   74088, biggest     0 |    0 loose,  0.00% of   50683, biggest     0 ;    0 loose,  0.00% of   47443, biggest     0 |    0 loose,  0.00% of  131481, biggest     0

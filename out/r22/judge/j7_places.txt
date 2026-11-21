@@ -1,0 +1,33 @@
+== places that one squaring sends onto the spot c^2 + c of the rabbit (in the flat page)
+   oneplane   2 places,  0 of them off the flat page
+   lathe      2 places,  0 of them off the flat page
+   along      8 places,  6 of them off the flat page  e.g. (-0.102, 0.576, 0.477)
+   once       8 places,  6 of them off the flat page  e.g. (-0.102, 0.576, 0.477)
+   hinge      4 places,  2 of them off the flat page  e.g. (-0.148, 0.730, 0.124)
+   preturn    6 places,  4 of them off the flat page  e.g. (0.123, -0.000, 0.745)
+   capfold45  6 places,  4 of them off the flat page  e.g. (0.041, -0.248, -0.712)
+== places that one squaring sends onto a spot in the flat page, (0.3, 0.2, 0)
+   oneplane   2 places,  0 of them off the flat page
+   lathe      2 places,  0 of them off the flat page
+   along      4 places,  2 of them off the flat page  e.g. (-0.575, -0.155, -0.081)
+   once       4 places,  2 of them off the flat page  e.g. (-0.575, -0.155, -0.081)
+   hinge      8 places,  6 of them off the flat page  e.g. (0.160, 0.081, 0.573)
+   preturn    6 places,  4 of them off the flat page  e.g. (-0.575, -0.000, 0.174)
+   capfold45  6 places,  4 of them off the flat page  e.g. (0.192, 0.058, 0.566)
+== places that one squaring sends onto a spot in the flat page on the left, (-0.5, 0.1, 0)
+   oneplane   2 places,  0 of them off the flat page
+   lathe      2 places,  0 of them off the flat page
+   along      8 places,  6 of them off the flat page  e.g. (0.041, 0.461, 0.544)
+   once       8 places,  6 of them off the flat page  e.g. (0.041, 0.461, 0.544)
+   hinge      4 places,  2 of them off the flat page  e.g. (0.030, 0.684, 0.202)
+   preturn    6 places,  4 of them off the flat page  e.g. (-0.070, -0.000, 0.711)
+   capfold45  6 places,  4 of them off the flat page  e.g. (0.023, 0.237, -0.673)
+== places that one squaring sends onto a spot off the page, (0.2, 0.3, 0.25)
+   oneplane   2 places,  2 of them off the flat page  e.g. (0.555, 0.297, 0.207)
+   lathe      2 places,  2 of them off the flat page  e.g. (0.565, 0.265, 0.221)
+   along      2 places,  2 of them off the flat page  e.g. (0.565, 0.270, 0.217)
+   once       2 places,  2 of them off the flat page  e.g. (0.565, 0.270, 0.217)
+   hinge      4 places,  4 of them off the flat page  e.g. (0.114, -0.163, 0.632)
+   preturn    2 places,  2 of them off the flat page  e.g. (0.555, 0.335, 0.136)
+   capfold45  6 places,  6 of them off the flat page  e.g. (0.555, 0.297, 0.207)
+done 8 s

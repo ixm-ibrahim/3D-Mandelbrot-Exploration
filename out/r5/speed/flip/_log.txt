@@ -1,0 +1,53 @@
+step 1 waited 2.0 s
+step 2 result: "FLIP f01-m | new programs 0 | label \"\" | finished after 137 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 2 waited 0.0 s
+step 2 wrote out/r5/speed/flip/f01-m.png
+step 3 result: "FLIP f02-m-solid1 | new programs 1 | label \"Preparing the formula\" for 3314 ms | finished after 3602 ms | program mercator|...|s"
+step 3 waited 0.0 s
+step 3 wrote out/r5/speed/flip/f02-m-solid1.png
+step 4 result: "FLIP f03-m-solid0 | new programs 0 | label \"\" | finished after 192 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 4 waited 0.0 s
+step 4 wrote out/r5/speed/flip/f03-m-solid0.png
+step 5 result: "FLIP f04-m-solid2 | new programs 0 | label \"\" | finished after 491 ms | program mercator|...|s"
+step 5 waited 0.0 s
+step 5 wrote out/r5/speed/flip/f04-m-solid2.png
+step 6 result: "FLIP f05-m-solid2-tones | new programs 0 | label \"\" | finished after 171 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 6 waited 0.0 s
+step 6 wrote out/r5/speed/flip/f05-m-solid2-tones.png
+step 7 result: "FLIP f06-m-solid2-shell | new programs 0 | label \"\" | finished after 380 ms | program mercator|...|s"
+step 7 waited 0.0 s
+step 7 wrote out/r5/speed/flip/f06-m-solid2-shell.png
+step 8 result: "FLIP f07-flat | new programs 0 | label \"\" | finished after 122 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 8 waited 0.0 s
+step 8 wrote out/r5/speed/flip/f07-flat.png
+step 9 result: "FLIP f08-flat-inside | new programs 1 | label \"Preparing the formula\" for 2449 ms | finished after 2532 ms | program mercator|...|i"
+step 9 waited 0.0 s
+step 9 wrote out/r5/speed/flip/f08-flat-inside.png
+step 10 result: "FLIP f09-3d-inside-kept | new programs 0 | label \"\" | finished after 915 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 10 waited 0.0 s
+step 10 wrote out/r5/speed/flip/f09-3d-inside-kept.png
+step 11 result: "FLIP f10-flat-inside-again | new programs 0 | label \"\" | finished after 119 ms | program mercator|...|i"
+step 11 waited 0.0 s
+step 11 wrote out/r5/speed/flip/f10-flat-inside-again.png
+step 12 result: "FLIP f11-flat-plain | new programs 0 | label \"\" | finished after 120 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 12 waited 0.0 s
+step 12 wrote out/r5/speed/flip/f11-flat-plain.png
+step 13 result: "FLIP f12-cut | new programs 0 | label \"\" | finished after 311 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 13 waited 0.0 s
+step 13 wrote out/r5/speed/flip/f12-cut.png
+step 14 result: "FLIP f13-cut-face | new programs 0 | label \"\" | finished after 342 ms | program mercator|...|i"
+step 14 waited 0.0 s
+step 14 wrote out/r5/speed/flip/f13-cut-face.png
+step 15 result: "FLIP f14-cut-plain | new programs 0 | label \"\" | finished after 302 ms | program mercator|...|vec3(0.0, 0.0, 0.0)"
+step 15 waited 0.0 s
+step 15 wrote out/r5/speed/flip/f14-cut-plain.png
+step 16 result: "FLIP f15-k | new programs 1 | label \"Preparing the formula\" for 814 ms | finished after 900 ms | program klein"
+step 16 waited 0.0 s
+step 16 wrote out/r5/speed/flip/f15-k.png
+step 17 result: "FLIP f16-k-solid1 | new programs 1 | label \"Preparing the formula\" for 1699 ms | finished after 1849 ms | program klein|s"
+step 17 waited 0.1 s
+step 17 wrote out/r5/speed/flip/f16-k-solid1.png
+step 18 result: "FLIP f17-k-solid0 | new programs 0 | label \"\" | finished after 120 ms | program klein"
+step 18 waited 0.0 s
+step 18 wrote out/r5/speed/flip/f17-k-solid0.png
+no console errors

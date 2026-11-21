@@ -1,0 +1,7 @@
+step 1 result: "warm"
+step 1 waited 3.1 s
+step 2 result: "COMPILE orbit 2545"
+step 3 result: "k"
+step 3 waited 1.5 s
+step 4 result: "COMPILE klein 849"
+no console errors

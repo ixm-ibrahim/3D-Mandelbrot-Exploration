@@ -1,0 +1,40 @@
+== out/lab2/judge/base-inflated
+plain-m2d-z000.png         z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 15.5% of the picture; sizes: 15.51
+plain-m2d-z010.png         z = 0.10: 1 (0 specks); largest 100.0% of solid; solid 8.1% of the picture; sizes: 8.10
+plain-m2d-z025.png         z = 0.25: 1 (0 specks); largest 100.0% of solid; solid 1.5% of the picture; sizes: 1.52
+plain-m2d-z050.png         z = 0.50: 0 (0 specks); largest 0.0% of solid; solid 0.0% of the picture; sizes: 
+plain-j-bas-2d-z000.png    z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 13.7% of the picture; sizes: 13.75
+plain-j-bas-2d-z020.png    z = 0.20: 3 (0 specks); largest 76.1% of solid; solid 9.0% of the picture; sizes: 6.83, 1.07, 1.07
+== out/lab2/judge/base-folded
+plain-m2d-z000.png         z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 15.5% of the picture; sizes: 15.52
+plain-m2d-z010.png         z = 0.10: 1 (25 specks); largest 99.8% of solid; solid 11.9% of the picture; sizes: 11.84
+plain-m2d-z025.png         z = 0.25: 2 (7 specks); largest 95.7% of solid; solid 6.2% of the picture; sizes: 5.97, 0.25
+plain-m2d-z050.png         z = 0.50: 1 (0 specks); largest 100.0% of solid; solid 3.3% of the picture; sizes: 3.30
+plain-j-bas-2d-z000.png    z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 13.7% of the picture; sizes: 13.75
+plain-j-bas-2d-z020.png    z = 0.20: 3 (0 specks); largest 82.5% of solid; solid 7.4% of the picture; sizes: 6.14, 0.65, 0.65
+== out/lab2/softfold
+plain-m2d-z000.png         z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 15.5% of the picture; sizes: 15.52
+plain-m2d-z010.png         z = 0.10: 3 (89 specks); largest 93.7% of solid; solid 12.6% of the picture; sizes: 11.82, 0.29, 0.29
+plain-m2d-z025.png         z = 0.25: 7 (69 specks); largest 82.0% of solid; solid 6.0% of the picture; sizes: 4.95, 0.29, 0.29, 0.11, 0.11, 0.07, 0.07
+plain-m2d-z050.png         z = 0.50: 1 (38 specks); largest 94.4% of solid; solid 2.4% of the picture; sizes: 2.25
+plain-j-bas-2d-z000.png    z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 13.7% of the picture; sizes: 13.75
+plain-j-bas-2d-z020.png    z = 0.20: 1 (18 specks); largest 100.0% of solid; solid 17.7% of the picture; sizes: 17.74
+== out/lab2/axisbulb
+plain-m2d-z000.png         z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 15.5% of the picture; sizes: 15.51
+plain-m2d-z010.png         z = 0.10: 1 (8 specks); largest 99.9% of solid; solid 14.9% of the picture; sizes: 14.86
+plain-m2d-z025.png         z = 0.25: 2 (3 specks); largest 90.2% of solid; solid 13.0% of the picture; sizes: 11.73, 1.26
+plain-m2d-z050.png         z = 0.50: 2 (6 specks); largest 99.2% of solid; solid 8.2% of the picture; sizes: 8.14, 0.05
+plain-j-bas-2d-z000.png    z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 13.8% of the picture; sizes: 13.75
+plain-j-bas-2d-z020.png    z = 0.20: 3 (0 specks); largest 79.5% of solid; solid 8.8% of the picture; sizes: 6.97, 0.90, 0.90
+== out/lab2/pillow2/pillowboth
+plain-m2d-z000.png         z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 16.2% of the picture; sizes: 16.22
+plain-m2d-z010.png         z = 0.10: 7 (85 specks); largest 92.9% of solid; solid 9.9% of the picture; sizes: 9.15, 0.12, 0.11, 0.06, 0.06, 0.06, 0.06
+plain-m2d-z025.png         z = 0.25: 5 (22 specks); largest 92.6% of solid; solid 4.3% of the picture; sizes: 3.97, 0.07, 0.07, 0.07, 0.06
+plain-j-bas-2d-z000.png    z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 14.7% of the picture; sizes: 14.71
+plain-j-bas-2d-z020.png    z = 0.20: 1 (58 specks); largest 99.8% of solid; solid 11.8% of the picture; sizes: 11.80
+== out/lab2/pillow2/pillowsmooth
+plain-m2d-z000.png         z = 0.00: 1 (55 specks); largest 99.9% of solid; solid 16.5% of the picture; sizes: 16.50
+plain-m2d-z010.png         z = 0.10: 1 (8 specks); largest 99.9% of solid; solid 11.2% of the picture; sizes: 11.18
+plain-m2d-z025.png         z = 0.25: 1 (2 specks); largest 99.9% of solid; solid 7.1% of the picture; sizes: 7.08
+plain-j-bas-2d-z000.png    z = 0.00: 1 (0 specks); largest 100.0% of solid; solid 30.7% of the picture; sizes: 30.70
+plain-j-bas-2d-z020.png    z = 0.20: 1 (0 specks); largest 100.0% of solid; solid 29.5% of the picture; sizes: 29.52

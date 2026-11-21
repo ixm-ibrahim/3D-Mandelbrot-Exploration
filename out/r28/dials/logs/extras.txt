@@ -1,0 +1,9 @@
+1. warming on (the page as it comes): after the default picture of Balls on balls, programs started in the background within 2.2 s: 2; then the size set to 150: programs that had to be built then 0, picture finished after 251 ms (program k-balls2/); no console errors
+2. two equal spheres at 100, depth 16: finished after 259 ms; Done: 12 passes at 862 × 701
+2. two equal spheres at 100, depth 200 (the old end of typed values): finished after 265 ms; Done: 12 passes at 862 × 701
+2. two equal spheres at 100, depth 1000: finished after 264 ms; Done: 12 passes at 862 × 701
+2. second sphere 50, size 200, depth 1000: finished after 701 ms; Done: 12 passes at 862 × 701
+2. second sphere 50, size 200, depth 1000, 2D view: finished after 251 ms; Done: 12 passes at 862 × 701
+2. size 150 (second sphere 33.33), depth 1000: finished after 255 ms; Done: 12 passes at 862 × 701
+2. the default, depth 1000: finished after 252 ms; Done: 12 passes at 862 × 701
+   no console errors

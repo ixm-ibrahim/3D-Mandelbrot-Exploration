@@ -1,0 +1,4 @@
+mine-p250-r40-kiss on dist/r28-dials.html: t 0.700000 rho 0.400000 grid 0 depth 16 | Done: 12 passes at 862 × 701 | drawn in 1797 ms | picks 38016, stops 37944
+mine-p120-r50-hex-budkiss on dist/r28-dials.html: t 0.916667 rho 0.500000 grid 1 depth 16 | Done: 12 passes at 862 × 701 | drawn in 443 ms | picks 38016, stops 38016
+p150-r50-budkiss on dist/r28-dials.html: t 0.833333 rho 0.500000 grid 0 depth 16 | Done: 12 passes at 862 × 701 | drawn in 581 ms | picks 38016, stops 37961
+exit 0, no console errors, 3 of 3 views back, 143 s

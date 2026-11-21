@@ -1,0 +1,16 @@
+Along once   c = (-1, 0, 0.3), IN the plane y = 0, 403200 points: stay 30 / 40 / 80 / 300 steps: 0 / 0 / 0 / 0
+             lifted off that plane by 1e-09: 0 / 0 / 0 / 0
+             lifted off that plane by 1e-06: 0 / 0 / 0 / 0
+             lifted off that plane by 0.001: 0 / 0 / 0 / 0
+             lifted off that plane by 0.01: 0 / 0 / 0 / 0
+one plane    c = (-1, 0, 0.3), IN the plane y = 0, 403200 points: stay 30 / 40 / 80 / 300 steps: 0 / 0 / 0 / 0
+             lifted off that plane by 1e-09: 0 / 0 / 0 / 0
+             lifted off that plane by 1e-06: 0 / 0 / 0 / 0
+             lifted off that plane by 0.001: 0 / 0 / 0 / 0
+             lifted off that plane by 0.01: 0 / 0 / 0 / 0
+Pulled plane c = (-1, 0, 0.3), IN the plane y = 0, 403200 points: stay 30 / 40 / 80 / 300 steps: 15204 / 9302 / 1242 / 0
+             lifted off that plane by 1e-09: 15204 / 9302 / 1242 / 0
+             lifted off that plane by 1e-06: 15206 / 9297 / 1138 / 0
+             lifted off that plane by 0.001: 14500 / 7877 / 5 / 0
+             lifted off that plane by 0.01: 11036 / 4107 / 0 / 0
+flakes.png: the plane y = 0 (x to the right, z up) for Along once | one plane | Pulled plane; white = stays 300 steps, grey = stays 40, dark = leaves sooner

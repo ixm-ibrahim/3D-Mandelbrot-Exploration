@@ -1,0 +1,285 @@
+3,4c3,4
+< +++ src/js/10-approaches.js	2026-11-19 14:47:51.013791900 -0700
+< @@ -279,6 +279,60 @@
+---
+> +++ src/js/10-approaches.js	2026-11-19 15:56:44.723973400 -0700
+> @@ -279,6 +279,62 @@
+49a50
+> +  // usesC: the very first squaring already depends on c (so the card, which shows that squaring, must follow c).
+50a52
+> +    usesC: true,
+65c67
+< @@ -348,6 +402,10 @@
+---
+> @@ -348,6 +404,10 @@
+76c78
+< @@ -968,7 +1026,9 @@
+---
+> @@ -968,7 +1028,9 @@
+87c89
+< @@ -977,7 +1037,8 @@
+---
+> @@ -977,7 +1039,8 @@
+97c99
+< @@ -1005,6 +1066,72 @@
+---
+> @@ -1005,6 +1068,72 @@
+170c172
+< @@ -1187,6 +1314,37 @@
+---
+> @@ -1187,6 +1316,52 @@
+176,178c178,184
+< +const crRough = (rough, fine) => `The lab always draws this rule with “Distance estimate” at “Rough”, whatever that setting says. Measured on the Julia sets for c = −1, the rabbit, the Siegel disc and c = −0.75, 1,728 lines of sight each, against the set worked point by point: with “Rough” no ray stopped where the set has no body, and ${rough}. ${fine} The pictures described here were made with Iterations at 40.`;
+< +const AO_ROUGH = crRough('of the lines that meet the set at most 4 of 323 were missed', 'With “Exact” up to 44% of the stops were at nothing, and with “One neighbour” up to 8%.');
+< +const PP_ROUGH = crRough('of the lines that meet the set at most 1 was missed', 'With “One neighbour” up to 82% of the stops were at nothing, and with “Exact” up to 26%.');
+---
+> +// (off: what the picture shows for a c out of the flat plane, where no such promise holds. Measured in out/r22/entrycheck/:
+> +// offplane.txt and the pictures break/*-19-*.png, break/*-20-*.png; Sphere inversions, one plane: parity.txt there.)
+> +const crRough = (rough, fine, off) => `The lab always draws this rule with “Distance estimate” at “Rough”, whatever that setting says. Measured on the Julia sets for c = −1, the rabbit, the Siegel disc and c = −0.75, which all lie in the flat plane, 1,728 lines of sight each, against the set worked point by point: with “Rough” no ray stopped where the set has no body, and ${rough}. ${fine} For a c out of the flat plane (the dial “c along z” away from 0) that does not hold, and the picture can show what is not there: ${off} The lab stops a ray at the places where orbits hold out longest, and Sphere inversions, one plane does the same for such a c (it stopped 244 of 1,200 rays for a c whose set is empty). The pictures described here were made with Iterations at 40.`;
+> +const AO_ROUGH = crRough('of the lines that meet the set at most 4 of 323 were missed', 'With “Exact” up to 44% of the stops were at nothing, and with “One neighbour” up to 8%.',
+> +  'with the rabbit’s c turned 10° about the x-axis it shows jagged shards, and with c = (−1, 0, 0.3) two flat flakes, though of 400,000 points tested each time none stayed for the 40 steps the picture asks for.');
+> +const PP_ROUGH = crRough('of the lines that meet the set at most 1 was missed', 'With “One neighbour” up to 82% of the stops were at nothing, and with “Exact” up to 26%.',
+> +  'with the rabbit’s c turned 10° about the x-axis it shows a smooth thin slab with buds along one edge, though of 400,000 points tested only 94 stayed for the 40 steps the picture asks for, and with c = (−1, 0, 0.3) a thin branching thread, where 66 of 400,000 stayed.');
+180c186,188
+< +const CR_ONE = 'The measurements on this card and the Learn tab look at one squaring, so for this entry they show the first squaring of an orbit only';
+---
+> +const CR_ONE = 'The measurements on this card look at one squaring, so for this entry they show the first squaring of an orbit only';
+> +const CR_LEARN = ' The Learn tab follows the orbit: its first step shows a first squaring, and after “Next step” the moves are those of the squaring the orbit has come to.';
+> +const CR_START = ' A power written into the start value (as in the start value c²) is taken before the orbit begins and does not count as a squaring';
+182,183c190,191
+< +const AO_NOTE = AO_ROUGH + ' What an orbit carries here is a count of its squarings and nothing else, and every orbit starts its count afresh. A squaring of the exact origin does not count. So in a Mandelbrot picture, where the orbit starts at 0, the squaring done by Turning plane, along is the squaring of c. ' + CR_SEVERAL + ': in the first step each of them is taken by Turning plane, along. ' + CR_ONE + ', which is the squaring of Turning plane, along. Every later squaring is the one of Sphere inversions, one plane, and the card of that entry describes it. A product of two different points is taken from Sphere inversions, one plane.';
+< +const AO_ABOUT = 'Turning plane, along squares every point about a plane of its own, at every step. That gives c = −1 its buds in eight directions, and it swells the rabbit into one lump. This entry does it once. The first squaring of an orbit is the one of Turning plane, along, and from the second squaring on the orbit follows Sphere inversions, one plane. So a point belongs to a Julia set of this entry exactly when its first step lands in the solid that Sphere inversions, one plane draws for the same c. What was measured in round 21, point by point, and seen in cuts: for c = −1 the middle body has eight buds round it (eight separate stretches of the set on circles round the x-axis through the buds). Close up the eight are not alike. The two in the plane y = 0 carry smaller buds on their sides, as in Turning plane, along. The two in the flat plane are bare on their sides, as in Sphere inversions, one plane. The four at 45° are plain lenses. The rabbit comes apart into smooth bodies, also off the flat plane, where Turning plane, along has one lump. Where it falls short: the bodies to the left and right of the middle body of c = −1 are bare off the flat plane. Cut at 45° and at 90° they show no buds. For c = −0.75 the bodies are fused into one mass. The rabbit is in three pieces: two of its bodies float free, one above and one below the rest. Each holds 7.2% of the volume and stands 0.11 away from the rest, the same on a coarse grid and on a fine one, so the gap is real. For a c out of the plane z = 0 it does no better than Sphere inversions, one plane: with the rabbit’s c turned 10° or more about the x-axis no point of the set was left. The Mandelbrot solid has the body of the solid of Sphere inversions, one plane: of 200,000 points c tested with 80 steps in round 21, none got a different answer. But the picture also shows thin curved wings standing off its left end, where Sphere inversions, one plane has nothing: in one picture 68 of 195 rays stopped on them. The wings are there, but they are films with no thickness. Followed along a line of sight into three of them, the orbit stays longer and longer the nearer the film (18 to 22 steps at the best of 20,000 places along a stretch 0.08 long, 39 to 57 steps when the search is narrowed to a stretch of 0.000000000003), and no place was found that stays for good. And it is not one rule: it is two rules and a count that says when to change from one to the other, which nothing in the flat rule asks for. Powers other than 2 have not been looked at for this entry.';
+---
+> +const AO_NOTE = AO_ROUGH + ' What an orbit carries here is a count of its squarings and nothing else, and every orbit starts its count afresh. A squaring of the exact origin does not count. So in a Mandelbrot picture, where the orbit starts at 0, the squaring done by Turning plane, along is the squaring of c. ' + CR_SEVERAL + ': in the first step each of them is taken by Turning plane, along.' + CR_START + ': it is taken by Sphere inversions, one plane. ' + CR_ONE + ', which is the squaring of Turning plane, along. Every later squaring is the one of Sphere inversions, one plane, and the card of that entry describes it.' + CR_LEARN + ' A product of two different points is taken from Sphere inversions, one plane.';
+> +const AO_ABOUT = 'Turning plane, along squares every point about a plane of its own, at every step. That gives c = −1 its buds in eight directions, and it swells the rabbit into one lump. This entry does it once. The first squaring of an orbit is the one of Turning plane, along, and from the second squaring on the orbit follows Sphere inversions, one plane. So a point belongs to a Julia set of this entry exactly when its first step lands in the solid that Sphere inversions, one plane draws for the same c. What was measured in round 21, point by point, and seen in cuts: for c = −1 the middle body has eight buds round it (eight separate stretches of the set on circles round the x-axis through the buds). Close up the eight are not alike. The two in the plane y = 0 carry smaller buds on their sides, as in Turning plane, along. The two in the flat plane are bare on their sides, as in Sphere inversions, one plane. The four at 45° are plain lenses. The rabbit comes apart into smooth bodies, also off the flat plane, where Turning plane, along has one lump. Where it falls short: the bodies to the left and right of the middle body of c = −1 are bare off the flat plane. Cut at 45° and at 90° they show no buds. For c = −0.75 the bodies are fused into one mass. The rabbit is in three pieces: two of its bodies float free, one above and one below the rest. Each holds 7.2% of the volume and stands 0.11 away from the rest, the same on a coarse grid and on a fine one, so the gap is real. For a c out of the plane z = 0 it does no better than Sphere inversions, one plane: with the rabbit’s c turned 10° or more about the x-axis no point of the set was left. The picture does not show that emptiness. It shows jagged shards there, where no point was found that stays (the numbers are in the next paragraph), and shards are one of the things this search is trying to get rid of. The Mandelbrot solid has the body of the solid of Sphere inversions, one plane: of 200,000 points c tested with 80 steps in round 21, none got a different answer. But the picture also shows thin curved wings standing off its left end, where Sphere inversions, one plane has nothing: in one picture 68 of 195 rays stopped on them. The wings are there, but they are films with no thickness. Followed along a line of sight into three of them, the orbit stays longer and longer the nearer the film (18 to 22 steps at the best of 20,000 places along a stretch 0.08 long, 39 to 57 steps when the search is narrowed to a stretch of 0.000000000003), and no place was found that stays for good. And it is not one rule: it is two rules and a count that says when to change from one to the other, which nothing in the flat rule asks for. Powers other than 2 have not been looked at for this entry.';
+189c197
+< +const PP_NOTE = PP_ROUGH + ' What an orbit carries here is a plane through the x-axis and a number that says how firmly it is held. Every orbit starts afresh with the flat page, held weakly. The three dials below are the three numbers of the rule that were set by hand in round 21. Nothing in the flat rule gives them, and what is written about this entry was measured with the dials where they start: 0.05, 0.7 and 16. A squaring of the exact origin pulls at nothing. So in a Mandelbrot picture, where the orbit starts at 0, the first pulls are those of the step that squares c. ' + CR_SEVERAL + ': the plane is pulled once, by c and by the point the step starts from, and every power of that step is taken about it. ' + CR_ONE + ', taken with the c of the Julia dials (the Learn tab takes its own c). In that squaring the plane has been pulled once by c and once by the point. A product of two different points is taken from Sphere inversions, one plane.';
+---
+> +const PP_NOTE = PP_ROUGH + ' What an orbit carries here is a plane through the x-axis and a number that says how firmly it is held. Every orbit starts afresh with the flat page, held weakly. The three dials below are the three numbers of the rule that were set by hand in round 21. Nothing in the flat rule gives them, and what is written about this entry was measured with the dials where they start: 0.05, 0.7 and 16. A squaring of the exact origin pulls at nothing. So in a Mandelbrot picture, where the orbit starts at 0, the first pulls are those of the step that squares c. ' + CR_SEVERAL + ': the plane is pulled once, by c and by the point the step starts from, and every power of that step is taken about it.' + CR_START + ': it is taken about the flat page. ' + CR_ONE + ', taken with the c of the picture: in a Julia picture the c of the Julia dials, and in a Mandelbrot picture, where every point is its own c, the point that is squared. In that squaring the plane has been pulled once by c and once by the point.' + CR_LEARN + ' It takes its own c. A product of two different points is taken from Sphere inversions, one plane.';
+193c201
+< +const PP_ABOUT = 'Sphere inversions, one plane squares every point about the flat page. Turning plane, along gives every point a plane of its own. Here the plane belongs to the orbit. Think of the planes through the x-axis as the pages of a book whose spine is the x-axis. Every orbit starts with the book open at the flat page, held weakly. Before each squaring two things pull at the page: first c, then the point that is about to be squared. A thing far from the x-axis pulls hard, and a thing on the x-axis does not pull at all. Each pulls toward the page it lies in itself, less directly the nearer that page is to the open one. The pulls add up and none is forgotten, so the page turns less and less as the orbit goes on. Then the point is squared by the one-plane rule about the page as it stands. What was measured in round 21, point by point, and seen in cuts: for c = −1 a row of separate bodies with round buds in four directions, two in the flat plane and two in the plane y = 0 (four separate stretches of the set on circles round the x-axis through the buds, 19° and 15° wide, where Turning plane, along has eight of 13°). The cut along the plane y = 0 looks like the flat picture. The rabbit and the Siegel disc are clean separate bodies in one piece, where Turning plane, along has a lump. Where it falls short: the four directions are there for c on the x-axis and close to it only. For c = −1 + 0.2i nothing is left in the plane y = 0, and for a c a little off the x-axis a ledge runs across the front of every body. The rabbit is nearly the rabbit of Sphere inversions, one plane (one point in eight of its inside differs), so its smaller bodies sit round the flat page only. Close up, thin loose flakes hover over the skin of c = −1 between the two rows of buds: in 336 of 720 directions tested there, and still there after 600 steps, where Sphere inversions, one plane has none. At 45° there is no bud, only a thin loose crescent. The Siegel disc loses 15% of its points between 30 and 200 steps before it settles. For a c that lies in neither of the two planes the set can vanish: with the rabbit’s c turned by 10°, 30° or 45° about the x-axis no point of it was left. The Mandelbrot solid shows the flat set in the plane z = 0 and, but for a few points, in the plane y = 0 (104 of 84,000 places differ), with smooth skin between the two and no buds there. Three numbers of the rule were set by hand, and they matter: see the three dials. Powers other than 2 have not been looked at for this entry.';
+---
+> +const PP_ABOUT = 'Sphere inversions, one plane squares every point about the flat page. Turning plane, along gives every point a plane of its own. Here the plane belongs to the orbit. Think of the planes through the x-axis as the pages of a book whose spine is the x-axis. Every orbit starts with the book open at the flat page, held weakly. Before each squaring two things pull at the page: first c, then the point that is about to be squared. A thing far from the x-axis pulls hard, and a thing on the x-axis does not pull at all. Each pulls toward the page it lies in itself, less directly the nearer that page is to the open one. The pulls add up and none is forgotten, so the page turns less and less as the orbit goes on. Then the point is squared by the one-plane rule about the page as it stands. What was measured in round 21, point by point, and seen in cuts: for c = −1 a row of separate bodies with round buds in four directions, two in the flat plane and two in the plane y = 0 (four separate stretches of the set on circles round the x-axis through the buds, 19° and 15° wide, where Turning plane, along has eight of 13°). The cut along the plane y = 0 looks like the flat picture. The rabbit and the Siegel disc are clean separate bodies in one piece, where Turning plane, along has a lump. Where it falls short: the four directions are there for c on the x-axis and close to it only. For c = −1 + 0.2i nothing is left in the plane y = 0, and for a c a little off the x-axis a ledge runs across the front of every body. The rabbit is nearly the rabbit of Sphere inversions, one plane (one point in eight of its inside differs), so its smaller bodies sit round the flat page only. Close up, thin loose flakes hover over the skin of c = −1 between the two rows of buds: in 336 of 720 directions tested there, and still there after 600 steps, where Sphere inversions, one plane has none. At 45° there is no bud, only a thin loose crescent. The Siegel disc loses 15% of its points between 30 and 200 steps before it settles. For a c that lies in neither of the two planes the set can vanish: with the rabbit’s c turned by 10°, 30° or 45° about the x-axis no point of it was left. The picture does not show that emptiness. For the turn by 10° it shows a smooth thin slab with buds along one edge, and for c = (−1, 0, 0.3) a thin branching thread, where next to no point stays (the numbers are in the next paragraph). The Mandelbrot solid shows the flat set in the plane z = 0 and, but for a few points, in the plane y = 0 (104 of 84,000 places differ), with smooth skin between the two and no buds there. Three numbers of the rule were set by hand, and they matter: see the three dials. Powers other than 2 have not been looked at for this entry.';
+196c204,213
+< +const ppSmooth = (p, n) => 'Not one formula applied again and again: the plane a point is squared about depends on the whole orbit before it. And the plane has no direction where the pulls cancel what holds it. Beside such a place it swings by a quarter turn, so the rule jumps there. In the first squaring, with c on the x-axis, that happens on two lines beside the x-axis: y = 0, z = ±' + aprNum(Math.sqrt(Math.max(0, ppDial(p, 'hold', 0.05)))) + ', the root of the first dial (read off the rule; measured with c = −1 at x = −0.8: two points 0.000000002 apart, one on either side of such a line, get answers 0.70 apart, which is as far apart as the answers are long).' + (aprWhole(n) ? '' : APR_HALF);
+---
+> +// (the measurement in brackets was made at the power 2 with the first dial at 0.05, out/r22/entry/jump.txt, so it is
+> +// shown there only; where the lines lie is read off the rule and holds for every power and every setting of the dials)
+> +const ppSmooth = (p, n) => {
+> +  const hold = Math.max(0, ppDial(p, 'hold', 0.05)), measured = aprIs(n, 2) && aprIs(hold, 0.05);
+> +  return 'Not one formula applied again and again: the plane a point is squared about depends on the whole orbit before it. And the plane has no direction where the pulls cancel what holds it. Beside such a place it swings by a quarter turn, so the rule jumps there. '
+> +    + (hold > 0 ? 'In the first squaring, with c on the x-axis, that happens on two lines beside the x-axis: y = 0, z = ±' + aprNum(Math.sqrt(hold)) + ', the root of the first dial (read off the rule'
+> +      + (measured ? '; measured with c = −1 at x = −0.8: two points 0.000000002 apart, one on either side of such a line, get answers 0.70 apart, which is as far apart as the answers are long' : '') + ').'
+> +      : 'With the first dial at 0 nothing holds the plane before the first pull, so in the first squaring, with c on the x-axis, there is no such place off the x-axis (read off the rule); in later squarings there can be.')
+> +    + (aprWhole(n) ? '' : APR_HALF);
+> +};
+208c225
+< @@ -1665,4 +1823,35 @@
+---
+> @@ -1665,4 +1840,35 @@
+233c250
+< +      { type: 'dial', key: 'ease', label: 'Ease of a pull', min: 0, max: 1, step: 0.01, def: 0.7, help: PP_HELP_EASE },
+---
+> +      { type: 'dial', key: 'ease', label: 'How little a thing near the page turns it', min: 0, max: 1, step: 0.01, def: 0.7, help: PP_HELP_EASE },
+323,324c340,341
+< +++ src/js/60-measure.js	2026-11-19 14:43:32.473881000 -0700
+< @@ -1,6 +1,9 @@
+---
+> +++ src/js/60-measure.js	2026-11-19 15:49:15.220435700 -0700
+> @@ -1,6 +1,19 @@
+328,331c345,358
+< +// (The fourth argument is the Julia constant, for the entries whose orbit carries something, see CARRY in
+< +// 10-approaches.js: their one squaring is the first of an orbit with that c. No other entry looks at it.)
+< +const cardCarries = a => typeof CARRY !== 'undefined' && !!CARRY[a.id];
+< +const powerF = () => { const a = ap(), q = { ...apP() }, n = cardPower(), c = S.c.slice(); return v => MATH[a.id](v, n, q, c); };
+---
+> +// (Round 22. An entry whose orbit carries something, see CARRY in 10-approaches.js, shows here the FIRST squaring of a
+> +// fresh orbit. Where that squaring depends on c (CARRY[id].usesC) the rule is handed the c of the picture as a fourth
+> +// argument: in a Julia picture the Julia constant; in a Mandelbrot picture, where every point is its own c and the
+> +// first squaring that counts is the squaring of c, the point itself. Every other entry is called as it always was.)
+> +const cardUsesC = a => typeof CARRY !== 'undefined' && !!CARRY[a.id] && !!CARRY[a.id].usesC;
+> +// what the card and the step figure depend on besides the approach, its dials and the power: '' for every other entry
+> +const cardCKey = a => (!cardUsesC(a) ? '' : S.mode === 'm' ? ' c=point' : ' c=' + JSON.stringify(S.c.slice(0, 3)));
+> +const cardRule = (a, n, q) => {
+> +  if (!cardUsesC(a)) return v => MATH[a.id](v, n, q);
+> +  if (S.mode === 'm') return v => MATH[a.id](v, n, q, v);
+> +  const c = S.c.slice(0, 3);
+> +  return v => MATH[a.id](v, n, q, c);
+> +};
+> +const powerF = () => { const a = ap(), q = { ...apP() }, n = cardPower(); return cardRule(a, n, q); };
+335c362,383
+< @@ -246,7 +249,7 @@
+---
+> @@ -114,8 +127,8 @@
+>  // last called. shown: id of the approach whose measured cells are on show. result: the last measurement shown.
+>  // cache: finished measurements, by approach, n and parameters. slices, longest: how the last measurement was
+>  // spread over frames (count, and the longest single piece in ms), kept for the timing test.
+> -// pow: the power the card last described (see cardPower).
+> -const cardRun = { cancel: null, last: -1e9, shown: null, result: null, cache: new Map(), slices: 0, longest: 0, pow: null };
+> +// pow: the power the card last described (see cardPower). ck: the c it last described (see cardCKey).
+> +const cardRun = { cancel: null, last: -1e9, shown: null, result: null, cache: new Map(), slices: 0, longest: 0, pow: null, ck: '' };
+>  
+>  function buildCard() {
+>    $('card').innerHTML = '<p class="note" id="cardPowNote" hidden></p><div class="row head label"><div>Property</div><div>In the plane</div><div id="ruleHead">In space</div></div>' +
+> @@ -232,7 +245,8 @@
+>  function updateCard() {
+>    const a = ap(), q = { ...apP() }, n = cardPower(), now = performance.now();
+>    cardStop();
+> -  cardRun.pow = n;
+> +  const ck = cardCKey(a);
+> +  cardRun.pow = n; cardRun.ck = ck;
+>    // say so when the power described is not the one on the dial
+>    const note = $('cardPowNote'), other = Math.abs(n - S.n) > 1e-9;
+>    if (note) {
+> @@ -246,7 +260,7 @@
+340c388
+< +  const c0 = S.c.slice(), key = a.id + ' ' + n + ' ' + JSON.stringify(q) + (cardCarries(a) ? ' ' + JSON.stringify(c0) : ''), known = cardRun.cache.get(key), stream = now - cardRun.last < CARD_QUIET;
+---
+> +  const key = a.id + ' ' + n + ' ' + JSON.stringify(q) + ck, known = cardRun.cache.get(key), stream = now - cardRun.last < CARD_QUIET;
+344c392
+< @@ -258,7 +261,7 @@
+---
+> @@ -258,7 +272,7 @@
+349c397
+< +  const st = measureBegin(v => MATH[a.id](v, n, q, c0), n);
+---
+> +  const st = measureBegin(cardRule(a, n, q), n);
+352a401,421
+> @@ -271,6 +285,9 @@
+>        cardRun.cancel = cardFrame(piece);
+>      } else {
+>        const m = measureEnd(st);
+> +      // A measurement that depends on c is remembered for the c in use only: a c dial that sweeps would otherwise
+> +      // fill the memory with one measurement per value and push every other entry's out of it.
+> +      if (ck) for (const k of [...cardRun.cache.keys()]) if (k.includes(' c=') && !k.endsWith(ck)) cardRun.cache.delete(k);
+>        cardRun.cache.set(key, m);
+>        if (cardRun.cache.size > 40) cardRun.cache.delete(cardRun.cache.keys().next().value);
+>        setBusy('measure', null);
+> @@ -381,7 +398,9 @@
+>  function drawStep3d() {
+>    // A new equation reaches this module only through this hook: the page redraws the picture without calling
+>    // refresh(). When the equation now takes another power, the figures and the card follow it.
+> -  if (cardRun.pow !== null && cardRun.pow !== cardPower()) { buildStep3d(); drawStep2d(); updateCard(); }
+> +  // (Round 22: the same for the c of the picture, for an entry whose first squaring depends on it. Whatever moved c,
+> +  // a dial, "Jump to a point", a saved point, has asked for a new picture, and that brings the page here.)
+> +  if (cardRun.pow !== null && (cardRun.pow !== cardPower() || cardRun.ck !== cardCKey(ap()))) { buildStep3d(); drawStep2d(); updateCard(); }
+>    const el = $('step3d'), b = basis(), axis = ap().axis(apP());
+>    // Called whenever anything on the stage changes. Skip the work unless something this figure shows has changed.
+>    const sig = [stepBuilt, el.clientWidth, el.clientHeight, window.devicePixelRatio, theme.line, theme.ink2, theme.brass, theme.dark, axis, b.right, b.up].join();
+355,356c424,446
+< +++ src/js/65-learn-steps.js	2026-11-19 14:22:19.338526800 -0700
+< @@ -350,12 +350,24 @@
+---
+> +++ src/js/65-learn-steps.js	2026-11-19 15:50:27.440228100 -0700
+> @@ -140,13 +140,19 @@
+>    const f = (v, t) => learnScale(v, learnPowLen(len(v), n), t, rule);
+>    return learnMove('stretch', 'Stretch', f, (a, b) => learnSayStretch(n, 'Its length', len(a), len(b)));
+>  }
+> +// (Round 22.) A reader who has just seen the Turn double an angle takes the Stretch for doubling too. So for a whole
+> +// power above 1 the contrast is said outright, with a number that tells the two apart: 3 squared is 9, 3 doubled is 6
+> +// (2 would not do: 2 squared and 2 doubled are both 4).
+> +const learnExample = n => (n <= 6 ? `3 would become ${aprNum(3 ** n)}, not ${aprNum(3 * n)}` : '');
+>  function learnSayStretch(n, what, r, R, flat) {
+>    if (!(r > 0)) return R > 0 ? `${flat ? 'The flat part of the point is 0' : 'The point is at the origin'}, and this power sends it outward: to a length of ${learnNum(R)}.`
+>      : `${flat ? 'The flat part of the point is 0' : 'The point is at the origin: its length is 0'}, and 0 ${learnPowWord(n)} is still 0. It stays.`;
+>    if (learnIs(n, 1)) return `${what} is ${learnNum(r)}. The power is 1, so it stays ${learnNum(r)}.`;
+>    const tail = R >= 1e18 ? ' That is as far as the lab counts.' : learnIs(r, 1) ? ' A length of exactly 1 stays 1.'
+>      : n > 1 ? (r < 1 ? ' A length under 1 gets shorter.' : ' A length over 1 gets longer.') : n < 0 ? ' A negative power turns short into long and long into short.' : '';
+> -  return `${what}, ${learnNum(r)}, is ${learnPowWord(n)}: ${learnNum(R)}.${tail}`;
+> +  const ex = learnExample(n), not = !(n > 1) || !aprWhole(n) || R >= 1e18 || learnIs(r, 1) ? ''
+> +    : (learnIs(n, 2) ? ' Squared means multiplied by itself, not doubled' : learnIs(n, 3) ? ' Cubed means multiplied by itself twice, not tripled' : ` That means multiplied by itself ${aprNum(n - 1)} times, not multiplied by ${aprNum(n)}`) + (ex ? `: ${ex}.` : '.');
+> +  return `${what}, ${learnNum(r)}, is ${learnPowWord(n)}: ${learnNum(R)}.${not}${tail}`;
+>  }
+>  function learnShift(c, space) {
+>    const f = (v, t) => [v[0] + t * c[0], v[1] + t * c[1], v[2] + t * c[2]];
+> @@ -350,12 +356,24 @@
+367,368c457,458
+< +  const ex = r < 1 ? 2 : 0.5, show = x => String(+x.toPrecision(3));
+< +  return `Its length is ${how}: ${learnNum(r)} becomes ${learnNum(R)}, and ${show(ex)} would become ${show(ex ** n)}. A length under 1 gets shorter, a length over 1 gets longer.`;
+---
+> +  const ex = learnExample(n);
+> +  return `Its length is ${how}: ${learnNum(r)} becomes ${learnNum(R)}${ex ? ', and ' + ex : ''}. A length under 1 gets shorter, a length over 1 gets longer.`;
+385c475
+< @@ -382,7 +394,7 @@
+---
+> @@ -382,7 +400,7 @@
+394c484
+< @@ -392,7 +404,9 @@
+---
+> @@ -392,7 +410,13 @@
+399,401c489,495
+< +  // (the fourth argument is for the entries whose orbit carries something, see CARRY in 10-approaches.js: their one
+< +  // squaring is the first of an orbit with this c; every other entry does not look at it)
+< +  const F = v => MATH[id](v, n, q, c);
+---
+> +  // An entry whose orbit carries something (CARRY in 10-approaches.js) has no one squaring: what a step does depends on
+> +  // what the orbit carries when the step begins. o.carry is that (left out: a fresh orbit, so the step is the orbit's
+> +  // first), and plan.carry(v), set below, is what the orbit carries after the step that starts at v, for the plan of
+> +  // the step after it. Every other entry is asked as before, with the plan's c as a fourth argument it does not look at.
+> +  const car = space === 3 && typeof CARRY !== 'undefined' && CARRY[id] ? CARRY[id] : null;
+> +  const car0 = car ? (o.carry !== undefined ? o.carry : car.start(q)) : null;
+> +  const F = car ? v => car.pw(car.step(car0, v, c, q), v, n) : v => MATH[id](v, n, q, c);
+405c499
+< @@ -452,9 +466,10 @@
+---
+> @@ -452,14 +476,16 @@
+414c508
+< +        + (typeof CARRY !== 'undefined' && CARRY[id] ? ' In this entry an orbit carries something from step to step, and these moves show its first squaring only: after “Next step” the moves on show are still those of a first squaring, not the ones the entry’s later squarings make.' : '');
+---
+> +        + (car ? ' In this entry an orbit carries something from step to step, and a squaring depends on it. The moves on show are those of the step on show: the first step is the first squaring of an orbit, and after “Next step” they are the moves of the squaring the orbit has come to.' : '');
+418,429c512,553
+< diff -ru base17a/js/80-ui.js src/js/80-ui.js
+< --- base17a/js/80-ui.js	2026-11-19 01:35:14.133435400 -0700
+< +++ src/js/80-ui.js	2026-11-19 14:43:32.474872300 -0700
+< @@ -445,7 +445,7 @@
+<    // Julia point
+<    UI.juliaSel = addSelect('juliaPresetHost', 'juliaPreset', 'Jump to a point', uiJuliaOptions(), () => juliaKeyAt(UI.juliaKey),
+<      key => { const p = juliaEntry(key); if (p) { UI.juliaKey = key; applyJuliaPreset(p); } });
+< -  const cd = (id, label, i, def) => addDial('juliaDials', id, label, -2, 2, 0.01, () => S.c[i], v => { S.c[i] = v; uiJuliaMark(); touch(); }, { lo: -8, hi: 8, xmin: -10, xmax: 10, xlo: -50, xhi: 50, def, group: 'julia' });
+< +  const cd = (id, label, i, def) => addDial('juliaDials', id, label, -2, 2, 0.01, () => S.c[i], v => { S.c[i] = v; uiJuliaMark(); if (typeof CARRY !== 'undefined' && CARRY[ap().id]) uiApproachParam(); else touch(); }, { lo: -8, hi: 8, xmin: -10, xmax: 10, xlo: -50, xhi: 50, def, group: 'julia' });
+<    cd('cx', 'c along x', 0, -1); cd('cy', 'c along y', 1, 0); cd('cz', 'c along z', 2, 0);
+<    uiJuliaList();
+<    $('juliaFrame').addEventListener('click', () => frameJuliaPreset(juliaEntry(juliaKeyAt(UI.juliaKey))));
+---
+>    const pre = v => (mirror ? mirror.at(v, 1) : v);
+>    const plan = { moves, note, space, id, n, params: q, c, rule: v => add(power(pre(v)), c) };
+> +  if (car) plan.carry = v => car.step(car0, pre(v), c, q);
+>    plan.run = v => learnRun(plan, v);
+>    plan.check = v => learnCheck(plan, v);
+>    return plan;
+> diff -ru base17a/js/66-learn-view.js src/js/66-learn-view.js
+> --- base17a/js/66-learn-view.js	2026-11-19 01:35:14.132430400 -0700
+> +++ src/js/66-learn-view.js	2026-11-19 15:50:50.608332000 -0700
+> @@ -77,20 +77,29 @@
+>    const L = LEARN, sp = L.space, P = L.pts[sp], id = ap().id;
+>    L.stale = false;
+>    let plan = null, fault = '';
+> +  // carry: what the orbit carries when the step begins, for an entry whose orbit carries something (round 22, see
+> +  // learnPlan); left out for the first step and for every other entry.
+> +  const planFor = carry => learnPlan({ space: sp, id, params: S.param[id], n: S.n, c: P.c.slice(), abs: S.abs.slice(), flip: S.flip.slice(), carry });
+>    if (typeof learnPlan !== 'function') fault = 'The moves are missing from this copy of the page.';
+>    else {
+> -    try { plan = learnPlan({ space: sp, id, params: S.param[id], n: S.n, c: P.c.slice(), abs: S.abs.slice(), flip: S.flip.slice() }); }
+> +    try { plan = planFor(undefined); }
+>      catch (e) { fault = 'The moves could not be worked out for these settings.'; console.warn('learnPlan failed', e); }
+>    }
+> -  const moves = plan && Array.isArray(plan.moves) ? plan.moves : [];
+> +  let moves = plan && Array.isArray(plan.moves) ? plan.moves : [];
+>    const at = (m, v, t) => { try { const p = m.at(v, t); return learnVFinite(p) ? p : v.slice(); } catch (e) { return v.slice(); } };
+>    const run = v => { const out = [v.slice()]; for (const m of moves) out.push(at(m, out[out.length - 1], 1)); return out; };
+>    // the steps taken so far, worked out again from the first point (the approach, the power or c may have changed)
+>    const orbit = [P.z.slice()];
+>    while (orbit.length <= L.k && moves.length) {
+> -    const r = run(orbit[orbit.length - 1]), e = r[r.length - 1];
+> +    const a = orbit[orbit.length - 1], r = run(a), e = r[r.length - 1];
+>      if (len(e) > 8) break;
+>      orbit.push(e);
+> +    // An entry whose orbit carries something: the step after this one gets moves of its own, made with what the
+> +    // orbit carries once this step is done. (Every other entry has one plan for every step, as before.)
+> +    if (plan.carry) {
+> +      try { plan = planFor(plan.carry(a)); moves = Array.isArray(plan.moves) ? plan.moves : []; }
+> +      catch (err) { fault = 'The moves could not be worked out for these settings.'; console.warn('learnPlan failed', err); moves = []; }
+> +    }
+>    }
+>    L.k = orbit.length - 1;
+>    const pts = run(orbit[L.k]), N = 48;

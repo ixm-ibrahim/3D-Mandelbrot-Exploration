@@ -1,0 +1,5 @@
+alongonce    start [0.5, -0.4, 0.3], c [-0.8, 0.1, 0.2], dials None: 4 steps; Learn against the library: largest difference 6.7e-15; second point Learn [-0.367, 0.453, 1.011], library [-0.367, 0.453, 1.011]
+pulledplane  start [0.5, -0.4, 0.3], c [-0.8, 0.1, 0.2], dials None: 6 steps; Learn against the library: largest difference 3.1e-15; second point Learn [-0.543, -0.549, 0.425], library [-0.543, -0.549, 0.425]
+alongonce    start [0, 0, 0], c [-0.9, 0.2, 0.15], dials None: 6 steps; Learn against the library: largest difference 6.7e-16; second point Learn [-0.152, -0.219, -0.012], library [-0.152, -0.219, -0.012]
+pulledplane  start [0, 0, 0], c [-0.9, 0.2, 0.15], dials None: 6 steps; Learn against the library: largest difference 5.6e-16; second point Learn [-0.151, -0.248, 0.174], library [-0.151, -0.248, 0.174]
+pulledplane  start [0.3, 0.5, -0.2], c [-1, 0, 0], dials {'hold': 0.6, 'ease': 0.1, 'cpull': 40}: 5 steps; Learn against the library: largest difference 9.3e-15; second point Learn [0.257, -0.749, -0.249], library [0.257, -0.749, -0.249]

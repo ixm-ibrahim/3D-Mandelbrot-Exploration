@@ -1,0 +1,109 @@
+page dist/r28-fix.html, window 1400x950, dark, 15:08:32
+the row Balls on balls
+     -> size 55.56, second sphere 100, depth 16 (t 1.400000, radius 1.000000; reach 1.3, Drawing radius 8.00; 3D view)
+     -> sentence: ""
+
+=== E1, the sentence: second sphere at 50 without touching
+reset, size 150 typed, second sphere 50 typed, Frame it
+     -> size 150, second sphere 50, depth 16 (t 0.833333, radius 0.500000; reach 3.1, Drawing radius 8.00; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+second sphere 49 typed
+     -> size 150, second sphere 49, depth 16 (t 0.833333, radius 0.490000; reach 3.0, Drawing radius 8.00; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 49 % of the first."
+reset, second sphere 50 typed (size stays 55.56)
+     -> size 55.56, second sphere 50, depth 16 (t 1.400000, radius 0.500000; reach 1.1, Drawing radius 8.00; 3D view)
+     -> sentence: "The second sphere is now 50 % of the first. Reset this section puts it back to 100. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+
+=== D2: touching within rounding
+reset, second sphere 33.33 typed, size 300 typed
+     -> size 300, second sphere 33.33, depth 16 (t 0.666667, radius 0.333300; reach 257.2, Drawing radius 8.00; 3D view)
+     -> sentence: "At 300 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+Frame it
+     -> size 300, second sphere 33.33, depth 16 (t 0.666667, radius 0.333300; reach 257.2, Drawing radius 10.50; 3D view)
+     -> sentence: "At 300 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+2D view ticked, Frame it
+     -> size 300, second sphere 33.33, depth 16 (t 0.666667, radius 0.333300; reach 257.2, Drawing radius 10.50; 2D view)
+     -> sentence: "At 300 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+
+=== D7: a chain too long to frame that does not touch
+reset, second sphere 50 typed, size 199.8 typed, Frame it
+     -> size 199.8, second sphere 50, depth 16 (t 0.750250, radius 0.500000; reach 57.5, Drawing radius 10.50; 3D view)
+     -> sentence: "Here the chain is too long for one picture, so Frame it shows a stretch of it. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+2D view ticked, Frame it
+     -> size 199.8, second sphere 50, depth 16 (t 0.750250, radius 0.500000; reach 57.5, Drawing radius 10.50; 2D view)
+     -> sentence: "Here the chain is too long for one picture, so Frame it shows a stretch of it. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+
+=== D3: a number typed again into the second sphere's own box
+reset, size 150 typed
+     -> size 150, second sphere 33.33, depth 16 (t 0.833333, radius 0.333333; reach 2.4, Drawing radius 10.50; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first. It follows the size until you set it yourself."
+33.33 typed into the second sphere's own box, Enter
+     -> size 150, second sphere 33.33, depth 16 (t 0.833333, radius 0.333333; reach 2.4, Drawing radius 10.50; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+size 200 typed
+     -> size 200, second sphere 33.33, depth 16 (t 0.750000, radius 0.333333; reach 3.5, Drawing radius 10.50; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first."
+for comparison: reset, size 150 typed, size 250 typed (nothing typed into the second sphere)
+     -> size 250, second sphere 20, depth 16 (t 0.700000, radius 0.200000; reach 3.6, Drawing radius 10.50; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 20 % of the first. It follows the size until you set it yourself."
+
+=== D5: a size typed with three decimals just over 100
+reset, size 100.004 typed
+     -> size 100, second sphere 100, depth 16 (t 1.000000, radius 1.000000; reach no end, Drawing radius 10.50; 3D view)
+     -> sentence: "At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+reset, size 100.01 typed
+     -> size 100.01, second sphere 50, depth 16 (t 0.999950, radius 0.499950; reach 1.8, Drawing radius 10.50; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. It follows the size until you set it yourself. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+reset, size 100 typed
+     -> size 100, second sphere 100, depth 16 (t 1.000000, radius 1.000000; reach no end, Drawing radius 10.50; 3D view)
+     -> sentence: "At 100 the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen."
+
+=== D6 (a): the words on the second sphere's box and arrows
+as the page stands: box "From 2 to 50, or 100" | up "Up to the next whole number. Hold Shift for ten steps. From 50 one step goes to 100." | down "Down to the next whole number. Hold Shift for ten steps. From 100 one step goes to 50." | step button reads ±1
+after a click on the step button: box "From 2 to 50, or 100" | up "Up by 0.1. Hold Shift for ten steps. From 50 one step goes to 100." | down "Down by 0.1. Hold Shift for ten steps. From 100 one step goes to 50." | step button reads ±0.1
+after Extreme ranges on and off (by script): box "From 2 to 50, or 100" | up "Up to the next whole number. Hold Shift for ten steps. From 50 one step goes to 100."
+
+=== D6 (b): a large size typed, before Frame it
+reset, Drawing radius 8 (by script), size 2000 typed, no Frame it
+     -> size 2000, second sphere 2.5, depth 16 (t 0.525000, radius 0.025000; reach 24.9, Drawing radius 8.00; 3D view)
+     -> sentence: "The Drawing radius in the View section cuts the two big neighbours open. Frame it makes room for them. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first. It follows the size until you set it yourself."
+Frame it
+     -> size 2000, second sphere 2.5, depth 16 (t 0.525000, radius 0.025000; reach 24.9, Drawing radius 25.25; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 2.5 % of the first. It follows the size until you set it yourself."
+reset, Drawing radius 8 (by script), size 150 typed, no Frame it
+     -> size 150, second sphere 33.33, depth 16 (t 0.833333, radius 0.333333; reach 2.4, Drawing radius 8.00; 3D view)
+     -> sentence: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 33.33 % of the first. It follows the size until you set it yourself."
+
+=== D6 (c): the help under the size dial
+"How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain, and past 100, where they are larger than the middle ball, the second sphere is made smaller to let them."
+the help under the second sphere: "The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball, and their buds are smaller and stand further apart. Between 50 and 100 the buds on a neighbour would cut into each other, so the dial jumps from 50 to 100."
+
+=== D6 (d): the longest block of sentences (spheres touching, a smaller second sphere, depth under 5)
+reset, second sphere 50, size 200, depth 1, Frame it
+     -> size 200, second sphere 50, depth 1 (t 0.750000, radius 0.500000; reach no end, Drawing radius 9.00; 3D view)
+     -> sentence: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With so few rounds of the search whole balls are still undecided, and they come out as broken shells. With a single round most of the picture is one wall of colour."
+     that is 467 characters, 95 words
+depth 3
+     -> size 200, second sphere 50, depth 3 (t 0.750000, radius 0.500000; reach no end, Drawing radius 9.00; 3D view)
+     -> sentence: "At 200 the chain never ends, so the picture shows a stretch of it. Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen. Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 50 % of the first. With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+     that is 404 characters, 82 words
+
+=== E3: what the sentence says at depth 1, 2, 4, 5
+depth 1 typed
+     -> size 55.56, second sphere 100, depth 1 (t 1.400000, radius 1.000000; reach 1.3, Drawing radius 9.00; 3D view)
+     -> sentence: "With so few rounds of the search whole balls are still undecided, and they come out as broken shells. With a single round most of the picture is one wall of colour."
+depth 2 typed
+     -> size 55.56, second sphere 100, depth 2 (t 1.400000, radius 1.000000; reach 1.3, Drawing radius 9.00; 3D view)
+     -> sentence: "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+depth 4 typed
+     -> size 55.56, second sphere 100, depth 4 (t 1.400000, radius 1.000000; reach 1.3, Drawing radius 9.00; 3D view)
+     -> sentence: "With so few rounds of the search whole balls are still undecided, and they come out as broken shells."
+depth 5 typed
+     -> size 55.56, second sphere 100, depth 5 (t 1.400000, radius 1.000000; reach 1.3, Drawing radius 9.00; 3D view)
+     -> sentence: ""
+
+=== states written by hand (no dial gives them)
+radius 0.7 written into the state: the box shows 50, the program on show is k-balls2, sentence "The second sphere is now 50 % of the first. Reset this section puts it back to 100. With the second sphere at 50 the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen."
+radius 0.5 with t = 0.6 written into the state (below the touching value 0.75): the picture's program and the twin with nothing passed give different verdicts at 0 of 4096 points of the flat cut; the size box shows 200
+
+console: no console errors or warnings

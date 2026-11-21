@@ -1,0 +1,622 @@
+[
+ {
+  "summary": "Prover, about 90 minutes. Pencil first, then numpy on the orchestrator's own rule code; five pictures made and looked at. No Mandelbrot solid drawn or looked at; nothing registered with the bench. Long notes: out/r20/prover/NOTES.md.\n\nW1, W3, W4 hold exactly. W2 holds with a better reason. W5 is half wrong and half proved. W6 is half right and half wrong.\n\n- W1 HOLDS: one step sends the planes at 60 and 120 degrees into the flat plane (|Z| <= 3e-14) and the cuts equal the flat set at 0 of 160,801 points for basilica, rabbit, Siegel (dendrite: 1 point, rounding). Amendment: the 60-degree copy is the MIRROR image (the three copies are the flat picture turned 0, 120, 240 degrees).\n- W2 HOLDS, reason sharpened: with even k the cut z = 0 is still right for c on the x-axis (0 points differ) and wrong off it (rabbit 88.9 % of points, Siegel 100 %). Clean statement (parity): a fold-free rule exact on the flat plane has an EVEN number of extra half-planes on each side of it, at every power. One a side (two planes) is exactly what cannot be had.\n- W3 HOLDS (5.5e-14); six-fold for c on the x-axis.\n- W4 HOLDS on all four counts (0.0000 % reversed, covers 5.994 times, six crushed directions, six bud directions with stretch 2.0000 x 2.0000, +x reached only from +-x). Left out: the x-axis is a line of cone points, stretch 2 x 2 up to 2 x 10 right beside it.\n- W5 first half FAILS for the sinus profile: buds in the planes are ovals 0.98, 1.29, 1.32, 1.48 long-to-thin at generations 1 to 4 (one-plane twins 0.86, 0.99, 0.95); an exact 10-degree band brings them to 0.86, 1.09, 1.05, 1.12. Second half HOLDS and is proved for every member: only 33 %, 11 %, 3.7 % of buds at generations 2, 3, 4 lie in the planes; the rest are fins, median 5.5, 6.9, 14.6 to 1 (largest 126 to 1), median thickness 0.014, 0.0048, 0.0013. At every neck the skin between the planes is a comb of hair-thin slivers (seen).\n- W6 first half HOLDS to two figures: Siegel half-thickness 0.0097, 0.0045, 0.0022, 0.0011 at 60, 240, 960, 3840 steps against pencil 0.0090, 0.0045, 0.0022, 0.0011: a sheet. Second half FAILS: an exact band gives a body that keeps its thickness, but only 0.062 (band 10) or 0.126 (band 20) against the one-plane rule's 0.468: a wedge with flat faces meeting on the x-axis.\n- C1 forbids a second plane that the rule KEEPS; the copy planes are not kept (one step into the flat plane, never back), so the rule is outside C1.\n- Two planes with an exact flat cut: three ways tried, all fail (even winding, lopsided winding, one fold).\n- Right k: odd is forced; the roundness count asks for k = n; so k = n at odd powers and n + 1 at even powers (the entry's formula). At power 2 the count the power asks for (k = 2, the two-plane look) is the forbidden case.\n- A ten-second scout of the same rule wound round the y-axis FAILS (frayed flake, streaked neck).",
+  "verdicts": [
+   {
+    "name": "W1",
+    "what": "For every c in the flat plane the cut by the plane at 60 and at 120 degrees is the flat picture, turned.",
+    "verdict": "holds (exactly), with one amendment: the copy at 60 degrees is the mirror image; as planes the copies are the flat picture turned 0, 120 and 240 degrees",
+    "evidence": "Reasoned: a point of the half-plane at j x 60 degrees is sent by T to the flat plane, half y > 0 for even j and y < 0 for odd j; from then on it is a flat orbit; nothing uses the slope of g or which c. Measured (logs/exact.log, logs/extra.log): |Z| <= 3e-14 after one step; error 7e-15 against (x + i rho)^2 at 0, 120, 240 degrees and against (x - i rho)^2 at 60, 180, 300; whole cuts at 60 steps differ from the (mirrored) flat set at 0 of 160,801 points for basilica, rabbit, Siegel, 1 point for the dendrite. Seen: two-planes.png bottom right.",
+    "gates": "exact.py block W1 + escape-step check: all pass"
+   },
+   {
+    "name": "W2",
+    "what": "k must be odd: an even k breaks the cut z = 0.",
+    "verdict": "holds, but the stated reason is loose: with even k the cut z = 0 is still the flat set for c on the x-axis; it is wrong for c off it. Clean form: parity rule",
+    "evidence": "Measured: k = 2 and 4 give conj(z^2) on the half y < 0 (error 0 against it, 37 against z^2); basilica cut z = 0 differs at 0 of 19,541 points; rabbit at 88.9 % of its points; Siegel 100 % (cut empty). Seen: two-planes.png top middle (a rabbit folded on the x-axis). Reasoned (parity): exactness forces g(0) = 0, g(180) = 180 + whole turns; a rising g then puts 2m (even) extra half-planes strictly above the flat plane; with the mirror above/below k = 2m + 1 is odd. Holds at every power.",
+    "gates": "exact.py block W2: as expected"
+   },
+   {
+    "name": "W3",
+    "what": "F is unchanged by a 120-degree turn about the x-axis, so every Julia set has that symmetry for every c.",
+    "verdict": "holds (exactly)",
+    "evidence": "Measured 5.5e-14 on 200,000 points; control F(turn 60) - F = 50. Also measured to 6e-14: F(turn 60) = half turn of F (six-fold symmetry for c on the x-axis), both mirrors, the half turn about the upright axis, F(-v) = mirror of F(v). One sentence on the other solid: it keeps the two mirrors only, not the three-fold turn (reasoned; not drawn).",
+    "gates": "exact.py block W3: pass"
+   },
+   {
+    "name": "W4",
+    "what": "Folds nothing; crushes only the six directions half way between the planes at right angles to the x-axis (sent straight up or down); the six bud directions arrive with stretch exactly 2; only +x and -x go to +x.",
+    "verdict": "holds on all four counts; leaves out that the whole x-axis is a line of cone points",
+    "evidence": "Measured on 600,000 directions: 0.0000 % mirror-reversed, covers 5.994 times, area factor < 0.02 only within 0.7 degrees of the half-way turns and 3.6 degrees of the plane x = 0; the six bud directions sent to (-1, 0, 0) with stretches 2.0000 and 2.0000; of 3,000,000 directions 100 land within 1 degree of +x, all by +x or -x. Left out: 0.5 degree from +x the stretches are 2 x 2 in a copy plane, 2 x 4 at 10 degrees, 2 x 8 at 20, 2 x 10 half way. Squeeze round the axis / along the meridian equals g'(a) to 5e-8 everywhere.",
+    "gates": "exact.py block W4: pass"
+   },
+   {
+    "name": "W5, first half",
+    "what": "A bud whose centre lies in one of the three planes is as round as its flat twin, at every depth.",
+    "verdict": "broken for the sinus profile: ovals that get slowly thinner with depth; true to about 10 % with an exact band",
+    "evidence": "Measured (logs/fins-sin3.log, fins-one.log, fins-band10.log), width along the meridian / round the axis at generations 1 to 4: m_w3 0.98, 1.29, 1.32 (1.19 to 1.45), 1.48 (1.31 to 1.76); one-plane twins 0.86, 0.99, 0.95; exact band 10 degrees 0.86, 1.09, 1.05, 1.12. Reasoned: g' = 1 only ON the plane; across a bud 5 degrees wide it reaches 1.27 and the squeeze adds up over the ancestors. Seen: fins-unrolled.png top row (ovals on the green lines for m_w3, rounder for the band).",
+    "gates": "6, 12, 24, 48 buds measured point by point at 80 steps"
+   },
+   {
+    "name": "W5, second half",
+    "what": "A bud between the planes is squeezed thin round the x-axis by the slope of g, and its own buds by more, without limit; fins cannot be removed in this kind.",
+    "verdict": "holds, and proved for every member of the kind (any g going k >= 2 times round)",
+    "evidence": "Measured: generation 2 has 24 fins at x = +-1.041, turned 23.6 and 36.4 degrees (pencil the same), 0.076 long, 0.065 tall, 0.014 thick, 5.5 to 1 (pencil g' = 4.57 times the 1.2 above). Generation 3: 192 of 216 buds between the planes, median 6.9 to 1, largest 28, 12 % thinner than 20 to 1. Generation 4: 1248 of 1296, median 14.6 to 1, largest 126, 40 % thinner than 20 to 1, median thickness 0.0013. Even winding: every bud a sliver (2.6, 9, 24, 37 to 1). Seen: fins-unrolled.png (slivers under the predicted ticks), neck-unrolled.png (a comb between the planes at 0.118, 0.048, 0.018 from the neck; clean only within about 5 degrees of the copy planes). Proof (reasoned): near a neck on the x-axis the rule is (x, rho, a) -> (x^2, 2|x| rho, g(a)), measured to 6 figures; so the k^m copies of one bud, m steps deeper, lie on ONE circle round the axis with equal length and height; only 360/D of them fit at full width; the average is thinner by k^m D / 360.",
+    "gates": "fins.py on sin3, lin3, band10, one-plane; near-axis form checked in logs/extra.log"
+   },
+   {
+    "name": "W6, first half",
+    "what": "Where g(a) is further from the flat plane than a, a body that neither attracts nor repels across the flat plane (Siegel disc) collapses to a sheet.",
+    "verdict": "holds, to two figures against pencil",
+    "evidence": "Pencil: at the disc's middle h -> h (1 + 103 h^2) for m_w3, so a height stays N steps only below 1/sqrt(206 N). Measured half-thickness 0.0147, 0.0097, 0.0064, 0.0045, 0.0031, 0.0022, 0.0015, 0.0011 at 30 to 3840 steps; pencil 0.0127, 0.0090, 0.0064, 0.0045, 0.0032, 0.0022, 0.0016, 0.0011. One-plane rule 0.468 at every count. m_w5 thinner still (0.0040 at 60 steps); m_w3lin below 0.0002 at every count; m_w3f a wafer thinning slowly to 0.013. Seen: siegel-thickness.png (three thin lines at 0 and +-60 degrees, thinner at 480 steps than at 60).",
+    "gates": "siegel.py, 7 rules x 3 spots x 8 step counts"
+   },
+   {
+    "name": "W6, second half",
+    "what": "A profile with g(a) = a exactly in a band round the flat plane would give the Siegel disc the one-plane rule's thickness.",
+    "verdict": "broken as worded: it gives a body that does not thin, but a wedge, 13 % (band 10) or 27 % (band 20) as thick as the one-plane body",
+    "evidence": "Measured half-thickness at the middle: band 10 degrees 0.0615, band 20 degrees 0.1258, the same at every step count from 30 to 3840; pencil |y| tan(w) = 0.0596 and 0.1229; one-plane 0.468. Toward the x-axis less: band 10 gives 0.038 and 0.015 at 30 % and 60 % of the way to the point 0. Seen: siegel-thickness.png right column: a six-sided wedge with two flat faces meeting in a point on the x-axis, ragged loose specks at its far end.",
+    "gates": "siegel.py"
+   },
+   {
+    "name": "C1 and this rule",
+    "what": "What exactly C1 forbids and why wind-then-square is not forbidden.",
+    "verdict": "holds: C1 forbids a second plane or smooth sheet that the rule KEEPS for c off the x-axis; the copy planes are not kept",
+    "evidence": "Reasoned from the round-17 proof (hypothesis: the plane is mapped into itself, so the crossing line is kept by z^2 + c). Here one step sends the planes at 60 and 120 degrees into the flat plane (measured |Z| <= 3e-14) and they never return; the crossing line is treated like every other line of the plane, so no condition on c arises. Price not named by C1: a plane that is not kept cannot keep its surroundings round after the first step; that is where the fins come from.",
+    "gates": "n/a (argument); one-step measurement in exact.py"
+   },
+   {
+    "name": "Two planes with an exact flat cut",
+    "what": "Is there any way to have TWO planes (k = 2, or a winding with one fold) and keep the flat cut exact?",
+    "verdict": "no: three ways tried, each fails for a stated reason",
+    "evidence": "(1) Even winding k = 2: flat cut wrong off the x-axis (rabbit 88.9 %). (2) Lopsided k = 2 (once round above, three half turns below): flat exact to 5e-15 and fold-free, but both extra half-planes lie below (240 and 300 degrees, measured), are not one plane, and the mirror above/below is off by 49. (3) One fold a side: flat exact, mirror kept, upright plane sent into the flat plane, but both halves land on y < 0, so its picture is the lower half doubled by a mirror: equal to the flat set for the basilica (0 points), not the rabbit (11,505 points differ; 43 from the doubled half); and it is the closed fold-before-squaring kind. General (reasoned): with the mirror above/below the upright plane can never carry both halves of the flat picture. Seen: two-planes.png.",
+    "gates": "exact.py block TWO planes"
+   },
+   {
+    "name": "A member whose between-plane bodies do not thin",
+    "what": "Is there one, or a proof that there is none?",
+    "verdict": "there is none (proved by a count, for any g going at least twice round; a staircase g does not escape)",
+    "evidence": "The proof under W5 second half. Measured on three profiles: sinus, even winding, exact band 10 degrees all thin with depth (band 10 between the planes: 5.6, 7.6, 17 to 1 at generations 2, 3, 4).",
+    "gates": "fins.py on three profiles"
+   },
+   {
+    "name": "The right k for a whole power n",
+    "what": "By a principle, not taste.",
+    "verdict": "k = n when n is odd, n + 1 when n is even (the entry's formula). At power 2 the count the power asks for, k = 2, is forbidden",
+    "evidence": "Principle 1 (parity, reasoned; measured flat error 1e-14 to 1e-11 for odd k at powers 2 to 5, 240 and 1200 for even k): k odd at every power. Principle 2 (the count, measured): covers n k times: 5.99, 8.99, 19.98, 24.97 for (2,3), (3,3), (4,5), (5,5); round on average needs n^2. They agree at odd powers (9 = 3^2, 25 = 5^2); at even powers n + 1 is the smallest allowed count not below what the power asks for (n - 1 at power 2 is the one-plane rule), over-covering by 1.5 at power 2 and 1.25 at power 4.",
+    "gates": "exact.py blocks 'The count' and 'Flat plane exact'"
+   },
+   {
+    "name": "The count check",
+    "what": "Round bodies on average need the sphere covered n^2 times; P covers it n times and T k times.",
+    "verdict": "holds; it does not rescue the fins",
+    "evidence": "Measured mean area factor = n k for 8 pairs; root-mean-square stretch 2.45 against 2 at power 2 with k = 3, 3.00 against 3 at power 3 with k = 3. The count is right at odd powers, yet the proof of the fins holds for every k >= 2 at every power.",
+    "gates": "exact.py"
+   },
+   {
+    "name": "Powers 3 and up: a symmetry lost",
+    "what": "The flat picture of z^n has an n-fold turn about the upright axis. Does the solid keep it?",
+    "verdict": "broken at powers 3, 4, 5; kept at power 2",
+    "evidence": "Measured on unit vectors: the one-plane rule changes by 2e-15 under that turn at every power; wind-then-square by 0.00 at power 2 and by a median 1.04, 1.31, 1.23 at powers 3, 4, 5. So at power 3 the flat cut has a three-fold turn that the solid lacks: the x-axis is singled out among three equal axes. Tested on F (one step), not on drawn sets.",
+    "gates": "exact.py block 'Power-n symmetry'"
+   },
+   {
+    "name": "Scout: wound round the y-axis instead",
+    "what": "The same rule with the winding axis on the bud axis, so that no neck lies on the axis. Ten seconds, not gated, not registered.",
+    "verdict": "fail at first look: frayed flake, streaked neck",
+    "evidence": "Measured: flat cut exact (0 points differ, 1.6e-14). Seen in scout-ywind.png: the planes through the y-axis at 60 degrees carry the flat basilica and rabbit, but the basilica cut across the winding axis is a six-armed flake with frayed, holed edges, the rabbit there a twelve-pointed thin star, and the skin near the x-axis neck is torn into long layered streaks, worse than m_w3's comb.",
+    "gates": "ywind.py; three cuts per set and one unrolled skin, looked at"
+   }
+  ],
+  "findings": [
+   "measured: W1 exact. One step from the planes at 60 and 120 degrees lands in the flat plane to 3e-14; cuts equal the flat set at 0 of 160,801 points (basilica, rabbit, Siegel), 1 point for the dendrite. The 60-degree copy is the mirror image.",
+   "measured: even k replaces z^2 by its mirror image on the half y < 0 of the flat plane. Basilica cut z = 0 unchanged (0 points), rabbit wrong at 88.9 % of points, Siegel cut empty.",
+   "reasoned: parity rule. A fold-free rule exact on the flat plane has an even number of extra half-planes on each side, at every power. Two planes (one extra a side) cannot be had; three planes (k = 3) is the smallest.",
+   "measured: all symmetries of F to 6e-14: third of a turn about x; sixth of a turn for c on the x-axis; both mirrors; half turn about the upright axis.",
+   "measured: the squeeze of a small body round the x-axis relative to the meridian is exactly g'(a) (5e-8 on 600,000 directions): 1 on the planes, up to 5 half way.",
+   "measured: right beside the x-axis the stretch is 2 x 2 in a copy plane and 2 x 10 half way: a cone point all along the axis. Not in W4.",
+   "measured: buds in the copy planes are ovals for the sinus profile: 0.98, 1.29, 1.32, 1.48 long-to-thin at generations 1 to 4, against 0.86, 0.99, 0.95 for the one-plane twins and 0.86, 1.09, 1.05, 1.12 with an exact 10-degree band.",
+   "measured: only 6 x 2^(G-1) of the 6^G copies of a bud lie in the planes: 100 %, 33 %, 11 %, 3.7 % at generations 1 to 4.",
+   "measured: between-plane fins: generation 2 at 23.6 and 36.4 degrees, 0.076 x 0.065 x 0.014; median 6.9 to 1 at generation 3 and 14.6 to 1 at generation 4 (largest 126), median thickness 0.0048 and 0.0013. Deep fins are tilted, so these numbers understate.",
+   "seen in the picture (fins-unrolled.png): slivers exactly under the predicted ticks; the skin smooth within about 8 degrees of each copy plane and saw-toothed between.",
+   "seen in the picture (neck-unrolled.png): close to the neck the skin between two copy planes is a dense comb of slivers one picture point wide with loose specks above; clean only within about 5 degrees of the planes and in a notch at 30 degrees.",
+   "reasoned: no member of the kind avoids the fins. Near a neck the k^m copies of a bud share one circle round the x-axis; only 360/D fit at full width.",
+   "measured: Siegel half-thickness for m_w3 follows 1/sqrt(206 x steps) to two figures from 60 to 3840 steps; one-plane rule 0.468 at every count.",
+   "measured: an exact band gives a Siegel body that does not thin (0.0615 and 0.1258 for 10 and 20 degrees) but is 13 % and 27 % of the one-plane body.",
+   "seen in the picture (siegel-thickness.png): m_w3 three thin lines; band 20 a six-sided wedge with flat faces meeting on the x-axis and ragged specks at its far end.",
+   "measured: covers n k times; k = n matches n^2 at odd powers only.",
+   "measured: at powers 3, 4, 5 F is not unchanged by the flat picture's own turn about the upright axis (median change 1.0 to 1.3 on unit vectors); at power 2 it is (0.00).",
+   "seen in the picture (scout-ywind.png): the same rule wound round the y-axis is frayed across its axis and streaked at the neck. Fail.",
+   "reasoned: the Mandelbrot solid of the rule keeps the two mirrors only, not the three-fold turn. Nothing drawn."
+  ],
+  "recommendation": "The right k for a whole power n is: k = n when n is odd, k = n + 1 when n is even. It rests on two things. First, a parity rule (reasoned, checked at powers 2 to 5): a fold-free rule that is exact on the flat plane and the same above and below must wind an odd number of times, at every power. Second, the count (measured): the rule covers the sphere of directions n k times and round-on-average needs n squared, so the power asks for k = n. At odd powers both agree. At even powers k = n is forbidden, n - 1 under-covers (at power 2 it is the one-plane rule itself) and n + 1 is the smallest allowed count that is not below what the power asks for. So the entry's formula is right and is not a dial.\n\nWhat cannot be had:\n1. Two planes at power 2. The count the power asks for is k = 2, four buds round the axis, the two-plane basilica the user liked. That is exactly the forbidden case: even winding breaks the flat cut off the x-axis, a lopsided winding puts both extra half-planes on one side, one fold gives a mirror-doubled half picture.\n2. A count that moves with every power: the count round the x-axis is 2k = 6, 6, 10, 10 for powers 2, 3, 4, 5.\n3. Round bodies between the planes: proved impossible for every member of the kind. Fins are the large majority of buds at depth and stand as combs at every neck.\n4. A Siegel body with the one-plane thickness: a band gives a wedge at best.\n5. At powers 3 and up, the flat picture's own turning symmetry about the upright axis: the solid does not have it.\n\nFor the texts of the lab entry: say \"turned by a third of a turn\" for the copies (the 60-degree one is mirrored), say that the buds in the planes are slightly oval, that between the planes the buds are thin fins that get thinner with depth, and that the Siegel disc is a sheet.",
+  "best_next": "Put the comb at the necks through panel2's hair number before anything else is built on this rule: `wide.py m_w3:basilica:15,45` with tiles close to the neck at x = -0.618 (my unrolled cuts at 0.118, 0.048 and 0.018 from the neck show the comb at 80 steps; panel2 has not seen it). My odds: about 85 % that the rule fails \"clean close up\" there by panel2's own line, as `along` did, since the comb is forced by a count and no profile removes it. If it does fail, the kind is closed for a clean skin and the only open question is whether the fins are small enough to be accepted by eye; the profile to judge that on is an exact band of about 10 degrees (rounder buds in the planes, a Siegel wedge instead of a sheet, fins no better). About 15 % that the slivers are too thin and too short to count at the scale panel2 looks at.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/fins-unrolled.png : basilica skin unrolled round the x-axis for m_w3, even winding and band 10; ovals on the copy planes, slivers under the predicted ticks, saw-toothed skin between. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/neck-unrolled.png : m_w3 skin unrolled at three distances from the neck; a comb of hair-thin slivers between the copy planes. Stretched across, not true to scale. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/siegel-thickness.png : Siegel disc cut across the x-axis at 60 and 480 steps for one-plane, m_w3, m_w3f, band 20; fat body, thinning lines, wafer, wedge. The one-plane body is taller than the frame. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/two-planes.png : six flat cuts: the flat rabbit, the wrong cut z = 0 under k = 2, the exact one under m_w3, the basilica under k = 2, the one-fold upright cut (lower half doubled), the mirrored 60-degree copy. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/scout-ywind.png : the failed scout wound round the y-axis: exact flat cuts, frayed flake across the axis, streaked skin at the neck. Looked at."
+  ],
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/NOTES.md",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/lib.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/exact.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/fins.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/siegel.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/pics.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/ywind.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/prover/logs/ (exact.log, extra.log, siegel.log, fins-sin3.log, fins-one.log, fins-band10.log, fins-lin3.log, gen2/gen3 .npy tables)",
+   "five PNG files in out/r20/prover/ listed under pictures; nothing outside out/r20/prover/ was touched"
+  ],
+  "not_done": [
+   "No bench or panel2 run (not this section). The comb at the necks was seen in my own unrolled cuts only; panel2's hair number has not been applied to it.",
+   "The proof that fins cannot be avoided uses the first-order form of the rule near a neck on the x-axis; the error terms were argued, not bounded line by line. Not reviewed by a mathematician.",
+   "Generation-4 bud widths for the one-plane rule were not run (its generations 1 to 3 were).",
+   "Deep fins were measured along three fixed directions; they are tilted, so the long-to-thin numbers at generations 3 and 4 understate, and a few read below 1.",
+   "Power 3 to 5 statements were tested on the rule itself (one step, the map of directions), not on Julia sets of those powers.",
+   "The y-axis scout was three cuts and one unrolled skin of two sets; not gated.",
+   "W1's amendment (mirror image at 60 degrees) was not checked against the lab build of the entry section."
+  ],
+  "risks": [
+   "The bench's J4 line counts round buds; it cannot see that the share of round buds falls to 11 % and 3.7 % at generations 3 and 4. A pass on J4 says little about this rule.",
+   "An exact band makes the buds in the planes rounder and gives the Siegel disc a body, but its Siegel body is a wedge with flat faces and ragged specks (seen), band 10's buds carry short whiskers in the unrolled picture (seen), and the fins between the planes are no better (measured). The profiles section may read the band as a cure; it is a trade.",
+   "The neck picture is stretched across; slivers thinner than a picture point show as specks. How visible the comb is at the scale a person looks at was not measured.",
+   "My band profile (smoothstep ramps) is my own, not the profiles section's; their numbers for 'band w' may differ from mine.",
+   "The entry's lab texts may say 'turned 60 degrees' and 'round at every depth'; both are wrong as measured here.",
+   "At powers 3 and up the lab entry will show a solid without the flat picture's turning symmetry; a user may read that as a fault of the build."
+  ]
+ },
+ {
+  "summary": "m_w3 (\"wind three times, then one plane\") FAILS ALL ELEVEN sets of panel2 (the orchestrator's own run, which finished; I ran no second one). along fails nine and passes two; twoplane passes three. It is NOT better than along on the panel: there is no set and no line where m_w3 passes and along fails.\n\nWhat holds (measured): the flat picture stands exactly in three planes for every c of the flat plane (0 points differ on rabbit and Siegel disc), the rule is unchanged by a third of a turn (6e-14), no lump anywhere (rabbit volume 0.97 of the one-plane yardstick, along 3.65), first buds of the x-axis sets are round (thickness/width 1.01, 0.99).\n\nWhat fails, and where:\n1. Skin. Tiles over a line, of 120: basilica 104 (along 24), San Marco 110 (12), airplane 31 (0), cauliflower 30 (0), rabbit 120, Siegel 99 of 102, nudged San Marco 120 (23). On the basilica every half-plane is whiskered and dusty EXCEPT exactly 30, 60 and 90 degrees (0 of 15 each), which are the only places its maker cut. The whiskers are part of the set (same inside share at 80, 320, 1280 steps).\n2. Wide bodies become flakes. Rabbit ears are 0.49 and 0.59 as thick as wide (one plane 1.15, 1.19); the rabbit is a cloud of flakes and shards (biggest face-joined piece 52 % at 257, 385 and 513 voxels a side; panel 82 %, needs 98.5). Siegel disc is a six-armed star of sheets 0.008 thick that drains (volume 0.350, 0.218, 0.154, 0.115, 0.089 at 20..320 steps). Dendrite: three flat trees, nothing between.\n3. A c nudged off the planes: the orbit of 0 stays bounded but never comes to rest (basilica nudged 0.058: wanders 1.3 across; along, twoplane, oneplane all settle on the 2-cycle), and the inside leaks: 16 % gone after 3000 steps at bas_yz, 7 % at bas_zy, 0 for the other three rules. Bodies crumple, outlines are hairy in every cut, the bud is a tuft of bristles.\n\nSheet for the user: out/r20/check/sheet.png (11 sets x 4 rules, then the basilica's skin and one bud for the four rules). Notes: out/r20/check/NOTES.md. Clock time used: about 40 minutes.",
+  "verdicts": [
+   {
+    "name": "basilica",
+    "what": "c = (-1, 0, 0), on the x-axis. The reference look.",
+    "verdict": "fail at clean close up: 104 of 120 tiles whiskered or dusty (thin up to 2.37 against 0.10, film up to 38 % against 0.5 %); at all three tile widths (35, 34, 35 of 40)",
+    "evidence": "Measured (panel2 run + my tiles). By angle: 15 of 15 tiles fail at 11.25, 33.75, 45, 56.25, 67.5, 78.75, 14 at 22.5; 0 of 15 at 30, 60, 90, 150. Seen (skin-basilica.png, worst-m_w3.png): toothed outline already in a tile 0.2 wide, whiskers and dust finer; along a smooth line with droplets, twoplane and oneplane clean lines. Whole set (seen): the liked look, buds in six rows, ribbed like a walnut (radius 0.495 to 0.5115 round the middle body, measured). One bud (seen bud.png, closeup.png): a ribbed egg, round in section (1.01), its own buds only in its plane; under along the bud is covered in small round buds. Bud on the bud 0.68 as thick as the one-plane rule's (measured). 4,792 loose voxel specks = 1.63 % of the solid at 385 a side, 74 % of that more than 3 degrees from all six planes (one plane: 88 specks, 0.03 %).",
+    "gates": "panel2: cut, one piece (with gap), stays, bodies, truly 3D, mirror pass; clean FAILS. along: fails clean too, 24 of 120."
+   },
+   {
+    "name": "sanmarco",
+    "what": "c = (-0.75, 0, 0), on the x-axis.",
+    "verdict": "fail at clean close up: 110 of 120 tiles (film up to 47 %)",
+    "evidence": "Measured. Seen (between-m_w3-sanmarco.png): at 30 degrees the three bodies run together, notches filled; cuts across the axis have a fuzzy hexagonal outline. Whole set: like the basilica, studded with buds. Bud round (0.99, measured).",
+    "gates": "panel2: only clean fails. along: fails clean, 12 of 120."
+   },
+   {
+    "name": "airplane",
+    "what": "c = (-1.754878, 0, 0), on the x-axis.",
+    "verdict": "fail at clean close up: 31 of 120 tiles (0 wide, 2 middle, 29 fine; thin 0.94, film 5.4 %). The mildest failure",
+    "evidence": "Measured. Seen: a ball with six spines of beads (4 off the flat plane), clean balls on a line in every half-plane; the fault is a knobbly, toothed edge with short spikes only in tiles 0.002 wide.",
+    "gates": "panel2: truly 3D passes by 6 spines; clean FAILS. along: passes every line."
+   },
+   {
+    "name": "cauliflower",
+    "what": "c = (0.25, 0, 0), on the x-axis.",
+    "verdict": "fail at clean close up: 30 of 120 tiles (4, 10, 16 by width; thin 1.73)",
+    "evidence": "Measured. Seen (between-m_w3-cauliflower.png, skin-cauliflower.png, sheet): a pumpkin with twelve grooves (12 dents, 10 off the flat plane); cuts across the axis at x = +-0.3 and +-0.6 are ragged and saw-toothed; blades and fins stand in the grooves; clean at 33.75 degrees at one skin point, ragged at 78.75.",
+    "gates": "panel2: clean FAILS. along: passes every line."
+   },
+   {
+    "name": "rabbit",
+    "what": "c = (-0.122561, 0.744862, 0), in the flat plane.",
+    "verdict": "fail at one piece: biggest piece 82.1 % with no gap (needs 98.5); also bodies (thickest place 0.75 of the flat set's), truly 3D (roundness 0.33), clean (120 of 120)",
+    "evidence": "Measured: face-joined biggest piece 36, 52, 52, 52 % at 129, 257, 385, 513 a side (one plane 61, 99.8, 99.9); with a one-voxel gap 99.93, 99.95, 99.80, 99.79 (line 99.97). Ears 0.49 and 0.59 as thick as wide (one plane 1.15, 1.19; along 4.83, 1.92). Cut area 0.655 flat, 0.281 at 10 degrees, 0.151 at 30; the shells at 30 degrees do not go away (0.1501 at 40 to 320 steps). Seen (between-m_w3-rabbit.png, bud.png, sheet): a cloud of flakes and shards; only the three flat copies are whole, as plates; at 30 degrees only the middle body with onion-skin shells.",
+    "gates": "panel2: exact cut, stays, mirror pass; one piece, bodies, truly 3D, clean FAIL. along: fails bodies, truly 3D, clean (a layered lump, one piece)."
+   },
+   {
+    "name": "dendrite",
+    "what": "c = (0, 1, 0), a tree.",
+    "verdict": "fail at one piece: 98.2 % at 10 steps, 83.5 % at 12 (one plane and along 100); tree test 3.6 against 3.0",
+    "evidence": "Measured (panel2). Seen: three flat trees 120 degrees apart crossing on the x-axis, nothing between (area of the 30 degree cut 0.0001 at 14 steps). Reasoned: the three trees are joined at the origin, so the one-piece fail is thinness in voxels; the honest fault is three pressed leaves with ribbon branches half as thick as the flat tree.",
+    "gates": "panel2: one piece and tree test FAIL. along: fails the tree test as a lump."
+   },
+   {
+    "name": "siegel",
+    "what": "c = (-0.390541, -0.586788, 0), one smooth body.",
+    "verdict": "fail at one piece (90.7 %); also the solid stays (71 %), bodies (thickest place 0.13 of the flat set's), truly 3D, clean (99 of 102)",
+    "evidence": "Measured: volume 0.350, 0.218, 0.154, 0.115, 0.089 at 20, 40, 80, 160, 320 steps (one plane 1.288 to 1.192, steady); the disc is 0.008 thick where it is 0.45 wide; cut area at 10 degrees is 13 % of the flat one. Seen: a six-armed star of thin sheets with wisps. W6 holds.",
+    "gates": "panel2: five lines FAIL. along: fails truly 3D and clean (a terraced lump that stays)."
+   },
+   {
+    "name": "bas_yz",
+    "what": "Basilica nudged, c = (-1, 0.05, 0.03).",
+    "verdict": "fail at one piece (97.69 %, needs 98.5); also bodies (thickest place x 0.31 of its own basilica), truly 3D (a ring), clean (26 of 120)",
+    "evidence": "Measured: the orbit of 0 stays bounded but never settles (wanders 1.3 across; along, twoplane, oneplane settle on the 2-cycle); of 60,000 points inside at 40 steps 0.997, 0.982, 0.942, 0.836 remain at 80, 320, 1000, 3000 steps (others 1.000). Seen (between-m_w3-bas_yz.png, bud.png, skin-bas_yz.png): crumpled bodies, hairy outline in every cut including the flat plane, pinholes inside, the bud a tuft of bristles. The '26 of 120' is not a skin count: panel2's tiles landed on pinholes inside the body.",
+    "gates": "panel2: four lines FAIL; 'the solid stays' passes (100 %) and is blind to this slow leak. along: fails one piece (98.19) and clean (20 of 120)."
+   },
+   {
+    "name": "bas_zy",
+    "what": "Basilica nudged, c = (-1, 0.03, 0.05).",
+    "verdict": "fail at one piece (77.1 %); also bodies (x 0.34), truly 3D (3 rings), clean (26 of 120)",
+    "evidence": "Measured: orbit of 0 never settles (1.3 across); 0.999, 0.993, 0.977, 0.930 of the inside remain at 80, 320, 1000, 3000 steps. Seen (between-m_w3-bas_zy.png): as bas_yz, hairy outline everywhere, pinholes.",
+    "gates": "panel2: four lines FAIL. along: fails one piece and clean (22 of 120)."
+   },
+   {
+    "name": "sm_yz",
+    "what": "San Marco nudged, c = (-0.75, 0.01, 0.02).",
+    "verdict": "fail at clean close up: 120 of 120 tiles (film up to 46 %)",
+    "evidence": "Measured: orbit of 0 wanders 0.43 across without leaking in 3000 steps (the other three rules settle on a 2-cycle). Seen (between-m_w3-sm_yz.png, worst-m_w3.png): whole set hardly changed from San Marco; close up the whole skin lies under stripes of dust.",
+    "gates": "panel2: only clean fails. along: fails clean, 23 of 120."
+   },
+   {
+    "name": "rab_up",
+    "what": "Rabbit lifted, c = (-0.122561, 0.744862, 0.015).",
+    "verdict": "fail at one piece: 39.2 % even with a one-voxel gap; also bodies, truly 3D (roundness 0.40), clean (120 of 120)",
+    "evidence": "Measured (panel2). Orbit of 0 settles on a 3-cycle, nothing leaks. Seen (between-m_w3-rab_up.png, sheet): flakes and shards as the rabbit; even the cut in the flat plane is now separate ragged blobs (10,354 points inside against 20,772 for the rabbit).",
+    "gates": "panel2: four lines FAIL. along: fails bodies, truly 3D, clean."
+   },
+   {
+    "name": "copies and symmetry (W1, W3)",
+    "what": "The six half-planes at 0, 60, ... 300 degrees carry the flat picture; the solid is unchanged by a third of a turn, for every c.",
+    "verdict": "holds",
+    "evidence": "Measured: rule unchanged by a 120 degree turn to 6e-14, both mirrors commute; cuts at 0/120/240 and at 60/180/300 identical pixel for pixel on rabbit, Siegel, rab_up (0 differ) and bas_yz (1 of 12,493); cut at 0 and at 60 degrees equals the flat set on rabbit and Siegel (0 of 20,772 and 27,939 differ). Six identical buds on the basilica (edge 0.7862 in all six directions).",
+    "gates": "quick.py and an inline check; seconds"
+   },
+   {
+    "name": "W5, first sentence",
+    "what": "Claim: a bud whose centre lies in one of the three planes is as round as its flat twin at every depth.",
+    "verdict": "broken: buds in the planes thin with depth too, only more slowly",
+    "evidence": "Measured: thickness round the axis against the one-plane rule's for the same bud: first bud 0.067 against 0.077 (0.87), bud on that bud 0.0063 against 0.0092 (0.68). Reasoned: g(a) = a + 12 a^3 is the plain turn only at the plane itself.",
+    "gates": "measure.py thick and an inline check"
+   },
+   {
+    "name": "two screens in seconds",
+    "what": "screens.py: (1) rabbit ears, thickness round the axis over width; (2) 57 nudged cases (c = -1 nudged 0.03 and 0.058, c = -0.9 nudged 0.01, 19 directions each): does the orbit of 0 rest on the 2-cycle.",
+    "verdict": "done",
+    "evidence": "Measured: oneplane ears 1.15/1.19, rests 47 (10 leave); twoplane 1.06/1.09, 51; along 4.83/1.92, 57 of 57; m_w3 0.49/0.59, 35 (15 never settle); m_w3f 0.71/0.76, 36; m_w5 0.27/0.34, 18; m_w3lin 0.01/0.04, 24; w_b10 0.83/0.85, 38; w_b15 0.98/0.98, 40; w_b20 1.11/1.11, 41; w_b25 1.16/1.25, 41; m_w3saw 1.12/1.32, 43; w_c10 0.55/0.58, 32; w_c15 0.77/0.79, 36; w_5b05 0.52/0.53, 25. I read the other sections' rules through the bench and judged none of them.",
+    "gates": "about 10 s a rule; numbers in screens.json"
+   },
+   {
+    "name": "holes in panel2 found by this rule",
+    "what": "Places where the panel is blind.",
+    "verdict": "done",
+    "evidence": "(1) 'The solid stays' passes a body that loses 16 % by 3000 steps (measured). (2) wide.py takes the first non-inside point on a ray as the skin; with pinholes inside, the 120 tiles show pinholes, not skin (seen, skin-bas_yz.png). (3) A rule looks clean in its own mirror planes; a check that cuts only at the rule's own angles sees no hair (measured: 0 of 15 at 30, 60, 90 against 15 of 15 beside them). (4) Control: the hair number passes the flat rabbit and flat Siegel disc, 0 of 45 tiles each, but the flat rabbit sits just under both lines (thin 0.07, film 0.4 %).",
+    "gates": "n/a"
+   }
+  ],
+  "findings": [
+   "Measured: m_w3 fails 11 of 11 sets on panel2; along fails 9, twoplane 8, oneplane 11 (never truly 3D). No set and no line where m_w3 passes and along fails.",
+   "Measured: tiles over a line (of 120), m_w3 / along: basilica 104 / 24, San Marco 110 / 12, airplane 31 / 0, cauliflower 30 / 0, rabbit 120 / 118, Siegel 99 of 102 / 113, bas_yz 26 / 20, bas_zy 26 / 22, sm_yz 120 / 23, rab_up 120 / 115.",
+   "Measured: on the basilica the only clean half-planes are 30, 60, 90 (and 150) degrees, 0 of 15 tiles each; every other angle tried fails 14 or 15 of 15. The orchestrator's cuts were at 0, 30, 60, 90 only.",
+   "Reasoned: those are mirror planes of the solid, and a cut in a mirror plane does not show what leans across it.",
+   "Measured: the whiskers are part of the set: inside share of four skin tiles identical to four figures at 80, 320 and 1280 steps.",
+   "Seen in the picture (skin-basilica.png): same skin place, four rules: m_w3 toothed, whiskered, dusty at every width; along a smooth line with droplets; twoplane and oneplane clean lines.",
+   "Measured: thickness round the x-axis over width in the plane: basilica bud 1.01, San Marco bud 0.99, rabbit ears 0.49 and 0.59, Siegel disc 0.02. One plane gives 1.15 to 1.19, along 4.8 and 1.9 on the ears.",
+   "Measured: the rabbit's biggest face-joined piece holds 52 % at 257, 385 and 513 voxels a side; it does not improve with finer voxels. With a one-voxel gap allowed 99.79 to 99.95 % (line 99.97): flakes joined by less than a voxel.",
+   "Seen in the picture (between-m_w3-rabbit.png): at 10 degrees off the flat plane the rabbit's ears are already slivers; at 30 degrees only the middle body remains, under thin shells like onion skins.",
+   "Measured: Siegel disc volume 0.350, 0.218, 0.154, 0.115, 0.089 at 20, 40, 80, 160, 320 steps; still draining.",
+   "Measured: the orbit of 0 stays bounded 3000 steps at all four nudged sets (my expectation that two would be 'outside' was wrong).",
+   "Measured: at bas_yz and bas_zy the orbit of 0 never settles under m_w3 and does under along, twoplane and oneplane; the inside leaks 16 % and 7 % by 3000 steps under m_w3 and 0 under the others.",
+   "Measured: the basilica's 2-cycle survives every nudge up to 0.02; at 0.058, 9 of 19 directions churn or leave. At c = -0.9 a nudge of 0.005 already churns in 8 of 19 directions. along rests in all 57 cases.",
+   "Reasoned: near the x-axis the rule triples the turn round the axis at every step while c pushes the point off the axis again; tripling an angle never settles. This belongs to the kind (any winding count above 1), not to the sinus profile.",
+   "Measured: all three copies stay identical for a lifted c, so the planes keep agreeing; what they agree on is no longer a clean body.",
+   "Measured: 4,792 loose voxel pieces on the basilica at 385 a side, 1.63 % of the solid, share steady from 129 to 385 a side; 74 % of it lies more than 3 degrees from all six planes. One plane: 88 pieces, 0.03 %.",
+   "Seen in the picture (bud.png, closeup.png): the basilica's bud is a ribbed egg with buds only in its own plane and flat flakes on the skin beside it; under along the same bud is covered with small round buds.",
+   "Measured: W1 and W3 hold exactly; W6 holds; W5's first sentence does not (in-plane buds 0.87 then 0.68 of the one-plane thickness)."
+  ],
+  "recommendation": "Is m_w3 better than along on the panel? No. It passes 0 of 11 sets, along 2 of 11, and there is no line on any set where m_w3 passes and along fails.\n\nWhere it is worse (8 sets): the skin of all four x-axis sets (104, 110, 31, 30 failing tiles against 24, 12, 0, 0), which costs it the two sets along passes (airplane, cauliflower); the Siegel disc (sheets that drain, against a lump that stays); both nudged basilicas (no resting cycle, a slow leak, crumpled and hairy, against along's nearly unchanged bodies); nudged San Marco (120 failing tiles against 23).\n\nWhere it fails differently, not better (3 sets): rabbit, dendrite, lifted rabbit. along makes one layered lump; m_w3 makes flakes, shards and pressed leaves, and adds a one-piece failure.\n\nWhere it is truly better than along: the exact flat picture in three planes for every c of the flat plane, and no lump (rabbit volume 0.97 of the yardstick against 3.65). Those two are worth keeping as ideas; the rule as it stands should not go to a Mandelbrot solid, and the lab entry's texts must say the skin is whiskered between its planes, that wide bodies are flakes, and that the Siegel disc drains.",
+  "best_next": "Make the two seconds-long screens part of the gates before any member of this kind is run on the panel again: `python out/r20/check/screens.py <rule>` (ear thickness over width near 1; orbit of 0 resting in the 57 nudged cases), and cut the basilica's skin at 11.25, 22.5 and 45 degrees, never only at the rule's own angles. Then apply them to the one form the profiles section recommends. Honest odds: the exact-band forms w_b15 to w_b25 already bring the ear's middle to 0.98 to 1.25, so perhaps 1 in 3 that one of them has whole rabbit ears; under 1 in 10 that the same form has a clean skin between the planes (the turn must still be tripled on average, so a wider plain band means a steeper ramp); and none rests under a nudge as along does (41 to 43 of 57 against 57). That any member of this kind passes all eleven sets: under 1 in 20.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/sheet.png - THE SHEET FOR THE USER (3120 x 7691): 11 sets x 4 rules (front, along the x-axis, cut across, verdict words), then the basilica's skin for the four rules, then one bud for the four rules. Looked at, all three parts.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/skin-basilica.png - same skin place on the basilica, four rules, three widths: m_w3 whiskered, others clean or nearly. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/bud.png - one bud point by point, three cuts at right angles, four rules: basilica bud, bud on the bud, two rabbit ears, nudged basilica bud. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/worst-m_w3.png - worst skin tiles of m_w3 on ten sets, by the new and the old hair number. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/between-m_w3-rabbit.png - rabbit between the planes: half-planes 0 to 60 degrees, cuts across, 30 degrees at 80/160/320 steps, zooms on the shells. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/between-m_w3-bas_yz.png and between-m_w3-bas_zy.png - nudged basilicas: hairy outline in every cut, pinholes. Both looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/between-m_w3-siegel.png, -dendrite.png, -basilica.png, -sanmarco.png, -cauliflower.png, -sm_yz.png, -airplane.png, -rab_up.png - the same layout for the other sets. All looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/skin-bas_yz.png - shows panel2's tiles for m_w3 on bas_yz sitting on pinholes, not on the skin. Looked at. skin-cauliflower.png beside it: looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/closeup.png - voxel boxes round one bud, m_w3 and along only (job stopped after two columns). Top five rows looked at; lower rows of the along column not.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/_mw3_tiles.png and _bas_x0.png - working pictures (m_w3's eleven solids; six identical buds across the basilica). Looked at.",
+   "NOT looked at: out/r20/check/between-oneplane-rabbit.png, between-along-rabbit.png (comparison sheets) and _steps_basilica_skin.png (only its numbers were used).",
+   "The five pictures named in the task (out/r19/me/cuts-m_w3.png, out/r16/bench/sheets/m_w3.png, out/r19/panel2/groupc.png, hair-calibration.png, out/me/v16/basilica-check.png) were looked at before starting."
+  ],
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/check/NOTES.md (long notes: expectations written first, verdict, the eleven sets, measurements, panel holes, files, not done)",
+   "out/r20/check/sheet.png, skin-basilica.png, skin-cauliflower.png, skin-bas_yz.png, bud.png, worst-m_w3.png, closeup.png, between-*.png (14), _mw3_tiles.png, _bas_x0.png, _steps_basilica_skin.png",
+   "out/r20/check/panel2-table.txt (panel2's own lines for m_w3, along, twoplane, oneplane, printed read-only)",
+   "out/r20/check/quick.json, measure.json, nudge-m_w3.json, nudge-oneplane-along-twoplane.json, extra.json, screens.json, worst-m_w3.json, between-*.json",
+   "out/r20/check/wide30/ (my close-cut tiles at 30, 60, 150 degrees for ten sets, scores-m_w3.json), tiles/ (132 sheet tiles), vols/ (44 packed voxel solids), logs/",
+   "out/r20/check/quick.py, solids.py, rabbit.py, measure.py, tiles30.py, worst.py, skin.py, bud.py, nudge.py, extra.py, screens.py, sheet.py, closeup.py",
+   "Nothing outside out/r20/check/ was written. out/r19/panel2/ was only read (tiles, scores, results, and its table command with rule names, which prints and writes nothing)."
+  ],
+  "not_done": [
+   "No second panel2 run of m_w3: every panel line is from the orchestrator's run, which finished while I worked.",
+   "The bench's J1 to J8 were not re-run; the J8 fail and the 1160 pieces are the orchestrator's numbers (the pieces I re-counted my own way).",
+   "No Mandelbrot solid drawn, looked at or described.",
+   "The lab's own renderer was not used; every 3D picture is the rough voxel renderer at 257 a side.",
+   "closeup.png has two of four rule columns; I stopped the job because bud.png answers the same question point by point.",
+   "Not looked at closely: whether the airplane's beads off the flat plane are round or needles; sm_yz and bas_zy at one bud; rab_up beyond its between-planes sheet.",
+   "The profile and band rules of the other sections were only put through my two screens, not judged.",
+   "No proof of the two reasoned explanations (mirror planes hide the hair; tripling the turn prevents rest)."
+  ],
+  "risks": [
+   "The sheet's 3D pictures are rough voxels at 40 steps; the lab's renderer paints within a pixel of the set and may make the rabbit's flakes look fuller than they are.",
+   "The 'clean close up' counts rest on panel2's hair number. I checked it by eye on the basilica, the worst tiles of all ten sets and two controls, but for bas_yz and bas_zy the count is not a skin count at all (tiles on pinholes); the verdict there rests on my cuts and the leak numbers.",
+   "One-piece numbers depend on what counts as joined: panel 82 % (corner joins allowed), mine 52 % (face joins only), 99.8 to 99.95 % with a one-voxel gap. All three fail the panel's lines, but 'cloud of loose flakes' means joined by less than a voxel, not far apart.",
+   "My thickness measure walks one arc through the middle of a body; it says nothing about shards round it. A band form that scores 1.1 there can still fail the rabbit.",
+   "The nudge screen covers c = -1 and c = -0.9 only (57 cases); 'never settles' is judged over the last 300 to 400 of 3000 to 4000 steps with a tolerance of 1e-6.",
+   "The dendrite's one-piece failure is voxel thinness, not a real break (reasoned).",
+   "sheet.png is tall (3120 x 7691, 6.5 MB); a viewer that scales it to fit will make the words small.",
+   "Clock: the machine's clock showed about 40 minutes from first to last command, well under the 75 aimed for; nothing was cut short for time, but the items under not_done were left by choice."
+  ]
+ },
+ {
+  "summary": "The entry is in the lab and it works; the rule itself is good only for c on the x-axis. Done in 46 minutes (00:21 to 01:07). Julia sets only; no Mandelbrot picture of the rule was saved, looked at or described.\n\nBUILT: \"Wind, then square\" (id windsq), group Sphere inversions, last in the list after turnalong, no dials, its own entry. Only src/js/10-approaches.js changed (81 lines added, none of base16a changed or removed). dist/r20-entry.html built from base16a. The smoke list passes: 62 old steps + 5 new ones, no console errors, exit 0.\n\nHOLDS (measured): the page's rule equals the bench rule m_w3 to 3e-15. Cut at z = 0 is the flat set: 0 of 160,000 points differ in each of six Julia sets at powers 2 to 5. Six half-planes land in the flat plane at powers 2 and 3, ten at powers 4 and 5 (to 6e-15). No jump (gap/step steady at 14.5 at power 2). Nothing folded (0 of 400,000 directions reversed). For the rabbit the cut at 120 degrees is the flat rabbit point for point and the cut at 60 degrees the flat rabbit turned over (0 of 129,600 differ). Basilica: separate bodies, six buds round each, touching point clean (0 of 129,600 points in a cut 0.2 wide), the bud at 60 degrees is a real body (oval 0.133 by 0.121).\n\nFAILS, and where:\n1. Distance estimate: only Rough can draw this rule. Exact and One neighbour draw a spindle of fog (basilica: 90 % and 98 % of ray stops have no point of the set within 8 pixels; Rough 0 %). deMax is set to 0. Rough in turn steps over thin sheets: on the rabbit 58 of 254 rays that meet the set show nothing (15 of 254 with the ray step at 0.4).\n2. Basilica skin is NOT clean between the planes: smooth at x = 0 (a special place), ragged with thin needles at x = 0.2, a dozen spikes at x = -0.3, 197 loose specks round the bud. The lab draws it streaked and bristly like a sea urchin. San Marco has six sharp ridges and a hairy rim, the cauliflower twelve lobes like a pumpkin.\n3. Off the x-axis the bodies are thin. Rabbit: turn the flat set 4 degrees about the x-axis and only 52 % of its points are still in the set, 19 % at 15 degrees (same at 40 and 80 steps); the basilica keeps 91 %. The lab shows a feathery mass, no bodies meeting at points. Siegel disc: three sheets that thin with every step (79 % at a quarter of a degree after 40 steps, 64 % after 80). Dendrite: a thin dust.\n4. The count round the axis is 6, 6, 10, 10 for powers 2, 3, 4, 5: it follows the power two powers at a time.\n\nAll of this is said in the entry's own texts, with the numbers.",
+  "verdicts": [
+   {
+    "name": "entry windsq in src/js/10-approaches.js",
+    "what": "The rule as its own lab entry: F(v) = P(W(v)), W winds the angle round the x-axis by g(a) = k a - (k - 1) sin(2 k a) / (2 k), k = m if m odd else m + 1, m = whole number nearest |n| (at least 1); P = one-plane power n. JS mirror MATH.windsq, shader GL_WINDSQ, texts R20-TEXTS, entry at the end of APPROACHES, group inversions, deMax 0, no dials.",
+    "verdict": "done",
+    "evidence": "out/r20/entry/checks.txt: place 18 of 19 after turnalong; MATH.windsq against m_w3 at power 2: largest difference 3.3e-15 (6,000 points) and 2.6e-15 (7,000 points beside planes and axes); against my own Python rule at powers 3, 4, 5: under 8e-15. Shader against MATH: largest 6.8e-5 of the length at power 2 (median 1.2e-7), 1.9e-4 at power 5, all finite; z exactly 0 kept; mul equals the one-plane product (difference 0). 10-approaches.diff: 81 lines added, 0 removed; every other src file equals base16a.",
+    "gates": "checks.js on the final build: all sections as expected, no console errors"
+   },
+   {
+    "name": "flat cut, whole powers 2 to 5",
+    "what": "The cut at z = 0 is exactly the flat set at every whole power",
+    "verdict": "holds",
+    "evidence": "Measured: MATH with z = 0 gives z exactly 0 and the one-plane answer (0 of 4,000 points off, powers 2, 3, 4, 5, -2, 2.5, 1, 0.5). Point-by-point Julia cuts against plain complex arithmetic: 0 of 160,000 points differ for power 2 c = -1, power 3 c = 0.3 and c = i, power 4 c = -1 and c = 0.3 + 0.3i, power 5 c = 0.3 (brute-powers.txt). The lab's 2D view against Sphere inversions, one plane: of 604,262 pixels 586 differ for c = -1 (none by more than 8 of 255 levels), 4,015 for the rabbit (189 clearly), 5,415 for the Siegel disc (667 clearly), all on thin edges of the outline (flatcmp.txt, _look-flatdiff.png looked at).",
+    "gates": "brute.py powers; flatcmp.py"
+   },
+   {
+    "name": "count round the axis, whole powers 2 to 5",
+    "what": "How many half-planes land in the flat plane, and how often the outline of the cut across the x-axis repeats",
+    "verdict": "holds as 2k: 6, 6, 10, 10 (not one count per power)",
+    "evidence": "Measured: half-planes sent into z = 0 onto the complex power: 6 at powers 2 and 3 (every 60 degrees), 10 at powers 4 and 5 (every 36 degrees), to 6e-15; all others miss by 0.8 to 1.5 of the length. Outline of the cut at x = 0, strongest repeat per turn: 6 (power 2, c = -1), 6 with 24 stronger (power 3, c = 0.3, a nearly round disc), 10 (power 4, c = -1: ten buds seen), 10 (power 5, c = 0.3); c off the axis: 3 (power 3, c = i), 10 (power 4, c = 0.3 + 0.3i). Seen in _look-powers.png.",
+    "gates": "checks.js half-planes; thick.py part 2"
+   },
+   {
+    "name": "deMax (which distance estimate may draw the rule)",
+    "what": "Lab stops along 825 rays per view compared with the set worked point by point; false = no point of the set within 8 pixels of a stop",
+    "verdict": "done: Rough (0). Exact and One neighbour fail: they draw fog that is not there",
+    "evidence": "Measured on seven views (measure-main.txt, measure-skin.txt): false stops Rough 0 to 1.0 %; One neighbour 75 to 99 %; Exact 21 to 99 % (basilica whole 0 / 98 / 90 %, rabbit 0.5 / 75 / 21 %, Siegel 0.5 / 84 / 29 %). Seen in _look-de-*.png: Exact turns the basilica into a lens of fog and the rabbit into a lumpy rock. Yardstick: one plane with Exact stands 4 to 8 pixels off its set, none over 16. Rough's own fault, measured: rays that meet the set but show nothing at ray step 0.8 / 0.4 / 0.2: basilica 3 / 1 / 0 of 128, rabbit 58 / 15 / 1 of 254, Siegel 60 / 15 / 1 of 265.",
+    "gates": "measure.py main, skin, step, calib"
+   },
+   {
+    "name": "entry texts",
+    "what": "tag, note, formula, about, round note, crush, smooth, slice at every power",
+    "verdict": "done",
+    "evidence": "card.txt: all texts at powers 2, 3, 4, 5, 2.5, 1, 0.7, 0, -1, -2, -3 with 0 bad parts (no undefined, NaN or pending text). Each sentence traced to a file in NOTES.md. The page's own scorecard agrees: at power 2 it reports the stretch running from 0 to 9.9 times where the plane gives 2, and 'wraps the sphere of directions 6 times and never reverses it'. Only sentence about the Mandelbrot solid: 'has not been judged yet'.",
+    "gates": "card.js on the final build"
+   },
+   {
+    "name": "smoke test",
+    "what": "tools/smoke-v14.json (62 steps) plus 5 steps for the new entry, 1400x950",
+    "verdict": "pass",
+    "evidence": "out/r20/entry/smoke.log: 67 results, no console errors, exit 0, on the final build. New steps: entry chosen in Julia mode from the menu, c = -1 whole in the frame (22 of 165 probes, 0 on the outer ring), words on the page and in About this approach, same probes with the setting at Rough and at Exact (the cap holds), 2D view at z = 0, powers 3, 4, 5 and the rabbit draw (46 to 48 probes), Reset everything returns to the one-plane rule.",
+    "gates": "smoke.py, run twice (once before and once after the last text change)"
+   },
+   {
+    "name": "sheet-for-user.png",
+    "what": "Seven flat-plane panel sets as Julia sets at 40 iterations, windsq, turnalong and mercator, two cameras each, from the lab itself",
+    "verdict": "done",
+    "evidence": "Looked at. Basilica: windsq is a row of separate bodies with buds in several directions, like turnalong but with a busier, streaked skin. San Marco and cauliflower: ribbed lengthwise. Airplane: thin spine, alike in all three. Rabbit, Siegel disc: windsq is a feathery mass, turnalong a layered lump, only one plane shows clean bodies. Dendrite: windsq a thin dust, turnalong a lump, one plane a thin tree.",
+    "gates": "pics.py sheet, make_sheet.py"
+   },
+   {
+    "name": "close.png",
+    "what": "Basilica and rabbit of windsq close up from several sides, with point-by-point cuts beneath",
+    "verdict": "done",
+    "evidence": "Looked at. Basilica along the x-axis: six buds 60 degrees apart on a bristly body. Bud at 60 degrees: round, with rings and small buds. Touching point: two cones meeting in a point with a string of beads. Rabbit: feathers from every side, a six-armed burst along the x-axis, smeared patches at the pinch; ray step 0.4 fills it in without changing its character.",
+    "gates": "pics.py close, brute.py basilica / others / ribs"
+   },
+   {
+    "name": "stretch and thickness numbers",
+    "what": "How the rule stretches directions; how thick the bodies are round the x-axis",
+    "verdict": "done",
+    "evidence": "stretch.txt: the 2k directions sent to -x are stretched exactly as the plane (ratio 1.000000, powers 2 to 5); two of three stretches fall under 2 % at the 2k directions half way; largest stretch 5 times the plane's at powers 2, 3 and 9 times at 4, 5; within 5 degrees of a carrying plane 7 % out of round, within 5 degrees of half way about 5 to 1 (power 2), 12 to 1 (power 3), 19 to 1 (power 4). thick.txt: share of the flat set still in the set after a turn of 1 / 4 / 15 / 30 degrees: basilica 97 / 91 / 88 / 91 %, rabbit 78 / 52 / 19 / 14 %, Siegel 52 / 18 / 4 / 0.6 % at 40 steps and 35 / 9 / 2 / 0.3 % at 80.",
+    "gates": "stretch.py, thick.py"
+   }
+  ],
+  "findings": [
+   "measured: MATH.windsq equals the bench rule m_w3 at power 2 to 3.3e-15, so every bench and panel number for m_w3 is a number for the lab entry.",
+   "measured: the cut at z = 0 is the flat set at powers 2 to 5: 0 of 160,000 points differ in each of six Julia sets.",
+   "measured: 6 half-planes land in the flat plane at powers 2 and 3, 10 at powers 4 and 5. So the count round the axis is 6, 6, 10, 10: it follows the power two powers at a time, with no dial.",
+   "measured: no jump (gap / step 14.4 to 14.7 at power 2 from step 0.001 down to 0.000001); both mirrors commute exactly; a turn by 120 degrees leaves the answer unchanged (2.4e-15); length squared to 1.4e-15.",
+   "measured: nothing is folded (0 of 400,000 directions mirror-reversed at powers 2, 3, 4); the page's own scorecard says the sphere of directions is wrapped 6 times at power 2 and 9 times at power 3.",
+   "measured: Exact and One neighbour draw fog for this rule (21 to 99 % and 75 to 99 % of ray stops have no point of the set within 8 pixels); Rough at most 1 %. My expectation that Exact would be fine was wrong.",
+   "measured: Rough steps over thin sheets. Rabbit: 58 of 254 rays that meet the set show nothing at the ray step the page opens with (0.8), 15 at 0.4, 1 at 0.2; at 0.2 the basilica gets 35 false stops of 149 instead.",
+   "seen in the picture: the basilica in the lab is a row of separate bodies with six buds round each and smaller buds on those; skin streaked and grainy, bristly like a sea urchin along the x-axis. At 14 iterations the bodies are still joined by short necks.",
+   "measured: cut across the basilica's touching point, 0.2 wide, 40 steps: 0 of 129,600 points in the set. The bud at 60 degrees is an oval 0.133 by 0.121 when cut along the x-axis, with 197 loose specks round it.",
+   "seen in the picture: point by point the basilica's outline between two planes is smooth at x = 0 down to a picture 0.12 wide, but ragged with thin needles at x = 0.2 (0.3 wide, 80 steps) and has a dozen spikes at x = -0.3. x = 0 is a special place; I first read the skin as clean from it and that was wrong.",
+   "seen in the picture: cut across the x-axis the cauliflower has twelve lobes (a pumpkin) and San Marco six sharp ridges with a hairy rim at x = -0.3.",
+   "measured: for the rabbit the cut by the plane at 120 degrees is the flat rabbit point for point and the cut at 60 degrees the flat rabbit turned over (0 of 129,600 points differ each).",
+   "measured: the rabbit's bodies are thin off the planes: 78 / 52 / 35 / 19 / 14 % of the flat set's points survive a turn of 1 / 4 / 8 / 15 / 30 degrees about the x-axis, the same at 40 and 80 steps. The basilica keeps 97 / 91 / 88 / 88 / 91 %.",
+   "measured: the Siegel disc thins with the step count: a quarter of a degree off its planes 79 % of its points are in the set at 40 steps, 64 % at 80; at 4 degrees 18 % and 9 %.",
+   "seen in the picture: in the lab the rabbit and the Siegel disc of windsq are feathery masses with no separate bodies, the dendrite a thin dust; one plane is the only rule of the three in the sheet with clean bodies off the x-axis.",
+   "measured: a power that is not a whole number tears along the half-planes half way between the carrying ones on the side x < 0 (gap 0.18 across 2e-7 at power 2.5), not along y = 0; the entry's text says so.",
+   "measured: the Learn tab works with the entry (3 generic moves, chain ends where MATH ends to 3e-16); it does not show the winding as a move of its own.",
+   "reasoned: the thin ears come from the winding pushing points away from the flat plane faster than the one-plane rule alone does once they are a few degrees off it (g sends 4 degrees to 4.2, 10 to 13.5, 20 to 43.5), so a profile with g(a) = a in a band should thicken them up to about the band's width. Not tested here; it is the profiles section's question."
+  ],
+  "recommendation": "Before publishing, the orchestrator should look at these, in this order.\n\n1. out/r20/entry/sheet-for-user.png, rows rabbit, dendrite and Siegel disc. The new rule draws feathers and dust there, not bodies. The entry's tag says so, but decide whether an entry that fails every set off the x-axis goes to the user now or after the profiles section has had its say.\n2. out/r20/entry/close.png top row and out/r20/entry/brute-bas-x02-skin.png. The basilica has the right bodies and six buds, but the skin between the planes is ragged with needles. It is not cleaner than Turning plane, along.\n3. The ray step. The page opens with 0.8 and at that setting a quarter of the rabbit's rays show nothing. The note tells the user to lower it to 0.4. A per-entry default would need a small change in src/js/40-render.js, which I did not make.\n4. The texts in out/r20/entry/card.txt. Every number belongs to the sinus profile. If another profile is chosen, all of R20-TEXTS must be measured again (out/r20/entry/put_texts.py holds them in one place).\n5. The published page will let the user switch this entry to Mandelbrot mode before that solid has been judged. The tag and the About text end with \"has not been judged yet\"; nothing stops the click.\n6. The join is base16a plus src/js/10-approaches.js and nothing else; the smoke list to run is out/r20/entry/smoke-steps.json (62 + 5 steps).",
+  "best_next": "Use the thickness number as a 20-second gate on every profile the profiles section proposes: out/r20/entry/thick.py turns the flat set a few degrees about the x-axis and counts what is still in the set. Today: basilica 91 % at 4 degrees, rabbit 52 %, Siegel disc 18 % at 40 steps falling to 9 % at 80. Try the exact band (g(a) = a within 15 degrees of the flat plane) first. Honest odds: about 50 % that the rabbit rises above 80 % at 4 degrees; about 20 % that its ears then read as bodies in the lab picture, because the ramp outside the band gets steeper and should grow more needles; under 15 % that the Siegel disc stops thinning with the step count; under 10 % that any profile of this kind passes the whole panel.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/sheet-for-user.png - seven Julia sets, windsq / turnalong / mercator, two cameras, 40 iterations, from the lab; looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/close.png - basilica and rabbit of windsq close up (rabbit also at ray step 0.4) with point-by-point cuts beneath; looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/_look-de-bas-whole.png - basilica with Rough, One neighbour, Exact side by side: bodies against fog; looked at (also _look-de-rabbit-whole, -siegel-whole, -dendrite-whole, -bas-neck, -bas-bud60out, -bas-mid30)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/_look-step-rabbit-whole.png - rabbit with Rough at ray step 0.8, 0.4, 0.2: fills in, stays feathers; looked at (also _look-step-bas-skin30)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/_look-brute-bas.png - nine point-by-point cuts of the basilica (six buds, clean touching point, flat set at 60 degrees, bud as a body); looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/_look-brute-ribs.png - cauliflower with twelve lobes, San Marco with six ridges and hairy rim, basilica skin with needles at x = 0.2; looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/_look-brute-others.png - rabbit, Siegel disc and dendrite point by point: exact flat pictures in the planes, shreds and sheets between; looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/_look-powers.png - cuts across the x-axis at powers 2 to 5: six buds, ten buds, three-fold and five-fold shapes; looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/_look-flatdiff.png - the lab's 2D view of windsq beside the pixels that differ from one plane (thin edges only); looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/look-bas-14.png - basilica at the 14 iterations the page opens with: bodies joined by short necks; looked at",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/smoke/ - the smoke list's own screenshots; NOT looked at (none opened)"
+  ],
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/src/js/10-approaches.js (81 lines added, none of base16a changed or removed; the only src file touched)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/dist/r20-entry.html (built with: python build.py --name r20-entry --base base16a --use src/js/10-approaches.js)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/entry/ (new folder: NOTES.md, 10-approaches.diff, sheet-for-user.png, close.png, the scripts patch1.py put_texts.py run.py checks.js rule.py stretch.py thick.py measure.py brute.py flatcmp.py pics.py make_sheet.py card.js smoke.py, their logs checks.txt card.txt smoke.log stretch.txt thick.txt small.txt flatcmp.txt measure-*.txt brute-*.txt, and all pictures)"
+  ],
+  "not_done": [
+   "No panel2 run and no hair number for the entry: that is the check section's job. I report only what my own cuts show.",
+   "The Learn tab does not show the winding as a move of its own (src/js/65-learn-steps.js not touched); it shows three generic moves whose chain ends at the right answer.",
+   "No per-entry default for the ray step: it would need a change in src/js/40-render.js. The page still opens this entry at ray step 0.8.",
+   "3D pictures at powers 3, 4, 5 were only smoke-tested as not empty; their numbers (flat cut, half-planes, count, jump, stretch) were measured, their look was not judged.",
+   "Negative and fractional powers: texts checked at every case and the tear measured at power 2.5; no pictures.",
+   "The airplane was looked at in the whole view only; no cuts.",
+   "The cause of the 2D view's differing edge pixels was not tested."
+  ],
+  "risks": [
+   "The required smoke list (its step 11) chooses every entry in Mandelbrot mode and then in Julia mode, so the headless page drew a Mandelbrot view of the new entry for a moment. No picture of it was saved (that step's screenshot is taken in Julia mode, c = -1), I opened no file in out/r20/entry/smoke/, and out/r20/entry/smoke.log step 12 holds only a probe count per entry, which I did not read.",
+   "A published page lets the user switch this entry to Mandelbrot mode before that solid has been judged. Only the words 'has not been judged yet' stand in the way.",
+   "The lab's 3D picture of this rule under-draws thin parts at the default ray step (rabbit: 58 of 254 rays). A user may read the feathery rabbit as the whole truth or as a rendering fault; the note explains it but is behind 'About this approach'.",
+   "All numbers in the entry's texts belong to the sinus profile at the settings measured. A change of profile or of k makes them wrong until measured again.",
+   "The 'false stop' test for the distance estimate is weak on sets with no inside: on the dendrite at 20 steps Rough has 13 of 35 stops with no point of the set within 8 pixels. I left the dendrite out of the note's numbers and say so in NOTES.md.",
+   "One of my measurement views (bas-mid30) had the camera inside the body; its rows are in measure-main.txt and should be ignored. I replaced it with bas-skin30."
+  ]
+ },
+ {
+  "summary": "No form of \"wind, then square\" passes, and no profile will make it pass; the profile only trades one fault against another. I built 11 forms (exact bands of 5, 10, 15, 20, 25 degrees with a smooth ramp; bands of 10 and 15 with a straight ramp; a rounded-corner straight ramp; k = 5 with a band) and gated them beside the orchestrator's m_w3, m_w3lin, m_w3f, m_w5: rule checks, point-by-point cuts of four sets, bench stage 1, panel2's skin tiles and hair number, my own counts for rabbit, dendrite, Siegel disc and the nudged sets, and full panel2 runs on w_b15 and w_c15.\n\nWhat holds: every band form passes the rule checks and bench J1 to J7; the bud direction arrives at -x with stretch exactly 2 both ways; W6 holds (a band gives the Siegel disc a body), with a correction: the body is as thick as the wedge, 0.338 x tan(band) at its centre (0.070 at 10 degrees, 0.103 at 15, 0.136 at 20; one plane 0.470; sinus 0.004 and draining to 71 %).\n\nWhat fails, everywhere: bench J8 (ribs on a bud 2.10 % with no band, 0.95 at 15 degrees, 0.40 and 0.51 at 25; line 0.45); panel2's \"clean close up\" on the basilica at every tile width (32 to 35 of 35 tiles over the line for every form; along 4 of 35, twoplane 0 of 35); rabbit, dendrite and Siegel disc by eye (three copies of the flat set crossing on the x-axis; a ragged six-armed mass). Wider bands help every flat-plane set and wreck the first step off the planes: the nudged basilica (-1, 0.05, 0.03) is 0.148 thick with the sinus, 0.089 with the smooth 15 degree band, drains from 20 degrees and is gone at 25. What hurts off the planes is ramp steepness, not the band.\n\nRecommended: w_c15 (exact within 15 degrees of each plane, constant slope 5 between), fixed by one principle: the widest exact bands possible without being steeper anywhere than the sinus form's steepest point, 2k - 1. It is no worse than m_w3 on any line measured and holds the nudged basilicas best of the family (0.165 and 0.299 thick, volume unchanged to 1,000 steps). panel2 still fails it on all 10 sets it judges (21 failing lines; m_w3 28 on 11).\n\nFolder: C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/ (NOTES.md has every table; sheet-profiles.png is the picture to open first).",
+  "verdicts": [
+   {
+    "name": "m_w3 (orchestrator's sinus form; the reference; w_s0 is my rebuild of it and agrees to 3e-15)",
+    "what": "g(a) = 3a - sin(6a)/3: slope 1 on the six half-planes, 5 half way",
+    "verdict": "fail at bench J8 and at panel2 'clean close up' on every x-axis set; fails rabbit, dendrite, Siegel disc and all four nudged sets (orchestrator's panel2 run: 28 failing lines on 11 sets)",
+    "evidence": "Measured: ribs 0.18, 2.10, 1.56 %; hair on the basilica 35, 34, 35 of 35 tiles over the line at tile widths 0.1, 0.02, 0.004; Siegel disc 0.004 thick at its centre, volume 0.342, 0.213, 0.172, 0.151 at 20 to 80 steps (stays 71 %); rabbit thickest 0.260 (flat 0.348), biggest piece 82.1 % with no gap; bud at 60 degrees 0.93 as wide as long; nudged basilicas 0.148 and 0.160 thick, slowly leaking (volume 0.560, 0.552, 0.528 at 80, 300, 1,000 steps). Seen: skin pleated all over like a scallop shell with flat plates in the pleats; rabbit a six-armed star of blades and loose flakes; Siegel disc a wire skeleton.",
+    "gates": "check.py rules pass; cliff 10.0; bench J1 to J7 pass, J8 FAIL; panel2 (orchestrator's run) fails all 11"
+   },
+   {
+    "name": "w_c15 (RECOMMENDED)",
+    "what": "Exact band 15 degrees round each plane, straight ramp: slope 1 for d <= 15, slope 5 for 15 < d <= 30 (d = angle to the nearest of the six half-planes). The widest bands possible with no slope above 2k - 1 = 5",
+    "verdict": "fail at bench J8 and at panel2 'clean close up' (basilica); best of the family overall, not a pass",
+    "evidence": "Measured: ribs 0.27, 1.24, 1.19 %; round to 0.76, 0.64, 0.72; bud at 60 degrees 1.05 as wide as long; hair 32, 34, 35 of 35; Siegel disc 0.091 thick, stays 95 %; rabbit thickest 0.323, biggest piece 95.6 %; nudged basilicas 0.165 and 0.299 thick at 40 steps (0.160, 0.299 at 80), volume 0.563, 0.562, 0.559 and 0.542, 0.542, 0.541 at 80, 300, 1,000 steps; cliff 10.0 (same as m_w3). panel2 full run: x-axis sets and sm_yz fail 'clean' only; rabbit passes 'bodies', fails one piece (95.56 %), truly 3D (0.26), clean; dendrite fails one piece (96.73 % at 12 steps) and tree (box-doubling 3.9); Siegel fails one piece (98.42 against 98.5), bodies (0.27), truly 3D, clean; bas_yz printed 'outside' (orbit of 0 leaves at step 1736); bas_zy bodies 0.64; rab_up passes bodies (0.89), one piece 31.6 % with no gap. Seen: a small corner in the body's outline at the band edge (cross-edge.png); skin pleated over the middle two thirds, a little cleaner than the sinus.",
+    "gates": "rule checks pass (length 1.4e-14, flat 1.3e-14, 60 degree plane 1e-14, no jump); cuts looked at; bench J1 to J7 pass, J8 FAIL; panel2 run: 21 failing lines on 10 judged sets"
+   },
+   {
+    "name": "w_c15r",
+    "what": "w_c15 with its corner rounded over 3 degrees either side (exact band 12 degrees, same ramp slope 5)",
+    "verdict": "fail at bench J8; as good as w_c15 off the planes, but brings a second size no principle fixes",
+    "evidence": "Measured: ribs 0.30, 1.50, 1.36 %; Siegel 0.078 thick, stays 93 %; rabbit thickest 0.321, 95.6 %; nudged basilicas 0.228 and 0.235 thick (0.218, 0.204 at 80 steps), volume flat to 1,000 steps; orbit of 0 stays at all four nudged sets. Seen: only the bench sheet (looks like the other band forms).",
+    "gates": "rule checks pass; bench J1 to J7 pass, J8 FAIL; no panel2 run, no skin tiles"
+   },
+   {
+    "name": "w_b05",
+    "what": "Exact band 5 degrees, smooth ramp (steepest slope 5.8)",
+    "verdict": "fail at bench J8; too little band to help",
+    "evidence": "Measured: ribs 0.18, 1.87, 1.77 %; Siegel 0.036 thick, stays 85 % (panel line 90: fails); nudged basilica 0.142 thick; orbit of 0 at bas_yz leaves at step 1970. Seen: bench tiles only.",
+    "gates": "rule checks pass; bench J1 to J7 pass, J8 FAIL; cuts made, not looked at"
+   },
+   {
+    "name": "w_b10",
+    "what": "Exact band 10 degrees, smooth ramp (steepest slope 7)",
+    "verdict": "fail at bench J8 and 'clean close up'; runner-up if a crease is not wanted",
+    "evidence": "Measured: ribs 0.19, 1.26, 1.43 %; hair 32, 34, 34 of 35; Siegel 0.070 thick, stays 91 %; rabbit thickest 0.331, biggest piece 94.2 %; nudged basilicas 0.154 and 0.098 thick, bas_zy draining (0.513, 0.480, 0.387 at 80, 300, 1,000 steps); orbit of 0 stays at all four. Its 10 degrees are fixed by no principle.",
+    "gates": "rule checks pass; cuts looked at; bench J1 to J7 pass, J8 FAIL; skin tiles on basilica, rabbit, Siegel all fail"
+   },
+   {
+    "name": "w_b15",
+    "what": "Exact band 15 degrees, smooth ramp (steepest slope 9)",
+    "verdict": "fail at bench J8 and 'clean close up'; better than m_w3 on flat-plane sets, worse off the planes",
+    "evidence": "Measured: ribs 0.15, 0.95, 0.99 %; hair 32, 34, 34 of 35; Siegel 0.103 thick, stays 95 %; rabbit thickest 0.339, biggest piece 98.1 % (panel needs 98.5); nudged basilicas 0.089 and 0.059 thick and draining (bas_yz volume 0.553, 0.511, 0.399; bas_zy 0.242, 0.129, 0.128); orbit of 0 at bas_zy leaves at step 32. panel2 full run: 21 failing lines on 10 judged sets, bas_zy outside; Siegel now passes 'one piece' and 'stays'.",
+    "gates": "rule checks pass; cuts looked at; bench J1 to J7 pass, J8 FAIL; panel2 full run fails every judged set"
+   },
+   {
+    "name": "w_b20",
+    "what": "Exact band 20 degrees, smooth ramp (steepest slope 13)",
+    "verdict": "fail at bench J8 and 'clean close up'; loses both nudged basilicas",
+    "evidence": "Measured: ribs 0.07, 0.65, 0.71 %; hair 32, 34, 33 of 35 (films a third of the sinus's); Siegel 0.136 thick, stays 97 %; rabbit thickest 0.340, 98.3 %; bas_yz 0.030 thick, volume 0.380 then 0.164 (draining); orbit of 0 leaves at steps 57 and 31. Seen: smoothest skin near the planes so far, pleats in a narrow middle strip.",
+    "gates": "rule checks pass; cuts looked at; bench J1 to J7 pass, J8 FAIL; skin tiles fail"
+   },
+   {
+    "name": "w_b25",
+    "what": "Exact band 25 degrees, smooth ramp (steepest slope 25)",
+    "verdict": "fail at bench J8 by 0.06, and fails off the planes outright: the nudged basilica is gone",
+    "evidence": "Measured: ribs 0.02, 0.40, 0.51 % (line 0.45); Siegel 0.166 thick, stays 99 %; rabbit thickest 0.337; bas_yz volume 0.089 at 40 steps, 0.002 at 80; orbit of 0 leaves at steps 23 and 31; cliff 49 (at a gap of a tenth of the radius two points land 1.65 apart, 2 being opposite ends). Seen: cleanest basilica skin of the wind forms, still one bundle of pleats and blades half way; empty picture for the nudged basilica.",
+    "gates": "rule checks pass; cuts looked at; bench J1 to J7 pass, J8 FAIL"
+   },
+   {
+    "name": "w_c10",
+    "what": "Exact band 10 degrees, straight ramp (slope 4)",
+    "verdict": "fail at bench J8; worse than w_c15 on the bench",
+    "evidence": "Measured: ribs 0.35, 2.10, 1.85 %; round to 0.73, 0.69, 0.53; the bench counts 26 buds on the middle body, 20 off the flat plane, only 12 round (fat fins big enough to count as buds).",
+    "gates": "rule checks pass; bench J1 to J7 pass, J8 FAIL; cuts made, not looked at"
+   },
+   {
+    "name": "m_w3lin (orchestrator's; the known bad end)",
+    "what": "g(a) = 3a, slope 3 everywhere",
+    "verdict": "fail at bench J4 (and J5, J8): every bud a thin plate, as W5 says",
+    "evidence": "Measured: stretch at the bud direction 2 along x, 6 round the axis; bud at 60 degrees 0.35 as wide as long; round to 0.26; 0 of 4 off-plane buds round. Seen: six thin blades in place of buds; the rabbit has nothing off its planes but a speck at the axis; the Siegel disc is gone even in the flat plane at 60 steps (the flat plane itself repels sideways by 3 a step, so rounding error loses it).",
+    "gates": "rule checks pass; cuts looked at; bench J4, J5, J8 FAIL"
+   },
+   {
+    "name": "m_w5 (orchestrator's) and w_5b05",
+    "what": "k = 5: sinus profile; and exact band 5 degrees with a smooth ramp",
+    "verdict": "m_w5 fail at bench J4 (and J8): worse than k = 3 on every set looked at. w_5b05: rule checks pass, cut but not judged",
+    "evidence": "Measured (m_w5): 20 buds off the flat plane, 8 round; round to 0.53, 0.25, 0.31; ribs 0.70, 1.58, 0.70 %; 1,461 pieces with no gap. Seen: ten rows of lemon-shaped buds; a bud's bud is a stack of plates; the rabbit is a ten-pointed spiky star with shards, the Siegel disc a ten-armed thread star.",
+    "gates": "rule checks pass (planes at 36 degrees exact; check.py's '60 degree' column does not apply to k = 5); bench J4, J8 FAIL"
+   },
+   {
+    "name": "m_w3f (orchestrator's flatter sinus)",
+    "what": "slope 1 and curvature 0 at the planes, no exact band",
+    "verdict": "not gated on the bench by me; fails 'the solid stays' on the Siegel disc",
+    "evidence": "Measured: Siegel 0.021 thick, stays 83 %; nudged basilica 0.126 thick; orbit of 0 leaves at steps 975 and 1904; cliff 12.6. A flat spot without an exact band does not rescue the Siegel disc.",
+    "gates": "rule checks pass; cuts made, not looked at; no bench run"
+   }
+  ],
+  "findings": [
+   "MEASURED. Every band form passes the rule checks (length squared to 1.4e-14, flat plane and 60 degree plane exact to 3e-14, no jump: move/gap steady from 1e-3 to 1e-6; bench J6 largest jump 1.3e-8 to 3.1e-8 over 1e-9) and bench J1 to J7. The bud direction on the 60 degree plane is sent to (-1, 0, 0) with stretch 2.000 along x and 2.000 round the axis in every sinus and band form (W4 holds); m_w3lin gives 2 and 6.",
+   "MEASURED. Ribs (bench J8, one bud / a bud's bud, % of the radius, line 0.45): no band 2.10 / 1.56; 5 degrees 1.87 / 1.77; 10 degrees 1.26 / 1.43; 15 degrees 0.95 / 0.99; 20 degrees 0.65 / 0.71; 25 degrees 0.40 / 0.51; straight ramp 15 degrees 1.24 / 1.19. They fall but do not go. SEEN (zoom-shoulder-final.png): the pleats are pushed into the ramp and stay there; a straight seam runs along every body exactly half way between the planes.",
+   "REASONED, fits what is seen: at x = 0 the solid's cut is the one-plane solid's cut with its angle replaced by g(a), so the outline round the axis is one fixed oval read through g: six lobes, then 18, 54 on the bodies down the chain. A band flattens the lobes' tops and squeezes the same rise into the ramp.",
+   "MEASURED. W6 holds with a correction: the Siegel disc's thickness at its centre is the wedge's, 0.338 x tan(band): predicted 0.030, 0.060, 0.091, 0.123, 0.158; measured 0.036, 0.070, 0.103, 0.136, 0.166 (smooth ramps), 0.091 (straight, 15 degrees). One plane 0.470; sinus 0.004 and still thinning. 'The solid stays' (80 over 40 steps, line 90 %): sinus 71, 5 degrees 85, 10 degrees 91, 15 degrees 95, 20 degrees 97, 25 degrees 99.",
+   "SEEN. The Siegel disc with a band is a six-armed mass with a ragged, flapping skin, fatter with every 5 degrees; never a smooth body (one plane gives a smooth pillow). REASONED: the disc turns about a centre off the x-axis, its points keep passing near the x-axis where the band is thinner than any height, and each pass deals them to another wedge.",
+   "MEASURED. Fins are a comb, not twelve rows (my own expectation E4 was wrong): six point-by-point cuts across the basilica's middle body hold 168 off-plane things at least 0.0032 wide plus 648 thinner films for the sinus; 96 + 600 at 10 degrees, 48 + 468 at 15, 84 + 216 at 20, 48 + 108 at 25, 120 + 528 for w_c15. They reach 0.04 to 0.08 out of the body (a bud's radius is 0.066), median width 0.001. REASONED: every body carries the rows of all generations (6 round, 12 squeezed once, 36 squeezed twice ...), all equally long; this is W5 and no profile removes it.",
+   "MEASURED. panel2's hair number on the basilica, tiles over the line at tile widths 0.1 / 0.02 / 0.004 (35 tiles each, the rule's two mirror half-planes left out): m_w3 35 / 34 / 35; w_b10 32 / 34 / 34; w_b15 32 / 34 / 34; w_c15 32 / 34 / 35; w_b20 32 / 34 / 33; along 4 / 6 / 14; twoplane 0 / 0 / 0. On the skin test every wind form is worse than along at every scale. Rabbit: 35 / 35 / 35 for every wind form tried.",
+   "SEEN. At the size of the whole set no form shows its fins (bench front views look alike). At the size of one body's skin: pleats and lens-shaped plates. At the size of one bud and below: combs of needles and film in every form (hair-*-basilica.png).",
+   "MEASURED and SEEN. Rabbit (257 a side, 40 steps): thickest place 0.260 (sinus), 0.331, 0.339, 0.340 (bands 10, 15, 20), 0.323 (w_c15), flat set 0.348; biggest piece with no gap 82.1, 94.2, 98.1, 98.3, 95.6 %; 4,500 to 7,400 pieces in every wind form (one plane 7). It is three copies of the flat rabbit crossing on the x-axis: blades and loose flakes with the sinus, six fat arms of faceted bodies with round buds with a band. None is balls meeting at points.",
+   "MEASURED. Dendrite, biggest piece with a one-voxel gap at 8, 10, 12 steps: one plane 100, 100, 99.3 %; sinus 99.8, 97.6, 79.2; band 15 degrees 100, 99.85, 98.7; w_c15 99.99, 99.4, 95.4. SEEN: three trees crossing on the x-axis in a cloud of specks; with the sinus, three dotted lines.",
+   "MEASURED. Off the planes the trade reverses. Nudged basilica (-1, 0.05, 0.03), thickest place at 40 then 80 steps (un-nudged 0.47, one plane 0.432): sinus 0.148, 0.108; band 10 0.154, 0.123; band 15 0.089, 0.065; band 20 0.030, 0.019 with the volume halving; band 25 gone; w_c15 0.165, 0.160. At (-1, 0.03, 0.05): sinus 0.160, band 10 0.098, band 15 0.059 and draining, w_c15 0.299. San Marco nudged is the same for every form (0.48). SEEN (vol-basyz-final.png): every wind form's nudged basilica is a row of crumpled walnuts with two or three buds; along keeps its buds.",
+   "MEASURED. What hurts off the planes is the ramp's steepness: w_c15 (band 15, slope never above 5) holds the nudged basilicas better than w_b10 (band 10, slope up to 7) and far better than w_b15 (same band, slope up to 9).",
+   "MEASURED. The orbit-of-0 test is not safe for these rules: w_c15's orbit of 0 at bas_yz leaves at step 1736, so panel2 prints 'outside, not judged', yet its solid there keeps 99.3 % of its volume from step 80 to step 1,000, the most stable of the family (sinus 94.3 %, band 15 72 %).",
+   "MEASURED. The cut by the half-plane at 60 + d degrees equals the cut at 180 + d degrees point for point (0 points differ; d = 4, 8, 12, 18; basilica, rabbit, Siegel disc; sinus and bands): W3's three-fold turn is exact and holds outside the bands too.",
+   "MEASURED. Lifted rabbit (rab_up): biggest piece with no gap 37 % (sinus; 39 % even with a one-voxel gap), 31 % (band 10), 96 % (band 15), 98 % (band 20), 32 % (w_c15; 100 % with a one-voxel gap). Here the wider smooth band is the better one, so the off-plane sets do not all point the same way."
+  ],
+  "recommendation": "ONE form: w_c15. Planes at multiples of 60 degrees; d = angle to the nearest plane; the wound angle is (plane number) x 180 degrees plus or minus h(d), with h(d) = d for d <= 15 degrees and h(d) = 15 + 5 (d - 15) for 15 < d <= 30 degrees. For a general odd k: band 90/(2k) degrees, ramp slope 2k - 1.\n\nPrinciple, no free size: slope exactly 1 near every plane, and nowhere steeper than the smooth sinus form is at its steepest (2k - 1). The widest bands that allows are half of the way to the mid plane, and the ramp between them is then forced to be straight. This is a convention with a reason (I measured that steepness is what breaks the sets off the planes), not a derivation from the squaring; I found none.\n\nWhy this one: it has the same steepest slope and cliff number as m_w3 and beats or equals it on every line I measured: bud at 60 degrees exactly as round as its flat twin (1.05 against 0.93), ribs on the buds 1.24 and 1.19 % against 2.10 and 1.56, Siegel disc 0.091 thick and staying (95 % against 71 %), rabbit thickest 0.323 against 0.260 and biggest piece 95.6 against 82.1 %, nudged basilicas 0.165 and 0.299 thick against 0.148 and 0.160 and not leaking over 1,000 steps. Where it is worse: a visible corner in the outline 15 degrees either side of each plane, ribs on the middle body 0.27 against 0.18 % (line 0.45), and panel2 labels bas_yz 'outside' for it.\n\nBy pictures alone the 25 degree band has the cleanest basilica skin, but it loses the nudged basilica completely, so it is out. If the crease shows in the lab, use w_c15r (corner rounded over 3 degrees; numbers as good, one extra size). It does not pass: bench J8 fails, the skin is hairy at every scale, and panel2 fails it on all 10 sets it judges.",
+  "best_next": "Put w_c15's profile into the lab entry beside the sinus (three lines: nearest plane, band test, straight ramp) and look at the Siegel disc, the rabbit and the basilica close up in the real renderer at 40 steps or more; check that the distance estimate copes with the slope-5 crease, and fall back to w_c15r if the crease shows. Odds: about 4 in 5 that the Siegel disc and rabbit look clearly better than with the sinus (the sinus's Siegel disc is a draining film); about 1 in 2 that the basilica looks any different to a person at normal zoom; practically nil that any profile of this rule passes panel2, because the comb of fins and the three crossing copies are properties of winding k times, not of g. The honest decision for the orchestrator is therefore not which profile, but whether to show the user the kind at all with its faults named.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/sheet-profiles.png - START HERE: seven captioned rows (basilica skin patch for twoplane, along, m_w3, w_c15, w_b25; skin tiles of m_w3 and w_c15; rabbit from two sides; Siegel disc; nudged basilica). Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/zoom-shoulder-final.png (also zoom-shoulder-refs.png, zoom-shoulder.png) - the same 0.44-wide patch of the basilica's middle body: clean (twoplane), round bumps (along), pleats and plates (wind forms, fewer with wider bands). Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/cuts-w_b10.png, cuts-w_b15.png, cuts-w_b20.png, cuts-w_b25.png, cuts-w_c15.png, cuts-m_w3lin.png, cuts-m_w5.png - four sets, six point-by-point cuts each. Looked at. cuts-w_b05.png, cuts-w_c10.png, cuts-m_w3f.png, cuts-w_5b05.png in the same folder: made, NOT looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/bench-tiles-a.png and bench-tiles-b.png - the bench's own basilica tiles for nine forms side by side (whole set alike; bud a ribbed lemon for the sinus, rounder with bands, a plate for m_w3lin). Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/hair-m_w3-basilica.png, hair-w_b20-basilica.png, hair-w_c15-basilica.png - panel2's three worst and three typical skin tiles: combs of fins and film. Looked at. hair-w_b10-, hair-w_b15- (seen inside an earlier sheet), hair-w_s0-basilica.png: NOT looked at on their own.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/vol-rabbit-axis-final.png, vol-rabbit-above-final.png (and vol-rabbit*.png) - rabbit, voxels 257 a side: six-armed star, three crossing copies. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/vol-siegel-above-final.png, vol-siegel-above.png, vol-siegel-axis.png - Siegel disc: smooth pillow (one plane), wire skeleton (sinus), ragged six-armed mass (bands). Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/vol-basyz-final.png, vol-basyz.png - nudged basilica: crumpled walnuts in every wind form, empty for the 25 degree band. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/vol-dendrite.png - dendrite at 10 steps: one tree (one plane), dotted lines (sinus), three crossing trees with specks (bands). Looked at. vol-dendrite-axis.png: NOT looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/cross-edge.png - the crease: a small corner in w_c15's outline at the band edge, none in the smooth forms. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/cross-m03.png - cut across the basilica at x = -0.3 between two planes: bristly skin and loose lens plates in every form, needles at 25 degrees. Looked at.",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r16/bench/sheets/w_c15r.png - the bench's sheet for the rounded-corner form. Looked at. The bench's sheets for the other w_ forms were seen only as tiles in bench-tiles-a/b.png."
+  ],
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/myrules.py (new: w_b05, w_b10, w_b15, w_b20, w_b25, w_c10, w_c15, w_c15r, w_s0, w_5b05)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/NOTES.md (new: all tables, reasoning, picture list, not-done)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/ tools (new): check.py (copy of the orchestrator's), cliff.py, wedge.py, cmp.py, tilesheet.py, fins.py, hair.py, hairw.py, siegel.py, pieces.py, orbit0.py, longstay.py, sheet.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r20/profiles/ numbers and pictures (new): fins.json, hair.json, hairw.json, siegel.json, pieces.json, logs/ (every run's output, including panel2-w_b15-table.txt, panel2-w_c15-table.txt, panel2-m_w3-table.txt), vol/ (cached voxel solids), and the PNGs listed under pictures",
+   "Written by the bench's own tool (stage1, sheets), not by hand: C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r16/bench/results/, tiles/, sheets/, cache/ for w_b05, w_b10, w_b15, w_b20, w_b25, w_c10, w_c15, w_c15r, m_w3lin, m_w5",
+   "Written by panel2's own tools (wide.py, panel2.py run), not by hand: C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/wide/w_*-*.npz (w_s0, w_b10, w_b15, w_b20, w_c15 tile sets), out/r19/panel2/results/ for w_b15 and w_c15, and new entries in out/r19/panel2/wide/scores.json",
+   "Not touched: base*/, src/, dist/, squaring-lab.html, notes/_state.md, any bench or panel .py file, any other section's folder. No m_w3 run was repeated under its own name."
+  ],
+  "not_done": [
+   "No pass to hand to a checker: every form fails bench J8 and panel2.",
+   "panel2 full runs only for w_b15 and w_c15; the other forms have bench stage 1, cuts and my own counts (volume, thickest place, pieces, staying), and skin tiles only for basilica (w_b10, w_b15, w_b20, w_c15), rabbit and Siegel disc (w_b10, w_b20, w_c15).",
+   "w_c15r has numbers but no skin tiles, no panel2 run and no pictures beyond the bench sheet.",
+   "Not tried: a straight ramp with a 20 degree band, a different rounding width for the corner, band forms for k = 5 beyond one cut sheet (w_5b05 was cut and not judged).",
+   "Cut sheets not looked at: w_b05, w_c10, m_w3f, w_5b05. Also not looked at: vol-dendrite-axis.png, hair-w_b10-basilica.png, hair-w_s0-basilica.png.",
+   "The lab's own renderer was not used (Python only): how its distance estimate copes with a slope-5 crease, and whether the fins show there at normal zoom, is unknown.",
+   "No principle was found that derives the band width from the squaring itself; the one given (cap the slope at the sinus form's own steepest, 2k - 1) is a convention with a measured reason."
+  ],
+  "risks": [
+   "The size principle is a convention. If the orchestrator does not accept 'never steeper than the sinus at its steepest', the family has no interior optimum on the lines I measured and the choice of band is a dial.",
+   "w_c15 has a crease in the rule 15 degrees either side of every plane. Seen as a small corner in the outline; it raised the ribs on the middle body from 0.18 to 0.27 % (line 0.45). It may show as a line in the lab's renderer.",
+   "panel2's orbit-of-0 test mislabels w_c15 at bas_yz as 'outside, not judged' (orbit leaves at step 1736) while the solid there loses under 1 % of its volume between step 80 and step 1,000. That line cannot be trusted for these rules.",
+   "Thickness, volume and piece counts are from voxels at 257 a side (129 or 97 for staying and long-stay); films thinner than a voxel are invisible to them. 'Thickest place' is twice the largest voxel distance to the skin, a rough number.",
+   "The J8 ribs number looks at the deepest tenth of the outline, so narrow pleats can hide from it; the fall from 2.10 to 0.40 % overstates how much smoother the wide bands look. The pleats are still there in the pictures.",
+   "fins.py counts only what stands out of the body's own slow outline; its 'on the planes' count is unreliable and was not used. Its off-plane counts are from six cuts of one body of one set.",
+   "hairw.py leaves out the half-planes at 30 and 90 degrees (the rule's mirror planes, always clean), so its '35 tiles' are the other seven half-planes; panel2's own run counts all eight or nine.",
+   "logs/orbit0.log also holds the orbit of 0 at other lifts of c above the basilica (one orbit each, no solid drawn, nothing described). It is not in NOTES.md; the orchestrator may want to drop it to stay strictly inside the user's order of work.",
+   "My two panel2 runs and my tile sets added entries to panel2's shared wide/scores.json and results/ (through its own tools). w_s0 there duplicates m_w3 under another name.",
+   "Rabbit, Siegel disc and dendrite were judged by eye from rough voxel views and from cuts; a person looking in the lab may judge the six-armed clusters more kindly or more harshly than I did."
+  ]
+ }
+]

@@ -1,0 +1,22 @@
+[0.3, 0.5, 0], "pointsOfJuliaShape6": {"before": 727, "whileHeld": 585}, "qualityWhileHeld": "move", "qualityAfter": "still", "where": "Step 6 of 16: what is left", "say": "What is left after 6 steps. Left: the Mandelbrot shape. Right: the Julia shape for the diamond’s c.", "play": "Play", "slider": 6}
+step 4 wrote out/r28/final/ui/r26/use-new-2-diamond-dragged-2d-both.png
+step 5 result: {"viewBefore": {"yaw": -0.62, "pitch": 0.9, "zoom": 1}, "viewAfter": {"yaw": -1.82, "pitch": 0.42, "zoom": 1}, "qualityWhileDragging": "move", "qualityAtRest": "still", "resetShown": true}
+step 5 wrote out/r28/final/ui/r26/use-new-3-3d-turned.png
+step 6 result: {"during": {"playing": true, "pos": 1.2}, "away": {"learnOn": false, "shapeOn": false, "barHidden": true, "glHidden": true, "bodyClass": ""}, "back": {"on": true, "follow": "shape", "playing": false, "pos": 1.2, "kind": "both", "space": 3, "note": ""}, "where": "Step 2 of 16: under way", "say": "Step 2: in both pictures every point that is still here takes one more step. The ones that land outside the big ball are thrown out.", "play": "Play", "slider": 1.2}
+step 6 wrote out/r28/final/ui/r26/use-new-4-other-tab-and-back.png
+step 7 result: {"themeNow": "light", "stageBackground": "rgb(220, 226, 231)", "coloursOk": true}
+step 7 wrote out/r28/final/ui/r26/use-new-5-theme-switched.png
+step 8 result: {"themeBack": null}
+step 9 result: {"rightAfter": {"learnOn": false, "follow": "point", "bodyShape": false}, "learnAgain": {"follow": "point", "pointChecked": true, "space": 2, "where": "Step 1, move 1 of 3: Turn"}, "wholeShape": {"kind": "m", "space": 2, "pos": 0, "c": [-0.4, 0.3, 0], "view2": {"m": {"x": 0, "y": 0, "zoom": 1}, "j": {"x": 0, "y": 0, "zoom": 1}}, "view3": {"yaw": -0.62, "pitch": 0.9, "zoom": 1}, "playsByItselfAgain": false}}
+step 9 wrote out/r28/final/ui/r26/use-new-6-after-reset-everything.png
+step 10 result: {"learnOn": true, "follow": "shape", "pointChecked": false, "wholeShapeInside": {"kind": "both", "space": 3, "pos": 7, "c": [0.3, -0.6, 0.4]}}
+step 10 wrote out/r28/final/ui/r26/use-new-7-after-learn-reset.png
+step 11 result: {"spaceBefore": 2, "spaceInShape": 2, "oneDChoiceShown": false, "panelSpaceChoices": ["2D page", "3D space"]}
+step 11 wrote out/r28/final/ui/r26/use-new-8-from-1d.png
+step 12 result: {"boxAndBuffer": [862, 511, 1724, 1022], "narrow": [518, 511, 1036, 1022, true], "wideAgain": [862, 511, 1724, 1022, true]}
+step 12 wrote out/r28/final/ui/r26/use-new-9-resized-3d.png
+step 13 result: {"labC": [-1, 0, 0], "shapeC": [-1, 0, 0]}
+step 14 result: {"power": 3, "pointsInShape6": {"power2": 2597, "power3": 2389}, "note": "step is the lab’s rule: take to the power 3 (the dial “Power n”), then add c. (Follow: One point shows one step slowly.)", "named": ["USE THE C OF THE JULIA TAB", "c at x −1, y 0", "c at x −0.12, y 0.74", "c at x 0, y 1", "c at x 0, y 0"], "end": "After 16 steps nothing is left to see: every point of the picture has been thrown out."}
+no console errors
+exit code 0
+

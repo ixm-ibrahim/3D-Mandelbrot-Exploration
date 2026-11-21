@@ -1,0 +1,7 @@
+page dist/r27-final.html, exit 0, no console errors
+{"view":"as it opens after the click on the row","mode":"k","group":1,"t":1.4,"grid":0,"depth":16,"flat":false,"cam":[-1.25,0.5,3.765],"scrollY":305,"status":"Done: 12 passes at 862 × 701","stage":[12,715]}
+{"view":"front","mode":"k","group":1,"t":1.4,"grid":0,"depth":16,"flat":false,"cam":[-1.5708,0.22,3.765],"scrollY":305,"status":"Done: 12 passes at 862 × 701","stage":[12,715]}
+{"view":"end-on","mode":"k","group":1,"t":1.4,"grid":0,"depth":16,"flat":false,"cam":[0,0.15,3.765],"scrollY":305,"status":"Done: 12 passes at 862 × 701","stage":[12,715]}
+{"view":"end-on, nearer","mode":"k","group":1,"t":1.4,"grid":0,"depth":16,"flat":false,"cam":[0,0.15,2.6],"scrollY":305,"status":"Done: 12 passes at 862 × 701","stage":[12,715]}
+{"view":"above","mode":"k","group":1,"t":1.4,"grid":0,"depth":16,"flat":false,"cam":[-1.5708,1.45,3.765],"scrollY":305,"status":"Done: 12 passes at 862 × 701","stage":[12,715]}
+{"view":"flat view","mode":"k","group":1,"t":1.4,"grid":0,"depth":16,"flat":true,"cam":[-1.25,0.5,3.765],"scrollY":305,"status":"Done: 12 passes at 862 × 701","stage":[12,715]}

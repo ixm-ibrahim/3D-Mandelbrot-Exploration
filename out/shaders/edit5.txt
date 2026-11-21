@@ -1,0 +1,18 @@
+<<<<
+  int budget = (mosaic ? 2 : 1) * (uSteps + uShSteps + 12);
+====
+  // Neighbouring pixels are worked through together by the GPU, a turn of the loop at a time, and a turn
+  // costs what its dearest pixel costs. So the light and crevice queries (long orbits, close to the surface)
+  // wait at two gates until every ray has finished marching (mostly short orbits, far away) rather than
+  // riding along with it. A waiting turn costs next to nothing.
+  int turns = mosaic ? 2 : 1, gate1 = turns * uSteps + 1, gate2 = gate1 + turns * (uShSteps + 4);
+  int budget = gate2 + turns * 5 + 2;
+>>>>
+<<<<
+  for (int i = 0; i < budget; i++){
+    float tMax = gInsideOut ? spanIn.y : spanOut.y, e = max(uDetail * pix * t, 1e-7);
+====
+  for (int i = 0; i < budget; i++){
+    if (!flat2 && i < (phase >= PH_AO ? gate2 : phase >= PH_SLOPE ? gate1 : 0)) continue;
+    float tMax = gInsideOut ? spanIn.y : spanOut.y, e = max(uDetail * pix * t, 1e-7);
+>>>>

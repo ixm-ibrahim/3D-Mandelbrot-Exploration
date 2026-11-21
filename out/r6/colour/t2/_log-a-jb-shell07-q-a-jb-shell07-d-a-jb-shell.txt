@@ -1,0 +1,23 @@
+step 1 waited 2.4 s
+step 2 result: "a-jb-shell07-qB"
+step 4 waited 0.0 s
+step 4 wrote out/r6/colour/t2/a-jb-shell07-qB.png
+step 5 result: "a-jb-shell07-qU"
+step 7 waited 0.0 s
+step 7 wrote out/r6/colour/t2/a-jb-shell07-qU.png
+step 8 result: "a-jb-shell07-qF"
+step 10 waited 0.0 s
+step 10 wrote out/r6/colour/t2/a-jb-shell07-qF.png
+step 11 result: "a-jb-shell07-qN"
+step 13 waited 0.3 s
+step 13 wrote out/r6/colour/t2/a-jb-shell07-qN.png
+step 14 result: "a-jb-shell07-d02"
+step 16 waited 0.3 s
+step 16 wrote out/r6/colour/t2/a-jb-shell07-d02.png
+step 17 result: "a-jb-shell07-d3"
+step 19 waited 0.0 s
+step 19 wrote out/r6/colour/t2/a-jb-shell07-d3.png
+step 20 result: "a-jb-shell07-i60"
+step 22 waited 0.3 s
+step 22 wrote out/r6/colour/t2/a-jb-shell07-i60.png
+no console errors

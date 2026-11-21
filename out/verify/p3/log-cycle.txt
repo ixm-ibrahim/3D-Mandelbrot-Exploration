@@ -1,0 +1,11 @@
+step 1 result: "sections around the colour dials as the page opens: secColour open=false"
+step 1 waited 1.8 s
+step 2 result: {"rect": [1139, 462, 26, 26], "inView": true, "label": "Sweep Colour bands, shift", "pressed0": "false", "seen": [0.079, 0.154, 0.229, 0.308, 0.383, 0.458], "pressed1": "true", "label1": "Sweep Colour bands, shift", "box": "0.4583", "idleWhilePlaying": false}
+step 2 wrote out/verify/p3/cycle-a.png
+step 3 wrote out/verify/p3/cycle-b.png
+step 4 result: {"beforePause": 0.8791, "afterPause": [0.8791, 0.8791], "box": "0.8791", "pressed": "false"}
+step 4 waited 0.0 s
+step 4 wrote out/verify/p3/cycle-c-paused.png
+step 5 result: {"playing": 1.0041, "whileHiddenByClay": [1.0041, 1.0041], "shownAgain": [1.0041, 1.0041], "playingBeforeReset": 1.1041, "afterReset": [0, 0]}
+step 5 waited 0.0 s
+no console errors

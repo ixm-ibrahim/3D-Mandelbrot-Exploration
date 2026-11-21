@@ -1,0 +1,4 @@
+mandel c_lathe 10 s
+mandel c_page 22 s
+mandel c_Pfirst 28 s
+mandel c_lag50 41 s

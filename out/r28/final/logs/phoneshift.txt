@@ -1,0 +1,7 @@
+k-first-group-as-it-opens    whole window: 57016 pixels differ as it stands; rows 0 to 389 are the same; below, the new page shifted by 221 px against the frozen one: 0 pixels differ in the 189 rows both show
+k-first-group-preset5-2d     whole window: 206662 pixels differ as it stands; rows 0 to -1 are the same; below, the new page shifted by -740 px against the frozen one: 6837 pixels differ in the 60 rows both show
+m-quat4-power4               whole window: 172985 pixels differ as it stands; rows 0 to -1 are the same; below, the new page shifted by 61 px against the frozen one: 0 pixels differ in the 739 rows both show
+j-turnalong-cut              whole window: 0 pixels differ
+j-pulledplane-2d             whole window: 0 pixels differ
+m-as-the-page-opens          whole window: 0 pixels differ
+learn-tab                    whole window: 0 pixels differ

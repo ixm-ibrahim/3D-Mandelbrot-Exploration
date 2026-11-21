@@ -1,0 +1,122 @@
+step 1 waited 1.5 s
+step 2 result: "01-m-open"
+step 4 waited 0.3 s
+step 4 wrote out/r5/speed/new3/01-m-open.png
+step 5 result: "02-j-basilica"
+step 7 waited 0.3 s
+step 7 wrote out/r5/speed/new3/02-j-basilica.png
+step 8 result: "03-k-open"
+step 10 waited 0.8 s
+step 10 wrote out/r5/speed/new3/03-k-open.png
+step 11 result: "04-m-solid1-shell"
+step 13 waited 2.5 s
+step 13 wrote out/r5/speed/new3/04-m-solid1-shell.png
+step 14 result: "05-j-solid2-cross"
+step 16 waited 0.3 s
+step 16 wrote out/r5/speed/new3/05-j-solid2-cross.png
+step 17 result: "06-j-solid1-ring-where"
+step 19 waited 0.3 s
+step 19 wrote out/r5/speed/new3/06-j-solid1-ring-where.png
+step 20 result: "07-k-solid1-shell"
+step 22 waited 1.3 s
+step 22 wrote out/r5/speed/new3/07-k-solid1-shell.png
+step 23 result: "08-k-solid2-cross-step"
+step 25 waited 0.0 s
+step 25 wrote out/r5/speed/new3/08-k-solid2-cross-step.png
+step 26 result: "09-m-cross-bands"
+step 28 waited 0.0 s
+step 28 wrote out/r5/speed/new3/09-m-cross-bands.png
+step 29 result: "10-j-planes-step"
+step 31 waited 0.3 s
+step 31 wrote out/r5/speed/new3/10-j-planes-step.png
+step 32 result: "11-m-tones"
+step 34 waited 0.0 s
+step 34 wrote out/r5/speed/new3/11-m-tones.png
+step 35 result: "12-m-line-side"
+step 37 waited 0.0 s
+step 37 wrote out/r5/speed/new3/12-m-line-side.png
+step 38 result: "13-m-escape"
+step 40 waited 0.0 s
+step 40 wrote out/r5/speed/new3/13-m-escape.png
+step 41 result: "14-m-laststep"
+step 43 waited 0.0 s
+step 43 wrote out/r5/speed/new3/14-m-laststep.png
+step 44 result: "15-m-surface-dir"
+step 46 waited 0.0 s
+step 46 wrote out/r5/speed/new3/15-m-surface-dir.png
+step 47 result: "16-m-depth"
+step 49 waited 0.0 s
+step 49 wrote out/r5/speed/new3/16-m-depth.png
+step 50 result: "17-flat-m-open"
+step 52 waited 0.0 s
+step 52 wrote out/r5/speed/new3/17-flat-m-open.png
+step 53 result: "18-flat-m-in-trap"
+step 55 waited 2.0 s
+step 55 wrote out/r5/speed/new3/18-flat-m-in-trap.png
+step 56 result: "19-flat-j-in-settle"
+step 58 waited 0.0 s
+step 58 wrote out/r5/speed/new3/19-flat-j-in-settle.png
+step 59 result: "20-flat-m-in-deep"
+step 61 waited 0.0 s
+step 61 wrote out/r5/speed/new3/20-flat-m-in-deep.png
+step 62 result: "21-flat-j-in-ends"
+step 64 waited 0.0 s
+step 64 wrote out/r5/speed/new3/21-flat-j-in-ends.png
+step 65 result: "22-flat-k"
+step 67 waited 0.0 s
+step 67 wrote out/r5/speed/new3/22-flat-k.png
+step 68 result: "23-cut-m-hatch"
+step 70 waited 0.0 s
+step 70 wrote out/r5/speed/new3/23-cut-m-hatch.png
+step 71 result: "24-cut-m-face-settle"
+step 73 waited 0.0 s
+step 73 wrote out/r5/speed/new3/24-cut-m-face-settle.png
+step 74 result: "25-cut-j-face-trap"
+step 76 waited 0.0 s
+step 76 wrote out/r5/speed/new3/25-cut-j-face-trap.png
+step 77 result: "26-cut-j-solid1-shell"
+step 79 waited 0.3 s
+step 79 wrote out/r5/speed/new3/26-cut-j-solid1-shell.png
+step 80 result: "27-m-ultra"
+step 82 waited 0.0 s
+step 82 wrote out/r5/speed/new3/27-m-ultra.png
+step 83 result: "28-m-ultra-solid1"
+step 85 waited 0.0 s
+step 85 wrote out/r5/speed/new3/28-m-ultra-solid1.png
+step 86 result: "29-j-fine"
+step 88 waited 2.0 s
+step 88 wrote out/r5/speed/new3/29-j-fine.png
+step 89 result: "30-m-mosaic"
+step 91 waited 0.0 s
+step 91 wrote out/r5/speed/new3/30-m-mosaic.png
+step 92 result: "31-m-mosaic-flat"
+step 94 waited 0.0 s
+step 94 wrote out/r5/speed/new3/31-m-mosaic-flat.png
+step 95 result: "32-m-neg2"
+step 97 waited 2.0 s
+step 97 wrote out/r5/speed/new3/32-m-neg2.png
+step 98 result: "33-classic8"
+step 100 waited 1.5 s
+step 100 wrote out/r5/speed/new3/33-classic8.png
+step 101 result: "34-k-cross-bands"
+step 103 waited 0.0 s
+step 103 wrote out/r5/speed/new3/34-k-cross-bands.png
+step 104 result: "35-flat-m-solid-asked"
+step 106 waited 0.0 s
+step 106 wrote out/r5/speed/new3/35-flat-m-solid-asked.png
+step 107 result: "36-k-cut-face-ends"
+step 109 waited 0.8 s
+step 109 wrote out/r5/speed/new3/36-k-cut-face-ends.png
+step 110 result: "37-j-fast-solid2-shell-step"
+step 112 waited 0.0 s
+step 112 wrote out/r5/speed/new3/37-j-fast-solid2-shell-step.png
+step 113 result: "38-m-cut-face-deep-solid1"
+step 115 waited 2.8 s
+step 115 wrote out/r5/speed/new3/38-m-cut-face-deep-solid1.png
+step 116 result: "39-cut-m-face-plain"
+step 118 waited 0.0 s
+step 118 wrote out/r5/speed/new3/39-cut-m-face-plain.png
+step 119 result: "40-cut-j-face-plain-flat-inside"
+step 121 waited 0.0 s
+step 121 wrote out/r5/speed/new3/40-cut-j-face-plain-flat-inside.png
+no console errors

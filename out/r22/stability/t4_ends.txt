@@ -1,0 +1,84 @@
+== how close is along to the lathe, and to one-plane? turn between the two images of the same point (degrees), 400,000 random points in the cube -1.5..1.5
+  along    against lathe   : median 10.8, 90th pct 31.1, max 36.6 | left half (x < 0): median 21.3, max 36.6 | right half: median 5.4, max 27.8
+  along    against oneplane: median 34.6, 90th pct 135.8, max 179.9 | left half (x < 0): median 86.1, max 179.9 | right half: median 18.8, max 90.0
+  oneplane against lathe   : median 45.8, 90th pct 121.9, max 179.4 | left half (x < 0): median 88.5, max 179.4 | right half: median 22.5, max 89.9
+  away     against lathe   : median 37.0, 90th pct 123.2, max 179.9 | left half (x < 0): median 78.9, max 179.9 | right half: median 19.2, max 89.9
+  away     against oneplane: median 29.1, 90th pct 114.6, max 179.6 | left half (x < 0): median 64.2, max 179.6 | right half: median 16.2, max 89.9
+
+basilica    oneplane  inside after 400 steps:   4439 of 150000 (2.96 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+basilica    along     inside after 400 steps:   4001 of 150000 (2.67 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+basilica    lathe     inside after 400 steps:   4854 of 150000 (3.24 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+basilica    away      inside after 400 steps:   4197 of 150000 (2.80 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+San Marco   oneplane  inside after 400 steps:   9664 of 150000 (6.44 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.20 %, OFF page 99.80 %
+    no cycle, off page: |z| median 0.000252, 10th..90th pct 5.06e-05..0.000674; distance from the x-axis median 0.000262
+
+San Marco   along     inside after 400 steps:   8646 of 150000 (5.76 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6) 30.68 %, OFF page 69.32 %
+    no cycle, off page: |z| median 2.45e-05, 10th..90th pct 1.68e-06..0.000201; distance from the x-axis median 7.98e-05
+
+San Marco   lathe     inside after 400 steps:   9834 of 150000 (6.56 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  7.06 %, OFF page 92.94 %
+    no cycle, off page: |z| median 3.3e-05, 10th..90th pct 3.59e-06..0.000287; distance from the x-axis median 5.96e-05
+
+San Marco   away      inside after 400 steps:   8586 of 150000 (5.72 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6) 19.68 %, OFF page 80.32 %
+    no cycle, off page: |z| median 5.05e-05, 10th..90th pct 2.04e-06..0.000235; distance from the x-axis median 0.000112
+
+c=-1+0.03i  oneplane  inside after 400 steps:   4441 of 150000 (2.96 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.03i  along     inside after 400 steps:   3963 of 150000 (2.64 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.03i  lathe     inside after 400 steps:   4795 of 150000 (3.20 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.03i  away      inside after 400 steps:   4102 of 150000 (2.73 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.1i   oneplane  inside after 400 steps:   4149 of 150000 (2.77 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.1i   along     inside after 400 steps:   3778 of 150000 (2.52 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.1i   lathe     inside after 400 steps:   4436 of 150000 (2.96 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.1i   away      inside after 400 steps:   3610 of 150000 (2.41 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.2i   oneplane  inside after 400 steps:   2886 of 150000 (1.92 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.2i   along     inside after 400 steps:   3347 of 150000 (2.23 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.2i   lathe     inside after 400 steps:   3607 of 150000 (2.40 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+c=-1+0.2i   away      inside after 400 steps:   2039 of 150000 (1.36 %). flat cycle  95.6 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  4.41 %
+    no cycle, off page: |z| median 0.0974, 10th..90th pct 0.0391..0.0974; distance from the x-axis median 0.208
+
+rabbit      oneplane  inside after 400 steps:   2746 of 150000 (1.83 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+rabbit      along     inside after 400 steps:   9948 of 150000 (6.63 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+rabbit      lathe     inside after 400 steps:   9052 of 150000 (6.03 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+rabbit      away      inside after 400 steps:   2889 of 150000 (1.93 %). flat cycle 100.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page  0.00 %
+
+Siegel      oneplane  inside after 400 steps:   7317 of 150000 (4.88 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page 100.00 %
+    no cycle, off page: |z| median 0.0356, 10th..90th pct 0.0209..0.0386; distance from the x-axis median 0.326
+
+Siegel      along     inside after 400 steps:   9947 of 150000 (6.63 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.20 %, OFF page 99.80 %
+    no cycle, off page: |z| median 0.000912, 10th..90th pct 4.15e-05..0.00447; distance from the x-axis median 0.262
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\r22\stability\t4_ends.py:59: RuntimeWarning: overflow encountered in square
+  hit = (per == 0) & (np.sqrt((px - x) ** 2 + (py - y) ** 2 + (pz - z) ** 2) < 1e-8); per[hit] = k
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\r16\bench\rules.py:25: RuntimeWarning: overflow encountered in multiply
+  return x * x - y * y - z * z, 2 * x * y, 2 * x * z
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\r16\bench\rules.py:25: RuntimeWarning: invalid value encountered in subtract
+  return x * x - y * y - z * z, 2 * x * y, 2 * x * z
+
+Siegel      lathe     inside after 400 steps:  10106 of 150000 (6.74 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6) 100.00 %, OFF page  0.00 %
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\me\r16\scout.py:13: RuntimeWarning: overflow encountered in multiply
+  r2 = x * x + y * y + z * z; r = np.sqrt(r2); f = r2 / np.maximum(r2 + z * z, EPS)
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\me\r16\scout.py:13: RuntimeWarning: invalid value encountered in divide
+  r2 = x * x + y * y + z * z; r = np.sqrt(r2); f = r2 / np.maximum(r2 + z * z, EPS)
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\me\r16\scout.py:14: RuntimeWarning: overflow encountered in multiply
+  return f * (x * x - y * y), f * 2 * x * y, f * 2 * z * r
+C:\Users\IbrahimMahmoud\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\scratch-workspaces\18144097-1788-4c0f-b3ad-8a91f920f07b\76933351-09da-4379-8bd1-1c64ac9b94d1\scratch-2026-11-17-a06af1\out\me\r16\scout.py:14: RuntimeWarning: invalid value encountered in subtract
+  return f * (x * x - y * y), f * 2 * x * y, f * 2 * z * r
+
+Siegel      away      inside after 400 steps:    177 of 150000 (0.12 %). flat cycle   0.0 % | other cycle: on page  0.00 %, OFF page  0.00 % | no cycle: on page (|z| < 1e-6)  0.00 %, OFF page 100.00 %
+    no cycle, off page: |z| median 0.0016, 10th..90th pct 0.000127..0.0106; distance from the x-axis median 0.298

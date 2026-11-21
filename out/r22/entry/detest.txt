@@ -1,0 +1,33 @@
+The three settings of "Distance estimate" (cap lifted in the page), 48 x 36 lines of sight per picture.
+false = a stop with no point of the set within 0.03; missed = the set is on the line and the lab does not stop.
+
+alongonce   bas Rough        : stops  244, false    0 ( 0.0 %); library has the set on  243 lines, missed   0 ( 0.0 %);  2598 ms to draw
+alongonce   bas One neighbour: stops  246, false    0 ( 0.0 %); library has the set on  243 lines, missed   1 ( 0.4 %);  1506 ms to draw
+alongonce   bas Exact        : stops  268, false    0 ( 0.0 %); library has the set on  243 lines, missed   0 ( 0.0 %);  3996 ms to draw
+alongonce   rab Rough        : stops  324, false    0 ( 0.0 %); library has the set on  323 lines, missed   4 ( 1.2 %);  2978 ms to draw
+alongonce   rab One neighbour: stops  321, false   12 ( 3.7 %); library has the set on  323 lines, missed  22 ( 6.8 %);  2892 ms to draw
+alongonce   rab Exact        : stops  393, false  122 (31.0 %); library has the set on  323 lines, missed   0 ( 0.0 %);  2054 ms to draw
+alongonce   man Rough        : stops  195, false   68 (34.9 %); library has the set on  124 lines, missed   0 ( 0.0 %);   860 ms to draw
+alongonce   man One neighbour: stops  187, false   62 (33.2 %); library has the set on  124 lines, missed   0 ( 0.0 %);   484 ms to draw
+alongonce   man Exact        : stops  255, false  225 (88.2 %); library has the set on  124 lines, missed   0 ( 0.0 %);   959 ms to draw
+alongonce   sie Rough        : stops  366, false    0 ( 0.0 %); library has the set on  363 lines, missed   0 ( 0.0 %);   999 ms to draw
+alongonce   sie One neighbour: stops  367, false   30 ( 8.2 %); library has the set on  363 lines, missed   3 ( 0.8 %);   853 ms to draw
+alongonce   sie Exact        : stops  401, false  178 (44.4 %); library has the set on  363 lines, missed   0 ( 0.0 %);  1275 ms to draw
+alongonce   sm  Rough        : stops  368, false    0 ( 0.0 %); library has the set on  368 lines, missed   0 ( 0.0 %);   751 ms to draw
+alongonce   sm  One neighbour: stops  370, false    4 ( 1.1 %); library has the set on  368 lines, missed   1 ( 0.3 %);   628 ms to draw
+alongonce   sm  Exact        : stops  391, false   45 (11.5 %); library has the set on  368 lines, missed   0 ( 0.0 %);  1104 ms to draw
+pulledplane bas Rough        : stops  227, false    0 ( 0.0 %); library has the set on  226 lines, missed   1 ( 0.4 %);  2555 ms to draw
+pulledplane bas One neighbour: stops  245, false    2 ( 0.8 %); library has the set on  226 lines, missed   0 ( 0.0 %);   752 ms to draw
+pulledplane bas Exact        : stops  257, false    0 ( 0.0 %); library has the set on  226 lines, missed   0 ( 0.0 %);  1331 ms to draw
+pulledplane rab Rough        : stops  204, false    0 ( 0.0 %); library has the set on  203 lines, missed   0 ( 0.0 %);  1462 ms to draw
+pulledplane rab One neighbour: stops  252, false  207 (82.1 %); library has the set on  203 lines, missed   0 ( 0.0 %);  1043 ms to draw
+pulledplane rab Exact        : stops  234, false   61 (26.1 %); library has the set on  203 lines, missed   0 ( 0.0 %);  2608 ms to draw
+pulledplane man Rough        : stops  208, false    6 ( 2.9 %); library has the set on  195 lines, missed   0 ( 0.0 %);  1602 ms to draw
+pulledplane man One neighbour: stops  235, false  186 (79.1 %); library has the set on  195 lines, missed   0 ( 0.0 %);   936 ms to draw
+pulledplane man Exact        : stops  246, false  128 (52.0 %); library has the set on  195 lines, missed   0 ( 0.0 %);  1996 ms to draw
+pulledplane sie Rough        : stops  343, false    0 ( 0.0 %); library has the set on  342 lines, missed   0 ( 0.0 %);  1651 ms to draw
+pulledplane sie One neighbour: stops  359, false  118 (32.9 %); library has the set on  342 lines, missed   0 ( 0.0 %);  1124 ms to draw
+pulledplane sie Exact        : stops  362, false    4 ( 1.1 %); library has the set on  342 lines, missed   0 ( 0.0 %);  2489 ms to draw
+pulledplane sm  Rough        : stops  341, false    0 ( 0.0 %); library has the set on  340 lines, missed   0 ( 0.0 %);   977 ms to draw
+pulledplane sm  One neighbour: stops  355, false    2 ( 0.6 %); library has the set on  340 lines, missed   0 ( 0.0 %);   898 ms to draw
+pulledplane sm  Exact        : stops  366, false    1 ( 0.3 %); library has the set on  340 lines, missed   0 ( 0.0 %);  1580 ms to draw

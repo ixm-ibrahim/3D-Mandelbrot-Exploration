@@ -1,0 +1,107 @@
+102 different sentences or labels read from the logs (numbers written as N)
+FORBIDDEN WORD ['rho'] in: : size N (slider N), second sphere N (slider N), depth N (slider N) | t N, rho N | sentence: The Drawing radius in the View section cuts the two big neighbours open.
+FORBIDDEN WORD ['rho'] in: Coming back below N does not put rho back by itself
+sentences with a forbidden word: 2
+
+(slice at z = N)
+, background rgb(N, N, N), data-theme
+-> WRONG: the box is marked
+: size N (slider N), second sphere N (slider N), depth N (slider N) | t N, rho N | sentence: The Drawing radius in the View section cuts the two big neighbours open.
+: the box is marked
+A cousin, not a rule
+A line only (buds only round the flat picture)
+A zoom limit or a Drawing radius that is in the way is moved as well.
+At N the chain never ends
+At N the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.
+At N the chain never ends, so the picture shows a stretch of it, and the balls stand so close that they read as one bar with round holes; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.; status "Done: N passes at N × N"
+At N the chain never ends, so the picture shows a stretch of it, and the circles stand so close that they read as one band with holes; where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen.
+At N the chain never ends, so the picture shows a stretch of it.
+At N the chain never ends, so the picture shows a stretch of it; where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.
+Balls on balls
+Balls on balls a cousin of the flat picture: no c, no power
+Balls on ballsa cousin of the flat picture: no c, no power
+Balls on ballsa cousin of the flat picture: no c, no powerMade only of slides by whole numbers and sphere inversions, so every body is an exact ball.
+Between N and N the buds on a neighbour would cut into each other, so the dial jumps from N to N.
+Coming back below N does not put rho back by itself
+Depth of the search
+Depth of the search, typed value
+Done: N passes at N × N
+Double-click a spot to move in on it.
+Down by N.
+Down to the next whole number.
+Drag to turn.
+Frame it makes room for them.
+From N one step goes to N.
+From N to N
+From N to N, or N
+Here the chain is too long for one picture, so Frame it shows a stretch of it.
+Hold Shift for ten steps.
+Honeycomb grid (six-fold)
+How many rounds of the search a point may take before it counts as inside: the larger the neighbours, the more rounds the far balls of the chain need, and with too few they come out swollen.
+How wide the two big neighbours are, measured against the middle ball: smaller neighbours give a shorter chain, and past N, where they are larger than the middle ball, the second sphere is made smaller to let them.
+Increase Depth of the search
+Increase Second sphere, % of the first
+Increase Size of the neighbours, % of the middle ball
+It follows the size until you set it yourself.
+It follows the size until you set it yourself.; status "Done: N passes at N × N"
+It follows the size until you set it yourself.; the picture's own number against the twin at N x N points of the view (N inside): N differ; "(slice at z = N)"; status "Done: N passes at N × N"
+It has no c and no power.
+It has no c and no power.One click shows it in the Kleinian view, where its dials are.
+It is a cousin of the flat picture: its flat cut is a chain of circles.
+It is now N % of the first.
+It is now N % of the first.; status "Done: N passes at N × N"
+Kleinian group
+Made from: Balls on balls (slides by whole numbers and sphere inversions), neighbours N % of the middle ball, second sphere N % of the first, honeycomb grid, depth of search N.
+Made from: Balls on balls (slides by whole numbers and sphere inversions), neighbours N % of the middle ball, second sphere N % of the first, square grid, depth of search N.
+Made from: Balls on balls (slides by whole numbers and sphere inversions), neighbours N % of the middle ball, square grid, depth of search N.
+Made only of slides by whole numbers and sphere inversions, so every body is an exact ball.
+Move the camera to a view that shows the whole chain.
+One click shows it in the Kleinian view, where its dials are.
+Past N the second sphere has to be smaller than the first, or the two would cut into each other.
+Pearls between two walls
+Press for steps of N.
+Press for whole-number steps.
+Reset this section
+Reset this section puts it back to N.
+Saved as squaring-lab-kleinian-N.zip.
+Saved as squaring-lab-kleinian-NxN.png.
+Scroll to zoom.
+Second sphere, % of the first
+Second sphere, % of the first, typed value
+Second sphere, % of the first: step by whole numbers
+Shift-drag to slide.
+Shows this object in the Kleinian view, where its dials are.
+Size of the neighbours, % of the middle ball
+Size of the neighbours, % of the middle ball, typed value
+Size of the neighbours, % of the middle ball: step by whole numbers
+SizeN × N pixelsFilesquaring-lab-kleinian-NxN.pngFile sizeN MBTime takenN seconds
+Square grid (four-fold)
+The Drawing radius in the View section cuts the two big neighbours open.
+The arrows change the value by N.
+The arrows move to the next whole number.
+The chain of balls runs out past the Drawing radius in the View section, so its far ends are not drawn.
+The second sphere is now N % of the first.
+The sphere inversions use two spheres, and this is the size of the second against the first: with a smaller one the neighbours can be larger than the middle ball, and their buds are smaller and stand further apart.
+Up by N.
+Up to the next whole number.
+Where the buds sit: four-fold round the chain (square grid), six-fold (honeycomb grid), or only round the flat picture (a line only); the flat cut is the same for all three.
+Where the depth of the search runs out, the far balls and the places where two balls kiss come out swollen.
+Where the depth of the search runs out, the far circles and the places where two circles kiss come out swollen.
+Whole numbers
+Whole numbers from N to N
+With a single round most of the picture is one wall of colour.
+With a single round most of the picture is one wall of colour.; status "Done: N passes at N × N"
+With so few rounds of the search whole balls are still undecided, and they come out as broken shells.
+With so few rounds of the search whole balls are still undecided, and they come out as broken shells.; status "Done: N passes at N × N"
+With the second sphere at N the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen.
+With the second sphere at N the buds on a neighbour kiss, and where the depth of the search runs out those places come out swollen.; the picture's own number against the twin at N x N points of the view (N inside): N differ; "(slice at z = N)"; status "Done: N passes at N × N"
+You can save it again, or discard it to make another model.
+You can save it again, or discard it to make another picture.
+a cousin of the flat picture: no c, no power
+at N the second sphere drops to N %
+boxSaysToAScreenReader
+from N on it follows as N / p
+from the Approach list: mode j, status
+squaring-lab-kleinian-N.zip
+squaring-lab-kleinian-NxN.png
+within rounding

@@ -1,0 +1,20 @@
+step 1 result: page up, 18 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow turnaway turnalong
+step 1 waited 2.3 s
+brute-ta-m-x02-14.png: turnaway, n 2, Mandelbrot, centre [-0.2, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.4 wide, 14 steps, in the solid: 9.04 %
+brute-ta-m-x02-40.png: turnaway, n 2, Mandelbrot, centre [-0.2, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.4 wide, 40 steps, in the solid: 6.05 %
+brute-ta-m-x1-14.png: turnaway, n 2, Mandelbrot, centre [-1, 0, 0], across [0, 1, 0], up [0, 0, 1], 1.2 wide, 14 steps, in the solid: 8.46 %
+brute-ta-m-diag-14.png: turnaway, n 2, Mandelbrot, centre [-0.6, 0, 0], across [1, 0, 0], up [0, 0.707, 0.707], 3.2 wide, 14 steps, in the solid: 5.54 %
+brute-ta-m-y0-14.png: turnaway, n 2, Mandelbrot, centre [-0.6, 0, 0], across [1, 0, 0], up [0, 0, 1], 3.2 wide, 14 steps, in the solid: 18.97 %
+brute-ta-rabbit-x0-14.png: turnaway, n 2, c = [-0.12, 0.74, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 3 wide, 14 steps, in the solid: 10.15 %
+brute-ta-rabbit-y0-14.png: turnaway, n 2, c = [-0.12, 0.74, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 0, 1], 3 wide, 14 steps, in the solid: 5.93 %
+brute-ta-n3-j03-x0.png: turnaway, n 3, c = [0.3, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 14 steps, in the solid: 45.57 %
+brute-ta-n4-bas-x0.png: turnaway, n 4, c = [-1, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 14 steps, in the solid: 29.72 %
+brute-tl-m-x02-14.png: turnalong, n 2, Mandelbrot, centre [-0.2, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.4 wide, 14 steps, in the solid: 38.55 %
+brute-tl-m-x02-40.png: turnalong, n 2, Mandelbrot, centre [-0.2, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.4 wide, 40 steps, in the solid: 29.47 %
+brute-tl-m-x1-14.png: turnalong, n 2, Mandelbrot, centre [-1, 0, 0], across [0, 1, 0], up [0, 0, 1], 1.2 wide, 14 steps, in the solid: 18.08 %
+brute-tl-m-diag-14.png: turnalong, n 2, Mandelbrot, centre [-0.6, 0, 0], across [1, 0, 0], up [0, 0.707, 0.707], 3.2 wide, 14 steps, in the solid: 18.97 %
+brute-tl-m-y0-14.png: turnalong, n 2, Mandelbrot, centre [-0.6, 0, 0], across [1, 0, 0], up [0, 0, 1], 3.2 wide, 14 steps, in the solid: 18.97 %
+brute-tl-rabbit-x0-14.png: turnalong, n 2, c = [-0.12, 0.74, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 3 wide, 14 steps, in the solid: 22.06 %
+brute-tl-rabbit-y0-14.png: turnalong, n 2, c = [-0.12, 0.74, 0], centre [0, 0, 0], across [1, 0, 0], up [0, 0, 1], 3 wide, 14 steps, in the solid: 15.35 %
+brute-tl-n3-j03-x0.png: turnalong, n 3, c = [0.3, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 14 steps, in the solid: 45.52 %
+brute-tl-n4-bas-x0.png: turnalong, n 4, c = [-1, 0, 0], centre [0, 0, 0], across [0, 1, 0], up [0, 0, 1], 2.6 wide, 14 steps, in the solid: 51.25 %

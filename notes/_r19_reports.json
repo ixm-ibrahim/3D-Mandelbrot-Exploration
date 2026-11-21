@@ -1,0 +1,537 @@
+[
+ {
+  "summary": "No foldpost rule gets through the gates. Six rules built (prefix f_), four iterated, all fail by stage 1; no panel run, no Mandelbrot solid.\n\nONE FOLD is closed (reasoned, then measured). A cap mirrored in its rim lands on everything outside it, so every flat direction gets extra copies, the long-arm direction +x included (sphere covered -2 times, 39 to 64 % of directions mirrored). Fixing the radius so the extra copy of -x arrives with stretch exactly 2 forces the cap to sit 2 to 30 degrees off straight-up; then either the crease runs 2.5 degrees from the flat plane (f_one60) or the extra +x copies arrive with stretch 5.0 to 11 (spindles; f_one80 5.04, f_one85 5.48). A scan of the whole family finds no cap with stretch 2 at both copies except the degenerate near-half-sphere (crease 0.4 to 8 degrees from the flat plane). The crushed pole lands 14 to 29 degrees from -x, on the bud line. f_one80 closecut: clean edges but pointed lens bodies and droplets, same as m_cap15.\n\nTWO FOLDS (a pleat: mirror out of cap 1, mirror back at a slightly larger rim) do what the brief asked in the screens: sphere covered +2.00 times, +x gets no extra copy, -x gets 4 above and 4 below, largest stretch 2.4 to 3.7, all rule checks pass. But the copies cannot be round: for the pleat that leaves straight-up alone, a copy landing from answer elevation e has stretch sqrt(W)(1+W), W = tan(45 + e/2): 2 only on the flat plane, 2.39 at latitude 5, 2.90 at 10, 3.60 at 15.5 (closed form; measured 2.37, 2.80, 3.53).\n- f_cres10: clean skin, passes J1 J2 J3 J5 J6 J7; fails J4 (0 buds off the flat plane) and J8 (roundness 0.25, 0.47, 0.25 against oneplane's 0.76, 0.72, 0.73). It is the one-plane basilica with a small fan of stubby fingers hugging the flat plane.\n- f_pl10 (wider caps, stretch 2.24 and 2.50): fails J2 J3 J4 J8, a terraced block with a zero-thickness membrane on every neck.\n\nNew fault found, not predicted: any fold that reaches the upright meridian above +x traps a membrane in the mirror plane y = 0 (upright line above the neck inside for 1.15 units; oneplane 0). This is also m_cap15's \"thin sheet on every neck\".",
+  "verdicts": [
+   {
+    "name": "f_one80",
+    "what": "One fold of the one-plane answer: cap centred 10 degrees off straight-up toward +x (80 degrees from +x in the plane y = 0), angular radius 31.95 degrees, mirrored in its rim; same below. Radius fixed by 'extra copy of -x arrives with stretch exactly 2'. F = |v|^2 R(P(v/|v|)).",
+    "screens": "Measured: covers the sphere -1.97 times, 43 % mirrored, largest stretch 8.3, no jump (distance/gap constant 8.3 from 1e-3 to 1e-6), flat plane exact 4e-15, both mirrors exact. To -x: latitude 74.5 above +x and above -x, stretch 2.00, mirrored. To +x: latitude 43.3 above +-x, stretch 5.04, mirrored. Pole sent to 13.7 degrees above -x. Untouched band 26.5 degrees (above +-x), 42.5 above +-y.",
+    "gates": "Rule checks pass. Closecut by eye FAIL: lens bodies and droplets (hair numbers 1.4 to 20). Bench not run.",
+    "verdict": "fail at closecut: pointed lens bodies and loose droplets on the skin, as predicted from the stretch-5 arm copies and the pole landing next to the bud line",
+    "evidence": "out/r19/foldpost/closecut-f_one80.png (seen: clean edges, no fins or dust film, but pointed ovals about twice as long as wide, and specks); logs/screens.log; scan1.txt table A."
+   },
+   {
+    "name": "f_one85",
+    "what": "One fold, cap 5 degrees off straight-up toward +x, radius 27.75 degrees, same stretch-2 principle; this branch puts the bud copies above +-y.",
+    "screens": "Measured: covers -1.96 times, 39 % mirrored, largest stretch 7.9, no jump. To -x: latitude 77.4 above +-y, stretch 2.00, mirrored. To +x: latitude 53.2 above +-x, stretch 5.48. Pole sent to 13.8 degrees BELOW -x. Band 33 degrees.",
+    "gates": "Rule checks pass. Closecut numbers 1.58, 5.18, 10.48, 1.66, 0.69, 0.20; its picture was not studied by eye.",
+    "verdict": "fail at closecut by its numbers and by the same prediction as f_one80 (spindle arm copies, pole on the bud line); picture not looked at, so this one is measured plus reasoned, not seen",
+    "evidence": "logs/cc-ones.log, logs/screens.log, out/me/r16/closecut-f_one85.png (not inspected)."
+   },
+   {
+    "name": "f_one60",
+    "what": "One fold, big cap 30 degrees off straight-up toward +x, radius 55.2 degrees, same stretch-2 principle (the member with the mildest arm stretch).",
+    "screens": "Measured: covers -2.02 times, 64 % mirrored. To -x: latitude 54 above +-x, stretch 2.00. To +x: latitude 4.7 above +-x, stretch 2.22. Crease only 2.5 degrees from the flat plane above +-x. Pole sent to 28.9 degrees above -x.",
+    "gates": "Stopped at the direction screen: fails design target 1 (no one-plane band; the crease cuts the big bodies of the row 2.5 degrees off the flat plane). Not iterated.",
+    "verdict": "fail at the direction screen: the crease runs 2.5 degrees from the flat plane, so the row's big bodies are cut and stacked on their own mirror image (reasoned, not iterated)",
+    "evidence": "logs/screens.log; scan1.txt."
+   },
+   {
+    "name": "f_cres10",
+    "what": "A pleat (two folds): answers inside cap 1 are mirrored in its rim; those that land outside cap 2 are mirrored back in cap 2's rim. Both rims pass through straight-up and touch there; rim 1 passes 10 degrees above -x, rim 2 10 degrees below. Cap 1: centre 50 degrees above -x, radius 40; cap 2: centre 40, radius 50; same below.",
+    "screens": "Measured: covers +2.01 times, 5 % mirrored, largest stretch 3.7, no jump (3.7 constant), flat plane and mirrors exact. To -x: latitude 9.3 above +-y stretch 2.80 mirrored, latitude 15.1 above +-y stretch 3.53 not mirrored (same below). To +x: NO extra copy. Pole stays straight-up. Band 5 degrees at +-y, untouched above +-x.",
+    "gates": "Rule checks pass. Closecut by eye pass (smooth skin, one clean oval; the number 17.2 on one tile is that oval counted as hair). Bench: J1 J2 J3 J5 J6 J7 pass; first failure J4, then J8.",
+    "verdict": "fail at bench J4 and J8: the new buds are small stubby fingers within 20 degrees of the flat plane, not round bodies in a new direction",
+    "evidence": "J4: 6 buds, 0 off the flat plane; new buds 0.044 against 0.103 for the flat ones. J8: roundness 0.25, 0.47, 0.25 (oneplane 0.76, 0.72, 0.73). J2 identical to oneplane (ball 0.02 parts the bodies, upright line 0.000). Seen in bench-f_cres10.png: the one-plane row of balls with a small fan of about five fingers each side. closecut-f_cres10.png: five tiles a smooth line with one small kink, one tile a separate smooth oval about 1.6 to 1."
+   },
+   {
+    "name": "f_pl10",
+    "what": "Wide pleat: cap 1 runs from 10 degrees above -x over straight-up to 40 degrees above +x (centre 75 degrees above -x, radius 65); cap 2 from 10 degrees below -x to 30 degrees above +x (centre 70, radius 80); same below. Chosen because wider caps bring the copies' stretch nearest 2.",
+    "screens": "Measured: covers +2.00 times, 12.5 % mirrored, largest stretch 2.5, no jump. To -x: latitude 9.8 stretch 2.24 mirrored, latitude 18.0 stretch 2.50 (above +-y; same below). To +x: no extra copy. Pole sent to 87.9 degrees elevation (2 degrees off itself). But the fold touches 77 % of all directions and reaches the +x meridian at latitude 21.",
+    "gates": "Rule checks pass. Closecut by eye: borderline (rows of lemon-shaped buds meeting at points, small teeth and a notch at the creases). Bench: J1 pass, first failure J2, also J3, J4, J8.",
+    "verdict": "fail at bench J2: a membrane stands on every neck in the plane y = 0; and the body is a terraced block (J3, J4, J8 fail too)",
+    "evidence": "J2: upright line above the touching point inside for 1.149 (oneplane 0), no ball up to 0.32 parts the bodies. J3: 1 ring. J4: 12 buds, 0 off the flat plane. J8: roundness 0.70, 0.10, 0.27, ribs 0.51. Seen in bench-f_pl10.png: plates and ridges, stepped outlines in the cuts x = 0 and y = 0, a vertical line in the cut x = -0.618."
+   },
+   {
+    "name": "f_pl5",
+    "what": "Wide thin pleat: cap 1 as f_pl10, rim 2 only 5 degrees below -x and 38 degrees above +x.",
+    "screens": "Measured: covers +2.00 times, 6.9 % mirrored, largest stretch 2.4. To -x: latitude 9.8 stretch 2.24 mirrored, latitude 14.1 stretch 2.34. No +x copy. Pole sent 4.8 degrees off itself, toward -x.",
+    "gates": "Screens only. Not iterated: it shares f_pl10's cap 1, which reaches the +x meridian and gave the membrane and the terraces.",
+    "verdict": "fail expected at bench J2 like f_pl10 (same cap 1); reasoned, not run",
+    "evidence": "logs/screens.log."
+   }
+  ],
+  "claims": [],
+  "findings": [
+   "Measured: the closed-form fold stretch sin(t_out)/sin(t_in) and the one-plane stretch sqrt(2 cos L' (1 + cos L')) reproduce the rule code to 2 decimals (scan1.txt against logs/screens.log for f_one60, f_one80, f_one85).",
+   "Reasoned and measured: one fold always copies +x as well as -x, because a cap mirrored in its rim covers the whole rest of the sphere (every one of 7 flat directions tested has 2 extra sources above the plane; degree -2).",
+   "Measured (closed-form scan of all cap centres 40 to 140 degrees and all radii, scan1.txt B): no one-fold cap gives stretch 2 at both the -x copy and the +x copy except near-half-spheres with the crease 0.4 to 8 degrees from the flat plane.",
+   "Measured: with stretch exactly 2 at the bud copy and a band of at least 26 degrees, the arm copies arrive with stretch 5.0 to 11 and the crushed pole lands 4 to 14 degrees from -x.",
+   "Measured: a pleat keeps the flat rule's count (+2.00), gives +x no extra copy and -x four above and four below, with largest stretch 2.4 to 3.7; jump, flat-plane and mirror checks all pass.",
+   "Reasoned (closed form) and measured at three points: for a pleat whose rims pass through straight-up, a copy of -x landing from answer elevation e has stretch sqrt(W)(1+W), W = tan(45 + e/2), independent of the rims: above 2 everywhere off the flat plane (2.39, 2.90, 3.60, 4.60 at source latitude 5, 10, 15.5, 21).",
+   "Reasoned: stretch near 2 at a copy well away from its crease needs a cap of radius 64 to 84 degrees; a cap that stays clear of the flat plane and of the upright meridian above +x has radius at most 45 degrees. That gap is why the kind fails.",
+   "Measured: a fold that reaches the upright meridian above +x leaves a membrane in the mirror plane y = 0 on every neck (f_pl10: upright line inside 1.149; m_cap15: 1.709; oneplane and f_cres10: 0.000). Reasoned: zero thickness, because the sideways stretch there is above 1 at each step.",
+   "Seen in the picture: f_cres10's skin is as clean as oneplane's (smooth line, one small crease kink per tile); closecut's hair number 17.2 on one tile is one clean oval body counted as hair.",
+   "Seen in the picture: f_pl10's skin close up looks like a flat Julia outline (rows of lemon-shaped buds meeting at pinch points), yet its solid is a terraced block; the close cut alone would have flattered it.",
+   "Measured: the bench's J4 counts buds 9 and 15 degrees off the flat plane as in the flat plane (f_cres10: 6 buds, 0 off the plane)."
+  ],
+  "best_next": "Stop folding the answer with round caps: both results say the surplus is either everywhere (one fold) or cannot be round off the plane (pleat). The one thing worth one more hour is the pleat's stretch law turned round: sqrt(W)(1+W) exceeds 2 because the one-plane stretch has already dropped by the time the fold acts. A pleat applied BEFORE squaring acts where no stretch has been lost yet, so a small pleat of the direction near +-y (not a whole cone, which foldpre is testing) could give stretch exactly 2 at the copy and still leave +x and the upright plane alone. Concretely: mirror a small cap of source directions centred about 20 degrees above +y in its rim and back in a second rim, then apply oneplane; solve the two rims for stretch 2 at both copies; check that no rim reaches the meridian above +-x. Odds of getting through stage 1: about 1 in 6; the likely failure is again buds crowding the flat plane, since copies still sit next to their creases.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/bench-f_cres10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/closecut-f_cres10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/bench-f_pl10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/closecut-f_pl10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/closecut-f_one80.png"
+  ],
+  "not_done": [
+   "No panel run (rabbit, dendrite) for any rule: none passed stage 1, so the gates stop before it. Nothing is known by measurement about these rules off the x-axis.",
+   "f_one85: closecut numbers only, its picture was not looked at. f_one60 and f_pl5: direction screens only, never iterated.",
+   "No cuts at 45 degrees or at the rules' own mid angles (closecut's 22.5 and 11.25 only).",
+   "Caps centred off the upright plane (pairs mirrored in y) were reasoned about, not scanned.",
+   "Three or more folds, and creases that are not circles, were not tried.",
+   "The cliff tool out/r17/profiles/cliff.py was not run as such (its rule list is fixed in the file); the gap 0.001 jump test was done in screens.py instead, on 300,000 random pairs, not on pairs straddling a chosen plane.",
+   "The 'zero thickness' of the membrane is reasoned, not measured (no thickness scan across y = 0)."
+  ],
+  "risks": [
+   "The bench and closecut wrote their usual result files outside my folder (out/r16/bench/results, sheets, tiles, cache for f_pl10 and f_cres10; out/me/r16/closecut-f_*.png). That is how those tools work; copies of the pictures are in out/r19/foldpost/.",
+   "out/r19/foldpost/myrules.py registers six f_ rules in the bench registry; all are failed rules. Remove or ignore them if the registry is used for 'run everything' jobs.",
+   "The pleat stretch law was derived for rims through straight-up and checked at three points only; the statement for general pleats ('always above 2 off the plane') rests on a scan of about 150 rim pairs in scan2.txt, not on a proof.",
+   "Result 1 ('one fold is closed') is proved by scan only for caps centred in the upright plane; for off-plane cap pairs it is an argument.",
+   "f_cres10's J4 failure is partly the bench's angle tolerance (buds at 9 and 15 degrees counted as flat). By eye the verdict stands (small crowded fingers), and J8 fails independently, but a reader could take '0 off the flat plane' too literally.",
+   "Timing: about 95 minutes used; the last sheet (f_cres10) was looked at once, briefly."
+  ],
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/NOTES.md",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/folds.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/myrules.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/scan1.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/scan1.txt",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/scan2.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/scan2.txt",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/screens.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/screens.json",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/logs/screens.log",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/logs/stage1-f_cres10.log",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/logs/stage1-f_pl10.log",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/logs/cc-ones.log",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/logs/cc-pleats.log",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/bench-f_cres10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/bench-f_pl10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/closecut-f_cres10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/closecut-f_pl10.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpost/closecut-f_one80.png"
+  ]
+ },
+ {
+  "summary": "No fold-before rule gets through every gate; no claim. 13 rules built (prefix g_), all exact on the flat plane, all angle-keeping, 11 without a tear.\n\nWhat was tried and where each failed:\n- Caps round the poles (g_p12, g_p22, g_p245, g_p30, g_p45): the cap holds an exact mirror copy of everything below it (measured: 100.00 % agreement on the copy cone). They fail the bench at J2 with the same numbers as round 17's m_cap15 (0.400 of solid on the upright line through the neck, cut 1.70 % full), plus J4 and J8. g_p12 is a ribbed barrel; g_p245 is a ball with four extra long arms.\n- Leaning caps, crossed caps, kaleidoscopes and the mixture (g_t35, g_d48, g_k12, g_k245, g_mix) fail in seconds: needle arms (stretch 5 to 10), a tear at the upright axis, or the film on the necks.\n- Pleats (g_pl, g_pt, g_pt8: two creases, one inside the other, leaning over the bud directions) are the best of the family. They send only +x and -x to +x (no extra arms) and cover the sphere +2.00 times like the flat rule. g_pl and g_pt pass all eight bench lines (g_pl roundness 0.59, 0.52, 0.57; ribs 0.34, 0.18, 0.31). But the bud copies arrive with stretch 3.16 and 5.27, not 2 (lemons and leaves), the close cut shows small combs and thin leaves, and the rabbit is out: volume 3.16 times the yardstick's (a lump), no ball parts the three bodies. The dendrite falls into pieces (biggest piece 98 % against 100 %).\n\nTwo structural reasons, both of which close the family:\n- A copy made by mirrors in circles is always thinner than what it copies, so the stretch at a new bud direction is always above 2 (measured 2.18 at best, in a rule that is a fused barrel).\n- Creases are fixed in space, and for a c off the x-axis a big body sits under them (reasoned; the rabbit shows it).\n\nOne finding that matters beyond this section: the \"thin sheet standing on every neck\" (m_cap15 and every pole fold) is a film of no thickness lying exactly in the upright plane y = 0. Measured: 0.400 of the line inside on the plane, 0.000 one thousandth to the side, at 60 and 300 steps. Any crease that crosses that plane makes it; creases that stay clear of it do not. Not every 0.400 is only a film: g_p12, g_p45 and m_cap80 also have real solid beside the plane.",
+  "verdicts": [
+   {
+    "name": "g_p12",
+    "what": "One-plane rule after mirroring every direction above latitude 12 (and below -12) in the crease circle; one fold per side. F(v) = |v|^2 D(phi(v/|v|)), phi = sphere inversion with apex (0,0,1/cos 78).",
+    "verdict": "fail at bench J2: film on the necks plus real solid beside it; everything fused into a ribbed barrel",
+    "screens": "sent to -x: +-y on the flat plane (stretch 2.00) and 4 copies at latitude 23.5 (2.18, mirror-reversed). Sent to +x: +-x and 4 copies at 23.5 (2.18) = four extra arms. Crushed: the poles, sent straight up/down. Covers the sphere -2.00 times, 79 % folded over, largest stretch 2.2. No tear.",
+    "gates": "closecut by eye: passes (arcs with round buds like the flat basilica's edge; hair number 49 is the known bud-counting fault). Bench: J1 pass, J2 FAIL (no ball to 0.32, line 0.400, cut 1.70 %), J4 FAIL (0 off-plane buds), J8 FAIL (roundness 0.08, 0.04, 0.07, ribs 2.83). Rabbit by cut only: swollen body, shredded arcs. Panel not run.",
+    "evidence": "logs/dirs-1.log, logs/stage1-g_p12.log, out/me/r16/closecut-g_p12.png, out/r16/bench/sheets/g_p12.png, sheet-foldpre.png; neckline: 0.400 at y=0, 0.026 at y=0.001 (measured)"
+   },
+   {
+    "name": "g_p22",
+    "what": "The same with the crease at latitude 22.",
+    "verdict": "fail at bench J2: film on the necks",
+    "screens": "copies of buds and arms at latitude 41.1, stretch 2.65; four extra arms; crushed poles sent up/down; covers -1.99 times; no tear.",
+    "gates": "closecut not run. Bench: J2 FAIL (0.400, 1.70 %), J3 FAIL (1 ring), J4 FAIL, J8 FAIL (roundness 0.41, 0.26, 0.33).",
+    "evidence": "logs/dirs-2.log, logs/stage1-g_p22.log, out/r16/bench/sheets/g_p22.png (sheet not looked at)"
+   },
+   {
+    "name": "g_p245",
+    "what": "The same with the crease at 24.47 degrees, the one size with a principle: the copy of the flat plane lies at 45 degrees, half-way to the pole.",
+    "verdict": "fail at bench J2: film on the necks; also four extra long arms at 45 degrees",
+    "screens": "copies at latitude 45.0, stretch 2.83 (predicted 2.83); sent to +x: 6 directions; crushed poles sent up/down; covers -1.99 times; largest stretch 3.0; no tear.",
+    "gates": "closecut by eye: buds with clean edges, a little taller than wide, one small cluster of droplets. Bench: J2 FAIL (0.400, 1.70 %), J3 FAIL, J4 FAIL (8 off-plane buds, 0 round), J8 FAIL (0.35, 0.11). Rabbit by cut: round middle body ringed by broken lumps and frills. Dendrite by cut: tree copied onto the cone, arcs across the middle.",
+    "evidence": "logs/dirs-1.log, logs/stage1-g_p245.log, out/r16/bench/sheets/g_p245.png, stack-basilica-oneplane-g_p12-g_p245.png (copy cone = flat plane on 100.00 % of points), stack-rabbit-oneplane-g_p245-g_pl.png; neckline 0.400 / 0.000"
+   },
+   {
+    "name": "g_p30, g_p45",
+    "what": "The same with creases at 30 and 45 degrees.",
+    "verdict": "fail at closecut by eye (g_p30: lemon-shaped buds, slivers) and at the seconds screen (g_p45: stretch 6.00 at the copies, film with real thickness)",
+    "screens": "g_p30: copies at 53.1, stretch 3.33. g_p45: copies at 70.5, stretch 6.00. Both: four extra arms, poles crushed and sent up/down, no tear.",
+    "gates": "g_p30 closecut by eye: lemon buds and a few slivers; bench not run. g_p45: neckline 0.306 at y=0 and 0.153 at y=0.001 (real solid on the neck); nothing further run.",
+    "evidence": "logs/dirs-2.log, out/me/r16/closecut-g_p30.png, logs/neckline.log"
+   },
+   {
+    "name": "g_k12, g_k245",
+    "what": "The two creases at +-L used as facing mirrors (fold again and again): a triangle wave in the angle-true height ln tan(45 - lat/2).",
+    "verdict": "fail at the seconds screen: tear at the upright axis",
+    "screens": "copies stacked to the pole at 23.5, 43.5, 58.5, 69 ... with stretch 2.18, 2.76, 3.83, 5.59 ...; largest stretch 4856; jump over a gap of 0.001 is 0.49 (jump/gap 493 to 2126, not constant).",
+    "gates": "rule check fails (tear). Neckline 0.400. Nothing further run.",
+    "evidence": "logs/dirs-2.log, logs/neckline.log"
+   },
+   {
+    "name": "g_t35",
+    "what": "Four small caps (radius 35, centres at latitude 45 over +y and -y, above and below): creases low over the bud directions only.",
+    "verdict": "fail at the seconds screen: needle arms (stretch 10.2)",
+    "screens": "bud copies at latitude 18.0, stretch 3.12; arm copies at latitude 43.9 with stretch 10.16 (thin needles); covers -5.99 times; no film on the necks (0.000).",
+    "gates": "not taken to closecut or bench. Seen in the cut across the middle: four thin needles on the middle body. Rabbit by cut: shredded.",
+    "evidence": "logs/dirs-2.log, stack-basilica-g_pl-g_t35.png, stack-rabbit-g_pt8-g_t35.png"
+   },
+   {
+    "name": "g_d48",
+    "what": "Two caps per side leaning over +y and -y, crossing at right angles over +-x (radius 48.3, centres at latitude 58.3); a point in both is mirrored in both.",
+    "verdict": "fail at the seconds screen: three copies of each arm per side, stretch 5.2 to 8.5",
+    "screens": "sent to -x: bud copies at 19.2 (2.70) and at 71 to 76 (7.8, 8.5); sent to +x: 8 at latitude 51.9 (5.24) and more at 76 (8.5); largest stretch 9.6; neckline 0.002.",
+    "gates": "not taken further.",
+    "evidence": "logs/dirs-2.log, logs/neckline.log"
+   },
+   {
+    "name": "g_pl",
+    "what": "Four pleats (above/below times +y/-y). A pleat is two creases, one inside the other, both leaning over the bud direction: outer circle from 12 to 90 degrees up the meridian, inner from 27.9 to 69.55. Between them the direction is mirrored in the outer crease; inside the inner one it is mirrored in both (same hand again). Then the one-plane rule.",
+    "verdict": "fail at closecut by eye (mild: small combs and thin leaves), then, having passed all eight bench lines, fail at the rabbit (lump, bodies fused) and the dendrite (in pieces)",
+    "screens": "sent to -x: +-y (2.00), 4 at latitude 21.5 (3.16, mirror-reversed), 4 at 32.8 (5.27, same hand). Sent to +x: only +x and -x (no extra arms). Crushed: the poles and their mirror points at latitude 59, sent straight up/down. Covers the sphere +2.01 times, 31.5 % folded, largest stretch 5.6. No tear, no film (0.000).",
+    "gates": "closecut by eye: no hair, dust or film; smooth skin with sharp ridges at creases; thin slanted leaves 3 to 5 times longer than wide and combs of 4 to 10 teeth at the wide width (also at 33.75 and 45 degrees). Bench: J1 to J8 all pass (J2 ball 0.02, line 0.000; J4 8 off-plane buds, 4 round; J8 roundness 0.59, 0.52, 0.57, ribs 0.34, 0.18, 0.31). Panel rabbit: FAIL bodies (volume 1.401 = 3.16 x yardstick, no ball to 0.32 parts them, 0.418 straight up from the meeting point), FAIL truly 3D, FAIL clean (2.30). Panel dendrite: FAIL one piece (98.05 % against 100 %), sheet-like (3.6, allowed 3.0).",
+    "evidence": "logs/dirs-3.log, logs/stage1-g_pl.log, logs/panel-g_pl.log, out/me/r16/closecut-g_pl.png, close45-g_pl.png, out/r16/bench/sheets/g_pl.png, stack-rabbit-oneplane-g_p245-g_pl.png, out/r18/panel/tiles/g_pl/rabbit/front.png"
+   },
+   {
+    "name": "g_pt",
+    "what": "The same four pleats with both creases through the pole (outer low point 12, inner 27.9): seen from the pole, an ordinary paper pleat with two straight parallel creases.",
+    "verdict": "fail at the seconds screen on target 2 (bud copies arrive with stretch 3.16 and 4.43, not near 2); passes all eight bench lines; rabbit not run for this member (g_pl and g_pt8, same crease layout, fail it)",
+    "screens": "sent to -x: +-y, 4 at 21.5 (3.16), 4 at 33.3 (4.43); sent to +x: only +-x; covers +2.00 times; largest stretch 4.4; no tear, no film.",
+    "gates": "closecut hair numbers small at close widths; by eye a smooth skin with ridges, fewer and fatter leaves than g_pl (borderline). Bench: all eight pass (J8 roundness 0.58, 0.53, 0.55, ribs 0.14, 0.09, 0.27). Bench sheet not looked at.",
+    "evidence": "logs/dirs-4.log, logs/stage1-g_pt.log, out/me/r16/closecut-g_pt.png, close45-g_pt.png (hair 0.00 to 0.04; picture not looked at)"
+   },
+   {
+    "name": "g_pt8",
+    "what": "The same pleats lower: outer crease 8 degrees up, inner 19, both through the pole.",
+    "verdict": "fail at bench J4 (the copies sit 15 and 23 degrees up and count as in the flat plane); rabbit by cut: swollen, feathered, shredded",
+    "screens": "sent to -x: +-y, 4 at 14.9 (2.69), 4 at 22.7 (3.26): the roundest arms-free member; sent to +x: only +-x; covers +1.99 times; no tear, no film.",
+    "gates": "closecut by eye: clean smooth skin at 22.5 degrees; at 11.25 oval slanted buds about twice as long as wide, a sharp ridge, a few slivers. Bench: J4 FAIL (0 off the flat plane), the other seven pass (J8 0.54, 0.52, 0.62).",
+    "evidence": "logs/dirs-4.log, logs/stage1-g_pt8.log, out/me/r16/closecut-g_pt8.png, stack-rabbit-g_pt8-g_t35.png, sheet-foldpre.png"
+   },
+   {
+    "name": "g_mix",
+    "what": "Mixture: fold before (g_p245) and then round 17's fold after (cap fold, s = 0.15).",
+    "verdict": "fail at the seconds screen: film on the necks, poles sent to -x with stretch 0, four extra arms",
+    "screens": "sent to -x: +-y, 4 copies at 45 (2.83) and both poles (stretch 0.00); sent to +x: 6; largest stretch 17.9; no tear.",
+    "gates": "neckline 0.400 / 0.000. Not taken further.",
+    "evidence": "logs/dirs-2.log, logs/neckline.log"
+   }
+  ],
+  "claims": [],
+  "findings": [
+   "Measured: the brief's reasoning holds exactly. On the cone that carries the copy of the flat plane, the solid agrees with the flat set on 100.00 % of 270,400 points for g_p12 and g_p245 (basilica, rabbit and dendrite); the one-plane rule on that cone agrees on 92.8 %.",
+   "Measured: predicted copy latitudes and stretches came out to the digit: 23.5 / 2.18, 45.0 / 2.83, 53.1 / 3.33, 70.5 / 6.00, needles at 43.9 with stretch 10.2. The copy is always a needle (stretch above 2), never a lens.",
+   "Reasoned, then measured: for one cap the thinning factor is 1 + (angle between a body and its copy) x cot(cap radius). For pleats through the pole a copy at latitude L above the bud direction arrives with stretch 1 + tan^2(45 + L/2): 2.2 at 5 degrees, 2.7 at 15, 3.2 at 21.5, 4.4 at 33.",
+   "Reasoned (shown for one cap, two crossed caps and a nested pleat, not for every crease pattern): every folded direction that is sent to the flat plane arrives with stretch above 2. A mirror that keeps sizes is a mirror in a plane through the centre, and that cannot leave the flat plane alone.",
+   "My prediction P2 (every fold of this kind brings extra long arms) was wrong as written. Measured: a second crease inside the cap cancels the copy of the arms; g_pl, g_pt and g_pt8 send only +x and -x to +x and cover the sphere +2.00 times.",
+   "My prediction that J2 would pass for creases above 20 degrees was wrong: the film on the necks was not foreseen.",
+   "Measured (neckline.py, 60 and 300 steps): the sheet on the necks is a film of no thickness in the upright plane y = 0. Length inside on the upright line through the neck: 0.400 at y = 0 and 0.000 at y = 0.001 for m_cap15, g_p245, g_k245, g_mix; 0.000 everywhere for oneplane, twoplane, along, g_t35, g_pl, g_pt, g_pt8. Real thickness as well for g_p12 (0.026 at y = 0.001), g_p45 (0.153), m_cap80 (0.184).",
+   "Reasoned (fits all 16 rules tested): for c on the x-axis the upright plane is kept by the rule; a neck pushes points straight up in it; the one-plane rule lets them leave; any crease crossing that plane hands them back, and the only way out is sideways into a body. The bench sees the film as a one-voxel sheet because its grid holds that plane, hence the identical 0.400 and 1.70 % for four rules. This differs from the reason given in the brief for m_cap15.",
+   "Measured: a fold before with caps round the poles at latitude L is the same rule as a fold after with caps round the poles at the copy latitude (12 -> 23.49, 24.47 -> 45, 30 -> 53.13); largest difference 6e-14 on 400,000 points. So g_p<L> also belong to foldpost's family. Leaning caps and pleats do not (reasoned).",
+   "Reasoned: given the one-plane rule on one side of a crease circle, the angle-keeping rule on the other side is forced (mirror in the circle, then square). A fold-before rule is its set of crease circles and nothing else.",
+   "Seen in the picture (bench sheet, sheet-foldpre.png): g_pl's basilica is the clean one-plane basilica with, on each side of the middle body, a fan of five buds up the sky at latitudes 0, +-21.5, +-33; the flat one round, the others lemon- and leaf-shaped, each thinner than the last. The upright cut through the x-axis is untouched.",
+   "Seen in the picture and measured by the panel: the rabbit under g_pl is a craggy lump (volume 3.16 x the yardstick's; a ball at the meeting point 83 % full). Under g_pt8 and g_t35 the cut shows a swollen middle body with feathered edges between feathered bands; under g_p245 a round body ringed by broken lumps.",
+   "Reasoned: the rabbit fails because the creases are fixed in space. They were placed over the basilica's only thin spot (the small buds at +-y); the rabbit has a big body there (c at 99 degrees longitude, 0.75 out, about 19 degrees tall from the centre), so the crease cuts it and fuses it to its copy. No fixed crease is clear of the big bodies for every c.",
+   "Measured: the bench's roundness for g_pl and g_pt (0.52 to 0.59) lies in the band its own README calls undecided (bad rules under 0.34, good over 0.71). The bench passes lemons whose stretch is 3.2 to 5.3."
+  ],
+  "best_next": "Stop fold-before: odds that any member passes the rabbit are under 2 %, for the two structural reasons above.\n\nThe most useful next step costs minutes:\n1. Run `python out/r19/foldpre/neckline.py <rule>` (seconds) on every foldpost and rational rule before reading J2. It tells a zero-thickness film in the upright plane from a real sheet, and round 17's m_cap15 failure should be re-read with it.\n2. Run `python out/r19/foldpre/stack.py rabbit <rule>` (one minute) on any rule with a fixed crease or pole before any bench work. Fixed creases within about 25 degrees of the flat plane cut the rabbit's big body.\n\nIf a fold-after is still wanted, the one design the film result leaves open is caps whose crease, pulled back to directions, stays clear of the upright plane through the x-axis. I give that under 5 % to pass the rabbit, because the fixed-crease problem remains.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpre/sheet-foldpre.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpre/stack-basilica-oneplane-g_p12-g_p245.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpre/stack-basilica-g_pl-g_t35.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpre/stack-rabbit-oneplane-g_p245-g_pl.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpre/stack-rabbit-g_pt8-g_t35.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpre/stack-dendrite-oneplane-g_p245-g_pl.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/foldpre/close45-g_pl.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/me/r16/closecut-g_p12.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/me/r16/closecut-g_p245.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/me/r16/closecut-g_pl.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/me/r16/closecut-g_pt8.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r16/bench/sheets/g_pl.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r16/bench/sheets/g_p12.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r16/bench/sheets/g_p245.png"
+  ],
+  "files_changed": [
+   "out/r19/foldpre/myrules.py (13 rules, prefix g_)",
+   "out/r19/foldpre/dirs.py (seconds: rule checks, bud and arm directions with stretch, crushed directions)",
+   "out/r19/foldpre/neckline.py (seconds: the film on the necks)",
+   "out/r19/foldpre/stack.py (point-by-point cuts: basilica, rabbit, dendrite)",
+   "out/r19/foldpre/close45.py (closecut at 33.75 and 45 degrees)",
+   "out/r19/foldpre/sheet.py and sheet-foldpre.png",
+   "out/r19/foldpre/NOTES.md (long notes: predictions written first, then results)",
+   "out/r19/foldpre/stack-*.png, close45-*.png, logs/*",
+   "Written by the brief's own commands outside my folder: out/me/r16/closecut-g_*.png; out/r16/bench results, sheets, tiles and cache for g_p12, g_p22, g_p245, g_pl, g_pt, g_pt8; out/r18/panel results, tiles and sheets for g_pl (rabbit and dendrite only)"
+  ],
+  "not_done": [
+   "Panel run only for g_pl, and only rabbit and dendrite. The other rules had failed an earlier gate; their rabbit verdicts rest on my point-by-point cuts and my eye.",
+   "g_pt (passes all eight bench lines) was not run on the rabbit or the panel. It has the same crease layout as g_pl and g_pt8, which fail the rabbit, so I expect the same (reasoned, not measured).",
+   "Bench stage 1 not run for g_p30, g_p45, g_t35, g_d48, g_k12, g_k245, g_mix (all failed in seconds or at the close cut).",
+   "The bench sheets for g_p22, g_pt and g_pt8 and the picture close45-g_pt.png were not looked at closely; their verdicts rest on the printed numbers.",
+   "The claim that every folded direction sent to the flat plane arrives with stretch above 2 is shown for three crease layouts only (one cap, two crossed caps, a nested pleat), not for every possible pattern of circular creases.",
+   "No principle was found that fixes the four sizes of a pleat. Only the pole cap has one (copy of the flat plane at 45 degrees gives crease 24.47).",
+   "The dendrite cuts in stack-dendrite-*.png are hard to read (a tree has no inside to paint); only the panel's numbers for g_pl judge it.",
+   "Whether the zero-thickness film shows in the lab's own renderer was not checked."
+  ],
+  "risks": [
+   "g_pl and g_pt pass the bench's eight lines although their buds are lemons and leaves (stretch 3.2 to 5.3). Anyone reading only the bench table would take them for stage-1 passers; they are not, by the close cut and by the rabbit.",
+   "My close-cut verdict for g_pl (small combs, thin leaves: a mild fail) is a judgement by eye; g_pt and g_pt8 are borderline by the same eye. The rabbit decides either way.",
+   "The film explanation is reasoned from 16 rules and one mechanism; it has not been checked by anyone else. It contradicts the reason the brief gives for m_cap15's sheet.",
+   "The direction search in dirs.py uses random directions and sometimes lists a symmetric partner twice or misses one. The counts in my table were completed by the exact mirrors, not read straight off the log.",
+   "The registry now holds 13 g_ rules, including two with a tear (g_k12, g_k245). They are there as tested failures, not candidates.",
+   "Times are from the machine clock; I worked about 65 minutes."
+  ]
+ },
+ {
+  "summary": "No rule of the \"rational\" kind gets through; nothing is claimed. 12 rules written (prefix q_), 10 through the close cut, 7 through bench stage 1, 2 looked at on the rabbit and dendrite. Every one fails at the close cut or at stage 1. Nothing published, no Mandelbrot solid drawn. About 50 minutes used.\n\nWhat was built: on a cap round the upright axis, an angle-keeping map of the whole sphere of directions covering it 4 times (lopsided) or 6 times (symmetric), R(w) = (w^n - beta)/(w^d (1 - beta w^n)), faded into the one-plane rule at the flat plane. All of them: flat plane exact, both mirrors exact, no tear, no fold (0.0 % after I re-paced the fade), bench J1 and J6 pass.\n\nWhat failed and where:\n- Six-fold with stretch exactly 2 at the extra buds and arms (q_6m, the principled size): ONE ROCK. Volume 4.59 against 0.73 for one plane; the cut at the meeting point is 91 % full; fails J2, J3, J4, J8.\n- Six-fold, same size, other sign (q_6p): necks stay free (0.02 % full), but the stretch is 4: a faceted middle body, four spears, 1201 loose pieces; fails J4, J5, J8. Close cut 6.6 (droplets, prongs).\n- Six-fold, small surplus (q_6p3, q_6p6): the basilica keeps its three bodies but grows four long thin ears and thin spikes; 1385 to 1465 loose pieces; fails J4, J5, J8.\n- Four-fold (q_4p, q_4s): lopsided front to back and fused at the necks at both sizes (95 % and 89 % full); fails J2, J8.\n- Off the x-axis (q_6p3, q_6p): the rabbit swells into a shaggy lump (volume 1.74 and 2.36 against 0.44), the dendrite breaks into about 2000 crumbs.\n\nWhy (three counts, each checked on the rules): (1) stretch 2 on average needs 4 covers, but the half turn every flat Julia set has allows only 2 or 6; (2) with 6 covers, stretch 2 at the extra buds exists only for the sign that presses the whole upright plane forward onto the arms, which is the rock; the other sign never gets below 3.67; (3) a small surplus forces a large stretch (needles), a large one swallows the flat picture. Also measured: the change of angle round 17 used is not a smooth function for any member, so its crumpled skin was built in, not a table fault.\n\nRecommendation: close this kind.",
+  "verdicts": [
+   {
+    "name": "q_6m",
+    "what": "Six-fold angle-keeping cap, size fixed by the principle 'the extra bud and arm directions arrive with stretch exactly 2': R(w) = (w^4 - b)/(w^2 (1 - b w^4)), b = -0.134614, w = (x+iy)/(r+|z|); R for |w| <= 0.654, then w^2 exp(kappa Log(R/w^2)) with kappa fading to 0 at the flat plane (paced in |w|^4).",
+    "screens": "To -x: 6 (the flat +-y, and four 43 degrees from upright in the plane x = 0), to +x: 6 (flat +-x and four 43 degrees from upright in the upright plane y = 0); stretch at the extra ones 2.00 (formula), counted positions agree. Crushed directions (27 degrees above the flat plane) are sent 19 degrees above +x and -x, onto the arms; straight up is sent straight down. Covers 5.98 times, 0.0 % folded, angles kept on 77 %, stretch median 2.50, largest 4.0.",
+    "gates": "Rule checks pass (jump/gap 4.0 at every gap, flat plane exact, mirrors exact). Close cut FAILS: worst 99.8; by eye the skin is smooth but stands at height 0.76 instead of 0.39 and one tile is inside the body with a blade-shaped hole. Bench: J1 pass, J2 FAIL (cut at the meeting point 91 % full, no ball up to 0.32 parts the bodies), J3 FAIL, J4 FAIL (0 buds), J5 J6 J7 pass, J8 FAIL. Rabbit and dendrite not run.",
+    "verdict": "fail at closecut: the cut is inside a lump (and stage 1 J2: one rock, volume 4.59 against 0.73)",
+    "evidence": "out/me/r16/closecut-q_6m.png, out/r16/bench/sheets/q_6m.png, out/r19/rational/logs/stage1-q_6m.log, out/r19/rational/sheet.png row 4"
+   },
+   {
+    "name": "q_6mb",
+    "what": "The same rule with a true one-plane band (the rule IS the one-plane rule within 4 degrees of the flat plane; fade paced in |w|^8).",
+    "screens": "Same directions and stretch as q_6m. Covers 5.98 times, 0.0 % folded, angles kept on 83 %, worst 1 % of stretch ratios 5.3, largest stretch 4.3.",
+    "gates": "Rule checks pass (jump/gap 4.3). Close cut FAILS: worst 7.6 (number only; picture not looked at). Bench not run.",
+    "verdict": "fail at closecut: 7.6, same family as the rock",
+    "evidence": "out/r19/rational/logs/closecut-q_6mb.log, out/me/r16/closecut-q_6mb.png (not looked at)"
+   },
+   {
+    "name": "q_6h",
+    "what": "Six-fold cap, b = -0.0666, chosen so that the six bud directions sit evenly round the x-axis (30 degrees from upright).",
+    "screens": "To -x: 6, evenly spaced at 0, 60, 120, 180, 240, 300 degrees round the x-axis (counted); to +x: 6. Stretch at the extra ones 3.43. Crushed directions sent 36 degrees above +-x. Covers 5.98 times, 0.0 % folded, angles kept on 87 %, largest stretch 4.9.",
+    "gates": "Rule checks pass. Close cut FAILS: worst 21.4; by eye slashes, combs and needles. Bench: J2 FAIL (85 % full), J3, J4, J8 FAIL; volume 3.27.",
+    "verdict": "fail at closecut: slashed, needled skin (and stage 1 J2: a rock)",
+    "evidence": "out/me/r16/closecut-q_6h.png, out/r19/rational/logs/stage1-q_6h.log"
+   },
+   {
+    "name": "q_6m3",
+    "what": "Six-fold cap, b = -0.03 (small surplus, the sign of q_6m).",
+    "screens": "Extra directions 20 degrees from upright, stretch 5.5; crushed directions sent 52 degrees above +-x.",
+    "gates": "Rule checks pass (jump/gap 6.9). Close cut FAILS: worst 9.2 (number only). Bench not run.",
+    "verdict": "fail at closecut: 9.2",
+    "evidence": "out/r19/rational/logs/closecut-q_6m3.log"
+   },
+   {
+    "name": "q_6p",
+    "what": "Six-fold cap, the same size with the other sign, b = +0.134614: the crushed directions go towards +-y (harmless for the basilica) but the stretch at the extra directions is 4.",
+    "screens": "To -x: 6 (flat +-y and four 38 degrees from upright in the upright plane y = 0); to +x: 6 (flat +-x and four 38 degrees from upright in the plane x = 0); stretch there 4.00. Crushed directions sent 19 degrees above +y and -y. Covers 6.00 times, 0.0 % folded, angles kept on 77 %, largest stretch 4.0.",
+    "gates": "Rule checks pass. Close cut FAILS: worst 6.6; by eye a scalloped skin with loose oval droplets and a few thin prongs, at the normal height 0.33. Bench: J1, J2 (0.02 % full, a ball of 0.02 parts the bodies), J3, J6, J7 pass; J4 FAIL (50 buds off the plane, 8 round), J5 FAIL (1201 pieces), J8 FAIL (0.38, 0.24, 0.16). Rabbit (look only): shaggy rock, volume 2.36 against 0.44. Dendrite: a bush of thin twigs with crumbs, 1815 pieces.",
+    "verdict": "fail at closecut: loose droplets and prongs (and stage 1 J4, J5, J8: spears, not balls)",
+    "evidence": "out/me/r16/closecut-q_6p.png, out/r16/bench/sheets/q_6p.png, out/r19/rational/sheet.png row 3, out/r19/rational/rabbit-q_6p.png, out/r19/rational/dendrite-q_6p.png"
+   },
+   {
+    "name": "q_6p6",
+    "what": "Six-fold cap, b = +0.0666.",
+    "screens": "Extra directions 30 degrees from upright, stretch about 4.3; crushed directions sent towards +-y.",
+    "gates": "Rule checks pass (jump/gap 4.9). Close cut FAILS by eye: worst 3.1; droplets and small blades. Bench: J2 pass; J4 FAIL (44 buds off the plane, 0 round), J5 FAIL (1465 pieces), J8 FAIL (0.41, 0.41, 0.31); volume 0.59.",
+    "verdict": "fail at closecut: droplets and blades",
+    "evidence": "out/me/r16/closecut-q_6p6.png, out/r19/rational/logs/stage1-q_6p6.log"
+   },
+   {
+    "name": "q_6p3",
+    "what": "Six-fold cap, small surplus, b = +0.03. The least bad member: the basilica keeps its shape.",
+    "screens": "Extra directions 19 degrees from upright, stretch 6.38 (needles predicted); crushed directions sent 52 degrees above +-y; flat circle would be 1.77 to 2.25 without the fade.",
+    "gates": "Rule checks pass (jump/gap 6.9). Close cut FAILS: worst 29.6; by eye a kinked skin line with specks. Bench: J1, J2, J3, J6, J7 pass; J4 FAIL (28 off the plane, 4 round), J5 FAIL (1385 pieces), J8 FAIL (0.40, 0.29, 0.21); volume 0.65. Rabbit (look only): FAILS, a shaggy lump, volume 1.74 against 0.44, a ball of 0.1 at the meeting point 92 % full. Dendrite: FAILS one piece, the flat tree with a cloud of 2157 crumbs.",
+    "verdict": "fail at closecut: kinked skin with specks (stage 1 J4, J5, J8: four long thin ears and spikes; rabbit a lump)",
+    "evidence": "out/me/r16/closecut-q_6p3.png, out/r16/bench/sheets/q_6p3.png, out/r19/rational/sheet.png row 2, out/r19/rational/rabbit-q_6p3.png, out/r19/rational/dendrite-q_6p3.png, out/r19/rational/logs/panel-q_6p3.log"
+   },
+   {
+    "name": "q_4p",
+    "what": "Four-fold angle-keeping cap, R(w) = (w^3 - b)/(w (1 - b w^3)), b = +0.268 (the size at which the loop of directions sent onto the flat plane has stretch about 2).",
+    "screens": "To -x: 4 (flat +-y, and one above and one below, 28 degrees from upright leaning forward), stretch 2.48; to +x: 4 (flat +-x and one above, one below, 32 degrees from upright leaning back), stretch 1.43. Crushed directions sent 16 degrees above the flat plane towards +x and two more. Covers 4.00 times, 0.0 % folded, stretch median 1.99, largest 5.2, angles kept on 78 %. NOT kept by the half turn about the upright axis (differs by 40).",
+    "gates": "Rule checks pass (jump/gap 5.2). Close cut number passes (0.18) but by eye the skin stands at 0.68 and 0.58 instead of 0.39 and one tile shows a frayed comb. Bench: J2 FAIL (95 % full), J8 FAIL (0.40, 0.41, 0.45); J4 passes (8 buds off the plane, 6 round); volume 2.69.",
+    "verdict": "fail at bench J2: fused at the meeting point, a lopsided thorny rock",
+    "evidence": "out/me/r16/closecut-q_4p.png, out/r16/bench/sheets/q_4p.png, out/r19/rational/sheet.png row 5"
+   },
+   {
+    "name": "q_4m",
+    "what": "The same with b = -0.268 (extra bud leaning back, extra arm leaning forward).",
+    "screens": "Mirror picture of q_4p's directions; covers 4.00 times, 0.0 % folded.",
+    "gates": "Rule checks pass. Close cut FAILS: worst 30.1 (number only). Bench not run.",
+    "verdict": "fail at closecut: 30.1",
+    "evidence": "out/r19/rational/logs/closecut-q_4m.log"
+   },
+   {
+    "name": "q_4s",
+    "what": "Four-fold cap, small surplus, b = +0.10.",
+    "screens": "Extra bud 11 degrees from upright leaning forward, stretch 5.25; extra arm 11.5 degrees leaning back, stretch 4.85; crushed directions sent 46 degrees above the flat plane. Not kept by the half turn (differs by 35).",
+    "gates": "Rule checks pass (jump/gap 10.0). Close cut passes by number (0.08); by eye a clean straight skin, but at height 0.50, and one ragged knob. Bench: J2 FAIL (89 % full), J8 FAIL (0.33, 0.34, 0.35); J4 passes (14 off the plane, 6 round); volume 2.19.",
+    "verdict": "fail at bench J2: still fused and lopsided, with a tall thin spike",
+    "evidence": "out/me/r16/closecut-q_4s.png, out/r16/bench/sheets/q_4s.png, out/r19/rational/sheet.png row 6"
+   },
+   {
+    "name": "q_c6, q_c4",
+    "what": "Round 17's way kept for comparison: R everywhere, the flat circle mended by a change of angle that fades with height (b = +0.03 six-fold, +0.05 four-fold).",
+    "screens": "q_c6: covers 5.98 times, 0.0 % folded, largest stretch 18.9, angles kept on 88 %.",
+    "gates": "Rule checks only: jump/gap 13 to 15 (q_c6) and 20 to 30 (q_c4), against 4 to 7 for the fade rules and 550 to 2500 for round 17's p_x_ratc15 and p_x_ratc25. Never iterated.",
+    "verdict": "not taken further: the change of angle is measured to be non-smooth (slopes 1, 1.35, 1.95, 2.8, 4.1 over ever shorter steps even at this small size)",
+    "evidence": "out/r19/rational/logs/check3.log, out/r19/rational/logs/tau_singular.log"
+   }
+  ],
+  "claims": [],
+  "findings": [
+   "REASONED: a mirror-symmetric angle-keeping map that takes the flat circle twice round covers the sphere 4 or 6 times, never 3 (directions sent straight up minus those sent straight down in a hemisphere is 2, so their sum is even).",
+   "REASONED, then MEASURED: covering 4 times is the only count with stretch 2 on average (area must go up 4 times). Measured median stretch: one plane 1.39, four-fold rules 1.99, six-fold rules 2.2 to 2.5.",
+   "REASONED, then MEASURED: every flat Julia set is unchanged by a half turn; a rule keeps that only if it covers 2, 6, 10 ... times. The four-fold rules change by 35 to 41 under the half turn (check.py) and their basilica is a wedge pointing forward (seen). So 'round on average' and 'not lopsided' exclude each other in this kind.",
+   "REASONED: not every crushed direction can be sent to a pole: at most 2 of 3 per hemisphere (four-fold) or 4 of 5 (six-fold). Design target 3 cannot be met in full by any member.",
+   "MEASURED by formula (predict.py), positions confirmed by counting 3,000,000 directions: stretch at the extra bud directions against size. Four-fold: 5.25 at b = 0.10, 2.48 at 0.268, 2 only at 0.5. Six-fold with b > 0: never below 3.67. Six-fold with b < 0: exactly 2 at b = -0.1346, with extra directions 43 degrees from upright.",
+   "MEASURED and SEEN: the one size and sign with stretch exactly 2 (q_6m) gives one rock: volume 4.59 against 0.73, cut at the meeting point 91 % full, cut y = 0 a full barrel. REASONED why: for that sign no off-plane direction of the upright plane y = 0 is sent to the back half; everything more than 43 degrees from upright is pressed into a wedge 19 degrees thick above +x, so that whole plane is held.",
+   "MEASURED and SEEN: the other sign keeps the necks (J2: 0.02 % full at all three sizes 0.03, 0.0666, 0.1346) but gives spears and ears instead of round buds (0 to 8 round out of 28 to 50 off the plane), 1201 to 1465 loose pieces, roundness 0.16 to 0.41.",
+   "MEASURED: all three benched four-fold and negative-sign rules fuse at the meeting point (85 to 95 % full), the small four-fold one too (q_4s, 89 %). That the small one fuses was not predicted and is not explained.",
+   "MEASURED (tau_singular.py): the change of angle that makes the flat circle exact is not smooth. Its slope at +x over steps of 1/8, 1/64, 1/512, 1/4096, 1/32768 of a turn is 1, 3.3, 17, 102, 647 for the stretch-2 size and 1, 1.35, 1.95, 2.8, 4.1 for a small size; it never settles. REASONED: so round 17's crumpled skin and jump failure were built into that way of mending the flat circle, not a matter of table accuracy.",
+   "MEASURED (foldscan.py): fading the cap into the one-plane rule evenly in log |w| folds 1.3 to 2.9 % of directions at the large sizes; pacing it in |w|^n removes the fold (0.00 %). REASONED: no fade can keep angles (an angle-keeping map agreeing with w^2 on a circle is w^2), so a ring that does not keep angles is unavoidable; angles are kept on 77 to 87 % of directions.",
+   "MEASURED and SEEN (panel, rabbit and dendrite only, two rules, a look not a gate): the rabbit swells into a shaggy lump under both q_6p3 and q_6p (volume 1.74 and 2.36 against 0.44; the solid reaches 0.63 and 0.81 straight up from the meeting point against 0.023). The dendrite stays thin (thickest 0.039 against 0.038 flat) but breaks into 2157 and 1815 pieces. Design target 5 fails.",
+   "MEASURED: my prediction 'the four-fold rules fail J7' was wrong about the bench. Its front/back line is the mirror in y, which these rules keep. The bench has no test for the half turn about the upright axis.",
+   "REASONED, NOT CHECKED (a by-product for a prover): a rule with stretch 2 on average (total cover 4) and the half turn (signed count 2 or 6) must cover three times forward and once mirror-reversed. That is a statement about fold rules."
+  ],
+  "best_next": "Close the \"rational\" kind: no member can have round extra buds, free necks and the half-turn symmetry together, and the reason is a count, not tuning.\n\nThe one thing worth carrying over is a seconds-long screen for the fold sections, the \"cover budget\": total cover = the mean of stretch squared over the sphere (screen.py already computes the stretches). It should be near 4 for round bodies; one plane scores 2, my four-fold rules 4, my six-fold rules 6. Together with the half turn this says a candidate fold rule should cover three times forward and once mirror-reversed, with the reversed sheet keeping angles. Give that statement to a prover first; it is reasoned and unchecked.\n\nHonest odds that this leads to a passing rule: low, perhaps 1 in 10. Its sure value is that it rejects candidates in seconds, as stretch-at-the-bud did here.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/sheet.png (looked at: one row per rule, basilica views, four cuts, skin close up; rows: one plane, q_6p3 ears and spikes, q_6p spears, q_6m rock, q_4p thorny rock, q_4s fused)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/rabbit-q_6p3.png (looked at: shaggy lump; compare rabbit-oneplane.png beside it, clean bodies meeting at points)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/rabbit-q_6p.png (looked at: shaggy rock)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/dendrite-q_6p3.png (looked at: the flat tree with a cloud of crumbs)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/dendrite-q_6p.png (looked at: a bush of thin twigs in 3D with crumbs)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/me/r16/closecut-q_6m.png, closecut-q_6p.png, closecut-q_6h.png, closecut-q_4p.png, closecut-q_4s.png, closecut-q_6p6.png (all looked at; closecut-q_6mb, -q_4m, -q_6m3 judged by number only; closecut-q_6p3 seen only as the top row in sheet.png)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r16/bench/sheets/q_6p.png, q_6m.png, q_4p.png, q_4s.png, q_6p3.png (looked at as crops in out/r19/rational/crop-*.png; q_6h.png and q_6p6.png not looked at)"
+  ],
+  "not_done": [
+   "The full panel was not run on any rule (none got past stage 1); only the rabbit and the dendrite, and only for q_6p3 and q_6p.",
+   "A smooth carry of the change of angle off the flat circle (the brief's item) was not built: measured that the change of angle is not smooth for any member, and used a fade into the one-plane rule instead. The two change-of-angle rules q_c6 and q_c4 were screened, never iterated.",
+   "Close cuts at 45 degrees and at each rule's own mid angles were not made; only the standard 22.5 and 11.25 degrees.",
+   "q_6mb, q_4m and q_6m3 were judged by the close-cut number alone, not by eye, and were not benched.",
+   "Why the small four-fold rule fuses at the necks is not explained.",
+   "Six-fold maps that are not symmetric round the upright axis (poles off the axis) were reasoned to disturb the flat circle more, not built.",
+   "The 'three forward, one reversed' count for fold rules is not proved or tested."
+  ],
+  "risks": [
+   "The three counts are my reasoning, not reviewed by a mathematician; each is backed by a measurement on the rules but the general statements are not proved.",
+   "The fade between cap and flat plane is my choice of radii and pacing; one alternative (a true band) was tried and also failed. A different fade could change details of the skin but not, by the counts, the outcome.",
+   "For about three minutes (23:19 to 23:22) my rules file built a large table at load time, which slowed every bench or panel start by the other engineers. Fixed: it is lazy now and the bench's rule file loads in 1.1 s.",
+   "The official tools wrote their outputs outside my folder, where they always write: out/me/r16/closecut-q_*.png, out/r16/bench/sheets and results for q_*, out/r18/panel/results, tiles, sheets and logs for q_6p3 and q_6p. No .py file outside out/r19/rational/ was touched.",
+   "The close-cut hair number is known to count round buds as hair, and it passed two lumps (q_4p 0.18, q_4s 0.08) because their skin is smooth; the verdicts there rest on the skin height, my eye and bench J2.",
+   "Bench verdicts rest on voxels at 321 a side; loose-piece counts (1201 to 1465) may include pieces joined by threads thinner than a voxel. The point-by-point close cuts do show loose droplets for the same rules."
+  ],
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/NOTES.md",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/myrules.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/predict.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/check.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/foldscan.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/tau_singular.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/sheet.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/sheet.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/logs/ (predict, check, screen, count_dirs, foldscan, tau_singular, closecut-q_*, stage1-q_*, panel-q_6p3, panel-q_6p)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/rational/rabbit-*.png, dendrite-*.png, crop-*.png (strips cut from the panel's and the bench's own pictures)",
+   "Tool outputs outside my folder: out/me/r16/closecut-q_*.png (10), out/r16/bench/sheets/q_*.png and results (7), out/r18/panel/results, tiles, sheets, logs for q_6p3 and q_6p"
+  ]
+ },
+ {
+  "summary": "panel2 is built in out/r19/panel2/ (the round-18 panel copied unchanged as panel_r18.py, plus panel2.py, wide.py, hairnum.py, sheets.py, README.md, NOTES.md, table.txt, moves.txt). All six review faults are fixed or honestly dropped, and the 11 rules of round 18 were re-judged old beside new. Blunt result: NO rule passes the new panel, and none passes all four new off-plane sets. Sets passed out of 11: two planes 3 (basilica, airplane, cauliflower; it now FAILS San Marco on the skin), along 2, p_ss 2, p_cot 2, away 1, p_h4 1, p_tt16 1, one plane 0, lathe 0, p_tt256 0, p_tt1024 0 (its round-18 basilica pass was false). Key numbers: the new hair number scores the flat basilica, San Marco, airplane and cauliflower 0.000 on 180 tiles (old number 1.83, 1.09, 1.04, 0.16 against a line of 0.3) and fails along's fin combs (0.81 of the skin line), away's whiskers (1.24, dust film 24 %) and p_tt1024's dust film (12 % of a tile), lines 0.10 and 0.5 %. The skin is now cut in 120 tiles a set (8 half-planes x 5 skin points x 3 widths; 8,580 tiles kept for 74 rule-set pairs): 13 of the 49 not-clean sets would have been called clean from the old 12 tile places. 'The solid stays' caught one new thing: away on the Siegel disc keeps only 66 % of its volume from 40 to 80 steps. Old group C is replaced by four small nudges, each judged only after one orbit of 0: at round 18's 'rabbit turned 30 degrees' the orbit of 0 leaves at step 3 to 14 for 9 of 11 rules, so 'empty' there was never a fault. One step of 0.058 off the axis crumples the liked two-plane basilica (what comes off is no longer round: 0.21 against 0.45 needed; 15 of 120 skin tiles fail). Two holes remain and are NOT fixed: a ragged saw-toothed skin with short teeth is not counted (away's cauliflower passes 'clean' at 0.058 though it is not clean by eye), and a ball that turns into a dome on a nudged set passes 'bodies' (one plane, thickness x 0.91). So the panel is a sound filter and a far better gate than round 18, but a rule that comes through every line still needs eyes on worst/<rule>-<set>.png and on its nudged solids.",
+  "verdicts": [
+   {
+    "name": "1. hair number",
+    "what": "Replaced 'every pixel a 3-pixel wearing-down removes' by two counts per tile. thin = total length of thin things per pixel of skin line (a loose piece, or what a disc of 3.3 or 9.3 pixels wears off, with length^2 >= 4 x area, at least 8 pixels long, and if joined to a body sticking out of it by 6 pixels or more). film = per cent of the tile under loose dust or a comb (small bits under 12 pixels and thin things, more than 4 pixels clear of every body, dense in two directions). Round buds of any size, buds cut off their stalk and strings of beads are not counted. Lines: thin 0.10, film 0.5 %.",
+    "verdict": "done and calibrated as the brief asked; one blind spot left open: a ragged saw-toothed skin (short teeth) is not counted",
+    "evidence": "MEASURED: flat basilica, San Marco, airplane, cauliflower 0.000 thin and 0.00 % film on 180 tiles (old number 1.83, 1.09, 1.04, 0.16); one plane 0.000 on 1,080 tiles; two planes basilica 0.038; along basilica 0.81 (24 of 120 tiles over); away basilica 1.24 and film 24.4 % (82 of 120); p_tt1024 basilica 0.72 and film 12.2 % (15 of 120). SEEN in hair-calibration.png rows A to H: buds and beads untouched, fin combs and whiskers marked red, dust film marked purple. Near the line: clean sets at 0.038, 0.058, 0.075; failing sets at 0.110, 0.117, 0.133, then 0.31 and up. SEEN: away's cauliflower (0.058, passes) is a serrated coast, not clean by eye.",
+    "gates": "n/a (panel tool)",
+    "screens": "n/a"
+   },
+   {
+    "name": "2. look in enough places",
+    "what": "wide.py cuts 8 half-planes through the x-axis (11.25 to 90 degrees from the flat plane, which holds 45 and the mid angles 22.5 and 67.5 of along; a rule's own mid angles can be added) x 5 skin points x 3 widths = 120 tiles a set, kept on disk so the number can be changed without cutting again. The worst tile decides. panel2.py moves prints how the verdict moves with the choice.",
+    "verdict": "done; verdicts no longer hang on tile choice except in the 0.04 to 0.15 band of the thin number",
+    "evidence": "MEASURED (moves.txt): 74 rule-set pairs, 8,580 tiles. 49 sets not clean; 13 of them are clean on the old 12 tile places alone (p_tt1024 basilica and airplane, p_tt256 airplane, away airplane, p_cot San Marco, bas_yz and bas_zy, p_h4 cauliflower, two planes bas_yz and sm_yz, along sm_yz, lathe bas_yz and rab_up). p_tt1024's basilica fails in 8 of 40 (half-plane, skin point) pairs, so one pair passes it 4 times in 5; along's basilica fails in 18 of 40, in 6 of 8 half-planes (its own exact planes at 45 and 90 degrees are clean, as they must be).",
+    "gates": "n/a",
+    "screens": "n/a"
+   },
+   {
+    "name": "3. the solid stays",
+    "what": "New line on every set but the dendrite: volume at 80 steps at least 90 % of the volume at 40 (129 points a side, one run to 80 steps, volumes at 20, 40, 60, 80 kept).",
+    "verdict": "done; it found one draining solid round 18 could not see",
+    "evidence": "MEASURED: flat sets keep 98.4 to 100 % of their area; lathe at old rabbit30 100 %; p_cot there 92 % (close to the line, still leaking: 0.846, 0.790, 0.781); p_ss there 31 %; along there 5 %; one plane at bas_zy 0 %. On the panel's sets every rule keeps 97 to 100 % except away on the Siegel disc: 66 % (0.317, 0.170, 0.131, 0.112 at 20, 40, 60, 80 steps).",
+    "gates": "n/a",
+    "screens": "n/a"
+   },
+   {
+    "name": "4. group C replaced, orbit of 0 first",
+    "what": "rabbit90 and rabbit30 dropped. New sets: bas_yz c = (-1, 0.05, 0.03), bas_zy (-1, 0.03, 0.05), sm_yz (-0.75, 0.01, 0.02), rab_up (-0.122561, 0.744862, 0.015). For each rule one orbit of 0 (3,000 steps) is run first; where it leaves the cell reads 'outside' and nothing is judged. Where it stays: one piece, the solid stays, bodies against the same rule's un-nudged solid (thickest >= 0.8, volume 0.5 to 1.5, and inherits a failed un-nudged set), truly 3D, 120-tile skin. 'Truly 3D' there measures buds against the plane that best fits the buds themselves, not against z = 0.",
+    "verdict": "done; the nudges were sized so the yardstick stays inside; one hole left: a ball turned into a dome passes 'bodies'",
+    "evidence": "MEASURED: at old rabbit30 the orbit of 0 leaves at step 3 (one plane, two planes, away, p_tt16, p_tt256, p_tt1024), 5 (p_h4), 10 (p_ss), 14 (along); only lathe and p_cot keep it. One plane keeps the orbit at a lift of 0.03 above c = -1 and loses it at 0.05 (step 27); at the rabbit it keeps 0.015 and loses 0.02 (step 58). bas_yz and rab_up: bounded for all 11 rules; bas_zy: outside for one plane (step 26); sm_yz: outside for lathe (140), p_ss (742), p_cot (140). MEASURED: with the old count against z = 0 the yardstick PASSED 'truly 3D' on bas_yz (10 round pieces); against the fitted plane it has 0 (spread 0.008), lathe 0, two planes 27 of which 3 round (roundness 0.21), along 54 of which 25 round (0.58). SEEN in groupc.png: two planes and p_tt1024 crumple on the nudged basilica, along keeps its look best, away wrinkles, one plane's balls become domes with a flat underside (thickness x 0.91, volume x 0.91: passes 'bodies').",
+    "gates": "n/a",
+    "screens": "n/a"
+   },
+   {
+    "name": "5. airplane spines, cauliflower dents, San Marco bodies, Siegel lump",
+    "what": "Airplane: the middle body cut across at x = 0 point by point, 1,440 directions, 80 steps; a spine is a direction in which matter stands clear of the body; needs 2 off the flat plane and no ring or sheet. Cauliflower: outline cut across at x = 0; a dent is a place at least 1 % of the radius inside the outline's own rubber band; needs 2 off the flat plane. San Marco's and the Siegel disc's 'bodies' lines now read NOT JUDGED unless the gross thickness or volume check fails.",
+    "verdict": "done; the counts now describe what the pictures show; San Marco and Siegel 'bodies' are dropped, not fixed",
+    "evidence": "MEASURED and SEEN in across.png: airplane spines one plane 2 (0 off the plane, fails), two planes 12 (10 off), along 8 (6 off), away 4 (2 off: exactly the 2 needed), p_tt1024 16 (14 off), lathe a full disc (fails). Cauliflower dents one plane 2 (0 off), two planes 32 (30 off), along 8 (6 off), away 40 (38 off), lathe 0. A first dent count by smallest radius gave one plane 2 false dents at the poles of its oval and was replaced. The Siegel terraced lump of along is failed by 'truly 3D' (roundness 0.38) and by the skin (113 of 120 tiles), not by 'bodies'.",
+    "gates": "n/a",
+    "screens": "n/a"
+   },
+   {
+    "name": "6. re-run, old and new side by side, README",
+    "what": "All 11 rules of round 18 re-judged: old numbers reused where the test did not change; new numbers computed for the stays line, across cuts, four new sets, fitted-plane 3D and 120-tile skin cuts. table.txt prints the old grid, the new grid and every line with its numbers; README.md says how to run, what each change is, calibration and limits.",
+    "verdict": "done; no rule passes; five cells changed for a stated reason",
+    "evidence": "MEASURED: two planes San Marco pass -> fails skin (thin 1.36, 10 of 120 tiles: blade-shaped slivers against the skin, SEEN row H); p_tt1024 basilica pass -> fails skin (film 12.2 %); p_tt1024 and p_tt256 airplane pass -> fail skin (3 and 1 of 120 tiles, the second on the line at 0.110); lathe no longer fails skin on basilica, San Marco, airplane (its cut is the flat set); p_ss and p_cot airplane fail -> pass (old 0.32, new 0.000 on 120 tiles); away cauliflower fail -> pass, which is the new number's blind spot; away Siegel also fails 'the solid stays'.",
+    "gates": "n/a",
+    "screens": "n/a"
+   }
+  ],
+  "claims": [],
+  "findings": [
+   "MEASURED: no rule passes panel2. Sets passed of 11: two planes 3 (basilica, airplane, cauliflower), along 2 (airplane, cauliflower), p_ss 2, p_cot 2 (same two), away 1 (cauliflower, through the saw-edge blind spot), p_h4 1 and p_tt16 1 (airplane; p_tt16 at thin 0.075, inside the band where the eye must decide), one plane 0, lathe 0, p_tt256 0, p_tt1024 0.",
+   "MEASURED: the new hair number passes the flat sets (0.000 thin, 0.00 % film, 180 tiles) and the yardstick (0.000 on 1,080 tiles) and fails along's fin combs (0.81), away's whiskers (1.24; film 24 %), p_tt1024's dust film (12 %). Lines 0.10 and 0.5 %. Six of 74 tile sets have their worst tile between 0.04 and 0.14 (three pass, three fail); the next failing set is at 0.31.",
+   "SEEN (hair-calibration.png): flat outlines with round buds and the airplane's strings of beads carry no marks; fin combs, whiskers and needles are marked as thin; the dust film half-way between p_tt1024's planes is marked as film.",
+   "MEASURED and SEEN: the reference look two planes fails San Marco under the new number: thin 1.36 in two mirror tiles and 0.2 to 0.3 in eight more, in 5 of 8 half-planes; the pictures show blade-shaped bodies and slivers lying against the skin between its planes at the finest zoom. I did not move the line to rescue it.",
+   "MEASURED: where the old panel looked (12 tile places) 13 of the 49 not-clean sets look clean; p_tt1024's basilica pass in round 18 was such a case.",
+   "MEASURED: 'empty at rabbit turned 30 degrees' was not a rule fault: the orbit of 0 leaves by step 14 for 9 of 11 rules there. Only lathe and p_cot have that c inside their bounded region.",
+   "MEASURED and SEEN (groupc.png): at c = (-1, 0.05, 0.03), a step of 0.058 off the axis, two planes keeps volume (x 0.98) but its bodies crumple: thickest place x 0.82, what comes off is not round (0.21), 15 of 120 skin tiles fail with blades up to 1.03 of the skin line. along keeps smooth bodies and round buds (0.58) but its fin combs stay (20 of 120 tiles) and its strict one-piece share is 98.19 % against 98.5 needed. away's thickest place falls to 0.31 of its own basilica's.",
+   "MEASURED: one plane has no solid at c = (-1, 0.03, 0.05) (orbit of 0 leaves at step 26; volume 0.007 at 40 steps, 0 at 60): its bounded region is thinner than 0.05 above c = -1.",
+   "MEASURED: 'the solid stays' passes every rule on every old set at 97 to 100 % except away on the Siegel disc (66 %).",
+   "MEASURED: the old 'truly 3D' count (buds off z = 0) passes the yardstick on a lifted c; measured against the buds' own best plane it fails as it must (0 buds off it).",
+   "MEASURED (tried and dropped): counting loose specks one by one cannot separate the flat airplane's beads (0.22 a skin pixel) from a dense dust film (one film tile scored 0.04); a sharp-tip count for saw edges gave the flat basilica 1.7 and away's saw-toothed cauliflower 0.5, the wrong way round.",
+   "SEEN (worst/away-cauliflower.png lower strip, logs/nearline.png): away's cauliflower and airplane skins are ragged coasts with short teeth and cliffs; the new number gives 0.04 to 0.13. This is the blind spot.",
+   "SEEN (groupc.png): on every nudged set one plane's balls become domes with a flat underside and buds on the rim. No line of the panel measures that.",
+   "REASONED: a blade four times as long as wide is the same fault at every zoom, so the thin count has no size floor; if the user's eye accepts the two-plane San Marco slivers, the honest change is a minimum size in units of the body, not a higher line."
+  ],
+  "best_next": "Close the two holes before any rule is certified. (1) A 'ragged skin' line: on the kept tiles, remove what the new number already knows to be round buds, then compare the length of the biggest body's skin line with the length of the same line smoothed over 9 pixels; calibrate on the flat sets (must stay near 1) against away's cauliflower and airplane (must fail). Two simpler tries failed this round, so odds about even. (2) A 'ball stayed a ball' line for the nudged sets: slide the nudged solid onto the un-nudged one for best overlap and take the share that differs; one plane's domes and two planes' crumpling should both show. Odds good (about 70 %), half an hour of work. Until then a rule that comes through every line must also be looked at in worst/<rule>-<set>.png (lower strips) and in a groupc-style sheet.",
+  "pictures": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/hair-calibration.png (looked at; start here: 8 rows of six close-cut tiles; flat basilica, San Marco, airplane with nothing counted; two planes clean; along's fin combs and away's whiskers in red; p_tt1024's dust film in purple; two planes San Marco's blades)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/groupc.png (looked at: the un-nudged basilica and the four new off-plane sets for six rules, with 'orbit of 0 stays / leaves' and the failing lines under each tile)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/across.png (looked at: airplane middle body and cauliflower cut across the x-axis for six rules, spines and dents ticked and counted)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/worst/ (74 pictures, one per rule-set: upper strip the six worst tiles by the new number, lower strip the six worst by the old number. Looked at only p_h4-cauliflower.png and p_cot-sanmarco.png; the other 72 were NOT looked at)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/logs/nearline.png (looked at, working picture: tiles near the thin line for p_tt256 airplane, away airplane, away cauliflower, and two planes on the nudged basilica)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/logs/across-test.png (looked at, working picture: the first dent count's false dents on one plane's oval)"
+  ],
+  "not_done": [
+   "No measure for a ragged or saw-toothed skin; two tries failed (README limit 1).",
+   "No measure that a body keeps its shape on a nudged set (one plane's domes pass 'bodies').",
+   "`panel2.py run <rule>` (everything for a new rule in one command) was not exercised end to end; each of its steps was run on its own.",
+   "The 120-tile cut was made for 74 rule-set pairs, not all: for p_ss, p_cot, p_h4, p_tt16, p_tt256 on rabbit, Siegel and most new sets the skin line rests on the old 12 tiles and says so in words; all those cells fail other lines.",
+   "72 of the 74 worst/ montages were not looked at; rows B to H of the calibration and the near-line tiles were.",
+   "sheet-for-user.png and the per-rule sheets of round 18 were not redrawn for the new panel.",
+   "San Marco's meeting point and the Siegel disc's lump are dropped (NOT JUDGED), not measured in a better way.",
+   "Not touched: a tear test, ribs off the basilica, more than one step count per set, and the review's remark that the upward reach at the meeting point is measured in a plane that is exact for two-plane rules.",
+   "The lathe's skin on its off-plane sets and the round-17 rules' solids on the new sets were measured but their pictures not looked at."
+  ],
+  "risks": [
+   "The new hair number passes a saw-toothed skin. A rule whose only skin fault is short teeth would get through 'clean close up'.",
+   "The thin line 0.10 sits inside a cluster of small values (0.038, 0.058, 0.075 pass; 0.110, 0.117, 0.133 fail). In that band the verdict is luck and the eye must decide.",
+   "The lines 0.10 and 0.5 % were set on this round's pictures of known rules; they were not moved after the round-17 rules were scored, but they have never been tested on a rule of a new kind (a fold rule's lens bodies, for example, may read as blades: a lens 3.1 times as long as wide counts as thin).",
+   "The reference look now fails San Marco on the skin. If the user's eye disagrees, the number is too strict for small blades and needs a size floor; I left it as measured.",
+   "The 120 tiles cover a quarter turn on one side of the flat plane; the rest rests on the rule's symmetry.",
+   "Off-plane sets: a rule that is 'outside' at all four would show four unjudged cells and no failure there. The table shows it but does not forbid it.",
+   "Near thresholds on the new sets: along bas_yz one piece 98.19 % (needs 98.5); two planes bas_yz bodies x 0.82 (needs 0.8); away's airplane exactly 2 spines off the plane; p_cot at old rabbit30 keeps 92 % (needs 90).",
+   "The orbit-of-0 test is one orbit and 3,000 steps; near San Marco escape is slow (p_ss leaves at step 742).",
+   "For about three minutes in all I had five or six processes running instead of four (a scorer beside four queues; a doubled start of the fitted-plane job, re-run cleanly afterwards and the result files checked)."
+  ],
+  "files_changed": [
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/README.md",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/NOTES.md",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/panel2.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/hairnum.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/wide.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/sheets.py",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/panel_r18.py (copy of out/r18/panel/panel.py, unchanged)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/README.src.md and _readme_build.py (README.md is built from these plus table.txt and moves.txt)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/table.txt",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/moves.txt",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/hair-calibration.png, across.png, groupc.png",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/results/ (round 18's numbers copied, plus the four new sets per rule, extra-<rule>.json, orbits.json, stay-calib.json)",
+   "C:/Users/IbrahimMahmoud/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/scratch-workspaces/18144097-1788-4c0f-b3ad-8a91f920f07b/76933351-09da-4379-8bd1-1c64ac9b94d1/scratch-2026-11-17-a06af1/out/r19/panel2/wide/ (74 kept tile sets and scores.json), worst/ (74 montages), tiles/ (new sets and across cuts), logs/",
+   "Nothing outside out/r19/panel2/ was written."
+  ]
+ }
+]

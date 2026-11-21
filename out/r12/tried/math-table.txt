@@ -1,0 +1,63 @@
+2014 points on each plane. Worst |F - z^n| / |z^n|; "bad" = points off by more than 1e-9.
+
+mercator  default                            z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+fold      default                            z=0    n2: 1.16e-15 (bad 0, z not exactly 0) | n3: 3.55e-15 (bad 0, z not exactly 0) | n-1: 6.59e-16 (bad 0, z not exactly 0)
+lathe     default                            z=0    n2: 1.16e-15 (bad 0, z not exactly 0) | n3: 3.55e-15 (bad 0, z not exactly 0) | n-1: 6.59e-16 (bad 0, z not exactly 0)
+tilt      default                            z=0    n2: 1.24e-15 (bad 0, z not exactly 0) | n3: 3.57e-15 (bad 0, z not exactly 0) | n-1: 8.04e-16 (bad 0, z not exactly 0)
+bulb      default                            z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+classic   default                            z=0    n2: 1.41e+00 (bad 2014, z not exactly 0) | n3: 2.00e+00 (bad 2014, z not exactly 0) | n-1: 2.00e+00 (bad 2014, z not exactly 0)
+split     default                            z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 9.49e-16 (bad 0, z exactly 0)
+softfold  default                            z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  default                            z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+pillow    default                            z=0    n2: 1.26e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 1.25e-15 (bad 0, z exactly 0)
+softfold  planes 3                           z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+softfold  planes 4                           z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+softfold  straight blend                     z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+softfold  pinch                              z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+softfold  smoother step                      z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+softfold  band 0                             z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+softfold  band 0.45                          z=0    n2: 9.23e-16 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+softfold  planes 2, plane 1                  90deg  n2: 9.23e-16 (bad 0) | n3: 3.55e-15 (bad 0) | n-1: 6.59e-16 (bad 0)
+softfold  planes 3, plane 1                  60deg  n2: 1.05e-15 (bad 0) | n3: 3.43e-15 (bad 0) | n-1: 7.85e-16 (bad 0)
+softfold  planes 3, plane 2                  120deg n2: 1.05e-15 (bad 0) | n3: 3.50e-15 (bad 0) | n-1: 7.37e-16 (bad 0)
+softfold  planes 4, plane 1                  45deg  n2: 1.03e-15 (bad 0) | n3: 3.55e-15 (bad 0) | n-1: 7.25e-16 (bad 0)
+softfold  planes 4, plane 2                  90deg  n2: 9.23e-16 (bad 0) | n3: 3.55e-15 (bad 0) | n-1: 6.59e-16 (bad 0)
+softfold  planes 4, plane 3                  135deg n2: 1.03e-15 (bad 0) | n3: 3.55e-15 (bad 0) | n-1: 7.25e-16 (bad 0)
+softfold  pinch, plane 1                     90deg  n2: 9.23e-16 (bad 0) | n3: 3.55e-15 (bad 0) | n-1: 6.59e-16 (bad 0)
+softfold  default, power 2.5 and -2          z=0    n2.5: 1.14e-15 (bad 0, z exactly 0) | n-2: 1.14e-15 (bad 0, z exactly 0)
+axisbulb  multiplier 5                       z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  multiplier -3                      z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  multiplier 9                       z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  multiplier -7                      z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  multiplier 3                       z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  multiplier -1                      z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  multiplier 2                       z=0    n2: 2.00e+00 (bad 947, z exactly 0) | n3: 2.00e+00 (bad 1014, z exactly 0) | n-1: 2.00e+00 (bad 1028, z exactly 0)
+axisbulb  multiplier 4                       z=0    n2: 2.00e+00 (bad 947, z exactly 0) | n3: 2.00e+00 (bad 1014, z exactly 0) | n-1: 2.00e+00 (bad 1028, z exactly 0)
+axisbulb  pinch 1.5                          z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  wobble 1, reach 0                  z=0    n2: 1.16e-15 (bad 0, z exactly 0) | n3: 3.55e-15 (bad 0, z exactly 0) | n-1: 6.59e-16 (bad 0, z exactly 0)
+axisbulb  default, plane y=0                 90deg  n2: 1.16e-15 (bad 0) | n3: 3.55e-15 (bad 0) | n-1: 6.60e-16 (bad 0)
+axisbulb  multiplier 5, plane y=0            90deg  n2: 1.20e-15 (bad 0) | n3: 3.56e-15 (bad 0) | n-1: 6.91e-16 (bad 0)
+axisbulb  multiplier -3, plane y=0           90deg  n2: 1.18e-15 (bad 0) | n3: 3.55e-15 (bad 0) | n-1: 6.73e-16 (bad 0)
+axisbulb  multiplier 3, plane y=0            90deg  n2: 2.00e+00 (bad 2006) | n3: 2.00e+00 (bad 2010) | n-1: 2.00e+00 (bad 2010)
+axisbulb  default, power 2.5 and -2          z=0    n2.5: 1.14e-15 (bad 0, z exactly 0) | n-2: 1.14e-15 (bad 0, z exactly 0)
+pillow    smooth layout                      z=0    n2: 1.00e+00 (bad 2010, z exactly 0) | n3: 1.32e+01 (bad 2013, z exactly 0) | n-1: 1.47e+02 (bad 2012, z exactly 0)
+pillow    creased, plane y=0                 90deg  n2: 1.88e-15 (bad 0) | n3: 4.58e-15 (bad 0) | n-1: 1.16e-15 (bad 0)
+pillow    creased, powers 4, 5, 8, -2, -3    z=0    n4: 2.42e-15 (bad 0, z exactly 0) | n5: 3.89e-15 (bad 0, z exactly 0) | n8: 4.79e-15 (bad 0, z exactly 0) | n-2: 1.39e-15 (bad 0, z exactly 0) | n-3: 3.43e-15 (bad 0, z exactly 0)
+pillow    smooth, powers 4, 8                z=0    n4: 1.51e+00 (bad 2010, z exactly 0) | n8: 2.00e+00 (bad 2010, z exactly 0)
+
+text problems: none
+texts with a long dash: 0
+
+mercator [inversions] Sphere inversions, one plane; dials turn, lift; first under the name: note
+fold [inversions] Sphere inversions, two planes; dials planes, lift; first under the name: dial
+lathe [quaternion] Quaternion square (Lathe); dials spin; first under the name: dial
+tilt [quaternion] Quaternion square, twisted; dials tilt; first under the name: dial
+bulb [angles] Mandelbulb; dials lat, lon; first under the name: dial
+classic [angles] Mandelbulb, classic; dials theta, phi; first under the name: dial
+split [other] Split; dials none; first under the name: nothing
+softfold [tried] Blended planes; dials planes, blend, curve, mix; first under the name: note
+axisbulb [tried] Bulbs about the axis; dials k, wob, reach, pinch; first under the name: note
+pillow [tried] Pillow; dials layout; first under the name: note
+
+shot.py exit code 0
+no console errors

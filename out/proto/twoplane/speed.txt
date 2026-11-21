@@ -1,0 +1,77 @@
+step 1 result: 
+warm: pillow
+step 1 waited 3.2 s
+step 2 result: 
+warm: mercator, planes 2
+step 2 waited 3.9 s
+step 3 result: 
+pillow
+step 3 waited 3.6 s
+step 4 result: 
+pillow default picture: 1.91 s (Done: 12 passes at 862 × 701)
+step 5 result: 
+mercator
+step 5 waited 1.4 s
+step 6 result: 
+mercator planes 2 default picture: 1.26 s (Done: 12 passes at 862 × 701)
+step 7 result: 
+pillow
+step 7 waited 1.6 s
+step 8 result: 
+pillow default picture: 1.07 s (Done: 12 passes at 862 × 701)
+step 9 result: 
+mercator
+step 9 waited 1.3 s
+step 10 result: 
+mercator planes 2 default picture: 2.07 s (Done: 12 passes at 862 × 701)
+step 11 result: 
+pillow
+step 11 waited 3.1 s
+step 12 result: 
+pillow default picture: 1.07 s (Done: 12 passes at 862 × 701)
+step 13 result: 
+mercator
+step 13 waited 1.0 s
+step 14 result: 
+mercator planes 2 default picture: 1.01 s (Done: 12 passes at 862 × 701)
+step 15 result: 
+pillow
+step 15 waited 1.6 s
+step 16 result: 
+pillow default picture: 1.61 s (Done: 12 passes at 862 × 701)
+step 17 result: 
+mercator
+step 17 waited 2.6 s
+step 18 result: 
+mercator planes 2 default picture: 2.98 s (Done: 12 passes at 862 × 701)
+step 19 result: 
+pillow
+step 19 waited 3.6 s
+step 20 result: 
+pillow default picture: 2.02 s (Done: 12 passes at 862 × 701)
+step 21 result: 
+mercator
+step 21 waited 1.1 s
+step 22 result: 
+mercator planes 2 default picture: 2.39 s (Done: 12 passes at 862 × 701)
+step 23 result: 
+pillow
+step 23 waited 3.4 s
+step 24 result: 
+pillow default picture: 2.45 s (Done: 12 passes at 862 × 701)
+step 25 result: 
+mercator
+step 25 waited 1.6 s
+step 26 result: 
+mercator planes 2 default picture: 1.27 s (Done: 12 passes at 862 × 701)
+step 27 result: 
+pillow
+step 27 waited 1.4 s
+step 28 result: 
+pillow default picture: 2.91 s (Done: 12 passes at 862 × 701)
+step 29 result: 
+mercator
+step 29 waited 3.3 s
+step 30 result: 
+mercator planes 2 default picture: 6.81 s (Done: 12 passes at 862 × 701)
+no console errors

@@ -1,0 +1,39 @@
+== (a) buds of the left body, basilica, 200 steps
+along     bud at turn  -6.30: 0.03 degrees = 0.0002 thick round the axis, 0.0003 long along x -> long : thick = 1.55 | step there: round the axis x1.771, along x x2.181, det +1 | its image is 6.16 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+along     bud at turn   0.01: 12.53 degrees = 0.0672 thick round the axis, 0.0614 long along x -> long : thick = 0.91 | step there: round the axis x2.181, along x x2.181, det +1 | its image is 0.01 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+along     bud at turn   6.32: 0.03 degrees = 0.0002 thick round the axis, 0.0003 long along x -> long : thick = 1.55 | step there: round the axis x1.770, along x x2.181, det +1 | its image is 6.17 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+along     bud at turn  26.89: 7.62 degrees = 0.0409 thick round the axis, 0.0603 long along x -> long : thick = 1.47 | step there: round the axis x3.372, along x x2.180, det -1 | its image is 0.98 degrees from a flat/upright page, 0.642 from the axis, x = 0.001
+along     bud at turn  45.01: 4.03 degrees = 0.0216 thick round the axis, 0.0614 long along x -> long : thick = 2.84 | step there: round the axis x6.366, along x x2.181, det -1 | its image is 0.02 degrees from a diagonal page, 0.643 from the axis, x = 0.000
+along     bud at turn  63.12: 7.62 degrees = 0.0409 thick round the axis, 0.0603 long along x -> long : thick = 1.47 | step there: round the axis x3.369, along x x2.180, det -1 | its image is 0.99 degrees from a flat/upright page, 0.642 from the axis, x = 0.001
+along     bud at turn  83.70: 0.03 degrees = 0.0002 thick round the axis, 0.0003 long along x -> long : thick = 1.55 | step there: round the axis x1.771, along x x2.181, det +1 | its image is 6.16 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+along     bud at turn  90.00: 12.53 degrees = 0.0672 thick round the axis, 0.0614 long along x -> long : thick = 0.91 | step there: round the axis x2.181, along x x2.181, det +1 | its image is 0.01 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+along     bud at turn  96.31: 0.03 degrees = 0.0002 thick round the axis, 0.0003 long along x -> long : thick = 1.55 | step there: round the axis x1.770, along x x2.181, det +1 | its image is 6.17 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+oneplane  bud at turn   0.01: 12.81 degrees = 0.0687 thick round the axis, 0.0614 long along x -> long : thick = 0.89 | step there: round the axis x2.181, along x x2.181, det +1 | its image is 0.01 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+away      bud at turn   0.01: 10.63 degrees = 0.0571 thick round the axis, 0.0614 long along x -> long : thick = 1.08 | step there: round the axis x2.181, along x x2.181, det +1 | its image is 0.01 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+away      bud at turn  35.53: 2.68 degrees = 0.0144 thick round the axis, 0.0642 long along x -> long : thick = 4.46 | step there: round the axis x9.187, along x x2.166, det +1 | its image is 0.03 degrees from a flat/upright page, 0.626 from the axis, x = 0.011
+away      bud at turn  54.48: 2.68 degrees = 0.0144 thick round the axis, 0.0640 long along x -> long : thick = 4.45 | step there: round the axis x9.185, along x x2.166, det +1 | its image is 0.08 degrees from a flat/upright page, 0.626 from the axis, x = 0.011
+away      bud at turn  90.00: 10.63 degrees = 0.0571 thick round the axis, 0.0614 long along x -> long : thick = 1.08 | step there: round the axis x2.181, along x x2.181, det +1 | its image is 0.01 degrees from a flat/upright page, 0.643 from the axis, x = 0.000
+
+== (b) rabbit: overlap of the solids (120,000 random points in the box)
+  60 steps: inside along 7915, lathe 7250, one-plane 2147 | of along: 68.5 % also in the lathe, 27.0 % also in one-plane | of the lathe: 74.8 % in along | of one-plane: 99.6 % in along, 99.1 % in the lathe
+     along's solid by kind of first step: keeps 25.8 %, squeezes 23.9 %, hard 10.4 %, inside out 39.9 % | the part that one-plane does not have (73.0 % of along): keeps 19.2, squeezes 25.1, hard 11.3, inside out 44.5 %
+  150 steps: inside along 7913, lathe 7250, one-plane 2147 | of along: 68.5 % also in the lathe, 27.0 % also in one-plane | of the lathe: 74.8 % in along | of one-plane: 99.6 % in along, 99.1 % in the lathe
+     along's solid by kind of first step: keeps 25.8 %, squeezes 23.9 %, hard 10.4 %, inside out 39.9 % | the part that one-plane does not have (73.0 % of along): keeps 19.2, squeezes 25.1, hard 11.3, inside out 44.5 %
+
+== (c) reach straight off the flat page (up the z direction), 300 steps
+  rabbit     oneplane  cycle point (-0.662, 0.562): 0.236 | cycle point (-0.000, -0.000): 0.401 | cycle point (-0.123, 0.745): 0.161 | pinch point (-0.276, 0.480): 0.000
+  rabbit     along     cycle point (-0.662, 0.562): 0.489 | cycle point (-0.000, -0.000): 0.403 | cycle point (-0.123, 0.745): 0.514 | pinch point (-0.276, 0.480): 0.000
+  rabbit     lathe     cycle point (-0.662, 0.562): 0.308 | cycle point (-0.000, -0.000): 0.403 | cycle point (-0.123, 0.745): 0.501 | pinch point (-0.276, 0.480): 0.564
+  rabbit     away      cycle point (-0.662, 0.562): 0.162 | cycle point (-0.000, -0.000): 0.403 | cycle point (-0.123, 0.745): 0.103 | pinch point (-0.276, 0.480): 0.000
+  Siegel     oneplane  cycle point (-0.317, -0.611): 0.297 | middle of the disc (-0.369, -0.338): 0.470
+  Siegel     along     cycle point (-0.317, -0.611): 0.370 | middle of the disc (-0.369, -0.338): 0.397
+  Siegel     lathe     cycle point (-0.317, -0.611): 0.123 | middle of the disc (-0.369, -0.338): 0.514
+  Siegel     away      cycle point (-0.317, -0.611): 0.001 | middle of the disc (-0.369, -0.338): 0.007
+  c=-1+0.1i  oneplane  cycle point (0.010, -0.098): 0.486 | cycle point (-1.010, 0.098): 0.245 | pinch point (-0.619, 0.045): 0.000
+  c=-1+0.1i  along     cycle point (0.010, -0.098): 0.468 | cycle point (-1.010, 0.098): 0.201 | pinch point (-0.619, 0.045): 0.001
+  c=-1+0.1i  lathe     cycle point (0.010, -0.098): 0.508 | cycle point (-1.010, 0.098): 0.241 | pinch point (-0.619, 0.045): 0.000
+  c=-1+0.1i  away      cycle point (0.010, -0.098): 0.451 | cycle point (-1.010, 0.098): 0.099 | pinch point (-0.619, 0.045): 0.000
+  basilica   oneplane  cycle point (0.000, 0.000): 0.512 | cycle point (-1.000, 0.000): 0.262 | pinch point (-0.618, 0.000): 0.000
+  basilica   along     cycle point (0.000, 0.000): 0.786 | cycle point (-1.000, 0.000): 0.245 | pinch point (-0.618, 0.000): 0.000
+  basilica   lathe     cycle point (0.000, 0.000): 0.786 | cycle point (-1.000, 0.000): 0.245 | pinch point (-0.618, 0.000): 0.000
+  basilica   away      cycle point (0.000, 0.000): 0.786 | cycle point (-1.000, 0.000): 0.245 | pinch point (-0.618, 0.000): 0.000

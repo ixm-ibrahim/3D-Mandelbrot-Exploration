@@ -1,0 +1,12 @@
+brute-bas-body-1.png: window 0.80 wide round [-0.1152, -0.3371, 0.4736], plane y = -0.3371, 14 steps, in the solid: 28.2 %
+brute-bas-body-2.png: window 0.20 wide round [-0.1152, -0.3371, 0.4736], plane y = -0.3371, 20 steps, in the solid: 17.0 %
+brute-bas-body-3.png: window 0.05 wide round [-0.1152, -0.3371, 0.4736], plane y = -0.3371, 26 steps, in the solid: 29.7 %
+brute-bas-meet-1.png: window 0.80 wide round [-0.6838, -0.1926, 0.2564], plane y = -0.1926, 14 steps, in the solid: 40.0 %
+brute-bas-meet-2.png: window 0.20 wide round [-0.6838, -0.1926, 0.2564], plane y = -0.1926, 20 steps, in the solid: 26.2 %
+brute-bas-meet-3.png: window 0.05 wide round [-0.6838, -0.1926, 0.2564], plane y = -0.1926, 26 steps, in the solid: 18.9 %
+brute-rab-body-1.png: window 0.80 wide round [0.1126, -0.3388, 0.556], plane y = -0.3388, 14 steps, in the solid: 21.8 %
+brute-rab-body-2.png: window 0.20 wide round [0.1126, -0.3388, 0.556], plane y = -0.3388, 20 steps, in the solid: 10.8 %
+brute-rab-body-3.png: window 0.05 wide round [0.1126, -0.3388, 0.556], plane y = -0.3388, 26 steps, in the solid: 17.3 %
+brute-n3-j-1.png: window 0.80 wide round [0.1875, -0.5644, 0.9263], plane y = -0.5644, 14 steps, in the solid: 39.0 %
+brute-n3-j-2.png: window 0.20 wide round [0.1875, -0.5644, 0.9263], plane y = -0.5644, 20 steps, in the solid: 49.6 %
+brute-n3-j-3.png: window 0.05 wide round [0.1875, -0.5644, 0.9263], plane y = -0.5644, 26 steps, in the solid: 32.7 %

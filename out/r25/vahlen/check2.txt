@@ -1,0 +1,8 @@
+beta   0.0: v b vbar product against the Lathe about a flat axis: 5.3e-15, k part 1.8e-15
+beta  40.0: v b vbar product against the Lathe about a flat axis: 7.1e-15, k part 2.7e-15
+beta  90.0: v b vbar product against the Lathe about a flat axis: 3.6e-15, k part 1.8e-15
+beta 200.0: v b vbar product against the Lathe about a flat axis: 5.3e-15, k part 1.1e-14
+phase 0.0: halves squared against (x^2 - y^2, 2xy, 2 z |v|): 6.8e-13
+phase 1.3: halves squared against (x^2 - y^2, 2xy, 2 z |v|): 4.5e-13
+one point (0.3, 0.5, 0.4), spinor rolled by 0..150 degrees, its squares: (-0.32 0.30 0.24) (-0.12 -0.02 0.49) (0.29 -0.17 0.37) (0.50 0.00 0.00) (0.30 0.32 -0.25) (-0.12 0.47 -0.13)
+   the Lathe gives (-0.32, 0.3, 0.24)  and |v|^2 on the x-axis is 0.5

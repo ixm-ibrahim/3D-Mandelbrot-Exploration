@@ -1,0 +1,94 @@
+Each row: scene, entry, estimate (0 Rough, 1 One neighbour, 3 Exact); of 825 rays how many the lab stops (lab) and how many meet the set itself (true);
+then, for the lab's stops, how far the nearest point of the set is, in pixels of that picture: on it / within 1, 2, 4, 8, 16, 32 / further.
+false = stops with no point of the set within 8 pixels. missed = rays that meet the set where the lab stops nothing. through = stops more than 8 pixels behind the first point of the set.
+
+bas-whole       windsq    de 0: lab 128 true 128 | on  35  1:  84  2:   5  4:   3  8:   1  16:   0  32:   0  further:   0 | false   0 (0.0 % of stops)  missed   3  through   6 | true first point minus stop, pixels: 5 % -6.74, median 0.19, 95 % 18.95 | ray model off by 3.5e-07
+bas-whole       windsq    de 1: lab 359 true 128 | on   0  1:   0  2:   3  4:   0  8:   5  16:  16  32:  34  further: 301 | false 351 (97.8 % of stops)  missed   0  through   1 | true first point minus stop, pixels: 5 % 15.26, median 61.33, 95 % 153.49 | ray model off by 3.2e-07
+bas-whole       windsq    de 3: lab 215 true 128 | on   0  1:   0  2:   1  4:   6  8:  14  16:  31  32:  59  further: 104 | false 194 (90.2 % of stops)  missed   0  through   0 | true first point minus stop, pixels: 5 % 7.42, median 37.23, 95 % 103.55 | ray model off by 3.1e-07
+bas-neck        windsq    de 0: lab 667 true 672 | on 131  1: 520  2:   9  4:   5  8:   1  16:   0  32:   1  further:   0 | false   1 (0.1 % of stops)  missed   9  through 263 | true first point minus stop, pixels: 5 % -117.14, median -0.56, 95 % 54.6 | ray model off by 4.3e-08
+bas-neck        windsq    de 1: lab 825 true 672 | on   1  1:   4  2:   2  4:   1  8:   1  16:   1  32:   5  further: 810 | false 816 (98.9 % of stops)  missed   0  through   2 | true first point minus stop, pixels: 5 % 129.36, median 1295.78, 95 % 9178.64 | ray model off by 3.9e-08
+bas-neck        windsq    de 3: lab 825 true 672 | on   1  1:   0  2:   1  4:   1  8:   3  16:   6  32:  14  further: 799 | false 819 (99.3 % of stops)  missed   0  through   0 | true first point minus stop, pixels: 5 % 89.3, median 1314.8, 95 % 4457.94 | ray model off by 3.9e-08
+bas-bud60       windsq    de 0: lab 306 true 322 | on  59  1: 231  2:   6  4:   5  8:   2  16:   2  32:   0  further:   1 | false   3 (1.0 % of stops)  missed  18  through  78 | true first point minus stop, pixels: 5 % -158.63, median 0.04, 95 % 16.39 | ray model off by 9.9e-08
+bas-bud60       windsq    de 1: lab 661 true 322 | on   0  1:   2  2:   3  4:   3  8:   5  16:  11  32:  23  further: 614 | false 648 (98.0 % of stops)  missed   0  through   7 | true first point minus stop, pixels: 5 % 14.57, median 277.73, 95 % 896.53 | ray model off by 8.8e-08
+bas-bud60       windsq    de 3: lab 446 true 322 | on   0  1:   2  2:   5  4:   7  8:  21  16:  59  32:  65  further: 287 | false 411 (92.2 % of stops)  missed   0  through   1 | true first point minus stop, pixels: 5 % 7.91, median 103.77, 95 % 510.26 | ray model off by 8.1e-08
+bas-mid30       windsq    de 0: lab 763 true 810 | on 198  1: 559  2:   4  4:   0  8:   0  16:   2  32:   0  further:   0 | false   2 (0.3 % of stops)  missed  49  through 468 | true first point minus stop, pixels: 5 % -821.62, median -214.17, 95 % 3.54 | ray model off by 6.1e-08
+bas-mid30       windsq    de 1: lab 825 true 810 | on   0  1:   0  2:   1  4:   0  8:   0  16:   0  32:   1  further: 823 | false 824 (99.9 % of stops)  missed   0  through   3 | true first point minus stop, pixels: 5 % 1209.25, median 2303.85, 95 % 3295.82 | ray model off by 5.9e-08
+bas-mid30       windsq    de 3: lab 825 true 810 | on   0  1:   3  2:   2  4:   2  8:   8  16:   6  32:   4  further: 800 | false 810 (98.2 % of stops)  missed   0  through   2 | true first point minus stop, pixels: 5 % 887.58, median 1928.39, 95 % 2468.23 | ray model off by 5.8e-08
+rabbit-whole    windsq    de 0: lab 213 true 254 | on  46  1: 154  2:   7  4:   3  8:   2  16:   1  32:   0  further:   0 | false   1 (0.5 % of stops)  missed  58  through  45 | true first point minus stop, pixels: 5 % -120.81, median 0.02, 95 % 47.03 | ray model off by 3.5e-07
+rabbit-whole    windsq    de 1: lab 440 true 254 | on   0  1:  16  2:  15  4:  31  8:  49  16:  74  32:  80  further: 175 | false 329 (74.8 % of stops)  missed   0  through   9 | true first point minus stop, pixels: 5 % -2.83, median 37.32, 95 % 279.19 | ray model off by 3.7e-07
+rabbit-whole    windsq    de 3: lab 352 true 254 | on   2  1:  47  2:  80  4:  76  8:  72  16:  45  32:  19  further:  11 | false  75 (21.3 % of stops)  missed   0  through   2 | true first point minus stop, pixels: 5 % 1.87, median 13.75, 95 % 199.93 | ray model off by 3.3e-07
+siegel-whole    windsq    de 0: lab 215 true 265 | on  48  1: 158  2:   8  4:   0  8:   0  16:   1  32:   0  further:   0 | false   1 (0.5 % of stops)  missed  60  through  85 | true first point minus stop, pixels: 5 % -186.68, median -2.62, 95 % 42.96 | ray model off by 3.0e-07
+siegel-whole    windsq    de 1: lab 427 true 265 | on   2  1:   9  2:   8  4:  26  8:  22  16:  51  32:  46  further: 263 | false 360 (84.3 % of stops)  missed   5  through   2 | true first point minus stop, pixels: 5 % 7.47, median 52.35, 95 % 298.34 | ray model off by 3.6e-07
+siegel-whole    windsq    de 3: lab 331 true 265 | on   3  1:  58  2:  56  4:  61  8:  57  16:  37  32:  34  further:  25 | false  96 (29.0 % of stops)  missed   0  through   0 | true first point minus stop, pixels: 5 % 1.88, median 23.23, 95 % 205.44 | ray model off by 3.3e-07
+dendrite-whole  windsq    de 0: lab  35 true   5 | on   0  1:  15  2:   1  4:   3  8:   3  16:   1  32:   0  further:  12 | false  13 (37.1 % of stops)  missed   5  through   0 | true first point minus stop, pixels: 5 % None, median None, 95 % None | ray model off by 2.6e-07
+dendrite-whole  windsq    de 1: lab 431 true   5 | on   0  1:   0  2:   1  4:   3  8:   6  16:   7  32:   6  further: 408 | false 421 (97.7 % of stops)  missed   0  through   1 | true first point minus stop, pixels: 5 % -19.78, median 24.31, 95 % 129.59 | ray model off by 3.8e-07
+dendrite-whole  windsq    de 3: lab 331 true   5 | on   0  1:   8  2:   7  4:  10  8:  14  16:   8  32:   2  further: 282 | false 292 (88.2 % of stops)  missed   0  through   0 | true first point minus stop, pixels: 5 % 1.77, median 14.42, 95 % 377.2 | ray model off by 3.7e-07
+
+step 1 result: page up, 19 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow turnaway turnalong windsq
+step 1 waited 2.5 s
+step 2 result: bas-whole windsq de 0: mode j, approach windsq, iter 40, c [-1,0,0]
+step 2 waited 3.0 s
+step 2 wrote out/r20/entry/de-bas-whole-windsq-0.png
+step 4 result: bas-whole windsq de 1: mode j, approach windsq, iter 40, c [-1,0,0]
+step 4 waited 0.5 s
+step 4 wrote out/r20/entry/de-bas-whole-windsq-1.png
+step 6 result: bas-whole windsq de 3: mode j, approach windsq, iter 40, c [-1,0,0]
+step 6 waited 0.8 s
+step 6 wrote out/r20/entry/de-bas-whole-windsq-3.png
+step 8 result: bas-neck windsq de 0: mode j, approach windsq, iter 40, c [-1,0,0]
+step 8 waited 3.0 s
+step 8 wrote out/r20/entry/de-bas-neck-windsq-0.png
+step 10 result: bas-neck windsq de 1: mode j, approach windsq, iter 40, c [-1,0,0]
+step 10 waited 4.0 s
+step 10 wrote out/r20/entry/de-bas-neck-windsq-1.png
+step 12 result: bas-neck windsq de 3: mode j, approach windsq, iter 40, c [-1,0,0]
+step 12 waited 5.8 s
+step 12 wrote out/r20/entry/de-bas-neck-windsq-3.png
+step 14 result: bas-bud60 windsq de 0: mode j, approach windsq, iter 40, c [-1,0,0]
+step 14 waited 1.3 s
+step 14 wrote out/r20/entry/de-bas-bud60-windsq-0.png
+step 16 result: bas-bud60 windsq de 1: mode j, approach windsq, iter 40, c [-1,0,0]
+step 16 waited 1.8 s
+step 16 wrote out/r20/entry/de-bas-bud60-windsq-1.png
+step 18 result: bas-bud60 windsq de 3: mode j, approach windsq, iter 40, c [-1,0,0]
+step 18 waited 1.5 s
+step 18 wrote out/r20/entry/de-bas-bud60-windsq-3.png
+step 20 result: bas-mid30 windsq de 0: mode j, approach windsq, iter 40, c [-1,0,0]
+step 20 waited 3.3 s
+step 20 wrote out/r20/entry/de-bas-mid30-windsq-0.png
+step 22 result: bas-mid30 windsq de 1: mode j, approach windsq, iter 40, c [-1,0,0]
+step 22 waited 3.0 s
+step 22 wrote out/r20/entry/de-bas-mid30-windsq-1.png
+step 24 result: bas-mid30 windsq de 3: mode j, approach windsq, iter 40, c [-1,0,0]
+step 24 waited 2.8 s
+step 24 wrote out/r20/entry/de-bas-mid30-windsq-3.png
+step 26 result: rabbit-whole windsq de 0: mode j, approach windsq, iter 40, c [-0.122561,0.744862,0]
+step 26 waited 1.0 s
+step 26 wrote out/r20/entry/de-rabbit-whole-windsq-0.png
+step 28 result: rabbit-whole windsq de 1: mode j, approach windsq, iter 40, c [-0.122561,0.744862,0]
+step 28 waited 1.0 s
+step 28 wrote out/r20/entry/de-rabbit-whole-windsq-1.png
+step 30 result: rabbit-whole windsq de 3: mode j, approach windsq, iter 40, c [-0.122561,0.744862,0]
+step 30 waited 1.3 s
+step 30 wrote out/r20/entry/de-rabbit-whole-windsq-3.png
+step 32 result: siegel-whole windsq de 0: mode j, approach windsq, iter 40, c [-0.390541,-0.586788,0]
+step 32 waited 1.0 s
+step 32 wrote out/r20/entry/de-siegel-whole-windsq-0.png
+step 34 result: siegel-whole windsq de 1: mode j, approach windsq, iter 40, c [-0.390541,-0.586788,0]
+step 34 waited 1.0 s
+step 34 wrote out/r20/entry/de-siegel-whole-windsq-1.png
+step 36 result: siegel-whole windsq de 3: mode j, approach windsq, iter 40, c [-0.390541,-0.586788,0]
+step 36 waited 1.0 s
+step 36 wrote out/r20/entry/de-siegel-whole-windsq-3.png
+step 38 result: dendrite-whole windsq de 0: mode j, approach windsq, iter 20, c [0,1,0]
+step 38 waited 0.5 s
+step 38 wrote out/r20/entry/de-dendrite-whole-windsq-0.png
+step 40 result: dendrite-whole windsq de 1: mode j, approach windsq, iter 20, c [0,1,0]
+step 40 waited 0.8 s
+step 40 wrote out/r20/entry/de-dendrite-whole-windsq-1.png
+step 42 result: dendrite-whole windsq de 3: mode j, approach windsq, iter 20, c [0,1,0]
+step 42 waited 0.5 s
+step 42 wrote out/r20/entry/de-dendrite-whole-windsq-3.png
+step 44 result: end: failed 
+step 44 waited 0.5 s
+no console errors

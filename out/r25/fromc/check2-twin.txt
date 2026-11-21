@@ -1,0 +1,7 @@
+
+== twin_tri | even spacing on two flat triangles, a corner on the meeting point AND on its twin (space folded by a half turn first)
+   c = -1    at the meeting point: stretches 1.236 1.236 1.236, straight up 1.236 (flat stretch 1.236) | inside 0.0229; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 100.0 %
+   rabbit    at the meeting point: stretches 1.107 1.107 1.107, straight up 1.107 (flat stretch 1.107) | inside 0.0151; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   c = -0.75 at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0469; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 99.9 %
+   Siegel    at the meeting point: stretches 1.000 1.000 1.000, straight up 1.000 (flat stretch 1.000) | inside 0.0246; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 91.8 %
+   1/4 bud   at the meeting point: stretches 1.061 1.061 1.061, straight up 1.061 (flat stretch 1.061) | inside 0.0181; changes under a half turn 0.0 %, under the mirror 0.0 %; kept from 40 to 90 steps 97.9 %

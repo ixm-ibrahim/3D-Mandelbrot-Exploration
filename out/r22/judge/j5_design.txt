@@ -1,0 +1,67 @@
+== A. is the hinged rule "along" for c on the x-axis? 200,000 random start points, 80 steps
+c =  -1.0000: 0 verdicts differ (inside: 5383)
+c =  -0.7500: 0 verdicts differ (inside: 11504)
+c =  -1.7549: 0 verdicts differ (inside: 44)
+c =   0.2000: 0 verdicts differ (inside: 38643)
+but for c on the x-axis RIGHT of 1/4 (c = 0.3, meeting point off the axis):
+c = 0.3: 1 verdicts differ (inside along 0, hinged 1)
+
+== B. flat page: verdicts that differ from the flat picture (20,000 places), and the lift test (flat-inside points lifted by a millionth)
+hinge     differ: M 0, basilica 0, rabbit 0, Siegel 0 | lifted and still inside: basilica 2939 of 2939, rabbit 2686 of 2686
+preturn   differ: M 0, basilica 0, rabbit 0, Siegel 0 | lifted and still inside: basilica 2996 of 2996, rabbit 2782 of 2783
+capfold45 differ: M 0, basilica 0, rabbit 0, Siegel 0 | lifted and still inside: basilica 3027 of 3027, rabbit 2804 of 2804
+
+== C. the hinged rule off the x-axis: volume, leak between 30 and 80 and 300 steps, loose bits (96^3 grid)
+rabbit        oneplane  inside at 30 / 80 / 300 steps:  12048 /  11668 /  11668 | lost 30->80 3.2 %, 80->300 0.0 % | pieces   9, biggest 99 %, in pieces under 8 blocks 0.2 %
+rabbit        along     inside at 30 / 80 / 300 steps:  43528 /  42808 /  42808 | lost 30->80 1.7 %, 80->300 0.0 % | pieces   3, biggest 100 %, in pieces under 8 blocks 0.0 %
+rabbit        hinge     inside at 30 / 80 / 300 steps:  15278 /  15168 /  15168 | lost 30->80 0.7 %, 80->300 0.0 % | pieces  22, biggest 98 %, in pieces under 8 blocks 0.1 %
+  7 s
+Siegel        oneplane  inside at 30 / 80 / 300 steps:  32516 /  31584 /  31580 | lost 30->80 2.9 %, 80->300 0.0 % | pieces   1, biggest 100 %, in pieces under 8 blocks 0.0 %
+Siegel        along     inside at 30 / 80 / 300 steps:  44124 /  43012 /  42688 | lost 30->80 2.5 %, 80->300 0.8 % | pieces   3, biggest 100 %, in pieces under 8 blocks 0.0 %
+Siegel        hinge     inside at 30 / 80 / 300 steps:  19602 /  17790 /  17154 | lost 30->80 9.2 %, 80->300 3.6 % | pieces  14, biggest 100 %, in pieces under 8 blocks 0.2 %
+  11 s
+c=-1+0.2i     oneplane  inside at 30 / 80 / 300 steps:  12412 /  12332 /  12332 | lost 30->80 0.6 %, 80->300 0.0 % | pieces  13, biggest 78 %, in pieces under 8 blocks 0.2 %
+c=-1+0.2i     along     inside at 30 / 80 / 300 steps:  14280 /  14238 /  14238 | lost 30->80 0.3 %, 80->300 0.0 % | pieces  22, biggest 99 %, in pieces under 8 blocks 0.3 %
+c=-1+0.2i     hinge     inside at 30 / 80 / 300 steps:  14142 /  14124 /  14124 | lost 30->80 0.1 %, 80->300 0.0 % | pieces  18, biggest 100 %, in pieces under 8 blocks 0.2 %
+  14 s
+period 4      oneplane  inside at 30 / 80 / 300 steps:  12668 /   9368 /   9360 | lost 30->80 26.0 %, 80->300 0.1 % | pieces   7, biggest 99 %, in pieces under 8 blocks 0.1 %
+period 4      along     inside at 30 / 80 / 300 steps:  80834 /  76258 /  76182 | lost 30->80 5.7 %, 80->300 0.1 % | pieces   1, biggest 100 %, in pieces under 8 blocks 0.0 %
+period 4      hinge     inside at 30 / 80 / 300 steps:  10886 /  10288 /  10286 | lost 30->80 5.5 %, 80->300 0.0 % | pieces  26, biggest 91 %, in pieces under 8 blocks 0.4 %
+  18 s
+San Marco     oneplane  inside at 30 / 80 / 300 steps:  41616 /  41264 /  41256 | lost 30->80 0.8 %, 80->300 0.0 % | pieces   1, biggest 100 %, in pieces under 8 blocks 0.0 %
+San Marco     along     inside at 30 / 80 / 300 steps:  36808 /  36736 /  36736 | lost 30->80 0.2 %, 80->300 0.0 % | pieces   1, biggest 100 %, in pieces under 8 blocks 0.0 %
+San Marco     hinge     inside at 30 / 80 / 300 steps:  36808 /  36736 /  36736 | lost 30->80 0.2 %, 80->300 0.0 % | pieces   1, biggest 100 %, in pieces under 8 blocks 0.0 %
+  22 s
+dendrite c=i  oneplane  inside at 30 / 80 / 300 steps:      0 /      0 /      0 | lost 30->80 0.0 %, 80->300 0.0 % | pieces   0, biggest 0 %, in pieces under 8 blocks 0.0 %
+dendrite c=i  along     inside at 30 / 80 / 300 steps:    182 /      0 /      0 | lost 30->80 100.0 %, 80->300 0.0 % | pieces   0, biggest 0 %, in pieces under 8 blocks 0.0 %
+dendrite c=i  hinge     inside at 30 / 80 / 300 steps:      0 /      0 /      0 | lost 30->80 0.0 %, 80->300 0.0 % | pieces   0, biggest 0 %, in pieces under 8 blocks 0.0 %
+  24 s
+c=-0.6+0.4i   oneplane  inside at 30 / 80 / 300 steps:  37492 /  37096 /  37096 | lost 30->80 1.1 %, 80->300 0.0 % | pieces   1, biggest 100 %, in pieces under 8 blocks 0.0 %
+c=-0.6+0.4i   along     inside at 30 / 80 / 300 steps:  36472 /  36322 /  36322 | lost 30->80 0.4 %, 80->300 0.0 % | pieces   1, biggest 100 %, in pieces under 8 blocks 0.0 %
+c=-0.6+0.4i   hinge     inside at 30 / 80 / 300 steps:  21902 /  21454 /  21436 | lost 30->80 2.0 %, 80->300 0.1 % | pieces  69, biggest 99 %, in pieces under 8 blocks 0.5 %
+  28 s
+
+== D. buds of the hinged rabbit? rings round the hinge through the middle body (2,880 places, 80 and 300 steps)
+ring at 0.00 along the hinge, radius 0.46, hinge      80 steps:  24 arcs, 137.8 degrees inside, arcs of 5 degrees or more: 10, under 1 degree: 10
+ring at 0.00 along the hinge, radius 0.46, hinge     300 steps:  24 arcs, 137.8 degrees inside, arcs of 5 degrees or more: 10, under 1 degree: 10
+ring at 0.00 along the hinge, radius 0.46, along      80 steps:  24 arcs, 262.5 degrees inside, arcs of 5 degrees or more: 8, under 1 degree: 14
+ring at 0.00 along the hinge, radius 0.46, along     300 steps:  24 arcs, 262.5 degrees inside, arcs of 5 degrees or more: 8, under 1 degree: 14
+ring at 0.00 along the hinge, radius 0.46, oneplane   80 steps:   0 arcs,   0.0 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 0
+ring at 0.00 along the hinge, radius 0.46, oneplane  300 steps:   0 arcs,   0.0 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 0
+ring at 0.00 along the hinge, radius 0.50, hinge      80 steps:  34 arcs,  82.8 degrees inside, arcs of 5 degrees or more: 4, under 1 degree: 24
+ring at 0.00 along the hinge, radius 0.50, hinge     300 steps:  34 arcs,  82.8 degrees inside, arcs of 5 degrees or more: 4, under 1 degree: 24
+ring at 0.00 along the hinge, radius 0.50, along      80 steps:  30 arcs, 199.5 degrees inside, arcs of 5 degrees or more: 10, under 1 degree: 12
+ring at 0.00 along the hinge, radius 0.50, along     300 steps:  30 arcs, 199.5 degrees inside, arcs of 5 degrees or more: 10, under 1 degree: 12
+ring at 0.00 along the hinge, radius 0.50, oneplane   80 steps:   0 arcs,   0.0 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 0
+ring at 0.00 along the hinge, radius 0.50, oneplane  300 steps:   0 arcs,   0.0 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 0
+ring at 0.15 along the hinge, radius 0.40, hinge      80 steps:   2 arcs,   0.5 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 2
+ring at 0.15 along the hinge, radius 0.40, hinge     300 steps:   2 arcs,   0.5 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 2
+ring at 0.15 along the hinge, radius 0.40, along      80 steps:  56 arcs, 195.8 degrees inside, arcs of 5 degrees or more: 4, under 1 degree: 44
+ring at 0.15 along the hinge, radius 0.40, along     300 steps:  56 arcs, 195.8 degrees inside, arcs of 5 degrees or more: 4, under 1 degree: 44
+ring at 0.15 along the hinge, radius 0.40, oneplane   80 steps:   0 arcs,   0.0 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 0
+ring at 0.15 along the hinge, radius 0.40, oneplane  300 steps:   0 arcs,   0.0 degrees inside, arcs of 5 degrees or more: 0, under 1 degree: 0
+
+== E. "preturn": is its upright page the flat rabbit? (360 x 260, 120 steps)
+basilica upright page of preturn against the lower half of the flat picture: 0 places differ (flat picture there: 14064)
+rabbit   upright page of preturn against the lower half of the flat picture: 0 places differ (flat picture there: 12994)
+done 28 s

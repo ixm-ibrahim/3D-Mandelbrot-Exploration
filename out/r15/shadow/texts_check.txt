@@ -1,0 +1,252 @@
+step 1 result: page up, 16 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 pillow4d
+step 1 waited 4.1 s
+step 2 result: {
+ "groups": [
+  "inversions",
+  "kleinian",
+  "quaternion",
+  "pillow",
+  "angles",
+  "other",
+  "tried"
+ ],
+ "index": 15,
+ "name": "Pillow from 4D (closed form)",
+ "group": "pillow",
+ "tag": "Turn a 4D point n times as far on two circles at once, and look at it in 3D through a pillow-shaped grid.  ... (17415 characters)
+no console errors
+
+{
+ "groups": [
+  "inversions",
+  "kleinian",
+  "quaternion",
+  "pillow",
+  "angles",
+  "other",
+  "tried"
+ ],
+ "index": 15,
+ "name": "Pillow from 4D (closed form)",
+ "group": "pillow",
+ "tag": "Turn a 4D point n times as far on two circles at once, and look at it in 3D through a pillow-shaped grid. The slice at z = 0 is the flat set and no tear was found. The lobes in that plane follow the power. Off the plane the solid is lopsided, with fins and streaks, and no count of bodies that follows the power was found.",
+ "note": "1749 characters",
+ "about": "2353 characters",
+ "n=2": {
+  "formula": "v² = (2x² − ρ²,  −4xy·x₂·(2ρ + x₂)/(ρ² + 2x₂²),  (ρ² − 4x₂²)/√3)   with x₂ = −(√3·z + ρ)/2, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(√3·ρ − z)²/4 that lies above |x|. In the plane z = 0, ρ = |v| and this is (x² − y², 2xy, 0).",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0."
+  ],
+  "sliceOk": "The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. No seam and no corner of the pillow lies in that plane.",
+  "sliceNot": "The plane z = 0 does not follow complex arithmetic.",
+  "math": [
+   -0.13025506987087965,
+   0.19990728293292467,
+   -0.2920842117789459
+  ],
+  "mathFlat": [
+   -0.07000000000000003,
+   0.24,
+   0
+  ]
+ },
+ "n=3": {
+  "formula": "v³ = (ρ³·T(x/ρ),  −s·ρ¹·y·(s·ρ + c·z)·U(x/ρ)·U(x₂/ρ)/(1 − c·T(x₂/ρ)),  ρ³·(c − T(x₂/ρ))/s)   with x₂ = c·ρ − s·z, c and s the cosine and sine of 90°, T and U the polynomials with T(cos t) = cos 3t and U(cos t) = sin 3t / sin t, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(s·ρ + c·z)² that lies above |x|. In the plane z = 0, ρ = |v| and this is the complex power.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0."
+  ],
+  "sliceOk": "The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. No seam and no corner of the pillow lies in that plane.",
+  "sliceNot": "The plane z = 0 does not follow complex arithmetic.",
+  "math": [
+   -0.14130340904199679,
+   0.014022726946645124,
+   -0.1342022726946645
+  ],
+  "mathFlat": [
+   -0.11700000000000003,
+   0.04399999999999999,
+   0
+  ]
+ },
+ "n=4": {
+  "formula": "v⁴ = (ρ⁴·T(x/ρ),  −s·ρ²·y·(s·ρ + c·z)·U(x/ρ)·U(x₂/ρ)/(1 − c·T(x₂/ρ)),  ρ⁴·(c − T(x₂/ρ))/s)   with x₂ = c·ρ − s·z, c and s the cosine and sine of 72°, T and U the polynomials with T(cos t) = cos 4t and U(cos t) = sin 4t / sin t, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(s·ρ + c·z)² that lies above |x|. In the plane z = 0, ρ = |v| and this is the complex power.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0."
+  ],
+  "sliceOk": "The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. No seam and no corner of the pillow lies in that plane.",
+  "sliceNot": "The plane z = 0 does not follow complex arithmetic.",
+  "math": [
+   -0.05731306911276286,
+   0.014212520444243,
+   -0.05245871415711072
+  ],
+  "mathFlat": [
+   -0.0527,
+   -0.03360000000000001,
+   0
+  ]
+ },
+ "n=5": {
+  "formula": "v⁵ = (ρ⁵·T(x/ρ),  −s·ρ³·y·(s·ρ + c·z)·U(x/ρ)·U(x₂/ρ)/(1 − c·T(x₂/ρ)),  ρ⁵·(c − T(x₂/ρ))/s)   with x₂ = c·ρ − s·z, c and s the cosine and sine of 60°, T and U the polynomials with T(cos t) = cos 5t and U(cos t) = sin 5t / sin t, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(s·ρ + c·z)² that lies above |x|. In the plane z = 0, ρ = |v| and this is the complex power.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0."
+  ],
+  "sliceOk": "The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. No seam and no corner of the pillow lies in that plane.",
+  "sliceNot": "The plane z = 0 does not follow complex arithmetic.",
+  "math": [
+   0.0035458031341800288,
+   0.03584776306652698,
+   -0.011399612648171553
+  ],
+  "mathFlat": [
+   -0.002369999999999992,
+   -0.031160000000000007,
+   0
+  ]
+ },
+ "n=10": {
+  "formula": "v¹⁰ = (ρ¹⁰·T(x/ρ),  −s·ρ⁸·y·(s·ρ + c·z)·U(x/ρ)·U(x₂/ρ)/(1 − c·T(x₂/ρ)),  ρ¹⁰·(c − T(x₂/ρ))/s)   with x₂ = c·ρ − s·z, c and s the cosine and sine of 32.73°, T and U the polynomials with T(cos t) = cos 10t and U(cos t) = sin 10t / sin t, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(s·ρ + c·z)² that lies above |x|. In the plane z = 0, ρ = |v| and this is the complex power.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0."
+  ],
+  "sliceOk": "The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. No seam and no corner of the pillow lies in that plane.",
+  "sliceNot": "The plane z = 0 does not follow complex arithmetic.",
+  "math": [
+   -0.0018520451951541655,
+   0.00013284245881199937,
+   0.005948780090618805
+  ],
+  "mathFlat": [
+   -0.0009653287000000005,
+   0.00014769839999999958,
+   0
+  ]
+ },
+ "n=2.5": {
+  "formula": "v³ = (ρ³·T(x/ρ),  −s·ρ¹·y·(s·ρ + c·z)·U(x/ρ)·U(x₂/ρ)/(1 − c·T(x₂/ρ)),  ρ³·(c − T(x₂/ρ))/s)   with x₂ = c·ρ − s·z, c and s the cosine and sine of 90°, T and U the polynomials with T(cos t) = cos 3t and U(cos t) = sin 3t / sin t, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(s·ρ + c·z)² that lies above |x|. In the plane z = 0, ρ = |v| and this is the complex power. The pillow is that of the whole power 3; only the length ρⁿ follows the power 2.5.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0. The rule is made for the whole powers 2 to 10. Any other power uses the pillow of the nearest of them, and only the length follows the power set, so the picture jumps between whole powers."
+  ],
+  "sliceOk": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "sliceNot": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "math": [
+   -0.1947741028802598,
+   0.019329074078856014,
+   -0.18498582196857297
+  ],
+  "mathFlat": [
+   -0.16546298679765215,
+   0.06222539674441616,
+   0
+  ]
+ },
+ "n=1": {
+  "formula": "v² = (2x² − ρ²,  −4xy·x₂·(2ρ + x₂)/(ρ² + 2x₂²),  (ρ² − 4x₂²)/√3)   with x₂ = −(√3·z + ρ)/2, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(√3·ρ − z)²/4 that lies above |x|. In the plane z = 0, ρ = |v| and this is (x² − y², 2xy, 0). The pillow is that of the whole power 2; only the length ρⁿ follows the power 1.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0. The rule is made for the whole powers 2 to 10. Any other power uses the pillow of the nearest of them, and only the length follows the power set, so the picture jumps between whole powers."
+  ],
+  "sliceOk": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "sliceNot": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "math": [
+   -0.23384882531600018,
+   0.358896458558723,
+   -0.5243830423304431
+  ],
+  "mathFlat": [
+   -0.14000000000000007,
+   0.48,
+   0
+  ]
+ },
+ "n=-2": {
+  "formula": "v² = (2x² − ρ²,  −4xy·x₂·(2ρ + x₂)/(ρ² + 2x₂²),  (ρ² − 4x₂²)/√3)   with x₂ = −(√3·z + ρ)/2, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(√3·ρ − z)²/4 that lies above |x|. In the plane z = 0, ρ = |v| and this is (x² − y², 2xy, 0). The pillow is that of the whole power 2; only the length ρⁿ follows the power −2. A negative power also mirrors the result, y → −y and z → −z.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "part",
+   "By its construction nothing but the origin is sent to one point, and every direction is reached from n² directions (not measured here). How unevenly the rule stretches away from the plane z = 0 was not measured for this entry. The origin is sent to infinity."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0. The rule is made for the whole powers 2 to 10. Any other power uses the pillow of the nearest of them, and only the length follows the power set, so the picture jumps between whole powers."
+  ],
+  "sliceOk": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "sliceNot": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "math": [
+   -1.3531840251574074,
+   -2.076781671881259,
+   3.0343823835169186
+  ],
+  "mathFlat": [
+   -1.1200000000000006,
+   -3.84,
+   0
+  ]
+ },
+ "n=0": {
+  "formula": "v² = (2x² − ρ²,  −4xy·x₂·(2ρ + x₂)/(ρ² + 2x₂²),  (ρ² − 4x₂²)/√3)   with x₂ = −(√3·z + ρ)/2, and ρ the gauge of v: the root of (ρ² − x²)(ρ² − x₂²) = y²(√3·ρ − z)²/4 that lies above |x|. In the plane z = 0, ρ = |v| and this is (x² − y², 2xy, 0). The pillow is that of the whole power 2; only the length ρⁿ follows the power 0.",
+  "round": "Beside the plane z = 0 a small step out of the plane is stretched as much as a step in the plane: n times, at every longitude, with the side flipped, so that above goes below (measured at the powers 2 to 5). Away from the plane the stretch is uneven. How uneven was not measured for this entry.",
+  "crush": [
+   "no",
+   "At n = 0 every point is sent onto one closed surface, the pillow itself."
+  ],
+  "smooth": [
+   "part",
+   "One formula for every direction, with one equation of the fourth degree solved at each step. No jump was found: the gap between the answers for two close directions shrinks in step with their distance (measured at the powers 2 to 5). The grid has four sharp points, the corners of the pillow. They lie in the plane y = 0. The rule is made for the whole powers 2 to 10. Any other power uses the pillow of the nearest of them, and only the length follows the power set, so the picture jumps between whole powers."
+  ],
+  "sliceOk": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "sliceNot": "At this power the direction is taken from the nearest whole power from 2 to 10 and only the length follows the power set, so the plane z = 0 lands on itself but the slice is not the flat set of this power.",
+  "math": [
+   -0.41983220427336954,
+   0.6443320427160822,
+   -0.9414325184130078
+  ],
+  "mathFlat": [
+   -0.28000000000000014,
+   0.96,
+   0
+  ]
+ },
+ "badWords": 0
+}

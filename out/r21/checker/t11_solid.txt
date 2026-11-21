@@ -1,0 +1,4 @@
+M.solid against direct verdicts, eye straight at the flat page (cam = (0, 0, 1)), 120 x 90 pixels, 120 blocks deep, 40 steps
+  lag25          (-1.0, 0.0) pixels where the depth differs: 0 of 10800 (hit pixels: 1592)
+  along          (-0.122561, 0.744862) pixels where the depth differs: 0 of 10800 (hit pixels: 2597)
+  evc005e70k16   Mandelbrot pixels where the depth differs: 0 of 10800 (hit pixels: 1884)

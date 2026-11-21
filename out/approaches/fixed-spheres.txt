@@ -1,0 +1,28 @@
+1. Where the two versions agree, and where they part
+  n=2: unit sphere, fixed vs Mercator 4.2e-14;  plane z=0, fixed vs complex z^n 5.5e-16;  elsewhere they differ by up to 0.51 (relative), and |F(q)|/|q|^n runs from 0.407 to 3.15
+  n=3: unit sphere, fixed vs Mercator 2.1e-12;  plane z=0, fixed vs complex z^n 2.2e-15;  elsewhere they differ by up to 0.79 (relative), and |F(q)|/|q|^n runs from 0.162 to 9.43
+  n=4: unit sphere, fixed vs Mercator 2.2e-11;  plane z=0, fixed vs complex z^n 1.4e-15;  elsewhere they differ by up to 0.91 (relative), and |F(q)|/|q|^n runs from 0.0664 to 31.6
+  n=8: unit sphere, fixed vs Mercator 1.1e-08;  plane z=0, fixed vs complex z^n 1.2e-14;  elsewhere they differ by up to 1.00 (relative), and |F(q)|/|q|^n runs from 0.00166 to 4.53e+03
+2. The z-axis: F leaves every point of it where it is
+  n=2: max |F(0,0,t) - (0,0,t)| = 4.4e-16
+  n=3: max |F(0,0,t) - (0,0,t)| = 9.2e-16
+  n=8: max |F(0,0,t) - (0,0,t)| = 3.2e-16
+3. Growth far from the origin: |F(q)| at |q| = 100, by latitude (a true n-th power would give 100^n)
+  n=2: 0°: 1e+04, 0.01°: 1e+04, 0.1°: 9.85e+03, 5°: 1.14e+03, 30°: 200, 60°: 115, 89°: 100
+  n=3: 0°: 1e+06, 0.01°: 4.97e+05, 0.1°: 5.72e+04, 5°: 1.15e+03, 30°: 200, 60°: 115, 89°: 100
+  n=8: 0°: 9.98e+15, 0.01°: 5.73e+05, 0.1°: 5.73e+04, 5°: 1.15e+03, 30°: 200, 60°: 115, 89°: 100
+   Off the plane the growth is about |q| / sin(latitude): linear in |q|, not |q|^n.
+4. The set of z -> z^2 + c from z = 0, counted on a 360 x 360 grid of c (share of the grid that never escapes)
+  14 steps: slice y=0  fixed 0.994, following 0.031;  slice z=0 fixed 0.103
+  60 steps: slice y=0  fixed 0.443, following 0.020;  slice z=0 fixed 0.081
+  240 steps: slice y=0  fixed 0.076, following 0.019;  slice z=0 fixed 0.078
+   On the z-axis itself the fixed version only adds c each step (z_k = k c), so a point (0, 0, t) leaves
+   the radius-64 ball after 64/|t| steps: the solid there is a spike whose height is 64 / (number of steps).
+  14 steps: the solid reaches up the z-axis to 4.92   (64/steps = 4.57)
+  60 steps: the solid reaches up the z-axis to 1.08   (64/steps = 1.07)
+  240 steps: the solid reaches up the z-axis to 0.27   (64/steps = 0.27)
+  1000 steps: the solid reaches up the z-axis to 0.06   (64/steps = 0.06)
+5. A horizontal slice a little above the plane (z = 0.3), fixed version, by step count
+  14 steps: share never escaping 1.000
+  60 steps: share never escaping 1.000
+  240 steps: share never escaping 0.000

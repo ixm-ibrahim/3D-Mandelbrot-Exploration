@@ -1,0 +1,143 @@
+step 1 waited 3.6 s
+step 2 result: "k01-e03-is three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 4 waited 2.7 s
+step 4 wrote out/r9/klein/t4/k01-e03-is.png
+step 5 result: "k02-e24-is three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 7 waited 0.3 s
+step 7 wrote out/r9/klein/t4/k02-e24-is.png
+step 8 result: "k03-e03-added three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 10 waited 0.4 s
+step 10 wrote out/r9/klein/t4/k03-e03-added.png
+step 11 result: "k04-e24-added three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 13 waited 0.3 s
+step 13 wrote out/r9/klein/t4/k04-e24-added.png
+step 14 result: "k05-e03-is-fine three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 16 waited 0.6 s
+step 16 wrote out/r9/klein/t4/k05-e03-is-fine.png
+step 17 result: "k06-e24-is-fine three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 19 waited 0.6 s
+step 19 wrote out/r9/klein/t4/k06-e24-is-fine.png
+step 20 result: "k07-e03-is-fine-far three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 22 waited 0.3 s
+step 22 wrote out/r9/klein/t4/k07-e03-is-fine-far.png
+step 23 result: "k08-e00-is three=true kmx=0 skip=1 iter=14 note="
+step 25 waited 0.3 s
+step 25 wrote out/r9/klein/t4/k08-e00-is.png
+step 26 result: "k09-e21-is three=true kmx=0 skip=1 iter=14 note="
+step 28 waited 0.3 s
+step 28 wrote out/r9/klein/t4/k09-e21-is.png
+step 29 result: "k10-e00-tx06 three=true kmx=0 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 31 waited 0.4 s
+step 31 wrote out/r9/klein/t4/k10-e00-tx06.png
+step 32 result: "k11-e00-tx06-fine three=true kmx=0 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 34 waited 0.7 s
+step 34 wrote out/r9/klein/t4/k11-e00-tx06-fine.png
+step 35 result: "k12-e00-ty05 three=true kmx=0 skip=1 iter=14 note="
+step 37 waited 0.3 s
+step 37 wrote out/r9/klein/t4/k12-e00-ty05.png
+step 38 result: "k13-e00-tz06 three=true kmx=0 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 40 waited 0.3 s
+step 40 wrote out/r9/klein/t4/k13-e00-tz06.png
+step 41 result: "k14-e33-is three=true kmx=0 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 43 waited 0.4 s
+step 43 wrote out/r9/klein/t4/k14-e33-is.png
+step 44 result: "k15-ex6-pearls three=true kmx=0 skip=1 iter=14 note="
+step 46 waited 0.4 s
+step 46 wrote out/r9/klein/t4/k15-ex6-pearls.png
+step 47 result: "k16-ex7-rings three=true kmx=0 skip=1 iter=14 note="
+step 49 waited 0.3 s
+step 49 wrote out/r9/klein/t4/k16-ex7-rings.png
+step 50 result: "k17-ex8-discs three=true kmx=0 skip=1 iter=14 note="
+step 52 waited 0.3 s
+step 52 wrote out/r9/klein/t4/k17-ex8-discs.png
+step 53 result: "k18-ex6-pearls-fine three=true kmx=0 skip=1 iter=14 note="
+step 55 waited 0.7 s
+step 55 wrote out/r9/klein/t4/k18-ex6-pearls-fine.png
+step 56 result: "k19-ex7-rings-fine three=true kmx=0 skip=1 iter=14 note="
+step 58 waited 0.5 s
+step 58 wrote out/r9/klein/t4/k19-ex7-rings-fine.png
+step 59 result: "k20-ex8-discs-fine three=true kmx=0 skip=1 iter=14 note="
+step 61 waited 0.5 s
+step 61 wrote out/r9/klein/t4/k20-ex8-discs-fine.png
+step 62 result: "k30-e00-point three=true kmx=0 skip=1 iter=14 note="
+step 64 waited 0.0 s
+step 64 wrote out/r9/klein/t4/k30-e00-point.png
+step 65 result: "k31-e00-cross three=true kmx=0 skip=1 iter=14 note="
+step 67 waited 0.3 s
+step 67 wrote out/r9/klein/t4/k31-e00-cross.png
+step 68 result: "k32-e00-line three=true kmx=0 skip=1 iter=14 note="
+step 70 waited 0.3 s
+step 70 wrote out/r9/klein/t4/k32-e00-line.png
+step 71 result: "k33-e00-ray three=true kmx=0 skip=1 iter=14 note="
+step 73 waited 0.3 s
+step 73 wrote out/r9/klein/t4/k33-e00-ray.png
+step 74 result: "k34-e00-planes three=true kmx=0 skip=1 iter=14 note="
+step 76 waited 0.3 s
+step 76 wrote out/r9/klein/t4/k34-e00-planes.png
+step 77 result: "k35-e00-shell three=true kmx=0 skip=1 iter=14 note="
+step 79 waited 0.3 s
+step 79 wrote out/r9/klein/t4/k35-e00-shell.png
+step 80 result: "k36-e00-ring three=true kmx=0 skip=1 iter=14 note="
+step 82 waited 0.3 s
+step 82 wrote out/r9/klein/t4/k36-e00-ring.png
+step 83 result: "k40-e00-point-fine three=true kmx=0 skip=1 iter=14 note="
+step 85 waited 0.3 s
+step 85 wrote out/r9/klein/t4/k40-e00-point-fine.png
+step 86 result: "k41-e00-cross-fine three=true kmx=0 skip=1 iter=14 note="
+step 88 waited 0.6 s
+step 88 wrote out/r9/klein/t4/k41-e00-cross-fine.png
+step 89 result: "k42-e00-line-fine three=true kmx=0 skip=1 iter=14 note="
+step 91 waited 0.3 s
+step 91 wrote out/r9/klein/t4/k42-e00-line-fine.png
+step 92 result: "k43-e00-ray-fine three=true kmx=0 skip=1 iter=14 note="
+step 94 waited 0.3 s
+step 94 wrote out/r9/klein/t4/k43-e00-ray-fine.png
+step 95 result: "k44-e00-planes-fine three=true kmx=0 skip=1 iter=14 note="
+step 97 waited 0.5 s
+step 97 wrote out/r9/klein/t4/k44-e00-planes-fine.png
+step 98 result: "k45-e00-shell-fine three=true kmx=0 skip=1 iter=14 note="
+step 100 waited 0.6 s
+step 100 wrote out/r9/klein/t4/k45-e00-shell-fine.png
+step 101 result: "k46-e00-ring-fine three=true kmx=0 skip=1 iter=14 note="
+step 103 waited 0.5 s
+step 103 wrote out/r9/klein/t4/k46-e00-ring-fine.png
+step 104 result: "k50-e03-point three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 106 waited 0.0 s
+step 106 wrote out/r9/klein/t4/k50-e03-point.png
+step 107 result: "k51-e03-cross three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 109 waited 0.3 s
+step 109 wrote out/r9/klein/t4/k51-e03-cross.png
+step 110 result: "k52-e03-line three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 112 waited 0.3 s
+step 112 wrote out/r9/klein/t4/k52-e03-line.png
+step 113 result: "k53-e03-ray three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 115 waited 0.3 s
+step 115 wrote out/r9/klein/t4/k53-e03-ray.png
+step 116 result: "k54-e03-planes three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 118 waited 0.3 s
+step 118 wrote out/r9/klein/t4/k54-e03-planes.png
+step 119 result: "k56-e03-ring three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 121 waited 0.3 s
+step 121 wrote out/r9/klein/t4/k56-e03-ring.png
+step 122 result: "k60-e03-is-skip0 three=false kmx=1 skip=0 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 124 waited 0.6 s
+step 124 wrote out/r9/klein/t4/k60-e03-is-skip0.png
+step 125 result: "k61-e00-is-skip0 three=true kmx=0 skip=0 iter=14 note="
+step 127 waited 0.6 s
+step 127 wrote out/r9/klein/t4/k61-e00-is-skip0.png
+step 128 result: "k62-e03-is-skip3 three=false kmx=1 skip=3 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 130 waited 0.3 s
+step 130 wrote out/r9/klein/t4/k62-e03-is-skip3.png
+step 131 result: "k63-e00-ring-r16 three=true kmx=0 skip=1 iter=14 note="
+step 133 waited 0.5 s
+step 133 wrote out/r9/klein/t4/k63-e00-ring-r16.png
+step 134 result: "k64-e00-ring-thick02 three=true kmx=0 skip=1 iter=14 note="
+step 136 waited 0.3 s
+step 136 wrote out/r9/klein/t4/k64-e00-ring-thick02.png
+step 137 result: "k65-e03-is-ultra three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 139 waited 0.0 s
+step 139 wrote out/r9/klein/t4/k65-e03-is-ultra.png
+step 140 result: "k66-e03-is-cut three=false kmx=1 skip=1 iter=14 note=With this group or this trap centre some pieces come out cut"
+step 142 waited 0.3 s
+step 142 wrote out/r9/klein/t4/k66-e03-is-cut.png
+no console errors

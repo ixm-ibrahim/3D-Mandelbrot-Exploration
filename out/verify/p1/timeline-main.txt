@@ -1,0 +1,474 @@
+== 00 page load (already running)  [load]  (samples 13, longest frame gap 17 ms)
+       0-   664 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 0 ms; first indicator at None ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max -1.00
+== 01 equation preset: lambda  [c·z·(1 − z)  (lambda)]  (samples 284, longest frame gap 167 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      60-  2827 ms  busy='Preparing the formula'    bar=hidden     status='Preparing the formula'              DRAWING     card-idle
+    2884-  8920 ms  busy=-                          bar=0.00>0.08  status='Drawing at full size'               DRAWING     card-idle
+    8982- 11138 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+   11200- 11932 ms  busy=-                          bar=0.17>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+   11989- 12466 ms  busy=-                          bar=0.27>0.33  status='Refining: pass 4 of 12'             DRAWING     card-idle
+   12520- 12878 ms  busy=-                          bar=0.35>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+   12932- 13350 ms  busy=-                          bar=0.42>0.50  status='Refining: pass 6 of 12'             DRAWING     card-idle
+   13411- 13756 ms  busy=-                          bar=0.52>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+   13815- 14163 ms  busy=-                          bar=0.58>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+   14215- 14448 ms  busy=-                          bar=0.67>0.73  status='Refining: pass 9 of 12'             DRAWING     card-idle
+   14507- 14805 ms  busy=-                          bar=0.75>0.81  status='Refining: pass 10 of 12'            DRAWING     card-idle
+   14867- 15164 ms  busy=-                          bar=0.83>0.91  status='Refining: pass 11 of 12'            DRAWING     card-idle
+   15215- 15515 ms  busy=-                          bar=0.92>0.98  status='Refining: pass 12 of 12'            DRAWING     card-idle
+   15566- 16262 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 15515 ms; first indicator at 60 ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.98
+== 02 type equation z^3 + c*z  [err= preset=-1]  (samples 186, longest frame gap 446 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      52-  2361 ms  busy='Preparing the formula'    bar=hidden     status='Preparing the formula'              DRAWING     card-idle
+    2423-  2843 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+    2898-  5880 ms  busy=-                          bar=0.00>0.08  status='Drawing at full size'               DRAWING     card-idle
+    5934-  6227 ms  busy=-                          bar=0.11>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+    6280-  6663 ms  busy=-                          bar=0.18>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    6718-  7064 ms  busy=-                          bar=0.27>0.33  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    7117-  7346 ms  busy=-                          bar=0.35>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    7397-  7630 ms  busy=-                          bar=0.42>0.48  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    7695-  7913 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    7971-  8263 ms  busy=-                          bar=0.58>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    8329-  8676 ms  busy=-                          bar=0.68>0.73  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    8731-  9005 ms  busy=-                          bar=0.75>0.82  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    9060-  9333 ms  busy=-                          bar=0.83>0.91  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    9395-  9691 ms  busy=-                          bar=0.93>0.99  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    9746- 10467 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 9691 ms; first indicator at 52 ms; working with NO indicator: 482 ms total, longest stretch 482 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.99
+== 03 typing error: z^n + c)  [err=“)” is unexpected here.]  (samples 31, longest frame gap 17 ms)
+       0-  1626 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 0 ms; first indicator at None ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max -1.00
+== 04 typing error: z^n + q*  [err=“q” is not a name the formula knows. Use z, c, n, i, j, and write products with *, as in c*z.]  (samples 14, longest frame gap 17 ms)
+       0-   656 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 0 ms; first indicator at None ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max -1.00
+== 05 equation preset back to first  [zⁿ + c  (Mandelbrot)]  (samples 158, longest frame gap 26 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      60-   166 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     230-  1688 ms  busy=-                          bar=0.00>0.08  status='Drawing at full size'               DRAWING     card-idle
+    1749-  2583 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+    2649-  3521 ms  busy=-                          bar=0.17>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    3582-  4270 ms  busy=-                          bar=0.25>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    4327-  4882 ms  busy=-                          bar=0.33>0.41  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    4939-  5566 ms  busy=-                          bar=0.42>0.50  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    5629-  6147 ms  busy=-                          bar=0.50>0.58  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    6199-  6649 ms  busy=-                          bar=0.58>0.64  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    6708-  7195 ms  busy=-                          bar=0.67>0.73  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    7249-  7599 ms  busy=-                          bar=0.75>0.81  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    7663-  8015 ms  busy=-                          bar=0.83>0.91  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    8071-  8303 ms  busy=-                          bar=0.94>0.98  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    8364-  9062 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 8303 ms; first indicator at 230 ms; working with NO indicator: 166 ms total, longest stretch 166 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.98
+== 06 approach -> classic  []  (samples 98, longest frame gap 166 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      53-   220 ms  busy='Measuring the approach'   bar=hidden     status='Preparing the formula'              DRAWING     MEASURING
+     275-  2483 ms  busy='Preparing the formula'    bar=hidden     status='Preparing the formula'              DRAWING     card-idle
+    2533-  2533 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+    2596-  2888 ms  busy=-                          bar=0.00>0.05  status='Drawing at full size'               DRAWING     card-idle
+    2940-  3102 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+    3155-  3280 ms  busy=-                          bar=0.17>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    3342-  3400 ms  busy=-                          bar=0.28>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    3465-  3575 ms  busy=-                          bar=0.33>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    3633-  3699 ms  busy=-                          bar=0.44>0.46  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    3761-  3933 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    3984-  4041 ms  busy=-                          bar=0.58>0.64  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    4107-  4165 ms  busy=-                          bar=0.67>0.71  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    4226-  4297 ms  busy=-                          bar=0.75>0.80  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    4360-  4479 ms  busy=-                          bar=0.83>0.91  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    4543-  4639 ms  busy=-                          bar=0.95>1.00  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    4700-  5477 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 4639 ms; first indicator at 53 ms; working with NO indicator: 50 ms total, longest stretch 50 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 1.00
+== 06 approach -> lathe  []  (samples 44, longest frame gap 351 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      50-   168 ms  busy='Measuring the approach'   bar=hidden     status='Preview while moving'               DRAWING     MEASURING
+     235-   355 ms  busy='Measuring the approach'   bar=0.02>0.08  status='Drawing at full size'               DRAWING     MEASURING
+     415-   415 ms  busy='Measuring the approach'   bar=0.13>0.13  status='Refining: pass 2 of 12'             DRAWING     MEASURING
+     480-   544 ms  busy=-                          bar=0.20>0.25  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     607-   607 ms  busy=-                          bar=0.32>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     670-   670 ms  busy=-                          bar=0.37>0.37  status='Refining: pass 5 of 12'             DRAWING     card-idle
+     732-   847 ms  busy=-                          bar=0.42>0.46  status='Refining: pass 6 of 12'             DRAWING     card-idle
+     900-   951 ms  busy=-                          bar=0.50>0.54  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1015-  1130 ms  busy=-                          bar=0.58>0.66  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1185-  1185 ms  busy=-                          bar=0.67>0.67  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    1243-  1296 ms  busy=-                          bar=0.75>0.79  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    1358-  1466 ms  busy=-                          bar=0.83>0.90  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    1530-  1591 ms  busy=-                          bar=0.92>0.97  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    1647-  2449 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 1591 ms; first indicator at 50 ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.97
+== 06 approach -> bulb  []  (samples 53, longest frame gap 29 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      63-   171 ms  busy='Measuring the approach'   bar=hidden     status='Preview while moving'               DRAWING     MEASURING
+     226-   293 ms  busy=-                          bar=0.02>0.06  status='Drawing at full size'               DRAWING     card-idle
+     355-   523 ms  busy=-                          bar=0.08>0.12  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     577-   630 ms  busy=-                          bar=0.20>0.23  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     694-   877 ms  busy=-                          bar=0.25>0.31  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     938-  1043 ms  busy=-                          bar=0.33>0.41  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1106-  1106 ms  busy=-                          bar=0.42>0.42  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1161-  1276 ms  busy=-                          bar=0.50>0.56  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1327-  1443 ms  busy=-                          bar=0.58>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1507-  1676 ms  busy=-                          bar=0.70>0.73  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    1729-  1843 ms  busy=-                          bar=0.78>0.81  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    1909-  2026 ms  busy=-                          bar=0.83>0.90  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    2085-  2193 ms  busy=-                          bar=0.92>0.96  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    2244-  2941 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 2193 ms; first indicator at 63 ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.96
+== 06 approach -> mercator  []  (samples 81, longest frame gap 30 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      58-   161 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     227-   410 ms  busy=-                          bar=0.01>0.07  status='Drawing at full size'               DRAWING     card-idle
+     476-   649 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     702-   865 ms  busy=-                          bar=0.20>0.23  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     925-  1212 ms  busy=-                          bar=0.25>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    1267-  1445 ms  busy=-                          bar=0.33>0.41  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1513-  1834 ms  busy=-                          bar=0.42>0.49  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1892-  2124 ms  busy=-                          bar=0.50>0.58  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    2178-  2358 ms  busy=-                          bar=0.62>0.66  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    2410-  2693 ms  busy=-                          bar=0.67>0.74  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    2762-  3073 ms  busy=-                          bar=0.79>0.83  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    3126-  3360 ms  busy=-                          bar=0.83>0.91  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    3416-  3710 ms  busy=-                          bar=0.92>0.99  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    3760-  4535 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 3710 ms; first indicator at 227 ms; working with NO indicator: 161 ms total, longest stretch 161 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.99
+== 07 mode -> Julia  [j]  (samples 89, longest frame gap 51 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      57-   173 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     231-   563 ms  busy=-                          bar=0.02>0.06  status='Drawing at full size'               DRAWING     card-idle
+     624-   908 ms  busy=-                          bar=0.08>0.14  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     968-  1218 ms  busy=-                          bar=0.17>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    1274-  1546 ms  busy=-                          bar=0.25>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    1602-  1826 ms  busy=-                          bar=0.33>0.39  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1884-  2075 ms  busy=-                          bar=0.42>0.47  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    2130-  2475 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    2528-  2991 ms  busy=-                          bar=0.61>0.66  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    3046-  3223 ms  busy=-                          bar=0.67>0.70  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    3280-  3573 ms  busy=-                          bar=0.75>0.81  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    3623-  3857 ms  busy=-                          bar=0.83>0.89  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    3919-  4306 ms  busy=-                          bar=0.92>0.97  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    4370-  5030 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 4306 ms; first indicator at 231 ms; working with NO indicator: 173 ms total, longest stretch 173 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.97
+== 08 Julia preset  [26 rows; clicked Fat rabbit c=[-0.125,0.649519,0]]  (samples 113, longest frame gap 136 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      56-   173 ms  busy='Measuring the approach'   bar=hidden     status='Preview while moving'               DRAWING     MEASURING
+     228-   228 ms  busy='Measuring the approach'   bar=0.01>0.01  status='Drawing at full size'               DRAWING     MEASURING
+     291-   715 ms  busy=-                          bar=0.02>0.07  status='Drawing at full size'               DRAWING     card-idle
+     769-  1232 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+    1286-  1585 ms  busy=-                          bar=0.19>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    1650-  1998 ms  busy=-                          bar=0.25>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    2052-  2452 ms  busy=-                          bar=0.33>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    2512-  2969 ms  busy=-                          bar=0.42>0.49  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    3025-  3433 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    3486-  3902 ms  busy=-                          bar=0.58>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    3962-  4257 ms  busy=-                          bar=0.67>0.74  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    4318-  4606 ms  busy=-                          bar=0.78>0.82  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    4665-  5131 ms  busy=-                          bar=0.83>0.90  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    5183-  5653 ms  busy=-                          bar=0.92>0.99  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    5703-  6496 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 5653 ms; first indicator at 56 ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.99
+== 09 mode -> Kleinian  [k]  (samples 52, longest frame gap 84 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      51-   157 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     218-   218 ms  busy=-                          bar=0.07>0.07  status='Drawing at full size'               DRAWING     card-idle
+     282-   282 ms  busy=-                          bar=0.17>0.17  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     339-   391 ms  busy=-                          bar=0.25>0.25  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     451-   504 ms  busy=-                          bar=0.33>0.33  status='Refining: pass 5 of 12'             DRAWING     card-idle
+     562-   622 ms  busy=-                          bar=0.42>0.42  status='Refining: pass 6 of 12'             DRAWING     card-idle
+     687-   748 ms  busy=-                          bar=0.58>0.58  status='Refining: pass 8 of 12'             DRAWING     card-idle
+     804-   804 ms  busy=-                          bar=0.67>0.67  status='Refining: pass 9 of 12'             DRAWING     card-idle
+     857-   917 ms  busy=-                          bar=0.75>0.75  status='Refining: pass 10 of 12'            DRAWING     card-idle
+     981-   981 ms  busy=-                          bar=0.83>0.83  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    1034-  1090 ms  busy=-                          bar=0.92>0.92  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    1151-  2865 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 1090 ms; first indicator at 218 ms; working with NO indicator: 157 ms total, longest stretch 157 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.92
+== 10 Kleinian preset (4th)  [1/2 cusp]  (samples 34, longest frame gap 18 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      52-   158 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     224-   224 ms  busy=-                          bar=0.08>0.08  status='Drawing at full size'               DRAWING     card-idle
+     276-   391 ms  busy=-                          bar=0.17>0.17  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     444-   558 ms  busy=-                          bar=0.33>0.33  status='Refining: pass 5 of 12'             DRAWING     card-idle
+     614-   614 ms  busy=-                          bar=0.42>0.42  status='Refining: pass 6 of 12'             DRAWING     card-idle
+     674-   674 ms  busy=-                          bar=0.50>0.50  status='Refining: pass 7 of 12'             DRAWING     card-idle
+     738-   791 ms  busy=-                          bar=0.58>0.58  status='Refining: pass 8 of 12'             DRAWING     card-idle
+     846-   908 ms  busy=-                          bar=0.67>0.67  status='Refining: pass 9 of 12'             DRAWING     card-idle
+     970-   970 ms  busy=-                          bar=0.75>0.75  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    1025-  1079 ms  busy=-                          bar=0.83>0.83  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    1141-  1833 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 1079 ms; first indicator at 224 ms; working with NO indicator: 158 ms total, longest stretch 158 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.83
+== 11 mode -> Mandelbrot  [m]  (samples 54, longest frame gap 30 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      54-   163 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     225-   333 ms  busy=-                          bar=0.01>0.03  status='Drawing at full size'               DRAWING     card-idle
+     396-   566 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     628-   738 ms  busy=-                          bar=0.17>0.21  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     795-   908 ms  busy=-                          bar=0.25>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     962-  1079 ms  busy=-                          bar=0.33>0.41  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1143-  1197 ms  busy=-                          bar=0.42>0.48  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1252-  1312 ms  busy=-                          bar=0.54>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1376-  1484 ms  busy=-                          bar=0.63>0.66  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1543-  1770 ms  busy=-                          bar=0.67>0.74  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    1827-  1937 ms  busy=-                          bar=0.75>0.83  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    1988-  2102 ms  busy=-                          bar=0.83>0.90  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    2157-  2267 ms  busy=-                          bar=0.96>0.99  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    2323-  2976 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 2267 ms; first indicator at 225 ms; working with NO indicator: 163 ms total, longest stretch 163 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.99
+== 12 power typed 3  [n=3]  (samples 85, longest frame gap 63 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      56-   172 ms  busy='Measuring the approach'   bar=hidden     status='Preview while moving'               DRAWING     MEASURING
+     232-   232 ms  busy='Measuring the approach'   bar=0.03>0.03  status='Drawing at full size'               DRAWING     MEASURING
+     285-   467 ms  busy=-                          bar=0.04>0.06  status='Drawing at full size'               DRAWING     card-idle
+     518-   745 ms  busy=-                          bar=0.08>0.14  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     803-  1133 ms  busy=-                          bar=0.17>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    1185-  1398 ms  busy=-                          bar=0.25>0.31  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    1451-  1713 ms  busy=-                          bar=0.33>0.39  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1764-  1925 ms  busy=-                          bar=0.42>0.45  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1978-  2242 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    2295-  2397 ms  busy=-                          bar=0.62>0.64  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    2451-  2867 ms  busy=-                          bar=0.67>0.74  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    2918-  3075 ms  busy=-                          bar=0.75>0.81  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    3125-  3439 ms  busy=-                          bar=0.83>0.89  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    3492-  3755 ms  busy=-                          bar=0.92>0.98  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    3806-  4441 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 3755 ms; first indicator at 56 ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.98
+== 13 power typed -2  [n=-2]  (samples 137, longest frame gap 31 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      59-   161 ms  busy='Measuring the approach'   bar=hidden     status='Preview while moving'               DRAWING     MEASURING
+     215-   215 ms  busy='Measuring the approach'   bar=0.00>0.00  status='Drawing at full size'               DRAWING     MEASURING
+     268-   900 ms  busy=-                          bar=0.00>0.08  status='Drawing at full size'               DRAWING     card-idle
+     956-  1476 ms  busy=-                          bar=0.08>0.16  status='Refining: pass 2 of 12'             DRAWING     card-idle
+    1530-  1946 ms  busy=-                          bar=0.17>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    1999-  2528 ms  busy=-                          bar=0.25>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    2582-  3050 ms  busy=-                          bar=0.33>0.42  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    3102-  3309 ms  busy=-                          bar=0.44>0.48  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    3359-  3726 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    3779-  4148 ms  busy=-                          bar=0.58>0.66  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    4201-  4720 ms  busy=-                          bar=0.67>0.74  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    4775-  5253 ms  busy=-                          bar=0.77>0.83  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    5310-  5780 ms  busy=-                          bar=0.85>0.91  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    5833-  6416 ms  busy=-                          bar=0.92>1.00  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    6471-  7151 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 6416 ms; first indicator at 59 ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 1.00
+== 14 power typed 2  [n=2]  (samples 62, longest frame gap 31 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      53-   178 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     230-   347 ms  busy=-                          bar=0.01>0.06  status='Drawing at full size'               DRAWING     card-idle
+     412-   520 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     580-   646 ms  busy=-                          bar=0.19>0.22  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     709-   764 ms  busy=-                          bar=0.25>0.30  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     822-  1010 ms  busy=-                          bar=0.33>0.41  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1064-  1234 ms  busy=-                          bar=0.42>0.49  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1288-  1500 ms  busy=-                          bar=0.50>0.56  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1552-  1760 ms  busy=-                          bar=0.58>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1817-  2028 ms  busy=-                          bar=0.67>0.75  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    2081-  2185 ms  busy=-                          bar=0.79>0.81  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    2238-  2392 ms  busy=-                          bar=0.83>0.90  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    2445-  2707 ms  busy=-                          bar=0.92>0.99  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    2758-  3359 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 2707 ms; first indicator at 230 ms; working with NO indicator: 178 ms total, longest stretch 178 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.99
+== 15 2D view on  [flat=true]  (samples 26, longest frame gap 17 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      58-   122 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     176-   176 ms  busy=-                          bar=0.00>0.00  status='Drawing at full size'               DRAWING     card-idle
+     228-   228 ms  busy=-                          bar=0.25>0.25  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     279-   279 ms  busy=-                          bar=0.58>0.58  status='Refining: pass 8 of 12'             DRAWING     card-idle
+     332-   332 ms  busy=-                          bar=0.83>0.83  status='Refining: pass 11 of 12'            DRAWING     card-idle
+     385-  1313 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 332 ms; first indicator at 176 ms; working with NO indicator: 122 ms total, longest stretch 122 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.83
+== 16 2D view off  [flat=false]  (samples 61, longest frame gap 18 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      54-   163 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     215-   425 ms  busy=-                          bar=0.02>0.07  status='Drawing at full size'               DRAWING     card-idle
+     478-   692 ms  busy=-                          bar=0.08>0.16  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     742-   952 ms  busy=-                          bar=0.17>0.24  status='Refining: pass 3 of 12'             DRAWING     card-idle
+    1003-  1162 ms  busy=-                          bar=0.25>0.31  status='Refining: pass 4 of 12'             DRAWING     card-idle
+    1212-  1369 ms  busy=-                          bar=0.33>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1425-  1579 ms  busy=-                          bar=0.42>0.49  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1633-  1795 ms  busy=-                          bar=0.50>0.58  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1846-  1896 ms  busy=-                          bar=0.58>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1948-  2049 ms  busy=-                          bar=0.71>0.74  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    2102-  2159 ms  busy=-                          bar=0.75>0.81  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    2212-  2266 ms  busy=-                          bar=0.83>0.87  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    2319-  2370 ms  busy=-                          bar=0.92>0.96  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    2422-  3183 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 2370 ms; first indicator at 215 ms; working with NO indicator: 163 ms total, longest stretch 163 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.96
+== 17 mosaic on  [m-mosaic mosaic=true]  (samples 63, longest frame gap 234 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      65-   177 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     228-   335 ms  busy=-                          bar=0.01>0.06  status='Drawing at full size'               DRAWING     card-idle
+     385-   490 ms  busy=-                          bar=0.08>0.14  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     543-   593 ms  busy=-                          bar=0.17>0.23  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     648-   751 ms  busy=-                          bar=0.25>0.33  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     802-   855 ms  busy=-                          bar=0.33>0.38  status='Refining: pass 5 of 12'             DRAWING     card-idle
+     907-   958 ms  busy=-                          bar=0.42>0.48  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1010-  1118 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1169-  1221 ms  busy=-                          bar=0.58>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1272-  1377 ms  busy=-                          bar=0.67>0.70  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    1429-  1585 ms  busy=-                          bar=0.75>0.83  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    1635-  1688 ms  busy=-                          bar=0.83>0.90  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    1742-  1794 ms  busy=-                          bar=0.92>0.96  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    1848-  3303 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 1794 ms; first indicator at 228 ms; working with NO indicator: 177 ms total, longest stretch 177 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.96
+== 18 mosaic + 2D view  [flat=true]  (samples 20, longest frame gap 17 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      50-   159 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     214-   214 ms  busy=-                          bar=0.25>0.25  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     267-   267 ms  busy=-                          bar=0.75>0.75  status='Refining: pass 10 of 12'            DRAWING     card-idle
+     325-   987 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 267 ms; first indicator at 214 ms; working with NO indicator: 159 ms total, longest stretch 159 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.75
+== 19 mosaic off, 2D off  [flat=false mosaic=false]  (samples 32, longest frame gap 18 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      53-   155 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     207-   257 ms  busy=-                          bar=0.01>0.04  status='Drawing at full size'               DRAWING     card-idle
+     310-   310 ms  busy=-                          bar=0.12>0.12  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     361-   361 ms  busy=-                          bar=0.21>0.21  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     411-   411 ms  busy=-                          bar=0.29>0.29  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     462-   462 ms  busy=-                          bar=0.40>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+     516-   516 ms  busy=-                          bar=0.50>0.50  status='Refining: pass 7 of 12'             DRAWING     card-idle
+     571-   571 ms  busy=-                          bar=0.58>0.58  status='Refining: pass 8 of 12'             DRAWING     card-idle
+     623-   623 ms  busy=-                          bar=0.67>0.67  status='Refining: pass 9 of 12'             DRAWING     card-idle
+     674-   674 ms  busy=-                          bar=0.75>0.75  status='Refining: pass 10 of 12'            DRAWING     card-idle
+     727-   727 ms  busy=-                          bar=0.87>0.87  status='Refining: pass 11 of 12'            DRAWING     card-idle
+     778-   778 ms  busy=-                          bar=0.96>0.96  status='Refining: pass 12 of 12'            DRAWING     card-idle
+     829-  1618 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 778 ms; first indicator at 207 ms; working with NO indicator: 155 ms total, longest stretch 155 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.96
+== 20 quality qUltra  [{"res":0.5,"aa":1,"steps":90,"detail":2,"stepk":0.8,"smooth":1,"normals":"smooth","ao":false,"shadow":false,"de":0}]  (samples 20, longest frame gap 17 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      51-   152 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     206-   206 ms  busy=-                          bar=0.64>0.64  status='Drawing at full size'               DRAWING     card-idle
+     258-   985 ms  busy=-                          bar=hidden     status='Done: 1 pass at 431 × 351'          render-idle card-idle
+  -> work ended at 206 ms; first indicator at 206 ms; working with NO indicator: 152 ms total, longest stretch 152 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 1 pass at 431 × 351' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.64
+== 20 quality qFast  [{"res":0.75,"aa":3,"steps":160,"detail":1.25,"stepk":0.8,"smooth":1,"normals":"sharp","ao":true,"shadow":false,"de":3}]  (samples 46, longest frame gap 23 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 1 pass at 431 × 351'          render-idle card-idle
+      57-   161 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     214-   214 ms  busy=-                          bar=0.11>0.11  status='Drawing at full size'               DRAWING     card-idle
+     268-   318 ms  busy=-                          bar=0.33>0.56  status='Refining: pass 2 of 3'              DRAWING     card-idle
+     369-   369 ms  busy=-                          bar=0.86>0.86  status='Refining: pass 3 of 3'              DRAWING     card-idle
+     420-  2383 ms  busy=-                          bar=hidden     status='Done: 3 passes at 647 × 526'        render-idle card-idle
+  -> work ended at 369 ms; first indicator at 214 ms; working with NO indicator: 161 ms total, longest stretch 161 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 3 passes at 647 × 526' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.86
+== 20 quality qFine  [{"res":1.5,"aa":32,"steps":450,"detail":0.7,"stepk":0.8,"smooth":1,"normals":"sharp","ao":true,"shadow":true,"de":3}]  (samples 275, longest frame gap 150 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 3 passes at 647 × 526'        render-idle card-idle
+      50-   156 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     210-   312 ms  busy=-                          bar=0.01>0.03  status='Drawing at full size'               DRAWING     card-idle
+     363-   515 ms  busy=-                          bar=0.03>0.06  status='Refining: pass 2 of 32'             DRAWING     card-idle
+     571-   789 ms  busy=-                          bar=0.06>0.09  status='Refining: pass 3 of 32'             DRAWING     card-idle
+     843-   999 ms  busy=-                          bar=0.10>0.12  status='Refining: pass 4 of 32'             DRAWING     card-idle
+    1053-  1216 ms  busy=-                          bar=0.12>0.15  status='Refining: pass 5 of 32'             DRAWING     card-idle
+    1275-  1500 ms  busy=-                          bar=0.17>0.19  status='Refining: pass 6 of 32'             DRAWING     card-idle
+    1556-  1814 ms  busy=-                          bar=0.19>0.21  status='Refining: pass 7 of 32'             DRAWING     card-idle
+    1870-  2178 ms  busy=-                          bar=0.22>0.24  status='Refining: pass 8 of 32'             DRAWING     card-idle
+    2230-  2597 ms  busy=-                          bar=0.25>0.28  status='Refining: pass 9 of 32'             DRAWING     card-idle
+    2648-  3017 ms  busy=-                          bar=0.28>0.31  status='Refining: pass 10 of 32'            DRAWING     card-idle
+    3070-  3384 ms  busy=-                          bar=0.31>0.34  status='Refining: pass 11 of 32'            DRAWING     card-idle
+    3436-  3807 ms  busy=-                          bar=0.34>0.37  status='Refining: pass 12 of 32'            DRAWING     card-idle
+    3859-  4172 ms  busy=-                          bar=0.38>0.40  status='Refining: pass 13 of 32'            DRAWING     card-idle
+    4224-  4644 ms  busy=-                          bar=0.41>0.43  status='Refining: pass 14 of 32'            DRAWING     card-idle
+    4696-  5272 ms  busy=-                          bar=0.44>0.47  status='Refining: pass 15 of 32'            DRAWING     card-idle
+    5326-  5855 ms  busy=-                          bar=0.47>0.49  status='Refining: pass 16 of 32'            DRAWING     card-idle
+    5910-  6434 ms  busy=-                          bar=0.50>0.53  status='Refining: pass 17 of 32'            DRAWING     card-idle
+    6485-  6956 ms  busy=-                          bar=0.53>0.56  status='Refining: pass 18 of 32'            DRAWING     card-idle
+    7007-  7477 ms  busy=-                          bar=0.56>0.59  status='Refining: pass 19 of 32'            DRAWING     card-idle
+    7528-  7896 ms  busy=-                          bar=0.59>0.62  status='Refining: pass 20 of 32'            DRAWING     card-idle
+    7947-  8366 ms  busy=-                          bar=0.62>0.65  status='Refining: pass 21 of 32'            DRAWING     card-idle
+    8422-  8733 ms  busy=-                          bar=0.66>0.68  status='Refining: pass 22 of 32'            DRAWING     card-idle
+    8785-  9312 ms  busy=-                          bar=0.69>0.72  status='Refining: pass 23 of 32'            DRAWING     card-idle
+    9363-  9831 ms  busy=-                          bar=0.72>0.75  status='Refining: pass 24 of 32'            DRAWING     card-idle
+    9884- 10406 ms  busy=-                          bar=0.75>0.78  status='Refining: pass 25 of 32'            DRAWING     card-idle
+   10459- 11039 ms  busy=-                          bar=0.78>0.81  status='Refining: pass 26 of 32'            DRAWING     card-idle
+   11089- 11615 ms  busy=-                          bar=0.81>0.84  status='Refining: pass 27 of 32'            DRAWING     card-idle
+   11672- 12192 ms  busy=-                          bar=0.84>0.87  status='Refining: pass 28 of 32'            DRAWING     card-idle
+   12243- 12715 ms  busy=-                          bar=0.88>0.90  status='Refining: pass 29 of 32'            DRAWING     card-idle
+   12767- 12977 ms  busy=-                          bar=0.92>0.94  status='Refining: pass 30 of 32'            DRAWING     card-idle
+   13027- 13236 ms  busy=-                          bar=0.94>0.96  status='Refining: pass 31 of 32'            DRAWING     card-idle
+   13288- 13599 ms  busy=-                          bar=0.97>1.00  status='Refining: pass 32 of 32'            DRAWING     card-idle
+   13653- 14384 ms  busy=-                          bar=hidden     status='Done: 32 passes at 1293 × 1052'     render-idle card-idle
+  -> work ended at 13599 ms; first indicator at 210 ms; working with NO indicator: 156 ms total, longest stretch 156 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 32 passes at 1293 × 1052' glfail=0
+  -> bar went backwards 0 time(s); bar max 1.00
+== 20 quality qBal  [{"res":1,"aa":12,"steps":260,"detail":1,"stepk":0.8,"smooth":1,"normals":"sharp","ao":true,"shadow":true,"de":3}]  (samples 61, longest frame gap 20 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 32 passes at 1293 × 1052'     render-idle card-idle
+      51-   153 ms  busy=-                          bar=hidden     status='Preview while moving'               DRAWING     card-idle
+     206-   364 ms  busy=-                          bar=0.03>0.05  status='Drawing at full size'               DRAWING     card-idle
+     416-   571 ms  busy=-                          bar=0.08>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     623-   778 ms  busy=-                          bar=0.17>0.21  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     829-   935 ms  busy=-                          bar=0.25>0.32  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     985-  1093 ms  busy=-                          bar=0.33>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1143-  1303 ms  busy=-                          bar=0.42>0.48  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1354-  1457 ms  busy=-                          bar=0.50>0.57  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1509-  1614 ms  busy=-                          bar=0.62>0.65  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1668-  1828 ms  busy=-                          bar=0.67>0.73  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    1880-  1983 ms  busy=-                          bar=0.75>0.82  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    2036-  2136 ms  busy=-                          bar=0.83>0.87  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    2187-  2296 ms  busy=-                          bar=0.92>0.95  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    2347-  3101 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 2296 ms; first indicator at 206 ms; working with NO indicator: 153 ms total, longest stretch 153 ms, status meanwhile ['Preview while moving']
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.95
+== 21 approach parameter: planes 3 (scorecard)  [{"planes":3,"turn":0,"lift":0}]  (samples 54, longest frame gap 34 ms)
+       0-     0 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+      54-   162 ms  busy='Measuring the approach'   bar=hidden     status='Preview while moving'               DRAWING     MEASURING
+     214-   370 ms  busy='Measuring the approach'   bar=0.00>0.06  status='Drawing at full size'               DRAWING     MEASURING
+     422-   422 ms  busy=-                          bar=0.07>0.07  status='Drawing at full size'               DRAWING     card-idle
+     474-   578 ms  busy=-                          bar=0.12>0.15  status='Refining: pass 2 of 12'             DRAWING     card-idle
+     630-   734 ms  busy=-                          bar=0.17>0.22  status='Refining: pass 3 of 12'             DRAWING     card-idle
+     788-   893 ms  busy=-                          bar=0.25>0.30  status='Refining: pass 4 of 12'             DRAWING     card-idle
+     947-  1052 ms  busy=-                          bar=0.33>0.40  status='Refining: pass 5 of 12'             DRAWING     card-idle
+    1106-  1211 ms  busy=-                          bar=0.42>0.48  status='Refining: pass 6 of 12'             DRAWING     card-idle
+    1263-  1313 ms  busy=-                          bar=0.50>0.53  status='Refining: pass 7 of 12'             DRAWING     card-idle
+    1366-  1471 ms  busy=-                          bar=0.58>0.64  status='Refining: pass 8 of 12'             DRAWING     card-idle
+    1523-  1629 ms  busy=-                          bar=0.67>0.72  status='Refining: pass 9 of 12'             DRAWING     card-idle
+    1681-  1786 ms  busy=-                          bar=0.75>0.83  status='Refining: pass 10 of 12'            DRAWING     card-idle
+    1837-  1888 ms  busy=-                          bar=0.83>0.89  status='Refining: pass 11 of 12'            DRAWING     card-idle
+    1944-  2050 ms  busy=-                          bar=0.92>0.98  status='Refining: pass 12 of 12'            DRAWING     card-idle
+    2102-  2763 ms  busy=-                          bar=hidden     status='Done: 12 passes at 862 × 701'       render-idle card-idle
+  -> work ended at 2050 ms; first indicator at 54 ms; working with NO indicator: 0 ms total, longest stretch 0 ms, status meanwhile []
+  -> at the end: busy='' bar=hidden status='Done: 12 passes at 862 × 701' glfail=0
+  -> bar went backwards 0 time(s); bar max 0.98
+no console errors

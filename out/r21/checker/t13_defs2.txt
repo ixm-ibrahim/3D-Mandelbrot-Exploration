@@ -1,0 +1,5 @@
+their code against my re-coding of their words: verdicts that differ of 60,000 at 60 steps (inside theirs / mine)
+  span c_lag10       basilica 0 (1730/1730); rabbit 0 (1295/1295); c=(-0.6,0.3,0.4) 0 (0/0); Mandelbrot 0 (1066/1066)
+  span c_lag25       basilica 0 (1632/1632); rabbit 0 (1331/1331); c=(-0.6,0.3,0.4) 0 (3/3); Mandelbrot 0 (1479/1479)
+  frame area_1_px    basilica 0 (1829/1829); rabbit 0 (1576/1576); c=(-0.6,0.3,0.4) 0 (0/0); Mandelbrot 0 (986/986)
+  frame orb_inf_px   basilica 0 (2133/2133); rabbit 0 (1399/1399); c=(-0.6,0.3,0.4) 0 (667/667); Mandelbrot 237 (3026/3025)

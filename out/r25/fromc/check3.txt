@@ -1,0 +1,50 @@
+(a) the triangle pattern near its corner (the direction +x) against the quaternion square about the x-axis
+    within 10 degrees of the corner, all round           : largest difference 1.21e-06 degrees
+    within 10 degrees of the corner, in the flat plane   : largest difference 8.54e-07 degrees
+    within 10 degrees of the corner, in the upright plane: largest difference 1.21e-06 degrees
+    within 20 degrees of the corner, all round           : largest difference 1.21e-06 degrees
+    within 20 degrees of the corner, in the flat plane   : largest difference 1.21e-06 degrees
+    within 20 degrees of the corner, in the upright plane: largest difference 1.21e-06 degrees
+    within 28 degrees of the corner, all round           : largest difference 1.48e-06 degrees
+    within 28 degrees of the corner, in the flat plane   : largest difference 1.21e-06 degrees
+    within 28 degrees of the corner, in the upright plane: largest difference 1.21e-06 degrees
+    within 31 degrees of the corner, all round           : largest difference 2.00e-01 degrees
+    within 31 degrees of the corner, in the flat plane   : largest difference 1.21e-06 degrees
+    within 31 degrees of the corner, in the upright plane: largest difference 1.21e-06 degrees
+    within 40 degrees of the corner, all round           : largest difference 8.50e+00 degrees
+    within 40 degrees of the corner, in the flat plane   : largest difference 1.48e-06 degrees
+    within 40 degrees of the corner, in the upright plane: largest difference 1.21e-06 degrees
+    within 44 degrees of the corner, all round           : largest difference 1.55e+01 degrees
+    within 44 degrees of the corner, in the flat plane   : largest difference 1.48e-06 degrees
+    within 44 degrees of the corner, in the upright plane: largest difference 1.21e-06 degrees
+    within 46 degrees of the corner, all round           : largest difference 1.96e+01 degrees
+    within 46 degrees of the corner, in the flat plane   : largest difference 1.48e-06 degrees
+    within 46 degrees of the corner, in the upright plane: largest difference 1.86e+00 degrees
+    within 60 degrees of the corner, all round           : largest difference 4.92e+01 degrees
+    within 60 degrees of the corner, in the flat plane   : largest difference 1.48e-06 degrees
+    within 60 degrees of the corner, in the upright plane: largest difference 3.09e+01 degrees
+(b) the jump on the seam of twin_tri (the upright plane through 0 square to the line 0 - meeting point)
+    height angle   0.0: the two sides of the seam are sent 0.0 degrees apart
+    height angle   2.0: the two sides of the seam are sent 0.1 degrees apart
+    height angle   5.0: the two sides of the seam are sent 0.8 degrees apart
+    height angle  10.0: the two sides of the seam are sent 3.0 degrees apart
+    height angle  20.0: the two sides of the seam are sent 11.8 degrees apart
+    height angle  30.0: the two sides of the seam are sent 27.2 degrees apart
+    height angle  45.0: the two sides of the seam are sent 90.3 degrees apart
+    height angle  60.0: the two sides of the seam are sent 139.5 degrees apart
+    height angle  75.0: the two sides of the seam are sent 79.1 degrees apart
+    height angle  85.0: the two sides of the seam are sent 25.3 degrees apart
+    height angle  89.9: the two sides of the seam are sent 0.5 degrees apart
+(c) loose scrap on a 110^3 grid (box 3.6 x 2.8 x 2.8), 40 steps: pieces are blocks joined by faces
+    oneplane   c = -1  inside  33280 blocks in   21 pieces; the five biggest hold  99.3 %; scrap (pieces under 0.2 % of the whole)  0.22 %
+    oneplane   rabbit  inside  20404 blocks in   35 pieces; the five biggest hold  99.4 %; scrap (pieces under 0.2 % of the whole)  0.92 %
+    along      c = -1  inside  30016 blocks in  163 pieces; the five biggest hold  96.5 %; scrap (pieces under 0.2 % of the whole)  1.44 %
+    along      rabbit  inside  74452 blocks in  249 pieces; the five biggest hold  99.6 %; scrap (pieces under 0.2 % of the whole)  0.43 %
+    axis_once  c = -1  inside  32236 blocks in   43 pieces; the five biggest hold  97.4 %; scrap (pieces under 0.2 % of the whole)  0.38 %
+    axis_once  rabbit  inside  20894 blocks in   74 pieces; the five biggest hold  97.4 %; scrap (pieces under 0.2 % of the whole)  1.23 %
+    face4      c = -1  inside  25976 blocks in  333 pieces; the five biggest hold  89.3 %; scrap (pieces under 0.2 % of the whole)  4.65 %
+    face4      rabbit  inside  23280 blocks in 1531 pieces; the five biggest hold  63.9 %; scrap (pieces under 0.2 % of the whole) 14.38 %
+    face_tri   c = -1  inside  37540 blocks in  233 pieces; the five biggest hold  95.9 %; scrap (pieces under 0.2 % of the whole)  1.79 %
+    face_tri   rabbit  inside  36922 blocks in 1259 pieces; the five biggest hold  88.6 %; scrap (pieces under 0.2 % of the whole)  8.22 %
+    twin_tri   c = -1  inside  30472 blocks in  181 pieces; the five biggest hold  96.6 %; scrap (pieces under 0.2 % of the whole)  1.44 %
+    twin_tri   rabbit  inside  19524 blocks in  263 pieces; the five biggest hold  94.7 %; scrap (pieces under 0.2 % of the whole)  3.75 %

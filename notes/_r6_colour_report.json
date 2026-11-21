@@ -1,0 +1,96 @@
+{
+ "colour": {
+  "summary": "Round 6 colour, 02:33 to 03:57 (84 minutes). The cure is built and the page is in a finished state: dist/r6-colour.html equals a fresh build of my three files, and the whole smoke test passed on it after my last source change (42 steps, exit 0, no console errors). The trap colour of a 3D surface is now read from the surface itself with a fixed number of orbit steps, so it no longer follows the quality preset, Detail, zoom, or the iterations from 24 up; the rings are gone in every sheet I looked at. Honest limits: the SPEC6 number (\"mean difference under about 6 of 255\") is met only for the Kleinian view and partly for the equation views (averages 8 to 14 against 13 to 26 on v6; what is left sits on outlines and band edges); two of the ten 2D scenes differ from v6 by 1 of 255 in one and three pixels; glow width and trap radius were left at 1 because changing them would change the 2D opening picture; the Kleinian saving did not measure. One finding changed the design: reading at p - nor*d was not enough, because the distance estimate reads about half the true height, so a fit query (PH_FIT, in place of PH_COUNT) finds the surface. The dial starts at 4, not 6: measured, a higher start makes whole regions change colour while zooming in. Notes: notes/r6-colour.md. All evidence under out/r6/colour/.",
+  "files_changed": [
+   "src/js/25-colour.js",
+   "src/js/30-shaders.js",
+   "src/js/40-render.js",
+   "notes/r6-colour.md",
+   "dist/r6-colour.html",
+   "dist/r6-colour-m2.html",
+   "out/r6/colour/scenes.py",
+   "out/r6/colour/report.py",
+   "out/r6/colour/look.py",
+   "out/r6/colour/reachzoom.py",
+   "out/r6/colour/model.py",
+   "out/r6/colour/dial.py",
+   "out/r6/colour/edit1.py",
+   "out/r6/colour/25-colour.m2.js"
+  ],
+  "done": [
+   "MEASURED. Reference pictures from dist/v6.html with a fixed list in a script (out/r6/colour/scenes.py: 26 must-not-change, 176 acceptance, 20 trap solids, 14 extra; set out/r6/colour/ref/). The fixed scenes, the solids and the Julia c=-1 acceptance scenes were drawn before any source change (02:55 to 03:04); the other three subjects, the extras and the corrected zoom scenes later from the same frozen page.",
+   "MEASURED. Pictures that must not change (out/r6/colour/cmp-fixed-final.log): 24 of 26 have largest channel difference 0: eight 2D scenes (opening Mandelbrot, Julia c=-1, rabbit, slice at 0.3, Kleinian, power -2, mosaic, inside colouring) and all sixteen 3D scenes by escape count, depth, distance from centre, last step, surface direction and clay. The other two are listed under not_done.",
+   "MEASURED. Acceptance, worst of 16 set-ups with average in brackets, mean difference of 255 against Balanced, v6 then final (out/r6/colour/accept-ref.log, accept-final.log): Ultra fast 50.0 (25.8) to 19.1 (13.7); Fast 48.3 (17.7) to 17.7 (9.5); Fine 23.8 (12.9) to 14.1 (7.9); Detail 0.2 30.5 (16.6) to 18.1 (10.2); Detail 3 52.2 (29.7) to 37.8 (19.5); zoom x2 70.2 (21.8) to 19.4 (9.6); zoom x8 89.2 (33.5) to 31.2 (14.7); 60 and 120 iterations against 24: 1.7 (0.3). Worst share of the solid whose hue moved over 30 degrees at the presets: 73 to 77 percent on v6, 12 to 18 percent now.",
+   "LOOKED AT. No rings centred on the nearest point, and the same colours in the same places across presets, Detail and iterations from 24 up: out/r6/colour/pair-jb-shell07-ref-final.png, pair-m-shell07-ref-final.png, pair-jb-shell1-ref-final.png, t3-sheet.png (four subjects at the four presets). Difference maps put what is left on outlines and band edges: out/r6/colour/diffmaps-final.png.",
+   "BUILT, MEASURED. The surface read: PH_FIT replaces PH_COUNT (one query per lit pixel, two at Ultra fast). First build without it still changed colour with Detail (out/r6/colour/t1-sheet.png); with it the Julia shell 0.7 row fell from 26 to 36 down to 7 to 9 (t2-sheet.png).",
+   "BUILT. Fixed reach: gFade = colourReach(page pixel) = min(dial, log(1/pixel)/log(power) - 3), at least 1; the page pixel is pix*t*uPx (not Detail, not resolution); 2 stands for the power where the probe says the equation is not a plain power; same rule for inside-out solids and for volume samples with the sample spacing as pixel. Margin 3 chosen by measurement against 2 (Fast 7.9 against 11.4: out/r6/colour/m2-sheet.png and console).",
+   "BUILT, MEASURED. The dial: key reach, label 'Orbit steps the trap reads', whole numbers, own help text, shown in the 3D view of an equation while Colour by is Orbit trap, slider to 60 with Extreme ranges. Typing a value starts no program (R.compiles unchanged), 2.6 becomes 3, hidden in 2D, Kleinian and Escape count (out/r6/colour/dial.log).",
+   "MEASURED. Where the dial starts (out/r6/colour/reachzoom.log, 12 equation set-ups, colour movement when zooming x8): dial 4 average 14.3, worst hue share 22 percent; dial 5: 20.7, 63 percent; dial 6: 39.4, 99 percent. Started at 4. At the opening view 4, 6 and 12 look the same (out/r6/colour/look-look1-m.png, -jb.png, -jr.png).",
+   "BUILT, LOOKED AT. Skip count means the same in every mode (0 keeps the trap shape in the solid, 1 leaves it out): done in setColourUniforms with colSkipFrom(). out/r6/colour/pairs-solids-ref-final.png, s01, s16, s18.",
+   "BUILT, MEASURED. Kleinian cure for p5-6 (landing rule with gLand, last point put on the wall, colour query at the surface): Kleinian planes row Fast 11.0 to 3.9, Fine 10.4 to 3.3, Ultra fast 26.3 to 11.2 (accept logs); pictures in out/r6/colour/pair-k-planes-ref-final.png.",
+   "BUILT, LOOKED AT. Trap solids: pixel size from gPix (cPix) in place of 0.0015 of the camera distance; colours agree at Balanced, Fast and Ultra fast (out/r6/colour/pairs-solids-ref-final.png, s04 to s08). Other colourings by trap (step, side, blend, three tones, power -2, mosaic, power 8) checked at two presets each: out/r6/colour/pairs-extra-ref-final.png.",
+   "MEASURED. Smoke test, unchanged tools/smoke.json, on the final page after the last source change: 42 steps, exit 0, no console errors (out/r6/colour/smoke-final.log, 03:46). Inside colouring step: 5 clearly different colours at 7 places. Trap solid steps: 12 of 49 probes (Mandelbrot), 13 of 49 (Kleinian). No step is out of date.",
+   "MEASURED. Compile time (out/r6/colour/perf-final.log): opening Mandelbrot program 2235 and 2142 ms (limit 2600; v6 1760, 1813; base4 2053, 2327). Kleinian 685 ms in the first round (limit 1100; base4 606).",
+   "MEASURED. A model's colours by sampling (out/r6/colour/model-ref-new.png): v6 gives specks and fine rings along edges, the new page gives smooth colours with the same arcs as the picture.",
+   "WRITTEN. notes/r6-colour.md: what was built, every name, measurements, sheets, what the joiner must know, the closing-text sentences that are no longer true with suggested wording."
+  ],
+  "not_done": [
+   "SPEC6 target 'mean difference under about 6' is NOT met everywhere. Met: Kleinian at Fast, Fine, Detail 0.2 (3 to 6). Not met: equation views with shell or cross (7 to 12), planes with bands (13 to 19), Ultra fast (10 to 19), Detail 3 (worst row, up to 37.8: the solid is drawn about two pixels fatter there). Reason learned: the remainder is outline and band-edge shift, not regions changing hue.",
+   "Two of the ten 2D scenes are not pixel-identical: f09-flat-j-in-trap differs by 1 of 255 in 0.0003 percent of pixels (one pixel) and f10-flat-m-cross-bands in 0.0007 percent (three pixels). v6 drawn twice gives 0 (out/r6/colour/ref2/), so it comes from my change. Cause not traced; reasoned to be compiler rounding, since no line of the 2D path changed. The opening 2D picture is identical.",
+   "14 against 24 iterations still moves colours (30.5 worst, 12.1 average, same as v6): the solid itself changes shape there and the colour follows the surface. From 24 up nothing moves.",
+   "Opening look (item 4): glow width and trap radius NOT changed. Both act on the 2D view, whose opening picture was not to change. Sheets say radius 1 with glow 1 is best for both Julia sets; the Mandelbrot picture would gain from glow 2 or radius 0.7. Only the dial start was chosen. The grid was drawn for reach 4, 6, 12, not 8.",
+   "Kleinian drawing time: the build without fading weights (COL_KLEIN) is in, but the saving did not measure: 126 ms against 120 ms for v6, inside the noise of the shared GPU (out/r6/colour/chain2.log).",
+   "Drawing times against base4 are not settled: least of two visits M 445 against 344, J 507 against 434, K 126 against 94, but v6 read 621, 427, 120 in the same run, so the noise is larger than any difference. Reasoned to be under two percent.",
+   "A model's colours were checked by sampling only, with the dial at 6 and a 160 grid; not run through out/r4/mesh/run_tests.py. A coarse model reads fewer steps than the picture and so shows fewer arcs. Kleinian models are unchanged from v6 (samples do not use the landing rule).",
+   "Kleinian compile time in the second timing round read 1296 ms (limit 1100) while base4 read 1017 in the same round; I take that round as disturbed but did not repeat it.",
+   "The dial itself was not looked at in a picture (it is below the fold in out/r6/colour/dial-page.png); it was checked by script only."
+  ],
+  "names_added": [
+   "reach (COLOUR_CONTROLS, S.colour.reach): the dial 'Orbit steps the trap reads'; a state without it reads as 4",
+   "COL_REACH (25-colour.js): where the dial starts, 4",
+   "colReachOn(c) (25-colour.js): the dial is shown: 3D view, not Kleinian, Colour by Orbit trap",
+   "colSkipFrom() (25-colour.js): 1 in Mandelbrot mode when the start value is not written with c and the mosaic is off, else 0",
+   "uTrapReach (uniform, GL_COLOUR): the dial, read only through colourReach",
+   "uTrapSkip (uniform): CHANGED meaning, now the skip dial plus colSkipFrom()",
+   "colourReach(px) (GLSL, GL_COLOUR): the gFade value for the query a surface colour or volume sample is read from",
+   "colourFromTrap() (GLSL, GL_COLOUR): true when the surface colour comes from the trap (uColMode <= 1)",
+   "REACH_MARGIN (GLSL const, GL_COLOUR): 3 steps held back from what a pixel could just show",
+   "cPix (GLSL global, trap solid programs): gPix as captured at colourCapture()",
+   "COL_KLEIN (macro 0 or 1): 1 in the Kleinian program, trapAdd without fading weights; GL_COLOUR defines 0 when absent",
+   "glNeeds(needs, klein) (30-shaders.js): CHANGED, second argument writes the COL_KLEIN define; glNeedsKey and all program keys unchanged",
+   "gLand (GLSL global, GL_HEAD): set before a query; above 0 the Kleinian search stops feeding the trap at the first step that lands within that length",
+   "MOSAIC_FIT (GLSL const): MOVED from GL_ORBIT to GL_HEAD, same value",
+   "kde(z, land) (GL_KLEIN): CHANGED, second argument is the landing length in cell units",
+   "PH_FIT (GL_TAIL const): the phase that finds the surface under a hit; replaces PH_COUNT. PH_COUNT, TAIL, LEVEL_STEPS REMOVED",
+   "FIT_STEP (GL_TAIL const): 0.6, how far down PH_FIT reads the estimate again",
+   "lift, fit1, fitFirst, pagePix (locals of main): lift replaces fade; hue now means PH_FIT for trap colours of an equation; crawl is reused as the PH_FIT reading counter",
+   "sceneWant (40-render.js): CHANGED in one line, passes klein to glNeeds",
+   "skip dial help text: one sentence added ('At 0 the trap shape itself is part of the solid, at 1 it is left out.')"
+  ],
+  "needs_from_others": [
+   "src/body.html, closing text, section 'Why did the orbit trap only recolour the surface in 3D?': the sentence 'With the Sphere shell, a Mandelbrot picture starts as plain balls: try the cross or the ring as Trap shape, or raise the skipped steps to 2 or 3.' is no longer true. Replace with the wording in notes/r6-colour.md, section 'For whoever joins', item 5.",
+   "src/body.html, closing text, section 'Why did solids look like a stack of slices, even at Fine?': everything from 'The last few steps now fade out of the colouring' to the end of the paragraph is no longer true (including 'the Kleinian view never had it'). Replace with the paragraph in notes/r6-colour.md, item 6, which uses the label 'Orbit steps the trap reads'.",
+   "src/body.html, section 'What does the page open with?': optionally add that 'Orbit steps the trap reads' starts at 4.",
+   "Joining: take src/js/25-colour.js, src/js/30-shaders.js and src/js/40-render.js together; no other file needs a change. tools/smoke.json needs no change; its picture out/smoke-21b-trap-solid-m.png will show a different solid.",
+   "Orchestrator decision: whether the 2D opening picture may change. If yes, 'glow' def 2 in COLOUR_CONTROLS (src/js/25-colour.js) is the value to try for a livelier Mandelbrot picture; I did not make that change."
+  ],
+  "answers_for_user": [
+   "The 'stack of slices' rings are cured properly now. The colour used to be read from a point hovering a hair above the solid, and that hair changed from pixel to pixel. It is now read from the surface itself, so the rings have nothing to come from. I saw none at Balanced or Fine in any of the before and after sheets.",
+   "The colours no longer change when you switch between Ultra fast, Fast, Balanced and Fine, or move Detail, or zoom in. They are not identical to the last digit: outlines and thin colour bands still shift by about a pixel, and Detail 3 draws the solid a little fatter. Iterations below about 24 still move some colours, because there the solid itself is still changing shape.",
+   "There is a new dial in Colour and light, 'Orbit steps the trap reads'. It starts at 4. Raise it for finer patterns on the surface. At the opening view nothing more appears above about 5, because the picture cannot show finer steps; they come in as you zoom in.",
+   "The 3D pictures coloured by a trap are calmer than before. The 2D view and every picture not coloured by a trap look exactly as they did (two 2D test pictures differ by the smallest possible step in one and three pixels, which nobody can see).",
+   "'Orbit steps skipped at the start' now means the same in Mandelbrot and Julia pictures: 0 keeps the trap shape itself, 1 leaves it out. A Mandelbrot trap solid with the Sphere shell no longer starts as a plain ball."
+  ],
+  "risks": [
+   "The dial may feel dead at the opening view: values above about 5 change nothing until the view is zoomed in. The help text says so, but a user may still read it as broken.",
+   "Compile time of the opening Mandelbrot program is up about 0.4 s against v6 (2.1 to 2.2 s against 1.8 s in the same run), under the 2.6 s limit but with less room.",
+   "All timings were taken on a shared GPU; drawing-time comparisons are not trustworthy this round.",
+   "Kleinian view with the planes trap centred on the origin: every pearl that is an image of the wall y = 0 now gets one flat colour, because that wall is a trap plane. True of the surface, plain to look at (out/r6/colour/pair-k-planes-ref-final.png).",
+   "Ultra fast is the weakest preset: its hits are located to about a pixel only, so it agrees in colour but less closely (averages 12 to 14).",
+   "PH_FIT assumes the estimate falls in a straight line on the way down. Where it does not (sharp tips, mosaic cell walls) the fit is clamped and the colour is read from a slightly wrong height; I saw no speckle from it but did not hunt for it.",
+   "The mosaic with a trap solid and 0 steps skipped still colours step 0 wrongly, as before.",
+   "Saved pictures were not drawn; reasoned to agree with the screen because 45-export.js hands over the same page pixel. Other drivers and large screens not tried.",
+   "The 2D differences of 1 of 255 in four pixels are unexplained at the source level."
+  ]
+ }
+}

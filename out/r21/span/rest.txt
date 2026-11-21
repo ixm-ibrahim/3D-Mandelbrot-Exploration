@@ -1,0 +1,8 @@
+prev_lathe of 120000 c: swept flat set inside 9151 (heart 6687, elsewhere 2464). The rule throws out 1111 of the heart (16.6%) and 3 of the rest (0.1%); lets in 0 that the sweep has out
+prev_page  of 120000 c: swept flat set inside 10724 (heart 6591, elsewhere 4133). The rule throws out 899 of the heart (13.6%) and 4 of the rest (0.1%); lets in 0 that the sweep has out
+prev_keep  of 120000 c: swept flat set inside 10724 (heart 6591, elsewhere 4133). The rule throws out 900 of the heart (13.7%) and 4 of the rest (0.1%); lets in 0 that the sweep has out
+prev_axis  of 120000 c: swept flat set inside 10724 (heart 6591, elsewhere 4133). The rule throws out 49 of the heart (0.7%) and 3 of the rest (0.1%); lets in 3 that the sweep has out
+c_page     of 120000 c: swept flat set inside 10724 (heart 6591, elsewhere 4133). The rule throws out 0 of the heart (0.0%) and 0 of the rest (0.0%); lets in 0 that the sweep has out
+prev_keep at 30 steps: swept flat set inside 3839, rule inside 3780
+prev_keep at 120 steps: swept flat set inside 3498, rule inside 3057
+prev_keep at 240 steps: swept flat set inside 3449, rule inside 2950

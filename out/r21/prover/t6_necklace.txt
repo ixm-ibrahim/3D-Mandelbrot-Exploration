@@ -1,0 +1,18 @@
+table: 1401 x 651 pixels of 0.002; 1071 bodies, 5 of them on the x-axis; 12 limbs off the x-axis
+the ten biggest limbs: (x, height above the x-axis) radius -> copies round the x-axis
+   period   3  (-0.124, 0.744)  radius 0.091  ->  N = 20
+   period   4  (0.280, 0.530)  radius 0.041  ->  N = 32
+   period   5  (-0.504, 0.562)  radius 0.036  ->  N = 38
+   period   6  (-1.138, 0.240)  radius 0.024  ->  N = 24
+   period   5  (0.380, 0.336)  radius 0.022  ->  N = 38
+   period   7  (-0.622, 0.426)  radius 0.018  ->  N = 56
+   period   7  (0.122, 0.610)  radius 0.014  ->  N = 106
+   period   8  (-1.000, 0.266)  radius 0.013  ->  N = 50
+   period   8  (-0.358, 0.618)  radius 0.013  ->  N = 118
+   period   6  (0.388, 0.216)  radius 0.012  ->  N = 44
+(table 23 s)
+flat page: verdicts that differ from the flat orbit: Mandelbrot 0 of 20000
+turned by a random angle round the x-axis: 0.46% of verdicts change (inside: 6.29% of the box)
+solid the whole solid, eye at (0.45, 0.5, 1) (58 s)
+solid seen almost along the x-axis, eye at (1, 0.25, 0.25) (85 s)
+(117 s)

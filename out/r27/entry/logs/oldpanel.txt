@@ -1,0 +1,4 @@
+first group, positions of its controls relative to its first note (left top width height):
+new: kleinPreset 0 178.5 360 34 | kleinFrame 0 218.5 79.2 31 | kleinNote 0 263.5 360 60.8 | kmy 0 375.8 360 20 | kmx 0 440.8 360 20 | kmz 0 505.8 360 20 | k3 0 543.8 13 13 | kL 0 612.3 360 20 | kiter 0 677.3 360 20 | kinvr 0 742.3 360 20 | kcx 0 813.8 360 20 | kcy 0 885.3 360 20 | kcz 0 956.8 360 20 | reset 0 1336.5 137.3 25
+old: kleinPreset 0 178.5 360 34 | kleinFrame 0 218.5 79.2 31 | kleinNote 0 263.5 360 60.8 | kmy 0 375.8 360 20 | kmx 0 440.8 360 20 | kmz 0 505.8 360 20 | k3 0 543.8 13 13 | kL 0 612.3 360 20 | kiter 0 677.3 360 20 | kinvr 0 742.3 360 20 | kcx 0 813.8 360 20 | kcy 0 885.3 360 20 | kcz 0 956.8 360 20 | reset 0 1336.5 137.3 25
+THE SAME on both pages

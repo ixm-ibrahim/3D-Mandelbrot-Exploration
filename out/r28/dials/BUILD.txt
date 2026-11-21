@@ -1,0 +1,18 @@
+Round 28, Track A ("dials"): how the test page is built. Run from the project root. One line each.
+
+The page with the overlay (put your own name in place of r28-dials, for example --name r28-truth):
+
+PYTHONIOENCODING=utf-8 python -W ignore build.py --name r28-dials --base base20a --swap js/00-core.js=out/r28/dials/overlay/js/00-core.js js/32-balls.js=out/r28/dials/overlay/js/32-balls.js js/40-render.js=out/r28/dials/overlay/js/40-render.js js/46-mesh.js=out/r28/dials/overlay/js/46-mesh.js js/80-ui.js=out/r28/dials/overlay/js/80-ui.js
+
+The frozen page to compare with (Version 20, no overlay):
+
+PYTHONIOENCODING=utf-8 python -W ignore build.py --name r28-base --base base20a
+
+Overlay files (five, all JavaScript; no CSS, no body.html, no 90-boot.js):
+  out/r28/dials/overlay/js/00-core.js
+  out/r28/dials/overlay/js/32-balls.js
+  out/r28/dials/overlay/js/40-render.js
+  out/r28/dials/overlay/js/46-mesh.js
+  out/r28/dials/overlay/js/80-ui.js
+
+Never run plain "python build.py": it overwrites the published page.

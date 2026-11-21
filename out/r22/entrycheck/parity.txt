@@ -1,0 +1,70 @@
+A. The rule in JavaScript (L.CARRY) against the library and against my own writing-out of the briefing.
+   12,000 orbits each, 60 steps, leaving = |v| >= 6. "verdict" = stays all 60 steps; "count" = steps it stays.
+   alongonce          bas: inside lab   350, library   350, mine   350 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   alongonce          sie: inside lab   752, library   752, mine   752 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   alongonce          off: inside lab     0, library     0, mine     0 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   alongonce          man: inside lab   151, library   151, mine   151 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane        bas: inside lab   324, library   324, mine   324 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane        sie: inside lab   757, library   757, mine   757 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane        off: inside lab  1105, library  1105, mine  1105 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane        man: inside lab   461, library   461, mine   461 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane moved  bas: inside lab   331, library   331, mine   331 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane moved  sie: inside lab   846, library   846, mine   846 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane moved  off: inside lab  1088, library  1088, mine  1088 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+   pulledplane moved  man: inside lab   615, library   615, mine   615 | lab vs library: verdicts 0, counts 0 | lab vs mine: verdicts 0, counts 0 | library vs mine: verdicts 0
+
+B. The shader point by point (sampleSlice, three neighbouring orbits beside each point), level slices of 160 x 160 points.
+   Same number of squarings, leaving = |v| >= 64. "edge": a differing point with a neighbour of the other kind in the library's slice.
+   alongonce         sie z = 0    : inside lab  4486, library  4486, mine  4486; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0 | flat (complex) picture: lab differs 0
+   alongonce         sie z = 0.1  : inside lab  4208, library  4208, mine  4208; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   alongonce         sie z = -0.27: inside lab  3260, library  3260, mine  3260; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   alongonce         off z = 0    : inside lab     0, library     0, mine     0; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   alongonce         off z = 0.33 : inside lab     0, library     0, mine     0; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   alongonce         bas z = 0    : inside lab  3104, library  3104, mine  3104; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0 | flat (complex) picture: lab differs 0
+   alongonce         bas z = 0.31 : inside lab  1074, library  1074, mine  1074; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   alongonce         man z = 0    : inside lab  5486, library  5486, mine  5486; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0 | flat (complex) picture: lab differs 0
+   alongonce         man z = 0.1  : inside lab  2198, library  2198, mine  2198; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   alongonce         man z = -0.33: inside lab     0, library     0, mine     0; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane       sie z = 0    : inside lab  4486, library  4486, mine  4486; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0 | flat (complex) picture: lab differs 0
+   pulledplane       sie z = 0.1  : inside lab  4408, library  4408, mine  4408; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane       sie z = -0.27: inside lab  3597, library  3597, mine  3597; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane       off z = 0    : inside lab  5191, library  5191, mine  5191; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane       off z = 0.33 : inside lab  2614, library  2614, mine  2614; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane       bas z = 0    : inside lab  3104, library  3104, mine  3104; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0 | flat (complex) picture: lab differs 0
+   pulledplane       bas z = 0.31 : inside lab   988, library   988, mine   988; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane       man z = 0    : inside lab  5486, library  5486, mine  5486; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0 | flat (complex) picture: lab differs 0
+   pulledplane       man z = 0.1  : inside lab  3982, library  3982, mine  3982; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane       man z = -0.33: inside lab  2038, library  2038, mine  2038; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane-moved off z = 0.1  : inside lab  4792, library  4792, mine  4792; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane-moved bas z = 0.31 : inside lab  1024, library  1024, mine  1024; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+   pulledplane-moved man z = 0.1  : inside lab  4416, library  4416, mine  4416; lab vs library differ    0 (on an edge    0); lab vs mine differ    0; lab reads 0 or NaN: 0
+
+B2. The shader against the page's own JavaScript rule where the library has none (Julia sets, 160 x 160 points, a slice off the flat plane).
+   alongonce power 3            c = [0.3, 0, 0], z = 0.17: inside shader 11080, JavaScript 11080; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   alongonce power 3 c off      c = [0.2, 0.25, 0.1], z = 0.17: inside shader 10144, JavaScript 10144; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   alongonce z^2 + z^3 + c      c = [-0.2, 0, 0], z = 0.17: inside shader  6936, JavaScript  6936; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   alongonce z^2 + z^3 + c, c off c = [-0.25, 0.1, 0.12], z = 0.17: inside shader     0, JavaScript     0; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   alongonce |x||y||z|          c = [-1, 0, 0], z = 0.2: inside shader  1876, JavaScript  1876; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   pulledplane power 3          c = [0.3, 0, 0], z = 0.17: inside shader 11146, JavaScript 11146; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   pulledplane power 3 c off    c = [0.2, 0.25, 0.1], z = 0.17: inside shader 10548, JavaScript 10548; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   pulledplane z^2 + z^3 + c    c = [-0.2, 0, 0], z = 0.17: inside shader  6504, JavaScript  6504; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   pulledplane z^2 + z^3 + c, c off c = [-0.25, 0.1, 0.12], z = 0.17: inside shader  5158, JavaScript  5158; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+   pulledplane |x||y||z|        c = [-1, 0, 0], z = 0.2: inside shader  1684, JavaScript  1684; differ    0 (on an edge    0); shader reads 0 or NaN: 0
+
+C. The 3D picture (Rough), 40 x 30 probes per camera. My rule along the same lines of sight, a test every 0.003.
+   "near": of the lab-only stops, how many have a point of the set (mine, 400 random points) within 0.02 of the stop.
+   alongonce   sie : lab stops  226, mine  226, both  226, lab only   0 (near the set: 0), mine only   0 of 1200; depth -2.7 px median, |depth| 95 %: 3.5 px; stops off my lines: 3.9e-07 at most
+   alongonce   bas : lab stops  145, mine  145, both  145, lab only   0 (near the set: 0), mine only   0 of 1200; depth -1.2 px median, |depth| 95 %: 1.8 px; stops off my lines: 3.0e-07 at most
+   alongonce   off : lab stops  215, mine    0, both    0, lab only 215 (near the set: 2), mine only   0 of 1200; depth +0.0 px median, |depth| 95 %: 0.0 px; stops off my lines: 4.3e-07 at most
+   alongonce   man : lab stops  139, mine   87, both   87, lab only  52 (near the set: 7), mine only   0 of 1200; depth -0.6 px median, |depth| 95 %: 1.3 px; stops off my lines: 4.2e-07 at most
+   alongonce   man2: lab stops  154, mine   70, both   70, lab only  84 (near the set: 4), mine only   0 of 1200; depth -0.6 px median, |depth| 95 %: 1.2 px; stops off my lines: 3.2e-07 at most
+   pulledplane sie : lab stops  197, mine  197, both  197, lab only   0 (near the set: 0), mine only   0 of 1200; depth -2.2 px median, |depth| 95 %: 2.9 px; stops off my lines: 3.3e-07 at most
+   pulledplane bas : lab stops  143, mine  142, both  141, lab only   2 (near the set: 2), mine only   1 of 1200; depth -0.7 px median, |depth| 95 %: 1.7 px; stops off my lines: 3.0e-07 at most
+   pulledplane off : lab stops  317, mine  317, both  317, lab only   0 (near the set: 0), mine only   0 of 1200; depth -1.7 px median, |depth| 95 %: 2.5 px; stops off my lines: 3.3e-07 at most
+   pulledplane man : lab stops  143, mine  139, both  138, lab only   5 (near the set: 4), mine only   1 of 1200; depth -1.2 px median, |depth| 95 %: 2.1 px; stops off my lines: 3.4e-07 at most
+   pulledplane man2: lab stops  180, mine  171, both  170, lab only  10 (near the set: 8), mine only   1 of 1200; depth -1.1 px median, |depth| 95 %: 2.0 px; stops off my lines: 3.4e-07 at most
+   mercator    sie : lab stops  177, mine  177, both  177, lab only   0 (near the set: 0), mine only   0 of 1200; depth -2.5 px median, |depth| 95 %: 3.6 px; stops off my lines: 3.2e-07 at most
+   mercator    bas : lab stops  138, mine  138, both  138, lab only   0 (near the set: 0), mine only   0 of 1200; depth -1.3 px median, |depth| 95 %: 1.8 px; stops off my lines: 3.0e-07 at most
+   mercator    off : lab stops  244, mine    0, both    0, lab only 244 (near the set: 2), mine only   0 of 1200; depth +0.0 px median, |depth| 95 %: 0.0 px; stops off my lines: 4.3e-07 at most
+   mercator    man : lab stops   93, mine   87, both   87, lab only   6 (near the set: 5), mine only   0 of 1200; depth -0.6 px median, |depth| 95 %: 1.2 px; stops off my lines: 3.2e-07 at most
+   mercator    man2: lab stops   74, mine   70, both   70, lab only   4 (near the set: 2), mine only   0 of 1200; depth -0.6 px median, |depth| 95 %: 1.3 px; stops off my lines: 3.4e-07 at most

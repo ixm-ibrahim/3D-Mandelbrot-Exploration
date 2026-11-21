@@ -1,0 +1,16 @@
+=== G: neighbours 300, second sphere 25, a line only
+    rho 0.25, t 0.6666666667 (top 1.333333, p 300.0000), grid line, depth 16; HB 0.826420 HT 0.123295, the chain ends at x = +-5.5241
+    page dist/r28-truth.html, exit 0, no console errors, 14 s in the browser
+    the page: program "k-balls2/" (after the slices "k-balls2/"), state {"brho": 0.25, "bt": 0.6666666666666666, "bgrid": 2, "bit": 16, "group": 1}, ballsReach() = 5.524094948496091
+    the sentence under the dials: "Past 100 the second sphere has to be smaller than the first, or the two would cut into each other. It is now 25 % of the first."
+    b. twin against my writing, space: 20000 points, inside by the twin 5950, by me 5950, verdicts that differ 0; the twin with nothing passed says the same: True
+    b. twin against my writing, flat : 20000 points, inside by the twin 11651, by me 11651, verdicts that differ 0; the twin with nothing passed says the same: True
+    my list: 128422 balls, every one of radius >= 1.0e-05 in the object's own space (finer near the second sphere), 12 levels, 1 s
+    b. shader against my writing: flat cut 20402 points, verdicts that differ 0 (from the twin: 0); in space 20480 points, differ 0 (from the twin: 0)
+       shader's number against the twin's ballsEstimate where both say outside: 17152 points, worst relative difference 1.62e-03, more than 1 % apart at 0
+    c. the shader's own number at its 17152 outside grid points: longer than the true distance to the nearest listed ball at 4904; by more than single precision explains (0.2 % of the distance + 4e-7 of the size of the coordinates) at 0
+         the one furthest beyond that allowance: at (0.521403, 0.063993, 0.000000) the shader gives 1.4523e-05, the nearest listed ball is 1.44754e-05 away
+    c. ballsEstimate, box : 20000 outside points (made 100000, outside by my recipe 49089; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 5596; twice the estimate would still be free at 0
+    c. ballsEstimate, mid : 20000 outside points (made 98323, outside by my recipe 87245; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 18242; twice the estimate would still be free at 0
+    c. ballsEstimate, top : 20000 outside points (made 100000, outside by my recipe 98723; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 1297; twice the estimate would still be free at 0
+    c. ballsEstimate, edge: 20000 outside points (made 100000, outside by my recipe 74499; the page calls 0 of the 20000 inside), estimate longer than the true distance to the nearest listed ball at 0; "free" is the smaller of the two numbers at 10046; twice the estimate would still be free at 11
