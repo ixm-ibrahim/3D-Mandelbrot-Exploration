@@ -1370,3 +1370,29 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
   Checked: Learn opens with the whole shape's transport and choices on show, One point and back both work, leaving
   Learn and coming back keeps the choice, no console error.
 - Still open, asked of the user: is "The shape starts again" the moving surface they meant.
+
+## 2026-11-21, night: VERSION 27 (Learn: the shape's own surface, lit, goes through each move)
+
+- The user on Version 25's surface: no "Show" under the picture; "it's not the surface I'm expecting - like I see
+  no shading or lighting"; "I'm not seeing the surface do each mathematical step between the surface"; "that surface
+  that is moving seems different than the surface of the inside of the fractal". They want the fractal's own
+  surface, lit, to go through the moves and become the next one.
+- The fact that decides the design: going forwards, one step takes shape k + 1 exactly into shape k (Julia shape,
+  nothing carried). So surface k becomes surface k + 1 only when the step is played BACKWARDS. New fourth choice of
+  "How a step is played" (was "After each step"), after: 'back', "The shape is pulled back": parts are the moves
+  undone, last first (learnShapePart gives j = m - 1 - i, key 'undo'). Nothing is inverted: the net of skin k + 1 is
+  taken through the moves forwards once (learnShapeNet, J[j]) and the film is run in reverse (learnShapeNetAt).
+- learnShapeNet: surface nets on an even grid (40 a side in space, 260 on the page, reaching to 2.08), one point per
+  cell the skin crosses (crossings found by halving), cells round each crossed edge joined: lines on the page,
+  triangles in space. learnShapeMeshMake / learnShapeMeshDraw: a WebGL2 canvas of its own (#learnShapeMesh) between
+  the glass picture and the dots' canvas; flat camera from learnShape3d.proj; both sides lit; positions and normals
+  worked out in JavaScript every frame. Two fixes after the first look: where two copies of the skin lie on each
+  other the copy that started further round is drawn in front (fourth colour number, a small depth offset), and a
+  triangle torn longer than 10 grid gaps is left out.
+- 'again' ("The shape takes one step") now moves the skin of shape k + 1, which lands on skin k (it moved skin k
+  before, which landed on skin k - 1). In 'go' and 'home' the surface is still beads, with a line in the picture's
+  corner saying where the shape's own surface is.
+- Under the picture: Step (how a step is played) and Show, beside Each step and Dots.
+- One quick look (c = -1, one-plane rule, 2D and 3D, no console error; first 3D net 0.3 s). Known: the 3D net is
+  coarser than the glass picture, so fine folds of late steps are rounded off; one seam shows where the two copies
+  change places. NOTHING IS RUNNING. No candidate rule in hand.
