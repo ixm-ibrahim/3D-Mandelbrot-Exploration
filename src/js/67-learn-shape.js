@@ -1414,12 +1414,12 @@ function learnShapeFollow(shape, byHand) {
     if (!learnShapeCalm()) { Sh.pos = 0; learnShapePlay(); }
   }
 }
-// Called by learnVDefaults: this part back to how it opens. Follow = One point; inside it the Mandelbrot shape,
+// Called by learnVDefaults: this part back to how it opens. Follow = A whole shape (since version 26); inside it the Mandelbrot shape,
 // step 0, c as Learn opens on the 2D page, the views as they open. (The space, 2D, is put back by learnVDefaults.)
 function learnShapeDefaults() {
   const L = LEARN, Sh = LEARN_SHAPE;
   learnShapeStop();
-  L.follow = 'point';
+  L.follow = 'shape';      // (version 26: Learn opens on the whole shape, where the dots and their choices are)
   Sh.kind = 'm'; Sh.c = LEARN_V_START[2].c.slice(); Sh.pos = 0; Sh.gone = ''; Sh.thin = ''; Sh.place = null; Sh.above = {};
   Sh.each = 'moves'; Sh.dots = 'some'; Sh.endSide = false; Sh.D = {}; Sh.sig3 = '';      // (round 29)
   Sh.after = 'go'; Sh.paths = false; Sh.lay = 'grid'; Sh.tint = 'dir'; Sh.see = 'dots'; Sh.K = {};      // (versions 24 and 25)
@@ -1600,8 +1600,8 @@ function learnShapeInit() {
   const body = el.panel.querySelector('.sec-body'), intro = body.querySelector('p.note');
   E.summary = el.panel.querySelector('summary'); E.summaryWas = E.summary.textContent;
   const follow = make('fieldset', 'learn-follow', '<legend class="label">Follow</legend>' +
-    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowPoint" value="point" checked><span>One point</span></label>' +
-    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowShape" value="shape"><span>A whole shape</span></label>');
+    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowPoint" value="point"><span>One point</span></label>' +
+    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowShape" value="shape" checked><span>A whole shape</span></label>');
   follow.id = 'learnFollow';
   body.prepend(follow);
   E.follows = [...follow.querySelectorAll('input')];

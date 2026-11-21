@@ -9891,7 +9891,7 @@ const LEARN_V_HIDDEN = {
 };
 const LEARN = {
   on: false,
-  follow: 'point',               // 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js draws and paints)
+  follow: 'shape',               // (version 26: Learn opens on the whole shape) 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js draws and paints)
   space: 2,                      // 1 a line, 2 a page, 3 space
   pts: null,                     // pts[space] = { z, c }: where the first step starts, and the point c
   show: 'circle',                // 'point' | 'circle' | 'all' | 'grid': the extra points ('grid', round 29, is not laid out afresh)
@@ -10511,7 +10511,7 @@ function learnVDefaults() {
   L.space = 2; L.pts = learnVCopy(LEARN_V_START); L.show = 'circle'; L.hidden = { 1: true, 2: false };
   L.view = learnVCopy(LEARN_V_VIEWS); L.speed = 'normal'; L.k = 0; L.pos = 0; L.endSide = false; L.stale = true;
   if (L.el.speed) L.el.speed.value = 'normal';
-  if (typeof learnShapeDefaults === 'function') learnShapeDefaults();   // Follow = One point, and the whole shape as it opens
+  if (typeof learnShapeDefaults === 'function') learnShapeDefaults();   // Follow = A whole shape, and the whole shape as it opens
   if (L.dials) { L.dials.sync(); L.checks.sync(); }
 }
 // "Reset everything": Learn goes back to its starting state, which is off, with its own settings as they open.
@@ -12191,12 +12191,12 @@ function learnShapeFollow(shape, byHand) {
     if (!learnShapeCalm()) { Sh.pos = 0; learnShapePlay(); }
   }
 }
-// Called by learnVDefaults: this part back to how it opens. Follow = One point; inside it the Mandelbrot shape,
+// Called by learnVDefaults: this part back to how it opens. Follow = A whole shape (since version 26); inside it the Mandelbrot shape,
 // step 0, c as Learn opens on the 2D page, the views as they open. (The space, 2D, is put back by learnVDefaults.)
 function learnShapeDefaults() {
   const L = LEARN, Sh = LEARN_SHAPE;
   learnShapeStop();
-  L.follow = 'point';
+  L.follow = 'shape';      // (version 26: Learn opens on the whole shape, where the dots and their choices are)
   Sh.kind = 'm'; Sh.c = LEARN_V_START[2].c.slice(); Sh.pos = 0; Sh.gone = ''; Sh.thin = ''; Sh.place = null; Sh.above = {};
   Sh.each = 'moves'; Sh.dots = 'some'; Sh.endSide = false; Sh.D = {}; Sh.sig3 = '';      // (round 29)
   Sh.after = 'go'; Sh.paths = false; Sh.lay = 'grid'; Sh.tint = 'dir'; Sh.see = 'dots'; Sh.K = {};      // (versions 24 and 25)
@@ -12377,8 +12377,8 @@ function learnShapeInit() {
   const body = el.panel.querySelector('.sec-body'), intro = body.querySelector('p.note');
   E.summary = el.panel.querySelector('summary'); E.summaryWas = E.summary.textContent;
   const follow = make('fieldset', 'learn-follow', '<legend class="label">Follow</legend>' +
-    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowPoint" value="point" checked><span>One point</span></label>' +
-    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowShape" value="shape"><span>A whole shape</span></label>');
+    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowPoint" value="point"><span>One point</span></label>' +
+    '<label class="seg"><input type="radio" name="learnFollow" id="learnFollowShape" value="shape" checked><span>A whole shape</span></label>');
   follow.id = 'learnFollow';
   body.prepend(follow);
   E.follows = [...follow.querySelectorAll('input')];

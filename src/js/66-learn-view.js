@@ -29,7 +29,7 @@ const LEARN_V_HIDDEN = {
 };
 const LEARN = {
   on: false,
-  follow: 'point',               // 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js draws and paints)
+  follow: 'shape',               // (version 26: Learn opens on the whole shape) 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js draws and paints)
   space: 2,                      // 1 a line, 2 a page, 3 space
   pts: null,                     // pts[space] = { z, c }: where the first step starts, and the point c
   show: 'circle',                // 'point' | 'circle' | 'all' | 'grid': the extra points ('grid', round 29, is not laid out afresh)
@@ -649,7 +649,7 @@ function learnVDefaults() {
   L.space = 2; L.pts = learnVCopy(LEARN_V_START); L.show = 'circle'; L.hidden = { 1: true, 2: false };
   L.view = learnVCopy(LEARN_V_VIEWS); L.speed = 'normal'; L.k = 0; L.pos = 0; L.endSide = false; L.stale = true;
   if (L.el.speed) L.el.speed.value = 'normal';
-  if (typeof learnShapeDefaults === 'function') learnShapeDefaults();   // Follow = One point, and the whole shape as it opens
+  if (typeof learnShapeDefaults === 'function') learnShapeDefaults();   // Follow = A whole shape, and the whole shape as it opens
   if (L.dials) { L.dials.sync(); L.checks.sync(); }
 }
 // "Reset everything": Learn goes back to its starting state, which is off, with its own settings as they open.

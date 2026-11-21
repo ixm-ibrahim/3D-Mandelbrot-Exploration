@@ -1361,3 +1361,12 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
 - One quick look (2D and 3D, c = -1, no console error; the first 3D skin takes about 0.4 s). The user checks.
 - Open, asked of the user: is "the shape starts again" the surface picture they meant. NOTHING IS RUNNING. No
   candidate rule in hand.
+
+## 2026-11-21, late: VERSION 26 (Learn opens on "A whole shape")
+
+- The user could not find the new choices: they stand in the panel only while Follow = A whole shape, and Learn
+  opened on One point. The user: "a whole shape ... should be the default option". Now it is: LEARN.follow starts
+  as 'shape', learnShapeDefaults puts it back to 'shape' (so Reset everything does too), and the radio is ticked.
+  Checked: Learn opens with the whole shape's transport and choices on show, One point and back both work, leaving
+  Learn and coming back keeps the choice, no console error.
+- Still open, asked of the user: is "The shape starts again" the moving surface they meant.
