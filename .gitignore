@@ -1,8 +1,8 @@
 # Preview builds: build.py makes them again
 dist/
 
-# Research output. The scripts, notes and logs are kept; the heavy files they made are not
-# (about 15 GB of pictures, 3D models and number caches).
+# Research output. The scripts and notes are kept; whatever they make when run again is not
+# (screenshots, zip bundles, number caches, copies of the page).
 out/**
 !out/**/
 !out/**/*.py

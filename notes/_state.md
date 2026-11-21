@@ -1306,5 +1306,16 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
   and 90; pictures of a filled lump take several times longer to draw (nearly every ray stops on something); the
   lump is given a lit skin at the Drawing radius.
 - The last frozen copies (base19a, base20a, base21a) are removed. Versions are tags: v21, v22, v23.
-- The session is being moved to C:\Users\IbrahimMahmoud\Documents\Personal\3D-Mandelbrot-Exploration at the end of
-  this turn (the app copies the files). NOTHING IS RUNNING. No candidate rule in hand.
+- NOTHING IS RUNNING. No candidate rule in hand.
+
+## 2026-11-21, later: the research leftovers are deleted, the project moves to the user's folder
+
+- The user: "do we need everything from the research? I'd want to remove what is not needed anymore, 15gb seems
+  wild." Answer: none of it is needed. It was 25,700 test screenshots (8 GB), 330 zip bundles (4.3 GB), number
+  caches (2.2 GB) and old copies of the page, all of which the scripts in `out/` can make again.
+- With the user's yes, everything git ignores inside `out/` and `dist/` was deleted for good
+  (`git clean -fdX -- out dist`). The folder went from 14.8 GB to 55 MB. No tracked file was touched.
+- On disk but not in git: `notes/paper-kucera.txt` (the paper's text) and `.claude/`. `dist/` comes back whenever
+  `build.py` runs.
+- The session moves to `Documents/Personal/3D-Mandelbrot-Exploration` (the app copies the files at the end of the
+  turn). A script in `out/` that needs an old cache or picture has to make it again first.

@@ -36,7 +36,7 @@ No rule passes all five yet. `notes/_state.md` is the running log of what was tr
 | `tools/` | Test tools. `tools/shot.py` drives the page in headless Chrome and takes pictures |
 | `docs/` | The brief of each round of work (`ROUND29.md` and `ROUND29-LEARN.md` are the newest) |
 | `notes/` | The log (`_state.md`), reports and small scripts |
-| `out/` | Each round's scripts, notes and logs. The pictures, 3D models and number caches they produced are left out of the repository (about 15 GB) |
+| `out/` | Each round's scripts and notes, and the pictures that were made to be shown. The screenshots and number caches the scripts produce are left out of the repository; run a script to make them again |
 | `tests/`, `data/` | Test pages and the preset lists |
 
 All JavaScript files are joined into one function scope in file-name order, and only `90-boot.js` runs code when
