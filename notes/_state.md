@@ -1396,3 +1396,27 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
 - One quick look (c = -1, one-plane rule, 2D and 3D, no console error; first 3D net 0.3 s). Known: the 3D net is
   coarser than the glass picture, so fine folds of late steps are rounded off; one seam shows where the two copies
   change places. NOTHING IS RUNNING. No candidate rule in hand.
+
+## 2026-11-21, night: VERSION 28 (Learn: no Step menu, Orbits, the surface as a closed lit body)
+
+- The user on Version 27: "there should be an orbit menu/dropdown too"; "I don't think you understood what I meant
+  by surface - like it's a closed surface, made up of shaded raymarching or polygons or whatever - not a set of dots
+  that cover the surface"; "idk if the # of dots works with the 'show both' option"; "remove the 'step' menu - that
+  doesn't do what I expect it to do at all and just keep the 'dots keep going' option".
+- Done. The page offers only after = 'go'. The selects of the Step menu are gone from the bar and the panel; the
+  code of 'home', 'again' and 'back' (beads, nets, pull-back) is left in place and reachable only through
+  LEARN.shape.set({ after }). Orbits (LEARN_SHAPE.orbits: 'few' | 'all' | 'none') replaces the paths checkbox, in the
+  panel and under the picture.
+- The surface in 'go' (learnShapeLive, learnShapeLiveField, learnShapeLiveMesh, learnShapeLiveDraw3,
+  learnShapeLiveFlat): the shape "right now" = the starting places whose dot is inside the big ball at this moment
+  (and was at every whole step). Shape k when a step begins, shape k + 1 when its last move is done, changing with
+  the move being played in between. A grid of starting places (44 a side for steps 0 and 1, then 72; 300 on the
+  page; 22 / 110 while a dial is dragged), each point's dot kept at the joints of the moves, a number per point
+  (distance from the centre less 2), surface nets where it crosses 0, lit in the WebGL canvas of Version 27; on the
+  page the inside is filled. With the body on show the glass picture is put out of sight. The sentence of a move
+  says whether the surface changes with it (learnShapeLive().cross). The two carrying approaches are taken straight
+  from the start of a step to its end, not move by move.
+- Checked: Dots does work with Show: Both (806 dots at Few, 10,256 at Very many); it was the beads that hid it. No
+  console error; a frame of the body takes 2 to 19 ms, the first of a step up to 0.2 s. One approach looked at.
+- Still true and said to the user: a move that only turns the dots leaves the surface as it is.
+- NOTHING IS RUNNING. No candidate rule in hand.
