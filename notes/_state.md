@@ -1420,3 +1420,22 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
   console error; a frame of the body takes 2 to 19 ms, the first of a step up to 0.2 s. One approach looked at.
 - Still true and said to the user: a move that only turns the dots leaves the surface as it is.
 - NOTHING IS RUNNING. No candidate rule in hand.
+
+## 2026-11-21, late night: VERSION 29 (Learn: new dots as dots are thrown out; layout under the picture; new defaults)
+
+- The user ("ok really close now"): the "In 3D, lay the dots out as" menu under the picture too; an option for sheets
+  and shells together; "how far from the centre" as the opening colour; "why aren't you spawning new dots between the
+  remaining dots after each iteration, to maintain the same amount of dots after many iterations?"; then, while I
+  worked: a colouring by distance from the centre and height at once, as the new default, and sheets and shells
+  together as the default layout.
+- New dots (learnShapeRefill, LEARN_SHAPE.refill, on by default, a checkbox in the panel): after each step dots are
+  added until there are as many as at the start. A new dot STARTS between the starting places that are left and has
+  taken every step so far (from = the step it comes in at; its orbit is worked out like any dot's). New starting
+  places are tried in a Halton order (learnShapeCandidate), on the same sheets or shells in space; at most 25 tries
+  for each dot wanted, and a step that finds nothing in 2000 tries gives up. This is the true form of what the user
+  asked for in Version 24, which I then read as dots dropped in where the others are now and did not build.
+- Checked: on the 2D page 1968 dots are on show at every step up to 16 (without new dots: far fewer); in space 4162
+  at the start and 4034 to 4162 later (164 without). A step's new dots take 5 to 70 ms. No console error.
+- Layout 'both' (sheets and shells, half the dots each) and its select under the picture (In 3D). Colouring 'mix':
+  the hue says how far from the centre, light to dark says how high. Opens on lay 'both', tint 'mix'.
+- One approach looked at. NOTHING IS RUNNING. No candidate rule in hand.

@@ -64,8 +64,9 @@ const LEARN_SHAPE = {
   mesh: null,                    // the canvas and program the lit 3D surface is drawn with (learnShapeMeshMake)
   orbits: 'few',                 // (version 28) whose whole paths are drawn: 'few' (the handful drawn larger) | 'all' | 'none'
   Lv: {},                        // Lv[kind]: what the surface "right now" keeps of that picture (learnShapeLive)
-  lay: 'grid',                   // how the dots of a 3D picture are laid out: 'grid' | 'sheets' | 'shells'
-  tint: 'dir',                   // what a dot's colour says about where it started: 'dir' | 'height' | 'dist'
+  lay: 'both',                   // how the dots of a 3D picture are laid out: 'grid' | 'sheets' | 'shells' | 'both' (version 29: 'both', and it opens on that)
+  tint: 'mix',                   // what a dot's colour says about where it started: 'dir' | 'height' | 'dist' | 'mix' (version 29: 'mix', how far out and how high at once, and it opens on that)
+  refill: true,                  // (version 29) as dots are thrown out, new dots are added that start between the ones that are left (learnShapeRefill)
   D: {},                         // D[kind]: the kept dots of that picture (learnShapeDots)
   mv: { sig: null, moves: [], names: [], chips: [], keys: [] },   // the kept moves of one step (learnShapeMoves)
   endSide: false,                // at the joint of two parts: stand at the end of the part before (a play of one part stopped there)
@@ -660,9 +661,9 @@ function learnShapeTintRgb(p, three, dark, tint, out, o) {
   const up = three ? p[2] : p[1], side = three ? Math.hypot(p[0], p[1]) : Math.abs(p[0]);
   let hue, t;
   if (tint === 'height') { hue = 250 - 250 * clamp((up + 2) / 4, 0, 1); t = clamp(side / 2, 0, 1); }
-  else if (tint === 'dist') { hue = 290 * clamp(len(p) / 2, 0, 1); t = clamp((2 - up) / 4, 0, 1); }
+  else if (tint === 'dist' || tint === 'mix') { hue = 290 * clamp(len(p) / 2, 0, 1); t = clamp((2 - up) / 4, 0, 1); }      // ('mix', version 29: the same hue, and the height told by a wide run from light to dark)
   else { hue = (Math.atan2(p[1], p[0]) * 180 / PI + 360) % 360; t = three ? clamp((2 - p[2]) / 4, 0, 1) : clamp(Math.hypot(p[0], p[1]) / 2, 0, 1); }
-  const l = (dark ? 80 - 26 * t : 26 + 18 * t) / 100, s = dark ? 0.88 : 0.84, b = l < 0.5 ? l * (1 + s) : l + s - l * s, a = 2 * l - b, hh = hue / 360;
+  const wide = tint === 'mix', l = (dark ? (wide ? 88 - 48 * t : 80 - 26 * t) : (wide ? 20 + 40 * t : 26 + 18 * t)) / 100, s = dark ? 0.88 : 0.84, b = l < 0.5 ? l * (1 + s) : l + s - l * s, a = 2 * l - b, hh = hue / 360;
   const f = x => { x = (x % 1 + 1) % 1; return x < 1 / 6 ? a + (b - a) * 6 * x : x < 0.5 ? b : x < 2 / 3 ? a + (b - a) * (2 / 3 - x) * 6 : a; };
   out[o] = f(hh + 1 / 3); out[o + 1] = f(hh); out[o + 2] = f(hh - 1 / 3);
 }
@@ -843,22 +844,76 @@ function learnShapeSkin(kind, k) {
   } catch (err) { set.dots = []; }
   return set;
 }
+// (Version 29.) New dots as dots are thrown out. The dots on show thin out step by step, and after many steps a
+// handful is left. So after each step new dots are added until there are again as many as at the start: dots whose
+// STARTING places lie between the starting places that are left. Such a dot is not new to the game. It has taken
+// every step so far, like the others, and was only not drawn: its place now, its path and its colour are worked out
+// the same way. (A dot dropped in where the others are now would have no past, and the picture of starting places
+// behind the dots would no longer say which dots are in.)
+// The new starting places are tried in a fixed, evenly spread order (a Halton sequence), so the same settings always
+// give the same dots, forwards and backwards on the slider. In space they lie the way the layout does: anywhere for
+// the full grid, on the same sheets, on the same shells.
+const LEARN_SHAPE_SHEETS = [1.8, 1.2, 0.6, 0, -0.6, -1.2, -1.8], LEARN_SHAPE_SHELLS = [1.98, 1.5, 1, 0.5];
+const learnShapeHal = (i, b) => { let f = 1, r = 0; i += 1; while (i > 0) { f /= b; r += f * (i % b); i = Math.floor(i / b); } return r; };
+function learnShapeCandidate(three, lay, i) {      // the i-th starting place to try, or null when it falls outside the big circle
+  if (!three) { const p = [4 * learnShapeHal(i, 2) - 2, 4 * learnShapeHal(i, 3) - 2, 0]; return p[0] * p[0] + p[1] * p[1] <= 4 ? p : null; }
+  if (lay === 'both') { lay = i % 2 ? 'shells' : 'sheets'; i = Math.floor(i / 2); }
+  const a = learnShapeHal(i, 2), b = learnShapeHal(i, 3), c = learnShapeHal(i, 5);
+  if (lay === 'shells') {      // a shell is picked as often as its share of all the shells' surface
+    let u = c * LEARN_SHAPE_SHELLS.reduce((s, r) => s + r * r, 0), r = LEARN_SHAPE_SHELLS[LEARN_SHAPE_SHELLS.length - 1];
+    for (const q of LEARN_SHAPE_SHELLS) { if (u < q * q) { r = q; break; } u -= q * q; }
+    const zz = 1 - 2 * a, rr = Math.sqrt(Math.max(0, 1 - zz * zz));
+    return [r * rr * Math.cos(2 * PI * b), r * rr * Math.sin(2 * PI * b), r * zz];
+  }
+  const p = [4 * a - 2, 4 * b - 2, lay === 'sheets' ? LEARN_SHAPE_SHEETS[Math.min(LEARN_SHAPE_SHEETS.length - 1, Math.floor(c * LEARN_SHAPE_SHEETS.length))] : 4 * c - 2];
+  return p[0] * p[0] + p[1] * p[1] + p[2] * p[2] <= 4 ? p : null;
+}
+// Makes sure the dots that come in at the steps 1 .. K are there (D: the dots of one picture, learnShapeDots). A dot
+// that comes in at step k has from = k: it is on show from that step on. D.enter[k]: how many came in at step k.
+function learnShapeRefill(D, K) {
+  if (!D || !D.fill) return;
+  K = Math.min(K, LEARN_SHAPE_N);
+  while (D.filled < K) {
+    const k = ++D.filled;
+    let on = 0, got = 0, tries = 0;
+    for (const d of D.dots) if (d.out > k && !(d.from > k)) on++;
+    const need = D.n0 - on, most = 25 * need + 200;
+    if (!D.dead) while (got < need && tries < most) {
+      if (tries === 2000 && !got) break;      // nothing in two thousand tries: next to nothing is left to start from
+      const p = learnShapeCandidate(D.three, D.lay, D.seq++);
+      tries++;
+      if (!p) continue;
+      let ok = false;
+      try { ok = D.outAt(p, k) > k; } catch (err) { ok = false; }
+      if (!ok) continue;
+      const d = D.make(p);
+      if (!d || !(d.out > k)) continue;
+      d.from = k; D.dots.push(d); got++;
+    }
+    if (need > 0 && !got && !on) D.dead = true;      // no dot is left and none is found: the later steps are not searched
+    D.enter[k] = got;
+  }
+}
 // (Version 24.) In space the dots can also lie on level sheets (seven of them, the middle one the flat plane itself)
 // or on shells (four balls inside one another), with about as many dots as the full grid of the same choice has. A
 // sheet or a shell is a surface, and the eye follows a surface that bends more easily than a cloud. -> { pts, gap }
 function learnShapeLayout(three, h, lay) {
+  if (three && lay === 'both') {      // (version 29) sheets and shells together, each with half the dots
+    const A = learnShapeLayout(true, h * 1.26, 'sheets'), B = learnShapeLayout(true, h * 1.26, 'shells');
+    return { pts: A.pts.concat(B.pts), gap: Math.min(A.gap, B.gap) };
+  }
   if (!three || (lay !== 'sheets' && lay !== 'shells')) return { pts: learnVGridPoints(three ? 3 : 2, h), gap: h };
   const out = [];
   if (lay === 'sheets') {
     const g = 1.3 * Math.pow(h, 1.5), m = Math.ceil(2 / g) + 1;
-    for (const z of [1.8, 1.2, 0.6, 0, -0.6, -1.2, -1.8]) for (let j = m - 1; j >= -m; j--) for (let i = -m; i < m; i++) {
+    for (const z of LEARN_SHAPE_SHEETS) for (let j = m - 1; j >= -m; j--) for (let i = -m; i < m; i++) {
       const p = [(i + 0.5) * g, (j + 0.25) * g, z];
       if (p[0] * p[0] + p[1] * p[1] + z * z <= 4) out.push(p);
     }
     return { pts: out, gap: g };
   }
   const g = 1.67 * Math.pow(h, 1.5), ga = PI * (3 - Math.sqrt(5));
-  for (const r of [1.98, 1.5, 1, 0.5]) {
+  for (const r of LEARN_SHAPE_SHELLS) {
     const M = Math.max(12, Math.round(4 * PI * r * r / (g * g)));
     for (let i = 0; i < M; i++) { const zz = 1 - (i + 0.5) * 2 / M, rr = Math.sqrt(1 - zz * zz); out.push([r * rr * Math.cos(i * ga), r * rr * Math.sin(i * ga), r * zz]); }
   }
@@ -872,17 +927,18 @@ function learnShapeDotColour(p, three, dark, tint) {
   const up = three ? p[2] : p[1], side = three ? Math.hypot(p[0], p[1]) : Math.abs(p[0]);
   let hue, t;
   if (tint === 'height') { hue = 250 - 250 * clamp((up + 2) / 4, 0, 1); t = clamp(side / 2, 0, 1); }
-  else if (tint === 'dist') { hue = 290 * clamp(len(p) / 2, 0, 1); t = clamp((2 - up) / 4, 0, 1); }
+  else if (tint === 'dist' || tint === 'mix') { hue = 290 * clamp(len(p) / 2, 0, 1); t = clamp((2 - up) / 4, 0, 1); }      // ('mix', version 29: the same hue, and the height told by a wide run from light to dark)
   else { hue = (Math.atan2(p[1], p[0]) * 180 / PI + 360) % 360; t = three ? clamp((2 - p[2]) / 4, 0, 1) : clamp(Math.hypot(p[0], p[1]) / 2, 0, 1); }
   hue = Math.round(hue / 8) * 8 % 360;
-  return dark ? `hsl(${hue}, 88%, ${Math.round((80 - 26 * t) / 3) * 3}%)` : `hsl(${hue}, 84%, ${Math.round((26 + 18 * t) / 3) * 3}%)`;
+  const wide = tint === 'mix';
+  return dark ? `hsl(${hue}, 88%, ${Math.round((wide ? 88 - 48 * t : 80 - 26 * t) / 3) * 3}%)` : `hsl(${hue}, 84%, ${Math.round((wide ? 20 + 40 * t : 26 + 18 * t) / 3) * 3}%)`;
 }
 // dot = { p, out, pts, c, carry, col, big }: p the starting place; out the step at which it is thrown out
 // (N + 1: still in after N); pts, c, carry as learnShapeOrbit2 / learnShape3d.orbit give them; col its colour for
 // good; big: one of the handful drawn larger.
 function learnShapeDots(kind) {
   const L = LEARN, Sh = LEARN_SHAPE, three = L.space === 3, a = ap(), N = LEARN_SHAPE_N, dark = learnVDark();
-  const sig = [three ? 3 : 2, kind, Sh.dots, three ? Sh.lay : '', Sh.tint, S.n, S.abs, S.flip, three ? a.id + JSON.stringify(S.param[a.id]) : '', kind === 'j' ? (three ? Sh.c : Sh.c.slice(0, 2)) : '', dark].join('|');
+  const sig = [three ? 3 : 2, kind, Sh.dots, three ? Sh.lay : '', Sh.tint, Sh.refill, S.n, S.abs, S.flip, three ? a.id + JSON.stringify(S.param[a.id]) : '', kind === 'j' ? (three ? Sh.c : Sh.c.slice(0, 2)) : '', dark].join('|');
   let D = Sh.D[kind];
   if (D && D.sig === sig) return D;
   const gaps = LEARN_SHAPE_SPACING[three ? 3 : 2], lay = learnShapeLayout(three, gaps[Sh.dots] || gaps.some, Sh.lay), h = lay.gap, dots = [];
@@ -890,7 +946,7 @@ function learnShapeDots(kind) {
   for (const p of lay.pts) {
     let o = null;
     try { o = three ? (orbit3 ? orbit3(p, kind, Sh.c, N) : null) : learnShapeOrbit2(p, kind, Sh.c, N); } catch (err) { o = null; }
-    if (o && o.pts.length) dots.push({ p, out: o.out, pts: o.pts, c: o.c, carry: o.carry, col: learnShapeDotColour(p, three, dark, Sh.tint), big: false });
+    if (o && o.pts.length) dots.push({ p, out: o.out, pts: o.pts, c: o.c, carry: o.carry, col: learnShapeDotColour(p, three, dark, Sh.tint), big: false, from: 0 });
   }
   // A handful to follow with the eye, far apart from one another: two that stay to the end, and four that are
   // thrown out on the way, early ones and late ones (where there are such).
@@ -911,7 +967,15 @@ function learnShapeDots(kind) {
   for (let q = 0; q < 4; q++) far(mid.slice(Math.floor(q * mid.length / 4), Math.floor((q + 1) * mid.length / 4)));
   for (const pool of [stay.concat(mid), all]) while (pick.length < LEARN_SHAPE_MARKED && far(pool)) { /* fill up */ }
   for (const i of pick) dots[i].big = true;
-  return (Sh.D[kind] = { sig, kind, three, h, dots, big: pick, chain: null });
+  // (version 29) what learnShapeRefill needs to add dots later: how many dots there were at the start (n0), how far it
+  // has got (filled, seq), and how to ask about a new starting place (outAt) and make its dot (make)
+  const outAt = (p, m) => (three ? learnShape3d.out(p, kind, Sh.c, m) : learnShapeOut2(p, kind, Sh.c, m));
+  const make = p => {
+    let o = null;
+    try { o = three ? (orbit3 ? orbit3(p, kind, Sh.c, N) : null) : learnShapeOrbit2(p, kind, Sh.c, N); } catch (err) { o = null; }
+    return o && o.pts.length ? { p, out: o.out, pts: o.pts, c: o.c, carry: o.carry, col: learnShapeDotColour(p, three, dark, Sh.tint), big: false, from: 0 } : null;
+  };
+  return (Sh.D[kind] = { sig, kind, three, h, dots, big: pick, chain: null, n0: dots.length, filled: 0, seq: 0, enter: [], lay: three ? Sh.lay : '', outAt, make, fill: Sh.refill && (!three || !!orbit3) });
 }
 // The moves of one step for one dot of an entry whose orbit carries something ("Along once, then one plane",
 // "Pulled plane"): there a step depends on what the dot's own orbit carries when the step begins, and on its own c,
@@ -949,6 +1013,7 @@ function learnShapeMoveAt(M, own, d, j, v, t) {
 // many of them it throws out.
 function learnShapeChain(kind, k, set) {
   const D = set || learnShapeDots(kind), M = learnShapeMoves();
+  learnShapeRefill(D, k);      // (version 29) the dots that have come in by this step take part in it
   if (D.chain && D.chain.k === k && D.chain.M === M) return D.chain;
   const m = M.moves.length, n = D.dots.length;
   const ch = { k, M, m, kind, pos: new Array(n).fill(null), raw: new Array(n).fill(null), own: M.car ? new Array(n).fill(null) : null, list: [], on: 0, thrown: 0, gap: 0, moved: new Array(m + 2).fill(false), centre: true };
@@ -956,7 +1021,7 @@ function learnShapeChain(kind, k, set) {
   // starting places, at every step; who takes part and who is thrown out is still decided by the step k + 1.
   const from = learnShapeAgain(kind) || learnShapeBack(kind) ? 0 : k;
   if (k < LEARN_SHAPE_N) D.dots.forEach((d, i) => {
-    if (!(d.out > k) || !d.pts[from + 1]) return;
+    if (!(d.out > k) || d.from > k || !d.pts[from + 1]) return;
     ch.on++; ch.list.push(i);
     if (d.out === k + 1) ch.thrown++;
     const own = M.car ? (ch.own[i] = learnShapeOwnMoves(d, from, m)) : null, v = [d.pts[from]], truth = d.pts[from + 1];
@@ -969,6 +1034,7 @@ function learnShapeChain(kind, k, set) {
     if (d.out > k + 1 && len(sub(truth, d.p)) > 1e-9) ch.moved[m + 1] = true;
     if (len(v[0]) > 1e-12) ch.centre = false;
   });
+  if (D.fill) { learnShapeRefill(D, k + 1); ch.came = D.enter[k + 1] || 0; }      // (version 29) how many new dots come in when this step is done
   return (D.chain = ch);
 }
 // Where the dot i stands in the part ph of the step the chain ch belongs to, at the eased fraction te of the part.
@@ -994,6 +1060,7 @@ function learnShapeDotsDraw(g, P, to, s, k, ph, three, skin) {
   // (a picture that cannot start again, in a step cut for starting again: in the last part its dots stand where the step left them)
   if (Sh.after === 'again' && !again && ph && ph.key === 'home') { k += 1; ph = null; }
   const D = skin ? learnShapeSkin(P.kind, k) : learnShapeDots(P.kind), dots = D.dots;
+  if (!skin) learnShapeRefill(D, k + 1);      // (version 29) the dots that come in up to the end of this step
   // (Version 24.) go: a dot keeps going from where the last step left it, and is never put back. Otherwise the dots
   // are shown at home between steps; going out and coming back are not moves of the rule, so there a dot fades out in
   // one place and in at the other (fading) and does not travel.
@@ -1007,6 +1074,8 @@ function learnShapeDotsDraw(g, P, to, s, k, ph, three, skin) {
   for (let i = 0; i < dots.length; i++) {
     const d = dots[i];
     if (!(d.out > k)) continue;                                    // thrown out before: no longer on show
+    // (version 29) a dot that comes in when this step is done: it fades in where it then is, while the ones thrown out fade away
+    if (d.from > k) { if (go && d.from === k + 1 && key === 'gone' && d.out > k + 1 && d.pts[k + 1]) put(i, d.pts[k + 1], e(0.45, 1, ph.t), false); continue; }
     const going = part && d.out === k + 1, v = part ? ch.pos[i] : null;      // going: the step under way throws it out
     if (part && !v) continue;
     if (!part) put(i, go ? d.pts[k] : d.p, 1, false);
@@ -1028,7 +1097,7 @@ function learnShapeDotsDraw(g, P, to, s, k, ph, three, skin) {
       g.beginPath();
       for (let i = 0; i < dots.length; i++) {
         const d = dots[i];
-        if (!(d.out > k) || gone(d) !== pass || (pass && key === 'home')) continue;
+        if (!(d.out > k) || d.from > k || gone(d) !== pass || (pass && key === 'home')) continue;
         const q = to(d.p);
         if (inPane(q)) { g.moveTo(q[0] + mr, q[1]); g.arc(q[0], q[1], mr, 0, 2 * PI); }
       }
@@ -1147,7 +1216,7 @@ function learnShapePartWords(k, ph) {
       const pr = learnShapeProj(P), mid = pr.to([0, 0, 0]);
       hid = c.list.some(i => { if (D.dots[i].out !== k + 1) return false; const q = pr.to(c.pos[i][m]); return Math.hypot(q[0] - mid[0], q[1] - mid[1]) < 2 * pr.s; });
     });
-    say = thrown ? `${step}. The dots that landed outside ${M.again && kind === 'j' && !M.car ? 'what is left' : 'the big ' + ring} are thrown out${both ? ', in both pictures' : ''}: ${thrown} of ${on}.` + (M.go ? ' The places they started from leave the shape.' : '') + (hid ? ' Some of them are in front of the ball or behind it.' : '')
+    say = thrown ? `${step}. The dots that landed outside ${M.again && kind === 'j' && !M.car ? 'what is left' : 'the big ' + ring} are thrown out${both ? ', in both pictures' : ''}: ${thrown} of ${on}.` + (M.go ? ' The places they started from leave the shape.' + (chs.some(c => c.came > 0) ? ' New dots come in between the ones that are left.' : '') : '') + (hid ? ' Some of them are in front of the ball or behind it.' : '')
       : `${step}. No dot landed outside the big ${ring}, so none is thrown out.` + (Sh.thin[k] === '0' || Sh.thin[k] === '1' ? ' What this step takes is finer than the gaps between the dots.' : '');
   } else {
     const home = !chs.some(c => c.moved[m + 1]);      // every dot that is left already stands on its starting place
@@ -1702,6 +1771,7 @@ function learnShapePanel() {
       : Sh.after !== 'home'
       ? 'A dot takes step after step and is never put back: each step is played part by part, the moves of the rule one after another and then the throwing out. The picture behind shows the starting places whose dots are still in.'
       : 'Each step is played part by part: where the dots are now, the moves of the rule one after another, the throwing out, and back to where the dots that are left started. Going out and coming back are not moves of the rule, so there the dots fade and do not travel.')
+      + (Sh.refill ? ' As dots are thrown out, new dots are added: dots that start between the ones that are left. A new dot is not new to the game. It has taken every step so far and was only not drawn.' : '')
       + ' A dot keeps the colour of the place it started from, and a few are drawn larger, with their paths, so that you can follow them. (The last move, Slide, is the one that One point calls Add c.)'
       + (Sh.see !== 'dots' ? ' The surface is the shape as it is at this very moment: every starting place whose dot is inside the big ' + (three ? 'ball' : 'circle') + ' right now. It is drawn again all through a move, so you see which move changes it, and how. A move that only turns the dots changes nothing, because it takes no dot across the big ' + (three ? 'ball' : 'circle') + '.' : '')
     : 'Each step shows only what it leaves. Move by move shows the moves inside each step, played on dots.');
@@ -1735,7 +1805,8 @@ function learnShapePaint() {
   for (const r of E.eachs) r.checked = r.value === Sh.each;
   for (const s of E.dotSels) { if (s.value !== Sh.dots) s.value = Sh.dots; s.disabled = Sh.each !== 'moves'; }
   for (const key of ['tint', 'lay', 'see', 'orbits']) { const s = E[key]; if (!s) continue; if (s.value !== Sh[key]) s.value = Sh[key]; s.disabled = Sh.each !== 'moves' || (key === 'lay' && L.space !== 3); }
-  if (E.bars) for (const key of ['orbits', 'see']) { const s = E.bars[key]; if (s.value !== Sh[key]) s.value = Sh[key]; s.disabled = Sh.each !== 'moves'; }
+  if (E.bars) for (const key of ['orbits', 'see', 'lay']) { const s = E.bars[key]; if (s.value !== Sh[key]) s.value = Sh[key]; s.disabled = Sh.each !== 'moves' || (key === 'lay' && L.space !== 3); }
+  if (E.refill) { E.refill.checked = Sh.refill; E.refill.disabled = Sh.each !== 'moves'; }
   [...E.ticks.children].forEach((b, j) => { b.classList.toggle('is-on', W.whole && j === W.k); b.classList.toggle('is-past', j <= Sh.pos + 1e-9); });
   put(E.play, Sh.playing ? 'Pause' : 'Play'); E.play.setAttribute('aria-pressed', String(Sh.playing));
   E.back.disabled = Sh.pos <= 1e-9; E.fwd.disabled = Sh.pos >= N - 1e-9; E.again.disabled = Sh.pos <= 1e-9 && !Sh.playing;
@@ -1746,7 +1817,7 @@ function learnShapePaint() {
   for (const r of L.el.spaces) r.checked = +r.value === L.space;
   for (const r of E.follows) r.checked = r.value === L.follow;
   if (E.speed.value !== L.speed) E.speed.value = L.speed;
-  const a = ap(), sig = [Sh.kind, L.space, S.n, S.abs, S.flip, a.id, JSON.stringify(S.param[a.id]), Sh.c, Sh.threeTried, !!Sh.three, Sh.note, Sh.side, Sh.each, Sh.after, Sh.see].join('|');
+  const a = ap(), sig = [Sh.kind, L.space, S.n, S.abs, S.flip, a.id, JSON.stringify(S.param[a.id]), Sh.c, Sh.threeTried, !!Sh.three, Sh.note, Sh.side, Sh.each, Sh.after, Sh.see, Sh.refill].join('|');
   if (sig !== Sh.sig) { Sh.sig = sig; learnShapePanel(); }
   L.el.eqNote.hidden = S.eq === 'z^n + c';
   L.el.hint.hidden = !!Sh.note;
@@ -1868,7 +1939,7 @@ function learnShapeDefaults() {
   L.follow = 'shape';      // (version 26: Learn opens on the whole shape, where the dots and their choices are)
   Sh.kind = 'm'; Sh.c = LEARN_V_START[2].c.slice(); Sh.pos = 0; Sh.gone = ''; Sh.thin = ''; Sh.place = null; Sh.above = {};
   Sh.each = 'moves'; Sh.dots = 'some'; Sh.endSide = false; Sh.D = {}; Sh.sig3 = '';      // (round 29)
-  Sh.after = 'go'; Sh.orbits = 'few'; Sh.lay = 'grid'; Sh.tint = 'dir'; Sh.see = 'dots'; Sh.K = {}; Sh.Nt = {}; Sh.Lv = {};      // (versions 24 to 28)
+  Sh.after = 'go'; Sh.orbits = 'few'; Sh.lay = 'both'; Sh.tint = 'mix'; Sh.refill = true; Sh.see = 'dots'; Sh.K = {}; Sh.Nt = {}; Sh.Lv = {};      // (versions 24 to 28)
   Sh.view2 = { m: { x: 0, y: 0, zoom: 1 }, j: { x: 0, y: 0, zoom: 1 } }; Sh.view3 = learnVCopy(LEARN_SHAPE_VIEW3);
   Sh.sig = ''; Sh.seen = '';
   if (Sh.el.speed) Sh.el.speed.value = 'normal';
@@ -2017,6 +2088,8 @@ function learnShapeInit() {
     '<label class="learn-shape-dots"><span class="label learn-shape-cap">Dots</span><select id="learnShapeDotsBar"><option value="few">Few</option><option value="some">Some</option><option value="many">Many</option><option value="most">Very many</option></select></label>' +
     // (version 27) how a step is played and what is shown, under the picture as well
     '<label class="learn-shape-dots"><span class="label learn-shape-cap">Orbits</span><select id="learnShapeOrbitsBar"><option value="few">A few dots</option><option value="all">Every dot</option><option value="none">None</option></select></label>' +
+    // (version 29) how the dots lie in space, under the picture as well
+    '<label class="learn-shape-dots"><span class="label learn-shape-cap">In 3D</span><select id="learnShapeLayBar"><option value="grid">Full grid</option><option value="sheets">Sheets</option><option value="shells">Shells</option><option value="both">Sheets and shells</option></select></label>' +
     '<label class="learn-shape-dots"><span class="label learn-shape-cap">Show</span><select id="learnShapeSeeBar"><option value="dots">Dots</option><option value="skin">Surface</option><option value="both">Both</option></select></label></div></div>');
   E.bar.id = 'learnShapeBar'; E.bar.hidden = true;
   el.bar.after(E.bar);
@@ -2076,8 +2149,9 @@ function learnShapeInit() {
     // (version 25) the dots, the surface of what is left, or both
     '<div class="field"><label class="label" for="learnShapeSee">Show</label><select id="learnShapeSee" class="learn-shape-sel"><option value="dots">The dots</option><option value="skin">The surface, as beads</option><option value="both">Both</option></select></div>' +
     '<div class="field"><label class="label" for="learnShapeOrbits">Orbits: the whole path of</label><select id="learnShapeOrbits" class="learn-shape-sel"><option value="few">A few dots, drawn larger</option><option value="all">Every dot</option><option value="none">No dot</option></select></div>' +
-    '<div class="field"><label class="label" for="learnShapeTint">Colour each dot by</label><select id="learnShapeTint" class="learn-shape-sel"><option value="dir">Which way from the centre it started</option><option value="height">How high it started</option><option value="dist">How far from the centre it started</option></select></div>' +
-    '<div class="field"><label class="label" for="learnShapeLay">In 3D, lay the dots out as</label><select id="learnShapeLay" class="learn-shape-sel"><option value="grid">A full grid</option><option value="sheets">Level sheets, one above the other</option><option value="shells">Shells, one ball inside the other</option></select></div>');
+    '<label class="check"><input type="checkbox" id="learnShapeRefill" checked> <span>Add new dots as dots are thrown out</span></label>' +
+    '<div class="field"><label class="label" for="learnShapeTint">Colour each dot by</label><select id="learnShapeTint" class="learn-shape-sel"><option value="dir">Which way from the centre it started</option><option value="height">How high it started</option><option value="dist">How far from the centre it started</option><option value="mix">How far from the centre and how high it started</option></select></div>' +
+    '<div class="field"><label class="label" for="learnShapeLay">In 3D, lay the dots out as</label><select id="learnShapeLay" class="learn-shape-sel"><option value="grid">A full grid</option><option value="sheets">Level sheets, one above the other</option><option value="shells">Shells, one ball inside the other</option><option value="both">Sheets and shells together</option></select></div>');
   each.id = 'learnShapeEachBlock';
   kind.after(each);
   E.eachHelp = each.querySelector('#learnShapeEachHelp'); E.parts = E.bar.querySelector('#learnShapeParts');
@@ -2087,8 +2161,10 @@ function learnShapeInit() {
   each.addEventListener('change', pickEach); E.bar.querySelector('#learnShapeEachBar').addEventListener('change', pickEach);
   for (const s of E.dotSels) s.addEventListener('change', () => LEARN.shape.set({ dots: s.value }));
   for (const key of ['tint', 'lay', 'see', 'orbits']) { const s = E[key] = each.querySelector('#learnShape' + key[0].toUpperCase() + key.slice(1)); s.addEventListener('change', () => LEARN.shape.set({ [key]: s.value })); }
+  E.refill = each.querySelector('#learnShapeRefill');
+  E.refill.addEventListener('change', () => LEARN.shape.set({ refill: E.refill.checked }));
   E.bars = {};
-  for (const key of ['orbits', 'see']) { const s = E.bars[key] = E.bar.querySelector('#learnShape' + key[0].toUpperCase() + key.slice(1) + 'Bar'); s.addEventListener('change', () => LEARN.shape.set({ [key]: s.value })); }
+  for (const key of ['orbits', 'see', 'lay']) { const s = E.bars[key] = E.bar.querySelector('#learnShape' + key[0].toUpperCase() + key.slice(1) + 'Bar'); s.addEventListener('change', () => LEARN.shape.set({ [key]: s.value })); }
   const cBlock = make('div', 'sec-inner learn-only-shape', '<div id="learnShapeDials" class="sec-inner"></div><div class="learn-btncol" id="learnShapeCs">' +
     '<button class="btn" id="learnShapeJuliaC" type="button">Use the c of the Julia tab</button></div>');
   cBlock.id = 'learnShapeC';
@@ -2146,8 +2222,9 @@ function learnShapeSet(o) {
   // The two choices of After each step cut a step into different parts, so a step under way is put back to its start.
   if (o.see !== undefined && ['dots', 'skin', 'both'].includes(o.see)) Sh.see = o.see;      // (version 25)
   if (o.after !== undefined && ['go', 'home', 'again', 'back'].includes(o.after) && o.after !== Sh.after) { learnShapeStop(); Sh.after = o.after; Sh.endSide = false; Sh.sig3 = ''; Sh.pos = Math.floor(Sh.pos + 1e-9); }
-  if (o.lay !== undefined && ['grid', 'sheets', 'shells'].includes(o.lay)) Sh.lay = o.lay;
-  if (o.tint !== undefined && ['dir', 'height', 'dist'].includes(o.tint)) Sh.tint = o.tint;
+  if (o.lay !== undefined && ['grid', 'sheets', 'shells', 'both'].includes(o.lay)) Sh.lay = o.lay;
+  if (o.refill !== undefined) Sh.refill = !!o.refill;      // (version 29)
+  if (o.tint !== undefined && ['dir', 'height', 'dist', 'mix'].includes(o.tint)) Sh.tint = o.tint;
   // (version 28) orbits: 'few' | 'all' | 'none' (paths: true | false is still taken, as 'all' | 'few'). The page offers only
   // after: 'go'; the other ways of playing a step are left in the code and can be set from here.
   if (o.orbits !== undefined && ['few', 'all', 'none'].includes(o.orbits)) Sh.orbits = o.orbits;
@@ -2175,11 +2252,11 @@ function learnShapeState() {
     // with At once): its key ('out', 'move', 'gone', 'home'), its name, its number i of n, how far through it (t), and
     // for a move its number. parts: the names of the parts of one step, in order. shown: picture by picture, how many
     // dots there are and how many are on show at this step.
-    after: Sh.after, orbits: Sh.orbits, lay: Sh.lay, tint: Sh.tint, see: Sh.see, live: on && L.space === 3 && Sh.liveLast ? Sh.liveLast : [],
+    after: Sh.after, refill: Sh.refill, orbits: Sh.orbits, lay: Sh.lay, tint: Sh.tint, see: Sh.see, live: on && L.space === 3 && Sh.liveLast ? Sh.liveLast : [],
     beads: on && Sh.each === 'moves' && Sh.see !== 'dots' ? learnShapeKinds().map(kd => learnShapeSkin(kd, Math.min(LEARN_SHAPE_N, W.k)).dots.length) : [],
     each: Sh.each, dots: Sh.dots, part: W.part ? { key: W.part.key, label: W.part.label, i: W.part.i, n: W.part.n, t: W.part.t, move: W.part.key === 'move' ? W.part.j : -1 } : null,
     parts: Sh.each === 'moves' ? learnShapeMoves().chips.slice() : [],
-    shown: on && Sh.each === 'moves' ? learnShapeKinds().map(kd => { const D = learnShapeDots(kd); return { kind: kd, all: D.dots.length, on: D.dots.filter(d => d.out > W.k).length }; }) : [],
+    shown: on && Sh.each === 'moves' ? learnShapeKinds().map(kd => { const D = learnShapeDots(kd); learnShapeRefill(D, W.k); return { kind: kd, all: D.dots.length, start: D.n0, on: D.dots.filter(d => d.out > W.k && !(d.from > W.k)).length }; }) : [],
     // gone, thin: what the pictures on show told the words (learnShapeDraw). thick: the bite of each step in pixels,
     // picture by picture (2D). above: what a 3D shape seen from straight above told them (thick: in units).
     gone: on ? Sh.gone : '', thin: on ? Sh.thin : '', where: W.where.replace(/<[^>]+>/g, ''),
@@ -2217,7 +2294,7 @@ function learnShapeDotsAt(kind, pos) {
   if (!learnShapeMovesOn()) return { kind, pos: at, step: k, part: null, dots: [] };      // Each step: At once draws no dots
   const D = learnShapeDots(kind), ph = u > 1e-9 ? learnShapePart(u) : null, ch = ph ? learnShapeChain(kind, k) : null, te = ph ? learnShapeGlide(ph.t) : 0, list = [];
   D.dots.forEach((d, i) => {
-    if (!(d.out > k)) return;
+    if (!(d.out > k) || d.from > k) return;
     const going = !!ph && d.out === k + 1;
     if (going && ph.key === 'home') return;
     list.push({ i, at: (ph && ch.pos[i] ? learnShapeDotAt(D, ch, i, ph, te) : Sh.after === 'go' || (Sh.after === 'again' && !learnShapeAgain(kind)) ? d.pts[k] : d.p).slice(), going });
