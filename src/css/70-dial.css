@@ -1,10 +1,7 @@
-/* controls kit (70-dial.js). A dial is a label, a box cluster (play, step toggle, typed box with its two
+/* Controls kit (70-dial.js). A dial is a label, a box cluster (play, step toggle, typed box with its two
    step buttons) and a slider. Label and cluster share a row while there is room; in a narrow column the
-   cluster drops under the label, and in a very narrow one the typed box gives up width before anything
-   sticks out. Everything is drawn from the theme tokens. */
+   cluster drops under the label, and the typed box gives up width before anything sticks out. */
 .dial { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 10px; min-width: 0; }
-/* these classes set a display of their own, which would otherwise beat the hidden attribute */
-.dial[hidden], .field[hidden], .field-block[hidden], .check[hidden], .check-block[hidden], .note[hidden] { display: none; }
 .dial > .label { flex: 1 1 7em; min-width: 0; line-height: 1.3; overflow-wrap: anywhere; }
 .dial-box { flex: 0 1 auto; min-width: 0; max-width: 100%; display: flex; align-items: stretch; gap: 4px; height: 26px; margin-left: auto; }
 .dial-box button {
@@ -15,12 +12,11 @@
 .dial-box button:hover { color: var(--ink); border-color: var(--ink-2); }
 .dial-box button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 
-/* extreme values are on and this dial has its wider range: a small tag in front of the box cluster */
+/* extreme ranges are on and this dial has its wider range: a small tag in front of the box cluster */
 .dial-wide {
   flex: none; align-self: center; font-family: var(--f-cond); font-weight: 600; font-size: 10.5px; line-height: 1;
   letter-spacing: .09em; text-transform: uppercase; color: var(--brass); cursor: default; user-select: none; -webkit-user-select: none;
 }
-.dial-wide[hidden] { display: none; }
 
 /* play: sweeps the value */
 .dial-play { width: 26px; display: grid; place-items: center; }
@@ -33,10 +29,8 @@
 .dial-box .dial-mode { min-width: 40px; padding: 0 6px; font-family: var(--f-mono); font-size: 11.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .dial-box .dial-mode[aria-pressed="true"], .dial-box .dial-mode[aria-pressed="true"]:hover { color: var(--paper); background: var(--ink); border-color: var(--ink); }
 
-/* typed box with its step buttons. The box has its usual width (--dial-w) for every ordinary number and grows
-   for a longer one: the script writes the number of characters into --dial-len, and the box takes that many
-   plus half a character of air. So a value with six decimals and a minus sign shows whole. Only where the
-   column has no room left does the box give up width again. */
+/* typed box with its step buttons. The box has its usual width (--dial-w) and grows for a longer number: the
+   script writes the number of characters into --dial-len, and the box takes that many plus half a character. */
 .dial-num { flex: 0 1 auto; min-width: 0; display: flex; align-items: stretch; background: var(--paper); border: 1px solid var(--line); }
 .dial-num:hover { border-color: var(--ink-2); }
 .dial-num:focus-within { outline: 2px solid var(--brass); outline-offset: 2px; }
@@ -46,7 +40,7 @@
   background: transparent; color: var(--ink); font-family: var(--f-mono); font-size: 13px; line-height: 1;
   text-align: right; font-variant-numeric: tabular-nums;
 }
-/* a browser without max() keeps the usual width, as before */
+/* a browser without max() keeps the usual width */
 @supports (width: max(1ch, 2ch)) {
   .dial .dial-num .num { width: max(var(--dial-w), calc((var(--dial-len, 0) + .5) * 1ch)); }
 }
@@ -88,7 +82,7 @@
 
 .dial-help { flex: 1 0 100%; margin: 0; font-size: 12.5px; line-height: 1.4; }
 
-/* the reset button for a group (addReset): present, but quieter than the buttons that do things to the picture */
+/* the reset button for a group (addReset): quieter than the buttons that do things to the picture */
 .btn.dial-reset { align-self: flex-start; padding: 4px 9px; font-size: 12px; color: var(--ink-2); background: transparent; }
 .btn.dial-reset:hover { color: var(--ink); }
 

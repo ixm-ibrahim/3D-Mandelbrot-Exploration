@@ -1,3 +1,0 @@
-dist/r29-learn.html against dist/r29-learn-b0.html, 1400x950 dark, 130 states
-PICTURE point-reset: 18637 of 607392 pixels differ (largest step 212 of 255; 5049 differ by more than 2)  gl buffers None / None
-pictures identical pixel for pixel: 129 of 130;  words identical: 130 of 130

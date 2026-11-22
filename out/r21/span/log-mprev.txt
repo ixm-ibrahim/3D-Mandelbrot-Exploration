@@ -1,4 +1,0 @@
-mandel prev_lathe 11 s
-mandel prev_page 22 s
-mandel prev_Pfirst 32 s
-mandel prev_axis 45 s

@@ -1,7 +1,0 @@
-step 1 waited 4.6 s
-step 2 result: {"at": "with learn", "top": {"learn": true, "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": false, "top": 0, "h": 441, "small": 667}, "stageH": 193, "mainH": 441, "share": 0.661, "solo": true}, "scrolled": {"pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 441, "small": 667}, "main": [0, 441], "btn": [403, 435], "over": [], "pinH": "441px"}}
-step 2 wrote out/r13/pin/375x667-light-10-with-learn.png
-step 3 result: {"at": "learn off again", "learn": false, "pin": {"want": true, "can": true, "on": true, "free": false, "stuck": true, "top": 0, "h": 365, "small": 667}, "stageH": 265, "solo": false}
-step 3 waited 0.0 s
-step 3 wrote out/r13/pin/375x667-light-11-learn-off.png
-no console errors

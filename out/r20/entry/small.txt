@@ -1,5 +1,0 @@
-(a) bud at 60 degrees, cut along the x-axis through (0, 0.3, 0.52), 0.5 wide, 80 steps: biggest piece 0.133 long (along x) and 0.121 across (round the axis); 198 pieces in all, the biggest holds 96.2 % of the points in the set
-(b) rabbit, 360 x 360 points (pictures doubled): cut at 120 degrees against the flat cut: 0 of 518400 pixels differ; cut at 60 degrees flipped top to bottom against the flat cut: 0 differ; unflipped: 84848 differ
-(c) power 2.5 (wound k = 3 times): gap between the answers of two points 2e-7 apart, either side of the half-plane at the given angle round the x-axis
-    x = -0.5, 0.5 from the axis: 0 deg: 1.5e-07  15 deg: 3.5e-07  30 deg: 1.8e-01  45 deg: 3.5e-07  60 deg: 1.5e-07  90 deg: 1.8e-01  150 deg: 1.8e-01  180 deg: 1.5e-07
-    x = +0.5, 0.5 from the axis: 0 deg: 1.5e-07  15 deg: 3.5e-07  30 deg: 2.3e-07  45 deg: 3.5e-07  60 deg: 1.5e-07  90 deg: 2.3e-07  150 deg: 2.3e-07  180 deg: 1.5e-07

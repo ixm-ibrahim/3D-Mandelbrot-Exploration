@@ -1,17 +1,16 @@
-// ---------- approaches. Each one defines a product mul(a, b) and a power pw(a, n) on points of space;
-// every one except "classic" collapses to complex arithmetic in the plane z = 0.
-//
-// Powers may be negative or fractional. Every result is kept finite: a pole (the origin under a negative
-// power) and a runaway orbit both stop at a length of about 1.7e18, which the renderer's 32-bit numbers
-// can still square. e^42 sits just above 64^10: the escape radius raised to the largest power on the dial.
+// Approaches: the 3D squaring rules. Each defines a product mul(a, b) and a power pw(a, n) on points of space:
+// its shader text (GL_...), its JavaScript twin (MATH), what its orbit carries (CARRY) and its entry in APPROACHES.
+
+// Powers may be negative or fractional. Every result is kept finite: a pole (the origin under a negative power)
+// and a runaway orbit both stop at a length of about 1.7e18, which the renderer's 32-bit numbers can still square.
+// e^42 sits just above 64^10: the escape radius raised to the largest power on the dial.
 const APR_LOGCAP = 42;
 const aprPow = (r, n) => Math.exp(Math.min(n * Math.log(Math.max(r, 1e-30)), APR_LOGCAP));
 const aprRad = deg => (deg || 0) * PI / 180;
 
-// Fold the spin angle around the x-axis so the nearest of k planes through that axis lands on the
-// xy-plane (keeping the y > 0 and y < 0 halves apart, which the flat dynamics needs).
+// Folds the angle around the x-axis so that the nearest of k planes through that axis lands on the xy-plane.
+// The halves y > 0 and y < 0 stay apart, which the flat dynamics needs.
 function foldk(v, k) {
-  if (k < 1.5) return v;
   const [x, y, z] = v, rho = Math.hypot(y, z);
   if (rho < 1e-300) return v;
   const w = PI / k, psi = Math.atan2(z, y), s = psi < 0 ? -1 : 1, a = Math.abs(psi);
@@ -22,14 +21,12 @@ function foldk(v, k) {
   a2 *= s;
   return [x, rho * Math.cos(a2), rho * Math.sin(a2)];
 }
-// ---------- helper of "Sphere inversions, soft mirror" (version 31): the dial between one plane and two planes.
-// The turn a of a point round the x-axis, counted from the flat plane (0° in the plane z = 0, 90° in the plane y = 0),
-// is folded by a mirror that stands at `mirror` degrees, and the corner of the fold is rounded over `soft` degrees on
-// each side of the mirror:
+// Sphere inversions, soft mirror. The turn a of a point round the x-axis, counted from the flat plane (0° in the
+// plane z = 0, 90° in the plane y = 0), is folded by a mirror at `mirror` degrees, its corner rounded over `soft` degrees:
 //   g(a) = mirror − |a − mirror|                              where |a − mirror| >= soft
-//   g(a) = mirror − ((a − mirror)² / (2·soft) + soft / 2)     nearer the mirror than that (the same value and slope where they meet)
-// Then the one-plane rule. mirror = 90, soft = 0: the one-plane rule itself. mirror = 45, soft = 0: two planes.
-// The signs of y and z are kept, as in foldk, so the rule jumps across the plane y = 0 the way two planes does.
+//   g(a) = mirror − ((a − mirror)² / (2·soft) + soft / 2)     nearer the mirror (same value and slope where they meet)
+// mirror = 90, soft = 0 is the one-plane rule; mirror = 45, soft = 0 is two planes. The signs of y and z are kept,
+// as in foldk, so the rule jumps across the plane y = 0.
 const smDial = (q, key, def, lo, hi) => clamp(q && q[key] !== undefined && isFinite(+q[key]) ? +q[key] : def, lo, hi);
 function smTurn(a, q) {
   const b = aprRad(smDial(q, 'mirror', 45, 45, 90)), w = aprRad(smDial(q, 'soft', 0, 0, 45)), t = a - b;
@@ -42,12 +39,11 @@ function smFold(v, q) {
   const g = smTurn(Math.atan2(Math.abs(z), Math.abs(y)), q);
   return [x, (y < 0 ? -1 : 1) * rho * Math.cos(g), (z < 0 ? -1 : 1) * rho * Math.sin(g)];
 }
-// ---------- helper of "Soft mirrors, doubling" (version 32). The soft mirror of smFold, with twice as many mirrors
-// at each step of an orbit: at step k the mirrors stand every 90°/2^(k−1) round the x-axis, the first of them at half
-// that from the flat plane (45°, 22.5°, 11.25°, ...), so 2, 4, 8, ... planes through the x-axis are sent onto the flat
-// plane. The soft edge shrinks with the gap between the mirrors, so it is always the same share of it.
+// Soft mirrors, doubling. The soft mirror of smFold with twice as many mirrors at each step of an orbit: at step k
+// they stand every 90°/2^(k−1) round the x-axis, the first at half that from the flat plane, so 2, 4, 8, ... planes
+// through the x-axis are sent onto the flat plane. The soft edge keeps the same share of the gap between mirrors.
 //   b = 45°/2^(k−1),  t = how far the turn a is from the nearest mirror (−b .. b),  g = b − |t|, the corner rounded
-// as in smTurn. Nothing is stretched: every piece of the fold is a mirror image. k = 1 is smFold with the mirror at 45°.
+// as in smTurn. k = 1 is smFold with the mirror at 45°.
 function smFoldK(v, k, soft) {
   const [x, y, z] = v, rho = Math.hypot(y, z);
   if (z === 0 || !(rho > 1e-300)) return v;          // a point of the flat plane stays exactly where it is
@@ -56,7 +52,6 @@ function smFoldK(v, k, soft) {
   const g = !(w > 0) || Math.abs(t) >= w ? b - Math.abs(t) : b - (t * t / (2 * w) + 0.5 * w);
   return [x, (y < 0 ? -1 : 1) * rho * Math.cos(g), (z < 0 ? -1 : 1) * rho * Math.sin(g)];
 }
-// ---------- helpers of the three rules that were tried and failed (group 'tried'; ported from out/lab2/)
 // Blended planes. sfDir: the direction of the one-plane power of the unit direction d.
 const sfDir = (d, n) => {
   if (n === 2) { const q = 1 + d[2] * d[2]; return [(d[0] * d[0] - d[1] * d[1]) / q, 2 * d[0] * d[1] / q, 2 * d[2] / q]; }
@@ -73,7 +68,7 @@ const sfStep = (t, a, curve) => {
 //   turn G = k * g + A * W * sin(4g),   g the turn of the result, W = smoothstep of sin(angle from the x-axis) / sin(reach)
 // e^(ig) is raised to the whole power k by repeated complex multiplication and sin(4g) is the polynomial
 // 4cs(c^2 - s^2), so a point with z = 0 (or y = 0, for k = 1 mod 4) comes out with z = 0 (y = 0) to the last bit.
-// That matters: for |k| > 1 the turn pushes away from those planes, and a rounding leak would grow.
+// For |k| > 1 the turn pushes away from those planes, so a rounding leak would grow.
 function axbTurn(w, q) {
   const k = Math.round(q.k === undefined ? 1 : q.k), A = q.wob || 0, B = q.pinch || 0;
   if (k === 1 && A === 0 && B === 0) return w;
@@ -133,7 +128,7 @@ function pbUnslide(x, y, z) {
   if (z + PB_S3 * x >= 0) { const a = 0.75 * Math.atan2(z, x); return [c * Math.cos(a), y, c * Math.sin(a)]; }
   const b = 1.5 * Math.atan2(z, -x); return [-c * Math.cos(b), y, c * Math.sin(b)];
 }
-// weights (lA, lB, lC) -> unit direction with z >= 0
+// weights (lA, lB, lC) to a unit direction with z >= 0
 function pbLayout(l) {
   const mn = Math.min(l[0], l[1], l[2]), e = 3 * mn, s = 1 - e;        // s: 0 at the centre, 1 on the boundary
   const k = l[2] <= l[0] && l[2] <= l[1] ? 0 : l[0] <= l[1] ? 1 : 2;   // the edge the ray from the centre meets
@@ -141,7 +136,7 @@ function pbLayout(l) {
   const z = Math.sin(0.5 * PI * e), rho = Math.cos(0.5 * PI * e), tau = PB_T3 * (k + t);
   return pbSlide(rho * Math.cos(tau), rho * Math.sin(tau), z);
 }
-// the same backwards: a unit direction with z >= 0 -> weights
+// the same backwards: a unit direction with z >= 0 to weights
 function pbInverse(x0, y0, z0) {
   let [x, y, z] = pbUnslide(x0, y0, z0);
   z = clamp(z, 0, 1);
@@ -168,17 +163,16 @@ function pbPower(v, n) {
   const d = pbLayout(wt), R = aprPow(r, m);
   return [R * d[0], R * d[1], z === 0 ? 0 : flip ? -R * d[2] : R * d[2]];
 }
-// ---------- helpers of the rules of round 14 (their checks and pictures: out/r14/rules/)
-// cos and sin of an angle in degrees, with a value that should be exactly 0 made exactly 0 (the shader does the same)
-const r14CS = deg => [Math.cos(aprRad(deg)), Math.sin(aprRad(deg))].map(c => (Math.abs(c) < 1e-6 ? 0 : c));
+// cos and sin of an angle in degrees, with a value that should be exactly 0 made exactly 0, as in the shader
+const aprCosSin = deg => [Math.cos(aprRad(deg)), Math.sin(aprRad(deg))].map(c => (Math.abs(c) < 1e-6 ? 0 : c));
 // Rotor square: the reference axis, and a direction square to it for a point that lies on the axis itself
 function rtAxis(q) {
-  const lo = r14CS(q.lon), la = r14CS(q.lat === undefined ? 90 : q.lat);
+  const lo = aprCosSin(q.lon), la = aprCosSin(q.lat === undefined ? 90 : q.lat);
   return { a: [la[0] * lo[0], la[0] * lo[1], la[1]], side: [-lo[1], lo[0], 0] };
 }
 // Quaternions, 4D: where the picture point P sits in 4D (real, i, j, k), for a slice at w tilted by `tilt` degrees
 function q4Embed(P, q = {}) {
-  const [c, s] = r14CS(q.tilt), w = q.w || 0;
+  const [c, s] = aprCosSin(q.tilt), w = q.w || 0;
   return [P[0] * c - w * s, P[1], P[2], P[0] * s + w * c];
 }
 // Kleinian squaring: the direction map H. m + 1 caps round the equator, centred at the longitudes
@@ -204,15 +198,14 @@ function kqPower(v, n, two) {
   const R = aprPow(r, n);
   return n < 0 ? [R * h[0], -R * h[1], -R * h[2]] : [R * h[0], R * h[1], R * h[2]];
 }
-// ---------- helpers of the rule of round 15, Square pillow (its checks and pictures: out/r15/entry/)
-// Directions are laid on a square pillowcase: s runs round the pillow (one full turn is 1), t from the south seam
-// (0) to the north seam (1/2), and each seam is zipped shut. For the whole power m the belt t0 = 1/(m + 1) is the
-// equator, with s the longitude. Each half sphere is laid out the same way: p = (x, y)/(1 + |z|) =
+// Square pillow. Directions are laid on a square pillowcase: s runs round the pillow (one full turn is 1), t from
+// the south seam (0) to the north seam (1/2), and each seam is zipped shut. For the whole power m the belt
+// t0 = 1/(m + 1) is the equator, with s the longitude. Each half sphere is laid out the same way: p = (x, y)/(1 + |z|) =
 // ((1 + B²)/2 · cos 2πs, B · sin 2πs), B = 1 on the equator and B = 0 on the seam. North of the belt
 // B = sinh(bn·(1/2 − t))/sinh(bn·wn), south of it B = sinh(bs·t)/sinh(bs·ws), with wn = 1/2 − t0 and ws = t0 the widths
 // of the two strips and b·coth(b·width) = 2π, so that a step along t and a step along s are the same length on the belt.
 // The power multiplies s and t by m (with a mirror, s -> −s) and folds the result back onto the pillow.
-const SP_MAXN = 5;     // the layout is made for the whole powers 2 to SP_MAXN (b·coth(b·ws) = 2π has no answer above 5)
+const SP_MAXN = 5;     // the layout exists for the whole powers 2 to SP_MAXN: b·coth(b·ws) = 2π has no answer above 5
 const SP_LAY = {};
 function spLayout(m) {
   if (SP_LAY[m]) return SP_LAY[m];
@@ -226,8 +219,8 @@ function spLayout(m) {
 }
 // beta = B² for a point p of the unit disc: the root in [0, 1] of beta·(1 + beta)² − 4px²·beta − py²·(1 + beta)² = 0.
 // The left side curves upward on [0, 1], so Newton's steps from a value above the root come down onto it and never
-// pass it. The start is the root of the same equation without its beta³ (never below the true root, and nearly on
-// it near the seams); measured, 5 steps reach the last digit (out/r15/entry/beta_steps2.py).
+// pass it. The start, the root of the same equation without its beta³, is never below the true root, and 5 steps
+// reach the last digit.
 function spBeta(px, py) {
   const X = 4 * px * px, Y = py * py;
   if (!(Y > 0)) return Math.max(0, 2 * Math.abs(px) - 1);
@@ -270,12 +263,11 @@ function spPower(v, n) {
   }
   return n < 0 ? [R * h[0], -R * h[1], -R * h[2]] : [R * h[0], R * h[1], R * h[2]];
 }
-// ---------- helpers of the two rules of round 16, Turning plane (their checks and pictures: out/r16/entry/)
-// The one-plane power P is taken about a reference plane through the x-axis that turns with the point:
+// Turning plane. The one-plane power P is taken about a reference plane through the x-axis that turns with the point:
 //   F(v) = Rot(psi) P(Rot(−psi) v),   psi = q·(phi − sin(2m·phi)/(2m)),   phi = atan2(z, y),
 // with Rot(a) the turn about the x-axis by the angle a, m the whole number nearest to |n| (at least 1), and
-// q = 1 − m ("away": the plane turns against the point) or q = 1 ("along": it turns with the point). At n = 2
-// that is m = 2 and q = −1 or +1. psi stands still (a flat spot) where phi is a multiple of 180°/m.
+// q = 1 − m ("away": the plane turns against the point) or q = 1 ("along": it turns with the point).
+// psi stands still where phi is a multiple of 180°/m.
 const tpPlanes = n => Math.max(1, Math.floor(Math.abs(n) + 0.5));
 // the one-plane power with no turn and no lift; at n = 2 the closed form (the shader's aprMsq)
 function tpOne(v, n) {
@@ -295,13 +287,12 @@ function tpPower(v, n, along) {
   const w = tpOne([x, c * y + s * z, c * z - s * y], n);
   return [w[0], c * w[1] - s * w[2], s * w[1] + c * w[2]];
 }
-// ---------- helper of the rule of round 20, Wind, then square (its checks and pictures: out/r20/entry/)
-// The other planes through the x-axis get no arithmetic of their own. The turn a of a point round the x-axis (0 on
-// the side y > 0 of the plane z = 0) is first wound, a -> g(a) = k·a − (k − 1)·sin(2k·a)/(2k), and then the one-plane
-// power P is taken, with nothing turned back:   F(v) = P(x, ρ·cos g, ρ·sin g),   ρ the distance of v from the x-axis.
-// k is a whole odd number: m, the whole number nearest to |n| (at least 1), or m + 1 when m is even (an even count
-// would send the half y < 0 of the plane z = 0 onto the half y > 0). g has slope 1 wherever g(a) is a multiple of
-// 180°: those 2k half-planes are sent into the plane z = 0 with no squeeze. cos and sin of k·a come from multiplying
+// Wind, then square. The turn a of a point round the x-axis (0 on the side y > 0 of the plane z = 0) is wound,
+// a -> g(a) = k·a − (k − 1)·sin(2k·a)/(2k), and then the one-plane power P is taken, with nothing turned back:
+//   F(v) = P(x, ρ·cos g, ρ·sin g),   ρ the distance of v from the x-axis.
+// k is odd: m, the whole number nearest to |n| (at least 1), or m + 1 when m is even, because an even count would
+// send the half y < 0 of the plane z = 0 onto the half y > 0. g has slope 1 wherever g(a) is a multiple of 180°:
+// those 2k half-planes are sent into the plane z = 0 with no squeeze. cos and sin of k·a come from multiplying
 // (y + iz)/ρ by itself, and sin(2k·a) = 2·sin(k·a)·cos(k·a), so no angle is ever measured.
 const wsCount = n => { const m = Math.max(1, Math.floor(Math.abs(n) + 0.5)); return m % 2 ? m : m + 1; };
 // A point with z exactly 0 takes the one-plane power as it stands, so its result has z exactly 0.
@@ -313,21 +304,19 @@ function wsPower(v, n) {
   const e = spTurn(y / rho, z / rho, k), d = (k - 1) * e[0] * e[1] / k, cd = Math.cos(d), sd = Math.sin(d);
   return tpOne([x, rho * (e[0] * cd + e[1] * sd), rho * (e[1] * cd - e[0] * sd)], n);
 }
-// ---------- helpers of the two rules of round 22 (their checks and pictures: out/r22/entry/). They are the first rules
-// whose ORBIT CARRIES SOMETHING besides its point, so one squaring is not the whole rule. CARRY[id] is the rule:
+// Rules whose orbit carries something besides its point, so that one squaring is not the whole rule. CARRY[id] has:
 //   start(q)           what a fresh orbit carries (q: the entry's dials)
 //   step(st, z, c, q)  what it carries once the step that starts at the orbit point z, with the constant c, has begun.
-//                      Called ONCE per step, before any power of that step is taken. A step that starts at the exact
-//                      origin changes nothing (so the orbit of 0, the Mandelbrot orbit, counts from its point c), and
-//                      neither does one that starts at the point at infinity, which the orbit code puts at 1e9 on the
-//                      x-axis when a negative power throws the start of an orbit onto its pole.
+//                      Called once per step, before any power of that step is taken. A step that starts at the exact
+//                      origin changes nothing (so the Mandelbrot orbit counts from its point c), and neither does one
+//                      that starts at the point at infinity, which the orbit code puts at 1e9 on the x-axis.
 //   pw(st, v, n)       the power n of v in that step. An equation that takes several powers in one step (z² + z³ + c)
 //                      takes them all with the same st.
-// The shader has the same three pieces (carStart, carStep, the entry's pw) behind the hooks APR_CARRY in the orbit code.
+// The shader has the same three pieces (carStart, carStep, the entry's pw) behind the hooks of APR_CARRY.
 const carOrigin = v => { const r2 = v[0] * v[0] + v[1] * v[1] + v[2] * v[2]; return !(r2 >= 1e-30) || r2 >= 1e17; };
 // Pulled plane. The orbit carries w = |w|·(cos 2θ, sin 2θ): θ is the turn of a plane through the x-axis out of the
-// plane z = 0, |w| how firmly it is held (a plane has no front and back, hence the doubled angle). One pull by a thing
-// at (y, z), with the weight k and the ease e. A thing on the x-axis, or a weight 0, pulls nothing.
+// plane z = 0, |w| how firmly it is held. The angle is doubled because a plane has no front and back. ppPull is one
+// pull by a thing at (y, z), with the weight k and the ease e. A thing on the x-axis, or a weight 0, pulls nothing.
 function ppPull(w, y, z, k, e) {
   const m = Math.min(k * (y * y + z * z), 1e18);
   if (!(m > 0)) return w;
@@ -355,7 +344,7 @@ const CARRY = {
     pw: (st, v, n) => (st === 1 ? tpPower(v, n, true) : tpOne(v, n)),
   },
   // Pulled plane. Carried: w. Before the powers of a step c pulls, then the orbit point.
-  // usesC: the very first squaring already depends on c (so the card, which shows that squaring, must follow c).
+  // usesC: the first squaring already depends on c, so the card, which shows that squaring, must follow c.
   pulledplane: {
     usesC: true,
     start: q => [ppDial(q, 'hold', 0.05), 0],
@@ -366,33 +355,37 @@ const CARRY = {
     },
     pw: (st, v, n) => ppPower(st, v, n),
   },
-  // Soft mirrors, doubling (version 32). Carried: how many steps have counted, this one included, and the two dials
-  // (pw is not handed them). The mirrors double until the step named by the dial "stop", and stay as they are after it.
+  // Soft mirrors, doubling. Carried: how many steps have counted, this one included, and the two dials, which pw
+  // is not handed. The mirrors double until the step named by the dial "stop" and stay as they are after it.
   mirrorsdouble: {
     start: q => ({ k: 0, soft: smDial(q, 'soft', 2, 0, 45), stop: Math.round(smDial(q, 'stop', 3, 1, 12)) }),
     step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1, soft: st.soft, stop: st.stop }),
     pw: (st, v, n) => MATH.mercator(smFoldK(v, clamp(st.k, 1, st.stop), st.soft), n, {}),
   },
-  // Sphere inversions, either side (version 33). The page's own orbit is the plain one (every choice "not mirrored"):
-  // the picture asks all the choices, in the shader (APR_EITHER). Carried: nothing the page needs.
-  // Blended mirrors, doubling (version 34). The page's own orbit takes the sharp mirrors; the picture blends (APR_BLEND).
+  // Blended mirrors, doubling. The page's own orbit takes the sharp mirrors; the picture blends (APR_BLEND).
   mirrorsblend: {
     start: q => ({ k: 0, stop: Math.round(smDial(q, 'stop', 3, 1, 12)) }),
     step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1, stop: st.stop }),
     pw: (st, v, n) => MATH.mercator(smFoldK(v, clamp(st.k, 1, st.stop), 0), n, {}),
   },
+  // Sphere inversions, either side. The page's own orbit is the plain one, every choice "not mirrored"; the picture
+  // asks all the choices, in the shader (APR_EITHER). Carried: nothing the page needs.
   either: {
     start: () => ({ k: 0 }),
     step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1 }),
     pw: (st, v, n) => MATH.mercator(v, n, {}),
   },
 };
-// The first squaring of a fresh orbit: all that the card and the Learn tab, which look at one squaring, can show.
+// The first squaring of a fresh orbit: all that the card, which looks at one squaring, can show. (In space the
+// Learn tab follows the orbit through CARRY itself.)
 const carFirst = (id, v, n, q, c) => { const R = CARRY[id]; return R.pw(R.step(R.start(q), v, c, q), v, n); };
 // The power maps in JavaScript: MATH[id](v, n, q) with q the approach's parameter object. They mirror the
 // shader code below line for line, so what the scorecard measures is what the picture shows.
 const MATH = {
-  // one plane: the rule itself
+  // One plane: longitude and Mercator latitude times n, then the turn and the lift. For whole n this is the closed
+  // form of n + 1 sphere inversions, added:  v^n = |v|^n * [1 + n * inv(sum_k R_k inv(d - w_k))],  d = v / |v|,
+  // with w_k the n-th roots of unity on the unit circle of the xy-plane, R_k the turn about the z-axis by the
+  // angle of w_k, and inv(q) = (x, -y, -z) / |q|^2. A negative n takes one more inversion.
   mercator(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
     if (r < 1e-20 && n > 0) return [0, 0, 0];
@@ -401,12 +394,11 @@ const MATH = {
     const R = aprPow(r, n), p = Math.atan2(y, x) * n + aprRad(q.turn);
     return [R * h * Math.cos(p), R * h * Math.sin(p), R * Math.tanh(m)];
   },
-  // two or more planes (the earlier version): the fold, then the one-plane rule. No turn: the fold relies on
-  // the mirror symmetry y -> -y, which a turn breaks.
+  // Two or more planes: the fold, then the one-plane rule. No turn: the fold relies on the mirror symmetry
+  // y -> -y, which a turn breaks.
   fold(v, n, q = {}) {
     return MATH.mercator(foldk(v, Math.max(2, q.planes || 2)), n, { lift: q.lift });
   },
-  // ----- version 31: the one-plane rule behind a mirror with a soft edge (see smFold)
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -421,8 +413,7 @@ const MATH = {
     const t = aprRad(q.tilt), rz = (p, a) => [Math.cos(a) * p[0] - Math.sin(a) * p[1], Math.sin(a) * p[0] + Math.cos(a) * p[1], p[2]];
     return rz(MATH.lathe(rz(v, t), n, {}), -n * t);
   },
-  // ----- round 14
-  // Quaternions, 4D: the power is the quaternion power (the Lathe with spin 1). What is new sits in the shader's
+  // Quaternions, 4D: the power is the quaternion power (the Lathe with spin 1). The slice sits in the shader's
   // cmap and zmap: the picture point is a point of a 3D slice of 4D (see q4Embed and GL_QUAT4).
   quat4(v, n) { return MATH.lathe(v, n, {}); },
   // Rotor square: the angle between the reference axis and the point is multiplied, in the sheet that holds both.
@@ -447,33 +438,27 @@ const MATH = {
     const a = Math.cos(h), b = k * m[0], c = k * m[1], d = k * m[2], R = aprPow(r, n);
     return [R * (a * a + b * b - c * c - d * d), 2 * R * (b * c + a * d), 2 * R * (b * d - a * c)];
   },
-  // Kleinian squaring: |v|^n times the direction map H (see kqDir), with one family of caps or two.
   kleinsq(v, n) { return kqPower(v, n, false); },
   kleinsq2(v, n) { return kqPower(v, n, true); },
-  // ----- round 15
-  // Square pillow: both coordinates of a pillowcase grid are multiplied (see spPower).
   sqpillow(v, n) { return spPower(v, n); },
-  // ----- round 16
-  // Turning plane: the one-plane power about a reference plane that turns with the point (see tpPower).
   turnaway(v, n) { return tpPower(v, n, false); },
   turnalong(v, n) { return tpPower(v, n, true); },
-  // ----- round 20
-  // Wind, then square: the turn round the x-axis is wound a whole odd number of times, then the one-plane power (see wsPower).
   windsq(v, n) { return wsPower(v, n); },
-  // ----- round 22: the two rules whose orbit carries something (see CARRY). One squaring is not the whole rule, so
-  // these give the FIRST squaring of a fresh orbit. c: the constant of that orbit; left out, the page's Julia constant.
+  // Rules whose orbit carries something (see CARRY): each gives the first squaring of a fresh orbit. For
+  // pulledplane c is the constant of that orbit.
   alongonce(v, n) { return carFirst('alongonce', v, n, {}, [0, 0, 0]); },
-  // ----- version 32: the first squaring of a fresh orbit (two planes behind a soft mirror); see CARRY.mirrorsdouble
   mirrorsdouble(v, n, q = {}) { return carFirst('mirrorsdouble', v, n, q, [0, 0, 0]); },
-  // ----- version 33: the plain choice of Sphere inversions, either side (one plane)
+  // The plain choice of Sphere inversions, either side: one plane.
   either(v, n) { return MATH.mercator(v, n, {}); },
-  // ----- version 34: the first squaring of Blended mirrors, doubling, with the sharp mirror; see CARRY.mirrorsblend
   mirrorsblend(v, n, q = {}) { return carFirst('mirrorsblend', v, n, q, [0, 0, 0]); },
-  // ----- version 34: Even pillow. The direction d = (X, Y, Z) is written on a square pillow grid (A, L):
+  pulledplane(v, n, q = {}, c) { return carFirst('pulledplane', v, n, q, c); },
+  // Even pillow. The direction d = (X, Y, Z) is written on a square pillow grid (A, L):
   //   d = N(cos A, sin A cos L, sin L),  N = "made length 1".  L = 0 is the circle z = 0 (A is the angle there),
   //   A = 90 degrees is the circle x = 0 (L is the angle there); both are laid at an even speed. The four corners of
   //   the pillow are the directions (+-1, 0, +-1). Read back: rho^2 = 2 / (1 + sqrt(1 - 4 X^2 Z^2)), cos A = rho X,
   //   sin L = rho Z, cos L >= 0, sin A with the sign of Y. The power multiplies both A and L by n.
+  //   The length is the plain power |v|^n: this entry alone is not capped (aprPow), and it leaves the origin at
+  //   the origin at every power.
   evenpillow(v, n) {
     const [x, y, z] = v, r2 = x * x + y * y + z * z;
     if (!(r2 > 1e-300)) return [0, 0, 0];
@@ -487,7 +472,6 @@ const MATH = {
     const m = Math.pow(r, n) / Math.hypot(w[0], w[1], w[2]);
     return [w[0] * m, w[1] * m, w[2] * m];
   },
-  pulledplane(v, n, q = {}, c) { return carFirst('pulledplane', v, n, q, c || (typeof S !== 'undefined' && S && S.c) || [0, 0, 0]); },
   bulb(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
     if (r < 1e-20 && n > 0) return [0, 0, 0];
@@ -500,10 +484,9 @@ const MATH = {
     const t = Math.atan2(Math.hypot(x, y), z) * n + aprRad(q.theta), p = Math.atan2(y, x) * n + aprRad(q.phi), R = aprPow(r, n);
     return [R * Math.sin(t) * Math.cos(p), R * Math.sin(t) * Math.sin(p), R * Math.cos(t)];
   },
-  // A negative power is the positive power followed by one sphere inversion with a mirror (y -> -y), which
-  // is what a reciprocal is in every other approach. Taken side by side, (1/(x + iy), 1/z) has no value on
-  // the plane z = 0 or on the z-axis, so everything near them would be thrown to infinity. This form is
-  // finite everywhere except the origin, and in the plane z = 0 it is still complex z^n exactly.
+  // A negative power is the positive power followed by one sphere inversion with a mirror (y -> -y), which is what
+  // a reciprocal is in every other approach. Side by side, (1/(x + iy), 1/z) has no value on the plane z = 0 or on
+  // the z-axis. This form is finite everywhere except the origin, and in the plane z = 0 it is complex z^n exactly.
   split(v, n) {
     if (n < 0) {
       const u = MATH.split(v, -n), L = len(u), most = Math.exp(APR_LOGCAP);
@@ -514,7 +497,6 @@ const MATH = {
     const R = rho < 1e-20 && n > 0 ? 0 : aprPow(rho, n);
     return [R * Math.cos(p), R * Math.sin(p), az > 0 ? aprPow(az, n) * (z < 0 ? Math.cos(PI * n) : 1) : 0];
   },
-  // ----- tried, and kept for the record
   // Blended planes: the one-plane rule is kept exactly on each of p planes through the x-axis, and between two
   // neighbouring planes the two answers are blended along the great circle between their directions.
   softfold(v, n, q = {}) {
@@ -527,7 +509,7 @@ const MATH = {
     let s = 0, ct = 1, st = 0, cw = 1, sw = 0, cj = 1, sj = 0, pa = d, D, pz = 0, sd = 1;
     const pinch = q.mix > 1.5;
     const rho = Math.hypot(d[1], d[2]);
-    if (k > 1 && d[2] !== 0 && rho > 1e-15) {               // on z = 0, and on the x-axis where every plane agrees, the first plane's rule is the answer
+    if (k > 1 && d[2] !== 0 && rho > 1e-15) {               // on z = 0, and on the x-axis where every plane agrees, the first plane answers
       const w = PI / k, u = Math.atan2(d[2], d[1]) / w, j = Math.min(Math.floor(u), k - 1), t = u - j;
       const a = clamp(q.blend || 0, 0, 0.49);
       s = sfStep(t, a, q.curve || 0);
@@ -579,25 +561,6 @@ const MATH = {
   // Pillow: a flat sheet of triangles wrapped onto the sphere of directions, in one of two layouts.
   pillow(v, n, q = {}) { return q.layout > 0.5 ? psPower(v, n) : pbPower(v, n); },
 };
-// The sphere-inversion power written out literally: n + 1 inversions, added (see notes/inversions.md).
-//   v^n = |v|^n * [ 1 + n * inv( sum_k R_k inv(d - w_k) ) ],   d = v / |v|
-// with w_k the n-th roots of unity on the unit circle of the xy-plane, R_k the turn about the z-axis by the
-// angle of w_k, and inv(q) = (x, -y, -z) / |q|^2. Whole n only; a negative n takes one more inversion.
-// The lab draws with the closed form (MATH.mercator, one plane). This is kept so the two can be compared.
-function inversionPower(v, n) {
-  const inv = q => { const r2 = Math.max(dot(q, q), 1e-300); return [q[0] / r2, -q[1] / r2, -q[2] / r2]; };
-  const m = Math.abs(Math.round(n)), r = len(v);
-  if (m === 0) return [1, 0, 0];
-  const d = scl(v, 1 / r);
-  let s = [0, 0, 0];
-  for (let k = 0; k < m; k++) {
-    const t = 2 * PI * k / m, cs = Math.cos(t), sn = Math.sin(t), q = inv(sub(d, [cs, sn, 0]));
-    s = add(s, [cs * q[0] - sn * q[1], sn * q[0] + cs * q[1], q[2]]);
-  }
-  const out = add([1, 0, 0], scl(inv(s), m));
-  return scl(n < 0 ? inv(out) : out, Math.pow(r, n));
-}
-
 // Shader side. Shared by every approach: finite powers, and helpers the formula compiler relies on.
 const GL_APR = `
 const float APR_LOGCAP = 42.0, APR_CAP = 1.74e18;
@@ -608,8 +571,8 @@ float aprSPow(float a, float b){
   if (abs(a) < 1e-30 && b > 0.0) return 0.0;
   return aprPow(abs(a), b) * (a < 0.0 ? cos(PI * b) : 1.0);
 }`;
-// The one-plane rule, shared by "Sphere inversions, one plane" and "Sphere inversions, two planes".
-// aprTurn() and aprLift() are defined by each of the two, because their dials sit in different slots of uA.
+// The one-plane rule, shared by every approach built on it. Each defines aprTurn() and aprLift() itself, because
+// the dials sit in different slots of uA.
 const GL_MERC_CORE = `
 vec3 aprMmul(vec3 a, vec3 b){
   float ra = length(a), rb = length(b);
@@ -642,8 +605,7 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return aprMpw(a, n); }
 vec3 sqr(vec3 a){ return uA.x == 0.0 && uA.y == 0.0 ? aprMsq(a) : aprMpw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
-// uA.x: the number of planes (2 or more). uA.y: the lift. No turn: the folds rely on the mirror symmetry
-// y -> -y, which a turn breaks.
+// uA.x: the number of planes (2 or more). uA.y: the lift. No turn (see MATH.fold).
 const GL_FOLD = GL_APR + `
 float aprTurn(){ return 0.0; }
 float aprLift(){ return uA.y; }
@@ -700,8 +662,7 @@ vec3 pw(vec3 v, float n){
 }
 vec3 sqr(vec3 v){ return aprSpin(aprCap(vec3(v.x * v.x - dot(v.yz, v.yz), 2.0 * v.x * v.yz))); }
 vec3 cmap(vec3 c){ return c; }`;
-// uA.x: the tilt in degrees. The quaternion power, measured from an axis turned by the tilt inside the plane
-// z = 0, and the result turned back (see MATH.tilt).
+// uA.x: the tilt in degrees (see MATH.tilt).
 const GL_TILT = GL_APR + `
 vec3 aprRz(vec3 v, float a){ float c = cos(a), s = sin(a); return vec3(c * v.x - s * v.y, s * v.x + c * v.y, v.z); }
 vec3 aprLmul(vec3 a, vec3 b){ return vec3(a.x * b.x - dot(a.yz, b.yz), a.x * b.yz + b.x * a.yz); }
@@ -763,14 +724,17 @@ vec3 pw(vec3 v, float n){
 }
 vec3 sqr(vec3 v){ return aprCap(vec3(v.x * v.x - v.y * v.y, 2.0 * v.x * v.y, v.z * v.z)); }
 vec3 cmap(vec3 c){ return c; }`;
-// ----- tried, and kept for the record (ported from out/lab2/, where each has its notes and its checks)
-// The product of two different points in "Blended planes" and "Pillow" is the one-plane product (aprMmul).
-const GL_TRIED_MERC = `
+// The one-plane rule with no turn and no lift, for approaches that take their product of two different points
+// (aprMmul) or their power from it.
+const GL_MERC_PLAIN = `
 float aprTurn(){ return 0.0; }
 float aprLift(){ return 0.0; }` + GL_MERC_CORE;
+// the one-plane power with no turn and no lift; at n = 2 the closed form (the twin of the JavaScript tpOne)
+const GL_TP_ONE = `
+vec3 tpOne(vec3 v, float n){ return n == 2.0 ? aprMsq(v) : aprMpw(v, n); }`;
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
-const GL_SOFTFOLD = GL_APR + GL_TRIED_MERC + `
+const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 // the direction of the one-plane power of the unit direction d
 vec3 sfDir(vec3 d, float n){
@@ -788,7 +752,7 @@ vec3 pw(vec3 v, float n){
   float s = 0.0, ct = 1.0, st = 0.0, cw = 1.0, sw = 0.0, cj = 1.0, sj = 0.0, rho = length(d.yz), pz = 0.0, sd = 1.0;
   bool pinch = uA.w > 1.5;
   vec3 pa = d, A = vec3(0.0), B = vec3(0.0), D;
-  // on z = 0, and on the x-axis where every plane agrees, the first plane's rule is the answer
+  // on z = 0, and on the x-axis where every plane agrees, the first plane answers
   if (k > 1.5 && d.z != 0.0 && rho > 1e-15){
     float w = PI / k, u = atan(d.z, d.y) / w, j = min(floor(u), k - 1.0), t = u - j;
     float a = clamp(uA.y, 0.0, 0.49), q = clamp((t - a) / (1.0 - 2.0 * a), 0.0, 1.0);
@@ -863,7 +827,7 @@ vec3 sqr(vec3 v){ return axbTurn(aprCap(vec3(v.x * v.x - dot(v.yz, v.yz), 2.0 * 
 vec3 cmap(vec3 c){ return c; }`;
 // Pillow. uA.x: the layout. 0: creased, the planes z = 0 and y = 0 exact (pb...). 1: smooth and angle-true, the
 // plane z = 0 kept but not exact (ps...). The same steps as psDir, pbLayout, pbInverse, psPower and pbPower.
-const GL_PILLOW = GL_APR + GL_TRIED_MERC + `
+const GL_PILLOW = GL_APR + GL_MERC_PLAIN + `
 vec3 psDir(vec3 d){
   float s = 1.0 + abs(d.z);
   vec2 w = d.xy / s, w3 = cmul(cmul(w, w), w);
@@ -940,18 +904,18 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return uA.x > 0.5 ? psPw(a, n) : pbPw(a, n); }
 vec3 sqr(vec3 a){ return uA.x > 0.5 ? psSq(a) : pbPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
-// ----- round 14 (the same steps as the JavaScript above: q4Embed, rtAxis, MATH.rotorframe, kqDir, kqPower)
-const GL_R14 = `
-vec2 r14CS(float deg){ float a = radians(deg); vec2 cs = vec2(cos(a), sin(a)); return vec2(abs(cs.x) < 1e-6 ? 0.0 : cs.x, abs(cs.y) < 1e-6 ? 0.0 : cs.y); }`;
+// cos and sin of an angle in degrees, with a value that should be exactly 0 made exactly 0 (the twin of aprCosSin above)
+const GL_COSSIN = `
+vec2 aprCosSin(float deg){ float a = radians(deg); vec2 cs = vec2(cos(a), sin(a)); return vec2(abs(cs.x) < 1e-6 ? 0.0 : cs.x, abs(cs.y) < 1e-6 ? 0.0 : cs.y); }`;
 // Quaternions, 4D. uA.x: where the slice sits on the fourth axis. uA.y: its tilt toward that axis, degrees.
 // uA.z: the fourth coordinate of c in a Julia picture. A quaternion orbit of q^n + c never leaves the flat sheet or
 // the 3D space spanned by 1, the imaginary part of c and the imaginary part of its start, so three numbers hold it:
 // (real part, part along Im c, part across Im c), and the step is the Lathe's. cmap gives c in those numbers, and
 // zmap (the hook APR_ZMAP in the orbit code) the start of a Julia orbit. Both keep the turn about the x-axis that
 // (y, z) had, so that with all three dials at 0 they change nothing: then this is the Lathe to the last bit.
-const GL_QUAT4 = GL_APR + GL_R14 + `
+const GL_QUAT4 = GL_APR + GL_COSSIN + `
 #define APR_ZMAP 1
-vec4 q4E(vec3 P){ vec2 t = r14CS(uA.y); return vec4(P.x * t.x - uA.x * t.y, P.y, P.z, P.x * t.y + uA.x * t.x); }
+vec4 q4E(vec3 P){ vec2 t = aprCosSin(uA.y); return vec4(P.x * t.x - uA.x * t.y, P.y, P.z, P.x * t.y + uA.x * t.x); }
 // the constant in 4D: in a Julia picture the page's c with the dial for its fourth part, otherwise the picture point
 vec4 q4C(vec3 c){ return uJulia > 0.5 ? vec4(c, uA.z) : q4E(c); }
 vec2 q4Dir(vec2 v){ float l = length(v); return l > 1e-12 ? v / l : vec2(1.0, 0.0); }
@@ -979,8 +943,8 @@ vec3 pw(vec3 v, float n){
 }
 vec3 sqr(vec3 v){ return aprCap(vec3(v.x * v.x - dot(v.yz, v.yz), 2.0 * v.x * v.yz)); }`;
 // Rotor square. uA.x, uA.y: the longitude and the latitude of the reference axis, degrees.
-const GL_ROTOR = GL_APR + GL_R14 + `
-vec3 rtAxis(){ vec2 lo = r14CS(uA.x), la = r14CS(uA.y); return vec3(la.x * lo, la.y); }
+const GL_ROTOR = GL_APR + GL_COSSIN + `
+vec3 rtAxis(){ vec2 lo = aprCosSin(uA.x), la = aprCosSin(uA.y); return vec3(la.x * lo, la.y); }
 vec3 mul(vec3 p, vec3 q){
   vec3 a = rtAxis();
   float x = dot(p, a), y = dot(q, a);
@@ -994,7 +958,7 @@ vec3 pw(vec3 v, float n){
   float x = dot(v, a);
   vec3 s = v - x * a;
   float rho = length(s), g = at2(rho, x) * n;
-  vec2 lo = r14CS(uA.x);
+  vec2 lo = aprCosSin(uA.x);
   vec3 u = rho > 0.0 ? s / rho : vec3(-lo.y, lo.x, 0.0);
   return aprPow(r, n) * (cos(g) * a + sin(g) * u);
 }
@@ -1035,7 +999,7 @@ vec3 sqr(vec3 v){
 vec3 cmap(vec3 c){ return c; }`;
 // Kleinian squaring, with one family of caps (kleinsq) or two (kleinsq2). No dials. The product of two different
 // points is the one-plane product of Sphere inversions (aprMmul).
-const GL_KLEINSQ_CORE = GL_APR + GL_TRIED_MERC + `
+const GL_KLEINSQ_CORE = GL_APR + GL_MERC_PLAIN + `
 vec3 kqDir(vec3 d, float m){
   float psi = PI / (m + 1.0), cp = cos(psi), th = at2(d.y, d.x);
   if (th < 0.0) th += 2.0 * PI;
@@ -1065,11 +1029,11 @@ vec3 sqr(vec3 a){ return kqPw(a, 2.0, false); }`;
 const GL_KLEINSQ2 = GL_KLEINSQ_CORE + `
 vec3 pw(vec3 a, float n){ return kqPw(a, n, true); }
 vec3 sqr(vec3 a){ return kqPw(a, 2.0, true); }`;
-// ----- round 15 (the same steps as the JavaScript above: spLayout, spBeta, spTurn, spPower)
-// Square pillow. No dials. The product of two different points is the one-plane product of Sphere inversions (aprMmul).
-// spLay gives the layout of the whole power m: K = (bn, bs, sinh(bn·wn), sinh(bs·ws)) and the belt t0.
+// Square pillow, the same steps as spLayout, spBeta, spTurn and spPower above. No dials. The product of two
+// different points is the one-plane product (aprMmul). spLay gives the layout of the whole power m:
+// K = (bn, bs, sinh(bn·wn), sinh(bs·ws)) and the belt t0.
 const spGl = x => { const t = String(+x.toPrecision(10)); return /[.e]/.test(t) ? t : t + '.0'; };
-const GL_SQPILLOW = GL_APR + GL_TRIED_MERC + `
+const GL_SQPILLOW = GL_APR + GL_MERC_PLAIN + `
 const float SP_MAXN = ${spGl(SP_MAXN)};
 void spLay(float m, out vec4 K, out float t0){
 ${Array.from({ length: SP_MAXN - 1 }, (_, i) => { const m = SP_MAXN - i, k = spLayout(m); return `  ${m > 2 ? `if (m > ${m - 0.5}) ` : ''}{ K = vec4(${[k.bn, k.bs, k.hn, k.hs].map(spGl).join(', ')}); t0 = ${spGl(k.t0)}; ${m > 2 ? 'return; ' : ''}}`; }).join('\n')}
@@ -1124,15 +1088,11 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return spPw(a, n); }
 vec3 sqr(vec3 a){ return spPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
-// ----- round 16
-// Turning plane, away and along (see tpPower): the one-plane power about a reference plane through the x-axis that
-// turns with the point. The two differ only in tpTurn, how far the plane turns for the whole power m. No dials.
-// The product of two different points is the one-plane product (aprMmul).
-// (glTurningCore is the rule without the four names an approach hands to the orbit code: round 22's entry "Along once,
-// then one plane" uses the rule for one step. glTurning puts the same text together as before, letter for letter.)
-const glTurningCore = turn => GL_APR + GL_TRIED_MERC + `
+// Turning plane, away and along (see tpPower). The two differ only in tpTurn, how far the plane turns for the
+// whole power m. No dials. The product of two different points is the one-plane product (aprMmul).
+// glTurningCore is the rule without mul, pw, sqr and cmap: "Along once, then one plane" uses it for one step.
+const glTurningCore = turn => GL_APR + GL_MERC_PLAIN + GL_TP_ONE + `
 float tpTurn(float m){ return ${turn}; }
-vec3 tpOne(vec3 v, float n){ return n == 2.0 ? aprMsq(v) : aprMpw(v, n); }
 vec3 tpPw(vec3 v, float n){
   if (v.z == 0.0){ vec3 w = tpOne(v, n); return vec3(w.xy, 0.0); }
   float m = max(1.0, floor(abs(n) + 0.5)), phi = atan(v.z, v.y);
@@ -1147,31 +1107,26 @@ vec3 sqr(vec3 a){ return tpPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
 const GL_TURNAWAY = glTurning('1.0 - m'), GL_TURNALONG = glTurning('1.0');
 
-// ----- round 20
-// Wind, then square (see wsPower): the turn round the x-axis is wound k times, k whole and odd, with slope 1 where the
-// wound turn is a multiple of 180°, and then the one-plane power is taken. No dials. The product of two different
-// points is the one-plane product (aprMmul).
-const GL_WINDSQ = GL_APR + GL_TRIED_MERC + `
+// Wind, then square (see wsPower). No dials. The product of two different points is the one-plane product (aprMmul).
+const GL_WINDSQ = GL_APR + GL_MERC_PLAIN + GL_TP_ONE + `
 float wsCount(float n){ float m = max(1.0, floor(abs(n) + 0.5)); return mod(m, 2.0) > 0.5 ? m : m + 1.0; }
-vec3 wsOne(vec3 v, float n){ return n == 2.0 ? aprMsq(v) : aprMpw(v, n); }
 vec3 wsPw(vec3 v, float n){
-  if (v.z == 0.0){ vec3 w = wsOne(v, n); return vec3(w.xy, 0.0); }
+  if (v.z == 0.0){ vec3 w = tpOne(v, n); return vec3(w.xy, 0.0); }
   float k = wsCount(n), rho = length(v.yz);
-  if (k < 1.5 || !(rho > 1e-18)) return wsOne(v, n);
+  if (k < 1.5 || !(rho > 1e-18)) return tpOne(v, n);
   vec2 u = v.yz / rho, e = u;
   int kk = int(k + 0.5);
   for (int i = 1; i < 16; i++){ if (i >= kk) break; e = cmul(e, u); }
   float d = (k - 1.0) * e.x * e.y / k;
-  return wsOne(vec3(v.x, rho * cmul(e, vec2(cos(d), -sin(d)))), n);
+  return tpOne(vec3(v.x, rho * cmul(e, vec2(cos(d), -sin(d)))), n);
 }
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return wsPw(a, n); }
 vec3 sqr(vec3 a){ return wsPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
 
-// ----- round 22: the two rules whose orbit carries something besides its point (the same steps as CARRY above).
-// APR_CARRY switches on four hooks in the orbit code (orbitDE and f in 30-shaders.js), and an approach that defines it
-// must define what they call:
+// Rules whose orbit carries something besides its point (the same steps as CARRY above). APR_CARRY switches on four
+// hooks in the orbit code (orbitDE and f in 30-shaders.js), and an approach that defines it must define what they call:
 //   carStart()        before an orbit is run (and when the orbit is begun again from a pole): everything carried is
 //                     made fresh, for the point itself and for each of its neighbouring orbits.
 //   gCarI             set before each f(): which orbit the step belongs to, 0 the point itself, 1 to 3 its neighbours.
@@ -1183,13 +1138,13 @@ vec3 cmap(vec3 c){ return c; }`;
 //                     and is given what the point itself carries.
 const GL_CARRY = `
 #define APR_CARRY 1
-int gCarI;`;
+int gCarI;
+bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }`;
 // Along once, then one plane. Carried: the number of steps that have counted, this one included. It is a property of
 // the point's own orbit: a neighbouring orbit stands for a small push of that orbit, so it takes the same rule at
 // every step and has no count of its own.
 const GL_ALONGONCE = glTurningCore('1.0') + GL_CARRY + `
 float gAoCount;
-bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
 void carStart(){ gAoCount = 0.0; gCarI = 0; }
 void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gAoCount += 1.0; }
 void carFit(int i, float s){ }
@@ -1201,9 +1156,8 @@ vec3 cmap(vec3 c){ return c; }`;
 // Soft mirrors, doubling (see smFoldK and CARRY.mirrorsdouble). Carried: the number of steps that have counted, this
 // one included; a neighbouring orbit takes the rule of the point's own step, as in Along once, then one plane.
 // uA.x: the soft edge of the first mirror, in degrees. uA.y: the step after which the mirrors stop doubling.
-const GL_MIRRORSDOUBLE = GL_APR + GL_TRIED_MERC + GL_CARRY + `
+const GL_MIRRORSDOUBLE = GL_APR + GL_MERC_PLAIN + GL_CARRY + `
 float gMdCount;
-bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
 void carStart(){ gMdCount = 0.0; gCarI = 0; }
 void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gMdCount += 1.0; }
 void carFit(int i, float s){ }
@@ -1220,16 +1174,15 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(mdFold(a, mdStep()), mdFold(b, mdStep()
 vec3 pw(vec3 a, float n){ return aprMpw(mdFold(a, mdStep()), n); }
 vec3 sqr(vec3 a){ return aprMsq(mdFold(a, mdStep())); }
 vec3 cmap(vec3 c){ return mdFold(c, 1.0); }`;
-// Sphere inversions, either side (version 33). At each of the first steps of an orbit a point may be squared as it is,
-// or mirrored first (the sharp mirror at 45 degrees round the x-axis, which moves nothing on the flat side of it).
-// A point belongs to the solid if ANY run of such choices keeps it. APR_EITHER makes the orbit code (30-shaders.js)
+// Sphere inversions, either side. At each of the first steps of an orbit a point may be squared as it is, or
+// mirrored first (the sharp mirror at 45 degrees round the x-axis, which moves nothing on the flat side of it).
+// A point belongs to the solid if any run of such choices keeps it. APR_EITHER makes the orbit code (30-shaders.js)
 // run one orbit per run of choices, gPick naming the run: choice k (0 at the first squaring) is "mirrored" when
-// digit k of gPick in base 2 is 1. Carried: the number of squarings so far.  uA.x: through which step there is a choice.
-const GL_EITHER = GL_APR + GL_TRIED_MERC + GL_CARRY + `
+// digit k of gPick in base 2 is 1. Carried: the number of squarings so far. uA.x: through which step there is a choice.
+const GL_EITHER = GL_APR + GL_MERC_PLAIN + GL_CARRY + `
 #define APR_EITHER 1
 int gPick = 0;
 float gEiCount;
-bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
 void carStart(){ gEiCount = 0.0; gCarI = 0; }
 void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gEiCount += 1.0; }
 void carFit(int i, float s){ }
@@ -1247,9 +1200,9 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(eiFold(a), eiFold(b)); }
 vec3 pw(vec3 a, float n){ return aprMpw(eiFold(a), n); }
 vec3 sqr(vec3 a){ return aprMsq(eiFold(a)); }
 vec3 cmap(vec3 c){ return c; }`;
-// Even pillow (version 34; see MATH.evenpillow for the grid). At the power 2 no angle is taken: the doubled grid
-// point is written with squares and roots only, so the plane z = 0 is complex squaring to the last digit.
-const GL_EVENPILLOW = GL_APR + GL_TRIED_MERC + `
+// Even pillow (see MATH.evenpillow for the grid). At the power 2 no angle is taken: the doubled grid point is
+// written with squares and roots only, so the plane z = 0 is complex squaring to the last digit.
+const GL_EVENPILLOW = GL_APR + GL_MERC_PLAIN + `
 vec3 epPw(vec3 v, float n){
   float r2 = dot(v, v);
   if (!(r2 >= 1e-30)) return vec3(0.0);
@@ -1267,20 +1220,17 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return epPw(a, n); }
 vec3 sqr(vec3 a){ return epPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
-// Blended mirrors, doubling (version 34). The mirrors of Soft mirrors, doubling, kept sharp. Beside a mirror a point
-// has two places it could be squared from: where the mirror puts it, and the mirror image of that. Within the blend
-// width of a mirror the picture runs both orbits and cross-fades their distances, half and half on the mirror itself.
-// The blended distance has no slope across the mirror, so the skin crosses it square: no crease. Nothing is bent, so
-// nothing is smeared, and a body that sits on a mirror (which is its own mirror image) is left exactly as it is.
+// Blended mirrors, doubling. The mirrors of Soft mirrors, doubling, kept sharp. Beside a mirror a point has two
+// places it could be squared from: where the mirror puts it, and the mirror image of that. Within the blend width
+// of a mirror the picture runs both orbits and cross-fades their distances, half and half on the mirror itself.
 // APR_BLEND makes the orbit code (30-shaders.js) run the orbits: gPick names the run (digit k in base 2: at squaring
 // k + 1 take the mirror image), gBlW is the weight of the run, gBlA1..3 say whether the first three squarings of the
-// run fell within a blend width.  uA.x: the blend width at the first mirror, in degrees.  uA.y: where doubling stops.
-const GL_MIRRORSBLEND = GL_APR + GL_TRIED_MERC + GL_CARRY + `
+// run fell within a blend width. uA.x: the blend width at the first mirror, in degrees. uA.y: where doubling stops.
+const GL_MIRRORSBLEND = GL_APR + GL_MERC_PLAIN + GL_CARRY + `
 #define APR_BLEND 1
 int gPick = 0;
 float gMbCount, gMbDone, gBlW;
 bool gBlA1, gBlA2, gBlA3;
-bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
 void carStart(){ gMbCount = 0.0; gMbDone = 0.0; gBlW = 1.0; gBlA1 = false; gBlA2 = false; gBlA3 = false; gCarI = 0; }
 void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gMbCount += 1.0; }
 void carFit(int i, float s){ }
@@ -1308,7 +1258,7 @@ vec3 sqr(vec3 a){ return aprMsq(mbFold(a, mbStep(), true)); }
 vec3 cmap(vec3 c){ return mbFold(c, 1.0, false); }`;
 // Pulled plane (see ppPull, ppPower). Carried: the 2-vector w, one for the point and one for each neighbour.
 // uA.x: how firmly the flat page is held at the start. uA.y: the ease. uA.z: how many times the pull of c counts.
-const GL_PULLEDPLANE = GL_APR + GL_TRIED_MERC + GL_CARRY + `
+const GL_PULLEDPLANE = GL_APR + GL_MERC_PLAIN + GL_TP_ONE + GL_CARRY + `
 vec2 gPp0, gPp1, gPp2, gPp3;
 vec2 ppGet(){ return gCarI == 0 ? gPp0 : gCarI == 1 ? gPp1 : gCarI == 2 ? gPp2 : gPp3; }
 void carStart(){ gPp0 = vec2(uA.x, 0.0); gPp1 = gPp0; gPp2 = gPp0; gPp3 = gPp0; gCarI = 0; }
@@ -1321,7 +1271,6 @@ vec2 ppPull(vec2 w, vec2 p, float k, float e){
   float a = a0 + t - e * sin(t);
   return w + m * vec2(cos(a), sin(a));
 }
-bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
 void carStep(vec3 z, vec3 c){
   if (carOrigin(z)) return;
   vec2 w = ppPull(ppPull(ppGet(), c.yz, uA.z, uA.y), z.yz, 1.0, uA.y);
@@ -1330,19 +1279,18 @@ void carStep(vec3 z, vec3 c){
 void carFit(int i, float s){
   if (i == 1) gPp1 = gPp0 + (gPp1 - gPp0) * s; else if (i == 2) gPp2 = gPp0 + (gPp2 - gPp0) * s; else if (i == 3) gPp3 = gPp0 + (gPp3 - gPp0) * s;
 }
-vec3 ppOne(vec3 v, float n){ return n == 2.0 ? aprMsq(v) : aprMpw(v, n); }
 vec3 ppPw(vec3 v, float n){
   vec2 w = ppGet();
-  if (w.y == 0.0 && w.x >= 0.0){ vec3 o = ppOne(v, n); return v.z == 0.0 ? vec3(o.xy, 0.0) : o; }
+  if (w.y == 0.0 && w.x >= 0.0){ vec3 o = tpOne(v, n); return v.z == 0.0 ? vec3(o.xy, 0.0) : o; }
   float th = 0.5 * at2(w.y, w.x), c = cos(th), s = sin(th);
-  vec3 o = ppOne(vec3(v.x, c * v.y + s * v.z, c * v.z - s * v.y), n);
+  vec3 o = tpOne(vec3(v.x, c * v.y + s * v.z, c * v.z - s * v.y), n);
   return vec3(o.x, c * o.y - s * o.z, s * o.y + c * o.z);
 }
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return ppPw(a, n); }
 vec3 sqr(vec3 a){ return ppPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
-// ---------- wording helpers for the approach texts
+// Wording helpers for the approach texts
 const aprIs = (a, b) => Math.abs(a - b) < 1e-9;
 const aprWhole = n => aprIs(n, Math.round(n));
 const aprNum = x => String(+(+x).toFixed(2)).replace('-', '−');
@@ -1351,7 +1299,7 @@ const aprSup = k => [...String(Math.round(k))].map(ch => (ch === '-' ? '⁻' : '
 const aprWrap = deg => { const d = ((deg + 180) % 360 + 360) % 360 - 180; return aprIs(d, -180) ? 180 : d; };
 const aprPlus = (x, unit) => (x ? (x < 0 ? ' − ' : ' + ') + aprNum(Math.abs(x)) + unit : '');   // "" or " + 20°"
 const aprPole = n => (n < 0 ? ' The origin is sent to infinity.' : '');
-// a fractional power cannot close up around the origin, here or in the plane: add one of these sentences then
+// A fractional power cannot close up around the origin, here or in the plane: one of these sentences is added then.
 const aprTear = (n, text) => (aprWhole(n) ? '' : text);
 const APR_HALF = ' A power that is not a whole number also tears space along the half-plane y = 0, x < 0, the way zⁿ tears the plane along the negative x-axis.';
 const APR_LINE = ' A power that is not a whole number also tears space along the negative x-axis, the way zⁿ tears the plane there.';
@@ -1361,14 +1309,14 @@ function aprPasses(a, b, target) {
   return Math.ceil(hi - 1e-9) - Math.floor(lo + 1e-9) > 1;
 }
 // the slice sentence for a rule that adds a turn of `deg` degrees to every power
-function aprTurned(subject, deg, n) {
+function aprTurned(deg, n) {
   const back = aprWhole(n) && !aprIs(n, 1) ? ` For zⁿ + c that slice is the usual flat set turned by ${aprDeg(aprWrap(-deg / (n - 1)))}.` : '';
-  return `${subject} complex arithmetic with one change: every power is also turned by ${aprDeg(deg)}.${back}`;
+  return `The plane z = 0 follows complex arithmetic with one change: every power is also turned by ${aprDeg(deg)}.${back}`;
 }
 const aprMercTurn = p => aprWrap(p.turn || 0);   // the turn in effect, between −180° and 180°
 const APR_INVERSION = 'At n = −1 the rule is a single sphere inversion with a flip, and inversions keep every shape.';
 const APR_MIRROR = 'At n = −1 the rule is a single sphere inversion with a mirror, and inversions keep every shape.';
-// n = 0 sends every point to the same place, whatever the approach
+// the cells for n = 0, where a rule sends every point to the same place
 const aprNone = () => ['no', 'Everything is crushed onto one point.'];
 const aprConstant = () => ['ok', 'A constant.'];
 // what the turn and longitude-phase dials do to the slice at z = 0
@@ -1378,14 +1326,14 @@ const APR_SLICE_TURNS = ' Away from 0 the slice at z = 0 is no longer the plain 
 // the list shows the approaches of a group in the order they stand in APPROACHES.
 const APPROACH_GROUPS = [
   { id: 'inversions', title: 'Sphere inversions' },
-  { id: 'kleinian', title: 'Inversions by region (the paper’s road)' },
+  { id: 'kleinian', title: 'Inversions by region (the road of Kučera’s paper)' },
   { id: 'quaternion', title: 'Quaternions' },
   { id: 'pillow', title: 'Doubling on a pillow grid' },
   { id: 'angles', title: 'Angle rules' },
   { id: 'other', title: 'Side by side' },
-  { id: 'tried', title: 'Tried, and kept for the record' },
+  { id: 'tried', title: 'Tried, and failed' },
 ];
-// The one-plane rule in words, shared by the two Sphere inversions entries.
+// The one-plane rule in words, shared by the entries built on it.
 function aprMercFormula(n) {
   const k = Math.round(n);
   if (aprWhole(n) && n >= 2) return `v${aprSup(k)} = |v|${aprSup(k)} · [1 + ${k}·inv(Σₖ Rₖ·inv(d − ωₖ))]   with d = v/|v| the direction of v, inv a sphere inversion, ωₖ the ${k} points spaced evenly round the unit circle, and Rₖ the turn about the z-axis that reaches the k-th of them.`;
@@ -1399,11 +1347,10 @@ const aprMercAfter = (turn, lift) => (turn || lift ? ' After it, ' + [turn ? `${
 const APR_LIFT = { type: 'dial', key: 'lift', label: 'Lift toward the pole', min: -2, max: 2, step: 0.01, def: 0, lo: -6, hi: 6, xmin: -6, xmax: 6, xlo: -20, xhi: 20, animate: 'bounce', help: 'The nearest thing this approach has to the Mandelbulb’s latitude phase: it pushes every direction toward one pole each time a power is taken. It is an offset where the phase is an angle, so play sweeps it to one end and back. Away from 0 the flat set leaves the plane z = 0.' };
 const APR_LIFTED = 'With a lift the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set the lift to 0 to get the flat set back.';
 const APR_CIRCLES = 'Circles on the sphere stay circles (see the step view). The squash is between the outward direction and the sphere.';
-// Bulbs about the axis: which planes through the x-axis a turn multiplier k keeps exact (the wobble never disturbs them)
+// Bulbs about the axis: which planes through the x-axis a turn multiplier k keeps exact. The wobble never disturbs them.
 const axbExact = k => (k % 2 === 0 ? 0 : ((k % 4) + 4) % 4 === 1 ? 2 : 1);   // 0: none, 1: z = 0 only, 2: z = 0 and y = 0
 
-// ---------- the words of the five entries of round 14 (measured in out/r14/rules/: see checks.txt there)
-// R14-TEXTS-BEGIN
+// Texts of Quaternions 4D, Rotor square, Rotor square with a frame and Kleinian squaring
 const q4Words = p => (!p.tilt ? `(x, y, z, ${aprNum(p.w || 0)})` : `(x·cos t − w·sin t, y, z, x·sin t + w·cos t) with w = ${aprNum(p.w || 0)} and t = ${aprDeg(p.tilt)}`);
 const Q4_HELP_W = 'Slides the slice along the fourth axis, the way a cut plane slides through a solid. At 0 the slice passes through the middle of the 4D set. In a Mandelbrot picture the solid shrinks as the slice moves away from 0, and past about 1.12 either way nothing is left. Play sweeps the slice there and back.';
 const Q4_HELP_TILT = 'Leans the slice out of the first three axes: the picture’s x direction is turned toward the fourth axis. At 90 or −90 it runs along the fourth axis itself, and a Mandelbrot picture is then a ball of nested shells, the same from every side.';
@@ -1432,26 +1379,24 @@ const kqFormula = (n, two) => {
     + (two ? ' A direction nearer the plane y = 0 than the plane z = 0 uses the same caps laid round the circle of the plane y = 0, with the mirror z → −z.' : '')
     + (whole ? '' : ` The caps are those of the whole power ${m}; only the length follows the power ${aprNum(n)}.` + (n < 0 ? ' A negative power ends with one more inversion.' : ''));
 };
-const KQ_TAG = 'Tried: squaring rebuilt from sphere inversions, a different one in each region of the sphere of directions (a reading of the first construction in Kučera’s paper). Failed: its slice at z = 0 is a cousin of the flat set, not the flat set.';
+const KQ_TAG = 'Squaring rebuilt from sphere inversions, a different one in each region of the sphere of directions (a reading of the first construction in Kučera’s paper). Its slice at z = 0 is a cousin of the flat set, not the flat set.';
 const KQ_NOTE = 'A reading of the first construction in Václav Kučera’s paper (Bridges 2019). The paper leaves out the details, so this is rebuilt from its text and may differ from what its author drew. Measured: the rule has no jump anywhere on the sphere of directions, and it keeps shapes inside each cap and outside the caps. On the equator it follows the pattern of zⁿ but not its numbers: at n = 2 it agrees with angle doubling in six directions, 60° apart, and is up to 17.6° off in between. So the slice at z = 0 is a cousin of the flat set: about 80% of the flat Mandelbrot set lies inside the slice, and about an eighth of the slice lies outside the flat set (for the Julia set of c = −1: about 62%, and about an eighth). A quarter of all directions, the two patches round the poles that no cap covers, are only mirrored. A product of two different points is taken from Sphere inversions, one plane.';
 const KQ_ABOUT = 'Kučera’s paper replaces squaring by sphere inversions, a different one in each region of the sphere of directions, the way a Kleinian group is built from a few inversions. This entry rebuilds its first construction: for the square, three spheres stand round the equator, each crossing the unit sphere at right angles, and a direction inside one of them is inverted in it and then mirrored. What the pictures show: the Mandelbrot solid is one lumpy body with a spike, much like the solid of Sphere inversions, one plane, but with creases. The Julia set for c = −1 is a chain of bodies along the x-axis with small buds on them. The rabbit is one angular lump, and for a c off the plane z = 0 the set falls apart into shards. The slices at z = 0 are angular cousins of the flat sets: the same bodies in the same places, with straighter edges. Where it falls short: the slice is not the flat set, and the creases along the rims of the caps show on every surface.';
 const KQ_ROUND = 'Circles on the sphere of directions stay circles inside each cap, and outside the caps. Along the rims of the caps the rule is creased.';
 const KQ_CRUSH = 'Nothing but the origin is crushed. The sphere of directions is folded along the rims of the caps instead: the directions outside every cap come out as a mirror image (a quarter of all directions at n = 2).';
 const KQ_SMOOTH = 'No jump was found (measured at n = 2, 3 and 4), but the rule is creased along the rim of every cap: inside a cap it is one sphere inversion with a mirror, outside the caps the mirror alone. A power that is not a whole number of 2 or more uses the caps of the nearest such power, so the picture jumps between whole powers.';
 const KQ_SLICE = `The plane z = 0 lands on itself, but it does not follow complex arithmetic: the angle is multiplied with a wobble (${KQ_WOBBLE}). So the slice is a cousin of the flat set, not the flat set.`;
-const KQ2_TAG = 'Tried: the same caps round two circles (a reading of the second construction in Kučera’s paper, its Figure 4). Failed: the slice at z = 0 is not the flat set, the number of buds follows the number of planes and not the power, and away from the x-axis it tears into shards.';
+const KQ2_TAG = 'The same caps round two circles (a reading of the second construction in Kučera’s paper, its Figure 4). The slice at z = 0 is not the flat set, the number of buds follows the number of planes and not the power, and away from the x-axis it tears into shards.';
 const KQ2_NOTE = 'A reading of the second construction in the paper: the caps of the entry above round the equator, and the same caps round the circle of the plane y = 0. A direction nearer the plane z = 0 uses the first family, one nearer the plane y = 0 the second. Measured: on the seam between them, the planes y = z and y = −z, the two families send one direction to places up to 180° apart (92° on average), so the rule jumps there. The jump does no harm only in a Julia set whose c lies on the x-axis. Everywhere else, the Mandelbrot solid included, it tears the solid. The paper gives the same limit: its construction is for c on the x-axis. The planes z = 0 and y = 0 both carry the cousin of the flat set that the entry above has in the plane z = 0.';
 const KQ2_ABOUT = 'The second construction of Kučera’s paper, as far as its text lets it be rebuilt: the inversions of Kleinian squaring, one plane, used twice, once round the equator and once round the circle of the plane y = 0. What the pictures show: the Julia set for c = −1 is a chain of bodies along the x-axis with buds round two circles, above and below as well as left and right. That is the look of the entry Sphere inversions, two planes, with rougher, knobbly buds. With c on the x-axis at −1.75 the bodies thin to dust along the axis. For a c off the x-axis, and for the Mandelbrot solid, the picture is a mass of shards: the tear along the seam is copied all over the surface. Where it falls short: it is whole for c on the x-axis only, and its slices are cousins of the flat sets, not the flat sets.';
 const KQ2_SMOOTH = 'Jumps across the planes y = z and y = −z, where the two families of caps meet (measured at n = 2: by up to 180°). It is creased along the rim of every cap as well.';
 const KQ2_SLICE = `The planes z = 0 and y = 0 both land on themselves, but neither follows complex arithmetic: the angle is multiplied with a wobble (${KQ_WOBBLE}). So both slices are cousins of the flat set, not the flat set.`;
-// R14-TEXTS-END
 
-// ---------- the words of the entry of round 15 (measured in out/r15/entry/: see checks.txt there)
-// R15-TEXTS-BEGIN
+// Texts of Square pillow
 const spGrid = n => clamp(Math.floor(Math.abs(n) + 0.5), 2, SP_MAXN);   // the whole power the grid is laid out for
 const spOwn = n => aprWhole(n) && Math.abs(n) >= 2 && Math.abs(n) <= SP_MAXN;   // a power the grid is made for
 const SP_TAG = 'Lay the directions on a square pillowcase grid and double both of its coordinates. The slice at z = 0 is the flat set and no tear was found, but at power 2 the solid is streaked and its bodies do not come apart. Power 3 looks better: buds on buds.';
-const SP_NOTE = 'Measured at power 2. The plane z = 0 follows complex arithmetic exactly: the 2D view draws the same picture as for Sphere inversions, one plane, pixel for pixel (five pictures compared). No jump was found between close directions (400,000 pairs). The rule is lopsided above and below the plane z = 0, because the belt of the grid that carries that plane does not lie half way between the two seams, it is twice as far from the lower seam as from the upper one: a direction and its mirror image are sent to places 0.7 apart on average, on a sphere of radius 1. At power 3 the belt lies half way and the rule is mirror-symmetric (to 15 digits). Beside the plane z = 0 a small circle of directions stays nearly a circle. Away from it the stretch is uneven: for half of all directions at least 1.6 times as much one way as the other, and for about one in six more than 3 times. The skin of the 3D picture was compared with a plain test of the set along 567 rays per picture: for three Julia sets every place where a ray stopped lay within 0.05 of the set (about 11 pixels of the opening picture), and about 5 in 6 within 0.0125. For the Mandelbrot solid 3 of 223 lay further away than 0.05. The same test gives 0.025 at most for Sphere inversions, one plane, and more than 0.1 at 12 of 145 places for Pillow. This is not the entry Pillow under “Tried”: that one wraps a sheet of triangles and has corners in the plane z = 0, this one a square sheet with no corner and no fold in that plane. A product of two different points is taken from Sphere inversions, one plane.';
+const SP_NOTE = 'Measured at power 2. The plane z = 0 follows complex arithmetic exactly: the 2D view draws the same picture as for Sphere inversions, one plane, pixel for pixel (five pictures compared). No jump was found between close directions (400,000 pairs). The rule is lopsided above and below the plane z = 0, because the belt of the grid that carries that plane does not lie half way between the two seams, it is twice as far from the lower seam as from the upper one: a direction and its mirror image are sent to places 0.7 apart on average, on a sphere of radius 1. At power 3 the belt lies half way and the rule is mirror-symmetric (to 15 digits). Beside the plane z = 0 a small circle of directions stays nearly a circle. Away from it the stretch is uneven: for half of all directions at least 1.6 times as much one way as the other, and for about one in six more than 3 times. The skin of the 3D picture was compared with a plain test of the set along 567 rays per picture: for three Julia sets every place where a ray stopped lay within 0.05 of the set (about 11 pixels of the opening picture), and about 5 in 6 within 0.0125. For the Mandelbrot solid 3 of 223 lay further away than 0.05. The same test gives 0.025 at most for Sphere inversions, one plane, and more than 0.1 at 12 of 145 places for Pillow. This is not the entry Pillow under “Tried, and failed”: that one wraps a sheet of triangles and has corners in the plane z = 0, this one a square sheet with no corner and no fold in that plane. A product of two different points is taken from Sphere inversions, one plane.';
 const SP_ABOUT = 'The Mandelbulb doubles two angles on a globe grid, and a globe grid is squeezed toward its poles. This entry tries another grid: a square pillowcase, a flat sheet folded double and sewn shut, which is squeezed nowhere except at its four corners. On that sheet the rule doubles both coordinates, a plain enlargement by 2. One belt of the pillow comes back to itself with its position doubled. That belt is laid on the equator, so the plane z = 0 follows complex squaring exactly, and no seam is needed. What the pictures show at power 2: the Mandelbrot solid is one lopsided rock with fins. The Julia set for c = −1 is a row of bodies with spikes, but the bodies do not come apart: cut through the point where two flat bodies touch, the solid is 24% as large as cut through its middle, and it reaches as far above and below the plane there as 0.54 (in the middle: 0.60). Sphere inversions, one plane gives 4% there. The rabbit is a group of lumps, c = i a branching coral, and c = 0.3 one smooth block. Close up, at three depths, the skin is made of streaked sheets, blades and thin slits, like combed or stirred paint. Cuts worked point by point, without the shortcuts of the 3D picture, show the same thing: the detail goes on at smaller sizes, but as thin sheets and slivers, not as smaller bodies. Where it falls short: a pillowcase is flat and a sphere is round, so laying one on the other stretches it somewhere, and the layout used here is even only beside the plane z = 0. The streaks probably come from that, which was not tested. At the powers 3, 4 and 5 the opening pictures show a blocky body with knobbly buds on its corners and rims. At power 3 one Julia set, c = (0.3, 0.5, 0), was also looked at close up in one place, at three depths: there the skin is buds with smaller buds on them, with no streaks, and cuts worked point by point show a bumpy outline with no slits. Other sets and other places at these powers were not looked at.';
 const SP_ROUND = 'On the pillow grid the rule is a plain enlargement, but the grid is laid on the sphere unevenly. Beside the plane z = 0 a small circle of directions stays nearly a circle (measured at power 2: about 5% out of round within 5° of the plane). Further away it comes out as an oval.';
 const SP_CRUSH2 = 'Nothing but the origin is crushed onto one point. Beside the upper pole the stretch falls to almost nothing (measured: down to 0.001 where the plane gives 2), and beside the corner points of the grid in the lower half it is largest (measured: up to 10).';
@@ -1465,10 +1410,8 @@ const spFormula = n => {
   return `v${k} = |v|${k} · dir(D(pil(d)))   with d = v/|v| the direction of v. pil lays d on a square pillowcase grid: s runs once round the pillow from 0 to 1, and t from the lower seam (0) to the upper seam (½). D multiplies both by ${m} with a mirror, (s, t) → (−${m}s, ${m}t), and where the result passes a seam the sheet is folded back over it. dir is pil backwards. The belt t = 1/${m + 1} comes back to itself with s multiplied by ${m}, and that belt is the equator, with s the longitude.`
     + (own ? '' : ` The grid is that of the whole power ${m}; only the length follows the power ${aprNum(n)}.` + (n < 0 ? ' A negative power ends with a mirror, y → −y and z → −z.' : ''));
 };
-// R15-TEXTS-END
 
-// ---------- the words of the two entries of round 16 (measured in out/r16/entry/: see checks.txt there)
-// R16-TEXTS-BEGIN
+// Texts of Turning plane, away and along
 const TP_ROUGH = 'The lab always draws this rule with “Distance estimate” at “Rough”, whatever that setting says. Raise Iterations to 40 or more to see the bodies come apart: at 14 they are still joined by necks and look ribbed.';
 const TP_TAG_AWAY = 'Square each point by the one-plane rule about a plane that turns against the point. Two planes carry the flat set and nothing tears. For c = −1 it gives separate bodies with buds in four directions, but the skin is streaks and hair, and the Mandelbrot solid is two thin crossed leaves.';
 const TP_TAG_ALONG = 'Square each point by the one-plane rule about a plane that turns with the point. Four planes carry the flat set and nothing tears. For c = −1 it gives separate bodies with buds in eight directions and smaller buds on those, with thin fins and hair between the planes close up. The Mandelbrot solid is a lumpy rock with no bulbs.';
@@ -1496,14 +1439,12 @@ const tpFormula = (n, along) => {
     + (along ? '.' : `, and neither is the factor ${m === 1 ? '0' : '−' + (m - 1)} in front, which is 1 − m.`)
     + (aprWhole(n) ? '' : ` P itself is taken at the power ${aprNum(n)}; only the planes follow the whole number ${m}.`);
 };
-// R16-TEXTS-END
 
-// ---------- the words of the entry of round 20 (measured in out/r20/entry/: see checks.txt there)
-// R20-TEXTS-BEGIN
+// Texts of Wind, then square
 const WS_ROUGH = 'The lab always draws this rule with “Distance estimate” at “Rough”, whatever that setting says. The other two settings draw a spindle of fog round the solid: measured on seven views of the Julia sets for c = −1, the rabbit and the Siegel disc, between 21% and 99% of the places where a ray stopped had no point of the set within 8 pixels with “Exact”, between 75% and 99% with “One neighbour”, and at most 1% with “Rough”. Rough has a fault of its own: a ray can step over a sheet that is thinner than its step, so thin parts are left out of the 3D picture. For the rabbit 58 of 254 rays that meet the set stopped at nothing. With “Ray step, share of the distance estimate” lowered to 0.4 it was 15 of 254. The pictures described here were made with Iterations at 40: at 14 the bodies are still joined by short necks.';
-const WS_TAG = 'Wind each point round the x-axis three times (at power 2), then square it by the one-plane rule, and turn nothing back. Three planes then carry the flat set for every c of the flat plane, and nothing tears. For c = −1 it gives separate bodies with buds in six directions, but their skin is ragged between the planes. Off the x-axis it falls short: the rabbit’s ears are thin plates and the Siegel disc is three sheets. Its Mandelbrot solid has not been judged yet.';
+const WS_TAG = 'Wind each point round the x-axis three times (at power 2), then square it by the one-plane rule, and turn nothing back. Three planes then carry the flat set for every c of the flat plane, and nothing tears. For c = −1 it gives separate bodies with buds in six directions, but their skin is ragged between the planes. Off the x-axis it falls short: the rabbit’s ears are thin plates and the Siegel disc is three sheets.';
 const WS_NOTE = WS_ROUGH + ' Measured: a point with z exactly 0 gets exactly the answer of Sphere inversions, one plane, and the cut at z = 0 is the flat set (six Julia sets at the powers 2 to 5, 160,000 points each, tested against plain complex arithmetic: none differs). The 2D view draws the flat set, and the same picture as for Sphere inversions, one plane except along thin edges of the outline: of 604,262 pixels, 586 differ for c = −1 (all of them faintly), 4,015 for the rabbit (189 of them clearly) and 5,415 for the Siegel disc (667 clearly). At power 2 the six half-planes through the x-axis at 0°, 60°, 120°, 180°, 240° and 300° are sent into the plane z = 0 in one step (to 15 digits), and from there on a point follows complex squaring. So three planes through the x-axis, 60° apart, each show the flat set, turned about the x-axis, whether c lies on the x-axis or not: for the rabbit the cut by the plane at 120° is the flat rabbit point for point, and the cut at 60° is the flat rabbit turned over (129,600 points each, none differs). No jump was found: for 200,000 pairs of close points the gap between the two answers shrinks in step with their distance, at four distances from 0.001 down to 0.000001, at the powers 2 to 5. The rule gives the same answer mirrored above and below and mirrored front and back, the same answer for a point turned by 120° about the x-axis (to 15 digits), and the length of a point is squared exactly. So every Julia set of this rule looks the same after a third of a turn about the x-axis. A whole power n is wound n times when n is odd and n + 1 times when n is even: the powers 2 and 3 have six half-planes that land in the plane z = 0, the powers 4 and 5 have ten (measured). A product of two different points is taken from Sphere inversions, one plane.';
-const WS_ABOUT = 'In Sphere inversions, two planes and in the two Turning plane entries, each plane that carries the flat set is squared inside itself. Here only the plane z = 0 is squared. Before the squaring every point is carried round the x-axis: its angle round that axis is multiplied by three, unevenly, at the angle’s own pace beside six half-planes 60° apart and five times as fast half way between them. The six half-planes land in the plane z = 0, and a point of them is from then on a point of the flat plane, where c lives. So they show the flat picture without the rule having to keep them, and that works for every c of the flat plane. What the pictures show for c = −1: a row of separate bodies along the x-axis, each with six buds round it, one in each of the six half-planes, and smaller buds on those. Cut across at the point where two bodies touch, nothing but that point is left (40 steps, a cut 0.2 wide). The bud at 60° is a body and not a plate: cut along the x-axis it is an oval 0.13 long and 0.12 across. Cut across the x-axis through the middle of the middle body, at x = 0, the outline between two buds is smooth down to a picture 0.12 wide (80 steps), but that place is special. Where it falls short for c = −1: a little to the side, at x = 0.2, the same stretch of outline is ragged, with thin needles standing off it (80 steps, a picture 0.3 wide). At x = −0.3 a dozen short thin spikes and loose specks stand round the body, and the bud at 60° has a fringe of about 200 loose specks. The 3D picture shows this as a streaked, grainy skin, bristly like a sea urchin when seen along the x-axis, where Sphere inversions, one plane is smooth. The sets for c = −0.75 and c = 0.25 are ribbed from end to end: cut across the x-axis, c = 0.25 has twelve lobes like a pumpkin and c = −0.75 six sharp ridges, with a hairy rim at x = −0.3. Where it falls short away from the x-axis: the bodies are thin there. Turn the flat rabbit 4° about the x-axis and only 52% of its points are still in the set, and at 15° only 19% (the same with 40 and with 80 steps). For c = −1 it is 91% at 4° and 91% at 30°. So the rabbit’s middle body is a body with six points, but its ears are plates lying in the three planes, with shredded rims, and the 3D picture shows a feathery mass and no separate bodies. The Siegel disc is thinner still and thins with every step: a quarter of a degree off its planes 79% of its points are in the set after 40 steps and 64% after 80. It is three sheets crossing on the x-axis, not a body. For c = i, a tree in the plane, the cuts show three flat trees and the 3D picture a thin dust. Whole powers: cut across the x-axis the outline repeats six times round the axis at the powers 2 and 3 and ten times at the powers 4 and 5 (for c = −1 at power 4: ten buds), so the count follows the power two powers at a time. The Mandelbrot solid of this rule has not been judged yet.';
+const WS_ABOUT = 'In Sphere inversions, two planes and in the two Turning plane entries, each plane that carries the flat set is squared inside itself. Here only the plane z = 0 is squared. Before the squaring every point is carried round the x-axis: its angle round that axis is multiplied by three, unevenly, at the angle’s own pace beside six half-planes 60° apart and five times as fast half way between them. The six half-planes land in the plane z = 0, and a point of them is from then on a point of the flat plane, where c lives. So they show the flat picture without the rule having to keep them, and that works for every c of the flat plane. What the pictures show for c = −1: a row of separate bodies along the x-axis, each with six buds round it, one in each of the six half-planes, and smaller buds on those. Cut across at the point where two bodies touch, nothing but that point is left (40 steps, a cut 0.2 wide). The bud at 60° is a body and not a plate: cut along the x-axis it is an oval 0.13 long and 0.12 across. Cut across the x-axis through the middle of the middle body, at x = 0, the outline between two buds is smooth down to a picture 0.12 wide (80 steps), but that place is special. Where it falls short for c = −1: a little to the side, at x = 0.2, the same stretch of outline is ragged, with thin needles standing off it (80 steps, a picture 0.3 wide). At x = −0.3 a dozen short thin spikes and loose specks stand round the body, and the bud at 60° has a fringe of about 200 loose specks. The 3D picture shows this as a streaked, grainy skin, bristly like a sea urchin when seen along the x-axis, where Sphere inversions, one plane is smooth. The sets for c = −0.75 and c = 0.25 are ribbed from end to end: cut across the x-axis, c = 0.25 has twelve lobes like a pumpkin and c = −0.75 six sharp ridges, with a hairy rim at x = −0.3. Where it falls short away from the x-axis: the bodies are thin there. Turn the flat rabbit 4° about the x-axis and only 52% of its points are still in the set, and at 15° only 19% (the same with 40 and with 80 steps). For c = −1 it is 91% at 4° and 91% at 30°. So the rabbit’s middle body is a body with six points, but its ears are plates lying in the three planes, with shredded rims, and the 3D picture shows a feathery mass and no separate bodies. The Siegel disc is thinner still and thins with every step: a quarter of a degree off its planes 79% of its points are in the set after 40 steps and 64% after 80. It is three sheets crossing on the x-axis, not a body. For c = i, a tree in the plane, the cuts show three flat trees and the 3D picture a thin dust. Whole powers: cut across the x-axis the outline repeats six times round the axis at the powers 2 and 3 and ten times at the powers 4 and 5 (for c = −1 at power 4: ten buds), so the count follows the power two powers at a time.';
 const wsRound = n => (wsCount(n) === 1 ? APR_CIRCLES
   : `Inside the ${wsCount(n)} planes that carry the flat set the rule is the complex power, which keeps shapes, and the ${2 * wsCount(n)} directions that are sent to the negative x-axis, one in each of the ${2 * wsCount(n)} half-planes, are stretched exactly as the flat plane stretches (measured at the powers 2 to 5). Beside those planes a small ball stays nearly a ball, and half way between them it is squeezed flat. Measured at power 2: 7% out of round within 5° of the planes, and about five to one within 5° of half way. The squeeze grows with the power: about 12 to one at power 3 and 19 to one at power 4.`);
 const wsAngles = k => Array.from({ length: Math.min(k, 3) }, (_, j) => aprDeg((j + 0.5) * 180 / k)).join(', ');
@@ -1522,12 +1463,9 @@ const wsFormula = n => {
     + '. An even count would send the half y < 0 of the plane z = 0 onto the half y > 0, and the slice at z = 0 would no longer be the flat set. So the count follows the power and is not a free choice.'
     + (aprWhole(n) ? '' : ` P itself is taken at the power ${aprNum(n)}; only the winding follows the whole number.`);
 };
-// R20-TEXTS-END
 
-// ---------- the words of the two entries of round 22 (measured in out/r21/judge/ and out/r22/entry/: see NOTES.md there)
-// R22-TEXTS-BEGIN
-// (off: what the picture shows for a c out of the flat plane, where no such promise holds. Measured in out/r22/entrycheck/:
-// offplane.txt and the pictures break/*-19-*.png, break/*-20-*.png; Sphere inversions, one plane: parity.txt there.)
+// Texts of "Along once, then one plane" and "Pulled plane". crRough's `off` says what the picture shows for a c out
+// of the flat plane.
 const crRough = (rough, fine, off) => `The lab always draws this rule with “Distance estimate” at “Rough”, whatever that setting says. Measured on the Julia sets for c = −1, the rabbit, the Siegel disc and c = −0.75, which all lie in the flat plane, 1,728 lines of sight each, against the set worked point by point: with “Rough” no ray stopped where the set has no body, and ${rough}. ${fine} For a c out of the flat plane (the dial “c along z” away from 0) that does not hold, and the picture can show what is not there: ${off} The lab stops a ray at the places where orbits hold out longest, and Sphere inversions, one plane does the same for such a c (it stopped 244 of 1,200 rays for a c whose set is empty). The pictures described here were made with Iterations at 40.`;
 const AO_ROUGH = crRough('of the lines that meet the set at most 4 of 323 were missed', 'With “Exact” up to 44% of the stops were at nothing, and with “One neighbour” up to 8%.',
   'with the rabbit’s c turned 10° about the x-axis it shows jagged shards, and with c = (−1, 0, 0.3) two flat flakes, though of 400,000 points tested each time none stayed for the 40 steps the picture asks for.');
@@ -1539,21 +1477,21 @@ const CR_LEARN = ' The Learn tab follows the orbit: its first step shows a first
 const CR_START = ' A power written into the start value (as in the start value c²) is taken before the orbit begins and does not count as a squaring';
 const AO_TAG = 'The first squaring of every orbit is done by Turning plane, along, and every later one by Sphere inversions, one plane. For c = −1 the middle body keeps its buds in eight directions, and the rabbit comes apart into smooth separate bodies. But the bodies beside the middle one keep 6 buds where Turning plane, along has 16, each big bud carries 2 small buds instead of 16, two bodies of the rabbit float free, and the Mandelbrot solid is very nearly the one-plane solid, with thin wings standing off it that have no thickness.';
 const AO_NOTE = AO_ROUGH + ' What an orbit carries here is a count of its squarings and nothing else, and every orbit starts its count afresh. A squaring of the exact origin does not count. So in a Mandelbrot picture, where the orbit starts at 0, the squaring done by Turning plane, along is the squaring of c. ' + CR_SEVERAL + ': in the first step each of them is taken by Turning plane, along.' + CR_START + ': it is taken by Sphere inversions, one plane. ' + CR_ONE + ', which is the squaring of Turning plane, along. Every later squaring is the one of Sphere inversions, one plane, and the card of that entry describes it.' + CR_LEARN + ' A product of two different points is taken from Sphere inversions, one plane.';
-const AO_ABOUT = 'Turning plane, along squares every point about a plane of its own, at every step. That gives c = −1 its buds in eight directions, and it swells the rabbit into one lump. This entry does it once. The first squaring of an orbit is the one of Turning plane, along, and from the second squaring on the orbit follows Sphere inversions, one plane. So a point belongs to a Julia set of this entry exactly when its first step lands in the solid that Sphere inversions, one plane draws for the same c. What was measured in round 21, point by point, and seen in cuts: for c = −1 the middle body has eight buds round it (eight separate stretches of the set on circles round the x-axis through the buds). Close up the eight are not alike. The two in the plane y = 0 carry smaller buds on their sides, as in Turning plane, along. The two in the flat plane are bare on their sides, as in Sphere inversions, one plane. The four at 45° are plain lenses. The rabbit comes apart into smooth bodies, also off the flat plane, where Turning plane, along has one lump. Where it falls short: whatever needs a second step off the flat plane is lost. Counted in round 22 on rings round the x-axis: the bodies to the left and right of the middle body of c = −1 keep 6 buds where Turning plane, along has 16, the rings further out keep 2, and each big bud of the middle body carries 2 small buds where Turning plane, along has 16. For c = −0.75 the bodies are fused into one mass. The rabbit is in three pieces: two of its bodies float free, one above and one below the rest. Each holds 7.2% of the volume and stands 0.11 away from the rest, the same on a coarse grid and on a fine one, so the gap is real. For a c out of the plane z = 0 it does no better than Sphere inversions, one plane: with the rabbit’s c turned 10° or more about the x-axis no point of the set was left. The picture does not show that emptiness. It shows jagged shards there, where no point was found that stays (the numbers are in the next paragraph), and shards are one of the things this search is trying to get rid of. The Mandelbrot solid has very nearly the body of the solid of Sphere inversions, one plane: of 2,000,000 points c tested in round 22, between 4 and 8 got a different answer. But the picture also shows thin curved wings standing off its left end, where Sphere inversions, one plane has nothing: in one picture 68 of 195 rays stopped on them. The wings are there, but they are films with no thickness. Followed along a line of sight into three of them, the orbit stays longer and longer the nearer the film (18 to 22 steps at the best of 20,000 places along a stretch 0.08 long, 39 to 57 steps when the search is narrowed to a stretch of 0.000000000003), and no place was found that stays for good. And it is not one rule: it is two rules and a count that says when to change from one to the other, which nothing in the flat rule asks for. Powers other than 2 have not been looked at for this entry.';
+const AO_ABOUT = 'Turning plane, along squares every point about a plane of its own, at every step. That gives c = −1 its buds in eight directions, and it swells the rabbit into one lump. This entry does it once. The first squaring of an orbit is the one of Turning plane, along, and from the second squaring on the orbit follows Sphere inversions, one plane. So a point belongs to a Julia set of this entry exactly when its first step lands in the solid that Sphere inversions, one plane draws for the same c. Measured point by point, and seen in cuts: for c = −1 the middle body has eight buds round it (eight separate stretches of the set on circles round the x-axis through the buds). Close up the eight are not alike. The two in the plane y = 0 carry smaller buds on their sides, as in Turning plane, along. The two in the flat plane are bare on their sides, as in Sphere inversions, one plane. The four at 45° are plain lenses. The rabbit comes apart into smooth bodies, also off the flat plane, where Turning plane, along has one lump. Where it falls short: whatever needs a second step off the flat plane is lost. Counted on rings round the x-axis: the bodies to the left and right of the middle body of c = −1 keep 6 buds where Turning plane, along has 16, the rings further out keep 2, and each big bud of the middle body carries 2 small buds where Turning plane, along has 16. For c = −0.75 the bodies are fused into one mass. The rabbit is in three pieces: two of its bodies float free, one above and one below the rest. Each holds 7.2% of the volume and stands 0.11 away from the rest, the same on a coarse grid and on a fine one, so the gap is real. For a c out of the plane z = 0 it does no better than Sphere inversions, one plane: with the rabbit’s c turned 10° or more about the x-axis no point of the set was left. The picture does not show that emptiness. It shows jagged shards there, where no point was found that stays (the numbers are in the next paragraph), and shards are one of the things this search is trying to get rid of. The Mandelbrot solid has very nearly the body of the solid of Sphere inversions, one plane: of 2,000,000 points c tested, between 4 and 8 got a different answer. But the picture also shows thin curved wings standing off its left end, where Sphere inversions, one plane has nothing: in one picture 68 of 195 rays stopped on them. The wings are there, but they are films with no thickness. Followed along a line of sight into three of them, the orbit stays longer and longer the nearer the film (18 to 22 steps at the best of 20,000 places along a stretch 0.08 long, 39 to 57 steps when the search is narrowed to a stretch of 0.000000000003), and no place was found that stays for good. And it is not one rule: it is two rules and a count that says when to change from one to the other, which nothing in the flat rule asks for. Powers other than 2 have not been looked at for this entry.';
 const AO_CARD = 'This card measures the first squaring of an orbit, which is the squaring of Turning plane, along. ';
 const AO_LATER = ' Every later squaring is the one of Sphere inversions, one plane';
 const aoFormula = n => 'First squaring of an orbit: ' + tpFormula(n, true) + ` Every later squaring: v${aprWhole(n) && n >= 2 ? aprSup(n) : 'ⁿ'} = P(v). The orbit carries a count of its squarings and nothing else.`;
 const aoSlice = ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly in the first squaring and in every later one, so that slice is the flat set.');
 const PP_TAG = 'Each orbit carries a plane through the x-axis. It starts as the flat page and is pulled toward c and toward every point of the orbit, and each point is squared by the one-plane rule about it. For c = −1 it gives round buds in four directions, and the rabbit and the Siegel disc are clean separate bodies. But the four directions fade as c leaves the x-axis, the rabbit is nearly the one-plane rabbit, thin loose flakes hover over the skin close up, and three numbers in the rule were set by hand.';
-const PP_NOTE = PP_ROUGH + ' What an orbit carries here is a plane through the x-axis and a number that says how firmly it is held. Every orbit starts afresh with the flat page, held weakly. The three dials below are the three numbers of the rule that were set by hand in round 21. Nothing in the flat rule gives them, and what is written about this entry was measured with the dials where they start: 0.05, 0.7 and 16. A squaring of the exact origin pulls at nothing. So in a Mandelbrot picture, where the orbit starts at 0, the first pulls are those of the step that squares c. ' + CR_SEVERAL + ': the plane is pulled once, by c and by the point the step starts from, and every power of that step is taken about it.' + CR_START + ': it is taken about the flat page. ' + CR_ONE + ', taken with the c of the picture: in a Julia picture the c of the Julia dials, and in a Mandelbrot picture, where every point is its own c, the point that is squared. In that squaring the plane has been pulled once by c and once by the point.' + CR_LEARN + ' It takes its own c. A product of two different points is taken from Sphere inversions, one plane.';
+const PP_NOTE = PP_ROUGH + ' What an orbit carries here is a plane through the x-axis and a number that says how firmly it is held. Every orbit starts afresh with the flat page, held weakly. The three dials below are the three numbers of the rule that were set by hand. Nothing in the flat rule gives them, and what is written about this entry was measured with the dials where they start: 0.05, 0.7 and 16. A squaring of the exact origin pulls at nothing. So in a Mandelbrot picture, where the orbit starts at 0, the first pulls are those of the step that squares c. ' + CR_SEVERAL + ': the plane is pulled once, by c and by the point the step starts from, and every power of that step is taken about it.' + CR_START + ': it is taken about the flat page. ' + CR_ONE + ', taken with the c of the picture: in a Julia picture the c of the Julia dials, and in a Mandelbrot picture, where every point is its own c, the point that is squared. In that squaring the plane has been pulled once by c and once by the point.' + CR_LEARN + ' It takes its own c. A product of two different points is taken from Sphere inversions, one plane.';
 const PP_HELP_HOLD = 'How firmly an orbit holds the flat page before anything has pulled at it. At 0 the first pull decides the plane alone. The larger the number, the longer the flat page holds, and the nearer the picture comes to Sphere inversions, one plane. Set by hand: 0.05.';
-const PP_HELP_EASE = 'How a thing pulls. At 0 it pulls the plane straight toward the plane it lies in itself. At 1 a thing that lies close to the plane pulls toward the plane as it stands, and only a thing that stands square to the plane pulls toward its own. Set by hand: 0.7. Measured for the rabbit: with the third dial at 16, where it starts, 8% of the set is lost at 1. With the third dial at 1, 28% is lost at 1, and at 0.5 the bodies fuse where they meet (round 21).';
-const PP_HELP_CPULL = 'c pulls at the plane before every squaring, and this is how many times its pull counts beside the pull of the point. At 0 c does not pull. A c on the x-axis never pulls, whatever this number is. Set by hand: 16. Measured for the rabbit in round 21: at 4 the bodies fuse where they meet.';
-const PP_ABOUT = 'Sphere inversions, one plane squares every point about the flat page. Turning plane, along gives every point a plane of its own. Here the plane belongs to the orbit. Think of the planes through the x-axis as the pages of a book whose spine is the x-axis. Every orbit starts with the book open at the flat page, held weakly. Before each squaring two things pull at the page: first c, then the point that is about to be squared. A thing far from the x-axis pulls hard, and a thing on the x-axis does not pull at all. Each pulls toward the page it lies in itself, less directly the nearer that page is to the open one. The pulls add up and none is forgotten, so the page turns less and less as the orbit goes on. Then the point is squared by the one-plane rule about the page as it stands. What was measured in round 21, point by point, and seen in cuts: for c = −1 a row of separate bodies with round buds in four directions, two in the flat plane and two in the plane y = 0 (four separate stretches of the set on circles round the x-axis through the buds, 19° and 15° wide, where Turning plane, along has eight of 13°). The cut along the plane y = 0 looks like the flat picture. The rabbit and the Siegel disc are clean separate bodies in one piece, where Turning plane, along has a lump. Where it falls short: the four directions are there for c on the x-axis and close to it only. For c = −1 + 0.2i no bud is left in the plane y = 0 (the bodies still cross it), and for a c a little off the x-axis a ledge runs across the front of every body. The rabbit is nearly the rabbit of Sphere inversions, one plane (one point in eight of its inside differs), so its smaller bodies sit round the flat page only. Close up, thin loose flakes hover over the skin of c = −1 between the two rows of buds: in 336 of 720 directions tested there, and still there after 600 steps, where Sphere inversions, one plane has none. At 45° there is no bud, only a thin loose crescent. The Siegel disc loses 15% of its points between 30 and 200 steps before it settles. For a c that lies in neither of the two planes the set can vanish: with the rabbit’s c turned by 10°, 30° or 45° about the x-axis no point of it was left. The picture does not show that emptiness. For the turn by 10° it shows a smooth thin slab with buds along one edge, where next to no point stays (the numbers are in the next paragraph). A c that lies in the plane y = 0 is another matter: there the cut along that plane is the flat picture of the same c stood upright (measured in round 22 for c = (−1, 0, 0.3), whose flat picture is a thin branching thread). The Mandelbrot solid shows the flat set in the plane z = 0 and, but for a few points, in the plane y = 0 (104 of 84,000 places differ), with smooth skin between the two and no buds there. Three numbers of the rule were set by hand, and they matter: see the three dials. Powers other than 2 have not been looked at for this entry.';
+const PP_HELP_EASE = 'How a thing pulls. At 0 it pulls the plane straight toward the plane it lies in itself. At 1 a thing that lies close to the plane pulls toward the plane as it stands, and only a thing that stands square to the plane pulls toward its own. Set by hand: 0.7. Measured for the rabbit: with the third dial at 16, where it starts, 8% of the set is lost at 1. With the third dial at 1, 28% is lost at 1, and at 0.5 the bodies fuse where they meet.';
+const PP_HELP_CPULL = 'c pulls at the plane before every squaring, and this is how many times its pull counts beside the pull of the point. At 0 c does not pull. A c on the x-axis never pulls, whatever this number is. Set by hand: 16. Measured for the rabbit: at 4 the bodies fuse where they meet.';
+const PP_ABOUT = 'Sphere inversions, one plane squares every point about the flat page. Turning plane, along gives every point a plane of its own. Here the plane belongs to the orbit. Think of the planes through the x-axis as the pages of a book whose spine is the x-axis. Every orbit starts with the book open at the flat page, held weakly. Before each squaring two things pull at the page: first c, then the point that is about to be squared. A thing far from the x-axis pulls hard, and a thing on the x-axis does not pull at all. Each pulls toward the page it lies in itself, less directly the nearer that page is to the open one. The pulls add up and none is forgotten, so the page turns less and less as the orbit goes on. Then the point is squared by the one-plane rule about the page as it stands. Measured point by point, and seen in cuts: for c = −1 a row of separate bodies with round buds in four directions, two in the flat plane and two in the plane y = 0 (four separate stretches of the set on circles round the x-axis through the buds, 19° and 15° wide, where Turning plane, along has eight of 13°). The cut along the plane y = 0 looks like the flat picture. The rabbit and the Siegel disc are clean separate bodies in one piece, where Turning plane, along has a lump. Where it falls short: the four directions are there for c on the x-axis and close to it only. For c = −1 + 0.2i no bud is left in the plane y = 0 (the bodies still cross it), and for a c a little off the x-axis a ledge runs across the front of every body. The rabbit is nearly the rabbit of Sphere inversions, one plane (one point in eight of its inside differs), so its smaller bodies sit round the flat page only. Close up, thin loose flakes hover over the skin of c = −1 between the two rows of buds: in 336 of 720 directions tested there, and still there after 600 steps, where Sphere inversions, one plane has none. At 45° there is no bud, only a thin loose crescent. The Siegel disc loses 15% of its points between 30 and 200 steps before it settles. For a c that lies in neither of the two planes the set can vanish: with the rabbit’s c turned by 10°, 30° or 45° about the x-axis no point of it was left. The picture does not show that emptiness. For the turn by 10° it shows a smooth thin slab with buds along one edge, where next to no point stays (the numbers are in the next paragraph). A c that lies in the plane y = 0 is another matter: there the cut along that plane is the flat picture of the same c stood upright (measured for c = (−1, 0, 0.3), whose flat picture is a thin branching thread). The Mandelbrot solid shows the flat set in the plane z = 0 and, but for a few points, in the plane y = 0 (104 of 84,000 places differ), with smooth skin between the two and no buds there. Three numbers of the rule were set by hand, and they matter: see the three dials. Powers other than 2 have not been looked at for this entry.';
 const PP_ROUND = 'About a plane that stands still the squaring keeps circles on the sphere as circles, as Sphere inversions, one plane does. But the plane is pulled by the very point that is squared, so two points side by side are squared about slightly different planes, and that squashes shapes (read off the rule; the numbers on this card are measured).';
 const PP_CRUSH = 'Each squaring is the one-plane rule about the plane the orbit carries, and the one-plane rule crushes one line only: the line that stands square to its plane. Which line that is changes from orbit to orbit and from step to step.';
-// (the measurement in brackets was made at the power 2 with the first dial at 0.05, out/r22/entry/jump.txt, so it is
-// shown there only; where the lines lie is read off the rule and holds for every power and every setting of the dials)
+// The measurement in brackets holds for the power 2 with the first dial at 0.05, so it is shown there only. Where
+// the lines lie is read off the rule and holds for every power and every setting of the dials.
 const ppSmooth = (p, n) => {
   const hold = Math.max(0, ppDial(p, 'hold', 0.05)), measured = aprIs(n, 2) && aprIs(hold, 0.05);
   return 'Not one formula applied again and again: the plane a point is squared about depends on the whole orbit before it. And the plane has no direction where the pulls cancel what holds it. Beside such a place it swings by a quarter turn, so the rule jumps there. '
@@ -1568,25 +1506,24 @@ const ppFormula = (p, n) => {
   const k = aprWhole(n) && n >= 2 ? aprSup(n) : 'ⁿ', hold = aprNum(ppDial(p, 'hold', 0.05)), ease = aprNum(ppDial(p, 'ease', 0.7)), cpull = aprNum(ppDial(p, 'cpull', 16));
   return `v${k} = Rot(θ)·P(Rot(−θ)·v)   with P the power ${aprNum(n)} of Sphere inversions, one plane, Rot(a) the turn about the x-axis by the angle a, and θ the turn of the plane that the orbit carries. The plane is kept as w = |w|·(cos 2θ, sin 2θ), and a fresh orbit starts with w = (${hold}, 0): the flat page, held weakly. Before each squaring w is pulled twice: by c with the weight ${cpull}, then by the point v with the weight 1. A pull by a thing with the coordinates (y, z) and the weight k: t = twice the angle of the thing round the x-axis, less 2θ, brought between −180° and 180°; a = 2θ + t − ${ease}·sin t; then w becomes w + k·(y² + z²)·(cos a, sin a). The numbers ${hold}, ${ease} and ${cpull} are the three dials. They were set by hand.`;
 };
-// R22-TEXTS-END
 
-// ----- version 31: the texts of "Sphere inversions, soft mirror"
+// Texts of Sphere inversions, soft mirror
 const SM_NOTE = 'How it works: every point is first turned about the x-axis as if a mirror stood there, and then the one-plane rule is applied. The mirror is a half-plane through the x-axis. A point on the flat-plane side of it stays where it is. A point beyond it goes to its mirror image. With the mirror at 90° nothing lies beyond it: that is Sphere inversions, one plane. With the mirror at 45° and a sharp edge it is Sphere inversions, two planes. The mirror is what puts bodies off the flat plane, and its edge is what goes wrong. A sharp edge leaves a crease in every body the mirror cuts through. A soft edge takes the crease away and stretches whatever sits beside the mirror instead. No setting has neither.';
 const SM_ABOUT = 'Sphere inversions with one plane, with two planes, and Turning plane, along, are one idea at three settings: the one-plane rule, and a mirror through the x-axis that brings points from beside the upright plane down beside the flat plane. Everything that sits off the flat plane is a mirror image. One plane has no mirror, so it has no such bodies. Two planes has a mirror with a sharp edge, so its bodies keep their shapes and carry a crease. Along has a mirror with a wide soft edge, so it has no crease and its bodies are stretched. This entry puts the place of the mirror and the softness of its edge on two dials. Like two planes it is whole only for c on the x-axis, such as the Basilica.';
 const smSoft = p => +(p && p.soft) > 0;
-// ----- version 32: the texts of "Soft mirrors, doubling"
+// Texts of Soft mirrors, doubling
 const MD_NOTE = 'How it works: Sphere inversions, soft mirror, with twice as many mirrors at each step. At the first squaring of an orbit two planes through the x-axis are brought onto the flat plane, as in that entry. At the second squaring four planes are, at the third eight, and so on. A point of the flat plane is never moved, so the flat picture is exact. Nothing is stretched to make the count grow: every piece is a mirror image. What an orbit carries is a count of its squarings and nothing else. A squaring of the exact origin does not count.';
 const MD_ABOUT = 'In the flat picture each squaring doubles the number of places round the circle that land on one spot: 2, then 4, then 8. That doubling is what lines the edge of every body with smaller bodies at every size. Round the x-axis the soft mirror has no such doubling: two planes at every step, so the bodies stay on a few circles. This entry doubles the mirrors at each step instead. Bodies then sit between the planes as well: 4 round the middle body after one step, 8 more after two, and so on. The cost: far down, where the mirrors are many, a body is ringed by a string of small beads and comes close to the rings of the Quaternion square. The dial “Doubling stops after step” says how far down the doubling goes. Like the soft mirror it is whole only for c on the x-axis, such as the Basilica.';
 const mdPlanes = p => Math.pow(2, clamp(Math.round(+p.stop || 1), 1, 12));
-// ----- version 33: the texts of "Sphere inversions, either side"
+// Texts of Sphere inversions, either side
 const EI_NOTE = 'How it works: at each of its first steps a point may be squared as it is (Sphere inversions, one plane), or mirrored first in the plane that stands at 45° round the x-axis and then squared. A point belongs to the solid if any run of such choices keeps it. So the solid is the one-plane solid with mirror images of itself added, and nothing is cut away. A point on the flat side of the mirror has no choice, so the flat picture is exact. No rounded edge is needed: a mirror image is only ever added, so the skin can dip where two pieces meet but can never stand up in a ridge.';
-const EI_ABOUT = 'The mirror entries before this one replace what is behind the mirror with the mirror image. Where the skin crossed the mirror at a slant that left a crease, and rounding the mirror took the crease away at the price of a smeared band beside it. Here the mirror image is added to what is already there instead. Two pieces that are added to each other meet in a valley, the way a bulb meets the body it sits on, never in a ridge, and nothing is smeared. The cost is work: with a choice through step 3 the picture runs 8 orbits for every point. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
-// ----- version 34: the texts of "Blended mirrors, doubling"
-const MB_NOTE = 'How it works: the mirrors of Soft mirrors, doubling, but kept sharp and not bent. Close to a mirror a point could be squared from two places: where the mirror puts it, or the mirror image of that place. Within the blend width the picture works out both and cross-fades between them, half and half on the mirror itself. That takes the crease away without bending anything, so nothing is smeared, and a body that sits right on a mirror is left exactly as it is. This is done at the first three steps of an orbit; later mirrors are sharp. A point of the flat plane is never moved, so the flat picture is exact.';
+const EI_ABOUT = 'The other mirror entries replace what is behind the mirror with the mirror image. Where the skin crossed the mirror at a slant that left a crease, and rounding the mirror took the crease away at the price of a smeared band beside it. Here the mirror image is added to what is already there instead. Two pieces that are added to each other meet in a valley, the way a bulb meets the body it sits on, never in a ridge. The bulbs between the planes come out smeared flat all the same. A second cost is work: with a choice through step 3 the picture runs 8 orbits for every point. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
+// Texts of Blended mirrors, doubling
+const MB_NOTE = 'How it works: the mirrors of Soft mirrors, doubling, but kept sharp and not bent. Close to a mirror a point could be squared from two places: where the mirror puts it, or the mirror image of that place. Within the blend width the picture works out both and cross-fades between them, half and half on the mirror itself. That takes the crease away without bending anything, so nothing is smeared. A bud that sits right on a mirror does not come through whole: the cross-fade puts a smooth bubble round it. This is done at the first three steps of an orbit; later mirrors are sharp. A point of the flat plane is never moved, so the flat picture is exact.';
 const MB_ABOUT = 'A sharp mirror leaves a crease where the skin crosses it at a slant. Soft mirrors, doubling takes the crease away by rounding the mirror, and the rounding smears whatever sits beside the mirror round the x-axis: the striped ovals. Here the mirror stays sharp and the two sides are cross-faded instead. The cost: a bead that sits beside a mirror, but not on it, is lower than it would be, down to half its height right at the mirror. Close to a mirror the picture runs two orbits for a point, or more where blend widths of several steps meet, so it is slower there. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
-// ----- version 34: the texts of "Even pillow"
+// Texts of Even pillow
 const EP_NOTE = 'How it works: the direction of a point is read off a square grid that is wrapped round the sphere like a pillowcase, and both grid numbers are multiplied by the power. One grid number is the angle round the circle z = 0, so the flat picture is exact. The other measures how far the direction is from that circle, and it is doubled the same way, above and below alike. There is no mirror and no rounded edge anywhere. The grid is laid at an even speed along the circle z = 0 and along the circle x = 0, and it is squeezed only at its four corners, the directions (±1, 0, ±1). A product of two different points is taken from Sphere inversions, one plane.';
-const EP_ABOUT = 'Square pillow, the older entry, used the same idea with a grid that is lopsided above and below the flat plane and unevenly stretched, and its picture was streaked. This grid is the same above and below and nearly even. The price at the power 2, and at every even power: along two short arcs through the directions straight up and straight down the rule jumps, and the two sides of the jump are mirror images of each other, left to right. A Julia set with c on the x-axis is its own mirror image, so there the jump does not show. For other c it shows as a tear. At the odd powers, 3 and 5, there is no jump at all and the rule is whole for every c.';
+const EP_ABOUT = 'Square pillow uses the same idea with a grid that is lopsided above and below the flat plane and unevenly stretched, and its picture is streaked. This grid is the same above and below and nearly even. The price at the power 2, and at every even power: along two short arcs through the directions straight up and straight down the rule jumps, and the two sides of the jump are mirror images of each other, left to right. A Julia set with c on the x-axis is its own mirror image, so there the jump does not show. For other c it shows as a tear. At the odd powers, 3 and 5, there is no jump at all and the rule is whole for every c.';
 const epOdd = n => aprWhole(n) && Math.abs(Math.round(n)) % 2 === 1;
 const APPROACHES = [
   {
@@ -1602,31 +1539,30 @@ const APPROACHES = [
     about: 'In the plane, zⁿ can be built from n + 1 circle inversions: one about each of n points spaced evenly round the unit circle, the results added, then one more inversion of the sum. Swap the circles for spheres and the same recipe works in space, once a plane is chosen for the n points to lie in. Worked out, it multiplies two angles by n: the longitude, and the latitude as a Mercator map stretches it. Cut the solid at z = 0 and the slice is exactly the ordinary 2D Mandelbrot or Julia set of the same power (the 2D view shows it).',
     // a lift stretches the sphere of directions, so at n = −1 the rule is a plain inversion only while the lift is 0
     roundNote: (p, n) => (aprIs(n, -1) && !p.lift ? APR_INVERSION : APR_CIRCLES),
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       if (aprIs(n, 0)) return aprNone();
       const a = Math.abs(n);
       if (aprIs(a, 1)) return ['ok', n < 0 ? 'Crushes nothing: at n = −1 the rule is one sphere inversion. The origin is sent to infinity.' : 'Crushes nothing: at n = 1 every point stays where it is.'];
       if (a < 1) return ['part', 'Crushes nothing at this power, but the stretch has no limit beside the z-axis.' + aprPole(n)];
       return ['part', 'Crushes the z-axis only: a line where the plane has a point.' + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (aprIs(n, 0)) return aprConstant();
       if (!aprWhole(n)) return ['no', 'Smooth for whole powers only.' + aprTear(n, APR_HALF)];
       return ['part', n < 0 ? 'Smooth everywhere except the origin, which is a pole.' : 'Smooth everywhere except the origin. It needs |v|, so it is not a polynomial.'];
     },
-    slice: (ok, p, n = S.n) => {
+    slice: (ok, p, n) => {
       if (p.lift) return APR_LIFTED;
       const turn = aprMercTurn(p);
-      if (turn) return aprTurned('The plane z = 0 follows', turn, n);
+      if (turn) return aprTurned(turn, n);
       return !ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.';
     },
   },
   {
-    // The earlier version of Sphere inversions, an approach of its own so that the two can be told apart. The fold
-    // sends the half y > 0 and the half y < 0 of space to opposite sides, so the rule jumps across the plane
-    // y = 0 (see foldk).
+    // The fold sends the half y > 0 and the half y < 0 of space to opposite sides, so the rule jumps across the
+    // plane y = 0 (see foldk).
     id: 'fold', name: 'Sphere inversions, two planes', group: 'inversions', glsl: GL_FOLD, axis: () => [1, 0, 0],
-    tag: 'The earlier version. Fold space like a fan first, so that two planes carry the flat set.',
+    tag: 'Fold space like a fan first, so that two planes carry the flat set.',
     params: [
       { type: 'dial', key: 'planes', label: 'Planes', min: 2, max: 8, step: 1, def: 2, int: true, xmax: 16, xhi: 64 },
       { type: 'note', text: 'An attempt to copy Figure 4 in Václav Kučera’s paper (Bridges 2019), with beads around two circles. It looks right for a Julia set whose c lies on the x-axis, such as the Basilica. Everywhere else, the Mandelbrot solid included, the rule jumps on the seam of its fold, which tears the solid. The count is a free choice: p planes give 2p fins around the x-axis, whatever the power is. There is no Turn dial here: with a fold a turn tears the solid into sheets.' },
@@ -1635,9 +1571,9 @@ const APPROACHES = [
     formula: (p, n) => aprMercFormula(n) + ` Before that, the nearest of ${p.planes} planes through the x-axis is folded onto the xy-plane.` + aprMercAfter(0, p.lift),
     about: 'The one-plane rule with a fold in front of it. Space is folded around the x-axis like a fan, until the nearest of the chosen planes lies on the xy-plane, and then the one-plane rule is applied. With two planes, the planes z = 0 and y = 0 both carry the flat set. This follows the second construction in Kučera’s paper, whose third map is the second one turned by 90° about the x-axis. The paper reports that construction for c on the x-axis only, and that is where this rule is whole too.',
     roundNote: (p, n) => (aprIs(n, -1) && !p.lift ? 'At n = −1 each piece is a sphere inversion with a flip, which keeps every shape. The folds between the pieces still leave creases.' : APR_CIRCLES),
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone()
+    crush: (p, n) => (aprIs(n, 0) ? aprNone()
       : ['part', (n > 1 ? 'Nothing but the origin is crushed.' : 'Nothing is crushed.') + ' Space is creased where the folds meet instead.' + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', 'Pieces of the one-plane rule joined by mirror folds. The folds leave creases, and across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
     slice: (ok, p) => (p.lift ? APR_LIFTED : !ok ? 'The plane z = 0 does not follow complex arithmetic.'
       : `${p.planes} planes through the x-axis follow complex arithmetic exactly, z = 0 among them.`),
@@ -1651,13 +1587,13 @@ const APPROACHES = [
       + (p.spin !== 1 ? `, then the angle of (y, z) is multiplied by ${aprNum(p.spin)}` : ''),
     about: 'With spin 1 this is the power of a quaternion (a number with three imaginary parts) with one part held at zero, and the set is the flat one turned on a lathe. It is also what the sum of sphere inversions gives when no plane is chosen: for the square, the two centres are the points 1 and −1 on the x-axis, and they need no plane. So this is the one rule of its kind that treats every direction around the x-axis alike. Any other odd spin also twists directions around the x-axis, which breaks the rings into bulbs while the plane z = 0 stays exact.',
     roundNote: (p, n) => (aprIs(n, -1) && p.spin === 1 ? APR_INVERSION : 'The squash is in the spin direction.'),
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       const a = Math.abs(n);
       if (aprIs(n, 0)) return aprNone();
       if (a < 1 + 1e-9) return ['ok', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
       return ['no', 'Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.' + (aprIs(a, 2) ? ` For n = ${aprNum(n)} that is the whole plane x = 0.` : '') + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       const tear = aprTear(n, APR_LINE);
       if (aprIs(n, 0)) return aprConstant();
       if (p.spin !== 1) return ['no', 'Has a crease along the whole x-axis, where the spin has nothing to be measured from.' + tear];
@@ -1673,10 +1609,6 @@ const APPROACHES = [
     id: 'tilt', name: 'Quaternion square, twisted', group: 'quaternion', glsl: GL_TILT,
     axis: p => [Math.cos(aprRad(p.tilt)), -Math.sin(aprRad(p.tilt)), 0],
     tag: 'Square a quaternion, with the second copy twisted first. The rings of the quaternion square break up.',
-    // What the help and the note say was measured in out/r12/check-maths/ and again in out/r12/fix/ (sweep.log,
-    // after-maths.log): the Mandelbrot solid ends inside radius 2 at every tilt (the rule squares lengths); a tilt
-    // of 180 is the mirror twin for even powers and the plain quaternion square for odd ones; away from tilt 0 the
-    // plane y = 0 does not follow complex arithmetic.
     params: [
       { type: 'dial', key: 'tilt', label: 'Tilt of the axis, degrees', min: -180, max: 180, step: 1, def: 40, lo: -360, hi: 360, animate: true, help: 'At 0 this is the plain quaternion square, the entry above, and the solid is made of rings. Away from 0 the rings break up into one body with tunnels. At 180 it is the mirror twin of the quaternion square for an even power, and the quaternion square itself for an odd one. At 90 and −90 the Mandelbrot solid is one fat body with spikes. It ends at every tilt: nothing further than 2 from the centre belongs to it. A tilt with a minus sign gives the mirror image of that solid, with y and −y swapped. For whole powers the plane z = 0 is exact at every tilt.' },
       { type: 'note', text: 'A rule for all of space with no seam: for whole positive powers it is built from plain multiplying and adding. One plane is built into it all the same: the plane z = 0 is exact, and at power 2 the plane y = 0 is not, unless the tilt is 0. In the close-up pictures its skin is smooth sheets and folds, with no fine bumps. The fine detail of the flat set is there where the solid meets the plane z = 0.' },
@@ -1685,20 +1617,20 @@ const APPROACHES = [
       : `vⁿ = turn(−n·t) · qⁿ(turn(t) · v)   with t = ${aprDeg(p.tilt)}, qⁿ the quaternion power and turn a turn about the z-axis.`),
     about: 'Squaring multiplies a quaternion by itself. Here the second copy is twisted first: a quaternion has four directions, two of them outside the flat plane, and in the second copy those two are turned together, in their own plane, by twice the tilt. What that leaves in 3D is the quaternion square with its angle measured from an axis tilted inside the plane z = 0, and the result turned back. In the plane z = 0 the two turns cancel, so the slice is the flat set at every tilt. A Julia set whose c lies in that plane is a true slice of the 4D set. A Mandelbrot solid needs a c with a height, and adding it as a 3D point is this page’s own choice.',
     roundNote: () => 'The squash is in the spin direction around the tilted axis.',
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       const a = Math.abs(n);
       if (aprIs(n, 0)) return aprNone();
       if (a < 1 + 1e-9) return ['ok', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
       return ['no', 'Crushes every direction whose angle from the tilted axis, times n, is a multiple of 180°.' + (aprIs(a, 2) ? ` For n = ${aprNum(n)} that is the whole plane through the origin at right angles to the tilted axis.` : '') + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (aprIs(n, 0)) return aprConstant();
       if (!aprWhole(n)) return ['no', 'A polynomial (built from plain multiplying and adding) for whole positive powers only. A power that is not a whole number also tears space along a line, the way zⁿ tears the plane along the negative x-axis.'];
       return n < 0 ? ['part', 'A polynomial divided by a power of |v|²: smooth everywhere except the origin, which is a pole.'] : ['ok', 'A polynomial: built from plain multiplying and adding.'];
     },
     // A power that is not whole tears the plane along the negative side of the tilted axis, where the plain
     // complex power tears it along the negative x-axis. So the two differ in the wedge between those two rays.
-    slice: (ok, p, n = S.n) => (ok ? 'The plane z = 0 follows complex arithmetic exactly, at every tilt.'
+    slice: (ok, p, n) => (ok ? 'The plane z = 0 follows complex arithmetic exactly, at every tilt.'
       : !aprWhole(n) && p.tilt ? 'For a power that is not a whole number the plane z = 0 follows complex arithmetic except in a wedge as wide as the tilt, beside the negative x-axis: the tear lies along the tilted axis, not along the negative x-axis. Whole powers are exact at every tilt.'
       : 'The plane z = 0 does not follow complex arithmetic.'),
   },
@@ -1719,21 +1651,21 @@ const APPROACHES = [
       return (Math.abs(Math.sin(aprRad(p.lat))) > 1e-6 ? 'With a latitude phase even the equator is squashed, and ' : 'Exact on the equator, but ')
         + (torn ? 'the stretch grows without limit toward the z-axis.' : 'beside the z-axis the stretch along the circles of latitude is |n| times too large.');
     },
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       if (aprIs(n, 0)) return aprNone();
       if (!aprPasses((p.lat || 0) - 90 * n, (p.lat || 0) + 90 * n, 90)) return ['ok', (n < 0 ? 'Crushes nothing at these settings.' : 'Crushes nothing but the origin at these settings.') + aprPole(n)];
       return ['no', `Crushes the cones where n times the latitude${p.lat ? ', plus the phase,' : ''} reaches ±90°, ±270° and so on` + (aprIs(Math.abs(n), 2) && !p.lat ? ' (latitude ±45° here).' : '.') + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (aprIs(n, 0)) return aprConstant();
       const torn = Math.abs(Math.cos(n * PI / 2 + aprRad(p.lat))) > 1e-6, even = aprWhole(n / 2) && !p.lat;
       return ['no', (torn ? `Torn along the z-axis: directions next to a pole are thrown all the way around ${even ? 'the equator' : 'a circle of latitude'}.`
         : 'Has a crease along the z-axis, where the longitude has nothing to be measured from.') + aprTear(n, APR_HALF)];
     },
-    slice: (ok, p, n = S.n) => {
+    slice: (ok, p, n) => {
       const lat = aprWrap(p.lat || 0), flip = aprIs(Math.abs(lat), 180), turn = aprWrap((p.lon || 0) + (flip ? 180 : 0));
       if (lat && !flip) return 'With a latitude phase the plane z = 0 lands on a cone, so no flat slice follows complex arithmetic. Set that phase to 0 to get the flat set back.';
-      if (turn) return aprTurned('The plane z = 0 follows', turn, n);
+      if (turn) return aprTurned(turn, n);
       return ok ? 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.' : 'The plane z = 0 does not follow complex arithmetic.';
     },
   },
@@ -1745,28 +1677,28 @@ const APPROACHES = [
       { type: 'dial', key: 'phi', label: 'φ phase, degrees', min: -180, max: 180, step: 1, def: 0, lo: -360, hi: 360, animate: true, help: 'Added to the angle around the z-axis each time a power is taken. For zⁿ + c it turns the Mandelbrot solid about the z-axis; Julia sets change shape.' },
     ],
     formula: p => `vⁿ = |v|ⁿ · (sin T cos P, sin T sin P, cos T)   with T = n·θ${aprPlus(p.theta, '°')}, P = n·φ${aprPlus(p.phi, '°')}, θ the angle from the z-axis and φ the angle around it`,
-    about: 'White and Nylander’s formula as most renders use it, usually at n = 8. It is here as a rendering benchmark, and with every dial at its starting value it is the one approach whose z = 0 slice is not the flat set: for even n that whole plane is thrown onto the z-axis. A θ phase of (1 − n) × 90° turns it into the Mandelbulb above.',
+    about: 'White and Nylander’s formula as most renders use it, usually at n = 8. It is here as a rendering benchmark. With every dial at its starting value its z = 0 slice is not the flat set: for even n that whole plane is thrown onto the z-axis. A θ phase of (1 − n) × 90° turns it into the Mandelbulb above.',
     roundNote: (p, n) => {
-      if (aprIs(n, -1) && !p.theta) return 'At n = −1 the rule is a single sphere inversion with a mirror, and inversions keep every shape.';
+      if (aprIs(n, -1) && !p.theta) return APR_MIRROR;
       const torn = Math.abs(Math.sin(aprRad(p.theta))) > 1e-6 || Math.abs(Math.sin(n * PI + aprRad(p.theta))) > 1e-6;
       return torn ? 'Beside the z-axis the stretch has no limit, and on cones around the axis directions are crushed.' : 'Stretched up to |n| times too far beside the z-axis, crushed on cones around it.';
     },
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : aprPasses(p.theta || 0, (p.theta || 0) + 180 * n, 0)
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : aprPasses(p.theta || 0, (p.theta || 0) + 180 * n, 0)
       ? ['no', `Crushes every direction whose angle from the z-axis, times n${p.theta ? ' plus the phase' : ''}, is a multiple of 180°.` + aprPole(n)]
       : ['ok', (n < 0 ? 'Crushes nothing at these settings.' : 'Crushes nothing but the origin at these settings.') + aprPole(n)]),
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (aprIs(n, 0)) return aprConstant();
       const torn = Math.abs(Math.sin(aprRad(p.theta))) > 1e-6 || Math.abs(Math.sin(n * PI + aprRad(p.theta))) > 1e-6;
       return ['no', (torn ? 'Torn along the z-axis: directions next to a pole are thrown all the way around a circle.'
         : 'Has a crease along the whole z-axis, where the angle around it has nothing to be measured from.') + aprTear(n, APR_HALF)];
     },
-    slice: (ok, p, n = S.n) => {
+    slice: (ok, p, n) => {
       const T = n * PI / 2 + aprRad(p.theta), fix = aprWrap((1 - n) * 90);
       if (Math.abs(Math.cos(T)) > 1e-6) {
-        return `No. This is the one approach here that starts out without the flat set at z = 0. Setting the θ phase to ${aprDeg(fix)} would put it back: that turns this formula into the Mandelbulb above.`;
+        return `No. This formula starts out without the flat set at z = 0. Setting the θ phase to ${aprDeg(fix)} would put it back: that turns this formula into the Mandelbulb above.`;
       }
       const turn = aprWrap((p.phi || 0) + (Math.sin(T) < 0 ? 180 : 0));
-      if (turn) return aprTurned('The plane z = 0 follows', turn, n);
+      if (turn) return aprTurned(turn, n);
       return p.theta ? 'With this θ phase the plane z = 0 follows complex arithmetic exactly: the formula has become the Mandelbulb above.'
         : 'At this n the plane z = 0 happens to follow complex arithmetic.';
     },
@@ -1783,25 +1715,23 @@ const APPROACHES = [
     },
     about: 'Space treated as a complex number x + iy and an ordinary number z side by side, each multiplied on its own. Two points that are not 0 can multiply to 0 this way, and the set is the flat one extruded into a prism. A negative power is the positive power followed by one sphere inversion, as in the other approaches. Dividing by z on its own is not possible on the plane z = 0, where z is 0.',
     roundNote: (p, n) => (aprIs(n, -1) ? APR_MIRROR : 'Each factor keeps shapes on its own. Together they do not.'),
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       const a = Math.abs(n);
       if (aprIs(n, 0)) return aprNone();
       if (aprIs(a, 1)) return ['ok', n < 0 ? 'Crushes nothing: at n = −1 the rule is one sphere inversion with a mirror. The origin is sent to infinity.' : 'Crushes nothing: at n = 1 every point stays where it is.'];
       if (a < 1) return ['part', 'Crushes nothing at this power, but the stretch has no limit at the plane z = 0 and the z-axis.' + aprPole(n)];
       return ['no', 'Crushes the plane z = 0 and the z-axis.' + aprPole(n)];
     },
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : !aprWhole(n) ? ['no', 'A polynomial for whole positive powers only. Otherwise the complex factor is torn along the half-plane y = 0, x < 0, and below the plane the real factor keeps only the real part of zⁿ.']
       : n < 0 ? ['part', 'One polynomial divided by another: smooth everywhere except the origin, which is sent to infinity.'] : ['ok', 'A polynomial.']),
-    slice: (ok, p, n = S.n) => (!ok ? 'The plane z = 0 does not follow complex arithmetic.'
+    slice: (ok, p, n) => (!ok ? 'The plane z = 0 does not follow complex arithmetic.'
       : n < 0 ? 'The plane z = 0 follows complex arithmetic exactly. Because a negative power ends with an inversion, the slices at other heights are not copies of it.'
       : 'The plane z = 0 follows complex arithmetic exactly. So does every level slice of the prism.'),
   },
-  // ----- Tried, and kept for the record. Three rules that were built to get the look of Figure 4 (bodies with
-  // beads) without the tear of the two-planes rule, and failed. Each says what it was tried for and why it fails
-  // in the two places the list shows first: in short in `tag` (the line under the name, shown for every entry),
-  // and in full in `about` (the paragraph under the formula). How the rule works is the note above its dials.
-  // Their prototypes, numbers and pictures are in out/lab2/<softfold|axisbulb|pillow2>/; this round's checks in out/r12/tried/.
+  // The next three entries are rules that failed (group 'tried'; three more end the list). Each says what it was
+  // tried for and why it fails: in short in `tag` (the line under the name), in full in `about` (the paragraph
+  // under the formula). How the rule works is the note above its dials.
   {
     id: 'softfold', name: 'Blended planes', group: 'tried', glsl: GL_SOFTFOLD, axis: () => [1, 0, 0],
     tag: 'Tried: several planes joined by a smooth blend instead of a fold, to get beads without a tear. Failed: one swollen mass, no beads.',
@@ -1815,16 +1745,16 @@ const APPROACHES = [
     formula: (p, n) => (p.mix > 1.5
       ? `vⁿ = |v|ⁿ · pull(Fₖ(d), T, S(t))   with d the direction of v, Fₖ the one-plane rule built on the nearer of ${p.planes} planes through the x-axis, T the direction the seam has to land on (the x-axis for an even power), t how far the half-plane holding v has turned toward the seam, and S a weight that is 0 for the first ${aprNum(p.blend)} of the way to the next plane and rises smoothly to 1 on the seam.`
       : `vⁿ = |v|ⁿ · blend(Fₖ(d), Fₖ₊₁(d), S(t))   with d the direction of v, Fₖ the one-plane rule built on the k-th of ${p.planes} planes through the x-axis, t how far the half-plane holding v has turned from plane k to plane k + 1, and S a weight that stays at 0 for the first ${aprNum(p.blend)} of the way, rises smoothly, and stays at 1 for the last ${aprNum(p.blend)}.`),
-    about: 'Tried for: the look of Figure 4, bodies with beads, without the tear of Sphere inversions, two planes. Each plane keeps the one-plane rule, and between two planes the two answers are blended smoothly, so nothing jumps. Why it fails: the pictures. The Julia set for c = −1 comes out as one swollen mass with ridges where the planes cross, not a row of bodies with beads, and the Mandelbrot solid is a mass of shards and flames. The fault sits on the seam half way between two planes. A rule with no jump can only fold space back over itself there, or, for an even power, crush the whole seam onto the x-axis, and either way the seam fills with a fat set of its own. No setting of these dials mends it. The 3D picture also draws the skin a little outside the true set in places (measured on the Mandelbrot solid: by up to 0.07), so judge the fine detail with care.',
+    about: 'Tried for: the look of Figure 4 in Kučera’s paper, bodies with beads, without the tear of Sphere inversions, two planes. Each plane keeps the one-plane rule, and between two planes the two answers are blended smoothly, so nothing jumps. Why it fails: the pictures. The Julia set for c = −1 comes out as one swollen mass with ridges where the planes cross, not a row of bodies with beads, and the Mandelbrot solid is a mass of shards and flames. The fault sits on the seam half way between two planes. A rule with no jump can only fold space back over itself there, or, for an even power, crush the whole seam onto the x-axis, and either way the seam fills with a fat set of its own. No setting of these dials mends it. The 3D picture also draws the skin a little outside the true set in places (measured on the Mandelbrot solid: by up to 0.07), so judge the fine detail with care.',
     roundNote: p => (p.mix > 1.5 ? 'Inside each plane’s own band circles on the sphere stay circles. Toward the seam between two planes they are squashed flat.'
       : 'Inside each plane’s own band circles on the sphere stay circles. In the blend between two bands they do not.'),
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       if (aprIs(n, 0)) return aprNone();
       if (p.mix > 1.5) return aprWhole(n / 2) ? ['no', 'Crushes every seam, the half-plane half way between two planes, onto the x-axis.' + aprPole(n)]
         : ['part', 'For an even power every seam, the half-plane half way between two planes, is crushed onto the x-axis. Other powers were not measured.' + aprPole(n)];
       return ['no', 'In the blend the sphere of directions is folded back over itself, and along each fold line it is crushed flat. Measured at n = 2: about 5 to 7% of directions come out turned over with 2 planes, about 30% with 3 or 4.' + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (aprIs(n, 0)) return aprConstant();
       if (!aprWhole(n)) return ['no', 'A power that is not a whole number tears the plane z = 0 along the negative x-axis, as zⁿ does. Away from the planes such powers were not tested.'];
       if (p.mix > 1.5) return ['part', 'No jump was found with the pinch (measured with 2 and 3 planes at n = 2, 3 and −2), but toward each seam the rule is squeezed flat.'];
@@ -1849,14 +1779,14 @@ const APPROACHES = [
       + (aprIs(n, 2) && p.k === 1 && !p.wob && !p.pinch ? '. That is (x² − y² − z², 2xy, 2xz).' : '.'),
     about: 'Tried for: beads in place of the rings of the Quaternion square (Lathe), by also changing the turn around the x-axis. Why it fails: for a Julia set whose c lies on the x-axis, such as c = −1, the turn never feeds back into the shape. So that set stays the same body, round about the x-axis, rings and all, whatever the multiplier and the wobble are. On the Mandelbrot solid a small wobble only opens some rings into ribbons. A multiplier of 5 or −3 gives flames and whiskers, and over part of the flat set in the plane z = 0 the solid then thins to a sheet with no thickness: over about half of the flat Mandelbrot set at a multiplier of 5, and about a third at −3. The pinch is the one dial that changes the c = −1 set, and it gives fins, not beads.',
     roundNote: (p, n) => (aprIs(n, -1) && p.k === 1 && !p.wob && !p.pinch ? APR_INVERSION : Math.abs(p.k) > 1 ? `The squash is in the turn direction: beside the x-axis, circles around it are stretched ${aprNum(Math.abs(p.k))} times their due.` : 'The squash is in the turn direction.'),
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       const a = Math.abs(n);
       if (aprIs(n, 0)) return aprNone();
       if (p.k === 0 && !p.wob) return ['no', 'With a multiplier of 0 every turn is thrown onto the half-plane z = 0, y > 0.'];
       if (a < 1 + 1e-9) return ['ok', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
       return ['no', 'Crushes every direction whose angle from the x-axis, times n, is a multiple of 180°.' + (aprIs(a, 2) ? ` For n = ${aprNum(n)} that is the whole plane x = 0.` : '') + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       const tear = aprTear(n, APR_LINE);
       if (aprIs(n, 0)) return aprConstant();
       if (p.k !== 1) return ['no', 'No jump, but a crease along the whole x-axis, where the turn has nothing to be measured from.' + tear];
@@ -1893,27 +1823,24 @@ const APPROACHES = [
     about: 'Tried for: a rule with no seam to jump across. A flat sheet tiled with triangles wraps around the sphere of directions as a pillow, and multiplying the sheet is the power. Why it fails: the Julia set for c = −1 is one lump, not a row of bodies. Laid smoothly, the pillow gives a smooth egg, and its slice at z = 0 is not the flat set. Laid so that the planes z = 0 and y = 0 are both exact, the bodies get waists that never close, and the creases of the layout are copied all over the surface as fibres and dust. A smooth pillow gives a rock and a creased one gives fibres, and no layout was found that escapes both. The 3D picture also draws the skin a little outside the true set in places (measured for the creased layout on the Julia set for c = −1: by up to 0.3), so judge the fine detail with care.',
     roundNote: p => (p.layout > 0.5 ? 'Circles on the sphere of directions stay circles, except at the three directions half way between the corners, where three sheets are folded together.'
       : 'Shapes are not kept: a small circle of directions comes out as an oval or a rounded triangle.'),
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       if (p.layout > 0.5) return psReps(n) === 0 ? ['ok', 'Crushes nothing: below 1.5 this layout leaves every point where it is.']
         : ['part', 'Nothing but the origin is crushed onto one point. At three directions in the plane z = 0 (60°, 180° and 300°) the stretch falls to 0, where three sheets wrap around.'];
       if (Math.round(n) === 0) return aprNone();
       return ['ok', (Math.abs(Math.round(n)) < 2 ? 'Crushes nothing at this power.' : 'Nothing but the origin is crushed.') + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (p.layout > 0.5) return psReps(n) === 0 ? ['ok', 'Below 1.5 this layout leaves every point where it is.']
         : ['part', 'Smooth everywhere except the origin. Three directions in the plane z = 0 (60°, 180° and 300°) are spots where three sheets meet: smooth, but wrapped three times around.'];
       if (Math.round(n) === 0) return aprConstant();
       return ['no', (Math.abs(Math.round(n)) < 2 ? 'Smooth at this power.' : 'No jump was found, but the layout is creased, and every power copies the creases onto more places.')
         + aprTear(n, ' A power that is not a whole number is rounded, so the picture jumps between whole powers.')];
     },
-    slice: (ok, p, n = S.n) => (p.layout > 0.5 ? (psReps(n) === 0 ? 'Below 1.5 this layout leaves every point where it is.'
+    slice: (ok, p, n) => (p.layout > 0.5 ? (psReps(n) === 0 ? 'Below 1.5 this layout leaves every point where it is.'
         : 'The plane z = 0 lands on itself, but it does not follow complex arithmetic: the angle is doubled with a wobble of up to 60°. So the slice is not the flat set.')
       : !aprWhole(n) ? 'The power is rounded to a whole number, so the plane z = 0 follows that whole power and not this one.'
       : ok ? 'The planes z = 0 and y = 0 both follow complex arithmetic exactly. The 2D view of this page still draws the slice with a fringe: measured at n = 2, about 5 to 7% more solid than the flat set.' : 'The plane z = 0 does not follow complex arithmetic.'),
   },
-  // ----- Round 14: five rules tried at the user's request. They stand at the end of this list so that the entries
-  // before them keep their places; the Approach list shows each under the heading of its group. What their texts
-  // say was measured in out/r14/rules/ (checks.txt, and the contact sheets there).
   {
     id: 'quat4', name: 'Quaternions, 4D (slices)', group: 'quaternion', glsl: GL_QUAT4, axis: () => [1, 0, 0],
     tag: 'The quaternion sets live in four dimensions. The picture is a flat 3D slice through one of them, and the dials move the slice.',
@@ -1928,13 +1855,13 @@ const APPROACHES = [
       + `. The picture point (x, y, z) stands for q = ${q4Words(p)}.`,
     about: Q4_ABOUT,
     roundNote: (p, n) => (aprIs(n, -1) ? APR_INVERSION : 'The squash is in the spin direction.'),
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       const a = Math.abs(n);
       if (aprIs(n, 0)) return aprNone();
       if (a < 1 + 1e-9) return ['ok', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
       return ['no', 'In the three numbers the orbit is held in, it crushes every direction whose angle from the real axis, times n, is a multiple of 180°. In 4D the same directions are crushed.' + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (aprIs(n, 0)) return aprConstant();
       if (!aprWhole(n)) return ['no', 'A polynomial for whole positive powers only.' + aprTear(n, APR_LINE)];
       return n < 0 ? ['part', 'A polynomial divided by a power of |q|²: smooth everywhere except the origin, which is a pole.'] : ['ok', 'A polynomial: plain quaternion multiplying.'];
@@ -1957,24 +1884,24 @@ const APPROACHES = [
         : 'vⁿ = |v|ⁿ · (cos nα · a + sin nα · u)   with α the angle between the reference axis a and v, and u the direction of v’s part square to a') + `. Here a = (${a}).`;
     },
     about: RT_ABOUT,
-    roundNote: (p, n) => (aprIs(n, -1) ? 'At n = −1 the rule is a single sphere inversion with a mirror, and inversions keep every shape.' : 'The squash is in the spin direction around the reference axis.'),
-    crush: (p, n = S.n) => {
+    roundNote: (p, n) => (aprIs(n, -1) ? APR_MIRROR : 'The squash is in the spin direction around the reference axis.'),
+    crush: (p, n) => {
       const a = Math.abs(n);
       if (aprIs(n, 0)) return aprNone();
       if (a < 1 + 1e-9) return ['ok', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
       return ['no', 'Crushes every direction whose angle from the reference axis, times n, is a multiple of 180°.' + (aprIs(a, 2) ? ` For n = ${aprNum(n)} that is the whole plane through the origin at right angles to the reference axis.` : '') + aprPole(n)];
     },
-    smooth: (p, n = S.n) => {
+    smooth: (p, n) => {
       if (aprIs(n, 0)) return aprConstant();
       if (!aprWhole(n)) return ['no', 'A polynomial for whole positive powers only. A power that is not a whole number also tears space along the reference axis, on its negative side, the way zⁿ tears the plane along the negative x-axis.'];
       return n < 0 ? ['part', 'A polynomial divided by a power of |v|²: smooth everywhere except the origin, which is a pole.'] : ['ok', 'A polynomial.'];
     },
-    slice: (ok, p, n = S.n) => {
+    slice: (ok, p, n) => {
       const lat = p.lat === undefined ? 90 : p.lat, lon = aprWrap(p.lon || 0);
-      if (Math.abs(r14CS(lat)[1]) > 0) return RT_SLICE_OFF + (aprIs(Math.abs(lat), 90) ? ' With the reference along the z-axis that is every plane through the z-axis, the plane y = 0 among them.' : '');
+      if (Math.abs(aprCosSin(lat)[1]) > 0) return RT_SLICE_OFF + (aprIs(Math.abs(lat), 90) ? ' With the reference along the z-axis that is every plane through the z-axis, the plane y = 0 among them.' : '');
       if (ok) return lon ? 'At this power the plane z = 0 follows complex arithmetic exactly.' : 'With the reference along the x-axis this is Quaternion square (Lathe): the plane z = 0 follows complex arithmetic exactly, and so does every other plane through the x-axis.';
       const turn = aprWrap((1 - n) * lon);
-      return aprWhole(n) && turn ? aprTurned('The plane z = 0 follows', turn, n) : 'The plane z = 0 does not follow complex arithmetic.';
+      return aprWhole(n) && turn ? aprTurned(turn, n) : 'The plane z = 0 does not follow complex arithmetic.';
     },
   },
   {
@@ -1985,12 +1912,12 @@ const APPROACHES = [
       : 'vⁿ = |v|ⁿ · Rⁿ(1, 0, 0)   with R the turn that carries the x-axis onto the direction of v (a tip up by the latitude, then a turn about the z-axis by the longitude), and Rⁿ the turn about the same line by n times the angle.'),
     about: RF_ABOUT,
     roundNote: () => RF_ROUND,
-    crush: (p, n = S.n) => {
+    crush: (p, n) => {
       if (aprIs(n, 0)) return aprNone();
       if (Math.abs(n) < 1 + 1e-9) return ['ok', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
       return aprIs(Math.abs(n), 2) ? ['no', RF_CRUSH2 + aprPole(n)] : ['part', RF_CRUSHN + aprPole(n)];
     },
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant() : ['no', RF_SMOOTH + aprTear(n, APR_HALF)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['no', RF_SMOOTH + aprTear(n, APR_HALF)]),
     slice: ok => (ok ? RF_SLICE : 'The plane z = 0 does not follow complex arithmetic.'),
   },
   {
@@ -2000,7 +1927,7 @@ const APPROACHES = [
     formula: (p, n) => kqFormula(n, false),
     about: KQ_ABOUT,
     roundNote: () => KQ_ROUND,
-    crush: (p, n = S.n) => (aprIs(n, 0) ? ['no', 'At n = 0 every point is sent onto the sphere of radius 1.'] : ['part', KQ_CRUSH + aprPole(n)]),
+    crush: (p, n) => (aprIs(n, 0) ? ['no', 'At n = 0 every point is sent onto the sphere of radius 1.'] : ['part', KQ_CRUSH + aprPole(n)]),
     smooth: () => ['no', KQ_SMOOTH],
     slice: () => KQ_SLICE,
   },
@@ -2011,12 +1938,10 @@ const APPROACHES = [
     formula: (p, n) => kqFormula(n, true),
     about: KQ2_ABOUT,
     roundNote: () => KQ_ROUND,
-    crush: (p, n = S.n) => (aprIs(n, 0) ? ['no', 'At n = 0 every point is sent onto the sphere of radius 1.'] : ['part', KQ_CRUSH + aprPole(n)]),
+    crush: (p, n) => (aprIs(n, 0) ? ['no', 'At n = 0 every point is sent onto the sphere of radius 1.'] : ['part', KQ_CRUSH + aprPole(n)]),
     smooth: () => ['no', KQ2_SMOOTH],
     slice: () => KQ2_SLICE,
   },
-  // ----- Round 15: one new rule, in a group of its own. It stands at the end of this list so that the entries
-  // before it keep their places. What its texts say was measured in out/r15/entry/.
   {
     id: 'sqpillow', name: 'Square pillow', group: 'pillow', glsl: GL_SQPILLOW, axis: () => [0, 0, 1],
     tag: SP_TAG,
@@ -2024,13 +1949,10 @@ const APPROACHES = [
     formula: (p, n) => spFormula(n),
     about: SP_ABOUT,
     roundNote: () => SP_ROUND,
-    crush: (p, n = S.n) => (aprIs(n, 0) ? ['no', 'At n = 0 every point is sent onto the sphere of radius 1.'] : ['part', (aprIs(Math.abs(n), 2) ? SP_CRUSH2 : SP_CRUSHN) + aprPole(n)]),
-    smooth: (p, n = S.n) => ['no', SP_SMOOTH + (spOwn(n) ? '' : SP_SMOOTH_OTHER)],
-    slice: (ok, p, n = S.n) => (spOwn(n) && ok ? SP_SLICE : spSliceOther(n)),
+    crush: (p, n) => (aprIs(n, 0) ? ['no', 'At n = 0 every point is sent onto the sphere of radius 1.'] : ['part', (aprIs(Math.abs(n), 2) ? SP_CRUSH2 : SP_CRUSHN) + aprPole(n)]),
+    smooth: (p, n) => ['no', SP_SMOOTH + (spOwn(n) ? '' : SP_SMOOTH_OTHER)],
+    slice: (ok, p, n) => (spOwn(n) && ok ? SP_SLICE : spSliceOther(n)),
   },
-  // ----- Round 16: two rules built from Sphere inversions, one plane, so they stand in its group. They are at the
-  // end of this list so that the entries before them keep their places. What their texts say was measured in
-  // out/r16/entry/.
   {
     id: 'turnaway', name: 'Turning plane, away', group: 'inversions', glsl: GL_TURNAWAY, axis: () => [1, 0, 0], deMax: 0,
     tag: TP_TAG_AWAY,
@@ -2038,9 +1960,9 @@ const APPROACHES = [
     formula: (p, n) => tpFormula(n, false),
     about: TP_ABOUT_AWAY,
     roundNote: () => TP_ROUND,
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', (tpPlanes(n) === 1 ? TP_ONE : TP_CRUSH_AWAY) + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', TP_SMOOTH + (aprWhole(n) ? '' : TP_SMOOTH_OTHER) + aprTear(n, APR_HALF)]),
-    slice: (ok, p, n = S.n) => tpSlice(ok, n, false),
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', (tpPlanes(n) === 1 ? TP_ONE : TP_CRUSH_AWAY) + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', TP_SMOOTH + (aprWhole(n) ? '' : TP_SMOOTH_OTHER) + aprTear(n, APR_HALF)]),
+    slice: (ok, p, n) => tpSlice(ok, n, false),
   },
   {
     id: 'turnalong', name: 'Turning plane, along', group: 'inversions', glsl: GL_TURNALONG, axis: () => [1, 0, 0], deMax: 0,
@@ -2049,37 +1971,32 @@ const APPROACHES = [
     formula: (p, n) => tpFormula(n, true),
     about: TP_ABOUT_ALONG,
     roundNote: () => TP_ROUND,
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', TP_CRUSH_ALONG + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', TP_SMOOTH + (aprWhole(n) ? '' : TP_SMOOTH_OTHER) + aprTear(n, APR_HALF)]),
-    slice: (ok, p, n = S.n) => tpSlice(ok, n, true),
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', TP_CRUSH_ALONG + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', TP_SMOOTH + (aprWhole(n) ? '' : TP_SMOOTH_OTHER) + aprTear(n, APR_HALF)]),
+    slice: (ok, p, n) => tpSlice(ok, n, true),
   },
-  // ----- Round 20: one rule built from Sphere inversions, one plane, so it stands in its group, at the end of this
-  // list so that the entries before it keep their places. What its texts say was measured in out/r20/entry/.
   {
     id: 'windsq', name: 'Wind, then square', group: 'inversions', glsl: GL_WINDSQ, axis: () => [1, 0, 0], deMax: 0,
     tag: WS_TAG,
     params: [{ type: 'note', text: WS_NOTE }],
     formula: (p, n) => wsFormula(n),
     about: WS_ABOUT,
-    roundNote: (p, n = S.n) => wsRound(n),
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', wsCrush(n) + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', wsSmooth(n)]),
-    slice: (ok, p, n = S.n) => wsSlice(ok, n),
+    roundNote: (p, n) => wsRound(n),
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', wsCrush(n) + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', wsSmooth(n)]),
+    slice: (ok, p, n) => wsSlice(ok, n),
   },
-  // ----- Round 22: the two near misses of round 21, each an entry of its own. They are the first entries whose orbit
-  // carries something besides its point (CARRY, GL_CARRY). Both are built from Sphere inversions, one plane, so they
-  // stand in its group, at the end of this list so that the entries before them keep their places. What their texts
-  // say was measured in out/r21/judge/ (the rules alongmem.c_wake1 and sheet.evc005e70k16) and in out/r22/entry/.
+  // The orbit of the next two entries carries something besides its point (CARRY, GL_CARRY).
   {
     id: 'alongonce', name: 'Along once, then one plane', group: 'inversions', glsl: GL_ALONGONCE, axis: () => [1, 0, 0], deMax: 0,
     tag: AO_TAG,
     params: [{ type: 'note', text: AO_NOTE }],
     formula: (p, n) => aoFormula(n),
     about: AO_ABOUT,
-    roundNote: (p, n = S.n) => AO_CARD + `It keeps shapes inside the ${tpCount(n, true)} planes through the x-axis in which Turning plane, along is the complex power, and squashes them between those planes and across them.` + AO_LATER + ', which keeps circles on the sphere as circles.',
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', AO_CARD + TP_CRUSH_ALONG + AO_LATER + ', which crushes the z-axis only.' + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', AO_CARD + TP_SMOOTH + (aprWhole(n) ? '' : TP_SMOOTH_OTHER) + aprTear(n, APR_HALF) + ' The rule changes after the first squaring, so an orbit is not one formula applied again and again.']),
-    slice: (ok, p, n = S.n) => aoSlice(ok),
+    roundNote: (p, n) => AO_CARD + `It keeps shapes inside the ${tpCount(n, true)} planes through the x-axis in which Turning plane, along is the complex power, and squashes them between those planes and across them.` + AO_LATER + ', which keeps circles on the sphere as circles.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', AO_CARD + TP_CRUSH_ALONG + AO_LATER + ', which crushes the z-axis only.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', AO_CARD + TP_SMOOTH + (aprWhole(n) ? '' : TP_SMOOTH_OTHER) + aprTear(n, APR_HALF) + ' The rule changes after the first squaring, so an orbit is not one formula applied again and again.']),
+    slice: ok => aoSlice(ok),
   },
   {
     id: 'pulledplane', name: 'Pulled plane', group: 'inversions', glsl: GL_PULLEDPLANE, axis: () => [1, 0, 0], deMax: 0,
@@ -2093,71 +2010,63 @@ const APPROACHES = [
     formula: (p, n) => ppFormula(p, n),
     about: PP_ABOUT,
     roundNote: () => PP_ROUND,
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', PP_CRUSH + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant() : ['no', ppSmooth(p, n)]),
-    slice: (ok, p, n = S.n) => ppSlice(ok),
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', PP_CRUSH + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['no', ppSmooth(p, n)]),
+    slice: ok => ppSlice(ok),
   },
-  // ----- Version 31: the dial between "one plane" and "two planes", asked for by the user. At the end of this list
-  // so that the entries before it keep their places.
   {
     id: 'softmirror', name: 'Sphere inversions, soft mirror', group: 'inversions', glsl: GL_SOFTMIRROR, axis: () => [1, 0, 0], deMax: 0,
     tag: 'Between one plane and two planes: the one-plane rule behind a mirror. One dial says where the mirror stands, the other how soft its edge is.',
     params: [
       { type: 'note', text: SM_NOTE },
-      { type: 'dial', key: 'mirror', label: 'Mirror stands at, degrees from the flat plane', min: 45, max: 90, step: 0.5, def: 45, lo: 45, hi: 90, help: 'Counted round the x-axis from the flat plane. 90°: no mirror, so nothing sits off the flat plane (one plane). 45°: the upright plane y = 0 becomes a copy of the flat plane (two planes).' },
-      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 20, lo: 0, hi: 45, help: 'How far to each side of the mirror its edge is rounded. 0: a sharp edge, which leaves a crease. Larger: no crease, and a band this wide on each side of the mirror in which bodies are stretched round the x-axis.' },
+      { type: 'dial', key: 'mirror', label: 'Mirror stands at, degrees from the flat plane', min: 45, max: 90, step: 0.5, def: 45, help: 'Counted round the x-axis from the flat plane. 90°: no mirror, so nothing sits off the flat plane (one plane). 45°: the upright plane y = 0 becomes a copy of the flat plane (two planes).' },
+      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 20, help: 'How far to each side of the mirror its edge is rounded. 0: a sharp edge, which leaves a crease. Larger: no crease, and a band this wide on each side of the mirror in which bodies are stretched round the x-axis.' },
     ],
     formula: (p, n) => aprMercFormula(n) + ` Before that the turn a of the point round the x-axis, counted from the flat plane, becomes ${aprDeg(p.mirror)} − |a − ${aprDeg(p.mirror)}|` + (smSoft(p) ? `, with the corner rounded over ${aprDeg(p.soft)} on each side.` : '.'),
     about: SM_ABOUT,
     roundNote: p => (smSoft(p) ? 'Away from the mirror circles on the sphere stay circles. Inside the soft edge they are squashed round the x-axis, and on the mirror itself squashed flat.' : 'Each piece keeps circles on the sphere as circles. The mirror leaves a crease between the pieces.'),
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone()
+    crush: (p, n) => (aprIs(n, 0) ? aprNone()
       : ['part', (smSoft(p) ? 'On the mirror the turn round the x-axis is crushed: a thin slice of directions is spread over the whole soft band.' : 'Nothing but the origin is crushed. Space is creased on the mirror instead.') + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', (smSoft(p) ? 'No crease on the mirror, but' : 'A crease on the mirror, and') + ' across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
     slice: (ok, p) => (!ok ? 'The plane z = 0 does not follow complex arithmetic.'
       : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.' + (aprIs(+p.mirror, 45) && +p.soft < 45 ? ' With the mirror at 45° the plane y = 0 carries the flat set as well.' : '')),
   },
-  // ----- Version 32: the soft mirror with twice as many mirrors at each step, to bring bodies between the planes.
-  // An entry whose orbit carries something (CARRY.mirrorsdouble). At the end of this list so that the entries before
-  // it keep their places.
+  // An entry whose orbit carries something (CARRY.mirrorsdouble).
   {
     id: 'mirrorsdouble', name: 'Soft mirrors, doubling', group: 'inversions', glsl: GL_MIRRORSDOUBLE, axis: () => [1, 0, 0], deMax: 0,
     tag: 'The soft mirror with twice as many mirrors at each step: 2 planes at the first squaring, 4 at the second, 8 at the third. Bodies come to sit between the planes too.',
     params: [
       { type: 'note', text: MD_NOTE },
-      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 2, lo: 0, hi: 45, help: 'How far to each side of the first mirror its edge is rounded. Every later mirror is rounded by the same share of the gap between mirrors. 0: sharp edges, which leave thin crease lines. From about 4 up, a bud that sits right on a mirror is smeared into a striped oval. It opened on 6 before Version 34.' },
-      { type: 'dial', key: 'stop', label: 'Doubling stops after step', min: 1, max: 12, step: 1, def: 3, int: true, lo: 1, hi: 12, help: 'The mirrors double at each step up to this one and stay as they are after it. 1: two planes at every step, which is Sphere inversions, soft mirror. 3: 2, 4, then 8 planes. 12: the doubling never stops within the steps a picture takes.' },
+      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 2, help: 'How far to each side of the first mirror its edge is rounded. Every later mirror is rounded by the same share of the gap between mirrors. 0: sharp edges, which leave thin crease lines. From about 4 up, a bud that sits right on a mirror is smeared into a striped oval.' },
+      { type: 'dial', key: 'stop', label: 'Doubling stops after step', min: 1, max: 12, step: 1, def: 3, int: true, help: 'The mirrors double at each step up to this one and stay as they are after it. 1: two planes at every step, which is Sphere inversions, soft mirror. 3: 2, 4, then 8 planes. 12: the doubling never stops within the steps a picture takes.' },
     ],
     formula: (p, n) => aprMercFormula(n) + ` Before that, at step k of an orbit, the turn a of the point round the x-axis is folded by mirrors that stand every 90°/2ᵏ⁻¹` + (smSoft(p) ? `, each with its corner rounded over the same share of that gap (${aprDeg(p.soft)} at the first step).` : '.') + ` From step ${aprNum(clamp(Math.round(+p.stop || 1), 1, 12))} on the mirrors stay as they are: ${aprNum(mdPlanes(p))} planes through the x-axis.`,
     about: MD_ABOUT,
     roundNote: p => 'This card measures the first squaring of an orbit, which is the one of Sphere inversions, soft mirror with the mirror at 45°. ' + (smSoft(p) ? 'Away from a mirror circles on the sphere stay circles. Inside a soft edge they are squashed round the x-axis.' : 'Each piece keeps circles on the sphere as circles. The mirrors leave creases between the pieces.'),
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone()
+    crush: (p, n) => (aprIs(n, 0) ? aprNone()
       : ['part', (smSoft(p) ? 'On each mirror the turn round the x-axis is crushed: a thin slice of directions is spread over the whole soft band.' : 'Nothing but the origin is crushed. Space is creased on the mirrors instead.') + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', (smSoft(p) ? 'No crease on the mirrors, but' : 'A crease on every mirror, and') + ' across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis. The rule changes from step to step, so an orbit is not one formula applied again and again.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step, so that slice is the flat set.'),
   },
-  // ----- Version 33: the mirror image is ADDED to the one-plane solid instead of replacing what is behind the mirror.
-  // The picture runs one orbit per run of choices (APR_EITHER in 30-shaders.js). At the end of this list so that the
-  // entries before it keep their places.
+  // The mirror image is added to the one-plane solid; it does not replace what is behind the mirror. The picture
+  // runs one orbit per run of choices (APR_EITHER in 30-shaders.js).
   {
     id: 'either', name: 'Sphere inversions, either side', group: 'tried', glsl: GL_EITHER, axis: () => [1, 0, 0], deMax: 0,
     tag: 'Tried: the one-plane solid with its mirror images added, not swapped in. Failed: fewer bulbs, and the ones between the planes are smeared flat. A point is kept if the plain rule or the mirrored rule keeps it.',
     params: [
       { type: 'note', text: EI_NOTE },
-      { type: 'dial', key: 'depth', label: 'Choice through step', min: 0, max: 5, step: 1, def: 1, int: true, lo: 0, hi: 5, help: 'For how many steps a point may be mirrored first. 0: never, which is Sphere inversions, one plane. 1: the cleanest picture. From 2 on, flat plates appear between the planes. Each step more doubles the work: 3 means 8 orbits for every point, 5 means 32.' },
+      { type: 'dial', key: 'depth', label: 'Choice through step', min: 0, max: 5, step: 1, def: 1, int: true, help: 'For how many steps a point may be mirrored first. 0: never, which is Sphere inversions, one plane. 1: the cleanest picture. From 2 on, flat plates appear between the planes. Each step more doubles the work: 3 means 8 orbits for every point, 5 means 32.' },
     ],
     formula: (p, n) => aprMercFormula(n) + ` At each of the first ${aprNum(clamp(Math.round(+p.depth || 0), 0, 5))} steps the point may first be mirrored in the plane at 45° round the x-axis. A point is kept if any run of such choices keeps it.`,
     about: EI_ABOUT,
     roundNote: () => 'This card measures the plain choice, which is Sphere inversions, one plane: circles on the sphere stay circles. The mirrored choice is a mirror image of it, so it keeps them too.',
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed, and nothing is smeared: every piece is the one-plane rule or a mirror image of it.' + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed: every piece is the one-plane rule or a mirror image of it.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', 'The solid is several solids added together, so it is not the solid of one formula applied again and again. Where two of them meet the skin has a valley. It is whole only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, and a point on it has no choice to make, so that slice is the flat set.'),
   },
-  // ----- Version 34: a square pillow grid that is the same above and below the plane z = 0, with both of its
-  // coordinates multiplied by the power. No mirror, no rounded edge. At the end of this list so that the entries
-  // before it keep their places.
   {
     id: 'evenpillow', name: 'Even pillow', group: 'tried', glsl: GL_EVENPILLOW, axis: () => [1, 0, 0], deMax: 0,
     tag: 'Tried: read the direction off a square pillow grid and double both grid numbers, the same above and below the flat plane, with no mirror at all. Failed at the power 2: the solid is spiky, with fins. At the power 2 it is whole only for c on the x-axis; at 3 and 5 for every c.',
@@ -2165,27 +2074,26 @@ const APPROACHES = [
     formula: (p, n) => `vⁿ = |v|ⁿ · N(cos nA, sin nA · cos nL, sin nL)   with n = ${aprNum(n)}, where the direction of v is N(cos A, sin A · cos L, sin L) and N makes a vector length 1. Read back from the direction (X, Y, Z): ρ² = 2 / (1 + √(1 − 4X²Z²)), cos A = ρX, sin L = ρZ, cos L ≥ 0, and sin A has the sign of Y.`,
     about: EP_ABOUT,
     roundNote: () => 'On the circles z = 0 and x = 0 a small circle of directions stays a circle. Away from them it becomes an oval, at most about 1.4 times as long as wide before the step and the same again after it. That does not build up from step to step: many steps together stretch a shape no more than one step can.',
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed onto one point. Beside the four corners of the grid, the directions (±1, 0, ±1), the stretch is uneven.' + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed onto one point. Beside the four corners of the grid, the directions (±1, 0, ±1), the stretch is uneven.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : epOdd(n) ? ['part', 'One formula with no mirror and no jump at this power. The four corners of the grid are the only special directions.']
       : ['no', 'One formula with no mirror, but at an even power it jumps along two short arcs through the directions straight up and straight down. The two sides of the jump are mirror images, so it does not show when c is on the x-axis.']),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. No corner of the grid lies in that plane.'),
   },
-  // ----- Version 34: the doubling mirrors, sharp, with the two sides of each mirror cross-faded (APR_BLEND in
-  // 30-shaders.js). At the end of this list so that the entries before it keep their places.
+  // The two sides of each mirror are cross-faded in the picture (APR_BLEND in 30-shaders.js).
   {
     id: 'mirrorsblend', name: 'Blended mirrors, doubling', group: 'tried', glsl: GL_MIRRORSBLEND, axis: () => [1, 0, 0], deMax: 0,
     tag: 'Tried: keep the doubling mirrors sharp and cross-fade the two sides of each mirror. Failed: a bud that sits on a mirror gets a smooth bubble round it, and a pale band shows along the mirror.',
     params: [
       { type: 'note', text: MB_NOTE },
-      { type: 'dial', key: 'soft', label: 'Blend width, degrees', min: 0, max: 45, step: 0.5, def: 6, lo: 0, hi: 45, help: 'How far to each side of the first mirror the two sides are cross-faded. Every later mirror gets the same share of the gap between mirrors. 0: no blending, plain sharp mirrors, which leave thin crease lines.' },
-      { type: 'dial', key: 'stop', label: 'Doubling stops after step', min: 1, max: 12, step: 1, def: 3, int: true, lo: 1, hi: 12, help: 'The mirrors double at each step up to this one and stay as they are after it. 1: two planes at every step. 3: 2, 4, then 8 planes. 12: the doubling never stops within the steps a picture takes.' },
+      { type: 'dial', key: 'soft', label: 'Blend width, degrees', min: 0, max: 45, step: 0.5, def: 6, help: 'How far to each side of the first mirror the two sides are cross-faded. Every later mirror gets the same share of the gap between mirrors. 0: no blending, plain sharp mirrors, which leave thin crease lines.' },
+      { type: 'dial', key: 'stop', label: 'Doubling stops after step', min: 1, max: 12, step: 1, def: 3, int: true, help: 'The mirrors double at each step up to this one and stay as they are after it. 1: two planes at every step. 3: 2, 4, then 8 planes. 12: the doubling never stops within the steps a picture takes.' },
     ],
     formula: (p, n) => aprMercFormula(n) + ` Before that, at step k of an orbit, the turn a of the point round the x-axis is folded by sharp mirrors that stand every 90°/2ᵏ⁻¹. From step ${aprNum(clamp(Math.round(+p.stop || 1), 1, 12))} on the mirrors stay as they are: ${aprNum(mdPlanes(p))} planes through the x-axis.` + (smSoft(p) ? ` Within ${aprDeg(p.soft)} of the first mirror (the same share of the gap later) the picture cross-fades the distance to the solid between the two sides, at the first three steps.` : ''),
     about: MB_ABOUT,
     roundNote: () => 'This card measures the first squaring of an orbit with the sharp mirror: each piece keeps circles on the sphere as circles. The cross-fade is done on the finished picture, not on this step, so it bends nothing.',
-    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed, and nothing is smeared: space is folded on the mirrors, and the picture cross-fades the two sides of each fold.' + aprPole(n)]),
-    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed, and nothing is smeared: space is folded on the mirrors, and the picture cross-fades the two sides of each fold.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', (smSoft(p) ? 'No crease on the mirrors of the first three steps: the two sides are cross-faded. That is done on the picture, so the solid is not the solid of one formula.' : 'A crease on every mirror.') + ' Across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step, so that slice is the flat set.'),
   },

@@ -1,8 +1,0 @@
-step 1 waited 2.8 s
-step 2 result: "f09-flat-j-in-trap"
-step 4 waited 3.6 s
-step 4 wrote out/r6/colour/ref2/f09-flat-j-in-trap.png
-step 5 result: "f10-flat-m-cross-bands"
-step 7 waited 0.0 s
-step 7 wrote out/r6/colour/ref2/f10-flat-m-cross-bands.png
-no console errors

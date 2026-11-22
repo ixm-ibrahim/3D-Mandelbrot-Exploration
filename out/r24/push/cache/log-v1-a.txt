@@ -1,8 +1,0 @@
-v1     1/2       2d 1.236 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.000 | neck / body: 0.008 / 0.088 (block 0.0081) | 10 s
-v1     1/2root   2d 1.000 | column: top 0.000, inside length 0.136, lowest escape 0.004 | disc top 0.000 | neck / body: 0.008 / 0.030 (block 0.0081) | 76 s
-v1     1/3       2d 1.107 | column: top 0.728, inside length 0.728, lowest escape 0.732 | disc top 0.724 | neck / body: 0.106 / 0.106, 0.137 / 0.137 (block 0.0081) | 127 s
-v1     1/3near   2d 1.050 | column: top 0.716, inside length 0.716, lowest escape 0.72 | disc top 0.708 | neck / body: 0.110 / 0.110, 0.135 / 0.135 (block 0.0081) | 217 s
-v1     1/4       2d 1.061 | column: top 0.788, inside length 0.892, lowest escape 0.792 | disc top 0.900 | neck / body: 0.076 / 0.076, 0.083 / 0.083, 0.115 / 0.115 (block 0.0081) | 300 s
-v1     in120     2d 0.920 | column: top 0.824, inside length 0.824, lowest escape 0.8280000000000001 | disc top 0.824 |  | 301 s
-v1     in180     2d 0.844 | column: top 0.044, inside length 0.476, lowest escape 0.048 | disc top 0.044 |  | 302 s
-done v1 302 s

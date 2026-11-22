@@ -1,8 +1,0 @@
-page dist/r29-free.html, exit 0, no console errors
-V21 (150, 33.33), k-balls2   k-balls2  the whole picture (12 passes)    110 ms (1.00 x), the first pass    50 ms (1.00 x), 512 x 512 distances    50 ms (1.00 x) | all five: [105, 107, 111, 110, 110]
-V21 (55.56, 100), k-balls    k-balls   the whole picture (12 passes)    133 ms (1.21 x), the first pass    53 ms (1.05 x), 512 x 512 distances    54 ms (1.08 x) | all five: [312, 118, 138, 132, 129]
-Y1 (80, 75)                  k-balls3  the whole picture (12 passes)    142 ms (1.28 x), the first pass    52 ms (1.03 x), 512 x 512 distances    66 ms (1.32 x) | all five: [154, 129, 141, 143, 138]
-X1 (120, 100)                k-balls3  the whole picture (12 passes)    859 ms (7.79 x), the first pass     5 ms (0.10 x), 512 x 512 distances    22 ms (0.45 x) | all five: [859, 852, 846, 860, 864]
-X6 (150, 75)                 k-balls3  the whole picture (12 passes)    409 ms (3.71 x), the first pass     5 ms (0.10 x), 512 x 512 distances    22 ms (0.45 x) | all five: [392, 408, 406, 414, 416]
-X4 (150, 100, honeycomb)     k-balls3  the whole picture (12 passes)    258 ms (2.34 x), the first pass     5 ms (0.10 x), 512 x 512 distances    51 ms (1.02 x) | all five: [257, 254, 255, 272, 259]
-Y2 (60, 60, honeycomb)       k-balls3  the whole picture (12 passes)    140 ms (1.27 x), the first pass    55 ms (1.10 x), 512 x 512 distances    57 ms (1.13 x) | all five: [136, 141, 139, 139, 144]

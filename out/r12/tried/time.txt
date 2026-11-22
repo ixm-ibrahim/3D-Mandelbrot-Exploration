@@ -1,8 +1,0 @@
-run 1 dist/v12a.html       exit 0 {"entries":7,"idle_ms":3396,"prepared_ms":43956,"failed":""}
-run 1 dist/r12-tried.html  exit 0 {"entries":10,"idle_ms":3731,"prepared_ms":40131,"failed":""}
-run 2 dist/v12a.html       exit 0 {"entries":7,"idle_ms":2954,"prepared_ms":29255,"failed":""}
-run 2 dist/r12-tried.html  exit 0 {"entries":10,"idle_ms":2982,"prepared_ms":38923,"failed":""}
-run 3 dist/v12a.html       exit 0 {"entries":7,"idle_ms":3651,"prepared_ms":35251,"failed":""}
-run 3 dist/r12-tried.html  exit 0 {"entries":10,"idle_ms":3836,"prepared_ms":41496,"failed":""}
-least of 3: dist/v12a.html       first picture fully drawn 2.95 s, every program prepared 29.25 s
-least of 3: dist/r12-tried.html  first picture fully drawn 2.98 s, every program prepared 38.92 s

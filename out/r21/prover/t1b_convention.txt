@@ -1,9 +1,0 @@
-share of 60,000 test points whose verdict changes when c is turned by a random angle round the x-axis (40 steps)
-tau           own_tol    delay_tol
-0.3            1.442%       0.138%
-0.1            0.442%       0.008%
-0.03           0.102%       0.105%
-0.01           0.020%       0.160%
-0.001          0.000%       0.193%
-0              0.000%       0.195%
-(delay at tau = 0 is 'delay_cov': what is left there is rounding on a knife edge, see t2_knife.txt, not the convention)

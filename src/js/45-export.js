@@ -1,14 +1,10 @@
-// ---------- "Save a picture": a background job that draws the picture as it was when Start was pressed, at a
-// chosen size and quality, and hands it over as a file.
-// The job works from its own snapshot (takeSnapshot in 40-render.js), so nothing done on the page afterwards
-// changes it. The picture is drawn tile by tile through the renderer's background queue (bgPiece), which keeps the
-// pieces short and gives way to the live picture. Finished tiles go straight into a 2D canvas, so the size of the
-// picture is not held to what one GL target can be, and that canvas is what gets written as PNG, JPG or WebP.
+// Save a picture: a background job that draws the picture as it was when Start was pressed, at a chosen size and
+// quality, and hands it over as a file. It works from its own snapshot (takeSnapshot in 40-render.js) and draws tile
+// by tile through bgPiece. Finished tiles go into a 2D canvas, so the size is not held to what one GL target can be.
 const EXPORT_TILE = 512;      // tiles are this many pixels square
 const EXPORT_MAX = 1e8;       // pixels in all: three times an 8K picture. Beyond it a browser may run out of memory instead of saying no.
-// Before the tiles are drawn every tile is felt: thin strips across it and down it, one every EXPORT_FEEL[0]
-// pixels and EXPORT_FEEL[1] pixels thick, are drawn once and timed. That is 1/32 of one pass, and it is what the
-// bar and the time left are worked out from (see exportFeel and exportProgress).
+// Before the tiles are drawn every tile is felt: strips across it and down it, one every EXPORT_FEEL[0] pixels and
+// EXPORT_FEEL[1] pixels thick, are drawn and timed (see exportFeel). That is 1/32 of one pass.
 const EXPORT_FEEL = [128, 2];
 const EXPORT_SIZES = [
   ['screen', 'As on screen'], ['x2', 'Twice the size on screen'], ['x4', 'Four times the size on screen'],
@@ -21,7 +17,6 @@ const EXPORT_QUALITY = {
   extra: { aa: 64, steps: 900, detail: 0.5, stepk: 0.8, smooth: 1, shadow: true, ao: true, de: 3, normals: 'sharp' },
 };
 const EXPORT_KINDS = { png: ['image/png', 'PNG'], jpg: ['image/jpeg', 'JPG'], webp: ['image/webp', 'WebP'] };
-const EXPORT_NAMES = { m: 'mandelbrot', j: 'julia', k: 'kleinian' };
 const EXPORT_WORDS = {
   cancel: 'The picture was cancelled.',
   none: 'A picture cannot be drawn just now, because the graphics of this page are not running.',
@@ -38,7 +33,6 @@ const EXPORT = {
 };
 function exportBusy() { return !!EXPORT.job; }
 function exportStop(code) { const e = new Error(code); e.exportCode = code; return e; }
-function exportBytes(n) { return n >= 1048576 ? (n / 1048576).toFixed(n >= 10485760 ? 0 : 1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' kB'; }
 function exportTime(ms) { const s = ms / 1000; return s < 1.5 ? 'about a second' : s < 90 ? Math.round(s) + ' seconds' : s < 5400 ? Math.round(s / 60) + ' minutes' : (s / 3600).toFixed(1) + ' hours'; }
 // The size in pixels a choice of size stands for. st: the picture on screen, { pw, ph } in pixels.
 function exportDims(o, st) {
@@ -50,12 +44,12 @@ function exportDims(o, st) {
   return [fit(st.pw * k), fit(st.ph * k)];
 }
 // A 2D canvas of that size, or null where the browser cannot make one. A canvas that is too large does not fail
-// loudly: it just stays empty, so one pixel in the far corner is drawn and read back.
+// loudly: it stays empty, so one pixel in the far corner is drawn and read back.
 function exportCanvas(W, H) {
   try {
     const cv = document.createElement('canvas');
     cv.width = W; cv.height = H;
-    // kept in ordinary memory: it is filled tile by tile and read once, and a picture this large need not sit on the GPU as well
+    // kept in ordinary memory: it is filled tile by tile and read once, so it need not sit on the GPU as well
     const ctx = cv.getContext('2d', { willReadFrequently: true });
     if (!ctx || cv.width !== W || cv.height !== H) return null;
     ctx.fillStyle = '#fff'; ctx.fillRect(W - 1, H - 1, 1, 1);
@@ -65,10 +59,10 @@ function exportCanvas(W, H) {
   } catch (err) { return null; }
 }
 
-// ---------- the job
 async function exportRun(job) {
   const { snap, W, H } = job, T = EXPORT_TILE, q = snap.S.q;
   const check = c => { if (job.cancel) throw exportStop('cancel'); if (c === null) throw exportStop('lost'); return c; };
+  const nt = sceneDe(q);   // read before the wait: the approach on the page may change while the program is prepared
   job.step = 'Preparing the formula'; exportPaint();
   const P = await snapReady(snap);
   check();
@@ -77,7 +71,7 @@ async function exportRun(job) {
   // The hatching of a cut face repeats every 8 * uPx pixels, counted from each tile's own corner. A period that
   // divides the tile keeps the lines unbroken from tile to tile (it changes their spacing by a few percent at most).
   const px = T / (8 * Math.max(1, Math.round(T / (8 * Math.max(H / Math.max(1, snap.stage.h), 1e-3)))));
-  const o = { w: W, h: H, off: [0, 0], px, nt: sceneDe(q), steps: q.steps, normEps: q.smooth, ao: q.ao, shadow: q.shadow, sharp: q.normals === 'sharp' };
+  const o = { w: W, h: H, off: [0, 0], px, nt, steps: q.steps, normEps: q.smooth, ao: q.ao, shadow: q.shadow, sharp: q.normals === 'sharp' };
   const acc = makeTarget(T, T, false), out = makeTarget(T, T, false, true);
   const bytes = new Uint8Array(4 * T * T);
   // The tiles, rows from the top of the picture down. For each: N pixel-passes in all and n of them drawn; ms, the
@@ -101,80 +95,74 @@ async function exportRun(job) {
     }, null, late), check);
     job.step = 'Drawing the picture'; job.t1 = performance.now(); exportPaint(true);
     for (const tile of tiles) {
-      {
-        const { x0, y0, tw, th } = tile, tile0 = performance.now();
-        const went = n => {   // n pixel-passes of this tile have been drawn
-          tile.n += n; tile.ms = performance.now() - tile0;
-          exportProgress(job); exportPaint();
-        };
-        // What a pixel of this tile costs is not known until it has been drawn once, and it can be a hundred times
-        // what the tile before cost. So the first pass feels its way: a few rows, then at most four times as many
-        // as the piece before. The cost is taken from the GPU's own count where it arrives (for a part of the tile
-        // the dearest piece of the first pass counts, for whole passes the average), else from the clock. Neither is
-        // allowed to push a piece below a sixteenth of the tile: one slow reading, with the GPU busy elsewhere, must
-        // not turn the rest of the tile into single rows (see bgPiece in 40-render.js).
-        const est = { wall: 0, g0: 0, gMs: 0, gPx: 0 };
-        let s = 0, y = 0, rowsWas = Math.max(1, Math.round(4096 / tw)), clear = true;
-        while (s < passes) {
-          const target = bgTarget(), first = clear, part = est.g0 || est.wall;
-          const fit = part > 0 ? target / (part * tw) : rowsWas;   // rows that fit the target
-          let rows = th - y, many = 1;
-          if (s === 0) rows = Math.min(rows, clamp(Math.round(fit), Math.min(8, rowsWas), 4 * rowsWas));
-          else {
-            const whole = est.gPx >= tw * th ? target / (est.gMs / est.gPx * tw * th) : fit / th;   // passes that fit
-            if (y === 0 && whole >= 1) many = clamp(Math.floor(whole), 1, Math.min(passes - s, 16));
-            else rows = Math.min(rows, Math.max(Math.round(fit), Math.ceil(th / 16)));
-          }
-          const s0 = s, ya = y, px = rows * tw * many;
-          const c = check(await bgPiece(() => {
-            if (R.gen !== gen) throw new Error('the GL context changed');
-            gl.bindFramebuffer(gl.FRAMEBUFFER, acc.fbo); gl.viewport(0, 0, tw, th);
-            gl.disable(gl.SCISSOR_TEST); gl.disable(gl.BLEND);
-            if (first) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
-            gl.enable(gl.SCISSOR_TEST); gl.scissor(0, ya, tw, rows);
-            gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
-            for (let i = 0; i < many; i++) {
-              const p = s0 + i, jx = p === 0 ? 0 : halton(p, 2) - 0.5, jy = p === 0 ? 0 : halton(p, 3) - 0.5;
-              if (i === 0) setScene(P, Object.assign(o, { off: [x0 + jx, y0 + jy] }), snap);
-              else gl.uniform2f(P.l('uOff'), x0 + jx, y0 + jy);
-              gl.drawArrays(gl.TRIANGLES, 0, 3);
-            }
-          }, null, ms => { if (s0 === 0) est.g0 = Math.max(est.g0, ms / px); est.gMs += ms; est.gPx += px; }));
-          clear = false;
-          est.wall = est.wall > 0 ? 0.5 * (est.wall + c.ms / px) : c.ms / px;
-          if (s === 0) rowsWas = rows;
-          went(px);
-          y += rows;
-          if (y >= th) { y = 0; s += many; }
+      const { x0, y0, tw, th } = tile, tile0 = performance.now();
+      const went = n => {   // n pixel-passes of this tile have been drawn
+        tile.n += n; tile.ms = performance.now() - tile0;
+        exportProgress(job); exportPaint();
+      };
+      // What a pixel of this tile costs is not known until it has been drawn once. So the first pass feels its way:
+      // a few rows, then at most four times as many as the piece before. The cost comes from the GPU's own count
+      // where it arrives, else from the clock. Neither may push a piece below a sixteenth of the tile: one slow
+      // reading must not turn the rest of the tile into single rows (see bgPiece).
+      const est = { wall: 0, g0: 0, gMs: 0, gPx: 0 };
+      let s = 0, y = 0, rowsWas = Math.max(1, Math.round(4096 / tw)), clear = true;
+      while (s < passes) {
+        const target = bgTarget(), first = clear, part = est.g0 || est.wall;
+        const fit = part > 0 ? target / (part * tw) : rowsWas;   // rows that fit the target
+        let rows = th - y, many = 1;
+        if (s === 0) rows = Math.min(rows, clamp(Math.round(fit), Math.min(8, rowsWas), 4 * rowsWas));
+        else {
+          const whole = est.gPx >= tw * th ? target / (est.gMs / est.gPx * tw * th) : fit / th;   // passes that fit
+          if (y === 0 && whole >= 1) many = clamp(Math.floor(whole), 1, Math.min(passes - s, 16));
+          else rows = Math.min(rows, Math.max(Math.round(fit), Math.ceil(th / 16)));
         }
-        // the finished tile: the same tone curve as the screen (the display shader), then into the 2D canvas
-        const part = bytes.subarray(0, 4 * tw * th);
-        check(await bgPiece(() => {
+        const s0 = s, ya = y, px = rows * tw * many;
+        const c = check(await bgPiece(() => {
           if (R.gen !== gen) throw new Error('the GL context changed');
-          gl.bindFramebuffer(gl.FRAMEBUFFER, out.fbo); gl.viewport(0, 0, tw, th);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, acc.fbo); gl.viewport(0, 0, tw, th);
           gl.disable(gl.SCISSOR_TEST); gl.disable(gl.BLEND);
-          gl.useProgram(blitP.p);
-          gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, acc.tex);
-          gl.uniform1i(blitP.l('uAcc'), 0); gl.uniform1i(blitP.l('uPrev'), 0);
-          gl.uniform2f(blitP.l('uSize'), T, T);
-          gl.uniform2f(blitP.l('uPrevScale'), 1, 1); gl.uniform2f(blitP.l('uPrevMax'), 1, 1);
-          gl.uniform1f(blitP.l('uUseAcc'), 1);
-          gl.drawArrays(gl.TRIANGLES, 0, 3);
-        }, { x: 0, y: 0, w: tw, h: th, into: part }));
-        const img = job.big.ctx.createImageData(tw, th);
-        for (let r = 0; r < th; r++) img.data.set(part.subarray(4 * tw * (th - 1 - r), 4 * tw * (th - r)), 4 * tw * r);   // GL rows run upward
-        job.big.ctx.putImageData(img, x0, H - y0 - th);
-        tile.n = tile.N; tile.ms = performance.now() - tile0; tile.fin = true;
-        tile.gMs = est.gMs; tile.gPx = est.gPx;
-        exportProgress(job, true); exportPaint();
+          if (first) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
+          gl.enable(gl.SCISSOR_TEST); gl.scissor(0, ya, tw, rows);
+          gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+          for (let i = 0; i < many; i++) {
+            const p = s0 + i, jx = p === 0 ? 0 : halton(p, 2) - 0.5, jy = p === 0 ? 0 : halton(p, 3) - 0.5;
+            if (i === 0) setScene(P, Object.assign(o, { off: [x0 + jx, y0 + jy] }), snap);
+            else gl.uniform2f(P.l('uOff'), x0 + jx, y0 + jy);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+          }
+        }, null, ms => { if (s0 === 0) est.g0 = Math.max(est.g0, ms / px); est.gMs += ms; est.gPx += px; }));
+        clear = false;
+        est.wall = est.wall > 0 ? 0.5 * (est.wall + c.ms / px) : c.ms / px;
+        if (s === 0) rowsWas = rows;
+        went(px);
+        y += rows;
+        if (y >= th) { y = 0; s += many; }
       }
+      // the finished tile: the same tone curve as the screen (the display shader), then into the 2D canvas
+      const part = bytes.subarray(0, 4 * tw * th);
+      check(await bgPiece(() => {
+        if (R.gen !== gen) throw new Error('the GL context changed');
+        gl.bindFramebuffer(gl.FRAMEBUFFER, out.fbo); gl.viewport(0, 0, tw, th);
+        gl.disable(gl.SCISSOR_TEST); gl.disable(gl.BLEND);
+        gl.useProgram(blitP.p);
+        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, acc.tex);
+        gl.uniform1i(blitP.l('uAcc'), 0); gl.uniform1i(blitP.l('uPrev'), 0);
+        gl.uniform2f(blitP.l('uSize'), T, T);
+        gl.uniform2f(blitP.l('uPrevScale'), 1, 1); gl.uniform2f(blitP.l('uPrevMax'), 1, 1);
+        gl.uniform1f(blitP.l('uUseAcc'), 1);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      }, { x: 0, y: 0, w: tw, h: th, into: part }));
+      const img = job.big.ctx.createImageData(tw, th);
+      for (let r = 0; r < th; r++) img.data.set(part.subarray(4 * tw * (th - 1 - r), 4 * tw * (th - r)), 4 * tw * r);   // GL rows run upward
+      job.big.ctx.putImageData(img, x0, H - y0 - th);
+      tile.n = tile.N; tile.ms = performance.now() - tile0; tile.fin = true;
+      exportProgress(job, true); exportPaint();
     }
   } finally {
     if (gl && !lost && R.gen === gen) { freeTarget(acc); freeTarget(out); }
   }
   const [mime, word] = EXPORT_KINDS[job.o.kind] || EXPORT_KINDS.png;
   job.step = `Writing the ${word} file`; job.frac = 0.97; job.left = -1; exportPaint();
-  if (typeof window.squaringLabExportTest === 'function') window.squaringLabExportTest(tiles.map(t => ({ x0: t.x0, y0: t.y0, gpu: t.gpu, clock: t.clock, felt: t.felt, w: t.w, ms: t.ms, N: t.N, gMs: t.gMs, gPx: t.gPx })));
   const blob = await new Promise(res => { try { job.big.cv.toBlob(res, mime, 0.93); } catch (err) { res(null); } });
   check();
   if (!blob) throw exportStop('encode');
@@ -186,20 +174,16 @@ async function exportRun(job) {
   pc.imageSmoothingQuality = 'high';
   pc.drawImage(job.big.cv, 0, 0, u.preview.width, u.preview.height);
   job.big.cv.width = job.big.cv.height = 0;   // the large canvas has done its work: let its memory go
-  const name = `squaring-lab-${EXPORT_NAMES[snap.S.mode] || 'picture'}-${W}x${H}.${got}`;
+  const name = `squaring-lab-${MODE_NAMES[snap.S.mode] || 'picture'}-${W}x${H}.${got}`;
   return {
     name, blob,
-    facts: [['Size', `${W} × ${H} pixels`], ['File', name], ['File size', exportBytes(blob.size)], ['Time taken', exportTime(performance.now() - job.t0)]],
+    facts: [['Size', `${W} × ${H} pixels`], ['File', name], ['File size', fileBytes(blob.size)], ['Time taken', exportTime(performance.now() - job.t0)]],
     note: got !== job.o.kind ? `This browser cannot write ${word} files, so the picture is a ${EXPORT_KINDS[got][1]} file.` : '',
   };
 }
-// What every tile will cost, before any of it is drawn. A pixel on the solid can cost a hundred times a pixel of
-// the empty background, so the share of the pixels drawn says little about the share of the time gone. Each tile's
-// strips (EXPORT_FEEL) are drawn as one piece, twice over, and the cheaper reading counts: other programs using
-// the GPU can only make a reading longer. A tile whose two readings disagree is asked a third time.
-// Strips, not small patches: a strip is as wide as the pieces the picture itself is drawn in, so the GPU is as
-// busy as it will be then. Small patches read by the dearest pixel in each and made a thin spike look like a
-// solid block (measured: four times too dear).
+// What every tile will cost, before any of it is drawn: a pixel on the solid can cost a hundred times a pixel of
+// the background. Each tile's strips (EXPORT_FEEL) are drawn as one piece, twice, and the cheaper reading counts;
+// a tile whose two readings disagree is asked a third time. Small patches would read by their dearest pixel.
 // piece(tile) gives a function (rects, late) that draws those rectangles of the tile as one background piece.
 // The GPU's own count is taken where it arrives; the clock otherwise, less what a piece that draws nothing takes.
 async function exportFeel(job, piece, check) {
@@ -230,19 +214,11 @@ async function exportFeel(job, piece, check) {
 }
 // A tile's cost as it was felt, in milliseconds for the whole tile with all its passes.
 function exportCost(t) { return Math.max(t.gpu > 0 ? t.gpu : t.clock, 0.004) / Math.max(1, t.felt) * t.N; }
-// The bar and the time left. The bar is the share of the felt cost that has been drawn. The time left needs one
-// more number: how long the clock takes over one unit of felt cost. It is read from the tiles the time goes into
-// (the dearest ones, as many as hold 85% of the felt cost between them), once they are finished or have had one
-// whole pass: the time they have taken over the felt cost drawn in them, and a little more (four tenths at the
-// start, when a tile or two is all there is to go by, down to one tenth at the end), so that the number leans
-// towards too long, not too short: it may not go up later, and the writing of the file at the end is not in it
-// either. The other tiles count by what such a tile has taken as a whole.
-// No time is given before two of the dear tiles are finished (or one has been drawn for 15 seconds), nor in the
-// first five seconds of drawing: right after a change the page is still preparing other formulas (sceneWarm in
-// 40-render.js), which slows the first tiles, and a job that short needs no countdown. Once given, the time does
-// not go up again: when the job is slowed, by the live picture or by another program, it waits.
-// Tried and dropped (out/r7/export, runs r7d and r7-final): the middle one of the tiles' own answers, each
-// counting by its time. It follows the slowest tile, and read two times too long when another program was busy.
+// The bar and the time left. The bar is the share of the felt cost that has been drawn. The time left also needs
+// the clock time per unit of felt cost. It is read from the dearest tiles (as many as hold 85% of the felt cost),
+// once they are finished or have had one whole pass, with a margin of four tenths at the start down to one tenth
+// at the end, so that the number leans towards too long. No time is given before two dear tiles are finished (or
+// one has been drawn for 15 seconds), nor in the first five seconds of drawing. Once given, it never goes up.
 function exportProgress(job, force) {
   const now = performance.now(), tiles = job.tiles;
   if (!tiles || (!force && now - (job.told || 0) < 200)) return;
@@ -252,14 +228,13 @@ function exportProgress(job, force) {
   job.frac = Math.max(job.frac, 0.97 * done / total);
   let dear = 0, sum = 0;
   for (const t of tiles.slice().sort((a, b) => b.w - a.w)) { dear = t.w; sum += t.w; if (sum >= 0.85 * total) break; }
-  // not the stragglers of that list: a tile at a quarter of the list's mean is a nearly empty one, and its time is mostly the fixed part
+  // not the stragglers: a tile at a quarter of the list's mean is nearly empty, and its time is mostly the fixed part
   dear = Math.max(dear, 0.25 * sum / tiles.filter(t => t.w >= dear).length);
   const dears = tiles.filter(t => t.w >= dear), known = dears.filter(t => t.ms > 0 && (t.fin || t.n >= t.tw * t.th)), fin = known.filter(t => t.fin).length;
   const seen = known.reduce((a, t) => a + t.ms, 0), drawn = known.reduce((a, t) => a + t.w * t.n / t.N, 0);
   if (now - job.t1 < 5000 || seen < 2000 || (fin < Math.min(2, dears.length) && seen < 15000)) return;
   // The pace of late, not of the whole job: the dear tiles drawn last, as many as hold half of the time the dear
-  // tiles have had (ten seconds at least). The first tiles of a job are often slow (see above), and the pace of
-  // the machine changes; the same goes for the nearly empty tiles, where the last eight count.
+  // tiles have had (ten seconds at least). For the nearly empty tiles the last eight count.
   let late = 0, lateDrawn = 0;
   for (let i = known.length - 1; i >= 0 && late < Math.max(10000, 0.5 * seen); i--) { late += known[i].ms; lateDrawn += known[i].w * known[i].n / known[i].N; }
   const rate = (1.1 + 0.3 * (1 - drawn / dears.reduce((a, t) => a + t.w, 0))) * late / lateDrawn;
@@ -278,10 +253,9 @@ async function exportStart() {
     return;
   }
   const snap = takeSnapshot();
-  // The job's quality settings stand in for the ones on screen, in its own copy of the state. "As on screen now"
-  // also keeps the surface exactly where the screen has it: the surface threshold is counted in pixels, so it is
-  // scaled with the picture, and the result is the same picture, only larger. Fine and Extra fine count it in the
-  // new picture's own pixels, which brings out finer detail at larger sizes.
+  // The job's quality settings replace the ones on screen in its own copy of the state. "As on screen now" keeps
+  // the surface where the screen has it: the surface threshold is counted in pixels, so it is scaled with the
+  // picture. Fine and Extra fine count it in the new picture's own pixels, which brings out finer detail.
   const scale = H / Math.max(1, snap.stage.ph);
   if (EXPORT_QUALITY[o.quality]) Object.assign(snap.S.q, EXPORT_QUALITY[o.quality]);
   else snap.S.q.detail *= scale;
@@ -306,25 +280,20 @@ async function exportSave() {
   const r = EXPORT.result;
   if (!r || r.saving) return;
   r.saving = true;
-  let out = null;
-  // saveFile promises not to throw. Should it do so all the same, the button must not stay dead for this picture.
-  try { out = await saveFile(r.name, r.blob); }
-  catch (err) { console.error('Saving the picture failed: ' + (err && err.stack || err)); }
-  finally { r.saving = false; }
-  if (EXPORT.result === r) exportSay(exportSaveWords(out || { ok: false, code: 'failed', again: true }, r));
+  const out = await saveFile(r.name, r.blob);
+  r.saving = false;
+  if (EXPORT.result === r) exportSay(exportSaveWords(out, r));
 }
 // What to say after a press of "Save the file". Another try is offered only where it can help (out.again).
 function exportSaveWords(out, r) {
   if (out.ok) return `Saved as ${r.name}. You can save it again, or discard it to make another picture.`;
   const msg = out.message || 'The file could not be saved.';
-  const again = out.again !== undefined ? out.again : ['declined', 'rate_limited', 'failed'].includes(out.code);
-  if (again) return /try again/i.test(msg) ? `${msg} The picture is still here.` : `${msg} The picture is still here, so you can try again.`;
+  if (out.again) return /try again/i.test(msg) ? `${msg} The picture is still here.` : `${msg} The picture is still here, so you can try again.`;
   if (out.code === 'too_large' && /\.png$/.test(r.name)) return `${msg} A JPG or WebP file of the same picture is much smaller.`;
   if (out.code === 'rejected_extension' || out.code === 'extension_not_enabled') return `${msg} Discard the picture and choose another file type.`;
   return msg;
 }
 
-// ---------- the panel
 // The time left in words, no finer than it is known: whole seconds at the end, fives and tens before that, half
 // minutes up to five minutes. Nothing under three seconds, and nothing while it cannot be said (s below 0).
 function exportLeftWords(s) {
@@ -355,7 +324,6 @@ function exportSizeNote() {
   if (u.sizeNote.textContent !== text) u.sizeNote.textContent = text;
   const typed = EXPORT.opt.size === 'typed';
   if (u.typed.hidden === typed) u.typed.hidden = !typed;
-  u.w.el.hidden = u.h.el.hidden = !typed;
 }
 // Show the block that fits the state: the start button, the running job, or the finished picture. With `move`,
 // the keyboard focus follows when the button it was on has just gone.
@@ -372,7 +340,7 @@ function exportShow(move) {
   if (lostFocus) (job ? u.cancel : res ? u.save : u.start).focus();
 }
 function buildExportPanel(host) {
-  host = typeof host === 'string' ? $(host) : host;
+  host = hostEl(host);
   if (!host || EXPORT.ui) return;
   const O = EXPORT.opt, grp = { group: 'export' };
   const make = (parent, tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; parent.appendChild(e); return e; };
@@ -382,8 +350,8 @@ function buildExportPanel(host) {
   const u = EXPORT.ui = {};
   addSelect(host, 'exportSize', 'Size', EXPORT_SIZES, () => O.size, v => { O.size = v; exportSizeNote(); }, { ...grp, def: 'x2' });
   u.typed = make(host, 'div', 'export-typed');
-  u.w = addDial(u.typed, 'exportW', 'Width, pixels', 16, 8192, 1, () => O.w, v => { O.w = v; exportSizeNote(); }, { ...grp, def: 1920, int: true, slider: false, xhi: 16384 });
-  u.h = addDial(u.typed, 'exportH', 'Height, pixels', 16, 8192, 1, () => O.h, v => { O.h = v; exportSizeNote(); }, { ...grp, def: 1080, int: true, slider: false, xhi: 16384 });
+  addDial(u.typed, 'exportW', 'Width, pixels', 16, 8192, 1, () => O.w, v => { O.w = v; exportSizeNote(); }, { ...grp, def: 1920, int: true, slider: false, xhi: 16384 });
+  addDial(u.typed, 'exportH', 'Height, pixels', 16, 8192, 1, () => O.h, v => { O.h = v; exportSizeNote(); }, { ...grp, def: 1080, int: true, slider: false, xhi: 16384 });
   u.sizeNote = make(host, 'p', 'note export-size'); u.sizeNote.id = 'exportSizeNote';
   addSelect(host, 'exportQuality', 'Quality', [['screen', 'As on screen now'], ['fine', 'Fine'], ['extra', 'Extra fine (slowest)']], () => O.quality, v => { O.quality = v; },
     { ...grp, def: 'fine', help: 'As on screen now uses the settings under Quality and speed as they are. Fine and Extra fine use more passes, more ray steps and a finer surface, whatever is set there. Large sizes at Extra fine can take many minutes.' });

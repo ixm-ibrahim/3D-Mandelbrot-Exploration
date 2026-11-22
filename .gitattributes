@@ -1,2 +1,2 @@
-# Keep every file byte for byte: the lab's checks compare program texts and built pages to the character.
+# No line-ending conversion: the built page is the same bytes on every machine.
 * -text

@@ -1,4 +1,0 @@
-mandel guessP 20 s
-mandel guessPc 42 s
-mandel guessN 73 s
-mandel guessNc 102 s

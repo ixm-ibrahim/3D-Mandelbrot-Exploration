@@ -1,7 +1,0 @@
-weld3  2/5       2d 1.040 | column: top 0.868, inside length 0.876, lowest escape 0.872 | disc top 0.880 | neck / body: 0.058 / 0.058, 0.086 / 0.086, 0.077 / 0.077, 0.091 / 0.091 (block 0.0081) | 34 s
-weld3  1/5       2d 1.040 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.054, 0.008 / 0.051, 0.008 / 0.066, 0.008 / 0.098 (block 0.0081) | 39 s
-weld3  1/6       2d 1.028 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.049, 0.008 / 0.047, 0.008 / 0.046, 0.008 / 0.059, 0.008 / 0.092 (block 0.0081) | 44 s
-weld3  3/7       2d 1.021 | column: top 0.704, inside length 0.756, lowest escape 0.708 | disc top 0.756 | neck / body: 0.047 / 0.047, 0.062 / 0.062, 0.040 / 0.041, 0.062 / 0.062, 0.055 / 0.055, 0.066 / 0.066 (block 0.0081) | 75 s
-weld3  siegel    2d 1.000 | column: top 0.168, inside length 0.168, lowest escape 0.17200000000000001 | disc top 0.168 |  | 76 s
-weld3  airplane  2d 1.832 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.000 |  | 76 s
-done weld3 76 s

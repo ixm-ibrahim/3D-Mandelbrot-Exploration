@@ -1,7 +1,0 @@
-cones  2/5       2d 1.040 | column: top 0.876, inside length 0.888, lowest escape 0.88 | disc top 0.892 | neck / body: 0.062 / 0.062, 0.086 / 0.086, 0.077 / 0.077, 0.091 / 0.091 (block 0.0081) | 50 s
-cones  1/5       2d 1.040 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.049, 0.008 / 0.049, 0.008 / 0.061, 0.008 / 0.091 (block 0.0081) | 56 s
-cones  1/6       2d 1.028 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.004 | neck / body: 0.008 / 0.043, 0.008 / 0.039, 0.008 / 0.041, 0.008 / 0.054, 0.008 / 0.083 (block 0.0081) | 62 s
-cones  3/7       2d 1.021 | column: top 0.728, inside length 0.740, lowest escape 0.732 | disc top 0.752 | neck / body: 0.047 / 0.047, 0.065 / 0.065, 0.041 / 0.041, 0.062 / 0.062, 0.055 / 0.055, 0.066 / 0.066 (block 0.0081) | 104 s
-cones  siegel    2d 1.000 | column: top 0.120, inside length 0.120, lowest escape 0.124 | disc top 0.116 |  | 104 s
-cones  airplane  2d 1.832 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.000 |  | 104 s
-done cones 104 s

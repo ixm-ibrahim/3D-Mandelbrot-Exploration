@@ -1,1 +1,0 @@
-lag family: largest growth factor over 200000 random (zeta, lam) with |zeta|<1/2, 0<=lam<=1: 0.9999990088425471

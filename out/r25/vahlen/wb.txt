@@ -1,6 +1,0 @@
-twoplane  c = -1      upright plane against the flat picture stood up: 0 differ; against its mirror image: 0 differ (of 40000, 5951 inside)
-twoplane  rabbit      upright plane against the flat picture stood up: 3764 differ; against its mirror image: 3730 differ (of 40000, 5566 inside)
-twoplane  Siegel disc upright plane against the flat picture stood up: 5496 differ; against its mirror image: 5333 differ (of 40000, 7616 inside)
-along     c = -1      upright plane against the flat picture stood up: 0 differ; against its mirror image: 0 differ (of 40000, 5951 inside)
-along     rabbit      upright plane against the flat picture stood up: 4313 differ; against its mirror image: 4137 differ (of 40000, 5566 inside)
-along     Siegel disc upright plane against the flat picture stood up: 4953 differ; against its mirror image: 4880 differ (of 40000, 7616 inside)

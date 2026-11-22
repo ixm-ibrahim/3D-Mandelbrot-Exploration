@@ -1,4 +1,0 @@
-julia guessP 64 s
-julia guessPc 122 s
-julia guessN 186 s
-julia guessNc 247 s

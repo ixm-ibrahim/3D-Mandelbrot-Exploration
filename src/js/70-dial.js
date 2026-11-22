@@ -1,21 +1,20 @@
-// ---------- controls kit: dials (a slider plus a typed box with step buttons), checkboxes, drop-downs,
-// and controls built from specs. `host` is an element or the id of one. Every control registers itself
-// so it can be re-read (syncControls) or put back to its default (resetGroup).
-const controls = [];      // { el, group, sync(), reset(), remove() }
+// Controls kit: dials (a slider plus a typed box with step buttons), checkboxes, drop-downs, and controls
+// built from specs. `host` is an element or the id of one. Every control registers itself, so it can be
+// re-read (syncControls) or put back to its default (resetGroup).
+const controls = [];      // { el, group, sync(), reset() }
 const dialSets = [];      // one entry per buildControls call; update() re-checks its `when` rules
 const hostEl = h => (typeof h === 'string' ? $(h) : h);
 let dialBatch = null;     // while resetGroup runs: change callbacks waiting to be called once at the end
 
-// ----- numbers as text
-// Decimals needed to write x (at most 10): 3 -> 0, 0.1 -> 1, 2.37 -> 2. Step arithmetic is rounded to
+// Numbers as text
+// Decimals needed to write x (at most 10): 0 for 3, 1 for 0.1, 2 for 2.37. Step arithmetic is rounded to
 // this many places, so 2.3 + 0.1 gives 2.4 and never 2.4000000000000004.
 function dialDecimals(x) {
   for (let d = 0; d < 10; d++) if (Math.abs(+x.toFixed(d) - x) <= 1e-12 * Math.max(1, Math.abs(x))) return d;
   return 10;
 }
-// The text a typed box shows: at most 6 decimals, no trailing zeros, plain digits for every ordinary size.
-// Only a value too small for 6 decimals (or astronomically large) falls back to the 1e-7 form, which
-// dialParse reads back.
+// The text a typed box shows: at most 6 decimals, no trailing zeros. A value too small for 6 decimals, or
+// from 1e15 up, is written in the 1e-7 form, which dialParse reads back.
 function dialFmt(v) {
   v = Number(v);
   if (!isFinite(v)) return '';
@@ -33,9 +32,8 @@ function dialParse(text) {
   const v = Number(t);
   return isFinite(v) ? v + 0 : NaN;   // + 0 turns -0 into 0
 }
-// True when the element is hidden for real: the hidden attribute or display none, on it or on anything around it
-// (a `when` rule, the panel of another approach, a section of another mode). A closed section does not count:
-// the user only folded it away, and what plays inside it keeps playing.
+// True when the element is hidden: the hidden attribute or display none, on it or on anything around it.
+// A closed section does not count: what plays inside it keeps playing.
 function dialGone(el) {
   if (!el.isConnected) return true;
   if (el.checkVisibility && el.checkVisibility()) return false;
@@ -51,7 +49,7 @@ const DIAL_ICON = {
   pause: '<svg class="i-pause" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1h2.2v8H2zM5.8 1H8v8H5.8z"/></svg>',
 };
 
-// ----- sweeping dials share one animation-frame loop
+// Sweeping dials share one animation-frame loop.
 const dialSweeps = new Set();   // one function per playing dial, called with the milliseconds since the last frame
 let dialSweepFrame = 0, dialSweepLast = 0;
 function dialSweepTick(now) {
@@ -67,34 +65,27 @@ function dialSweep(f, on) {
   if (dialSweeps.size && !dialSweepFrame) { dialSweepLast = performance.now(); dialSweepFrame = requestAnimationFrame(dialSweepTick); }
 }
 
-// ----- extreme values: one switch for every dial
-// A dial may carry a second, wider range: o.xmin/o.xmax for the slider and o.xlo/o.xhi for typed values. While the
-// switch is on, every dial that has one uses it. The flag lives in the page state (S.extreme) where there is one,
-// so it is saved, restored and synced like any other value; the kit's own test page has no state and uses the
-// copy kept here.
-let dialExtremeOwn = false;
-function isExtreme() { return typeof S !== 'undefined' && S && S.extreme !== undefined ? !!S.extreme : dialExtremeOwn; }
-// Switch extreme values on or off for every dial, present and future. Switching off also brings any value that
-// lies beyond its dial's normal typed limits back to the nearest limit, through the dial's setter, so the picture
-// follows. (Changing S.extreme from code and calling syncControls() moves the ranges too, but writes nothing.)
+// Extreme ranges: one switch for every dial
+// A dial may carry a second, wider range (o.xmin/o.xmax for the slider, o.xlo/o.xhi for typed values) and uses it
+// while the switch is on. The flag is S.extreme.
+function isExtreme() { return !!S.extreme; }
+// Switching off also brings a value beyond its dial's normal typed limits back to the nearest limit, through the
+// dial's setter. Changing S.extreme from code and calling syncControls() moves the ranges too, but writes no value.
 function setExtreme(on) {
-  dialExtremeOwn = !!on;
-  if (typeof S !== 'undefined' && S) S.extreme = dialExtremeOwn;
-  dialQuietly(() => controls.forEach(c => { if (c.rerange) c.rerange(!dialExtremeOwn); }));
+  S.extreme = !!on;
+  dialQuietly(() => controls.forEach(c => { if (c.rerange) c.rerange(!on); }));
 }
 
-// ----- the dial
+// The dial
 // min/max/step describe the slider. o.lo/o.hi are the hard limits for typed and stepped values (default: the
 // slider's range). o.int: whole numbers only. o.odd: odd whole numbers only. o.def: the value reset() restores
-// (default: the value at creation). o.animate: true (or seconds per sweep) adds a play button that sweeps the value
-// to the top of the slider and starts again at the bottom, which suits an angle; 'bounce' sweeps there and back,
-// for a value whose two ends give different pictures. o.help: a hint.
-// o.slider: false leaves the slider out (label and typed box only; the label then points at the box).
-// o.xmin/o.xmax: the slider's range while extreme values are on (setExtreme); o.xlo/o.xhi: the typed limits then.
-// Any of the four may be missing: the normal value stays, except that a typed limit moves out with the slider
-// when xmin or xmax reaches beyond it.
-// The label is HTML. The state stays the single source of truth: the dial reads it with get() and never keeps
-// a copy, so a value outside the slider's range, or finer than its step, survives until the user changes it.
+// (default: the value at creation). o.animate: true adds a play button that sweeps the value to the top of the
+// slider and starts again at the bottom; 'bounce' sweeps there and back. o.help: a hint.
+// o.slider: false leaves the slider out (the label then points at the typed box).
+// o.xmin/o.xmax: the slider's range while extreme ranges are on; o.xlo/o.xhi: the typed limits then. Where one is
+// missing the normal value stays, except that a typed limit moves out with the slider when xmin or xmax passes it.
+// The label is HTML. The state is the single source of truth: the dial reads it with get() and keeps no copy, so
+// a value outside the slider's range, or finer than its step, survives until the user changes it.
 function addDial(host, id, label, min, max, step, get, set, o = {}) {
   step = step > 0 ? +step : 1;
   const odd = !!o.odd, int = odd || !!o.int;
@@ -123,18 +114,17 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     return clamp(v, lo, hi) + 0;
   };
   const def = o.def === undefined ? get() : o.def;
-  // The arrows choose between the dial's own step and whole numbers. A dial whose own step is 1 but which can hold
-  // decimals gets 0.1 as its finer choice and starts on whole numbers, so "±1" means the same on every dial: to the
-  // next whole number. A dial that only holds whole numbers and steps by 1 has nothing to choose.
+  // The arrows choose between the dial's own step and whole numbers. A dial that steps by 1 but can hold decimals
+  // gets 0.1 as its finer choice and starts on whole numbers. A whole-number dial that steps by 1 has no choice.
   const fine = step === 1 && !int ? 0.1 : step;
   const canToggle = !odd && fine !== 1;
   const canPlay = !!o.animate && (normal.max > normal.min || wide.max > wide.min);
   const bounce = o.animate === 'bounce';
-  const period = (typeof o.animate === 'number' ? o.animate : 8) * 1000;
+  const period = 8000;   // milliseconds for one sweep across the slider
   const bare = o.slider === false;
 
   const el = document.createElement('div');
-  el.className = bare ? 'dial dial-bare' : 'dial';
+  el.className = 'dial';
   if (o.group !== undefined) el.dataset.group = o.group;
   el.innerHTML =
     `<label class="label" for="${id}${bare ? 'Num' : ''}">${label}</label><div class="dial-box">` +
@@ -161,11 +151,10 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     n.inputMode = lo < 0 && DIAL_NO_MINUS_KEY ? 'text' : 'decimal';
     n.setAttribute('aria-valuemin', lo); n.setAttribute('aria-valuemax', hi);
     n.title = odd ? `Odd whole numbers from ${range}` : int ? `Whole numbers from ${range}` : `From ${range}`;
-    el.classList.toggle('is-wide', isWide);
     if (wideTag) {
       wideTag.hidden = !isWide;
-      wideTag.title = bare ? `Extreme values are on. Typed values go from ${range}.`
-        : `Extreme values are on. The slider runs from ${dialFmt(min)} to ${dialFmt(max)}, and typed values go from ${range}.`;
+      wideTag.title = bare ? `Extreme ranges are on. Typed values go from ${range}.`
+        : `Extreme ranges are on. The slider runs from ${dialFmt(min)} to ${dialFmt(max)}, and typed values go from ${range}.`;
     }
   };
   n.setAttribute('aria-label', `${name}, typed value`);
@@ -188,16 +177,14 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
   const show = (force, fromSlider) => {
     if (canWiden && isWide !== isExtreme()) retune();   // the switch was changed in the state itself
     const v = cur(), ok = !isNaN(v);
-    // The browser puts the thumb at the nearest position it has. Nothing is read back from it here, so a
-    // value beyond the slider's range or between its steps stays as it is.
+    // nothing is read back from the thumb, so a value beyond the slider's range or between its steps stays
     if (r && !fromSlider) r.value = ok ? v : min;
     if (r) r.style.setProperty('--dial-p', ok && span > 0 ? clamp((v - min) / span, 0, 1) : 0);
     el.classList.toggle('is-out', ok && (v < min || v > max));
     el.dataset.at = !ok ? '' : v >= hi ? 'hi' : v <= lo ? 'lo' : '';
     const t = dialFmt(v);
     if (force || !(document.activeElement === n && n.value !== shown)) n.value = t;
-    // How many characters the number has. The style sheet makes the box wider than usual when a number is too
-    // long for it (six decimals, a minus sign), so that no digit is cut off.
+    // the number's length in characters: the style sheet widens the box for a number too long for it
     if (t.length !== shown.length) n.style.setProperty('--dial-len', t.length);
     shown = t;
     if (ok) n.setAttribute('aria-valuenow', v); else n.removeAttribute('aria-valuenow');
@@ -210,7 +197,7 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     flagTimer = setTimeout(unflag, 1400);
   };
 
-  // ----- sweep (the play button)
+  // Sweep (the play button)
   const sweepTitle = bounce ? 'Sweep this value across the slider and back, over and over' : 'Sweep this value across the slider, over and over';
   // `ph` is how far along the slider the sweep is. A there-and-back sweep carries on past `span` on its way down,
   // so its position folds back: the value never jumps from one end to the other.
@@ -228,7 +215,7 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
       try { set(v); } catch (e) { sweep(false); throw e; }   // a failing setter must not fail again on every frame
       show();
     }
-    sent = cur();                                    // what the state holds now; a setter may round what it was given
+    sent = cur();                                    // what the state holds: a setter may round what it is given
   };
   const sweep = on => {
     if (!canPlay || on === playing) return;
@@ -237,7 +224,6 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     dialSweep(sweepFrame, on);
     playBtn.setAttribute('aria-pressed', on);
     playBtn.title = on ? 'Pause the sweep' : sweepTitle;
-    el.classList.toggle('is-playing', on);
   };
   // The extreme switch changed: take the matching range, and let a running sweep carry on inside it.
   const retune = () => {
@@ -246,7 +232,7 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     if (playing) { const v = cur(); seat(isNaN(v) ? min : v, down); }
   };
 
-  // ----- changes made by hand: each one stops a sweep, writes the state, and shows what the state now holds
+  // Changes made by hand: each one stops a sweep, writes the state, and shows what the state holds.
   const put = v => {
     sweep(false);
     if (isFinite(v) && v !== cur()) set(v);
@@ -259,9 +245,8 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     put(fix(v));
     if (v < lo || v > hi) flag('clamped'); else unflag();
   };
-  // The round values of a dial: the usual slider's positions, carried on past both of its ends (for every dial of
-  // the lab these are the whole multiples of its step). A typed limit need not be one of them: Trap thickness steps
-  // by 0.005 and may go down to 0.0005.
+  // The round values of a dial: the normal slider's positions, carried on past both of its ends. A typed limit
+  // need not be one of them: Trap thickness steps by 0.005 and may go down to 0.0005.
   const roundDec = Math.min(10, Math.max(dialDecimals(normal.min), dialDecimals(fine)));
   const isRound = v => { const k = (v - normal.min) / fine; return Math.abs(k - Math.round(k)) < 1e-6; };
   const roundNext = (v, dir) => {                    // the first round value beyond v, going up (1) or down (-1)
@@ -272,14 +257,14 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     const b = +from.toFixed(10);                     // 2.9999999999999996 counts as 3
     if (odd) return fix((dir > 0 ? 2 * Math.floor((b + 1) / 2) + 1 : 2 * Math.ceil((b - 1) / 2) - 1) + 2 * dir * (times - 1));
     if (whole) return fix((dir > 0 ? Math.floor(b) + 1 : Math.ceil(b) - 1) + dir * (times - 1));
-    // A fine step adds the step to whatever the value is, so a typed 2.37 goes to 2.47. The one exception is a
-    // typed limit that is no round value. Leaving it, the first step lands on the next round value (0.0005 goes up
-    // to 0.005, then 0.01), so the arrows find their way back to the values they came down through.
+    // A fine step adds the step to whatever the value is, so a typed 2.37 goes to 2.47. The exception is a typed
+    // limit that is no round value: the first step away from it lands on the next round value (0.0005 goes up to
+    // 0.005, then 0.01).
     const behind = dir > 0 ? lo : hi, ahead = dir > 0 ? hi : lo;
     if (b === behind && !isRound(behind)) return fix(+(roundNext(behind, dir) + dir * (times - 1) * fine).toFixed(roundDec));
     const to = +(from + dir * times * fine).toFixed(Math.min(10, Math.max(dialDecimals(from), dialDecimals(fine))));
-    // Arriving at it, a step that would pass the limit stops on the last round value before it; only from there
-    // (or from a value beyond that one) does a step go to the limit itself.
+    // On the way to such a limit, a step that would pass it stops on the last round value before it. Only from
+    // there, or from beyond it, does a step go to the limit itself.
     if (dir * (to - ahead) > 0 && !isRound(ahead)) {
       const last = roundNext(ahead, -dir);
       if (dir * (last - b) > 0) return fix(last);
@@ -321,14 +306,14 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
       if (e.button !== 0) return;
       e.preventDefault();                            // focus stays where it was, so a tap never opens the phone keyboard
       // Capturing the pointer means its release is reported here wherever it happens, so a repeat cannot run away.
-      try { btn.setPointerCapture(e.pointerId); } catch (err) { /* a scripted press has no real pointer to capture */ }
+      try { btn.setPointerCapture(e.pointerId); } catch (err) { /* a pointer that is already gone cannot be captured */ }
       const times = e.shiftKey ? 10 : 1;
       const again = () => { if (document.hidden) return; nudge(dir, times); timer = setTimeout(again, 60); };
       stop(); nudge(dir, times);
       timer = setTimeout(again, 420);                // holding the button repeats
     });
     for (const ev of ['pointerup', 'pointercancel', 'lostpointercapture', 'pointerleave']) btn.addEventListener(ev, stop);
-    // A click that follows a press has detail >= 1 and was handled above; keyboard and scripted clicks have 0.
+    // A click that follows a press has detail >= 1 and is handled above; keyboard and scripted clicks have 0.
     btn.addEventListener('click', e => { if (e.detail === 0) nudge(dir, e.shiftKey ? 10 : 1); });
   }
   const paintMode = () => {
@@ -355,15 +340,13 @@ function addDial(host, id, label, min, max, step, get, set, o = {}) {
     sync: () => show(false),
     // Back to how the dial opens: the default value, and the arrows on the step they started on.
     reset: () => { sweep(false); ph = 0; unflag(); if (whole !== whole0) { whole = whole0; paintMode(); } set(def); show(true); },
-    play: on => sweep(on === undefined ? !playing : !!on),
-    // setExtreme calls this. `pull`: a value beyond the typed limits now in use goes back to the nearest one.
+    // setExtreme calls this. `pull`: a value beyond the typed limits in use goes back to the nearest one.
     rerange: pull => {
       retune();
       const v = cur();
       if (pull && !isNaN(v) && (v < lo || v > hi)) set(fix(v));
       show();
     },
-    remove: () => { sweep(false); unflag(); el.remove(); const i = controls.indexOf(c); if (i >= 0) controls.splice(i, 1); },
   };
   controls.push(c);
   return c;
@@ -380,7 +363,6 @@ function dialWithHelp(host, inner, id, help, wrapClass) {
   inner.querySelector('input, select').setAttribute('aria-describedby', p.id);
   return wrap;
 }
-const dialDrop = c => { const i = controls.indexOf(c); if (i >= 0) controls.splice(i, 1); c.el.remove(); };
 
 // o.def: the value reset() restores (default: the value at creation). o.help: a hint. The label is HTML.
 function addCheck(host, id, label, get, set, o = {}) {
@@ -393,7 +375,7 @@ function addCheck(host, id, label, get, set, o = {}) {
   const sync = () => { box.checked = !!get(); };
   sync();
   box.addEventListener('change', () => { set(box.checked); sync(); });
-  const c = { el, group: o.group, id, sync, reset: () => { set(def); sync(); }, remove: () => dialDrop(c) };
+  const c = { el, group: o.group, id, sync, reset: () => { set(def); sync(); } };
   controls.push(c);
   return c;
 }
@@ -421,7 +403,7 @@ function addSelect(host, id, label, options, get, set, o = {}) {
   };
   setOptions(options);
   sel.addEventListener('change', () => { const pick = options[+sel.value]; if (pick) { set(pick[0]); sync(); } });
-  const c = { el, group: o.group, id, sync, setOptions, reset: () => { set(def); sync(); }, remove: () => dialDrop(c) };
+  const c = { el, group: o.group, id, sync, setOptions, reset: () => { set(def); sync(); } };
   controls.push(c);
   return c;
 }
@@ -452,7 +434,7 @@ function buildControls(host, specs, obj, onChange, o = {}) {
       const p = document.createElement('p');
       p.className = 'note'; p.id = id; p.textContent = s.text;
       hostEl(host).appendChild(p);
-      c = { el: p, group: o.group, id, sync() {}, reset() {}, remove() { p.remove(); } };
+      c = { el: p, group: o.group, id, sync() {}, reset() {} };
     } else { console.warn(`buildControls: unknown control type "${s.type}"`); return; }
     made.push([s, c]);
   });
@@ -462,7 +444,6 @@ function buildControls(host, specs, obj, onChange, o = {}) {
     update,
     sync: () => { made.forEach(([, c]) => c.sync()); update(); },
     reset: () => dialQuietly(() => made.forEach(([, c]) => c.reset())),
-    remove: () => { made.forEach(([, c]) => c.remove()); const i = dialSets.indexOf(built); if (i >= 0) dialSets.splice(i, 1); },
   };
   dialSets.push(built);
   return built;
@@ -474,11 +455,10 @@ function dialQuietly(work) {
   try { work(); } finally { dialBatch = null; batch.forEach(f => f()); }
 }
 // A small button that puts a group (or several: pass an array) back to its defaults. o.label: its text.
-// o.after: called after the reset, for state of that section that is not held by a control. o.id: element id.
+// o.after: called after the reset, for state of that section that is not held by a control.
 function addReset(host, group, o = {}) {
   const b = document.createElement('button');
   b.type = 'button'; b.className = 'btn dial-reset'; b.textContent = o.label || 'Reset this section';
-  if (o.id) b.id = o.id;
   b.addEventListener('click', () => { resetGroup(group); if (o.after) o.after(); });
   hostEl(host).appendChild(b);
   return b;

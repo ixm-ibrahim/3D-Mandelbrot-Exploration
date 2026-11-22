@@ -1,6 +1,0 @@
-waiting 12:39:50
-started 12:45:09
-more wide: exit 0 12:45:54
-more phone: exit 0 12:46:26
-sizes: exit 0 12:49:26
-exit: all done 12:49:26

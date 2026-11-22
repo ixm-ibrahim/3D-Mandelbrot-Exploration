@@ -1,5 +1,0 @@
--rw-r--r-- 1 AzureAD+IbrahimMahmoud 4096  16220 Nov 17 23:01 tools/smoke-r3.json
--rw-r--r-- 1 AzureAD+IbrahimMahmoud 4096 108257 Nov 18 03:23 tools/smoke-v6.json
--rw-r--r-- 1 AzureAD+IbrahimMahmoud 4096 172402 Nov 18 06:18 tools/smoke-v9.json
--rw-r--r-- 1 AzureAD+IbrahimMahmoud 4096 172402 Nov 18 06:25 tools/smoke-v9m.json
--rw-r--r-- 1 AzureAD+IbrahimMahmoud 4096 171798 Nov 18 06:18 tools/smoke.json

@@ -1,7 +1,0 @@
-tri    2/5       2d 1.040 | column: top 0.200, inside length 0.216, lowest escape 0.20400000000000001 | disc top 0.200 | neck / body: 0.011 / 0.059, 0.011 / 0.084, 0.011 / 0.073, 0.011 / 0.089 (block 0.0081) | 52 s
-tri    1/5       2d 1.040 | column: top 0.000, inside length 0.232, lowest escape 0.004 | disc top 0.100 | neck / body: 0.016 / 0.041, 0.016 / 0.050, 0.014 / 0.067, 0.018 / 0.093 (block 0.0081) | 107 s
-tri    1/6       2d 1.028 | column: top 0.016, inside length 0.328, lowest escape 0.02 | disc top 0.308 | neck / body: 0.011 / 0.029, 0.011 / 0.027, 0.011 / 0.024, 0.011 / 0.037, 0.011 / 0.069 (block 0.0081) | 200 s
-tri    3/7       2d 1.021 | column: top 0.132, inside length 0.252, lowest escape 0.136 | disc top 0.196 | neck / body: 0.014 / 0.047, 0.018 / 0.060, 0.016 / 0.037, 0.016 / 0.060, 0.018 / 0.057, 0.014 / 0.061 (block 0.0081) | 284 s
-tri    siegel    2d 1.000 | column: top 0.236, inside length 0.244, lowest escape 0.24000000000000002 | disc top 0.236 |  | 285 s
-tri    airplane  2d 1.832 | column: top 0.004, inside length 0.048, lowest escape 0.008 | disc top 0.000 |  | 286 s
-done tri 286 s

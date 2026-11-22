@@ -1,2 +1,0 @@
-trapadd-128: tris 61548, closed True, oriented True, edge uses {'2': 92322}, pinch 0, dup 0, degenerate 0 (min area 5.14e-04), normals off 0 (reversed 0), pieces 1 (neg vol 1), euler -250, vol -53.445 cm3 (readme x1.0001), size [100.0, 76.54, 54.52], z0 True | obj v 30524 f 61548 vn 0 in-range True dist 5.171508789203472e-05 | ply v 30524 f 61548 ok True dist 0.0 black 0 | iou 0.828 pic-only 0.172 model-only 0.0 | hue {'compared_px': 92022, 'hue_diff_median_deg': 23.834593232220165, 'hue_diff_within_30deg_share': 0.5793071222099063} | 1 s
-check exit 0

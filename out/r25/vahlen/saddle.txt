@@ -1,5 +1,0 @@
-c = -0.12 + 0.6i (inside the rabbit bulb): cycle point -0.2331+0.4092i, flat pull 0.836; growth factors of one trip in spinor space: 21.258 0.836 0.836 0.005
-c = -0.10 + 0.70i (inside the rabbit bulb): cycle point -0.5677+0.5753i, flat pull 0.532; growth factors of one trip in spinor space: 21.795 0.532 0.532 0.001
-c = 0.2 + 0.3i (one body, attracting fixed point): cycle point 0.0792+0.3565i, flat pull 0.730; growth factors of one trip in spinor space: 2.353 0.730 0.730 0.378
-c = -0.9 + 0.05i (near the basilica): cycle point -0.1075-0.0637i, flat pull 0.447; growth factors of one trip in spinor space: 1.553 0.447 0.447 0.000
-c = -0.9 (on the x-axis): cycle point -0.1127+0.0000i, flat pull 0.400; growth factors of one trip in spinor space: 0.400 0.000 0.000 0.000

@@ -1,9 +1,8 @@
-/* "Save a 3D model" (46-mesh.js). The panel lays itself out, so it looks the same whatever wraps it. */
+/* The "Save a 3D model" panel (46-mesh.js). It lays itself out, so it looks the same whatever wraps it. */
 .mesh-panel { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.sec > .mesh-panel { padding-bottom: 14px; }
 .mesh-kinds { gap: 6px; }
 
-/* the running job and the finished model each sit in a box of their own, apart from the settings above */
+/* the running job and the finished model each sit in a box of their own */
 .mesh-run, .mesh-done { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 10px 12px; border: 1px solid var(--line); background: var(--panel); }
 .mesh-bar { height: 6px; background: var(--line); overflow: hidden; }
 .mesh-bar span { display: block; height: 100%; background: var(--brass); transform-origin: 0 50%; transform: scaleX(0); transition: transform .15s linear; }

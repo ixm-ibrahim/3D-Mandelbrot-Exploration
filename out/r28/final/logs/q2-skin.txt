@@ -1,9 +1,0 @@
-exit 0, no console errors
-as-drawn: shadow true, crevice shading true, Done: 12 passes at 862 × 701
-no-shadow: shadow false, crevice shading true, Done: 12 passes at 862 × 701
-no-crevice: shadow true, crevice shading false, Done: 12 passes at 862 × 701
-neither: shadow false, crevice shading false, Done: 12 passes at 862 × 701
-as-drawn    box (355, 598, 445, 678): darkest tenth of the box 95.3, middle of the box 98.7, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 8; steps of 4 or more: 329
-no-shadow   box (355, 598, 445, 678): darkest tenth of the box 98.7, middle of the box 101.3, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 2; steps of 4 or more: 0
-no-crevice  box (355, 598, 445, 678): darkest tenth of the box 95.3, middle of the box 98.7, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 8; steps of 4 or more: 329
-neither     box (355, 598, 445, 678): darkest tenth of the box 98.7, middle of the box 101.3, middle of the frame round it 101.7 (of 255); largest step between neighbouring pixels in the box 2; steps of 4 or more: 0

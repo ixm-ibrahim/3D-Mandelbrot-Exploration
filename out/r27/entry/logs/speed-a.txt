@@ -1,9 +1,0 @@
-run 1  first group (pearls): first full-size pass on screen after 6 ms, finished (Done: 12 passes at 862 × 701) after 860 ms; programs built 3
-run 1  Balls on balls: first full-size pass on screen after 4 ms, finished (Done: 12 passes at 862 × 701) after 917 ms; programs built 3
-run 1  Balls on balls, by its row: first full-size pass on screen after 7 ms, finished (Done: 12 passes at 862 × 701) after 841 ms; programs built 3
-run 2  first group (pearls): first full-size pass on screen after 6 ms, finished (Done: 12 passes at 862 × 701) after 863 ms; programs built 3
-run 2  Balls on balls: first full-size pass on screen after 5 ms, finished (Done: 12 passes at 862 × 701) after 810 ms; programs built 3
-run 2  Balls on balls, by its row: first full-size pass on screen after 5 ms, finished (Done: 12 passes at 862 × 701) after 1796 ms; programs built 3
-run 3  first group (pearls): first full-size pass on screen after 7 ms, finished (Done: 12 passes at 862 × 701) after 950 ms; programs built 3
-run 3  Balls on balls: first full-size pass on screen after 7 ms, finished (Done: 12 passes at 862 × 701) after 923 ms; programs built 3
-run 3  Balls on balls, by its row: first full-size pass on screen after 6 ms, finished (Done: 12 passes at 862 × 701) after 777 ms; programs built 3

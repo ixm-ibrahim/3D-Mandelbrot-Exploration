@@ -1,4 +1,0 @@
-step 1 result: page up, 16 entries: mercator fold lathe tilt bulb classic split softfold axisbulb pillow quat4 rotor rotorframe kleinsq kleinsq2 sqpillow
-step 1 waited 2.0 s
-step 2 result: [{"power":2,"mirrorWorst":1.999495207230841,"mirrorMean":0.7045572087409606,"shareLandingOnTheOtherSideOfThePlane":0.85215},{"power":3,"mirrorWorst":1.7556361476676574e-15,"mirrorMean":3.1832026009321897e-16,"shareLandingOnTheOtherSideOfThePlane":0.76495},{"power":4,"mirrorWorst":1.9995276775516686,"mirrorMean":0.7702606015858109,"shareLandingOnTheOtherSideOfThePlane":0.6981},{"power":5,"mirrorWorst":1.9999447933119519,"mirrorMean":0.884506691066463,"shareLandingOnTheOtherSideOfThePlane":0.65635}]
-no console errors

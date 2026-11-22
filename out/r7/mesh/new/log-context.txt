@@ -1,8 +1,0 @@
-step 1 waited 2.6 s
-step 2 result: "{\"stepWhenLost\":\"Building the mesh, slice 15 of 221. 15%. About 4 seconds left.\",\"busy\":false,\"msg\":\"The graphics of this page were interrupted, so the model could not be finished. Start it again.\",\"startShown\":true}"
-step 3 result: "{\"afterRestore\":\"The graphics of this page were interrupted, so the model could not be finished. Start it again.\"}"
-step 4 waited 0.0 s
-step 5 result: "{\"secondJob\":\"The model is ready.\",\"facts\":[\"Triangles\",\"16,912\",\"Points\",\"8,458\",\"Size\",\"100 × 91.4 × 25.9 mm\",\"Pieces\",\"The largest of 13\"]}"
-step 6 wrote out/r7/mesh/new/context-end.png
-no console errors
-exit 0

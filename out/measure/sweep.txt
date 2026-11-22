@@ -1,9 +1,0 @@
-step 1 waited 0.0 s
-step 2 result:
-quick render
-step 2 waited 0.0 s
-step 3 result:
-224 cases, 415 different sentences, 0 problems
-longest refresh() call 4.8 ms, longest measuring slice 4.6 ms, longest gap between frames 1512.3 ms (and 1231 ms in the frames where the baseline renderer compiles the next approach's shader)
-step 3 waited 0.3 s
-no console errors

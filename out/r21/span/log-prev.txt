@@ -1,4 +1,0 @@
-julia prev_lathe 45 s
-julia prev_page 100 s
-julia prev_Pfirst 136 s
-julia prev_axis 184 s

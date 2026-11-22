@@ -1,3 +1,0 @@
-step 1 waited 6.1 s
-step 2 result: {"at": "wide", "cls": "", "pin": {"want": true, "can": false, "on": false, "free": false, "stuck": false, "top": 0, "h": 0, "small": 950}, "pos": "sticky", "top": "12px", "zIndex": "auto", "padBottom": "0px", "bench": "grid", "btn": "none", "hint": "none", "status": ["block", "18px", "0px"], "stageH": 703, "toprow": "sticky", "before": "none"}
-no console errors

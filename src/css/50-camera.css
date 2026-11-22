@@ -2,7 +2,6 @@
    the busy indicator's place (05-core.css), the camera switch, the zoom slider with a limit box at each end,
    then the stage buttons. */
 .cam-mode { position: absolute; right: 10px; top: 46px; z-index: 2; display: flex; }
-.cam-mode[hidden], .cam-lim[hidden] { display: none; }
 .cam-mode button { font-family: var(--f-cond); font-weight: 500; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; line-height: 1.4; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; padding: 4px 9px; margin: 0; cursor: pointer; }
 .cam-mode button + button { border-left: 0; }
 .cam-mode button:hover { border-color: var(--ink-2); }
@@ -24,10 +23,8 @@
 .cam-thumb { position: absolute; left: calc(50% - 11px); width: 22px; height: 8px; margin-top: -4px; background: var(--brass); box-shadow: 0 0 0 1.5px var(--stage); }
 .cam-val { position: absolute; right: calc(100% + 7px); top: 50%; transform: translateY(-50%); font-family: var(--f-mono); font-size: 11px; line-height: 1.4; color: var(--ink); background: var(--stage); padding: 0 4px; white-space: nowrap; pointer-events: none; }
 .stage[data-cam="fly"] canvas { cursor: crosshair; }
-/* a short message from the camera (why the zoom stopped, why a typed limit was not taken): just above the hint
-   line, clear of the slider column on the right */
+/* a short message from the camera (why the zoom stopped, why a typed limit was not taken), clear of the slider column */
 .cam-note { position: absolute; left: 10px; bottom: 62px; z-index: 2; max-width: min(46ch, calc(100% - 96px)); margin: 0; font-size: 12.5px; line-height: 1.4; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--brass); padding: 4px 8px; pointer-events: none; }
-.cam-note[hidden] { display: none; }
 
 /* nothing to steer while the picture could not be made: camBuildUi() marks the three overlays while #glfail shows */
 .cam-mode.cam-gone, .cam-zoom.cam-gone, .cam-note.cam-gone { display: none; }
@@ -41,11 +38,9 @@
   .cam-thumb { left: calc(50% - 14px); width: 28px; height: 10px; margin-top: -5px; }
 }
 
-/* A narrow stage (a phone): the column lay over the solid, so camPlace() in 50-camera.js moves the zoom out of
-   the stage and marks it .is-row. It is then a row between the picture and the hint: the nearest limit with its
-   word above it, the slider with near at the left, the farthest limit. Nothing of it lies over the picture. */
-/* on such a stage the camera switch sits in the bottom left corner, level with the buttons at the bottom right
-   (the hint that has that corner on a wide stage is shown under the picture here), so tall solids stay clear of it */
+/* A narrow stage (a phone): camPlace() in 50-camera.js moves the zoom out of the stage and marks it .is-row. It is
+   then a row between the picture and the hint, so nothing of it lies over the picture. The camera switch (.is-low)
+   sits in the bottom left corner, level with the stage buttons, so tall solids stay clear of it. */
 .cam-mode.is-low { top: auto; right: auto; left: 10px; bottom: 10px; }
 .cam-zoom.is-row { position: static; width: auto; display: grid; grid-template-columns: 64px minmax(0, 1fr) 64px; grid-template-rows: auto auto; gap: 1px 14px; align-items: center; justify-items: center; pointer-events: auto; }
 .cam-zoom.is-row.cam-gone { display: none; }

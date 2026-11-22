@@ -1,5 +1,0 @@
-<<<<
-            if (dOut > d) stride = clamp(0.9 * d * (t - tOut) / (dOut - d), stride, 8.0 * stride);
-====
-            if (dOut > d) stride = clamp(0.9 * d * (t - tOut) / (dOut - d), stride, (d < 2.0 * e ? 8.0 : 3.0) * stride);
->>>>

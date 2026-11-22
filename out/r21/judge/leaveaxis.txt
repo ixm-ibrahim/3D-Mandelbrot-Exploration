@@ -1,8 +1,0 @@
-AS c LEAVES THE x-AXIS: c = -1 + i t (inside the round disc of the flat Mandelbrot set for t < 0.25).
-Walk round the x-axis at x = 0 on circles of radius 0.56 .. 0.70 (2,880 places, 80 steps): the largest number of separate arcs met on any of them,
-and the widest arc within 20 degrees of the upright sheet (0 = no bud there). Then the count of inside places in the cut along the upright sheet (300 x 217).
-rule                 t = 0             t = 0.01          t = 0.03          t = 0.06          t = 0.1           t = 0.15          t = 0.2          
-along                16 arcs  36%  9764 12 arcs  35%  9316 12 arcs  34%  8826 16 arcs  34%  8298 16 arcs  37%  7846 22 arcs  36%  7126 18 arcs  39%  6386
-oneplane              2 arcs   0% 10200  2 arcs   0% 10188  2 arcs   0% 10078  2 arcs   0%  9738  2 arcs   0%  9042  2 arcs   0%  7626  2 arcs   0%  5670
-sheet.evc005e70k16   16 arcs  38%  9844 10 arcs  36%  9432  8 arcs  33%  8774  6 arcs  27%  9258  8 arcs  38%  9654  4 arcs  40%  7946  2 arcs   0%  5746
-alongmem.c_wake1     12 arcs  36% 10180 12 arcs  36% 10160 14 arcs  34% 10026 12 arcs  34%  9642 10 arcs  36%  8990 12 arcs  35%  7646 14 arcs  37%  6006

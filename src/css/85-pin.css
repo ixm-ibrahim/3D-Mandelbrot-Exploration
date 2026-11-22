@@ -1,17 +1,13 @@
 /* The picture stays in view on a narrow window (a phone held upright), built and switched by pinInit() in 85-pin.js.
-   Wider than 920 px nothing here applies: there the picture column is sticky already (00-base.css).
-
-   Three classes on <html>, all set by the script:
+   Wider than 920 px nothing here applies: there the picture column is sticky already (00-base.css). */
+/* Three classes on <html>, all set by the script:
      pin-can     the window is 920 px wide or less and tall enough: the button "Unpin picture" / "Pin picture" shows
      pin-on      the picture is pinned: the compact layout below applies
      pin-let-go  pinned, but the block does not stick for now (an on-screen keyboard is up, or the block is too tall
-                 for this window). The layout stays exactly as it is, so the picture keeps its size.
-   and one on .bench-main: is-stuck, while the block is held at the top of the window (paint only: the hairline).
-
-   Heights use svh, the height of the window with the browser's bars showing. A phone's address bar slides away
-   while the page scrolls; svh (like vh) does not follow it, where dvh and window.innerHeight do. So the picture
-   keeps one height through a scroll, and it is never drawn again because of one. vh is the fallback where svh is
-   not known. */
+                 for this window). The layout stays as it is, so the picture keeps its size.
+   and one on .bench-main: is-stuck, while the block is held at the top of the window (it shows the hairline). */
+/* Heights use svh, the height of the window with the browser's bars showing. Unlike dvh it does not follow a phone's
+   address bar as it slides away, so the picture keeps one height through a scroll. vh is the fallback. */
 
 /* a measuring stick as tall as the window with the browser's bars showing: the script reads its height */
 .pin-probe { position: fixed; left: 0; top: 0; width: 1px; height: 100vh; height: 100svh; visibility: hidden; pointer-events: none; z-index: -1; }
@@ -22,13 +18,12 @@
   html.pin-can .bench-main { position: relative; padding-bottom: 6px; }
   html.pin-can .pin-btn { display: block; position: absolute; right: 0; bottom: 6px; min-height: 32px; padding: 5px 10px; white-space: nowrap; }
   html.pin-can .bench-main > .status { display: flex; align-items: center; min-height: 32px; padding-right: 10.5em; }
-  /* no status line to stand beside (another module hid it): the button takes a line of its own */
+  /* no status line to stand beside (the Learn tab hides it): the button takes a line of its own */
   html.pin-can .pin-btn.is-solo { position: static; align-self: flex-end; }
 
-  /* At this width the bench is a grid of one column, with the picture in a cell of its own. By the rules of CSS a
-     sticky box is held inside its cell, which here would mean not at all. (The Chrome this was tested in lets it
-     travel the whole grid anyway; a browser that keeps to the rule would not.) A flex column has no cells, so the
-     picture can travel the whole height of the controls in either kind of browser. It looks the same. */
+  /* At this width the bench is a grid of one column, and by the rules of CSS a sticky box is held inside its cell,
+     which here would mean not at all. Chrome lets it travel the whole grid anyway. A flex column has no cells, so
+     the picture can travel the whole height of the controls in any browser. It looks the same. */
   html.pin-on .bench { display: flex; flex-direction: column; align-items: stretch; }
   html.pin-on .bench-main { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; }
   html.pin-on.pin-let-go .bench-main { position: relative; }
@@ -42,20 +37,19 @@
   /* The top row of the controls scrolls with the page while the picture is pinned: stuck under the picture as
      well, the two would leave too little of a phone's window for the dials. */
   html.pin-on .toprow { position: static; }
-  /* what the browser scrolls a focused control to must clear the pinned block (--pin-h: its lower edge, measured) */
+  /* what the browser scrolls a focused control to must clear the pinned block (--pin-h: its lower edge, set by the script) */
   html.pin-on:not(.pin-let-go) .dials * { scroll-margin-top: calc(var(--pin-h, 0px) + 12px); }
 
   /* The picture's height while pinned: what it has without the pin, but no more than 55% of the window less what
      else the block holds (the status line and the gaps: 46 px), so that 45% of the window is left for the controls.
-     The Learn tab sets the height of its own stage, and this rule leaves that alone. */
+     The Learn tab sets the height of its own stage. */
   html.pin-on body:not(.is-learn) .stage { height: clamp(200px, calc(55vh - 46px), clamp(320px, 58vh, 560px)); }
   @supports (height: 1svh) {
     html.pin-on body:not(.is-learn) .stage { height: clamp(200px, calc(55svh - 46px), clamp(320px, 58vh, 560px)); }
   }
 }
 @media (max-width: 620px) {
-  /* on a phone the zoom row sits under the picture as well: 102 px for it, the status line and the gaps
-     (measured: 100) */
+  /* on a phone the zoom row sits under the picture as well: 102 px for it, the status line and the gaps */
   html.pin-on body:not(.is-learn) .stage { height: clamp(180px, calc(55vh - 102px), clamp(290px, 34vh, 560px)); }
   @supports (height: 1svh) {
     html.pin-on body:not(.is-learn) .stage { height: clamp(180px, calc(55svh - 102px), clamp(290px, 34vh, 560px)); }

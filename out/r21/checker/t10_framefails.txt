@@ -1,4 +1,0 @@
-frame FAILS turn_full 2596 2930 3057 3131 0.0e+00
-frame FAILS turn_full_half 1277 2432 2485 2330 0.0e+00
-frame FAILS e1_to_point 3738 2960 2715 3770 0.0e+00
-frame FAILS transport_full 2534 1980 2843 2545 0.0e+00

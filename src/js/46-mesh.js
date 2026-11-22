@@ -1,24 +1,17 @@
-// ---------- "Save a 3D model": the solid as a mesh of triangles, packed in a zip as STL, OBJ and PLY files.
+// "Save a 3D model": the solid as a mesh of triangles, packed in a zip as STL, OBJ and PLY files.
 //
 // The distance estimate is read one level slice at a time (sampleSlice: alpha holds the estimate, rgb the surface
-// colour). A coarse first pass finds the box that holds the solid. Each slice's estimates are then turned into
-// distances with the help of the slices below and above (meshTrue), and marching cubes runs between each pair of
-// neighbouring slices, so only a few slices are ever held. Each place where the surface crosses a grid edge becomes
-// one point, found again through per-slice edge maps by every triangle around it, so the mesh is indexed and has
-// no open edges. The job is a chain of short turns and works from its own snapshot: the page stays usable, and
-// nothing done on the page afterwards changes the model.
-//
-// For tests: window.squaringLabMeshTest = { field: 'sphere' | 'torus' | 'gyroid' | 'pearl' | 'noise', cells? }
-// puts a built-in field in place of the picture (behind the same call as sampleSlice), and the finished mesh is
-// left in its .mesh.
+// colour), and marching cubes runs between each pair of neighbouring slices, so only a few slices are ever held.
+// Each place where the surface crosses a grid edge becomes one point, shared by every triangle around it, so the
+// mesh is indexed and has no open edges. The job is a chain of short turns and works from its own snapshot: the
+// page stays usable, and nothing done on it afterwards changes the model.
 
-// The marching-cubes tables. Corners and edges are numbered as in the standard tables: corners 0 to 3 go round the
-// lower face of a cell and 4 to 7 sit above them; edges 0 to 3 go round the lower face, 4 to 7 round the upper one,
-// 8 to 11 are the uprights. Bit c of a case number is set when corner c is inside the solid. MESH_EDGE_TABLE holds
-// the edges the surface crosses in each case, MESH_TRI_TABLE the triangles as edge numbers written in hex, three
-// to a triangle, turning counter-clockwise seen from outside. Where the two inside corners of a face sit on a
-// diagonal, each is cut off on its own. That choice only looks at the face, so two cells that share a face agree
-// and the surface has no cracks. Both tables were worked out and checked case by case (notes/r4-mesh.md).
+// The marching-cubes tables, numbered as in the standard tables: corners 0 to 3 go round the lower face of a cell
+// and 4 to 7 sit above them; edges 0 to 3 go round the lower face, 4 to 7 round the upper one, 8 to 11 are the
+// uprights. Bit c of a case number is set when corner c is inside the solid. MESH_EDGE_TABLE holds the edges the
+// surface crosses in each case, MESH_TRI_TABLE the triangles as edge numbers written in hex, three to a triangle,
+// turning counter-clockwise seen from outside. Where the two inside corners of a face sit on a diagonal, each is cut
+// off on its own. That choice only looks at the face, so two cells that share a face agree and there are no cracks.
 const MESH_EDGE_TABLE = [
   0x000, 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c, 0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
   0x190, 0x099, 0x393, 0x29a, 0x596, 0x49f, 0x795, 0x69c, 0x99c, 0x895, 0xb9f, 0xa96, 0xd9a, 0xc93, 0xf99, 0xe90,
@@ -85,22 +78,18 @@ const MESH_MANY_PIECES = 200;        // from this many pieces on, the solid is f
 const MESH_THIN = 0.5;               // a part of a trap solid thinner than this many cells is left out of the model, whatever the picture shows (see meshCore)
 const MESH_THIN_PX = 2.4;            // and so is a part thinner than this many pixels of the picture, up to one cell: the picture does not draw it
 const MESH_THIN_TOL = 0.25;          // an estimate this many cells shorter than the thick parts allow is taken to come from a thin layer (see meshThin)
-// Where a sample holds the colour of the cut face and not a colour of the surface. The sampler (RAW_CUT, RAW_ABOVE
-// and RAW_IN in 30-shaders.js, which these three numbers repeat) gives that colour to every sample inside the solid
-// in the slices from MESH_FACE_BELOW cells below the cut plane to MESH_FACE_ABOVE above it, and anywhere else to a
-// sample whose estimate reads more than MESH_FACE_DEEP cells inside.
+// Where a sample holds the colour of the cut face and not a colour of the surface: inside the solid, in the slices
+// from MESH_FACE_BELOW cells below the cut plane to MESH_FACE_ABOVE above it, or anywhere with an estimate that
+// reads more than MESH_FACE_DEEP cells inside. The three repeat RAW_CUT, RAW_ABOVE and RAW_IN in 30-shaders.js.
 const MESH_FACE_BELOW = 1.01, MESH_FACE_ABOVE = 3.01, MESH_FACE_DEEP = 1.5;
 const MESH_FACE_NEAR = 0.5;          // a point this close under the cut plane's face, in cells, is coloured as part of it
-const MESH_FACE_RULE2 = true;        // the second exception of meshPoint's colours, kept as a switch so that it can be measured on and off
-const MESH_NAMES = { m: 'mandelbrot', j: 'julia', k: 'kleinian' };
 const MESH_WORDS = {
-  sample: 'The picture could not be read just now. Wait until it has finished drawing, then start again.',
+  sample: 'This solid could not be read, so there is no model to make. Either these settings cannot be drawn, or this device cannot draw the numbers a model is made from.',
   lost: 'The graphics of this page were interrupted, so the model could not be finished. Start it again.',
   empty: 'Nothing solid was found inside the drawing radius, so there is no model to make.',
   big: 'This model would have more than 15 million triangles, which is more than a browser page can hold. Choose a lower resolution.',
   bytes: 'These files would be too large for a browser page to put together. Choose a lower resolution or fewer kinds of file.',
   cancel: 'Cancelled. Nothing was saved.',
-  none: 'Saving a model is not available in this build of the page.',
   kinds: 'Choose at least one kind of file.',
   failed: 'The model could not be built. It may need more memory than the browser gives a page. Try a lower resolution.',
   prepare: 'Preparing to read this solid. The first model of each formula takes a few seconds longer. The next one starts at once.',
@@ -133,37 +122,9 @@ function meshYield() {
   });
 }
 
-// ---------- built-in fields for tests, behind the signature of sampleSlice
-// sphere and torus have known volumes; gyroid is a thin wall folded many times inside a ball; pearl is zero
-// inside and reads long outside, like the large pearls of the Kleinian view; noise visits every case of the tables.
-function meshTestSlice(kind, cx, cy, side, z, n) {
-  const out = new Float32Array(4 * n * n), h = side / n;
-  for (let j = 0, o = 0; j < n; j++) {
-    const y = cy - side / 2 + (j + 0.5) * h;
-    for (let i = 0; i < n; i++, o += 4) {
-      const x = cx - side / 2 + (i + 0.5) * h, r = Math.hypot(x, y, z);
-      let d = r - 1;
-      if (kind === 'torus') d = Math.hypot(Math.hypot(x, y) - 1, z) - 0.35;
-      else if (kind === 'gyroid') {
-        const k = 5.5, g = Math.sin(k * x) * Math.cos(k * y) + Math.sin(k * y) * Math.cos(k * z) + Math.sin(k * z) * Math.cos(k * x);
-        d = Math.max(Math.abs(g) / (1.5 * k) - 0.022, r - 1.2);
-      } else if (kind === 'pearl') d = Math.max(0, 1.6 * (r - 1));
-      else if (kind === 'noise') {
-        const s = Math.sin(x * 127.1 + y * 311.7 + z * 74.7) * 43758.5453;
-        d = Math.max(0.2 * (s - Math.floor(s) - 0.5), r - 0.5);
-      }
-      out[o] = clamp(0.5 + 0.4 * x, 0, 1); out[o + 1] = clamp(0.5 + 0.4 * y, 0, 1); out[o + 2] = clamp(0.5 + 0.4 * z, 0, 1);
-      out[o + 3] = d;
-    }
-  }
-  return Promise.resolve(out);
-}
-
-// ---------- the field the model is made from
-// The distances of one slice with the picture's own limits applied: nothing outside the drawing radius, and
-// nothing above the cut when the solid is cut open.
-// With T (from meshTrue) the slice's estimates have been turned into distances already, and T.d is filled in place.
-// The two limits are true distances themselves, so where one of them decides, T.f goes back to 1.
+// The distances of one slice with the picture's own limits applied: nothing outside the drawing radius, and nothing
+// above the cut when the solid is cut open. With T (from meshTrue) the estimates are distances already, and T.d is
+// filled in place. The two limits are true distances themselves, so where one of them decides, T.f goes back to 1.
 function meshField(job, raw, cx, cy, side, z, n, T) {
   const d = T ? T.d : new Float32Array(n * n), h = side / n, x0 = cx - side / 2 + h / 2, y0 = cy - side / 2 + h / 2;
   const B = job.bound, zz = z * z, cut = job.cutOn ? z - job.cut : -Infinity;
@@ -180,22 +141,14 @@ function meshField(job, raw, cx, cy, side, z, n, T) {
   return d;
 }
 // The estimates of one slice as distances: { d, f, own }, f being what each estimate was multiplied by.
-// The estimate is right about which side of the surface a sample is on, but outside the solid it reads short, by
-// a factor that changes from place to place: measured on the Douady rabbit, about two right beside the surface
-// and five a few cells above its flat top, hardly at all off a tip. A surface offset counted in that estimate
-// moved the top of a solid four times as far as its rim. What a sample can tell by itself is how fast the estimate
-// changes around it: a distance changes by one cell per cell. So each estimate outside the solid, up to a cell
-// past the level, is divided by its own slope, taken from its six neighbours (lo and hi are the raw slices below
-// and above, or null). Along each axis the steeper side counts: across a thin sheet or the bottom of a crevice
-// the two sides cancel, while one side alone still knows. An estimate is never made shorter (a slope above one
-// is a jump in the estimate, as beside the deep inside of a solid, not a distance) and never more than
-// 1 / MESH_SLOPE_MIN times longer (where parts lie closer together than two cells no slope can be read).
-// Samples inside the solid keep their estimate; meshPoint brings them to the scale of the outside end.
-// One kind of sample outside keeps its plain estimate too: the one that sits beside a part thinner than a cell
-// (a spike such as the Mandelbrot set's needle, a thin sheet). No sample lies inside such a part, so it shows as a
-// pit in the estimates: lowest at this sample and rising clearly to both sides along some axis. A thin part is
-// only caught at all if the sample nearest to it counts as solid, which for a spike can be 0.7 of a cell away.
-// The plain estimate reads short, and that is exactly the margin that keeps thin parts in one piece.
+// Outside the solid the estimate reads short, by a factor that changes from place to place. A distance changes by
+// one cell per cell, so each estimate outside the solid, up to a cell past the level, is divided by its own slope,
+// taken from its six neighbours (lo and hi are the raw slices below and above, or null). Along each axis the
+// steeper side counts: across a thin sheet or the bottom of a crevice the two sides cancel. An estimate is never
+// made shorter (a slope above one is a jump, not a distance) and never more than 1 / MESH_SLOPE_MIN times longer.
+// Samples inside the solid keep their estimate; meshPoint brings them to the scale of the outside end. So does a
+// sample beside a part thinner than a cell, which shows as a pit in the estimates (meshPit): the plain estimate
+// reads short, and that margin keeps thin parts in one piece.
 const meshPit = (v, p, q) => p >= v && q >= v && p + q - 2 * v >= 0.5 * v;   // false when a neighbour is missing
 function meshTrue(g, lo, mid, hi) {
   const n = g.n, d = new Float32Array(n * n), f = new Float32Array(n * n).fill(1), far = g.level + g.h, one = g.h, least = MESH_SLOPE_MIN * g.h, n4 = 4 * n;
@@ -222,23 +175,16 @@ function meshTrue(g, lo, mid, hi) {
   }
   return { d, f, own: d.slice() };   // own: the distances as the solid alone gives them, before meshField applies the picture's limits
 }
-// ---------- a solid made by a trap: its thinnest layers are left out
-// A trap that is the solid wraps the set in layer upon layer, each thinner than the last, without end: hairs and
-// sheets far thinner than a cell. The picture leaves out every layer thinner than two to three of its pixels
-// (TRAP_THIN in 30-shaders.js). A volume sample is asked without a pixel size and holds them all. With a surface
-// offset every sample within that distance of a hair counted as solid, so the hairs grew into fins and flakes all
-// over the model, which the picture does not show.
-// So the model of such a solid is built from its parts that are at least g.thinT thick (meshBuild sets it: what
-// the picture still draws, between MESH_THIN cells and one cell), and the offset grows only those.
-// Inside a layer of a trap and right beside it the estimate is a distance to first order. So three samples in a
-// row along an axis, v in the middle between p and r, tell how thick the part is that lies at the middle one or
-// between it and its lower neighbour: |p - r| - 2v. (Across a wall the estimate falls to the wall and rises again
-// behind it, both at the same rate, and that rate is what one step along the axis is worth.)
-// meshCore finds the samples inside thick parts: a sample inside the solid that has, along each axis, either a
-// neighbour inside the solid or a part at least g.thinT thick around it. It returns for each such sample of the
-// slice `mid` the radius of a ball around it that the solid reaches: its depth, or the way to the far face of a
-// wall where that is known (at most g.thin cells and a half), and -1 for every other sample. lo and hi are the raw
-// slices below and above, or null.
+// A solid made by a trap: its thinnest layers are left out
+// A trap that is the solid wraps the set in layer upon layer, each thinner than the last, without end. The picture
+// leaves out every layer thinner than two to three of its pixels (TRAP_THIN in 30-shaders.js); a volume sample
+// holds them all, and a surface offset would grow them into fins and flakes. So the model is built from the parts
+// at least g.thinT thick (meshBuild sets it: between MESH_THIN cells and one cell), and the offset grows only those.
+// Beside a layer of a trap the estimate is a distance to first order, so three samples in a row along an axis, v in
+// the middle between p and r, tell how thick the part at the middle one is: |p - r| - 2v.
+// meshCore returns, for each sample of the slice `mid` inside a thick part (inside the solid and with, along each
+// axis, a neighbour inside the solid or a part at least g.thinT thick around it), the radius of a ball around it
+// that the solid reaches, at most g.thin cells and a half, and -1 for every other sample.
 function meshCore(g, lo, mid, hi) {
   const n = g.n, n4 = 4 * n, deep = new Float32Array(n * n).fill(-1), most = (g.thin + 0.5) * g.h, thin = g.thinT;
   for (let j = 1; j < n - 1; j++) {
@@ -259,21 +205,17 @@ function meshCore(g, lo, mid, hi) {
   return deep;
 }
 // Two samples outside the solid, side by side along an axis, with a thick part between them that no sample fell
-// into: v is this sample, a its neighbour across the part, b the neighbour on its own far side, c the sample
-// beyond a. The estimate rises away from the part on both far sides (b above v, c above a) by what one step is
-// worth, and what the two estimates leave of that step is the part. (A hair leaves nothing. Beside a thick part
-// with a hair in front of it the estimate does not rise on the far side of a, which lies toward the solid.)
+// into: v is this sample, a its neighbour across the part, b the neighbour on its own far side, c the sample beyond
+// a. The estimate rises away from the part on both far sides (b above v, c above a) by what one step is worth, and
+// what the two estimates leave of that step is the part. A hair leaves nothing.
 const meshWall = (v, a, b, c, thin, h) => a > 0 && b - v > 0 && c - a > 0 && b - v < 1.25 * h && Math.min(b - v, c - a) - v - a >= thin;
-// The distances of slice `at` (T, from meshTrue) with the thin layers taken out. deep holds what meshCore found,
-// by slice number, for the slices from g.thin below to g.thin above; raw holds the raw slices from two below to
-// two above (nothing where there is no slice).
-// A sample inside a thick part tells every sample around it that the solid is no further than its distance to
-// that sample less the radius meshCore gave. The least of these, u, is a distance to the thick parts alone, a
-// little too long at most. An estimate that reads more than MESH_THIN_TOL cells shorter than u is the doing of a
-// thin layer close by, and u takes its place; with no thick part within reach the sample is put outside. A sample
-// right beside a thick wall that no sample fell into (meshWall) keeps its estimate.
-// Only samples that count as solid at the level, or lie within a cell of it, are looked at: the others are not
-// used for the surface. Returns the samples whose estimate was changed and that now lie outside.
+// The distances of slice `at` (T, from meshTrue) with the thin layers taken out. deep holds what meshCore found, by
+// slice number, from g.thin slices below to g.thin above; raw holds the raw slices from two below to two above.
+// A sample inside a thick part tells every sample around it that the solid is no further than its distance to that
+// sample less the radius meshCore gave. The least of these, u, is a distance to the thick parts alone. An estimate
+// that reads more than MESH_THIN_TOL cells shorter than u comes from a thin layer, and u takes its place; with no
+// thick part within reach the sample is put outside. A sample right beside a thick wall that no sample fell into
+// (meshWall) keeps its estimate. Returns the samples whose estimate was changed and that now lie outside.
 function meshThin(g, T, deep, raw, at) {
   const n = g.n, n4 = 4 * n, R = g.thin, d = T.d, L = g.level, h = g.h, far = L + h, tol = MESH_THIN_TOL * h, thin = g.thinT, drop = new Uint8Array(n * n);
   const mine = deep[at], mid = raw[at], z1 = raw[at - 1], z2 = raw[at - 2], z3 = raw[at + 1], z4 = raw[at + 2];
@@ -346,16 +288,15 @@ async function meshLocate(job) {
   return box;
 }
 
-// ---------- marching cubes, one pair of slices at a time
+// Marching cubes, one pair of slices at a time
 function meshTables() {
   if (MESH.tri) return;
   MESH.tri = new Int8Array(256 * 16).fill(-1);
   MESH_TRI_TABLE.forEach((row, c) => { for (let i = 0; i < row.length; i++) MESH.tri[16 * c + i] = parseInt(row[i], 16); });
 }
 // A slice ready for marching: which samples are inside (m), how many in each row (rows), the distances (d), what
-// meshTrue multiplied each estimate by (f), the colours (c).
-// Samples on the outer wall of the grid are counted as outside whatever they hold, which closes the mesh where the
-// solid runs into the wall (wall marks those samples).
+// meshTrue multiplied each estimate by (f), the colours (c). Samples on the outer wall of the grid count as outside
+// whatever they hold, which closes the mesh where the solid runs into the wall (wall marks those samples).
 // For the colours of a cut face (see meshPoint): own holds the distances before the picture's limits were applied,
 // zc is the height of the slice above the cut plane (minus infinity when the solid is not cut), and face says that
 // every sample inside the solid holds the colour of the cut face in this slice (see MESH_FACE_BELOW).
@@ -379,8 +320,7 @@ function meshSlice(g, d, c, end, f, own, zc, drop) {
 const meshHoldsFace = (g, s, q) => { const e = s.c[4 * q + 3]; return e <= 0 && (s.face || e < -MESH_FACE_DEEP * g.h); };
 // The sample a point of a cut face takes its colour from, as [the colours of its slice, its place in them]: the
 // inside end of the point's grid edge if it holds the face's colour, else the outside end, else the nearest sample
-// that does, within g.reach cells in the two slices (the band by which the model is fatter than the solid is as
-// wide as the surface offset, and no sample in it lies inside the solid). null when there is none.
+// that does, within g.reach cells in the two slices. null when there is none.
 function meshFaceFrom(g, si, qi, so, qo) {
   if (meshHoldsFace(g, si, qi)) return [si.c, 4 * qi];
   if (meshHoldsFace(g, so, qo)) return [so.c, 4 * qo];
@@ -405,34 +345,32 @@ function meshPoint(g, s0, s1, q0, q1, bi, bj, bk, axis) {
     pos.set(g.pos); col.set(g.col); g.pos = pos; g.col = col;
   }
   const L = g.level, h = g.h, d0 = s0.d[q0], d1 = s1.d[q1], in0 = d0 <= L;
-  // An inside end that lies in the solid itself still holds the plain estimate, which reads short just as the
-  // outside end's did. Multiplied by what the outside end was multiplied by, the two are on one scale again,
-  // and the place where the estimate passes zero stays where the plain estimates put it: at offset 0 the
-  // surface is not moved by any of this.
+  // An inside end that lies in the solid itself holds the plain estimate, which reads short as the outside end's
+  // did. Multiplied by what the outside end was multiplied by, the two are on one scale, and the place where the
+  // estimate passes zero stays where the plain estimates put it: at offset 0 the surface is not moved.
   let din = in0 ? d0 : d1;
   if (din < 0) din *= in0 ? s1.f[q1] : s0.f[q0];
-  // s: share of the way from the inside end to the outside end. Close to the surface the two values are
-  // distances, and the level lies between them in proportion (neither is trusted for more than one cell).
-  // Where the inside end holds a plain zero nothing is known there, and the outside end alone says how far
-  // the surface is. The point never sits on a sample itself, so no triangle ends up without area.
+  // s: share of the way from the inside end to the outside end. The level lies between the two distances in
+  // proportion (neither is trusted for more than one cell). Where the inside end holds a plain zero, the outside
+  // end alone says how far the surface is. The point never sits on a sample, so no triangle ends up without area.
   const a = Math.min((in0 ? d1 : d0) - L, h), b = Math.min(L - din, h);
   let s = din === 0 ? 1 - a / h : b / (a + b);
   s = s > 0.02 ? (s < 0.98 ? s : 0.98) : 0.02;
   const t = in0 ? s : 1 - s, v = g.nv++, p = 3 * v;
   g.pos[p] = bi + (axis === 0 ? t : 0); g.pos[p + 1] = bj + (axis === 1 ? t : 0); g.pos[p + 2] = bk + (axis === 2 ? t : 0);
   // The colour lies between the colours of the two ends, by the point's place on the edge, like the position.
-  // Both ends hold the colour of the surface nearest to them, with two exceptions.
+  // Both ends hold the colour of the surface nearest to them, with three exceptions.
   // 1. A point of a cut face. The model is cut open there, by the cut plane or by the wall of the grid, and the
-  //    picture shows such a face in one plain colour (or painted like the inside of the 2D view), right up to its
-  //    edge. So the point takes the colour of a sample that holds the face's colour (meshFaceFrom), or failing
-  //    that the colour the face had at the point before. A point belongs to the cut plane's face when its edge
-  //    stands upright, the outside end lies above the face, and on the way up the cut plane is reached before the
-  //    solid's own surface is: where the plane's distance passes the level, the solid's own is still within it.
-  //    Round the rim of the face, where the solid is thinner than a cell, the two samples cannot tell which comes
-  //    first, and the point ends up a little under the face: within MESH_FACE_NEAR cells it counts as the face too.
-  //    (Without this the face kept a rim of surface colours two to four cells wide.)
+  //    picture shows such a face in one plain colour (or painted like the inside of the 2D view). So the point
+  //    takes the colour of a sample that holds the face's colour (meshFaceFrom), or failing that the colour the
+  //    face had at the point before. A point belongs to the cut plane's face when its edge stands upright, the
+  //    outside end lies above the face, and on the way up the cut plane is reached before the solid's own surface
+  //    is, or the point lies within MESH_FACE_NEAR cells under the face (round the rim, where the solid is thinner
+  //    than a cell, the two samples cannot tell which comes first).
   // 2. An inside end that holds the cut face's colour says nothing about the surface, so there the outside end
   //    alone gives the colour.
+  // 3. An outside end that meshThin put outside holds the colour of a layer the model leaves out, so there the
+  //    inside end alone gives the colour.
   const si = in0 ? s0 : s1, so = in0 ? s1 : s0, ei = in0 ? q0 : q1, eo = in0 ? q1 : q0, cin = si.c, cout = so.c, qi = 4 * ei, qo = 4 * eo;
   let w = s, from = null, cut = so.wall[eo] === 1;
   if (!cut && axis === 2 && so.zc > L) {
@@ -442,8 +380,8 @@ function meshPoint(g, s0, s1, q0, q1, bi, bj, bk, axis) {
   if (cut) {
     from = meshFaceFrom(g, si, ei, so, eo);
     if (from) { const c = g.faceCol || (g.faceCol = [0, 0, 0]); for (let k = 0; k < 3; k++) c[k] = from[0][from[1] + k]; }
-  } else if (MESH_FACE_RULE2 && meshHoldsFace(g, si, ei) && !meshHoldsFace(g, so, eo)) w = 1;
-  else if (so.drop && so.drop[eo]) w = 0;   // 3. an outside end that meshThin put outside holds the colour of a layer the model leaves out
+  } else if (meshHoldsFace(g, si, ei) && !meshHoldsFace(g, so, eo)) w = 1;
+  else if (so.drop && so.drop[eo]) w = 0;   // exception 3
   for (let k = 0; k < 3; k++) {
     const lin = from ? from[0][from[1] + k] : cut && g.faceCol ? g.faceCol[k] : cin[qi + k] * (1 - w) + cout[qo + k] * w;
     g.col[p + k] = lin > 0 ? Math.round(255 * Math.pow(Math.min(lin, 1), 1 / 2.2)) : 0;   // files hold display values, not linear light
@@ -480,21 +418,20 @@ async function meshBuild(job, box) {
   const cells = ext.map(e => Math.min(N, Math.ceil(e / h - 1e-9) + 2 * pad));
   const n = Math.max(cells[0], cells[1]) + 1, nz = cells[2] + 1, side = n * h;
   const cx = (box[0] + box[1]) / 2, cy = (box[2] + box[3]) / 2, z0 = (box[4] + box[5]) / 2 - cells[2] * h / 2;
-  // thin: for a solid made by a trap, how far (in cells, along each axis) meshThin looks for a part thick enough to keep.
-  // A sample within the offset of such a part has a sample inside it no more than that many cells and one away.
+  // thin: for a solid made by a trap, how far (in cells, along each axis) meshThin looks for a part thick enough to
+  // keep. A sample within the offset of such a part has a sample inside it no more than that many cells and one away.
   const R0 = job.trap ? Math.floor(o.offset) + 1 : 0;
   const g = { n, nz, h, level: o.offset * h, reach: Math.min(8, pad), thin: R0, thinT: MESH_THIN * h, faceCol: null, nv: 0, ni: 0, ev: new Int32Array(12),
-    org: [cx - (n - 1) * h / 2, cy - (n - 1) * h / 2, z0], pos: new Float32Array(3 << 14), col: new Uint8Array(3 << 14), idx: new Uint32Array(3 << 15) };
+    pos: new Float32Array(3 << 14), col: new Uint8Array(3 << 14), idx: new Uint32Array(3 << 15) };
   let xA = new Int32Array(n * n).fill(-1), yA = new Int32Array(n * n).fill(-1), xB = new Int32Array(n * n), yB = new Int32Array(n * n);
   const zE = new Int32Array(n * n), began = performance.now();
-  // A slice is turned into distances once the slice above it has been read (meshTrue looks at both neighbours),
-  // so the marching runs one slice behind the reading, and three raw slices are held. For a solid made by a trap
-  // the reading runs g.thin slices further ahead: a slice can be thinned once the thick parts of the g.thin slices
-  // above it are known, and those of a slice are known once the slice above that one has been read.
-  if (R0 && job.snap) {
+  // meshTrue looks at both neighbours of a slice, so the marching runs one slice behind the reading, and three raw
+  // slices are held. For a solid made by a trap the reading runs g.thin slices further ahead: a slice can be thinned
+  // once the thick parts of the g.thin slices above it are known.
+  if (R0) {
     // the size of a pixel of the picture where the solid is (as the picture works it out: gPix in 30-shaders.js)
-    const b = job.snap.basis, st = job.snap.stage, v = job.snap.S && job.snap.S.view;
-    const px = b && st && v ? 2 * v.fov * Math.hypot(b.pos[0] - cx, b.pos[1] - cy, b.pos[2] - (box[4] + box[5]) / 2) / st.ph : NaN;
+    const b = job.snap.basis, v = job.snap.S.view;
+    const px = 2 * v.fov * Math.hypot(b.pos[0] - cx, b.pos[1] - cy, b.pos[2] - (box[4] + box[5]) / 2) / job.snap.stage.ph;
     if (px > 0 && isFinite(px)) g.thinT = h * clamp(MESH_THIN_PX * px / h, MESH_THIN, 1);
   }
   const R = g.thin, look = R + 1, raw = [], deep = [];   // raw slices and what meshCore found, by slice number, let go once nothing needs them
@@ -526,16 +463,14 @@ async function meshBuild(job, box) {
   return g;
 }
 
-// ---------- the finished mesh: loose pieces, measurements
+// The finished mesh: loose pieces, measurements
 // Count the pieces and, with `keep`, drop all but the largest. Two points belong to one piece when a triangle
-// joins them (union-find over the points).
-// The largest piece is the one with the most triangles among the pieces that enclose a volume. A piece whose
-// volume comes out negative faces inward: it is the wall of a hollow inside another piece and no body by itself.
-// (Chosen by its triangles alone, the inner wall of a hollow trap solid was kept at offset 0: a ball turned inside
-// out, with a negative volume in the readme.)
-// Returns { pieces, best, seen, seenTris, inward }: the number of pieces; the triangles of the largest; how many of
-// the other pieces can be seen from outside, and their triangles (a piece inside the largest one cannot, and nor
-// can the wall of a hollow); inward is true when no piece encloses a volume, which a closed mesh never gives.
+// joins them (union-find over the points). The largest piece is the one with the most triangles among the pieces
+// that enclose a volume, or among all pieces when none does. A piece whose volume comes out negative faces inward:
+// it is the wall of a hollow inside another piece and no body by itself.
+// Returns { pieces, best, seen, seenTris }: the number of pieces; the triangles of the largest; how many of the
+// other pieces can be seen from outside, and their triangles (a piece inside the largest one cannot, and nor can
+// the wall of a hollow).
 async function meshPieces(job, g, keep) {
   const nv = g.nv, ni = g.ni, idx = g.idx, P = g.pos, par = new Int32Array(nv), count = new Int32Array(nv), vol = new Float64Array(nv), CHUNK = 3 << 16;
   for (let i = 0; i < nv; i++) par[i] = i;
@@ -563,8 +498,8 @@ async function meshPieces(job, g, keep) {
     if (most < 0 || count[v] > count[most]) most = v;
     if (vol[v] > 0 && (best < 0 || count[v] > count[best])) best = v;
   }
-  const inward = best < 0, out = { pieces, best: 0, seen: 0, seenTris: 0, inward };
-  if (inward) best = most;
+  const out = { pieces, best: 0, seen: 0, seenTris: 0 };
+  if (best < 0) best = most;
   out.best = count[best];
   if (pieces > 1) {
     // Which of the other pieces lie inside the largest one? One point of each (the middle of one of its triangles)
@@ -640,7 +575,7 @@ async function meshMeasure(job, g, mm) {
   return { s, o, size: [0, 1, 2].map(k => (hi[k] - lo[k]) * s), volume: vol / 6 * s * s * s, unit: s / g.h };
 }
 
-// ---------- the three kinds of file. Each returns its bytes as a list of pieces.
+// The three kinds of file. Each returns its bytes as a list of pieces.
 // STL, binary: an 80-byte heading, the count, then 50 bytes a triangle (its normal, three corners, two spare bytes).
 async function meshStl(job, g, T, f0, f1) {
   const nt = g.ni / 3, dv = new DataView(new ArrayBuffer(84 + 50 * nt)), P = g.pos, I = g.idx, s = T.s, q = new Float64Array(9);
@@ -715,7 +650,7 @@ async function meshObj(job, g, T, f0, f1, title) {
   return [head, ...w.done()];
 }
 
-// ---------- zip
+// Zip
 function meshCrc(bytes, crc) {   // CRC-32 of `bytes`, carrying on from the CRC of what came before (0 at the start)
   if (!MESH.crc) {
     MESH.crc = new Uint32Array(256);
@@ -726,7 +661,6 @@ function meshCrc(bytes, crc) {   // CRC-32 of `bytes`, carrying on from the CRC 
   for (let i = 0; i < bytes.length; i++) c = T[(c ^ bytes[i]) & 255] ^ (c >>> 8);
   return ~c >>> 0;
 }
-const meshParts = data => (Array.isArray(data) ? data : [typeof data === 'string' ? new TextEncoder().encode(data) : data]);
 // entries: [{ name, parts: [Uint8Array], crc }]. Every entry is stored as it is, without compression.
 function meshZipBlob(entries) {
   const now = new Date(), time = now.getHours() << 11 | now.getMinutes() << 5 | now.getSeconds() >> 1;
@@ -753,11 +687,7 @@ function meshZipBlob(entries) {
   end.setUint32(12, dirSize, true); end.setUint32(16, at, true);
   return new Blob([...out, ...dir, new Uint8Array(end.buffer)], { type: 'application/zip' });
 }
-// A plain zip of files = [{ name, data }], data a Uint8Array or a string: stored entries with correct CRC-32.
-function zipStore(files) {
-  return meshZipBlob(files.map(f => { const parts = meshParts(f.data); return { name: f.name, parts, crc: parts.reduce((c, p) => meshCrc(p, c), 0) }; }));
-}
-// The same for the model's own files, which can be hundreds of megabytes: the CRC is worked out a few megabytes a turn.
+// The zip of the model's files, which can be hundreds of megabytes: the CRC is worked out a few megabytes a turn.
 async function meshZip(job, files) {
   const total = files.reduce((a, f) => a + f.size, 0);
   let seen = 0;
@@ -774,12 +704,11 @@ async function meshZip(job, files) {
   return meshZipBlob(files);
 }
 
-// ---------- the job
+// The job
 const meshCount = n => Math.round(n).toLocaleString('en-US');
 const meshMm = v => (v >= 99.95 ? v.toFixed(0) : v.toFixed(1));
 // A share of the surface, in words. It is counted in triangles, which are all about the same size.
 const meshShare = f => (f < 0.01 ? 'less than 1%' : f > 0.99 ? 'more than 99%' : `about ${Math.round(100 * f)}%`);
-function meshBytes(n) { return n >= 1048576 ? (n / 1048576).toFixed(n >= 10485760 ? 0 : 1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' kB'; }
 function meshReadme(job, info) {
   const o = job.opt, f = info.files, line = (name, text) => '  ' + name.padEnd(info.base.length + 6) + text;
   return [
@@ -832,8 +761,7 @@ function meshReadme(job, info) {
 // to tell two models apart and to make one again.
 const MESH_TRAPS = ['a point', 'the three axis lines', 'a line along the ', 'a ray toward ', 'the three coordinate planes', 'a sphere shell', 'a ring in the xy-plane'];
 function meshWhat() {
-  const k = S.k, c = S.colour || {}, tidy = t => String(t).replace(/<[^>]*>/g, ''), vec = v => `(${v.map(dialFmt).join(', ')})`;
-  const num = v => typeof v === 'number' && isFinite(v);
+  const k = S.k, c = S.colour, tidy = t => String(t).replace(/<[^>]*>/g, ''), vec = v => `(${v.map(dialFmt).join(', ')})`;
   // A trap that is the solid, or is added to it, shapes the model (the trap numbers are those of TRAP in 25-colour.js;
   // the last one, three tones, has no shape and makes no solid).
   let trap = '';
@@ -842,25 +770,25 @@ function meshWhat() {
     if (c.trap === 2) shape += (['x', 'y', 'z'][c.axis] || 'x') + '-axis';
     if (c.trap === 3) shape += ['+x', '-x', '+y', '-y', '+z', '-z'][c.ray] || '+x';
     const parts = [shape];
-    if (c.trap !== 0 && num(c.radius)) parts.push(`radius ${dialFmt(c.radius)}`);
-    if ([c.tx, c.ty, c.tz].every(num)) parts.push(`centre ${vec([c.tx, c.ty, c.tz])}`);
-    if (num(c.thick)) parts.push(`thickness ${dialFmt(c.thick)}`);
-    if (num(c.skip)) parts.push(`${c.skip} orbit ${c.skip === 1 ? 'step' : 'steps'} skipped`);
+    if (c.trap !== 0) parts.push(`radius ${dialFmt(c.radius)}`);
+    parts.push(`centre ${vec([c.tx, c.ty, c.tz])}`);
+    parts.push(`thickness ${dialFmt(c.thick)}`);
+    parts.push(`${c.skip} orbit ${c.skip === 1 ? 'step' : 'steps'} skipped`);
     trap = `. The trap ${c.solid > 1.5 ? 'is added to the solid' : 'is the solid'}: ${parts.join(', ')}`;
   }
-  // the second Kleinian group (32-balls.js): its own numbers (the second sphere is named when it is not as large as the first)
+  // the second Kleinian group (32-balls.js): the second sphere is named when it is not as large as the first
   if (S.mode === 'k' && k.group === 1) {
-    const rho = typeof ballsRho === 'function' ? ballsRho(k.brho) : 1;
+    const rho = ballsRho(k.brho);
     return `Balls on balls (slides by whole numbers and sphere inversions), neighbours ${dialFmt(+(100 / (2 * k.bt - 1)).toFixed(2))} % of the middle ball, ` +
       (rho < 1 ? `second sphere ${dialFmt(+(100 * rho).toFixed(2))} % of the first, ` : '') +
-      `${['square grid', 'honeycomb grid', 'a line only'][k.bgrid] || 'square grid'}, depth of search ${k.bit}`;   // (no trap solid for this group)
+      `${['square grid', 'honeycomb grid', 'a line only'][k.bgrid] || 'square grid'}, depth of search ${k.bit}`;   // no trap solid for this group
   }
   if (S.mode === 'k') {
     return `the Kleinian group with mu = ${vec([k.mx, k.my, k.mz])}, L = ${dialFmt(k.L)}, ${k.three ? 'with' : 'without'} the third map, ` +
       `turned out through the sphere of radius ${dialFmt(k.invR)} around ${vec([k.cx, k.cy, k.cz])}, depth of search ${k.iter}${trap}`;
   }
   const set = S.mode === 'j' ? `the Julia set of c = ${vec(S.c)}` : S.mosaic ? `the Julia mosaic of the Mandelbrot set (cells ${dialFmt(S.mosaicCell)} wide)` : 'the Mandelbrot set';
-  const mods = ['|x|', '|y|', '|z|'].filter((m, i) => S.abs && S.abs[i]).concat(['flip y', 'flip z'].filter((m, i) => S.flip && S.flip[i]));
+  const mods = ['|x|', '|y|', '|z|'].filter((m, i) => S.abs[i]).concat(['flip y', 'flip z'].filter((m, i) => S.flip[i]));
   return `${set} for ${S.eq}, approach "${tidy(ap().name)}", power ${dialFmt(S.n)}, ${S.iter} iterations${mods.length ? `, with the ${mods.length > 1 ? 'modifiers' : 'modifier'} ${mods.join(', ')}` : ''}${trap}`;
 }
 async function meshRun(job) {
@@ -871,9 +799,8 @@ async function meshRun(job) {
   if (!g.ni) throw meshStop('empty');
   const found = await meshPieces(job, g, o.largest), pieces = found.pieces;
   const nt = g.ni / 3, T = await meshMeasure(job, g, o.mm);
-  // kept: the share the largest piece holds of the surface that can be seen from outside, counted in triangles.
-  // Pieces inside the largest one, such as the inner layers of a hollow solid, are not counted: leaving them out
-  // takes nothing from the model's looks (found.seen counts the other pieces that can be seen).
+  // kept: the share the largest piece holds of the surface that can be seen from outside, counted in triangles
+  // (pieces inside the largest one, such as the inner layers of a hollow solid, are not counted).
   // part: the largest piece is clearly not the whole of what the picture shows, and it alone was kept.
   const kept = found.best / (found.best + found.seenTris), part = o.largest && kept < MESH_KEPT_SHARE, inward = !(T.volume > 0);
   if (84 * 3 + nt * ((o.stl ? 50 : 0) + (o.obj ? 24 : 0) + (o.ply ? 13 : 0)) + g.nv * ((o.obj ? 48 : 0) + (o.ply ? 15 : 0)) > MESH_MAX_BYTES) throw meshStop('bytes');
@@ -884,23 +811,17 @@ async function meshRun(job) {
     const parts = kind === 'stl' ? await meshStl(job, g, T, f0, f1) : kind === 'ply' ? await meshPly(job, g, T, f0, f1) : await meshObj(job, g, T, f0, f1, job.what);
     files.push({ name: `${base}.${kind}`, parts, size: parts.reduce((a, p) => a + p.length, 0) });
   }
-  const info = { base, files: { stl: o.stl, obj: o.obj, ply: o.ply }, size: T.size, volume: T.volume, unit: T.unit, cell: T.s, tris: nt, points: g.nv, pieces, kept, part, seen: found.seen, inward };
+  const info = { base, files: { stl: o.stl, obj: o.obj, ply: o.ply }, size: T.size, volume: T.volume, unit: T.unit, cell: T.s, tris: nt, points: g.nv, pieces, kept, seen: found.seen, inward };
   const readme = new TextEncoder().encode(meshReadme(job, info));
   const blob = await meshZip(job, [...files, { name: 'readme.txt', parts: [readme], size: readme.length }]);
-  if (job.test) job.test.mesh = { pos: g.pos.subarray(0, 3 * g.nv), col: g.col.subarray(0, 3 * g.nv), idx: g.idx.subarray(0, g.ni), h: g.h, n: g.n, nz: g.nz, org: g.org, box, ...info };
   const facts = [['Triangles', meshCount(nt)], ['Points', meshCount(g.nv)], ['Size', info.size.map(meshMm).join(' × ') + ' mm'],
     ['Pieces', !o.largest ? meshCount(pieces) : pieces > 1 ? `The largest of ${meshCount(pieces)}` + (found.seen ? `, with ${meshShare(kept)} of the surface that can be seen` : pieces > 2 ? '. The others lie inside it.' : '. The other lies inside it.') : '1'],
-    ...files.map(f => [f.name, meshBytes(f.size)]), ['Zip to save', meshBytes(blob.size)]];
+    ...files.map(f => [f.name, fileBytes(f.size)]), ['Zip to save', fileBytes(blob.size)]];
   // What the user should know about this model before saving it: each a plain sentence, shown together.
   // A solid finer than the grid (a negative power: sheets thinner than a cell of any grid on offer) cannot be made
-  // to match its picture by any setting. Measured on the power -2 picture at 128, 256 and 512 cells with offsets
-  // 0.5, 1 and 1.5 (notes/r9-mesh.md): with every piece kept, 93 to 99% of the picture's outline is covered and
-  // the shapes of the picture are there from 256 cells on, together with outer shells that the picture draws only
-  // in part; the largest piece alone lacks 16 to 82% of the picture, more of it at every higher resolution; a
-  // larger offset joins more pieces but thickens the sheets, and the outlines then agree less, not more. So the
-  // warning says what does help, in the order that helps: the tick box first, more cells only after that.
-  // Nothing is said about a model that follows its picture: one whose largest piece holds most of what can be seen,
-  // however many pieces lie inside it (a hollow trap solid has hundreds of inner layers that nobody sees).
+  // to match its picture by any setting, so the warning says what does help, in the order that helps: the tick box
+  // first, more cells only after that. Nothing is said about a model whose largest piece holds most of what can be
+  // seen, however many pieces lie inside it.
   const warn = [], fine = found.seen + 1 >= MESH_MANY_PIECES && kept < MESH_KEPT_SHARE, more = o.cells < 256 ? '256 or 512 cells' : o.cells < 512 ? '512 cells' : '';
   if (inward) warn.push('This surface faces inward, like the wall of a hollow, so a program for 3D printing will not take it for a body.' + (o.largest ? ' Untick "Keep only the largest piece" and start again.' : ''));
   else if (fine && part) {
@@ -915,18 +836,16 @@ async function meshRun(job) {
 }
 async function meshStart() {
   if (MESH.job || MESH.result) return;
-  const o = { ...MESH.opt }, test = window.squaringLabMeshTest || null, field = test && test.field;
+  const o = { ...MESH.opt };
   if (!o.stl && !o.obj && !o.ply) { meshSay(MESH_WORDS.kinds); return; }
-  if (!field && (typeof takeSnapshot !== 'function' || typeof sampleSlice !== 'function')) { meshSay(MESH_WORDS.none); return; }
-  if (test && test.cells) o.cells = test.cells;
   // What the model needs to know about the picture is read here, in the same moment as the snapshot is taken.
-  const job = MESH.job = { opt: o, test, cancel: false, step: 'Starting', frac: 0, left: 0, last: performance.now(), snap: null,
-    bound: S.view.bound, cutOn: S.cutOn, cut: S.cut, kind: field ? 'test-' + field : MESH_NAMES[S.mode] || 'model',
-    // the solid is made by a trap, alone or together with the set (the renderer's own test: colProgramNeeds in 25-colour.js)
-    trap: !field && typeof colProgramNeeds === 'function' && colProgramNeeds().solid ? 1 : 0,
-    what: field ? `the built-in test field "${field}"` : meshWhat() };
+  const job = MESH.job = { opt: o, cancel: false, step: 'Starting', frac: 0, left: 0, last: performance.now(), snap: null,
+    bound: S.view.bound, cutOn: S.cutOn, cut: S.cut, kind: MODE_NAMES[S.mode] || 'model',
+    // the solid is made by a trap, alone or together with the set (the renderer's own test: colProgramNeeds)
+    trap: colProgramNeeds().solid ? 1 : 0,
+    what: meshWhat() };
   job.sample = async (cx, cy, side, z, n) => {
-    const raw = await (field ? meshTestSlice(field, cx, cy, side, z, n) : sampleSlice(job.snap, cx, cy, side, z, n));
+    const raw = await sampleSlice(job.snap, cx, cy, side, z, n);
     if (job.cancel) throw meshStop('cancel');
     if (!raw) throw meshStop('sample');
     return raw;
@@ -939,32 +858,30 @@ async function meshStart() {
     if (job.cancel) throw meshStop('cancel');
   };
   // The browser can take the page's graphics away at any moment (and gives them back later). A job that was
-  // reading the picture then cannot go on, and the reason is not that the picture was still being drawn.
-  const canvas = document.getElementById('view'), onLost = () => { job.lost = true; };
-  if (canvas && !field) canvas.addEventListener('webglcontextlost', onLost);
+  // reading the picture then cannot go on.
+  const onLost = () => { job.lost = true; };
+  canvas.addEventListener('webglcontextlost', onLost);
   meshSay(''); meshShow(true);
   try {
-    if (!field) { job.snap = takeSnapshot(); await meshPrepare(job); }
+    job.snap = takeSnapshot(); await meshPrepare(job);
     MESH.result = await meshRun(job);
     meshSay('The model is ready.');
   } catch (err) {
     let code = err && err.mesh;
-    if (!field && (code === 'sample' || !code) && (job.lost || meshGraphicsLost(canvas))) code = 'lost';
+    if ((code === 'sample' || !code) && (job.lost || meshGraphicsLost())) code = 'lost';
     else if (!code) console.error('The 3D model could not be built: ' + (err && err.stack || err));
     meshSay(MESH_WORDS[code] || MESH_WORDS.failed);
   } finally {
-    if (canvas) canvas.removeEventListener('webglcontextlost', onLost);
-    if (job.snap && typeof releaseSnapshot === 'function') { try { releaseSnapshot(job.snap); } catch (err) { console.error(err); } }
+    canvas.removeEventListener('webglcontextlost', onLost);
+    releaseSnapshot(job.snap);
     MESH.job = null;
     meshShow(true);
   }
 }
-// The first model of a formula waits while the browser prepares the program its samples are drawn with (the
-// renderer starts that program when a model first asks for it: snapProg in 40-render.js answers 'wait' until it is
-// there). That takes a few seconds, and until now the panel said "Starting. 0%." all the while. The progress line
-// says in plain words what is going on, for as long as it lasts, and counts the seconds once there are two.
+// The first model of a formula waits while the browser prepares the program its samples are drawn with (snapProg in
+// 40-render.js answers 'wait' until it is there). That takes a few seconds: the progress line says so in plain
+// words, and counts the seconds once there are two.
 async function meshPrepare(job) {
-  if (typeof snapProg !== 'function') return;
   const began = performance.now();
   job.plain = true;   // the line shows the step as it is, without a percentage
   try {
@@ -975,10 +892,10 @@ async function meshPrepare(job) {
     }
   } finally { job.plain = false; }
 }
-// True while the page's graphics are gone. Asked of the canvas itself, so it needs nothing from the renderer.
-function meshGraphicsLost(canvas) {
+// True while the page's graphics are gone, asked of the canvas itself.
+function meshGraphicsLost() {
   try {
-    const ctx = canvas && canvas.getContext('webgl2');
+    const ctx = canvas.getContext('webgl2');
     return !!ctx && ctx.isContextLost();
   } catch (err) { return false; }
 }
@@ -986,15 +903,14 @@ async function meshSave() {
   const r = MESH.result;
   if (!r || r.saving) return;
   r.saving = true;
-  let out = null;
-  // saveFile promises not to throw; if it ever does, the button must still work for the next press
-  try { out = await saveFile(r.name, r.blob); } catch (err) { console.error('Saving the model failed: ' + (err && err.stack || err)); } finally { r.saving = false; }
+  const out = await saveFile(r.name, r.blob);
+  r.saving = false;
   if (MESH.result !== r) return;
-  if (out && out.ok) meshSay(`Saved as ${r.name}. You can save it again, or discard it to make another model.`);
-  else meshSay(`${out && out.message || 'The file could not be saved.'} The model is still here${out && out.again === false ? '.' : ', so you can try again.'}`);
+  if (out.ok) meshSay(`Saved as ${r.name}. You can save it again, or discard it to make another model.`);
+  else meshSay(`${out.message} The model is still here${out.again ? ', so you can try again.' : '.'}`);
 }
 
-// ---------- the panel
+// The panel
 function meshSay(text) { const u = MESH.ui; if (u && u.msg.textContent !== text) u.msg.textContent = text; }
 function meshPaint() {   // the progress of the running job
   const u = MESH.ui, job = MESH.job;
@@ -1022,7 +938,7 @@ function meshShow(move) {
   if (lost) (job ? u.cancel : res ? u.save : u.start).focus();
 }
 function buildMeshPanel(host) {
-  host = typeof host === 'string' ? $(host) : host;
+  host = hostEl(host);
   if (!host || MESH.ui) return;
   const O = MESH.opt, grp = { group: 'mesh' };
   const make = (parent, tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; parent.appendChild(e); return e; };

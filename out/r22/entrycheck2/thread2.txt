@@ -1,6 +1,0 @@
-Pulled plane c = (-1.0, 0.0, 0.2): of 400000 random points stay 40 / 80 / 300 steps: 6943 / 6826 / 6780
-Pulled plane c = (-1.0, 0.0, 0.3): of 400000 random points stay 40 / 80 / 300 steps: 66 / 0 / 0
-Pulled plane c = (-1.0, 0.2, 0.0): of 400000 random points stay 40 / 80 / 300 steps: 6835 / 6768 / 6757
-Along once   c = (-1.0, 0.0, 0.2): of 400000 random points stay 40 / 80 / 300 steps: 0 / 0 / 0
-Along once   c = (-1.0, 0.0, 0.3): of 400000 random points stay 40 / 80 / 300 steps: 0 / 0 / 0
-Along once   c = (-1.0, 0.2, 0.0): of 400000 random points stay 40 / 80 / 300 steps: 7163 / 7155 / 7155

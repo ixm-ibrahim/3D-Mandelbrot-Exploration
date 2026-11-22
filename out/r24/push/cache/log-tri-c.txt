@@ -1,4 +1,0 @@
-tri    1/4       2d 1.061 | column: top 0.144, inside length 0.144, lowest escape 0.14800000000000002 | disc top 0.124 | neck / body: 0.011 / 0.076, 0.011 / 0.076, 0.011 / 0.110 (block 0.0081) | 63 s
-tri    in120     2d 0.920 | column: top 0.324, inside length 0.328, lowest escape 0.328 | disc top 0.320 |  | 64 s
-tri    in180     2d 0.844 | column: top 0.900, inside length 0.900, lowest escape None | disc top 0.900 |  | 66 s
-done tri 66 s

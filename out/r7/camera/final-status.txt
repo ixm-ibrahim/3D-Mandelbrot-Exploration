@@ -1,7 +1,0 @@
-smoke exit 0
-step 42 wrote out/smoke-23-expanded.png
-no console errors
-wrote phone.json, tab.json, solids.json for tag r7
-solids exit 0
-solids2 exit 0
-04:05

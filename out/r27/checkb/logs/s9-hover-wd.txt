@@ -1,9 +1,0 @@
-s9-hover  1400x950 dark  page dist/r27-checkb.html
-step 1 waited 2.0 s
-step 2 result: {"menuJustOpened": {"hidden": false, "first": "Sphere inversions, one planeAdd up sphere inversions, the way circle inversions add up to zⁿ in the plane.v² ="}, "mouseOnLastVisibleApproach": {"row": "classic", "hidden": false, "first": "Mandelbulb, classicMultiply the angle from the z-axis and the angle around it.vⁿ = |v|ⁿ · (sin T cos P, sin T "}, "mouseOnBallsRow": {"hidden": false, "first": "Mandelbulb, classicMultiply the angle from the z-axis and the angle around it.vⁿ = |v|ⁿ · (sin T cos P, sin T "}, "rowTitle": "Shows this object in the Kleinian view, where its dials are."}
-step 3 wrote out/r27/checkb/shots/s9-wd-hover-on-balls-row.png
-step 4 result: {"whileBallsOn_menuJustOpened": {"hidden": true, "first": ""}, "mouseOnApproach5": {"hidden": false, "first": "Wind, then squareWind each point round the x-axis three times (at power 2), then square it by the one-plane ru"}, "mouseOnBallsRow": {"hidden": false, "first": "Wind, then squareWind each point round the x-axis three times (at power 2), then square it by the one-plane ru"}}
-step 5 wrote out/r27/checkb/shots/s9-wd-hover-on-balls-row-while-on.png
-no console errors
-
-exit 0, 7.5 s

@@ -1,7 +1,0 @@
-subject cutm: cutOn true at z = 0, pitch 1.05
-  picture at rest after 1.4 s (ok)
-  cutm-128: 4.8 s, facts ['Triangles', '25,404', 'Points', '12,700', 'Size', '100 × 91.3 × 13.1 mm', 'Pieces', 'The largest of 9', 'mandelbrot-128.stl', '1.2 MB', 'mandelbrot-128.obj', '974 kB', 'mandelbrot-128.ply', '509 kB', 'Zip to save', '2.7 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-128.zip', 'size': 2790773, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 55 ms (584 turns, 1 over 50 ms, 0 over 100 ms)
-  cutm-128-off0: 0.5 s, facts ['Triangles', '22,988', 'Points', '11,496', 'Size', '100 × 95.6 × 13.3 mm', 'Pieces', '1', 'mandelbrot-128.stl', '1.1 MB', 'mandelbrot-128.obj', '875 kB', 'mandelbrot-128.ply', '461 kB', 'Zip to save', '2.4 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-128.zip', 'size': 2519473, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 30 ms (68 turns, 0 over 50 ms, 0 over 100 ms)
-  cutm-128-off2: 0.7 s, facts ['Triangles', '28,268', 'Points', '14,136', 'Size', '100 × 91.7 × 15.3 mm', 'Pieces', '1', 'mandelbrot-128.stl', '1.3 MB', 'mandelbrot-128.obj', '1.1 MB', 'mandelbrot-128.ply', '566 kB', 'Zip to save', '3.0 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-128.zip', 'size': 3114385, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 39 ms (79 turns, 0 over 50 ms, 0 over 100 ms)
-no console errors
-drive exit 0

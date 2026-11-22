@@ -1,3 +1,0 @@
-step 1 waited 2.3 s
-step 2 result: {"softfold":{"param":{"planes":2,"blend":0.25,"curve":0,"mix":0},"index":7,"group":"tried"},"axisbulb":{"param":{"k":1,"wob":0.2,"reach":45,"pinch":0},"index":8,"group":"tried"},"pillow":{"param":{"layout":0},"index":9,"group":"tried"},"order":"mercator:inversions fold:inversions lathe:quaternion tilt:quaternion bulb:angles classic:angles split:other softfold:tried axisbulb:tried pillow:tried","selects":["par-softfold-curve=SELECT Smooth step / Smoother step","par-softfold-mix=SELECT Blend along a great circle / Blend along a straight line / No blend: pinch the seams","par-pillow-layout=SELECT Creased, both planes exact / Smooth, slice not exact"],"ids":[]}
-no console errors

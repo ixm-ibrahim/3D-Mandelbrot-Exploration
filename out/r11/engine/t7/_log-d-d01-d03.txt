@@ -1,8 +1,0 @@
-step 1 waited 2.5 s
-step 2 result: "d01-solids4-rabbit-fine mode=j c=-0.122561,0.744862,0 dist=2.1600 q={\"res\":1.5,\"aa\":32,\"steps\":450,\"detail\":0.7,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
-step 4 waited 23.1 s
-step 4 wrote out/r11/engine/t7/d01-solids4-rabbit-fine.png
-step 5 result: "d03-words4-side26-exact mode=j c=-0.122561,0.744862,0 dist=2.6000 q={\"res\":1,\"aa\":12,\"steps\":260,\"detail\":1,\"stepk\":0.8,\"smooth\":1,\"normals\":\"sharp\",\"ao\":true,\"shadow\":true,\"de\":3} solid=0 flat=false"
-step 7 waited 5.3 s
-step 7 wrote out/r11/engine/t7/d03-words4-side26-exact.png
-no console errors

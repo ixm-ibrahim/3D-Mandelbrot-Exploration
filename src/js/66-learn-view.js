@@ -1,10 +1,9 @@
-// ---------- Learn: one step of z -> z^n + c, played move by move on the stage (round 13, the view).
-// The moves themselves come from 65-learn-steps.js (learnPlan, learnRun). This file draws them: a second canvas
-// on the stage (Canvas 2D, no WebGL), a transport under the stage, and a panel in the controls column.
-// Learn is a fourth choice under Show. S.mode keeps its value; S.learn = true stands beside it, and while it is
-// set touch() calls learnTouch() and leaves the solid alone (see 40-render.js).
-// The two points each space opens with (unused coordinates stay 0). On the line and on the page they are chosen
-// so that Next step can be pressed many times: the point wanders and then settles, it does not run away.
+// Learn: one step of z -> z^n + c for one point, played move by move on a 2D canvas over the stage, with a
+// transport under the stage and a panel in the controls column. The moves come from learnPlan (65-learn-steps.js).
+// Learn is a fourth choice under Show: S.mode keeps its value, and while S.learn is set touch() calls learnTouch().
+
+// The points each space opens with. On the line and on the page they are chosen so that Next step can be pressed
+// many times: the point wanders and then settles.
 const LEARN_V_START = {
   1: { z: [-1.2, 0, 0], c: [-0.6, 0, 0] },
   2: { z: [0.7, 0.4, 0], c: [-0.4, 0.3, 0] },
@@ -15,10 +14,11 @@ const LEARN_V_VIEWS = {            // one view per kind of picture: flat line, f
   h1: { yaw: -0.42, pitch: 0.82, zoom: 1 }, h2: { yaw: -0.5, pitch: 0.55, zoom: 1 }, s3: { yaw: -0.62, pitch: 0.4, zoom: 1 },
 };
 const LEARN_V_SECONDS = { slow: 3.6, normal: 2, fast: 1 };   // how long one move plays
+const LEARN_V_PIECES = 48;         // the straight pieces a move's path is drawn in
 const LEARN_V_NOTICE = {
   1: 'On a line a number leans one of two ways from the positive side: 0° or 180°. Doubling 180° gives 360°, which is 0° again. That is why a negative number times itself is positive. To get there the point swings through a direction the line does not have.',
   2: 'On a page every lean from 0° to 360° exists, and the swing fits inside the page. The hinge of the turn is the one line the page does not have, the z-axis. Going from a line to a page is the big step: two leans become all of them, and the picture goes from a plain stretch of the line (from −2 to ¼) to the Mandelbrot set.',
-  3: 'In space a point still leans away from the x-axis by one angle. What is new is the direction it leans in, a second angle. A turn of space needs three numbers (two to aim its hinge, one for how far), and a point supplies only two. Each approach fills in the missing one in its own way, which is why there are several approaches and no single right one. Watch the hinge: under “Quaternion square (Lathe)” it is a different line for every point, and it is the z-axis exactly when the point lies in the flat plane.',
+  3: 'In space a point still leans away from the x-axis by one angle. What is new is the direction it leans in, a second angle. A turn of space needs three numbers (two to aim its hinge, one for how far), and a point supplies only two. Each approach fills in the missing one in its own way, which is why there are several approaches. Watch the hinge: under “Quaternion square (Lathe)” it is a different line for every point, and it is the z-axis exactly when the point lies in the flat plane.',
 };
 const LEARN_V_HIDDEN = {
   '1on': 'The line is seen at a slant, lying in the faint sheet the number swings through. The line itself does not have that direction. The dashed line standing on the sheet is the hinge of the swing.',
@@ -29,10 +29,10 @@ const LEARN_V_HIDDEN = {
 };
 const LEARN = {
   on: false,
-  follow: 'shape',               // (version 26: Learn opens on the whole shape) 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js draws and paints)
+  follow: 'shape',               // 'point': one point, move by move (this file) | 'shape': a whole shape, step by step (67-learn-shape.js)
   space: 2,                      // 1 a line, 2 a page, 3 space
   pts: null,                     // pts[space] = { z, c }: where the first step starts, and the point c
-  show: 'circle',                // 'point' | 'circle' | 'all' | 'grid': the extra points ('grid', round 29, is not laid out afresh)
+  show: 'circle',                // the extra points: 'point' | 'circle' | 'all' | 'grid'
   hidden: { 1: true, 2: false }, // "Show the hidden direction", for the line and for the page
   k: 0,                          // whole steps already taken: the step on show starts at orbit[k]
   pos: 0,                        // where in the step: 0 .. number of moves (2.5 = half way through the third move)
@@ -42,22 +42,33 @@ const LEARN = {
   view: null,                    // view[kind] = { yaw, pitch, zoom }
   stale: true,                   // the plan has to be worked out again
   frame: null,                   // what the picture is framed on: { tight, roomy }, each { ctr, hx, hy, rr, reach }
-  fit: 1, fitHold: false,        // the radius of the roomy frame; the frame is held still while a point is dragged
+  fitHold: false,                // the frame is held still while a point is dragged
   cache: null, col: null, proj: null, w: 0, h: 0,
   ptr: new Map(), drag: null, pinch: null,
-  el: {}, dials: null, sig: '',
+  el: {}, dials: null, checks: null, sig: '',
+  showCtl: null, showSig: null,  // the select Show, and the space its choices were last set for
+  // set({ space, z, c }): any of them. z and c are 3-vectors; what the space does not have is dropped.
+  set(o) {
+    const L = LEARN, vec = v => [0, 1, 2].map(i => (i < L.space && isFinite(+v[i]) ? clamp(+v[i], -8, 8) + 0 : 0));
+    learnVStop();
+    if (o.space !== undefined && [1, 2, 3].includes(+o.space) && +o.space !== L.space) { L.space = +o.space; L.k = 0; L.pos = 0; L.endSide = false; }
+    if (o.z) { L.pts[L.space].z = vec(o.z); L.k = 0; }
+    if (o.c) L.pts[L.space].c = vec(o.c);
+    L.dials.sync(); L.checks.sync();
+    learnVChanged();
+  },
 };
 const learnVCopy = o => JSON.parse(JSON.stringify(o));
 const learnVFinite = v => !!v && v.length === 3 && v.every(x => typeof x === 'number' && isFinite(x));
 const learnVNum = (x, d = 2) => { const t = (+x).toFixed(d); return (/^-0\.?0*$/.test(t) ? t.slice(1) : t).replace('-', '−'); };
 const learnVDeg = a => learnVNum(a * 180 / PI, 0) + '°';
-const learnVXyz = (v, sp = LEARN.space) => (sp === 1 ? learnVNum(v[0]) : '(' + v.slice(0, sp).map(x => learnVNum(x)).join(', ') + ')');
+const learnVXyz = v => (LEARN.space === 1 ? learnVNum(v[0]) : '(' + v.slice(0, LEARN.space).map(x => learnVNum(x)).join(', ') + ')');
 const learnVKey = () => (LEARN.space === 3 ? 's3' : (LEARN.hidden[LEARN.space] ? 'h' : 'f') + LEARN.space);
 const learnVIsCam = () => { const k = learnVKey(); return k !== 'f1' && k !== 'f2'; };
 
-// What a move turns the point a about, and the flat sheet the point travels in: the hinge (or null), the sheet as
-// the move gives it (or null), two directions at right angles that span it, its centre (on the hinge) and how far
-// the point is from that centre.
+// What the move m turns the point a about, and the flat sheet the point travels in: hinge and sheet as the move
+// gives them (or null), fr two directions at right angles that span the sheet, ctr its centre (on the hinge) and
+// rs how far the point is from that centre.
 function learnVSheet(m, a) {
   let hinge = null, sheet = null, fr = null;
   try { hinge = m.hinge ? m.hinge(a) : null; sheet = m.sheet ? m.sheet(a) : null; } catch (e) { hinge = sheet = null; }
@@ -73,26 +84,21 @@ function learnVSheet(m, a) {
   if (fr) { const iu = dot(a, fr[0]), iw = dot(a, fr[1]); ctr = sub(a, add(scl(fr[0], iu), scl(fr[1], iw))); rs = Math.hypot(iu, iw); }
   return { hinge: hinge ? norm(hinge) : null, sheet, fr, ctr, rs };
 }
-// ---------- (round 29) dots with a colour of their own, and the choice Show: A grid of points
-// Is the stage dark (the dark theme)? The dots' colours are light on a dark stage and deep on a light one.
+// Show "A grid of points": dots with a colour of their own, light on a dark stage and deep on a light one.
 function learnVDark() {
   try { const v = hexRgb(LEARN.col.stage); return 0.3 * v[0] + 0.59 * v[1] + 0.11 * v[2] < 0.5; } catch (err) { return true; }
 }
-// A dot's colour for good, from where it starts: the hue from which way it lies from the centre (in space: round
-// the z-axis; on a line: from left to right), and how light from how far out it lies (in space: how high). So the
-// eye can follow a dot, and a turn or a stretch of the whole grid shows in the colours.
+// A dot keeps the colour of where it starts: the hue from which way it lies from the centre (in space: round the
+// z-axis; on a line: from left to right), the lightness from how far out it lies (in space: how high).
 function learnVDotColour(p, space, dark) {
   if (space === 1) return `hsl(${Math.round(clamp((p[0] + 2) / 4, 0, 1) * 300)}, ${dark ? 88 : 82}%, ${dark ? 66 : 38}%)`;
   const hue = Math.round((Math.atan2(p[1], p[0]) * 180 / PI + 360) % 360);
   const t = space === 3 ? clamp((2 - p[2]) / 4, 0, 1) : clamp(Math.hypot(p[0], p[1]) / 2, 0, 1);
   return dark ? `hsl(${hue}, 88%, ${Math.round(80 - 26 * t)}%)` : `hsl(${hue}, 84%, ${Math.round(26 + 18 * t)}%)`;
 }
-// An even grid of points over the big circle (everything no further than 2 from the centre; in space the big ball;
-// on a line a row from −2 to 2), with the gap h between neighbours. The grid is shifted off the centre: half a gap
-// along x and a quarter along y on the page, so that no two dots are mirror twins through the centre (squaring
-// would lay them on top of each other); half, half and a quarter in space, so that no dot sits on an axis or in
-// the flat plane, where many of the 3D rules have a special case. "A whole shape" lays its dots out the same way
-// (learnShapeDots in 67-learn-shape.js).
+// An even grid, gap h, over everything no further than 2 from the centre. It is shifted off the centre so that no
+// two dots are mirror twins through it (squaring would lay them on top of each other) and no dot in space sits on
+// an axis or in the flat plane, where many 3D rules have a special case. "A whole shape" uses the same grid.
 const LEARN_V_GRID = { 1: 0.1, 2: 0.25, 3: 0.5 };
 function learnVGridPoints(space, gap) {
   const h = gap || LEARN_V_GRID[space], m = Math.ceil(2 / h) + 1, out = [];
@@ -107,8 +113,7 @@ function learnVGridPoints(space, gap) {
   }
   return out;
 }
-// A handful of the grid's dots to draw larger, so that single ones can be followed: the ones nearest to five
-// places spread round the centre.
+// The grid's dots that are drawn larger, so that single ones can be followed: the nearest to five set places.
 function learnVGridMarked(start, space) {
   const want = space === 1 ? [[-1.5, 0, 0], [-0.7, 0, 0], [0.4, 0, 0], [1.1, 0, 0], [1.8, 0, 0]]
     : space === 2 ? [20, 95, 165, 235, 310].map((d, i) => { const a = d * PI / 180, r = i % 2 ? 0.75 : 1.3; return [r * Math.cos(a), r * Math.sin(a), 0]; })
@@ -121,7 +126,7 @@ function learnVGridMarked(start, space) {
   }
   return out;
 }
-// The words of the select Show for the space on show: its choices, its help, and the line under it.
+// The select Show for the space on show: its choices, its help, and the line under it.
 function learnVShowOptions(space) {
   return [['point', 'The point alone'], ['circle', 'A small circle round the point'],
     ['all', space === 1 ? 'A row of points along the line' : space === 2 ? 'One point for every direction (a ring)' : 'One point for every direction (a ball)'],
@@ -133,8 +138,7 @@ function learnVShowHelp(space) {
   if (space === 1) return head + 'A small circle: on a line, a short row of points close around your point. A row of points along the line: points laid out evenly from −2 to 2. Both of these are laid out afresh at the start of every step. A grid of points: on a line, a row of dots from −2 to 2. ' + tail;
   return head + 'A small circle: points close around your point. One point for every direction: a direction is which way a point lies from the centre, without how far. These points all lie 1 from the centre, one in each direction, so they show what a move does to every direction at once. Both of these are laid out afresh at the start of every step. A grid of points: dots laid out evenly over the picture. ' + tail;
 }
-// One short line under the select, on show while extra points are: what they are right now, and whether they are
-// laid out afresh.
+// The line under the select: what the extra points are right now, and whether they are laid out afresh.
 function learnVShowLine() {
   const L = LEARN, sp = L.space, k = L.k, afresh = ' Laid out afresh at each step.';
   if (L.show === 'circle') return (sp === 1 ? 'Short row: points close around your point.' : 'Small circle: points close around your point.') + afresh;
@@ -158,27 +162,23 @@ function learnVShowPaint() {
   if (line.textContent !== text) line.textContent = text;
   line.hidden = !text;
 }
-// ---------- the plan: the moves of the step on show, and everything the picture needs from them
+// The plan: the moves of the step on show, and everything the picture needs from them.
 function learnVBuild() {
   const L = LEARN, sp = L.space, P = L.pts[sp], id = ap().id;
   L.stale = false;
   let plan = null, fault = '';
-  // carry: what the orbit carries when the step begins, for an entry whose orbit carries something (round 22, see
-  // learnPlan); left out for the first step and for every other entry.
+  // carry: what the orbit carries when the step begins (see learnPlan). Left out for the first step and for an
+  // entry whose orbit carries nothing.
   const planFor = carry => learnPlan({ space: sp, id, params: S.param[id], n: S.n, c: P.c.slice(), abs: S.abs.slice(), flip: S.flip.slice(), carry });
-  if (typeof learnPlan !== 'function') fault = 'The moves are missing from this copy of the page.';
-  else {
-    try { plan = planFor(undefined); }
-    catch (e) { fault = 'The moves could not be worked out for these settings.'; console.warn('learnPlan failed', e); }
-  }
+  try { plan = planFor(undefined); }
+  catch (e) { fault = 'The moves could not be worked out for these settings.'; console.warn('learnPlan failed', e); }
   let moves = plan && Array.isArray(plan.moves) ? plan.moves : [];
   const at = (m, v, t) => { try { const p = m.at(v, t); return learnVFinite(p) ? p : v.slice(); } catch (e) { return v.slice(); } };
   const run = v => { const out = [v.slice()]; for (const m of moves) out.push(at(m, out[out.length - 1], 1)); return out; };
-  // the steps taken so far, worked out again from the first point (the approach, the power or c may have changed)
+  // the steps taken so far, worked out again from the first point: the approach, the power or c may have changed
   const orbit = [P.z.slice()];
-  // (round 29) Show: A grid of points. These dots are not laid out afresh: like the point itself, each goes on from
-  // where the last step left it, through the same moves (for an entry whose orbit carries something: the moves of the
-  // point's own steps, as for every extra point). Worked out again from the fresh grid, as the point's steps are.
+  // The grid's dots are not laid out afresh: like the point, each goes on from where the last step left it, through
+  // the moves of the point's own steps.
   const gridStart = L.show === 'grid' ? learnVGridPoints(sp) : null;
   let grid = gridStart;
   while (orbit.length <= L.k && moves.length) {
@@ -186,15 +186,15 @@ function learnVBuild() {
     if (len(e) > 8) break;
     orbit.push(e);
     if (grid) grid = grid.map(v => { const q = run(v); return q[q.length - 1]; });
-    // An entry whose orbit carries something: the step after this one gets moves of its own, made with what the
-    // orbit carries once this step is done. (Every other entry has one plan for every step, as before.)
+    // An entry whose orbit carries something: the next step gets moves of its own, made with what the orbit carries
+    // once this step is done.
     if (plan.carry) {
       try { plan = planFor(plan.carry(a)); moves = Array.isArray(plan.moves) ? plan.moves : []; }
       catch (err) { fault = 'The moves could not be worked out for these settings.'; console.warn('learnPlan failed', err); moves = []; }
     }
   }
   L.k = orbit.length - 1;
-  const pts = run(orbit[L.k]), N = 48;
+  const pts = run(orbit[L.k]), N = LEARN_V_PIECES;
   const paths = moves.map((m, j) => { const a = pts[j], out = []; for (let i = 0; i <= N; i++) out.push(at(m, a, i / N)); return out; });
   const say = moves.map((m, j) => { try { return String(m.say(pts[j], pts[j + 1])); } catch (e) { return m.name || ''; } });
   // companions: points that are pushed through the same moves
@@ -211,8 +211,7 @@ function learnVBuild() {
     if (sp === 1) { for (let i = -10; i <= 10; i++) base.push([i * 0.2, 0, 0]); follow.push(2, 6, 14, 18); }
     else if (sp === 2) { for (let i = 0; i < 72; i++) { const a = (i + 0.5) / 72 * 2 * PI; base.push([Math.cos(a), Math.sin(a), 0]); } follow.push(3, 14, 27, 44); }
     else {
-      const M = 300, ga = PI * (3 - Math.sqrt(5));
-      for (let i = 0; i < M; i++) { const zz = 1 - (i + 0.5) * 2 / M, rr = Math.sqrt(1 - zz * zz); base.push([rr * Math.cos(i * ga), rr * Math.sin(i * ga), zz]); }
+      for (let i = 0; i < 300; i++) base.push(fib(i, 300));
       follow.push(40, 110, 190, 260);
     }
   } else if (grid) {
@@ -221,15 +220,15 @@ function learnVBuild() {
   }
   const comp = [base];
   moves.forEach((m, j) => comp.push(comp[j].map(v => at(m, v, 1))));
-  // What the picture has to hold: the centre, both points, the whole path and the companions. The picture is
-  // framed on these and not on the centre, so that on a small stage the step itself is as large as it can be.
-  // The frame moves in steps (a quarter of a unit), so that it stands still while a dial is moved a little.
+  // The picture is framed on what it has to hold (the centre, both points, the whole path and the companions), so
+  // that on a small stage the step is as large as it can be. The frame moves in quarters of a unit, so that it
+  // stands still while a dial is moved a little.
   const sheets = moves.map((m, j) => learnVSheet(m, pts[j]));
   if (!L.fitHold) {
     const key = [[0, 0, 0]];
     const see = (v, most) => { const l = len(v); key.push(l > most ? scl(v, most / l) : v); };
     pts.forEach(v => see(v, 9)); paths.forEach(p => p.forEach(v => see(v, 9))); orbit.forEach(v => see(v, 9)); see(P.c, 9);
-    if (grid) { for (let i = 0; i < sp; i++) for (const s of [-2, 2]) { const v = [0, 0, 0]; v[i] = s; key.push(v); } }      // (round 29)
+    if (grid) { for (let i = 0; i < sp; i++) for (const s of [-2, 2]) { const v = [0, 0, 0]; v[i] = s; key.push(v); } }
     else { comp[0].forEach(v => see(v, 4)); comp[comp.length - 1].forEach(v => see(v, 4)); }
     const frame = list => {
       const lo = [0, 0, 0], hi = [0, 0, 0];
@@ -245,10 +244,9 @@ function learnVBuild() {
     for (let i = 0; i < sp; i++) for (const s of [-1, 1]) { const v = [0, 0, 0]; v[i] = s; wide.push(v); }
     sheets.forEach((q, j) => { if (!q.fr || !q.sheet || !(q.rs > 1e-6) || len(sub(pts[j + 1], pts[j])) < 1e-9) return; const r = Math.min(q.rs, 4); for (let i = 0; i < 12; i++) { const an = i / 12 * 2 * PI; see(add(q.ctr, add(scl(q.fr[0], r * Math.cos(an)), scl(q.fr[1], r * Math.sin(an)))), 9); wide.push(key.pop()); } });
     L.frame = { tight: frame(key), roomy: frame(wide) };
-    L.fit = L.frame.roomy.rr;
   }
-  // In space, a sheet seen edge on or a hinge seen end on is hard to read. Until the view is turned by hand, it
-  // is turned for the reader: the nearest direction to the usual one from which every hinge of this step shows.
+  // In space a sheet seen edge on or a hinge seen end on is hard to read. Until the view is turned by hand, it is
+  // set to the direction nearest the usual one from which every hinge of this step shows.
   if (sp === 3 && !L.view.s3.user && !L.fitHold) {
     const V = L.view.s3, cp = Math.cos(V.pitch), sn = Math.sin(V.pitch), turning = sheets.filter((q, j) => q.fr && len(sub(pts[j + 1], pts[j])) > 1e-6).map(q => cross(q.fr[0], q.fr[1]));
     const score = yaw => { let worst = 1; for (const nm of turning) { const d = Math.abs(dot([Math.sin(yaw) * cp, -Math.cos(yaw) * cp, sn], nm)); worst = Math.min(worst, d < 0.5 ? d / 0.5 : (1 - d) / 0.5); } return worst; };
@@ -260,7 +258,7 @@ function learnVBuild() {
   }
   const end = pts[pts.length - 1], away = len(end) > 8 || !learnVFinite(end);
   L.cache = {
-    moves, pts, paths, say, orbit, comp, follow, at, fault, away, end, sheets, gridStart, gridCol: null, gridDark: null,
+    moves, pts, paths, say, orbit, comp, follow, at, fault, away, sheets, gridStart, gridCol: null, gridDark: null,
     note: fault || (plan && plan.note) || '',
     names: moves.map(m => m.name || m.key || 'Move'),
     doneText: moves.length ? `Step ${L.k + 1} is done: z went from ${learnVXyz(z)} to ${learnVXyz(end)}.` +
@@ -278,14 +276,14 @@ function learnVAt() {
   if (t < 1e-9 && j > 0 && L.endSide) { j -= 1; t = 1; }
   return { j, t, done: false, n };
 }
-// The moving point now.
+// Where the moving point is now.
 function learnVPoint() {
   const K = LEARN.cache, a = learnVAt();
   if (!K || !a.n) return LEARN.pts[LEARN.space].z.slice();
   return a.t >= 1 ? K.pts[a.j + 1].slice() : a.t <= 0 ? K.pts[a.j].slice() : K.at(K.moves[a.j], K.pts[a.j], a.t);
 }
 
-// ---------- drawing
+// Drawing
 function learnVTheme() {
   const cs = getComputedStyle(document.documentElement), g = k => cs.getPropertyValue(k).trim();
   LEARN.col = { stage: g('--stage'), panel: g('--panel'), ink: g('--ink'), ink2: g('--ink-2'), line: g('--line'), brass: g('--brass'), ok: g('--ok'), bad: g('--bad'), warn: g('--warn'), mono: g('--f-mono') || 'monospace' };
@@ -294,7 +292,7 @@ function learnVTheme() {
 // tipped views and space look from a camera that turns about the upright z-axis.
 function learnVProj() {
   const L = LEARN, w = L.w, h = L.h, vk = learnVKey(), V = L.view[vk], F = vk === 'f1' || Math.min(w, h) < 300 ? L.frame.tight : L.frame.roomy, f = F.ctr;
-  // the scale moves in steps too (15% apart), for the same reason as the frame
+  // the scale moves in steps of 15%, so that it stands still as the frame does
   const grid = s => Math.pow(1.15, Math.floor(Math.log(Math.max(s, 1)) / Math.log(1.15) + 1e-9));
   const cx = w / 2, cy = vk === 'f1' ? h * 0.58 : h / 2 + 5;
   if (vk === 'f1' || vk === 'f2') {
@@ -307,11 +305,11 @@ function learnVProj() {
   // a sheet seen at a slant is wide and low, so it may use the width; the ball of space needs the height
   const s = grid(vk === 's3' ? (Math.min(w, h) / 2 - 16) / F.rr : Math.min((w / 2 - 22) / F.rr, (h / 2 - 14) / (F.rr * 0.8))) * V.zoom;
   const fr = dot(f, R), fu = dot(f, U), to = v => [cx + (dot(v, R) - fr) * s, cy - (dot(v, U) - fu) * s, dot(v, D)];
-  return { cam: true, s, cx, cy, R, U, D, reach: F.reach, o: to([0, 0, 0]), to };
+  return { cam: true, s, cx, cy, reach: F.reach, o: to([0, 0, 0]), to };
 }
 function learnVDraw() {
   const L = LEARN, cv = L.el.canvas, K = L.cache;
-  if (L.follow === 'shape') { if (typeof learnShapeDraw === 'function') learnShapeDraw(); return; }   // the whole shape has the stage
+  if (L.follow === 'shape') { learnShapeDraw(); return; }   // the whole shape has the stage
   if (!L.on || !cv || !K) return;
   const w = stage.clientWidth, h = stage.clientHeight;
   if (!w || !h) return;
@@ -343,7 +341,7 @@ function learnVDraw() {
   const E = P.reach;   // how far the grid and the axes reach in the tipped views and in space
   const at = learnVAt(), m = K.moves[at.j], a = m ? K.pts[at.j] : O, p = learnVPoint(), start = K.orbit[L.k], c = L.pts[sp].c;
 
-  // ----- the ground: grid, axes, the unit circle or sphere
+  // the ground: grid, axes, the unit circle or sphere
   const axisTags = [];
   if (vk === 'f2') {
     const A = P.from(0, h), B = P.from(w, 0), step = B[0] - A[0] > 14 ? 2 : 1;   // the corners of what is in view
@@ -385,10 +383,9 @@ function learnVDraw() {
     for (const v of [[E, 0, 0], [0, E, 0], [0, 0, vk === 'h2' ? E * 0.85 : E]]) { const q = P.to(v); axisTags.push([clamp(q[0] + 8, 5, w - 5), clamp(q[1], 9, h - 9)]); }
   }
 
-  // ----- what the move turns about, and the sheet it moves in
-  // (the flat sheet the point travels in goes through the point, with its centre on the hinge: see learnVSheet)
+  // what the move turns about, and the sheet the point travels in (see learnVSheet)
   const Q = m ? K.sheets[at.j] : { hinge: null, sheet: null, fr: null, ctr: O, rs: 0 }, hinge = Q.hinge, sheet = Q.sheet, fr = Q.fr, ctr = Q.ctr, rs = Q.rs;
-  const round = (r, n) => circle(fr[0], fr[1], r, n).map(v => add(ctr, v));
+  const round = r => circle(fr[0], fr[1], r).map(v => add(ctr, v));
   if (sheet && fr && vk !== 'f1' && rs > 1e-6) {
     trace(round(rs), true); fill(C.ok, 0.1);
     trace(round(rs), true); stroke(C.ok, 1.25, 0.55);
@@ -408,10 +405,10 @@ function learnVDraw() {
     }
   }
 
-  // ----- the steps taken before this one
+  // the steps taken before this one
   for (let i = 0; i < L.k; i++) { seg(K.orbit[i], K.orbit[i + 1], C.ink2, 1.25, 0.55); disc(K.orbit[i], 2.75, C.ink2, 0.9); tag(K.orbit[i], String(i), C.ink2, 6, 9, 'left', 10); }
 
-  // ----- companions: a small circle round the point, or every direction at once
+  // companions: a small circle round the point, every direction at once, or a grid
   if (K.comp[0].length) {
     const now = at.t >= 1 ? K.comp[at.j + 1] : at.t <= 0 ? K.comp[at.j] : K.comp[at.j].map(v => K.at(m, v, at.t));
     const lift = vk === 'f1' ? -9 : 0;   // on a flat line the companions ride just above it
@@ -422,9 +419,9 @@ function learnVDraw() {
       }
       now.forEach(v => { const q = P.to(v); g.beginPath(); g.arc(q[0], q[1] + lift, vk === 'f1' ? 2.25 : 1.6, 0, 2 * PI); fill(C.ink, 0.9); });
     } else if (L.show === 'grid') {
-      // (round 29) A grid of points: each dot in the colour of the place it started from, a handful larger, with a
-      // ring where this step found them. The big circle they were laid out over (in space the big ball's outline) is
-      // drawn too. A dot that has gone out of the picture is not drawn; the frame does not grow to hold it.
+      // Each dot in the colour of the place it started from; the marked ones larger, with a ring where this step
+      // found them. The big circle they were laid out over (in space the big ball's outline) is drawn too. A dot
+      // outside the picture is not drawn: the frame does not grow to hold it.
       const dark = learnVDark();
       if (!K.gridCol || K.gridDark !== dark) { K.gridDark = dark; K.gridCol = K.gridStart.map(v => learnVDotColour(v, sp, dark)); }
       if (vk === 'f2' || vk === 'h2') { trace(circle(ex, ey, 2), true); stroke(C.ink2, 1.25, 0.6, [4, 4]); }
@@ -461,8 +458,8 @@ function learnVDraw() {
     }
   }
 
-  // ----- the path of the point: swept so far, and still to come
-  const N = 48, so = K.paths[at.j] ? K.paths[at.j].slice(0, Math.floor(at.t * N + 1e-9) + 1).concat([p]) : [];
+  // the path of the point: swept so far, and still to come
+  const N = LEARN_V_PIECES, so = K.paths[at.j] ? K.paths[at.j].slice(0, Math.floor(at.t * N + 1e-9) + 1).concat([p]) : [];
   if (vk === 'f1') {
     // on a flat line every move is drawn as a bow from where it starts to where the point is now
     K.moves.forEach((mv, j) => {
@@ -481,7 +478,7 @@ function learnVDraw() {
     if (so.length > 1) { trace(so); stroke(C.brass, 2.75, 1); }
   }
 
-  // ----- the number that is changing: an angle (with its arc at the centre) or a length
+  // the number that is changing: an angle (with its arc at the centre) or a length
   let read = '';
   const unwrap = list => {             // the angle in the frame along a path, without jumps of a whole turn
     let prev = null, sum = 0; const out = [];
@@ -511,7 +508,7 @@ function learnVDraw() {
   // adding c: the arm of c, carried to the point
   if (m && m.key === 'shift' && vk !== 'f1') { seg(a, add(a, c), C.ink, 1.25, 0.8, [5, 4]); }
 
-  // ----- arms and points
+  // arms and points
   if (vk !== 'f1') {
     seg(O, c, C.ink2, 1.25, 0.6, [2, 4]);
     if (len(sub(p, start)) > 1e-9) seg(O, start, C.ink2, 1.25, 0.7, [5, 4]);
@@ -527,23 +524,23 @@ function learnVDraw() {
   // labels stand clear of the arm: the point's outwards from the centre, the start's to the side the turn leaves behind
   const away = (q, gap, side) => { let dx = q[0] - P.o[0], dy = q[1] - P.o[1]; const d = Math.hypot(dx, dy); if (d < 2) { dx = 0.7; dy = -0.7; } else { dx /= d; dy /= d; } if (side) [dx, dy] = [-dy, dx]; return [q[0] + dx * gap, q[1] + dy * gap, dx > 0.35 ? 'left' : dx < -0.35 ? 'right' : 'center']; };
   if (apart > 26) { if (vk === 'f1') label('start', qs[0], qs[1] + 36, C.ink2, 'center'); else { const t = away(qs, 19, true); label('start', t[0], t[1], C.ink2, t[2]); } }
-  // the moving point (hollow while it is off a flat line, out in the direction the line does not have)
+  // the moving point: hollow while it is off a flat line, out in the direction the line does not have
   const off = vk === 'f1' && Math.hypot(p[1], p[2]) > 1e-3 * Math.max(1, len(p));
   disc(p, 8.5, C.stage); disc(p, 6.5, C.brass, off ? 0.35 : 1); if (off) ring(p, 6.5, C.brass, 1.75);
   { const t = vk === 'f1' ? [qp[0], qp[1] - 22, 'center'] : away(qp, 18, false); label(at.done ? 'new z' : 'z', t[0], t[1], C.brass, t[2], small ? 13.5 : 15.5, 600); }
   if (off) label('z is off the line, out in the hidden direction', P.cx, Math.min(h - 12, P.cy + 62), C.ink2, 'center');
 
-  // ----- the read-out in the corner
+  // the read-out in the corner
   if (m) {
-    label(`${m.name}`, 10, 15, C.ink, 'left', small ? 12.5 : 14, 600);
+    label(m.name, 10, 15, C.ink, 'left', small ? 12.5 : 14, 600);
     label(read, 10, small ? 32 : 35, C.brass, 'left', small ? 12.5 : 14, 600);
   }
 }
 
-// ---------- the words and marks on the page
+// The words and marks on the page
 function learnVPaint() {
   const L = LEARN, K = L.cache, el = L.el;
-  if (L.follow === 'shape') { if (typeof learnShapePaint === 'function') learnShapePaint(); return; }   // and its own words and transport
+  if (L.follow === 'shape') { learnShapePaint(); return; }   // the whole shape has its own words and transport
   if (!L.on || !K) return;
   const at = learnVAt(), n = at.n, put = (node, text, html) => { if (node.dataset.t !== text) { node.dataset.t = text; if (html) node.innerHTML = text; else node.textContent = text; } };
   put(el.where, !n ? 'No moves' : at.done ? `Step ${L.k + 1}: <b>done</b>` : `Step ${L.k + 1}, move ${at.j + 1} of ${n}: <b>${K.names[at.j]}</b>`, true);
@@ -580,9 +577,9 @@ function learnVPaint() {
   put(el.hint, cam ? 'Drag to turn the picture. Scroll or pinch to zoom.' : 'Drag the ring to move z, and the diamond to move c. Scroll to zoom.');
   el.viewReset.hidden = !(Math.abs(V.zoom - 1) > 1e-6 || (cam && (V.user || V.pitch !== D.pitch)));
   for (const r of el.spaces) r.checked = +r.value === L.space;
-  learnVShowPaint();      // (round 29) the choices of Show, its help and the line under it
+  learnVShowPaint();
 }
-// ---------- the clock: one frame redoes what is stale, moves a playing step on, and draws
+// The clock: one frame redoes what is stale, moves a playing step on, and draws.
 function learnVQueue() { if (!LEARN.raf && LEARN.on) LEARN.raf = requestAnimationFrame(learnVFrame); }
 function learnVFrame(now) {
   const L = LEARN;
@@ -605,11 +602,10 @@ function learnVFrame(now) {
   learnVPaint(); learnVDraw();
   if (L.playing) learnVQueue();
 }
-// Everything now, without waiting for a frame (the test methods and the controls use it, so that what they
-// read back is already true).
+// Everything now, without waiting for a frame, so that what the controls read back is true.
 function learnVNow() {
   const L = LEARN;
-  if (!L.on) { if (L.stale && L.pts) learnVBuild(); return; }
+  if (!L.on) { if (L.stale) learnVBuild(); return; }
   if (L.stale) learnVBuild();
   learnVPaint(); learnVDraw();
 }
@@ -627,14 +623,13 @@ function learnVPlay(until) {
 }
 function learnVPlayMove(j) { LEARN.pos = j; learnVPlay(j + 1); }
 function learnVGoto(pos, endSide) { learnVStop(); LEARN.pos = pos; LEARN.endSide = !!endSide; learnVNow(); }
-function learnVNextStep(play) {
+function learnVNextStep() {
   const L = LEARN;
   if (L.stale) learnVBuild();
-  if (!L.cache.moves.length || L.cache.away) return false;
+  if (!L.cache.moves.length || L.cache.away) return;
   learnVStop(); L.k += 1; L.pos = 0; L.endSide = false;
   learnVChanged();
-  if (play && !matchMedia('(prefers-reduced-motion: reduce)').matches) learnVPlay();
-  return true;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) learnVPlay();
 }
 function learnVAgain() { learnVStop(); LEARN.k = 0; LEARN.pos = 0; LEARN.endSide = false; learnVChanged(); }
 function learnVShowStage() {
@@ -642,20 +637,20 @@ function learnVShowStage() {
   const r = stage.getBoundingClientRect();
   if (r.bottom < 80 || r.top > innerHeight - 80) stage.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
 }
-// The settings of Learn back to how it opens (the approach, the power and the modifiers are not Learn's).
+// Learn's settings back to how it opens. The approach, the power and the modifiers are not Learn's.
 function learnVDefaults() {
   const L = LEARN;
   learnVStop();
   L.space = 2; L.pts = learnVCopy(LEARN_V_START); L.show = 'circle'; L.hidden = { 1: true, 2: false };
   L.view = learnVCopy(LEARN_V_VIEWS); L.speed = 'normal'; L.k = 0; L.pos = 0; L.endSide = false; L.stale = true;
-  if (L.el.speed) L.el.speed.value = 'normal';
-  if (typeof learnShapeDefaults === 'function') learnShapeDefaults();   // Follow = A whole shape, and the whole shape as it opens
-  if (L.dials) { L.dials.sync(); L.checks.sync(); }
+  L.el.speed.value = 'normal';
+  learnShapeDefaults();   // Follow = A whole shape, and the whole shape as it opens
+  L.dials.sync(); L.checks.sync();
 }
 // "Reset everything": Learn goes back to its starting state, which is off, with its own settings as they open.
-function learnReset() { learnVDefaults(); learnVSetOn(false, true); }
-// Learn on or off. `quiet`: the caller draws the solid itself (a click on another choice under Show does).
-function learnVSetOn(on, quiet) {
+function learnReset() { learnVDefaults(); learnVSetOn(false); }
+// Learn on or off. Switched off, the caller draws the solid.
+function learnVSetOn(on) {
   const L = LEARN, el = L.el;
   on = !!on;
   if (L.on === on && !!S.learn === on) return;
@@ -663,12 +658,12 @@ function learnVSetOn(on, quiet) {
   L.on = on; S.learn = on;
   document.body.classList.toggle('is-learn', on);
   for (const node of [el.panel, el.bar, el.canvas, el.over]) node.hidden = !on;
-  if (typeof learnShapeSync === 'function') learnShapeSync();   // with Follow = A whole shape, its transport and canvas stand in
+  learnShapeSync();   // with Follow = A whole shape, its transport and canvas stand in
   if (on) {
     el.radio.checked = true; el.panel.open = true;
     learnVTheme(); learnVChanged();
-    if (typeof uiCollapsePaint === 'function') uiCollapsePaint();
-  } else if (!quiet) refresh(false);   // re-ticks the choice the picture belongs to and draws the solid again
+    uiCollapsePaint();
+  }
 }
 function learnVRefresh() {             // the end of every refresh()
   if (!LEARN.on) return;
@@ -676,7 +671,7 @@ function learnVRefresh() {             // the end of every refresh()
   learnVChanged();
 }
 
-// ---------- hands on the picture
+// Pointer, wheel and keys on the picture
 function learnVBind(cv) {
   const L = LEARN, at = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
   const grab = (x, y, reach) => {
@@ -690,7 +685,7 @@ function learnVBind(cv) {
   const spread = () => { const [p, q] = [...L.ptr.values()]; return Math.hypot(p[0] - q[0], p[1] - q[1]); };
   cv.addEventListener('pointerdown', e => {
     if (!L.on || (e.pointerType === 'mouse' && e.button !== 0)) return;
-    try { cv.setPointerCapture(e.pointerId); } catch (err) { /* a scripted press has no real pointer */ }
+    try { cv.setPointerCapture(e.pointerId); } catch (err) { /* a pointer that is already gone cannot be captured */ }
     const [x, y] = at(e);
     L.ptr.set(e.pointerId, [x, y]);
     if (L.ptr.size === 2) { L.pinch = { d: Math.max(1, spread()), zoom: L.view[learnVKey()].zoom }; L.drag = null; return; }
@@ -727,7 +722,7 @@ function learnVBind(cv) {
   stage.addEventListener('wheel', e => {
     if (!L.on) return;
     e.preventDefault(); e.stopImmediatePropagation();
-    if (L.follow === 'shape') { if (typeof learnShapeWheel === 'function') learnShapeWheel(e); return; }
+    if (L.follow === 'shape') { learnShapeWheel(e); return; }
     zoomBy(Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0015))); learnVNow();
   }, { capture: true, passive: false });
   cv.addEventListener('keydown', e => {
@@ -743,10 +738,9 @@ function learnVBind(cv) {
   });
 }
 
-// ---------- building it (called once, after boot())
+// Builds Learn's part of the page. Called once, after boot().
 function learnInit() {
   const L = LEARN, el = L.el, make = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html) n.innerHTML = html; return n; };
-  if (el.panel) return;
   L.pts = learnVCopy(LEARN_V_START); L.view = learnVCopy(LEARN_V_VIEWS);
 
   // the fourth choice under Show
@@ -760,10 +754,9 @@ function learnInit() {
     if (!t || t.name !== 'mode') return;
     if (t === el.radio) { learnVSetOn(true); return; }
     if (!L.on) return;
-    learnVSetOn(false, true);
-    if (t.value === S.mode) { e.stopPropagation(); refresh(false); }
+    learnVSetOn(false);
+    if (t.value === S.mode) { e.stopPropagation(); refresh(); }
   }, true);
-  document.addEventListener('click', e => { if (e.target && e.target.closest && e.target.closest('#resetAll')) learnReset(); }, true);
 
   // the stage: the drawing, a hint and the button that puts the view back
   el.canvas = make('canvas', 'learn-canvas');
@@ -802,7 +795,7 @@ function learnInit() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) learnVGoto(j + 1, true);
     else { if (a.t >= 1) L.pos = j; learnVPlay(j + 1); }
   });
-  el.next.addEventListener('click', () => learnVNextStep(true));
+  el.next.addEventListener('click', learnVNextStep);
   el.again.addEventListener('click', learnVAgain);
   el.speed.addEventListener('change', () => { L.speed = LEARN_V_SECONDS[el.speed.value] ? el.speed.value : 'normal'; });
 
@@ -828,7 +821,7 @@ function learnInit() {
   for (const [key, id] of [['moves', 'learnMoves'], ['note', 'learnNote'], ['notice', 'learnNotice'], ['hiddenNote', 'learnHiddenNote'], ['eqNote', 'learnEqNote']]) el[key] = el.panel.querySelector('#' + id);
   el.spaces = [...el.panel.querySelectorAll('input[name=learnSpace]')];
   el.panel.querySelector('#learnSpace').addEventListener('change', e => { if (e.target.name === 'learnSpace') L.set({ space: +e.target.value }); });
-  el.panel.addEventListener('toggle', () => { if (typeof uiCollapsePaint === 'function') uiCollapsePaint(); });
+  el.panel.addEventListener('toggle', () => uiCollapsePaint());
   // The dials read and write the points of the space on show. A new first point starts the steps afresh.
   const store = {}, bind = (key, get, set) => Object.defineProperty(store, key, { get, set, enumerable: true });
   ['x', 'y', 'z'].forEach((axis, i) => {
@@ -841,14 +834,13 @@ function learnInit() {
   L.checks = buildControls('learnChecks', [{ type: 'check', key: 'hid', label: 'Show the hidden direction', def: false, when: () => L.space < 3 }], store, changed, { idPrefix: 'learn-', group: 'learn' });
   const pd = (key, label, when) => ({ type: 'dial', key, label, min: -2, max: 2, step: 0.01, lo: -8, hi: 8, when });
   L.dials = buildControls('learnDials', [
-    // (the labels are upper case, which would print the points z and c as capitals: class asis keeps them as typed)
+    // labels are printed in upper case; class asis keeps the points z and c as typed
     pd('zx', 'The point <span class="asis">z</span>, along x'), pd('zy', 'The point <span class="asis">z</span>, along y', () => L.space >= 2), pd('zz', 'The point <span class="asis">z</span>, along z', () => L.space === 3),
     pd('cx', 'The point <span class="asis">c</span>, along x'), pd('cy', 'The point <span class="asis">c</span>, along y', () => L.space >= 2), pd('cz', 'The point <span class="asis">c</span>, along z', () => L.space === 3),
-    // (round 29: a fourth choice, the third named by what it is in the space on show, and a help that says what a
-    // direction is and which of the extra points are laid out afresh; see learnVShowOptions and learnVShowHelp)
+    // the choices and the help follow the space on show (learnVShowPaint)
     { type: 'select', key: 'show', label: 'Show', def: 'circle', options: learnVShowOptions(L.space), help: learnVShowHelp(L.space) },
   ], store, () => learnVChanged(), { idPrefix: 'learn-', group: 'learn' });
-  // one line under the select: what the extra points are right now, and whether they are laid out afresh
+  // the line under the select (learnVShowLine)
   L.showCtl = L.dials.controls.find(c => c.id === 'learn-show') || null; L.showSig = L.space;
   el.showLine = make('p', 'note learn-show-line'); el.showLine.id = 'learnShowLine'; el.showLine.hidden = true;
   { const sel = el.panel.querySelector('#learn-show'), field = sel ? sel.closest('.field') : null; if (field) field.after(el.showLine); else el.panel.querySelector('#learnDials').appendChild(el.showLine); }
@@ -857,57 +849,11 @@ function learnInit() {
   // the kit puts its own controls back first; the points and the rest follow
   addReset('learnReset', 'learn', { after: () => { learnVDefaults(); learnVChanged(); } });
 
-  if (!hooks.refresh.includes(learnVRefresh)) hooks.refresh.push(learnVRefresh);
+  hooks.refresh.push(learnVRefresh);
   const retheme = () => { learnVTheme(); if (L.on) learnVNow(); };
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', retheme);
   new MutationObserver(retheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   new ResizeObserver(() => { if (L.on) learnVNow(); }).observe(stage);
   learnVTheme();
-  if (typeof learnShapeInit === 'function') learnShapeInit();   // the choice "Follow" and the whole shape (67-learn-shape.js)
+  learnShapeInit();   // the choice "Follow" and the whole shape (67-learn-shape.js)
 }
-
-// ---------- for tests and the console: no pixels needed
-// set({ space, z, c, show, hidden }): any of them. z and c are 3-vectors; what the space does not have is dropped.
-LEARN.set = o => {
-  const L = LEARN, vec = v => [0, 1, 2].map(i => (i < L.space && isFinite(+v[i]) ? clamp(+v[i], -8, 8) + 0 : 0));
-  learnVStop();
-  if (o.space !== undefined && [1, 2, 3].includes(+o.space) && +o.space !== L.space) { L.space = +o.space; L.k = 0; L.pos = 0; L.endSide = false; }
-  if (o.z) { L.pts[L.space].z = vec(o.z); L.k = 0; }
-  if (o.c) L.pts[L.space].c = vec(o.c);
-  if (o.show !== undefined && ['point', 'circle', 'all', 'grid'].includes(o.show)) L.show = o.show;
-  if (o.hidden !== undefined && L.space < 3) L.hidden[L.space] = !!o.hidden;
-  if (L.dials) { L.dials.sync(); L.checks.sync(); }
-  learnVChanged();
-  return L.state();
-};
-// goto(move, t): stand at the fraction t (0 to 1) of the move with that number, counted from 0.
-LEARN.goto = (move, t = 0) => { const L = LEARN; if (L.stale) learnVBuild(); const n = L.cache.moves.length, j = clamp(Math.round(+move) || 0, 0, Math.max(0, n - 1)), f = clamp(+t || 0, 0, 1); learnVGoto(j + f, f >= 1); return L.state(); };
-// next(): go on from the new point (false when the point has run away).
-LEARN.next = () => learnVNextStep(false);
-LEARN.again = () => { learnVAgain(); return LEARN.state(); };
-LEARN.play = until => learnVPlay(until);
-LEARN.setOn = on => { learnVSetOn(on); return LEARN.state(); };
-LEARN.reset = () => learnReset();
-// (round 29) points(): the extra points of the step on show. start: where the first step found them (for the grid:
-// the fresh grid, before any step); now: where they are at this moment of the step; afresh: are they laid out anew
-// at every step; marked: the ones drawn larger; line: the sentence under the select Show.
-LEARN.points = () => {
-  const L = LEARN;
-  if (L.stale || !L.cache) learnVBuild();
-  const K = L.cache, a = learnVAt(), m = K.moves[a.j];
-  const now = !K.comp[0].length || !m ? K.comp[0] : a.t >= 1 ? K.comp[a.j + 1] : a.t <= 0 ? K.comp[a.j] : K.comp[a.j].map(v => K.at(m, v, a.t));
-  return { show: L.show, space: L.space, step: L.k, afresh: L.show !== 'grid', start: (K.gridStart || K.comp[0]).map(v => v.slice()), stepStart: K.comp[0].map(v => v.slice()),
-    now: now.map(v => v.slice()), end: K.comp[K.comp.length - 1].map(v => v.slice()), marked: K.follow.slice(), line: learnVShowLine(),
-    options: learnVShowOptions(L.space).map(o => o[1]), help: learnVShowHelp(L.space) };
-};
-LEARN.state = () => {
-  const L = LEARN;
-  if (L.stale || !L.cache) learnVBuild();
-  const K = L.cache, a = learnVAt();
-  return {
-    on: L.on, space: L.space, z: K.orbit[L.k].slice(), z0: L.pts[L.space].z.slice(), c: L.pts[L.space].c.slice(), show: L.show,
-    hidden: L.space < 3 ? !!L.hidden[L.space] : false, step: L.k, move: a.j, t: a.t, done: a.done, playing: L.playing,
-    moves: K.names.slice(), sentence: !a.n ? K.fault : a.done ? K.doneText : K.say[a.j], note: K.note,
-    point: learnVPoint(), end: K.end.slice(), away: K.away, orbit: K.orbit.map(v => v.slice()), fit: L.fit,
-  };
-};

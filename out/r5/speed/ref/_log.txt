@@ -1,8 +1,0 @@
-step 1 waited 6.3 s
-step 2 result: "39-cut-m-face-plain"
-step 4 waited 0.3 s
-step 4 wrote out/r5/speed/ref/39-cut-m-face-plain.png
-step 5 result: "40-cut-j-face-plain-flat-inside"
-step 7 waited 0.0 s
-step 7 wrote out/r5/speed/ref/40-cut-j-face-plain-flat-inside.png
-no console errors

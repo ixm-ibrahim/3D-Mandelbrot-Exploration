@@ -1,43 +1,50 @@
 # 3D Mandelbrot Exploration
 
 A search for the right way to carry the flat rule z → z² + c into three dimensions, and the tool built to look at
-every attempt: the **3D Squaring Lab**, one web page with no dependencies.
+every attempt: the **3D Squaring Lab**, one web page that uses no libraries.
 
 The starting point was Kučera, "New Generalizations of Quadratic Julia Sets to 3D" (sphere inversions in place of
 squaring). The paper's text is not in this repository.
 
+**[docs/vision.md](docs/vision.md)** says what the finished fractal should look like, how a rule is judged, what has
+come closest and what is known not to work. No rule passes yet.
+
 ## The lab
 
-`squaring-lab.html` is the built page. Open it in a browser. It holds:
+`squaring-lab.html` is the built page. It holds:
 
-- an **Approach** list: every 3D rule that was tried, each as its own entry, with its dials;
-- a 3D view and a 2D view (the flat cut), cuts, colours, presets, export of pictures and 3D models;
+- an **Approach** list: the 3D rules that were tried and kept, each as its own entry;
+- a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models;
 - **Balls on balls**, a picture made only of slides by whole numbers and sphere inversions. It has no c and is not
   the goal, but its placement and spacing of bodies is the look the 3D basilica should have;
 - a **Learn** tab that plays one step of a rule move by move, for one point or for a whole shape.
 
-## What the right rule has to pass
+## Building and checking
 
-1. The flat cut z = 0 is exactly the flat picture of z² + c.
-2. The number of bulbs follows from the power, as it does in the flat picture.
-3. No shards and no smear.
-4. No rings (the flat picture merely spun round a line), and it works for the rabbit, not only for c = −1.
-5. It is a principled carry-over from 2D, with nothing picked by hand.
+    python build.py          # joins src/ into squaring-lab.html and dist/preview.html
+    python tools/smoke.py    # draws every approach as a Julia set and as a Mandelbrot set; fails on any page error
 
-No rule passes all five yet. `notes/_state.md` is the running log of what was tried and why each attempt failed.
+`squaring-lab.html` is the page as it is published: the host supplies the document around it. To open the lab from
+disk, use `dist/preview.html`, the same page inside a complete document.
+
+`tools/compare.py` draws a fixed set of views before and after a change and lists the ones that differ. The page
+draws the same picture every time, so any difference is a real change.
+
+`tools/shot.py` drives the page from the command line or from Python: it runs JavaScript in it, waits for the
+picture, and saves screenshots. The tools need Chrome or Edge and nothing else.
 
 ## Layout
 
 | Path | What it is |
 | --- | --- |
 | `src/` | The lab's source: `head.html`, `body.html`, `css/*.css`, `js/*.js` |
-| `build.py` | Joins `src/` into one page. `python build.py` writes `squaring-lab.html` and `dist/preview.html` |
-| git tags | Every published version is a tag: `git checkout v21` gives Version 21, the highest number is the newest |
-| `tools/` | Test tools. `tools/shot.py` drives the page in headless Chrome and takes pictures |
-| `docs/` | The brief of each round of work (`ROUND29.md` and `ROUND29-LEARN.md` are the newest) |
-| `notes/` | The log (`_state.md`), reports and small scripts |
-| `out/` | Each round's scripts and notes, and the pictures that were made to be shown. The screenshots and number caches the scripts produce are left out of the repository; run a script to make them again |
-| `tests/`, `data/` | Test pages and the preset lists |
+| `build.py` | Joins `src/` into one page |
+| `squaring-lab.html` | The built page |
+| `docs/` | `vision.md`: the goal, the tests, and the state of the search. `img/`: its pictures |
+| `tools/` | `smoke.py`, `compare.py` and `shot.py` |
 
-All JavaScript files are joined into one function scope in file-name order, and only `90-boot.js` runs code when
-the page loads.
+All JavaScript files are joined into one function scope in file-name order, so the number at the front of a file
+name is its place in the page. Only `90-boot.js` runs code when the page loads. Each 3D rule is one entry in
+`src/js/10-approaches.js`.
+
+This is version 1.00. Each version is tagged, as `v1.00`.

@@ -1,2 +1,0 @@
-background preparing ON (as a user has it), new trial 0: first paint after 1359 ms, finished after 1447 ms; programs built 1; Done: 12 passes at 862 × 701; stage [862, 701]
-background preparing ON (as a user has it), new trial 1: first paint after  985 ms, finished after 1044 ms; programs built 1; Done: 12 passes at 862 × 701; stage [862, 701]

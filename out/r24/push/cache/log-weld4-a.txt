@@ -1,8 +1,0 @@
-weld4  1/2       2d 1.236 | column: top 0.000, inside length 0.056, lowest escape 0.004 | disc top 0.020 | neck / body: 0.008 / 0.166 (block 0.0081) | 25 s
-weld4  1/2root   2d 1.000 | column: top 0.320, inside length 0.480, lowest escape 0.324 | disc top 0.488 | neck / body: 0.124 / 0.215 (block 0.0081) | 105 s
-weld4  1/3       2d 1.107 | column: top 0.000, inside length 0.184, lowest escape 0.004 | disc top 0.024 | neck / body: 0.008 / 0.105, 0.008 / 0.137 (block 0.0081) | 129 s
-weld4  1/3near   2d 1.050 | column: top 0.048, inside length 0.332, lowest escape 0.052000000000000005 | disc top 0.200 | neck / body: 0.016 / 0.110, 0.016 / 0.135 (block 0.0081) | 201 s
-weld4  1/4       2d 1.061 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.000 | neck / body: 0.008 / 0.074, 0.008 / 0.077, 0.008 / 0.115 (block 0.0081) | 223 s
-weld4  in120     2d 0.920 | column: top 0.756, inside length 0.756, lowest escape 0.76 | disc top 0.756 |  | 224 s
-weld4  in180     2d 0.844 | column: top 0.580, inside length 0.580, lowest escape 0.584 | disc top 0.580 |  | 224 s
-done weld4 225 s

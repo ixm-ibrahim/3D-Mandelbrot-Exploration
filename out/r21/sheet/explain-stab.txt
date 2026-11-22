@@ -1,5 +1,0 @@
-lag 0.25           formula: lifted cycle unstable on 20.6% of the set; measured lost 10.7%; agree on 86.9% of 11690 places; of the places measured lost, the formula flags 91.8%
-lag 0.50           formula: lifted cycle unstable on 20.3% of the set; measured lost 7.7%; agree on 83.8% of 11690 places; of the places measured lost, the formula flags 84.6%
-lag 0.67           formula: lifted cycle unstable on 2.9% of the set; measured lost 2.9%; agree on 97.5% of 11690 places; of the places measured lost, the formula flags 61.0%
-mirror (slope -1)  formula: lifted cycle unstable on 97.3% of the set; measured lost 56.6%; agree on 55.5% of 11690 places; of the places measured lost, the formula flags 100.0%
-over (slope 2)     formula: lifted cycle unstable on 95.6% of the set; measured lost 17.7%; agree on 18.0% of 11690 places; of the places measured lost, the formula flags 99.8%

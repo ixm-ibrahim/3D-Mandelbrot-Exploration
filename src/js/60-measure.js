@@ -1,11 +1,10 @@
-// ---------- measuring an approach's power rule against the flat case
+// Measuring an approach's power rule against the flat case: the measurement, the scorecard and the two step figures.
 // The parameters are copied, so a measurement that runs over several frames keeps the values it started with.
-// (Round 22. An entry whose orbit carries something, see CARRY in 10-approaches.js, shows here the FIRST squaring of a
-// fresh orbit. Where that squaring depends on c (CARRY[id].usesC) the rule is handed the c of the picture as a fourth
-// argument: in a Julia picture the Julia constant; in a Mandelbrot picture, where every point is its own c and the
-// first squaring that counts is the squaring of c, the point itself. Every other entry is called as it always was.)
-const cardUsesC = a => typeof CARRY !== 'undefined' && !!CARRY[a.id] && !!CARRY[a.id].usesC;
-// what the card and the step figure depend on besides the approach, its dials and the power: '' for every other entry
+// An entry whose orbit carries something (see CARRY in 10-approaches.js) shows the first squaring of a fresh
+// orbit. Where that squaring depends on c (CARRY[id].usesC) the rule gets the c of the picture as a fourth
+// argument: the Julia constant in a Julia picture, the point itself in a Mandelbrot picture.
+const cardUsesC = a => !!CARRY[a.id] && !!CARRY[a.id].usesC;
+// what the card and the step figures depend on besides the approach, its dials and the power; '' when the rule does not use c
 const cardCKey = a => (!cardUsesC(a) ? '' : S.mode === 'm' ? ' c=point' : ' c=' + JSON.stringify(S.c.slice(0, 3)));
 const cardRule = (a, n, q) => {
   if (!cardUsesC(a)) return v => MATH[a.id](v, n, q);
@@ -14,9 +13,8 @@ const cardRule = (a, n, q) => {
   return v => MATH[a.id](v, n, q, c);
 };
 const powerF = () => { const a = ap(), q = { ...apP() }, n = cardPower(); return cardRule(a, n, q); };
-// The power the scorecard and the two step figures describe. The equation may take another power of z than
-// the dial shows: 'z^-n + c' takes -n, 'z^3 - z + c' takes 3 whatever n is. When it takes several, the first
-// one written is described. A formula with no power in it (c*z*(1 - z)) leaves the dial's n.
+// The power the scorecard and the two step figures describe. The equation may take another power of z than the
+// dial shows ('z^-n + c' takes -n), and the first one written counts. A formula with no power leaves the dial's n.
 const cardPow = { key: null, n: 2, several: false };
 function cardPower() {
   const key = S.eq + '\n' + S.n;
@@ -45,9 +43,8 @@ function symEig3(a11, a12, a13, a22, a23, a33) { // eigenvalues of a symmetric 3
   return [e1, 3 * q - e1 - e3, e3];
 }
 
-// The measurement is a running total over MEASURE_N directions. measure() adds them all at once; the
-// scorecard adds a few milliseconds' worth per frame. Both go through the same three functions, so
-// they give the same numbers.
+// The measurement is a running total over MEASURE_N directions: measureBegin starts it, measureRun adds a few
+// milliseconds' worth of samples per frame, measureEnd reads the result.
 const MEASURE_N = 6000;
 const MEASURE_AXES = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
 function measureBegin(F, n) {
@@ -69,7 +66,7 @@ function measureSample(st) {
   const [e1, e2] = tangent(d), g1 = measureSlope(g, d, e1, h), g2 = g1 && measureSlope(g, d, e2, h);
   if (!g2) return;
   // Signed area scale of the map on directions: negative where a direction lands mirror-reversed on the sphere.
-  // The step figure dashes the same thing. (The whole of space keeps or loses its handedness as sign(n)·w does.)
+  // The step figure dashes the same thing. The whole of space keeps or loses its handedness as sign(n)·w does.
   const w = dot(norm(Fd), cross(g1, g2));
   if (w !== w) return;
   st.used++;
@@ -102,43 +99,34 @@ function measureEnd(st) {
     if (!k) k = [(out[0] * zx + out[1] * zy) / (R * R), (out[1] * zx - out[0] * zy) / (R * R)];
     copyErr = Math.max(copyErr, len(sub(out, [k[0] * zx - k[1] * zy, k[0] * zy + k[1] * zx, 0])) / (1 + R));
   }
-  const plane = planeErr < 1e-9, scale = Math.hypot(k[0], k[1]), copy = !plane && copyErr < 1e-9 && scale > 1e-6;
-  const turn = copy ? Math.atan2(k[1], k[0]) * 180 / PI : 0;   // degrees, from −180 (not included) to 180
+  const plane = planeErr < 1e-9, copy = !plane && copyErr < 1e-9 && Math.hypot(k[0], k[1]) > 1e-6;
   return { lmin: st.lmin, lmax: st.lmax, smin: st.smin, smax: st.smax, smin8: st.low[7], smax8: st.top[7], round: st.round / u, rev: st.rev / u, deg: st.deg / u, sheets: st.sheets / u,
-    used: st.used, plane, copy, turn: turn < -180 + 1e-9 ? 180 : turn, scale: copy ? scale : 1 };
-}
-function measure(F, n) {
-  const st = measureBegin(F, n);
-  while (st.i < MEASURE_N) measureSample(st);
-  return measureEnd(st);
+    used: st.used, plane, copy };
 }
 
-// ---------- the scorecard
+// The scorecard
 const fmtN = n => (Math.abs(n - Math.round(n)) < 1e-9 ? String(Math.round(n)) : String(+n.toFixed(2)));
 const tidy = x => { const r = Math.round(x); return Math.abs(x - r) < 0.07 ? String(r) : x.toFixed(1); };
 const cardMinus = s => String(s).replace('-', '−');              // a proper minus sign for running text
 const cardTimes = t => (t === '1' ? 'once' : t + ' times');
-const cardWhole = n => Math.abs(n - Math.round(n)) < 1e-9;
 const PROPS = [['len', 'Length goes to its nth power'], ['round', 'Keeps shapes'], ['wrap', 'Wraps without folding'], ['crush', 'Crushes only the origin'], ['smooth', 'One smooth formula'], ['slice', 'Contains the flat set']];
 const PILL = { ok: 'holds', part: 'partly', no: 'fails' };
 const CARD_MEASURED = ['len', 'round', 'wrap', 'slice'];           // rows whose "in space" cell waits for the measurement
 const CARD_SLICE_MS = 4, CARD_SLICE_MOST = 500, CARD_QUIET = 150;  // work per frame; its cap in samples; pause that ends a stream of calls
 // cancel: stops the measurement that is waiting or running (null when there is none). last: when updateCard was
-// last called. shown: id of the approach whose measured cells are on show. result: the last measurement shown.
-// cache: finished measurements, by approach, n and parameters. slices, longest: how the last measurement was
-// spread over frames (count, and the longest single piece in ms), kept for the timing test.
-// pow: the power the card last described (see cardPower). ck: the c it last described (see cardCKey).
-const cardRun = { cancel: null, last: -1e9, shown: null, result: null, cache: new Map(), slices: 0, longest: 0, pow: null, ck: '' };
+// last called. shown: id of the approach whose measured cells are on show. cache: finished measurements, by
+// approach, n and parameters. slices: how many frames the last measurement has taken so far. pow, ck: the power
+// and the c the card last described.
+const cardRun = { cancel: null, last: -1e9, shown: null, cache: new Map(), slices: 0, pow: null, ck: '' };
 
 function buildCard() {
   $('card').innerHTML = '<p class="note" id="cardPowNote" hidden></p><div class="row head label"><div>Property</div><div>In the plane</div><div id="ruleHead">In space</div></div>' +
     PROPS.map(([id, title]) => `<div class="row"><div class="prop">${title}</div>` +
       `<div class="cell"><span class="k label">In the plane</span><span id="p-${id}"></span></div>` +
       `<div class="cell"><span class="k label k3">In space</span><span class="pill" id="b-${id}" style="display:none"></span><span id="s-${id}"></span></div></div>`).join('');
-  cardRun.shown = null;
-  if (!hooks.view.includes(drawStep3d)) hooks.view.push(drawStep3d);
+  hooks.view.push(drawStep3d);
 }
-function cardSet(id, text) { const el = $(id); if (el && el.textContent !== text) el.textContent = text; }
+function cardSet(id, text) { const el = $(id); if (el.textContent !== text) el.textContent = text; }
 function setCell(id, st, text) {
   const b = $('b-' + id), s = $('s-' + id);
   b.className = 'pill ' + st; b.textContent = PILL[st];
@@ -148,7 +136,7 @@ function setCell(id, st, text) {
 
 // The "in the plane" column: what complex z^n does, for any real n.
 function cardPlane(n) {
-  const k = Math.abs(n), A = fmtN(k), whole = cardWhole(n);
+  const k = Math.abs(n), A = fmtN(k), whole = aprWhole(n);
   if (A === '0') return {
     len: 'z⁰ = 1 whatever z is, so every length becomes 1.',
     round: 'Nothing to keep: every circle lands on the single point 1.',
@@ -191,16 +179,15 @@ function cardSpace(a, q, n, m) {
     : two(m.lmin) === two(m.lmax) ? `For |v| = 1 the result always has length ${two(m.lmax)}.`
     : `For |v| = 1 the result has length anywhere from ${two(m.lmin)} to ${two(m.lmax)}.`;
 
-  // The approach's note explains its squash. When the row holds, a note the approach also gives at an ordinary
-  // power (where no rule keeps shapes) is about failing the row, so it is left out.
-  const roundOk = m.round > 0.999, noteAt = x => (typeof a.roundNote === 'function' ? a.roundNote(q, x) : a.roundNote) || '';
+  // The approach's note explains its squash. When the row holds, a note the approach also gives at the powers 2,
+  // 2.5 or 3 is taken to be about failing the row, so it is left out.
+  const roundOk = m.round > 0.999, noteAt = x => a.roundNote(q, x) || '';
   const note = roundOk && [2, 2.5, 3].some(x => noteAt(x) === noteAt(n)) ? '' : noteAt(n);
   let roundText = 'Nothing to keep: every direction lands on the same point.';
   if (m.smax >= 1e-6) {
     // No upper limit: the largest stretch stands far above the eighth largest (a spike that more samples would
-    // push higher), or it is beyond anything a bounded rule reaches (those stay under about n², see the classic
-    // Mandelbulb beside its axis). At the lower end a smallest value that stands apart from the eighth smallest
-    // is a difference taken across a crease, and the eighth is shown instead.
+    // push higher), or it is beyond what a bounded rule reaches (about n²). At the lower end a smallest value that
+    // stands apart from the eighth smallest is a difference taken across a crease, and the eighth is shown instead.
     const lo = m.smin < 0.03 * k ? '0' : dec(m.smin8 > 1.05 * m.smin ? m.smin8 : m.smin), hi = dec(m.smax);
     const noTop = m.smax8 < 0.8 * m.smax || m.smax > 30 * Math.max(k, 1);
     roundText = `Roundness ${roundOk ? 100 : Math.min(99, Math.round(m.round * 100))}%. At |v| = 1 the stretch ` +
@@ -220,7 +207,7 @@ function cardSpace(a, q, n, m) {
   return { len: [lenOk ? 'ok' : 'no', lenText], round: [roundOk ? 'ok' : 'no', roundText], wrap, slice: [m.plane ? 'ok' : m.copy ? 'part' : 'no', a.slice(m.plane, q, n)] };
 }
 
-// The next animation frame, or a timer when the page is in the background and frames are paused. Returns a function that cancels it.
+// The next animation frame, or a timer when frames are paused (a background page). Returns a function that cancels it.
 function cardFrame(fn) {
   let raf = 0, tmr = 0;
   const run = () => { cancelAnimationFrame(raf); clearTimeout(tmr); fn(); };
@@ -237,11 +224,10 @@ function cardShow(a, q, n, m) {
   const cells = cardSpace(a, q, n, m);
   for (const id of CARD_MEASURED) setCell(id, ...cells[id]);
   $('card').removeAttribute('aria-busy');
-  cardRun.shown = a.id; cardRun.result = m;
+  cardRun.shown = a.id;
 }
-// Fill the card for the current approach, parameters and n. Returns at once: the cells that need no measuring
-// are written straight away, the measured ones a few frames later. Calling it again cancels a measurement
-// still under way, and it may be called as often as every frame (it then waits for a pause before measuring).
+// Fill the card for the current approach, parameters and n. Returns at once: the measured cells follow a few
+// frames later. A new call cancels a measurement under way; called every frame, it waits for a pause to measure.
 function updateCard() {
   const a = ap(), q = { ...apP() }, n = cardPower(), now = performance.now();
   cardStop();
@@ -249,10 +235,8 @@ function updateCard() {
   cardRun.pow = n; cardRun.ck = ck;
   // say so when the power described is not the one on the dial
   const note = $('cardPowNote'), other = Math.abs(n - S.n) > 1e-9;
-  if (note) {
-    note.hidden = !other;
-    cardSet('cardPowNote', other ? `The equation takes z to the power ${cardMinus(fmtN(n))}${cardPow.several ? ' first' : ''}, so that is the power described here and in the two figures above. The dial shows n = ${cardMinus(fmtN(S.n))}.` : '');
-  }
+  note.hidden = !other;
+  cardSet('cardPowNote', other ? `The equation takes z to the power ${cardMinus(fmtN(n))}${cardPow.several ? ' first' : ''}, so that is the power described here and in the two figures above. The dial shows n = ${cardMinus(fmtN(S.n))}.` : '');
   cardSet('ruleHead', a.name);
   document.querySelectorAll('.k3').forEach(el => { el.textContent = a.name; });
   const plane = cardPlane(n);
@@ -273,9 +257,9 @@ function updateCard() {
   cardRun.shown = a.id;
 
   const st = measureBegin(cardRule(a, n, q), n);
-  cardRun.slices = 0; cardRun.longest = 0;
+  cardRun.slices = 0;
   const piece = () => {
-    const t0 = performance.now(), bg = document.hidden;   // nobody is watching a background page, so finish in one go there
+    const bg = document.hidden;   // nobody is watching a background page, so finish in one go there
     cardRun.cancel = null;
     try { measureRun(st, bg ? 1e9 : CARD_SLICE_MS, bg ? MEASURE_N : CARD_SLICE_MOST); }
     catch (err) { setBusy('measure', null); throw err; }
@@ -293,13 +277,13 @@ function updateCard() {
       setBusy('measure', null);
       cardShow(a, q, n, m);
     }
-    cardRun.slices++; cardRun.longest = Math.max(cardRun.longest, performance.now() - t0);
+    cardRun.slices++;
   };
   if (stream) { const t = setTimeout(piece, CARD_QUIET); cardRun.cancel = () => clearTimeout(t); }
   else cardRun.cancel = cardFrame(piece);
 }
 
-// ---------- the step figures
+// The step figures
 function prep(cv) {
   const dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
   if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
@@ -315,7 +299,7 @@ function arrow(ctx, w, h) {
   ctx.moveTo(w / 2 + 4, h / 2 - 4); ctx.lineTo(w / 2 + 9, h / 2); ctx.lineTo(w / 2 + 4, h / 2 + 4); ctx.stroke();
 }
 // Radius of the sample circles. For |n| > 1 it shrinks so the pushed-through circles stay apart; for |n| < 1
-// it grows (up to `most`) so that what is left of them after the step can still be seen.
+// it grows (up to `most`) so that what is left of them after the step can be seen.
 function stepRadius(n, usual, room, most) {
   const k = Math.abs(n);
   return k >= 1 ? Math.min(usual, room / k) : Math.min(most, usual / Math.sqrt(Math.max(k, 1e-6)));
@@ -325,14 +309,13 @@ function stepCaption2d(n) {
   const N = cardMinus(fmtN(n));
   if (N === '0') return 'The plane. With n = 0 every point is sent to 1, so all the circles shrink onto that one point.';
   return `The plane. Angles are multiplied by ${N}, so every circle lands as a circle ${stepSize(n)}` + (n < 0 ? ', and the ring of circles runs the other way round' : '') +
-    '. Nothing is squashed or flipped.' + (cardWhole(n) ? '' : ` Because ${N} is not a whole number, the angle jumps across the negative x-axis, and the circle sitting on that line is torn in two.`);
+    '. Nothing is squashed or flipped.' + (aprWhole(n) ? '' : ` Because ${N} is not a whole number, the angle jumps across the negative x-axis, and the circle sitting on that line is torn in two.`);
 }
 function stepCaption3d(a, n, anyFlipped) {
   return `${a.name}. ` + (fmtN(n) === '0' ? 'With n = 0 every direction is sent to the same place, so the circles shrink onto one point.' : `A shape-keeping rule would turn each circle into a circle ${stepSize(n)}.`) +
     (anyFlipped ? ' Dashed outlines have landed mirror-reversed, and the brass stubs mark the axis this approach singles out.' : ' The brass stubs mark the axis this approach singles out.') + ' Drag to turn.';
 }
-// A circle that the step has shrunk to a point (all its screen points within a pixel) is drawn as a dot,
-// so that it does not simply vanish from the "after" picture.
+// A circle that the step has shrunk to a point (all its screen points within a pixel) is drawn as a dot.
 function stepDot(ctx, pts, color) {
   if (!pts.length) return false;
   const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
@@ -342,7 +325,7 @@ function stepDot(ctx, pts, color) {
   return true;
 }
 function drawStep2d() {
-  const { ctx, w, h } = prep($('step2d')), n = cardPower(), whole = cardWhole(n), K = 7, rho = stepRadius(n, 0.16, 0.34, 0.3), M = 48;
+  const { ctx, w, h } = prep($('step2d')), n = cardPower(), whole = aprWhole(n), K = 7, rho = stepRadius(n, 0.16, 0.34, 0.3), M = 48;
   const R = Math.min(w / 4, h / 2) / 1.5, cy = h / 2;
   [w * 0.25, w * 0.75].forEach((cx, side) => {
     ctx.setLineDash([]); ctx.globalAlpha = 1; ctx.lineWidth = 1; ctx.strokeStyle = theme.line;
@@ -383,7 +366,7 @@ function ringAround(c, ang, M) {
   return pts;
 }
 function buildStep3d() {
-  // the direction a direction is sent to, or null where the rule gives nothing usable (a point crushed to the origin or thrown to infinity)
+  // the direction a direction is sent to, or null where the rule gives nothing usable (the origin, or infinity)
   const P = powerF(), F = v => { const p = P(v), l = len(p); return l > 0 && l < Infinity ? scl(p, 1 / l) : null; };
   const N = 34, n = cardPower(), rho = stepRadius(n, 0.11, 0.24, 0.2), h = 1e-4;
   stepCurves = []; stepBuilt++;
@@ -396,10 +379,8 @@ function buildStep3d() {
   cardSet('cap3d', stepCaption3d(ap(), n, stepCurves.some(cv => cv.flipped)));
 }
 function drawStep3d() {
-  // A new equation reaches this module only through this hook: the page redraws the picture without calling
-  // refresh(). When the equation now takes another power, the figures and the card follow it.
-  // (Round 22: the same for the c of the picture, for an entry whose first squaring depends on it. Whatever moved c,
-  // a dial, "Jump to a point", a saved point, has asked for a new picture, and that brings the page here.)
+  // A new equation, or a new c for an entry whose first squaring depends on it, reaches this file only through
+  // this hook: the page redraws the picture without calling refresh(). The figures and the card then follow.
   if (cardRun.pow !== null && (cardRun.pow !== cardPower() || cardRun.ck !== cardCKey(ap()))) { buildStep3d(); drawStep2d(); updateCard(); }
   const el = $('step3d'), b = basis(), axis = ap().axis(apP());
   // Called whenever anything on the stage changes. Skip the work unless something this figure shows has changed.

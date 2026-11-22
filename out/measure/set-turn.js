@@ -1,1 +1,0 @@
-const L = window.squaringLab; L.S.q.aa = 1; L.S.q.res = 0.4; L.S.q.shadow = false; L.S.approach = 0; L.S.n = -2; L.S.param.mercator.planes = 1; L.S.param.mercator.turn = 30; document.getElementById("ap-mercator").checked = true; L.syncControls(); L.refresh(false); return "one plane, turn 30, n = -2";

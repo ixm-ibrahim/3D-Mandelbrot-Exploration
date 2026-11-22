@@ -1,4 +1,0 @@
-waiting 12:50:51
-started 13:14:22
-sizes2: exit 0 13:18:41
-exit: all done 13:18:41

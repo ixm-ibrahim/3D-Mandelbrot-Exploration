@@ -1,7 +1,0 @@
-=== session follow2-667x375: dist/r13-check-page.html 667x375 light mobile=True dsf=1
-  after 70 Tab: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn", "active": "learn-hid", "y": 831}
-  Shift+Tab stops near the end: ["learn-zxNum mode-l learn=true", "learnSpace2 mode-l learn=true", "mode-l mode-l learn=true", "collapseAll mode-l learn=true", "learnNext mode-l learn=true", "learnPlay mode-l learn=true", "learnSpeed mode-l learn=true", "learnCanvas mode-l learn=true"]
-  after 70 Shift+Tab: {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn", "active": "learnCanvas", "y": 271}
-  before the tap on Mandelbrot: [[116.6640625, 187.8125, "SPAN:Mandelbrot"], {"checked": ["mode-l"], "learn": true, "mode": "m", "cls": "is-learn", "active": "learnCanvas", "y": 642}]
-  after the tap on Mandelbrot: {"checked": ["mode-m"], "learn": false, "mode": "m", "cls": "", "active": "mode-m", "y": 626}
-no console errors in follow2-667x375

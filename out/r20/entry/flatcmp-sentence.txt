@@ -1,1 +1,0 @@
-The 2D view draws the flat set, and the same picture as for Sphere inversions, one plane except along thin edges of the outline: of 604,262 pixels, 586 differ for c = −1 (all of them faintly), 4,015 for the rabbit (189 of them clearly) and 5,415 for the Siegel disc (667 clearly).

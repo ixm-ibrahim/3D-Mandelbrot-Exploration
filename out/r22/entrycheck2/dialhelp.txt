@@ -1,8 +1,0 @@
-rabbit, third dial (weight of c) 16, second dial 0.70: stay 30 / 80 / 200 steps 5586 / 5373 / 5373; at 200 steps 100 % of what the second dial at 0.7 keeps
-rabbit, third dial (weight of c) 16, second dial 1.00: stay 30 / 80 / 200 steps 5119 / 4925 / 4925; at 200 steps 92 % of what the second dial at 0.7 keeps
-rabbit, third dial (weight of c) 16, second dial 0.85: stay 30 / 80 / 200 steps 5368 / 5169 / 5169; at 200 steps 96 % of what the second dial at 0.7 keeps
-rabbit, third dial (weight of c) 16, second dial 0.50: stay 30 / 80 / 200 steps 5800 / 5594 / 5594; at 200 steps 104 % of what the second dial at 0.7 keeps
-rabbit, third dial (weight of c) 1, second dial 0.70: stay 30 / 80 / 200 steps 6810 / 5304 / 5298; at 200 steps 100 % of what the second dial at 0.7 keeps
-rabbit, third dial (weight of c) 1, second dial 1.00: stay 30 / 80 / 200 steps 6034 / 3855 / 3813; at 200 steps 72 % of what the second dial at 0.7 keeps
-rabbit, third dial (weight of c) 1, second dial 0.85: stay 30 / 80 / 200 steps 6417 / 4556 / 4549; at 200 steps 86 % of what the second dial at 0.7 keeps
-rabbit, third dial (weight of c) 1, second dial 0.50: stay 30 / 80 / 200 steps 8266 / 6582 / 6575; at 200 steps 124 % of what the second dial at 0.7 keeps

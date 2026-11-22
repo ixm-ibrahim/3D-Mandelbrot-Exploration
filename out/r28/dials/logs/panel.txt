@@ -1,4 +1,0 @@
-wide dark (window 1400x950): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors
-wide light (window 1400x950): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors
-phone dark (window 390x800): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors
-phone light (window 390x800): 8 pieces; stick out sideways 0, lie over a neighbour 0, wider inside than their box 0, the page scrolls sideways: False; no console errors

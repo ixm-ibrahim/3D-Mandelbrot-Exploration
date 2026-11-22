@@ -1,8 +1,0 @@
-   idle=True after 1.8 s
-small-dark-m
-   idle=True after 0.0 s
-   page 7834 px tall, 14 screens, hscroll 0
-small-light-m
-   idle=True after 0.8 s
-   page 7834 px tall, 14 screens, hscroll 0
-PAGE PROBLEMS: []

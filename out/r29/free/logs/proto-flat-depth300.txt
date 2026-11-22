@@ -1,1 +1,0 @@
-flat X2   size  130.00 second 100.00 grid 0 depth 300 | inside share 0.866 | outside 87971: too long 0 (0.0000 %), worst ratio 1.000 | wrongly under a pixel 0 (0.000 %) | median est/true 0.91

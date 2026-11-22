@@ -1,3 +1,0 @@
-queue 3 is back: Fri Nov 20 13:26:52 MST 2026
-speed first done: Fri Nov 20 13:30:24 MST 2026
-all done: Fri Nov 20 13:34:28 MST 2026

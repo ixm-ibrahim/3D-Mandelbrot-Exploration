@@ -1,4 +1,0 @@
-waiting 12:52:10
-started 13:18:43
-last: exit 0 13:19:11
-exit: all done 13:19:11

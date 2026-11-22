@@ -1,7 +1,0 @@
-picture 864x703, inside colour [233, 223, 199]
-m2d-z000: 10 piece(s) of at least 304 px; sizes [102444, 3645, 3559, 1729, 1622, 1261, 962, 961]; solid is 19.46% of the picture; largest piece holds 86.69% of the solid (9 smaller specks ignored, 606 px together)
-m2d-z010: 1 piece(s) of at least 304 px; sizes [74875]; solid is 12.48% of the picture; largest piece holds 98.76% of the solid (52 smaller specks ignored, 940 px together)
-m2d-z025: 5 piece(s) of at least 304 px; sizes [43577, 371, 359, 346, 305]; solid is 7.80% of the picture; largest piece holds 91.94% of the solid (136 smaller specks ignored, 2437 px together)
-m2d-z050: 3 piece(s) of at least 304 px; sizes [15334, 322, 321]; solid is 2.83% of the picture; largest piece holds 89.29% of the solid (137 smaller specks ignored, 1196 px together)
-j-bas-2d-z000: 28 piece(s) of at least 304 px; sizes [79298, 1453, 1327, 1327, 1325, 1318, 1208, 1124]; solid is 17.10% of the picture; largest piece holds 76.36% of the solid (7 smaller specks ignored, 487 px together)
-j-bas-2d-z020: 8 piece(s) of at least 304 px; sizes [112161, 1563, 1508, 1437, 939, 865, 816, 363]; solid is 20.02% of the picture; largest piece holds 92.24% of the solid (444 smaller specks ignored, 1942 px together)

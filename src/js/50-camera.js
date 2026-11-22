@@ -1,8 +1,6 @@
-// ---------- camera: one description of the view, and all the input that moves it.
-// `cam` is an arcball: the eye sits `dist` away from `target`, in the direction given by yaw and pitch.
-// Fly mode keeps the same four numbers and changes only what input does to them: looking around turns
-// about the eye (the target is carried along, `dist` ahead of it) and the keys move eye and target together.
-// So basis() never needs to know the mode, and switching modes cannot move the picture.
+// Camera: one description of the view, the input that moves it, and the overlays on the stage.
+// `cam` is an arcball: the eye sits `dist` away from `target`, in the direction given by yaw and pitch. Fly mode
+// keeps the same four numbers and changes only what input does to them, so basis() never needs to know the mode.
 // The 2D view has its own three numbers, S.v2 { x, y, h }: the centre of the picture and its visible height.
 const cam = { yaw: -1.0, pitch: 0.55, dist: 5.2, target: [-0.6, 0, 0] };
 
@@ -10,18 +8,14 @@ const CAM_DEF = { zmin: 0.005, zmax: 60, hmin: 0.0005, hmax: 40 };   // default 
 const CAM_LIM = {                                                    // the hard range each limit, and the fly speed, is held to
   zmin: [1e-5, 500], zmax: [0.002, 1000], hmin: [1e-5, 500], hmax: [0.002, 2000], speed: [0.001, 100],
 };
-const CAM_EASE = 0.07;                     // seconds: a zoom covers 92% of the way to its goal in 180 ms, and no frame takes more than a fifth of what is left
+const CAM_EASE = 0.07;                     // seconds: a zoom covers 92% of the way to its goal in 180 ms
 const CAM_NOTCH = Math.log(1.12) / 100;    // one notch of a mouse wheel (100 px of scroll) changes the zoom by 12%
 const CAM_STEP = 0.8;                      // one press of a zoom button, or of the plus and minus keys
 const CAM_SHARP = 0.0005;                  // 2D view: closer than this the shader's numbers run out of digits and the picture turns blocky
 const CAM_FOV0 = 0.32, CAM_FIT0 = CAM_FOV0 / Math.hypot(1, CAM_FOV0);   // the field of view the start framings were chosen at, and the sine of its half angle
-const CAM_ROW = 520;                       // a stage narrower than this many pixels (a phone) has no room for the zoom column beside the solid: the zoom becomes a row under the picture
-const CAM_PINCH_PAST = 0.1;                // a pinch must ask for this much more than a zoom limit allows (a tenth, on a log scale) before the note about the limit shows
+const CAM_ROW = 520;                       // a stage narrower than this many pixels (a phone) has the zoom as a row under the picture
+const CAM_PINCH_PAST = 0.1;                // a pinch must ask for this much more than a zoom limit allows, on a log scale, before the note about the limit shows
 const CAM_LOOK_WAIT = 15000;               // milliseconds the start view waits for a picture it has to look at (camLookLater)
-// Mandelbrot mode, a trap that is the solid: with fewer skipped steps than this the trap shape itself is part of
-// the solid. The colour module counts the skipped steps of Mandelbrot mode from the point c, as it does in Julia
-// mode (0 keeps the trap shape itself, 1 leaves it out), so this is 1.
-const CAM_TRAP_SKIP_M = 1;
 const CAM_KEYS = {                         // movement keys by position on the keyboard: [axis, direction, also works outside fly mode]
   KeyW: [1, 1], KeyS: [1, -1], KeyA: [0, -1], KeyD: [0, 1], KeyE: [2, 1], KeyQ: [2, -1], Space: [2, 1], ShiftLeft: [2, -1], ShiftRight: [2, -1],
   ArrowUp: [1, 1, true], ArrowDown: [1, -1, true], ArrowLeft: [0, -1, true], ArrowRight: [0, 1, true],
@@ -52,8 +46,8 @@ const CAM_TEXT = {
           soft: 'Closer than ' + CAM_SHARP + ' the picture loses sharpness: the numbers behind it run out of digits.' },
 };
 const CV = {            // private bookkeeping
-  init: false, bound: false, ui: null,
-  ptr: new Map(),       // pointers that are down: id -> { x, y, el, x0, y0, t0 }
+  init: false, ui: null,
+  ptr: new Map(),     // pointers that are down: id -> { x, y, el, x0, y0, t0 }
   tap: null, dblT: 0,   // the last quick tap of a finger, and when a double-click or double-tap was last acted on
   keys: new Set(),      // movement keys being held, by KeyboardEvent.code
   vel: [0, 0, 0],       // eased key motion along sideways, forward, up; each between -1 and 1
@@ -67,8 +61,8 @@ const CV = {            // private bookkeeping
 function camInit() {
   if (CV.init) return;
   CV.init = true;
-  S.view.zmin = CAM_DEF.zmin; S.view.zmax = CAM_DEF.zmax;   // the camera's own defaults replace the ones the state starts with
-  S.v2.hmin = S.v2.hmin ?? CAM_DEF.hmin; S.v2.hmax = S.v2.hmax ?? CAM_DEF.hmax;
+  // the zoom limits are part of the state: S.view.zmin and zmax (camera distance), S.v2.hmin and hmax (height of the 2D view)
+  S.view.zmin = CAM_DEF.zmin; S.view.zmax = CAM_DEF.zmax; S.v2.hmin = CAM_DEF.hmin; S.v2.hmax = CAM_DEF.hmax;
 }
 const camKind = () => (S.flat ? 'flat' : S.view.fly ? 'fly' : 'arc');
 const camOff = () => { const cp = Math.cos(cam.pitch); return [cp * Math.cos(cam.yaw), cp * Math.sin(cam.yaw), Math.sin(cam.pitch)]; };
@@ -80,34 +74,26 @@ const clampDist = d => clamp(d, S.view.zmin, S.view.zmax);
 
 // The sine of half the field of view: a ball of radius r just fits the picture's height from r / camFit() away.
 const camFit = () => S.view.fov / Math.hypot(1, S.view.fov);
-// The entry of the Julia or Kleinian list that the dials stand on, if it carries a camera chosen for it.
-// The lists belong to the page (75-presets.js), so every name is asked for, never assumed. The user's own
-// saved points are left out: their cameras are wherever the user happened to be.
-const camBalls = () => typeof ballsShown === 'function' && ballsShown();
+// The entry of the Julia or Kleinian list that the dials stand on, if it carries a camera chosen for it (the user's
+// own saved points carry none).
 function camListed() {
   let p = null;
-  try {
-    if (S.mode === 'j' && typeof juliaPresetAt === 'function' && S.eq === 'z^n + c' && Math.abs(S.n - 2) < 1e-9) p = juliaPresetAt();
-    // (the list belongs to the first Kleinian group; the second, Balls on balls, has a start view of its own: camHome)
-    else if (S.mode === 'k' && camBalls()) p = null;
-    else if (S.mode === 'k' && typeof kleinPresetAt === 'function' && typeof KLEIN_PRESETS !== 'undefined') p = KLEIN_PRESETS[kleinPresetAt()];
-  } catch (err) { p = null; }
-  return p && p.cam && p.cam.dist > 0 && p.source !== 'saved' ? p : null;
+  if (S.mode === 'j' && S.eq === 'z^n + c' && Math.abs(S.n - 2) < 1e-9) p = juliaPresetAt();
+  // the list belongs to the first Kleinian group; Balls on balls has a start view of its own (camHome)
+  else if (S.mode === 'k' && !ballsShown()) p = KLEIN_PRESETS[kleinPresetAt()];
+  return p && p.cam && p.cam.dist > 0 ? p : null;
 }
-// The start framing for what is on show: { yaw, pitch, dist, target, h }, where h is the matching span of the 2D view.
-// `preset` may carry hints: an equation preset { target, dist } (meant for its Mandelbrot set), or anything with
-// cam: { yaw, pitch, dist, target }, which is used exactly as given. Without one, the list entry the dials stand
-// on is used, then the equation preset in use. Those and the built-in distances were chosen at a field of view
-// of 0.32, so they are scaled to fit the solid the same way at the current one. `given` is true in the result when
-// the camera was used exactly as given.
+// The start framing for what is on show: { yaw, pitch, dist, target, h, given }, h being the span of the 2D view.
+// `preset` may be an equation preset { target, dist } (meant for its Mandelbrot set), or anything with cam:
+// { yaw, pitch, dist, target }, which is used exactly as given (`given` is then true). Without one, the list entry
+// the dials stand on is used, then the equation preset in use; those are scaled from CAM_FOV0 to the current field of view.
 function camHome(preset) {
   const jul = S.mode === 'j', kl = S.mode === 'k', wide = !jul && !kl && Math.abs(S.n - 2) < 0.5;
   const v = { yaw: jul ? -1.25 : kl ? 0.35 : -1.0, pitch: jul ? 1.0 : kl ? 0.35 : 0.55, dist: kl ? 7 : wide ? 5.2 : 4.8, target: wide ? [-0.6, 0, 0] : [0, 0, 0] };
-  // A negative power turns the solid inside out, and it then reaches further from the centre the nearer n is
-  // to 0: about 1.3 + 1/|n|, measured on the pictures for n from -8 to -1.
+  // A negative power turns the solid inside out: it reaches about 1.3 + 1/|n| from the centre, for n from -8 to -1.
   if (!kl && S.n < 0) v.dist = 3.8 * (1.3 + 1 / Math.max(1, -S.n));
   // Balls on balls: the whole chain in the picture, for the size of its neighbours and the shape of the stage
-  const balls = kl && camBalls() ? ballsCam() : null;
+  const balls = kl && ballsShown() ? ballsCam() : null;
   if (balls) { v.yaw = balls.yaw; v.pitch = balls.pitch; v.dist = balls.dist; }
   const listed = preset ? null : camListed(), p = preset || listed || PRESETS.find(q => q.eq === S.eq);
   let asGiven = false;
@@ -126,7 +112,7 @@ function camHome(preset) {
     v.h = balls ? balls.h : 2 * CAM_FOV0 * v.dist;
     if (listed) {
       // list cameras were chosen on a wide stage: back off on a tall, narrow one. Every Julia entry fits a span of 3.6.
-      v.dist *= Math.max(1, 1.2 * stage.clientHeight / Math.max(1, stage.clientWidth));
+      v.dist *= presetNarrow();
       if (jul) v.h = Math.max(v.h, 3.6);
     }
     v.dist *= CAM_FIT0 / camFit();
@@ -136,15 +122,14 @@ function camHome(preset) {
   v.given = asGiven;
   return v;
 }
-// A trap that is the solid or is added to it (the colour module's S.colour): the radius of a ball around `target`
-// that holds it, as far as that can be told without drawing, or 0 when no such trap is on. The trap shape reaches
-// its radius plus its thickness from its centre. One step back through z -> z^n + c that ball becomes one of
-// radius (reach + |c|)^(1/n) (Julia), or for the Mandelbrot solid of z^2 + c one of radius sqrt(reach + 1/4)
-// around -1/2. Which of the two the solid shows depends on the steps skipped. A Kleinian trap solid follows no
-// such rule: there only the trap's own size counts, and Reset view looks at the picture as well (camStepBack).
+// A trap that is the solid or is added to it (S.colour): the radius of a ball around `target` that holds it, as far
+// as that can be told without drawing, or 0 when no such trap is on. The trap shape reaches its radius plus its
+// thickness from its centre. One step back through z -> z^n + c that ball becomes one of radius (reach + |c|)^(1/n)
+// (Julia), or for the Mandelbrot solid of z^2 + c one of radius sqrt(reach + 1/4) around -1/2. Which of the two the
+// solid shows depends on the steps skipped. For a Kleinian trap solid only the trap's own size counts (see camStepBack).
 function camTrapBall(target) {
   const c = S.colour;
-  if (!c || !(c.solid > 0) || typeof TRAP === 'undefined' || c.trap === TRAP.tones || camBalls()) return 0;   // (Balls on balls has no trap solid)
+  if (!c || !(c.solid > 0) || c.trap === TRAP.tones || ballsShown()) return 0;   // Balls on balls has no trap solid
   const num = (x, d) => (Number.isFinite(+x) ? +x : d);
   const centre = [num(c.tx, 0), num(c.ty, 0), num(c.tz, 0)];
   const size = (c.trap === TRAP.point ? 0 : Math.max(0, num(c.radius, 1))) + Math.max(0, num(c.thick, 0.05));
@@ -152,10 +137,10 @@ function camTrapBall(target) {
   if (S.mode === 'k' || !(n >= 1)) return own;
   const jul = S.mode === 'j', two = !jul && Math.abs(n - 2) < 0.5, reach = len(centre) + size, skip = num(c.skip, 1);
   const back = Math.pow(reach + (jul ? len(S.c) : two ? 0.25 : 1), 1 / n) + len(sub(two ? [-0.5, 0, 0] : [0, 0, 0], target));
-  // the plain rule only: any other equation may put the pieces anywhere, so both sizes count
-  return S.eq === 'z^n + c' && skip >= (jul ? 1 : CAM_TRAP_SKIP_M) ? back : Math.max(own, back);
+  // The plain rule only: any other equation may put the pieces anywhere, so both sizes count. So they do with no
+  // step skipped, where the trap shape itself is part of the solid (in Mandelbrot mode the steps count from the point c).
+  return S.eq === 'z^n + c' && skip >= 1 ? back : Math.max(own, back);
 }
-// The distance from which that ball fits the picture, in height and in width, with a little air around it.
 function camTrapDist(target) {
   const r = camTrapBall(target);
   if (!(r > 0)) return 0;
@@ -163,11 +148,11 @@ function camTrapDist(target) {
   return 1.08 * r * Math.hypot(1, t) / t;
 }
 // Reset view with a trap solid on show: the estimate cannot know every such solid, so look at the picture. While
-// the solid reaches the edge of the frame the camera steps back, to at most twice the distance; if the solid
-// still runs out of the picture then (some have sheets that never end), a note says so.
+// the solid reaches the edge of the frame the camera steps back, to at most twice the distance. A note says so
+// when the solid runs out of the picture even then (some have sheets that never end).
 const CAM_TRAP_OUT = 'The solid made from the trap runs out of the picture. Zoom out to see more of it, or lower the trap radius or the trap thickness.';
 function camStepBack() {
-  if (CV.ui && CV.ui.note && CV.ui.note.textContent === CAM_TRAP_OUT) camNote('');   // an earlier look's verdict
+  if (CV.ui.note.textContent === CAM_TRAP_OUT) camNote('');   // an earlier look's verdict
   if (S.flat || !(camTrapBall(cam.target) > 0)) return;
   // one probe about every 30 pixels along the four edges: a piece narrower than that can slip through
   const w = stage.clientWidth, h = stage.clientHeight, m = 2, nx = clamp(Math.round(w / 30), 8, 32), ny = clamp(Math.round(h / 30), 8, 32);
@@ -182,19 +167,12 @@ function camStepBack() {
     cam.dist = clampDist(Math.min(cam.dist * 1.19, start * 2));
   }
 }
-// The start view of a Kleinian trap solid has no rule to stand back by (camTrapBall), so it must look at the picture
-// as Reset view does. When a start view is set (a change of mode) that picture may not exist yet: its program can
-// still be in the making, and pick() sees nothing until it is ready. So the look waits for the picture, and takes
-// place only if the camera is still exactly where the start view put it. Once the user has pressed on the picture,
-// dragged, scrolled, used the slider or a key, typed a zoom limit or switched the camera or the view, the camera
-// is theirs and the look is dropped for good.
-// Can pick() see the picture for the settings as they are now? The renderer keeps the state of its programs to
-// itself (40-render.js), so its names are asked for, never assumed: without them only a finished picture counts.
+// The start view of a Kleinian trap solid has no rule to stand back by (camTrapBall), so it looks at the picture as
+// Reset view does. The look waits until pick() can see the picture (camCanSee), and takes place only if the camera
+// is exactly where the start view put it.
 function camCanSee() {
-  try {
-    if (typeof sceneNow === 'function' && typeof progs === 'object') { const w = sceneNow(), P = w && progs.get(w.key); return !!P && P.state === 'ready'; }
-  } catch (err) { /* fall through to the public answer */ }
-  return renderIdle();
+  const w = sceneNow(), P = w && progs.get(w.key);
+  return !!P && P.state === 'ready';
 }
 function camLookDrop() {
   const k = CV.look;
@@ -203,7 +181,7 @@ function camLookDrop() {
 function camLookLater() {
   camLookDrop();
   const k = CV.look = { yaw: cam.yaw, pitch: cam.pitch, dist: cam.dist, target: cam.target.slice(), kind: camKind(), lo: S.view.zmin, hi: S.view.zmax, t0: performance.now(), tmr: 0, raf: 0 };
-  k.tmr = setTimeout(camLookTick, 0);   // first when the caller has finished changing the settings; a picture that is ready is then looked at before it is drawn
+  k.tmr = setTimeout(camLookTick, 0);   // once the caller has finished changing the settings
 }
 function camLookTick() {
   const k = CV.look;
@@ -220,9 +198,8 @@ function camLookTick() {
   camStepBack();
   if (cam.dist !== k.dist) touch();
 }
-// Put the view back to the start for what is on show (see camHome for `preset`). `only` limits it to the
-// '3d' camera or to the '2d' view; without it both are put back, as a change of mode or equation wants.
-// The zoom limits the user set are kept: the start distance is held to them.
+// Put the view back to the start for what is on show (see camHome for `preset`). `only` limits it to the '3d'
+// camera or the '2d' view. The zoom limits the user set are kept: the start distance is held to them.
 function resetCam(preset, only) {
   camInit();
   const v = camHome(preset);
@@ -232,32 +209,27 @@ function resetCam(preset, only) {
   }
   if (only !== '3d') { S.v2.x = v.target[0]; S.v2.y = v.target[1]; S.v2.h = clamp(v.h, S.v2.hmin, S.v2.hmax); }
   CV.goal = null; CV.vel = [0, 0, 0];
-  // a Kleinian trap solid on show: look at the picture as soon as there is one. A camera that was given is left as it is.
   camLookDrop();
   if (only !== '2d' && !v.given && S.mode === 'k' && !S.flat && camTrapBall(cam.target) > 0) camLookLater();
 }
-// The Reset view button, and what a "frame it" control should call: a fresh framing of the view that is on
-// screen. The other view (the 3D camera while the 2D view is up, and the other way round) is left as it is.
-// The look at the picture happens at once when the picture can be seen. When its program is still in the making
-// the look that resetCam() left waiting takes place once it is ready.
+// The Reset view button: a fresh framing of the view that is on screen; the other view is left as it is. The look
+// at the picture happens at once if the picture can be seen, else when the look resetCam() left waiting comes due.
 function resetView() {
   resetCam(undefined, S.flat ? '2d' : '3d');
   if (camCanSee()) camLookDrop();
   camStepBack(); touch();
 }
-// Hold the 3D distance to the zoom limits at once, without easing. A flying camera keeps its eye where it
-// is: the pivot ahead of it moves instead.
+// Hold the 3D distance to the zoom limits at once, without easing. A flying camera keeps its eye: the pivot moves.
 function camHoldDist() {
   const d = clampDist(cam.dist);
   if (d === cam.dist) return;
   if (S.view.fly) cam.target = sub(basis().pos, scl(camOff(), d));
   cam.dist = d;
 }
-// Put the zoom limits (3D and 2D) back to their defaults, pulling both views inside them if need be.
 function resetZoomLimits() {
   camInit();
   S.view.zmin = CAM_DEF.zmin; S.view.zmax = CAM_DEF.zmax; S.v2.hmin = CAM_DEF.hmin; S.v2.hmax = CAM_DEF.hmax;
-  // the view on screen eases back inside (camIntoLimits); the one out of sight is simply held
+  // the view on screen eases back inside (camIntoLimits); the one out of sight is held at once
   if (camKind() !== 'arc') camHoldDist();
   if (!S.flat) S.v2.h = clamp(S.v2.h, S.v2.hmin, S.v2.hmax);
   camIntoLimits();
@@ -269,7 +241,6 @@ function drawTriad() {
   [[1, 0, 0], [0, 1, 0], [0, 0, 1]].forEach((v, i) => {
     const x = dot(v, b.right), y = dot(v, b.up), front = -dot(v, b.f) >= -0.05;
     const ln = $('ax' + i), tx = $('at' + i);
-    if (!ln || !tx) return;
     // an axis seen end-on has no length to label, so its letter steps off the hub
     const lx = Math.hypot(x, y) < 0.2 ? -0.3 : x, ly = Math.hypot(x, y) < 0.2 ? -0.3 : y;
     ln.setAttribute('x2', (36 + 23 * x).toFixed(1)); ln.setAttribute('y2', (36 - 23 * y).toFixed(1));
@@ -278,7 +249,7 @@ function drawTriad() {
   });
 }
 
-// ---------- the zoom channel: the one quantity the wheel, a pinch and the stage slider change in the current mode
+// The zoom channel: the one quantity the wheel, a pinch and the stage slider change in the current mode.
 function camChan() {
   if (S.flat) return { key: 'h', v: S.v2.h, lo: S.v2.hmin, hi: S.v2.hmax };
   if (S.view.fly) return { key: 'speed', v: S.view.speed, lo: CAM_LIM.speed[0], hi: CAM_LIM.speed[1] };
@@ -298,7 +269,6 @@ const camFmt = v => { const a = Math.abs(v); return a > 0 ? String(+v.toFixed(cl
 // 2D view: where a stage pixel sits, in units of half the picture height from the centre (the shader's uv)
 const camFlatUv = (px, py) => { const r = canvas.getBoundingClientRect(), h = Math.max(1, r.height); return [(2 * px - r.width) / h, (h - 2 * py) / h]; };
 
-// Add to what the view is easing toward.
 function camGoal(patch) { CV.goal = Object.assign(camLive() || { kind: camKind() }, patch); camWake(); }
 // Ask for a new value of the channel. Zoom eases to it; `at` (2D only) is the stage pixel that must stay put.
 function camZoomTo(v, at) {
@@ -313,7 +283,6 @@ function camZoomTo(v, at) {
   if (at) { const u = camFlatUv(at[0], at[1]); hold = { u, p: [S.v2.x + u[0] * S.v2.h / 2, S.v2.y + u[1] * S.v2.h / 2] }; }
   camGoal({ h: v, at: hold, centre: null });
 }
-// The note that says the zoom rests on its nearest (end 0) or farthest (end 1) limit, and where that limit is set.
 function camStopNote(end) {
   const why = CAM_TEXT[camKind()].stop[end];
   // as a row under the picture the slider has its boxes at the left and right ends
@@ -344,7 +313,6 @@ function camFitSpeed() {
   S.view.speed = clamp(cam.dist / 4, CAM_LIM.speed[0], CAM_LIM.speed[1]);
   camSpeedChanged();
 }
-// A short message on the stage (why the zoom stopped, why a typed limit was not taken). It goes away by itself.
 function camNote(text) {
   const el = CV.ui && CV.ui.note;
   if (!el) return;
@@ -354,7 +322,7 @@ function camNote(text) {
   if (text) CV.noteTmr = setTimeout(() => { el.hidden = true; }, 6000);
 }
 
-// ---------- easing and held keys: a frame loop that runs only while something is moving
+// Easing and held keys: a frame loop that runs only while something is moving.
 function camWake() {
   touch();   // at once, so the renderer knows a change is under way before the first eased frame
   if (CV.raf) return;
@@ -411,7 +379,7 @@ function camTick() {
   if (live) camNext();
 }
 
-// ---------- what a drag, a pinch and a double-click do
+// What a drag, a pinch and a double-click do.
 function camTurn(dx, dy) {      // drag by (dx, dy) pixels: turn about the target, or about the eye when flying
   if (!S.view.fly) { cam.yaw -= dx * 0.008; cam.pitch = clamp(cam.pitch + dy * 0.008, -1.5, 1.5); return; }
   const eye = basis().pos;
@@ -431,10 +399,8 @@ function camFlatShift(dx, dy) {   // 2D view: move the centre by a scene distanc
   if (g) g.centre = null;
 }
 function camFlatDrag(dx, dy) { const s = S.v2.h / Math.max(1, canvas.getBoundingClientRect().height); camFlatShift(-dx * s, dy * s); }
-// A pinch that pushes on against a zoom limit gets the note the wheel and the buttons give there. `asked` is what
-// the fingers asked for, `v` what the limits allowed. Fingers are never quite steady, and two that slide the picture
-// change their spread a little as they go, so the note waits until the pinch has asked for a tenth more than the
-// limit allows (CAM_PINCH_PAST). Moving inside the limits pays that off again, and lifting a finger clears it.
+// A pinch that pushes on against a zoom limit (asked for `asked`, allowed `v`) gets the note the wheel gives there,
+// once it has asked for CAM_PINCH_PAST more than the limit allows. Moving inside the limits pays that off again.
 function camPinchPast(asked, v, f) {
   if (asked === v) { CV.past = Math.max(0, CV.past - Math.abs(Math.log(f))); return; }
   CV.past = Math.min(2 * CAM_PINCH_PAST, CV.past + Math.abs(Math.log(asked / v)));
@@ -496,16 +462,14 @@ function camBindDrag(el, main) {   // main: the stage canvas. Otherwise a small 
   };
   el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
 }
-// The wheel anywhere on the stage, the controls that sit on the picture included: the page must not scroll
-// away under a pointer that rests on the plus button or a limit box.
+// The wheel anywhere on the stage, the controls on the picture included: the page must not scroll away under the pointer.
 function camWheel(e) {
-  const fail = $('glfail');
-  if (fail && !fail.hidden) return;   // no picture to zoom, so the wheel scrolls the page as usual
+  if (!$('glfail').hidden) return;   // no picture to zoom, so the wheel scrolls the page as usual
   e.preventDefault();
-  // lines and pages become pixels; a pinch on a trackpad arrives as a wheel event with the control key set, in much smaller units
+  // lines and pages become pixels; a trackpad pinch arrives as a wheel event with the control key set, in much smaller units
   const px = clamp(e.deltaY * (e.deltaMode === 1 ? 100 / 3 : e.deltaMode === 2 ? 300 : 1) * (e.ctrlKey ? 8 : 1), -300, 300);
   if (!px) return;
-  // Over the picture the 2D zoom holds the spot under the pointer. Over a control it is about the middle, as that control's own zoom is.
+  // Over the picture the 2D zoom holds the spot under the pointer; over a control it is about the middle.
   const r = canvas.getBoundingClientRect(), onCtl = e.target !== canvas && e.target.closest && e.target.closest('.cam-zoom, .cam-mode, .stage-btns');
   camZoomBy(Math.exp(px * CAM_NOTCH), onCtl ? null : [e.clientX - r.left, e.clientY - r.top]);
 }
@@ -547,15 +511,10 @@ function setCamMode(fly) {
   touch();
 }
 
-// ---------- overlays on the stage: the camera switch and the zoom slider with its two limit boxes
-function camParse(text) {       // a typed number; spaces, a unicode minus and a decimal comma are fine
-  const s = String(text).trim().replace(/\u2212/g, '-').replace(',', '.');
-  return /^[-+]?(\d+\.?\d*|\.\d+)(e[-+]?\d+)?$/i.test(s) ? parseFloat(s) : NaN;
-}
-// Set the nearest (end 0) or farthest (end 1) zoom limit of the current view from a typed value.
-// -> '' when it was taken exactly as typed, else a sentence for the user saying what happened instead.
-// The two limits stay a factor 2 apart. A value on the wrong side of that is refused, not bent into a number
-// nobody typed (bending the near limit up to half the far one used to carry the camera far away).
+// Overlays on the stage: the camera switch and the zoom slider with its two limit boxes.
+// Set the nearest (end 0) or farthest (end 1) zoom limit of the current view from a typed value. Returns '' when
+// it was taken exactly as typed, else a sentence for the user saying what happened instead. The two limits stay
+// a factor 2 apart: a value on the wrong side of that is refused, not bent into a number nobody typed.
 function camSetLimit(end, v) {
   const kind = camKind();
   if (kind === 'fly') return 'The fly camera has no zoom limits.';
@@ -574,7 +533,7 @@ function camLimitBox(inp, end) {
   const show = () => { const ch = camChan(); inp.value = camFmt(end ? ch.hi : ch.lo); inp.dataset.dirty = ''; };
   const commit = () => {
     if (!inp.dataset.dirty) return;
-    const why = camSetLimit(end, camParse(inp.value));
+    const why = camSetLimit(end, dialParse(inp.value));
     show();
     if (why) {
       // the box shows a number that was not typed: flag it for a moment and say why
@@ -616,7 +575,6 @@ function camBuildUi() {
   ui.camArc.addEventListener('click', pickMode(false)); ui.camFly.addEventListener('click', pickMode(true));
   camLimitBox(ui.camNear, 0); camLimitBox(ui.camFar, 1);
   const rail = ui.camRail;
-  // the pointer's place along the rail: down it as a column, across it (near at the left) as a row
   const fromPt = e => {
     const r = rail.getBoundingClientRect(), t = ui.row ? (e.clientX - r.left) / Math.max(1, r.width) : (e.clientY - r.top) / Math.max(1, r.height);
     camZoomTo(camAtT(camChan(), clamp(t, 0, 1)));
@@ -633,19 +591,16 @@ function camBuildUi() {
     if (step === undefined || e.ctrlKey || e.metaKey || e.altKey) return;
     e.preventDefault(); camZoomTo(camAtT(ch, clamp(t + step, 0, 1)));
   });
-  // as a row the slider is outside the stage, whose wheel listener no longer hears it
+  // as a row the slider is outside the stage, so the stage's wheel listener does not hear it
   zoom.addEventListener('wheel', e => { if (ui.row) camWheel(e); }, { passive: false });
   // nothing to steer while the picture could not be made (the page shows #glfail then)
   const fail = $('glfail');
-  if (fail) {
-    const gone = () => { for (const el of [mode, zoom, note]) el.classList.toggle('cam-gone', !fail.hidden); };
-    gone();
-    if (typeof MutationObserver === 'function') new MutationObserver(gone).observe(fail, { attributes: true, attributeFilter: ['hidden'] });
-  }
+  const gone = () => { for (const el of [mode, zoom, note]) el.classList.toggle('cam-gone', !fail.hidden); };
+  gone();
+  if (typeof MutationObserver === 'function') new MutationObserver(gone).observe(fail, { attributes: true, attributeFilter: ['hidden'] });
 }
-// Where the zoom slider sits. On a stage with room it is a column down the right edge of the picture. On a narrow
-// one (a phone) that column lay over the solid, so there it is a row between the picture and the hint: nearest
-// limit, slider, farthest limit, from left to right. Runs whenever the stage changes size.
+// Where the zoom slider sits: a column down the right edge of the picture, or on a narrow stage (a phone) a row
+// between the picture and the hint. Runs whenever the stage changes size.
 function camPlace() {
   const ui = CV.ui, w = stage.clientWidth;
   if (!ui || !w) return;
@@ -671,7 +626,7 @@ function camSync() {
     ui.kind = kind; stage.dataset.cam = kind;
     camNote('');   // a message about the other view's zoom means nothing here
     ui.top = ''; ui.camVal.textContent = '';   // so the slider's position and wording are written afresh below
-    if (ui.hint) ui.hint.textContent = ui.touch ? tx.touch : tx.hint;
+    ui.hint.textContent = ui.touch ? tx.touch : tx.hint;
     canvas.setAttribute('aria-label', tx.view);
     ui.mode.hidden = kind === 'flat';
     ui.camArc.setAttribute('aria-pressed', String(kind === 'arc')); ui.camFly.setAttribute('aria-pressed', String(kind === 'fly'));
@@ -682,7 +637,6 @@ function camSync() {
     ui.camRail.title = tx.rail; ui.camRail.setAttribute('aria-label', kind === 'fly' ? 'Fly speed' : 'Zoom');
   }
   [[ui.camNear, ch.lo], [ui.camFar, ch.hi]].forEach(([inp, v]) => { const s = camFmt(v); if (!inp.dataset.dirty && inp.value !== s) inp.value = s; });
-  // along the rail: from the top as a column, from the left as a row
   const t = camT(ch, ch.v), val = camFmt(ch.v), top = (t * 100).toFixed(2) + '%', side = ui.row ? 'left' : 'top';
   if (ui.top !== top) {
     ui.top = top; ui.camThumb.style[side] = top;
@@ -705,11 +659,9 @@ function camSync() {
 }
 
 function bindView() {
-  if (CV.bound) return;
-  CV.bound = true;
   camInit(); camBuildUi();
   camBindDrag(canvas, true);
-  if ($('step3d')) camBindDrag($('step3d'), false);
+  camBindDrag($('step3d'), false);
   canvas.addEventListener('contextmenu', e => e.preventDefault());
   stage.addEventListener('wheel', camWheel, { passive: false });
   canvas.addEventListener('dblclick', camDblClick);
@@ -720,12 +672,11 @@ function bindView() {
   window.addEventListener('blur', () => CV.keys.clear());
   // After a click with a pointer the keyboard goes to the picture, as it does after the Arcball and Fly buttons:
   // W A S D must keep flying straight after Reset view, and Space must not press the button a second time.
-  const on = (id, fn) => { if ($(id)) $(id).addEventListener('click', e => { fn(); if (e.detail > 0) canvas.focus({ preventScroll: true }); }); };
+  const on = (id, fn) => $(id).addEventListener('click', e => { fn(); if (e.detail > 0) canvas.focus({ preventScroll: true }); });
   on('zoomIn', () => camStep(CAM_STEP)); on('zoomOut', () => camStep(1 / CAM_STEP));
   on('reset', resetView);
-  for (const f of [drawTriad, camSync]) if (!hooks.view.includes(f)) hooks.view.push(f);
+  hooks.view.push(drawTriad, camSync);
   camSync();
-  // the zoom slider is a column on the picture or a row under it, by the width of the stage
   camPlace();
   if (typeof ResizeObserver === 'function') new ResizeObserver(camPlace).observe(stage);
   else window.addEventListener('resize', camPlace);

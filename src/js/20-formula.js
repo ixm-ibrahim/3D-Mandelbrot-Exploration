@@ -1,12 +1,8 @@
-// Equation presets.
-// THE PRESET, always applied:   name, eq, z0   (the formula and its start value, nothing else)
-//                               note            a few sentences on what the picture shows
-// SUGGESTIONS ONLY, tuned for the Mandelbrot solid at n = 2 and the default approach. The page decides
-// whether to use them; a preset is complete without them, and none of them belongs to the formula:
+// Equations: the equation presets, and the parser that turns a typed formula into shader code.
+// A preset is its name, eq and z0 (the formula and its start value), with an optional note on what the picture
+// shows. It may add view hints, tuned for the Mandelbrot solid at n = 2 with the default approach:
 //   target, dist, yaw, pitch    a first camera (angles in radians)
 //   cut                         a height at which the solid is worth cutting open
-//   julia: { dist }             the same camera distance for Julia mode, where the solid has another size
-// A preset never carries an iteration count, a power, a quality setting or a colour.
 const PRESETS = [
   { name: 'zⁿ + c  (Mandelbrot)', eq: 'z^n + c', z0: '0' },
   { name: 'c·z·(1 − z)  (lambda)', eq: 'c*z*(1 - z)', z0: '0.5', target: [1, 0, 0], dist: 10 },
@@ -14,18 +10,17 @@ const PRESETS = [
   { name: 'conj(z)ⁿ + c  (tricorn)', eq: 'conj(z)^n + c', z0: '0' },
   { name: 'z³ − z + c  (cubic)', eq: 'z^3 - z + c', z0: '0.57735' },
   { name: 'zⁿ + c/z  (with a division by z)', eq: 'z^n + c/z', z0: '1', dist: 6 },
-  // Negative powers. The centre point is sent to infinity, so a path is thrown far out only by passing close to it.
   { name: 'z⁻ⁿ + c  (negative power)', eq: 'z^-n + c', z0: 'c', target: [0, 0, 0], dist: 6.5,
     note: 'A negative power sends the centre point to infinity, so z starts at c instead of 0. The only paths thrown far out are the ones that pass close to the centre. In the plane the set is a star with n + 1 points.' },
   // z0 = 4c + 1/4 is where every critical orbit of z² + c/z² arrives after two steps, so no root of c is needed.
-  { name: 'z² + c·z⁻²  (square against division)', eq: 'z^2 + c*z^-2', z0: '4*c + 0.25', target: [0, 0, 0], dist: 1.7, yaw: -1.0, pitch: 1.1, cut: 0, julia: { dist: 4.8 },
+  { name: 'z² + c·z⁻²  (square against division)', eq: 'z^2 + c*z^-2', z0: '4*c + 0.25', target: [0, 0, 0], dist: 1.7, yaw: -1.0, pitch: 1.1, cut: 0,
     note: 'The square pushes points outward and the division throws points near the centre far out, which leaves a small solid full of holes. It is worth cutting open at z = 0, where the cut face is the flat picture. The start value 4c + 1/4 is the one that makes this the true Mandelbrot-style set of the formula.' },
 ];
 
-// ---------- equation -> shader code. A formula is typed with z, c, n, i, j; products and powers are
-// handed to the approach's mul() and pw(), so one formula means something different under each approach.
+// From an equation to shader code. A formula is typed with z, c, n, i, j. Products and powers are handed to
+// the approach's mul() and pw(), so one formula means something different under each approach.
 
-// Formulas get pasted the way the page prints them (z² − c·z⁻¹), so put those glyphs back into typed form.
+// Formulas are pasted the way the page prints them (z² − c·z⁻¹): this puts those glyphs back into typed form.
 const APR_SUPER = '⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺ⁿ', APR_TYPED = '0123456789-+n';
 function aprPlain(text) {
   return text.replace(/[−–—]/g, '-').replace(/[·×∙⋅]/g, '*').replace(/÷/g, '/').replace(/π/g, 'pi')

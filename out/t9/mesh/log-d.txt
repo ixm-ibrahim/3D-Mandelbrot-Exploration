@@ -1,8 +1,0 @@
-subject exurchins0: offset 0
-  picture at rest after 10.9 s (ok)
-  exurchins0-128: 7.8 s, facts ['Triangles', '25,984', 'Points', '12,994', 'Size', '100 × 49.0 × 39.7 mm', 'Pieces', 'The largest of 35', 'julia-128.stl', '1.2 MB', 'julia-128.obj', '998 kB', 'julia-128.ply', '520 kB', 'Zip to save', '2.7 MB'] | warn '' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-128.zip', 'size': 2856171, 'type': 'application/zip', 'pulled_s': 0.1} | gap max 37 ms (974 turns, 0 over 50 ms, 0 over 100 ms)
-subject exbubbles0: offset 0
-  picture at rest after 6.7 s (ok)
-  exbubbles0-128: 3.2 s, facts ['Triangles', '41,096', 'Points', '19,750', 'Size', '100 × 90.5 × 100 mm', 'Pieces', 'The largest of 124, with about 40% of the surface', 'julia-128.stl', '2.0 MB', 'julia-128.obj', '1.6 MB', 'julia-128.ply', '811 kB', 'Zip to save', '4.3 MB'] | warn 'Only the largest piece was kept: about 40% of the surface. Untick "Keep only the' | msg 'The model is ready.' | file {'name': 'squaring-lab-julia-128.zip', 'size': 4521759, 'type': 'application/zip', 'pulled_s': 0.2} | gap max 38 ms (389 turns, 0 over 50 ms, 0 over 100 ms)
-no console errors
-exit 0

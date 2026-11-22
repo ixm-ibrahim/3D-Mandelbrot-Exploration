@@ -1,8 +1,0 @@
-step 1 waited 3.0 s
-step 2 result: "{\"stepWhenLost\":\"Building the mesh, slice 2 of 221. 11%. About 10 seconds left.\",\"busy\":false,\"msg\":\"The picture could not be read just now. Wait until it has finished drawing, then start again.\",\"startShown\":true}"
-step 3 result: "{\"afterRestore\":\"The picture could not be read just now. Wait until it has finished drawing, then start again.\"}"
-step 4 waited 0.0 s
-step 5 result: "{\"secondJob\":\"The model is ready.\",\"facts\":[\"Triangles\",\"18,292\",\"Points\",\"9,148\",\"Size\",\"100 × 91.3 × 28.5 mm\",\"Pieces\",\"1\"]}"
-step 6 wrote out/r7/mesh/v6/context-end.png
-no console errors
-exit 0

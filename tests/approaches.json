@@ -1,7 +1,0 @@
-[
-  {"js": "T.plane(); T.inversions(); return T.lines.join('\\n');"},
-  {"js": "const from = T.lines.length; T.offsets(); T.turned(); return T.lines.slice(from).join('\\n');"},
-  {"js": "const from = T.lines.length; T.texts(false); const f = T.formulas(); return T.lines.slice(from).join('\\n') + '\\n' + f;"},
-  {"js": "const from = T.lines.length; T.shader(); return T.lines.slice(from).join('\\n');"},
-  {"js": "const s = T.summary(); return (s.total - s.failed) + ' of ' + s.total + ' checks passed';", "shot": "out/approaches/parity.png"}
-]

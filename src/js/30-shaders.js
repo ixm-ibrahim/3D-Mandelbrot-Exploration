@@ -1,24 +1,20 @@
-// ---------- shaders
-// The scene program is GL_HEAD + glNeeds(needs) + GL_COLOUR + (approach.glsl + GL_ORBIT | GL_KLEIN) + GL_TAIL.
-// An approach's GLSL defines mul, pw, sqr and cmap, and may define APR_ZMAP with zmap (see orbitDE).
-// An approach whose orbit carries something besides its point defines APR_CARRY with carStart, carStep, carFit and
-// gCarI (see GL_CARRY in 10-approaches.js). Every use of them below stands between #ifdef APR_CARRY and #endif, so the
-// program of an approach that carries nothing is, once the preprocessor has run, the program it was before.
+// Shaders: the GLSL of the ray marcher, the orbit loop and the distance estimates.
+// The scene program is GL_HEAD + glNeeds(needs) + GL_COLOUR + (approach.glsl + GL_ORBIT | GL_KLEIN | one of the three
+// GL_BALLS programs of 32-balls.js) + GL_TAIL.
 //
-// Three things shape this file.
-// 1. Compile time. The D3D compiler behind WebGL on Windows copies a function into every place that calls it,
-//    and its time also grows with every value a loop has to carry from one turn to the next. So the formula is
-//    written into the shader once (f(), start() and cmap() have one call site each, inside orbitDE(), which
-//    has one call site in de(), which has one call site in main()), main() is a state machine around that
-//    single call, the colour of a pixel comes from one call to pixelColour() whatever kind of pixel it is, and
-//    whatever can be recomputed each turn is recomputed instead of carried.
-// 2. The solid is always the bounded piece. Normally that is the set of points whose orbit never leaves the
-//    escape radius. When points far away never leave it either (negative powers do this: a huge z comes
-//    straight back to c), that set fills all of space outside a small region, so the picture swaps the roles
-//    and draws the region whose orbits do leave. gEsc therefore means "this point is outside the solid".
-// 3. A program is built for what the picture needs (glNeeds below). Trap solids and inside colouring are left
-//    out of the source of a program that does not use them: left in and switched off by a uniform, the trap
-//    solid alone doubled the drawing time of the opening picture.
+// An approach's GLSL defines mul, pw, sqr and cmap. It may define APR_ZMAP with zmap (see orbitDE), and APR_CARRY
+// with carStart, carStep, carFit and gCarI when its orbit carries something besides its point (see GL_CARRY in
+// 10-approaches.js).
+//
+// Compile time shapes this file. The D3D compiler behind WebGL on Windows copies a function into every place that
+// calls it, and its time also grows with every value a loop has to carry from one turn to the next. So f(),
+// start() and cmap() have one call site each, inside orbitDE(), which has one call site in de(), which has one
+// call site in main(). main() is a state machine around that single call, the colour of a pixel comes from one
+// call to pixelColour(), and whatever can be recomputed each turn is recomputed instead of carried.
+//
+// The solid is always the bounded piece: normally the set of points whose orbit never leaves the escape radius.
+// When points far away never leave it either (negative powers do this: a huge z comes straight back to c), the
+// picture draws the region whose orbits do leave. gEsc therefore means "this point is outside the solid".
 const VERT = `#version 300 es
 void main(){
   vec2 p = vec2(float((gl_VertexID << 1) & 2), float(gl_VertexID & 2));
@@ -30,7 +26,7 @@ precision highp int;
 uniform vec2 uRes, uOff, uFlatC;
 uniform vec3 uCamPos; uniform mat3 uCam; uniform float uFov;
 uniform float uPow, uJulia, uBail, uCut, uPx, uDetail, uStepK, uNormEps, uAO, uShadow, uAnalytic, uPick;
-uniform float uBound, uMosaic, uFlat, uFlatH, uSliceZ, uRaw;
+uniform float uBound, uMosaic, uFlat, uFlatH, uSliceZ, uRaw, uGrid;
 uniform vec4 uA;
 uniform vec3 uC, uAbs, uSgn, uBg, uCutCol, uCutInk, uLight;
 uniform int uIter, uSteps, uNT, uShSteps;
@@ -38,31 +34,24 @@ uniform vec3 uKMu, uKInvC; uniform float uKL, uK3, uKInvR;
 out vec4 o;
 const float PI = 3.14159265358979;
 // Results of the latest distance query. gEsc: 1 when the point is outside the solid. gIt: smooth step count.
-// gLast: last orbit point. gGrad: outward slope (set only with three neighbouring orbits).
-// gId: 1 when the cut plane, not the set, is the nearer surface. gOnTrap: the distance returned is to the trap
-// solid (see uTrapSolid in the colour module), not to the set.
-// gFade is set BEFORE a query: an orbit point with step number "it" counts towards the colour trap with the
-// weight clamp(gFade + 1 - it, 0, 1), so 1e9 lets every point count in full. Only the query the surface colour
-// of the 3D view or of a 3D model is read from uses anything else: there it is the number of orbit steps the trap
-// reads (colourReach() in the colour module), which depends on a dial and on the size of a pixel and on nothing
-// else. The Kleinian program has no fading (its trapAdd is built without the weights).
-// gPix is also set before a query: the size of a pixel where the point asked about lies, or 0 when the
-// answer must not depend on the picture (the 2D view, volume sampling).
-// gLand is set before a query too and only the Kleinian search reads it. Above 0 it is a length in the scene:
-// the search stops feeding the colour trap at the first step that lands within that length of a pearl or a wall,
-// and feeds that last point as if it lay exactly on the wall (the query a hit's trap colour is read from).
+// gLast: last orbit point. gGrad: outward slope (set only with three neighbouring orbits). gId: 1 when the cut
+// plane, not the set, is the nearer surface. gOnTrap: the distance returned is to the trap solid, not to the set.
+// Set before a query:
+//   gFade   an orbit point with step number "it" counts towards the colour trap with the weight
+//           clamp(gFade + 1 - it, 0, 1), so 1e9 lets every point count in full. The query a surface colour is
+//           read from sets it to colourReach(). The Kleinian program has no fading.
+//   gPix    the size of a pixel where the point asked about lies, or 0 when the answer must not depend on the
+//           picture (the 2D view, volume sampling)
+//   gLand   read by the Kleinian search only. Above 0, the search stops feeding the colour trap at the first step
+//           that lands within that length of a pearl or a wall, and feeds that point as if it lay on the wall.
+//   gThinK  set only by the program a 3D model's samples are drawn with (see RAW_GONE). Declared here because
+//           main() is shared with the Kleinian program, which has no orbit code.
 float gEsc, gIt, gId, gFade, gPix, gLand; vec3 gLast, gGrad; bool gOnTrap;
-// gThinK is set before a query as well, and only by the program a 3D model's samples are drawn with (see RAW_GONE
-// in the orbit code and RAW_SLOPE in main()). It is declared here because main() is shared with the Kleinian
-// program, which has no orbit code: declared there, the Kleinian model's program did not build.
 float gThinK;
-// Layers of a trap solid thinner than this many pixels fade out of the picture (orbitDE); the colour module
-// follows the same rule when it looks for the step that touched the trap.
+// Layers of a trap solid thinner than this many pixels fade out of the picture (orbitDE, and trapAdd likewise).
 const float TRAP_THIN = 2.0;
-// That rule is about how finely the layers are folded, which goes with the stretch of the orbit, not about the
-// thickness the user has chosen: read literally, a thin trap lost its large first pieces too and the whole solid
-// vanished. So a trap thinner than TRAP_REF (where the thickness dial starts) fades where a trap of that thickness
-// would, in proportion: the same pieces, with thinner walls. Thicker traps go by their own thickness, as before.
+// A trap thinner than TRAP_REF (where the thickness dial starts) fades where a trap of that thickness would, in
+// proportion: the rule is about how finely the layers are folded, not about the thickness chosen.
 const float TRAP_REF = 0.05;
 const float MOSAIC_FIT = 0.225;   // cell widths per unit of a mosaic Julia set: a set of radius 2 spans 90% of its cell
 // What a query asks. ASK_PROBE: the far-away point that decides gInsideOut and gPowerLaw. ASK_CELL: is the
@@ -76,16 +65,14 @@ vec2 cmul(vec2 a, vec2 b){ return vec2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * 
 float at2(float y, float x){ return abs(x) + abs(y) > 0.0 ? atan(y, x) : 0.0; }
 `;
 // The switches a program is built with, as source text that goes between GL_HEAD and GL_COLOUR. needs is what
-// colProgramNeeds() (25-colour.js) returns: { solid, inside }. TRAP_SOLIDS 1: the program can draw the trap as a
-// solid. COL_INSIDE 1: it can colour the inside of the set (the 2D view and the cut face). With 0 the code is
-// not in the program at all. glNeedsKey is the same answer as a short tag for the program's key.
-// The third switch is not a colour setting but the kind of program: COL_KLEIN 1 for the Kleinian search, whose
-// trap never fades (gFade is always 1e9 there), so its trapAdd is written without the fading weights.
+// colProgramNeeds() (25-colour.js) returns, with raw added for a 3D model. With 0 the code is not in the program.
+//   TRAP_SOLIDS   the program can draw the trap as a solid
+//   COL_INSIDE    it can colour the inside of the set (the 2D view and the cut face)
+//   COL_KLEIN     the Kleinian search, whose trap never fades: its trapAdd is written without the fading weights
+//   RAW_FIT       the program a 3D model's samples are drawn with: only it carries the code that moves a sample
+//                 onto the surface for its colour and colours the model's cut face
+// glNeedsKey is the same answer as a short tag for the program's key.
 const glNeeds = (needs, klein) => `#define TRAP_SOLIDS ${needs.solid ? 1 : 0}\n#define COL_INSIDE ${needs.inside ? 1 : 0}\n#define COL_KLEIN ${klein ? 1 : 0}\n#define RAW_FIT ${needs.raw ? 1 : 0}\n`;
-// The fourth switch is the use: RAW_FIT 1 in the program a 3D model's samples are drawn with (needs.raw, asked for
-// by sampleSlice in 40-render.js; tag 'r'). Only that program carries the code that moves a sample onto the surface
-// for its colour and colours the model's cut face: in the program of the picture those branches of main() cost
-// about half a second of preparing for nothing (measured in round 7).
 const glNeedsKey = needs => (needs.solid ? 's' : '') + (needs.inside ? 'i' : '') + (needs.raw ? 'r' : '');
 // Distance estimate for an iterated equation. Up to three neighbouring orbits are carried along with
 // the point and renormalised every step; how fast they separate is the derivative, for any formula.
@@ -94,16 +81,12 @@ const glNeedsKey = needs => (needs.solid ? 's' : '') + (needs.inside ? 'i' : '')
 const GL_ORBIT = `
 const bool ORBIT_SCENE = true;
 const float MOSAIC_BALL = 2.1;    // each mosaic set is clipped to a ball of this radius, just short of the cell walls
-// Only in the program a 3D model's samples are drawn with (RAW_FIT, see RAW_SLOPE in main()). gThinK is set before
-// a query, like gPix: above 0, the layers of a trap solid that the picture does not draw at all are pushed away
-// that many times as fast as they fall short of RAW_GONE pixels. The picture's own rule (orbitDE) leaves such a
-// layer as a dip in the estimate, never more than four pixels deep: a ray is slowed by it and passes. A sample of a
-// model that looks for the picture's surface from a cell away would stop in it. RAW_GONE: half a layer's width, in
-// pixels, below which the picture's rule leaves nothing for a ray to stop on (a ray stops where the estimate reads
-// 0.8 of a pixel, and the rule adds 2 for each 1 that the half width is short of TRAP_THIN).
-#ifndef RAW_FIT
-#define RAW_FIT 1
-#endif
+// Only in the program a 3D model's samples are drawn with (see RAW_SLOPE). With gThinK above 0, the layers of a
+// trap solid that the picture does not draw are pushed away that many times as fast as they fall short of RAW_GONE
+// pixels: the picture's own rule leaves such a layer as a dip in the estimate, which a ray passes but a sample
+// looking for the surface from a cell away would stop in. RAW_GONE: half a layer's width, in pixels, below which
+// that rule leaves nothing for a ray to stop on (a ray stops where the estimate reads 0.8 of a pixel, and the rule
+// adds 2 for each 1 that the half width is short of TRAP_THIN).
 #if RAW_FIT
 const float RAW_GONE = 1.07;
 #endif
@@ -127,14 +110,12 @@ vec3 start(vec3 c){ return __Z0__; }
 float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   // Neighbour i (1 to 3) sits at z + dvI * exp(-lsI) with the constant c + dcI * exp(-lsI).
   // With no neighbours, slot 1 holds the running stretch instead: dv1.x * exp(ls1), fed by dc1.x.
-  // These are separate variables picked with "i == 1" tests, not arrays: an array indexed by a loop
-  // counter lives in memory on the GPU, and these are read and written in the innermost loop.
+  // Separate variables, not arrays: an array indexed by a loop counter lives in memory on the GPU, and these are
+  // read and written in the innermost loop.
   vec3 dv1 = vec3(0.0), dv2 = vec3(0.0), dv3 = vec3(0.0), dc1 = vec3(0.0), dc2 = vec3(0.0), dc3 = vec3(0.0);
   float h0 = 1e-3 * (length(p) + 0.05), pn = max(1.0, abs(uPow));
   vec3 c = vec3(0.0), v = vec3(0.0);
-  // What an orbit carries besides its point (APR_CARRY) is made fresh here, for the point and for every neighbour:
-  // this is the only place an orbit begins, whatever the query is for (the picture, its light, a colour, the cut,
-  // the 2D view, a mosaic cell or its Julia set, a pick, a sample of a 3D model).
+  // What an orbit carries besides its point is made fresh here: this is the only place an orbit begins.
 #ifdef APR_CARRY
   carStart();
 #endif
@@ -143,7 +124,7 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
     if (i > 0) e = h0 * (nt == 3 ? vec3(i == 1, i == 2, i == 3) : dir);
     vec3 s = p + e;
     // An approach whose picture is a slice of a larger space says where a Julia orbit starts for a picture point:
-    // its GLSL defines APR_ZMAP and zmap(point, c as the page holds it). No other approach is touched by this.
+    // zmap(point, c as the page holds it).
 #ifdef APR_ZMAP
     if (jul) s = zmap(s, cj);
 #endif
@@ -165,7 +146,6 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   // The trap solid (uTrapSolid 1 or 2): every point that has an orbit point within uTrapW of the trap shape.
   // tbest is its distance estimate: over the orbit, the least of (how far the orbit point is from the
   // thickened trap) divided by (how much the map from p to that orbit point stretches).
-  // Only in a program built for it (TRAP_SOLIDS): this sits in the innermost loop of the picture.
 #if TRAP_SOLIDS
   bool trapOn = uTrapSolid > 0.5 && gAsk != ASK_PROBE && gAsk != ASK_CELL;
   float tbest = 1e30;
@@ -186,10 +166,9 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
         float m12 = abs(dot(a1, a2)), m23 = abs(dot(a2, a3)), m31 = abs(dot(a3, a1));
         den = sqrt(max(dot(a1, a1) + m12 + m31, max(dot(a2, a2) + m12 + m23, dot(a3, a3) + m23 + m31)));
       } else if (nt == 1) den = length(dv1);
-      // Late steps wrap the set in layer upon layer of this solid, each thinner than the last. Layers thinner
-      // than a pixel cannot be drawn: a ray would stop on whichever one it happened to reach, and the picture
-      // would show them as ripples and scratches. So a layer loses thickness faster than it naturally would
-      // once it is under TRAP_THIN pixels thick (half its width, to be exact), and is gone at about half that.
+      // Late steps wrap the set in layer upon layer of this solid, each thinner than the last, and a ray would
+      // stop on whichever layer under a pixel it happened to reach. So a layer loses thickness faster than it
+      // naturally would once its half width is under TRAP_THIN pixels, and is gone at about half that.
       float inv = exp(clamp(-lm, -80.0, 80.0)) / max(den, 1e-30), wr = max(uTrapW, TRAP_REF);
       float td = (trapDist(v) - uTrapW) * inv + 2.0 * (uTrapW / wr) * max(TRAP_THIN * gPix - wr * inv, 0.0);
 #if RAW_FIT
@@ -282,8 +261,7 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
       if (dr > 1e8){ dr *= 1e-8; dc1.x *= 1e-8; ls1 += 18.420681; }
       dv1.x = dr;
     }
-    // An orbit that has come to rest will never escape, and where far points never escape most orbits
-    // come to rest within a few steps: stop there instead of running out the count.
+    // Where far points never escape, most orbits come to rest within a few steps and will never escape: stop there.
     still = swap && dot(w - v, w - v) < 1e-12 * lw * lw;
     v = w; rp = r; r = lw; it += 1.0;
     trapAdd(v, it);
@@ -301,7 +279,6 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   if (outside) d = d < cap ? max(d, 0.0) : cap;
   else d = d > -cap ? min(d, 0.0) : -cap;
   // The trap solid takes the place of the set (1) or joins it (2: whichever surface is nearer).
-  // (Without trap solids gOnTrap stays false, as main() set it.)
 #if TRAP_SOLIDS
   gOnTrap = trapOn && (uTrapSolid < 1.5 || tbest < d);
   if (gOnTrap){ outside = tbest > 0.0; d = clamp(tbest, -cap, cap); gGrad = vec3(0.0); }
@@ -311,7 +288,7 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
 }
 #ifdef APR_EITHER
 #undef orbitDE
-// (version 33) An approach that defines APR_EITHER has several orbits for one point, one per run of choices (gPick,
+// An approach that defines APR_EITHER has several orbits for one point, one per run of choices (gPick,
 // eitherCount() of them). The point belongs to the solid if any of them keeps it, so the distance is the least one.
 float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   float bd = 1e30, bEsc = 1.0, bIt = 0.0;
@@ -330,9 +307,9 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
 #endif
 #ifdef APR_BLEND
 #undef orbitDE
-// (version 34) An approach that defines APR_BLEND cross-fades the distances of several orbits of one point. Each
-// orbit says how much it counts (gBlW) and at which of its first three squarings a second orbit is wanted (gBlA1..3);
-// only those are run, so away from every blend width there is one orbit and the cost is what it was.
+// An approach that defines APR_BLEND cross-fades the distances of several orbits of one point. Each orbit says how
+// much it counts (gBlW) and at which of its first three squarings a second orbit is wanted (gBlA1..3); only those
+// are run, so away from every blend width there is one orbit.
 float gBlAcc, gBlSum, gBlBw, gBlBIt;
 vec3 gBlBGrad, gBlBLast;
 void blOne(int q, vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
@@ -368,8 +345,7 @@ float de(vec3 p, int nt, vec3 dir){
   else if (gAsk == ASK_CELL){
     // The centre of a mosaic cell, asked as a point of the ordinary picture. A looser test than the picture's
     // own (half the steps) also keeps the cells just outside, whose Julia sets have only begun to fall apart.
-    // The flat view can afford to be looser still: nothing hides anything there, and dust is cheap to draw.
-    // (Volume sampling is for a model of the 3D picture, so it keeps to that picture's test.)
+    // The flat view is looser still: nothing hides anything there. Volume sampling keeps to the 3D picture's test.
     q = gCell; n = 0;
     if (!swap) its = uFlat > 0.5 && uRaw < 0.5 ? min(3, uIter) : max(2, (uIter + 1) / 2);
   } else if (gAsk == ASK_JULIA){
@@ -391,16 +367,14 @@ float wrapf(float x, float a, float s){ x -= s; return (x - a * floor(x / a)) + 
 // the maps applied so far carry onto a wall. h: how far the mapped point stands from that wall. D: the same for
 // W, the image of the point at infinity. kk = 4 / |z - W|^2. Dividing h by the scale factor alone gives
 // t (1 + t / 2 rho) for a pearl of radius rho at the true distance t: right beside the pearl, far too long for a
-// small pearl seen from open space, where rays then stepped into it (a hollow shell) or over it. This is that
-// equation solved for t; the caller still divides by the scale factor.
+// small pearl seen from open space. This is that equation solved for t; the caller still divides by the scale
+// factor.
 float kpearl(float h, float D, float kk){ return h > 0.0 ? 2.0 * h / (1.0 + sqrt(1.0 + kk * h * max(D, 0.0))) : h; }
 // The search: carry the point back into one cell with the generators, tracking the scale factor DF and W.
 // Returns the distance to the nearest pearl it met (negative inside one), or to the trap solid, or to both.
-// land: 0, or (for the query a hit's trap colour is read from) the landing length in the units of the cell. A ray
-// stops a fraction of a pixel off a pearl, and left alone the search carries that hovering point on past the wall
-// the pearl is an image of, to places that depend on how high it hovered: the trap colours then changed with every
-// quality setting. So once a step lands within the landing length of a pearl the search is over: that point is
-// fed to the trap as a point of the wall itself, and no later one is.
+// land: 0, or the landing length in the units of the cell (see gLand). A ray stops a fraction of a pixel off a
+// pearl, and the search would carry that hovering point on past the wall the pearl is an image of, to places that
+// depend on how high it hovered. So the search is over once a step lands within the landing length of a pearl.
 float kde(vec3 z, float land){
   vec3 mu = uKMu, lz = z + vec3(1.0), llz = z - vec3(1.0), W = vec3(1e6);
   float a = mu.y, DF = 1.0, it = 0.0, fs = sign(-mu.x);
@@ -423,13 +397,10 @@ float kde(vec3 z, float land){
     // The trap as a solid: every point whose orbit, from step uTrapSkip on, comes within uTrapW of the trap shape.
     // To first order the point is that far from it, divided by how much the maps so far have stretched.
     // Step i is the point z0 as the maps left it; z is the same point carried into one copy of the pattern.
-    // The search comes to rest in a cycle of two: from there on the point as it lies in its copy is where it was
-    // two steps before, and z0 is that earlier point slid or turned by the moves of the pattern. A step that only
-    // comes back to a step that was skipped is skipped as well. Left in, it tested the trap shape itself at the
-    // starting point (half turned about mu / 2, or slid by 2), which "Orbit steps skipped at the start" is there to
-    // leave out: in a group that leans, the half-turned trap reaches under the dividing line, and its part there
-    // came into the solid two steps late as huge pieces cut off flat along the edges of the copy.
-    // The step that touched is kept here for the colours (the colour module's own record is off in this program).
+    // The search comes to rest in a cycle of two, where the point in its copy is where it was two steps before.
+    // A step that only comes back to a skipped step is skipped as well: it would test the trap shape itself at
+    // the starting point (half turned about mu / 2, or slid by 2).
+    // The step that touched is kept here for the colours (trapAdd keeps no such record in this program).
 #if TRAP_SOLIDS
     if (trapSolid){
       bool outNow = i < uTrapSkip || (out2 && dot(z - kd2, z - kd2) < 1e-5);
@@ -454,7 +425,7 @@ float kde(vec3 z, float land){
     llz = lz; lz = z;
   }
   // In the 3D view the count is reported 8 steps high. "Escape count" colours come out the same (8 steps are one
-  // full turn of the palette), and a fading tail (gFade) set from this count leaves every step of the search in.
+  // full turn of the palette).
   gIt = uFlat > 0.5 ? it : it + 8.0; gLast = z;
   best = min(best, 0.3);
   // The trap solid takes the place of the pearls (1) or joins them (2: whichever surface is nearer).
@@ -485,11 +456,7 @@ float de(vec3 p, int nt, vec3 dir){
   return d > 0.0 ? r2 * d / (R2 + r * d) : d * r2 / R2;
 }`;
 const GL_TAIL = `
-#ifndef RAW_FIT
-#define RAW_FIT 1
-#endif
-// What main() is doing. The first eight are steps, in the order of the gates they wait at; the rest say how the
-// pixel ended.
+// What main() is doing: eight steps, in the order of the gates they wait at, then how the pixel ended.
 const int PH_PROBE = 0, PH_MARCH = 1, PH_SLOPE = 2, PH_SHADOW = 3, PH_CUT = 4, PH_AO = 5, PH_FIT = 6, PH_COLOUR = 7;
 const int END_MISS = 8, END_CUT = 9, END_LIT = 10, END_FLAT = 11;
 // PH_FIT asks for the estimate this share of the way down from the hit to where the surface is expected.
@@ -497,46 +464,30 @@ const float FIT_STEP = 0.6;
 // With neighbouring orbits a ray has hit where the distance estimate reads this many pixels (see the march).
 const float LEVEL = 0.8;
 // Volume samples (the 3D model). A model point lies on a grid edge and takes its colour from the samples at the two
-// ends, which lie up to a cell off the surface. Read where the sample is, a trap colour drew rings wherever the
-// surface crossed a level of the grid, and came from fewer orbit steps than the picture's. So a sample whose
-// estimate reads between RAW_IN sample spacings inside and RAW_OUT outside (every end of an edge the surface can
-// cross, with the widest surface offset) reads its trap colour from the surface itself, found as PH_FIT finds it
-// under a hit, and with the picture's number of steps. A sample deeper inside than that, or inside the solid within
-// RAW_CUT spacings of the cut plane (the two slices whose samples the model's cut face is made between), is coloured
-// as the cut face (to RAW_ABOVE spacings above the plane: the model's face stands above it by the surface offset,
-// which goes up to two cells). RAW_HATCH is the share of ink in the cut face's hatching, taken over the whole face: a model
-// has no hatching, so its cut face gets that mix.
+// ends, which lie up to a cell off the surface. A sample whose estimate reads between RAW_IN sample spacings inside
+// and RAW_OUT outside reads its trap colour from the surface itself, found as PH_FIT finds it under a hit.
+// A sample deeper inside than that, or inside the solid in a slice between RAW_CUT spacings below the cut plane and
+// RAW_ABOVE above it (the model's face stands above the plane by the surface offset, up to two cells), is coloured
+// as the cut face. RAW_HATCH is the share of ink in the cut face's hatching, taken over the whole face.
 const float RAW_OUT = 3.2, RAW_IN = 1.5, RAW_CUT = 1.01, RAW_ABOVE = 3.01, RAW_HATCH = 0.12;
 // A sample of a trap solid. The trap solid has no slope of its own to hand over (gGrad is zero on the trap's part),
-// and its estimate is the nearest of many layers, most of them far thinner than anything the picture shows: a cell
-// off the surface the nearest one is some hair-thin layer of a late step, and read there the colour came from that
-// step (a model of smooth rainbow bubbles came out teal and speckled). So such a sample takes four more readings
-// round itself, RAW_SLOPE sample spacings off (the corners of a tetrahedron: their mean is the estimate at the
-// sample, their differences its slope), steps down that slope to where the surface should be, reads the estimate
-// there, and reads the colour where the line through the two readings reaches zero, as every other sample does.
+// and its estimate is the nearest of many layers, most of them far thinner than anything the picture shows. So
+// such a sample takes four more readings round itself, RAW_SLOPE sample spacings off (the corners of a tetrahedron:
+// their mean is the estimate at the sample, their differences its slope), and steps down that slope to the surface.
 // Those readings are made in the solid as the picture shows it: with the picture's own pixel at the sample (gPix),
-// so that the layers the picture thins out are thinned here, and with the layers it does not draw at all pushed
-// well away (gThinK = RAW_THIN, see RAW_GONE). The colour is then read by the picture's own rule alone. The
-// distance the sample hands back is its first reading, as before: the shape of the model does not change by this.
+// and with the layers it does not draw pushed well away (gThinK = RAW_THIN, see RAW_GONE).
 const float RAW_SLOPE = 0.25, RAW_THIN = 32.0;
 // The colour an orbit trap gives a hit must be a property of the surface, not of the ray that found it. A ray
-// stops a fraction of a pixel short of the solid, at a height that every quality setting sets differently, and the
-// orbit of that hovering point keeps to the surface for a while and then flies off: where the flight passes the
-// trap depends on the height, which changes smoothly from pixel to pixel. Read from there, with every step
-// counting, the trap painted rings over the solid, one for every extra step, like a stack of slices, and the
-// colours moved with the quality settings, the step limit and the distance from the camera. Two things cure it.
+// stops a fraction of a pixel short of the solid, at a height that every quality setting sets differently, and
+// where the orbit of that hovering point passes the trap depends on the height. Two things take the height out.
 // 1. The colour is read from the surface itself: the hit is moved down its own normal by the height it hovers at
-//    ("lift"). The estimate at the hit is not that height: beside an iterated set it reads about half of it, by a
-//    factor that changes from place to place, and a step of the orbit doubles whatever error is left, so that
-//    half a pixel is enough to change the colour. But the estimate falls in a straight line on the way down. So
-//    one more query (PH_FIT) reads it part of the way down, and the line through the two readings gives the
-//    height. (The Kleinian estimate is the true distance to a pearl and needs no such query.)
-// 2. The trap reads a fixed number of orbit steps (gFade = colourReach(pixel), in the colour module): the number
-//    on the "Orbit steps the trap reads" dial, or fewer where a pixel cannot show that many. "The nearest the
-//    first K orbit points come to the trap" is a continuous function of the starting point, inside and outside
-//    the solid alike, so what is left of the height does not show. The pixel meant is one of the page (uPx
-//    picture pixels), so the moving preview, every quality setting and a saved picture of any size agree.
-// Colours that do not come from a trap are read from the hit point as before, so that they do not change.
+//    ("lift"). The estimate at the hit is not that height (beside an iterated set it reads about half of it), but
+//    it falls in a straight line on the way down. So one more query (PH_FIT) reads it part of the way down, and
+//    the line through the two readings gives the height. The Kleinian estimate is the true distance to a pearl.
+// 2. The trap reads a fixed number of orbit steps (gFade = colourReach(pixel), in 25-colour.js). "The nearest the
+//    first K orbit points come to the trap" is a continuous function of the starting point, so what is left of
+//    the height does not show. The pixel meant is one of the page (uPx picture pixels), so every quality setting
+//    and a saved picture of any size agree.
 // the four corners of a tetrahedron: the cheapest set of points that gives a slope by sampling
 vec3 tetra(int i){ return vec3(i == 0 || i == 3 ? 1.0 : -1.0, i == 2 || i == 3 ? 1.0 : -1.0, i == 1 || i == 3 ? 1.0 : -1.0); }
 // the set, cut by the plane z = uCut
@@ -553,22 +504,32 @@ vec2 span(vec3 ro, vec3 rd, float R){
   h = sqrt(h);
   return vec2(max(-b - h, 0.0), -b + h);
 }
+// The grid of the plane z = 0 drawn over a colour: lines at whole numbers, the two axes heavier, and lines at tenths
+// once those are far enough apart. g is the point of the plane, w the size of a pixel there along x and along y,
+// and reach is how far from the middle the grid goes before it fades out.
+float gridLines(vec2 d, vec2 w, float wide){ vec2 a = 1.0 - smoothstep(vec2(0.0), wide * w, d); return max(a.x, a.y); }
+vec3 gridOver(vec3 col, vec2 g, vec2 w, float reach){
+  float px = max(w.x, w.y);
+  float k = 0.5 * gridLines(abs(g), w, 2.2);
+  k = max(k, 0.3 * gridLines(abs(fract(g + 0.5) - 0.5), w, 1.4) * (1.0 - smoothstep(0.04, 0.12, px)));
+  k = max(k, 0.14 * gridLines(0.1 * abs(fract(10.0 * g + 0.5) - 0.5), w, 1.4) * (1.0 - smoothstep(0.001, 0.0025, px)));
+  return mix(col, mix(uBg, uCutCol, 0.6), k * (1.0 - smoothstep(0.6 * reach, reach, length(g))));
+}
 void main(){
   vec2 uv = (2.0 * (gl_FragCoord.xy + uOff) - uRes) / uRes.y;
   bool flat2 = uFlat > 0.5, picking = uPick > 0.5;
   vec3 ro = uCamPos, rd = normalize(uCam * vec3(uv * uFov, 1.0)), L = uLight, nor = vec3(0.0);
   vec3 slicePoint = vec3(uFlatC + 0.5 * uFlatH * uv, uSliceZ);
   if (flat2 && picking){ o = vec4(slicePoint, 1.0); return; }
-  float bound = uBound > 0.0 ? uBound : 8.0, pix = 2.0 * uFov / uRes.y, farLimit = 0.45 * uBail;
+  float pix = 2.0 * uFov / uRes.y, farLimit = 0.45 * uBail;
   // An inside-out solid would also take in everything beyond the escape radius, so its picture stops short of it.
-  vec2 spanOut = span(ro, rd, bound), spanIn = span(ro, rd, min(bound, farLimit));
+  vec2 spanOut = span(ro, rd, uBound), spanIn = span(ro, rd, min(uBound, farLimit));
   bool mosaic = ORBIT_SCENE && uMosaic > 0.0 && uJulia < 0.5, cellKnown = false;
   float t = spanOut.x, tOut = 0.0, dOut = 0.0, tIn = -1.0, gauge = 1.0, ts = 0.0, res = 1.0, ao = 0.0, d = 0.0, lift = 0.0;
   int phase = ORBIT_SCENE ? PH_PROBE : flat2 ? PH_COLOUR : PH_MARCH, n = 0, nt = uNT, crawl = 0;
-  // Neighbouring pixels are worked through together by the GPU, a turn of the loop at a time, and a turn
-  // costs what its dearest pixel costs. So the light and crevice queries (long orbits, close to the surface)
-  // wait at two gates until every ray has finished marching (mostly short orbits, far away) rather than
-  // riding along with it. A waiting turn costs next to nothing.
+  // The GPU works neighbouring pixels through together, a turn of the loop at a time, and a turn costs what its
+  // dearest pixel costs. So the light and crevice queries (long orbits, close to the surface) wait at two gates
+  // until every ray has finished marching (mostly short orbits, far away). A waiting turn costs next to nothing.
   int turns = mosaic ? 2 : 1, gate1 = turns * uSteps + 1, gate2 = gate1 + turns * (uShSteps + 4);
   int budget = gate2 + turns * 6 + 2;
   if (!ORBIT_SCENE && !flat2 && spanOut.y < spanOut.x){ phase = END_MISS; budget = 0; }
@@ -587,18 +548,18 @@ void main(){
     vec3 p = flat2 ? slicePoint : ro + rd * t, q = p, dir = rd;
     // The step the colour of a hit begins with: a trap colour first finds the surface under the hit (PH_FIT).
     int qn = nt, hue = ORBIT_SCENE && colourFromTrap() ? PH_FIT : PH_COLOUR;
-    // How far down from the hit PH_FIT reads the estimate again: lift holds what it read at the hit, which beside
-    // an iterated set is about half the height. The fastest estimate (no neighbouring orbits) cannot be trusted
-    // for its size, so there PH_FIT uses one neighbouring orbit along the normal and takes both readings itself.
+    // How far down from the hit PH_FIT reads the estimate again (lift holds what it read at the hit). The fastest
+    // estimate cannot be trusted for its size, so there PH_FIT uses one neighbouring orbit along the normal and
+    // takes both readings itself.
     float fit1 = 2.0 * FIT_STEP * lift;
     bool fitFirst = ORBIT_SCENE && nt == 0 && crawl == 0;
     gAsk = ASK_PLAIN; gFade = 1e9; gLand = 0.0; gPix = flat2 ? 0.0 : pix * t;
 #if RAW_FIT
     gThinK = 0.0;
 #endif
-    // the size of a page pixel at this point, in the units the orbit runs in (a mosaic set is drawn small)
-    // (For a volume sample that is the pixel of the picture the model is made from: uPx then holds the height of
-    // that picture in page pixels, and the camera is the picture's, so a model reads as many steps as its picture.)
+    // The size of a page pixel at this point, in the units the orbit runs in (a mosaic set is drawn small). For a
+    // volume sample that is the pixel of the picture the model is made from: uPx then holds the height of that
+    // picture in page pixels, and the camera is the picture's.
 #if RAW_FIT
     float pagePix = (flat2 ? (uRaw > 0.5 ? 2.0 * uFov * length(p - ro) / uPx : uFlatH / uRes.y) : pix * t * uPx) / (mosaic ? uMosaic * MOSAIC_FIT : 1.0);
 #else
@@ -606,10 +567,8 @@ void main(){
 #endif
     if (phase == PH_PROBE){ q = farLimit * normalize(vec3(0.62, 0.37, 0.69)); qn = 0; gAsk = ASK_PROBE; }
     else if (phase == PH_SLOPE) q = p + tetra(n) * (uNormEps * e);
-    // The shadow ray asks with all the neighbouring orbits the picture has, not with one along the ray. One
-    // neighbour measures how fast the orbit moves along the ray alone; where the equation stretches space more
-    // across the ray than along it (light that grazes a fold), that read several times too long, the ray strode
-    // through the fold it should have stopped at, and the shadowed side came out hatched with fine lit lines.
+    // The shadow ray asks with all the neighbouring orbits the picture has: one along the ray alone reads several
+    // times too long where the equation stretches space more across the ray than along it (light grazing a fold).
     else if (phase == PH_SHADOW){ q = p + nor * 2.0 * e + L * ts; dir = L; }
     else if (phase == PH_AO){ q = p + nor * reach; qn = min(nt, 1); dir = nor; }
     // the point of the cut face itself, for its colour ("how deep inside" wants the estimate the 2D view uses)
@@ -623,15 +582,14 @@ void main(){
 #if RAW_FIT
         if (crawl == 4) q = p + tetra(n) * (RAW_SLOPE * uFlatH / uRes.y);
         else if (crawl == 1) q = p - nor * fit1; else if (crawl > 1) q = p - nor * lift;
-        // The readings a trap solid's sample finds its surface with, and the one its colour comes from, are made in
-        // the solid as the picture shows it (see RAW_SLOPE): the picture's pixel here is one of the page.
+        // A trap solid's sample reads the solid as the picture shows it (see RAW_SLOPE), with a page pixel as gPix.
         if (rawTrap){ gPix = 2.0 * uFov * length(p - ro) / uPx; if (crawl != 3) gThinK = RAW_THIN; }
 #endif
       }
 #if RAW_FIT
       // The second query of a Kleinian sample: the search lands on the pearl the sample stands beside, as it does
-      // for a hit in the picture, so the model has that pearl's colour. dOut is how far off the pearl is; the
-      // division undoes what de() did to that length on the way back through the turning-out sphere.
+      // for a hit in the picture. dOut is how far off the pearl is; the division undoes what de() did to that
+      // length on the way back through the turning-out sphere.
       if (!ORBIT_SCENE && uRaw > 0.5 && crawl > 1) gLand = 1.05 * max(dOut, 0.0) / max(1.0 - max(dOut, 0.0) / max(length(p), 1e-6), 0.2) + 1e-6;
 #endif
     } else if (phase == PH_FIT){
@@ -704,10 +662,8 @@ void main(){
 #if RAW_FIT
       // One of the four readings round a trap solid's sample (see RAW_SLOPE). After the fourth, lift holds the
       // estimate at the sample and nor four times the offset times its slope. The estimate of a trap solid is a
-      // distance (not half of one, as beside the set), so the surface should lie the estimate divided by the slope
-      // away: the next reading is made there, and the line through that reading and the one at the sample (ts and
-      // tIn, as for any sample) gives the place the colour is read from. With no slope to follow, the colour is read
-      // where the sample is, by the same rule.
+      // distance (not half of one, as beside the set), so the next reading is made the estimate divided by the
+      // slope away. With no slope to follow, the colour is read where the sample is.
       if (crawl == 4){
         nor += tetra(n) * d; lift += 0.25 * d; n++;
         if (n < 4) continue;
@@ -718,15 +674,14 @@ void main(){
         continue;
       }
       // A volume sample beside the trap's part of a trap solid, whose colour comes from the trap: it starts the four
-      // readings. dOut keeps the distance the sample itself read. (Not a sample that makes the cut face, see below.)
+      // readings. dOut keeps the distance the sample itself read. A sample that makes the cut face is left out.
       if (ORBIT_SCENE && flat2 && uRaw > 0.5 && crawl == 0 && colourFromTrap() && gOnTrap
           && d < RAW_OUT * uFlatH / uRes.y && d > -RAW_IN * uFlatH / uRes.y
           && (d > 0.0 || !rawFace)){
         dOut = d; lift = 0.0; nor = vec3(0.0); n = 0; rawTrap = true; crawl = 4; continue;
       }
       // A volume sample near the surface whose colour comes from the trap: the colour is read from the surface
-      // under (or over) the sample, as it is for a hit in the picture. dOut keeps the distance the sample itself read.
-      // (Not a sample inside the solid in one of the two slices next to the cut plane: that one makes the cut face.)
+      // under (or over) the sample, as it is for a hit in the picture. A sample that makes the cut face is left out.
       if (ORBIT_SCENE && flat2 && uRaw > 0.5 && crawl == 0 && colourFromTrap() && dot(gGrad, gGrad) > 0.0
           && d < RAW_OUT * uFlatH / uRes.y && d > -RAW_IN * uFlatH / uRes.y
           && (d > 0.0 || !rawFace)){
@@ -742,10 +697,10 @@ void main(){
 #endif
       phase = flat2 ? END_FLAT : END_LIT; break;
     }
-    // With no neighbouring orbits the estimate can read many times too short, by a factor nobody knows.
-    // That mode therefore trusts the sign of the estimate and how fast it falls along the ray, not its
-    // size: "ahead" is where the straight line through the last two points outside reaches zero. And gauge
-    // (how much too short, measured at the hit) scales the estimate back up for the shadow and crevice queries.
+    // With no neighbouring orbits the estimate can read many times too short, by an unknown factor. That mode
+    // trusts the sign of the estimate and how fast it falls along the ray, not its size: "ahead" is where the
+    // straight line through the last two points outside reaches zero. gauge (how much too short, measured at the
+    // hit) scales the estimate back up for the shadow and crevice queries.
     bool rough = ORBIT_SCENE && nt == 0, settle = false;
     if (phase == PH_SLOPE){
       nor += tetra(n) * d; n++;
@@ -757,9 +712,8 @@ void main(){
       if (phase == PH_MARCH){
         n++;
         // With neighbouring orbits the drawn surface is where the estimate reads LEVEL pixels, so that thin
-        // parts keep some body. A ray is not left at the first step that happens to fall under that level:
-        // rays side by side would stop up to a stride apart, and the light and shadow taken from there would
-        // come out as bands, like a stack of slices. Every hit is brought onto the level instead.
+        // parts keep some body. Every hit is brought onto the level: left at the first step under it, rays side
+        // by side would stop up to a stride apart, and their light and shadow would come out as bands.
         if (!rough) d -= LEVEL * e;
         float ahead = 1e9;
         if (rough) ahead = dOut > d && dOut < 4.0 * d ? d * (t - tOut) / (dOut - d) : 1e9;
@@ -793,9 +747,8 @@ void main(){
             // sheets (inside-out solids) or changes abruptly (mosaic cell walls).
             float longest = mosaic || gInsideOut ? 1.0 : d < 2.0 * e ? 8.0 : 3.0;
             if (ahead < 1e8) stride = clamp(0.9 * ahead, 0.3 * stride, longest * stride);
-            // A ray that runs alongside the solid reads a tiny distance at every step and would use up all its
-            // steps without getting past. Each stride in a row that is held at the least stride lets the
-            // next one be longer, though never past the point where the surface seems to be.
+            // A ray that runs alongside the solid would use up all its steps on tiny strides. Each stride in a row
+            // held at the least stride lets the next one be longer, though never past where the surface seems to be.
             float least = 0.5 * e * (1.0 + 0.25 * float(crawl));
             if (stride < least){ stride = min(least, max(0.9 * ahead, 0.5 * e)); crawl++; } else crawl = 0;
             near = ahead < 8.0 * e;
@@ -816,13 +769,12 @@ void main(){
           phase = END_CUT; break;
         }
         n = 0;
-        // How high above the solid the ray has stopped: on the level, give or take what is left in d. (A ray that
+        // How high above the solid the ray has stopped: on the level, give or take what is left in d. A ray that
         // ran out of steps has moved on since its last reading, and the fastest estimate is gauged by the slope
-        // samples that follow.)
+        // samples that follow.
         lift = rough ? 0.0 : LEVEL * e + (conv ? clamp(d, -e, e) : 0.0);
-        // The fastest estimate stops a ray anywhere within half a pixel of the surface, often inside, where
-        // nothing says how deep. For a trap colour the hit is the last point outside instead, and PH_FIT starts
-        // there (crawl, which the march is done with, counts its readings).
+        // The fastest estimate stops a ray anywhere within half a pixel of the surface, often inside. For a trap
+        // colour the hit is the last point outside instead, and PH_FIT starts there (crawl counts its readings).
         crawl = 0;
         if (rough && hue == PH_FIT && tIn >= 0.0) t = tOut;
         // the set's own slope says nothing about a trap solid, so with one in the picture the slope is sampled
@@ -833,8 +785,7 @@ void main(){
         // The stride: the estimate, at most 0.35, so that the soft edge of a shadow is sampled often enough. In the
         // open a longer stride cannot change that edge: with nothing nearer than d, no point of a stride s reads less
         // than d - s, and 10 (d - s) / (ts + s) stays at 1 or above up to s = (10 d - ts) / 11. So the ray takes that
-        // stride where it is the longer one and is out in half the steps. (Not with the fastest estimate, whose
-        // size cannot be trusted that far.)
+        // stride where it is the longer one. Not with the fastest estimate, whose size cannot be trusted that far.
         if (res >= 0.005 && ts <= 5.0 && n < uShSteps){ ts += empty ? leave : min(max(clamp(d, 2.0 * e, 0.35), rough ? 0.0 : (10.0 * d - ts) / 11.0), leave); continue; }
         n = 0; phase = uAO > 0.5 ? PH_AO : hue;
       } else {
@@ -861,23 +812,20 @@ void main(){
   if (phase == END_FLAT && gInsideOut && length(slicePoint) > farLimit){ gEsc = 1.0; d = max(d, length(slicePoint) - farLimit); }
 #if RAW_FIT
   if (raw){ p = slicePoint; if (crawl == 0) nor = dot(gGrad, gGrad) > 0.0 ? normalize(gGrad) : vec3(0.0, 0.0, 1.0); t = 0.0; }
-  // (a trap solid's sample is coloured as the point of the surface it found: with no steps skipped the colour module
-  // asks whether that point touches the trap shape itself)
+  // A trap solid's sample is coloured as the point of the surface it found: with no steps skipped the colour module
+  // asks whether that point touches the trap shape itself.
   if (raw && rawTrap) p -= nor * lift;
-  // A volume sample well inside the solid comes to light only where the model is cut open (at the cut plane, or at
-  // the wall of the grid), so it is coloured as the picture colours the cut face: the hatching, evened out, or the
-  // inside colouring when the cut face is painted.
+  // A volume sample well inside the solid comes to light only where the model is cut open, so it is coloured as
+  // the picture colours the cut face: the hatching, evened out, or the inside colouring when the face is painted.
   bool rawCut = raw && crawl == 0 && gEsc < 0.5 && (d < -RAW_IN * uFlatH / uRes.y || (d <= 0.0 && rawFace));
   if (rawCut) hit = false;
 #else
-  if (raw){ p = slicePoint; nor = dot(gGrad, gGrad) > 0.0 ? normalize(gGrad) : vec3(0.0, 0.0, 1.0); t = 0.0; }
   const bool rawCut = false;
 #endif
   if (flatPix || hit || rawCut || phase == END_CUT){
-    // A slice pixel, a hit or the cut face: one call colours them all, because every call from here is one more
-    // copy of the whole colour code for the compiler to work through (three calls took four times as long to
-    // prepare). The last query was made at the very point being coloured, so the colour hooks read live values.
-    // The cut face is hatched the way a section drawing marks cut material, unless the colour module paints it.
+    // A slice pixel, a hit or the cut face: one call colours them all (see the top of the file). The last query
+    // was made at the very point being coloured, so the colour hooks read live values. The cut face is hatched the
+    // way a section drawing marks cut material, unless the colour module paints it.
     float s = abs(fract((gl_FragCoord.x + gl_FragCoord.y) / (8.0 * uPx)) - 0.5);
     colourCapture();
     vec3 alb = pixelColour(flatPix ? COL_FLAT : hit ? COL_HIT : COL_CUT, flatPix ? slicePoint : phase == END_CUT ? vec3(p.xy, uCut) : p,
@@ -896,6 +844,18 @@ void main(){
       float spe = pow(clamp(dot(nor, normalize(L - rd)), 0.0, 1.0), 40.0) * dif * sh;
       vec3 lig = 1.45 * dif * sh * vec3(1.00, 0.94, 0.84) + occ * (0.42 * sky * vec3(0.50, 0.62, 0.80) + 0.20 * bac * vec3(0.80, 0.70, 0.58));
       col = alb * lig + 0.16 * spe + 0.06 * fre * occ * alb;
+    }
+  }
+  if (uGrid > 0.5){
+    // In the 2D view the grid lies on the picture. In space it shows wherever the plane is nearer than the solid.
+    // D is the ray stretched so that it reaches one unit forward: from pixel to pixel it changes by Dx and by Dy,
+    // which gives the pixel's size on the plane exactly.
+    vec3 D = rd / dot(rd, uCam[2]), Dx = pix * uCam[0], Dy = pix * uCam[1];
+    float tg = abs(D.z) > 1e-6 ? -ro.z / D.z : -1.0;
+    if (flat2) col = gridOver(col, slicePoint.xy, vec2(uFlatH / uRes.y), 1e9);
+    else if (tg > 0.0 && (phase == END_MISS || tg * length(D) < 1.001 * t)){
+      vec2 w = abs(ro.z) * (abs(Dx.xy * D.z - D.xy * Dx.z) + abs(Dy.xy * D.z - D.xy * Dy.z)) / (D.z * D.z);
+      col = gridOver(col, ro.xy + tg * D.xy, w, uBound);
     }
   }
   o = vec4(col, 1.0);

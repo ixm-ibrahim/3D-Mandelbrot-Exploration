@@ -1,5 +1,0 @@
-batch 2 is back: Fri Nov 20 12:45:05 MST 2026
-batch 3 done: Fri Nov 20 12:47:42 MST 2026
-flat2 done: Fri Nov 20 12:50:42 MST 2026
-same done: Fri Nov 20 12:52:48 MST 2026
-speed done: Fri Nov 20 13:17:29 MST 2026

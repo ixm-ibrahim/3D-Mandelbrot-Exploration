@@ -1,5 +1,0 @@
-tri    1/2       2d 1.236 | column: top 0.828, inside length 0.828, lowest escape 0.8320000000000001 | disc top 0.412 | neck / body: 0.025 / 0.166 (block 0.0081) | 69 s
-tri    1/2root   2d 1.000 | column: top 0.900, inside length 0.900, lowest escape None | disc top 0.900 | neck / body: 0.128 / 0.215 (block 0.0081) | 206 s
-tri    1/3       2d 1.107 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.012 | neck / body: 0.008 / 0.105, 0.008 / 0.137 (block 0.0081) | 223 s
-tri    1/3near   2d 1.050 | column: top 0.000, inside length 0.000, lowest escape 0.004 | disc top 0.028 | neck / body: 0.011 / 0.110, 0.011 / 0.135 (block 0.0081) | 294 s
-done tri 295 s

@@ -1,9 +1,9 @@
-// ---------- colour: palettes, orbit traps, and how a surface point or a 2D pixel is coloured.
-// This module owns everything about colour: its controls (COLOUR_CONTROLS -> S.colour), its shader code
-// (GL_COLOUR) and its uniforms (setColourUniforms). The renderer only calls the hooks named below.
+// Colour: palettes, orbit traps, and how a surface point or a 2D pixel is coloured.
+// Holds the controls (COLOUR_CONTROLS), the shader code (GL_COLOUR) and its uniforms (setColourUniforms).
 
-// A palette is [name, stop, stop, ...] with two to eight stops, spread evenly. A palette whose last stop
-// repeats its first runs round in a circle; any other runs to its end and back again, so neither has a seam.
+// A palette is [name, stop, stop, ...] with two to eight stops, spread evenly (the repeated last stop of a circular
+// palette is not counted). A palette whose last stop repeats its first runs round in a circle; any other runs to its
+// end and back again, so neither has a seam.
 // S.colour.pal is an index into this list: add new palettes at the end so the numbers keep their meaning.
 const PALETTES = [
   ['Brass and verdigris', '#c98f33', '#2a8078', '#21386b', '#dbd1b8', '#c98f33'],
@@ -26,9 +26,7 @@ const PALETTES = [
   ['Porcelain', '#f3efe6', '#c7d5e8', '#5a7fbd', '#23407f', '#e8dfcf'],
   ['Orchid', '#2a0f3d', '#7a2a8f', '#d05aa8', '#f7b6c8', '#fff4e6'],
 ];
-// The order of the palette menu: vivid ones first, restrained ones last, and warm and cool taking turns at the
-// top, so that stepping down the list changes the picture every time (Sunset, Fire and Ember in a row looked
-// like one palette). A palette missing from this list is still offered, after the others.
+// Menu order: vivid first, restrained last, warm and cool alternating. Palettes not listed follow at the end.
 const PAL_MENU = [7, 6, 5, 9, 13, 1, 2, 12, 15, 8, 14, 10, 11, 16, 18, 0, 3, 17, 4];
 const PAL_MAX = 16;   // stops the shader has room for: eight out and back
 const palMenuOptions = () => [...PAL_MENU, ...PALETTES.keys()].filter((i, at, all) => all.indexOf(i) === at).map(i => [i, PALETTES[i][0]]);
@@ -38,89 +36,68 @@ const TRAP = { point: 0, cross: 1, line: 2, ray: 3, planes: 4, shell: 5, ring: 6
 // Which controls apply. The trap is in use when the surface is coloured by it, when it shapes the solid (3D
 // only), or when the inside of the flat picture or of the cut face is coloured by it.
 const colSolidAsked = c => !S.flat && c.solid > 0;
-// (Balls on balls, the second Kleinian group, has no trap solid: there the trap only colours. colBalls is below.)
-const colSolidOn = c => colSolidAsked(c) && c.trap !== TRAP.tones && !colBalls();
+// Balls on balls (ballsShown in 32-balls.js) has no trap solid: there the trap only colours.
+const colSolidOn = c => colSolidAsked(c) && c.trap !== TRAP.tones && !ballsShown();
 const colInsideShown = c => !!S.flat || (!!c.cutFace && !!S.cutOn);
 const colInsideOn = c => colInsideShown(c) && c.inMode > 0;
-const colTrapColours = c => c.mode <= 1 || (colInsideShown(c) && c.inMode === 1);
-const colTrapOn = c => colTrapColours(c) || (colSolidAsked(c) && !colBalls());
+const colTrapColours = c => c.mode === 0 || (colInsideShown(c) && c.inMode === 1);
+const colTrapOn = c => colTrapColours(c) || (colSolidAsked(c) && !ballsShown());
 // A trap that has a centre (the three-tone mix has none), and one that has a "colours by" choice as well.
 const colTrapShape = c => colTrapOn(c) && c.trap !== TRAP.tones;
 const colTrapBy = c => colTrapColours(c) && c.trap !== TRAP.tones;
-// Anything that reads the palette.
-const colPalOn = c => c.mode <= 5 || colInsideOn(c);
+const colPalOn = c => c.mode <= 4 || colInsideOn(c);
 const colGlowOn = c => colTrapBy(c) && c.by === 4;
-// The "colours by" choices that go by nearness. On a solid made from the trap every point is equally near the
-// trap, so these have nothing to show there (see colPick in the shader for what is shown instead).
+// The "colours by" choices that go by nearness, which is the same all over a solid made from the trap.
 const colNearBy = c => c.by === 0 || c.by === 2 || c.by === 4;
-// True when every orbit of the picture stays in the plane z = 0: the 2D view of the slice at height 0 (for the
-// Kleinian set only while neither the group nor the turning-out sphere leans out of that plane).
-// (The second Kleinian group, Balls on balls, has no lean: its flat cut is always carried into itself, and the
-// trap sees that plane as its own z = 0. See 32-balls.js.)
-const colBalls = () => S.mode === 'k' && S.k.group === 1;
-const colOrbitsFlat = () => S.flat && S.cut === 0 && (S.mode !== 'k' || colBalls() || (S.k.cz === 0 && S.k.mz === 0));
+// colOrbitsFlat: every orbit of the picture stays in the plane z = 0 (the 2D view of the slice at height 0, with no
+// Kleinian lean out of that plane).
+const colOrbitsFlat = () => S.flat && S.cut === 0 && (S.mode !== 'k' || ballsShown() || (S.k.cz === 0 && S.k.mz === 0));
 // How much wider than the others the glow of a thin trap is drawn (see setColourUniforms).
 const COL_GLOW_THIN = 1.5;
-// "Orbit steps the trap reads": where the dial starts, and when it is shown. It acts on the surface of the 3D view
-// of an equation while that surface is coloured by the trap. The 2D view reads every step until the orbit leaves,
-// and the Kleinian search reads every step until it lands, so neither has a use for it.
-// It starts at 4 because that is what the opening views can show on any screen (a pixel there allows 4.5 to 5.5
-// steps, see colourReach in the shader). Started higher, the picture gained steps as the window grew or the view
-// moved in, and whole regions changed colour while zooming (measured in round 6: out/r6/colour/reachzoom.log).
+// Where "Orbit steps the trap reads" starts, and when it is shown.
+// 4 is what the opening views can resolve on any screen (see colourReach). Higher, regions change colour while zooming.
 const COL_REACH = 4;
-const colReachOn = c => !S.flat && S.mode !== 'k' && c.mode <= 1;
-// In Mandelbrot mode the orbit starts from a fixed value, so its first point that moves with the place in the
-// picture is step 1, where a Julia orbit (and a start value written with c) has it at step 0. "Orbit steps skipped
-// at the start" counts from that point in every mode: 0 keeps the trap shape itself in the solid, 1 leaves it out.
-// (The small sets of the mosaic are Julia sets.)
+const colReachOn = c => !S.flat && S.mode !== 'k' && c.mode === 0;
+// 1 where the orbit starts from a fixed value (Mandelbrot mode, no c in the start value, no mosaic): its first point
+// that moves with the place in the picture is step 1, and "Orbit steps skipped at the start" counts from there.
 const colSkipFrom = () => (S.mode === 'm' && !S.mosaic && !/(^|[^a-z])c([^a-z]|$)/i.test(String(S.z0)) ? 1 : 0);
-// The trap shapes that are thin as a solid: a point, one line, half a line.
+// Trap shapes that are thin as a solid.
 const colTrapThin = c => c.trap === TRAP.point || c.trap === TRAP.line || c.trap === TRAP.ray;
-// A Kleinian trap solid comes out in whole pieces only where the search's own cuts are hidden by a mirror symmetry:
-// the search carries a point back into one copy of the pattern by sliding and turning it, the trap is tested after
-// each of those moves, and a piece of the solid that reaches across the edge of a copy is tested on the far side
-// against another part of the trap. With both leans of mu at 0 and the trap centred on x = 0 and z = 0, the two
-// sides of every such edge are mirror images, and the piece carries on as its own reflection. Anything else shows
-// cut faces (round 7: the tester's entries 3 and 24 have a real part of 1; the third map has nothing to do with it).
-// The trap centre has been moved along y in the Kleinian view: the pieces of a trap solid then grow past the camera.
-const colKleinHigh = c => S.mode === 'k' && !colBalls() && c.ty !== 0;
-const colKleinCuts = c => S.mode === 'k' && !colBalls() && (S.k.mx !== 0 || S.k.mz !== 0 || c.tx !== 0 || c.tz !== 0);
+// colKleinHigh: the trap centre is off y = 0, where pieces of a Kleinian trap solid grow past the camera.
+// colKleinCuts: a Kleinian trap solid shows cut faces. Its pieces are whole only where the two sides of every edge of
+// a copy of the pattern are mirror images: both leans of mu at 0 and the trap centred on x = 0 and z = 0.
+const colKleinHigh = c => S.mode === 'k' && !ballsShown() && c.ty !== 0;
+const colKleinCuts = c => S.mode === 'k' && !ballsShown() && (S.k.mx !== 0 || S.k.mz !== 0 || c.tx !== 0 || c.tz !== 0);
 
 // Control specs: rendered by buildControls() into the Colour section; values live in S.colour[key].
-// Mode 1 is not offered: it was "nearest approach to the origin", which is now the point trap, and the shader
-// still reads 1 as "orbit trap". The page opens with what its user picked after trying the rest: a sphere shell
-// as the trap, shown as a glow, in the rainbow reversed. The shell's radius of 1 is tuned to that choice: the
-// orbits of the usual sets cross that sphere again and again, so its glow draws rings over the whole surface,
-// where a smaller shell left the rounder Julia sets one colour.
+// The numbers of 'mode' are what the shader switches on (uColMode).
+// The trap radius of 1 suits the opening shell and glow: the orbits of the usual sets cross that sphere again and again.
 // A `when` rule may read the page state S as well as the colour values; colViewSync keeps those rules in step.
 // xmin, xmax, xlo, xhi are the ranges while "Extreme ranges" is on.
 const COLOUR_CONTROLS = [
-  { type: 'select', key: 'mode', label: 'Colour by', def: 0, options: [[0, 'Orbit trap'], [2, 'Escape count'], [3, 'Distance from the centre'], [4, 'Depth from the camera'], [5, 'Direction of the last step'], [6, 'Surface direction'], [7, 'Plain clay']] },
-  { type: 'note', when: c => S.flat && c.mode === 4, text: 'A flat picture has no depth, so the 2D view shows the escape count here.' },
-  { type: 'note', when: c => S.flat && c.mode >= 6, text: 'In the 2D view this choice leaves a plain outline of the set.' },
-  { type: 'note', when: c => !S.flat && S.mode !== 'k' && c.mode === 5, text: 'On a solid the last step lands somewhere different for every point, so this choice looks speckled. It is at its best in the 2D view and on the Kleinian set.' },
-  { type: 'note', when: c => !S.flat && colBalls() && c.mode === 5, text: 'On Balls on balls the last step lands somewhere different for every point of a ball, so in the 3D view this choice blends into one pale colour: it is at its best in the 2D view.' },
+  { type: 'select', key: 'mode', label: 'Colour by', def: 0, options: [[0, 'Orbit trap'], [1, 'Escape count'], [2, 'Distance from the centre'], [3, 'Depth from the camera'], [4, 'Direction of the last step'], [5, 'Surface direction'], [6, 'Plain clay']] },
+  { type: 'note', when: c => S.flat && c.mode === 3, text: 'A flat picture has no depth, so the 2D view shows the escape count here.' },
+  { type: 'note', when: c => S.flat && c.mode >= 5, text: 'In the 2D view this choice leaves a plain outline of the set.' },
+  { type: 'note', when: c => !S.flat && S.mode !== 'k' && c.mode === 4, text: 'On a solid the last step lands somewhere different for every point, so this choice looks speckled. It is at its best in the 2D view and on the Kleinian set.' },
+  { type: 'note', when: c => !S.flat && ballsShown() && c.mode === 4, text: 'On Balls on balls the last step lands somewhere different for every point of a ball, so in the 3D view this choice blends into one pale colour: it is at its best in the 2D view.' },
   { type: 'select', key: 'trap', label: 'Trap shape', def: TRAP.shell, when: colTrapOn,
     options: [[TRAP.point, 'Point'], [TRAP.cross, 'Cross: the three axis lines'], [TRAP.line, 'Line: one axis'], [TRAP.ray, 'Ray: half of one axis'], [TRAP.planes, 'Planes: the three coordinate planes'], [TRAP.shell, 'Sphere shell'], [TRAP.ring, 'Ring in the xy-plane'], [TRAP.tones, 'Three tones, one for each plane']] },
-  { type: 'note', when: c => c.mode <= 1, text: 'A trap is a shape left in the path of the orbit. Each point is coloured by how its own orbit passed that shape.' },
+  { type: 'note', when: c => c.mode === 0, text: 'A trap is a shape left in the path of the orbit. Each point is coloured by how its own orbit passed that shape.' },
   { type: 'note', when: c => S.flat && colTrapColours(c) && (c.trap === TRAP.planes || c.trap === TRAP.ring),
     text: 'In the 2D view, while the slice and the trap centre are both at height 0, the planes show as the same two lines as the cross, and the ring as the same circle as the sphere shell. Raise either one to tell them apart.' },
-  // (Balls on balls has no trap solid, so there the choice is put away, and the Examples list with it, which stands
-  //  under it and holds trap solids only; one sentence stands in their place, a few lines down, where the builder of
-  //  round 27 put the first form of it. A choice made in another view is kept.)
-  { type: 'select', key: 'solid', label: 'In the 3D view the trap', def: 0, when: c => !S.flat && !colBalls() && (colTrapShape(c) || c.solid > 0),
+  { type: 'select', key: 'solid', label: 'In the 3D view the trap', def: 0, when: c => !S.flat && !ballsShown() && (colTrapShape(c) || c.solid > 0),
     options: [[0, 'Colours the surface'], [1, 'Is the solid'], [2, 'Is added to the solid']] },
   { type: 'note', when: colSolidOn, text: 'The solid now holds every point whose orbit comes within the trap thickness of the trap shape, so each trap shape gives a different object. The trap thickness, the steps skipped at the start, and the trap radius and centre change it most. Each further step of the orbit adds a finer layer of pieces, and layers too fine for the picture to show are left out, so the iterations hardly change it. The 2D view is not changed by this.' },
   { type: 'note', when: c => colSolidOn(c) && S.mode !== 'k' && colTrapThin(c),
     text: 'A point, a line and a ray are thin shapes, and as a solid they start as a few small pieces: raise the trap thickness for a fuller object. If the object looks like the plain set, move the trap centre: orbits inside the set all end at the same few places, and a trap that passes through one of them catches the whole inside.' },
-  { type: 'note', when: c => colSolidOn(c) && S.mode === 'k' && !colBalls() && colTrapThin(c),
+  { type: 'note', when: c => colSolidOn(c) && S.mode === 'k' && !ballsShown() && colTrapThin(c),
     text: 'In the Kleinian view a point, a line and a ray give much the same fine lace. The cross, the planes, the sphere shell and the ring each give an object of their own.' },
   { type: 'note', when: c => colSolidOn(c) && colKleinCuts(c),
     text: 'With this group or this trap centre some pieces come out cut open, with flat faces. The pieces are whole only while both leans of μ (its real part and its j part) are 0 and the trap centre has x = 0 and z = 0.' },
-  { type: 'note', when: c => !S.flat && colBalls() && (colTrapShape(c) || c.solid > 0), text: 'Balls on balls has no trap solid, and so none of the examples, which are all trap solids: in this view the trap only colours the balls.' },
+  { type: 'note', when: c => !S.flat && ballsShown() && (colTrapShape(c) || c.solid > 0), text: 'Balls on balls has no trap solid, and so none of the examples, which are all trap solids: in this view the trap only colours the balls.' },
   { type: 'note', when: c => colSolidOn(c) && colKleinHigh(c),
     text: 'With the trap centre moved up or down (y not 0) some pieces grow very large. They can fill the picture, or close round the camera so that the picture is black. Put y back to 0, or zoom out a long way.' },
-  { type: 'note', when: c => colSolidAsked(c) && !colSolidOn(c) && !colBalls(), text: 'Three tones has no shape of its own, so no solid can be made from it. Pick another trap shape.' },
+  { type: 'note', when: c => colSolidAsked(c) && !colSolidOn(c) && !ballsShown(), text: 'Three tones has no shape of its own, so no solid can be made from it. Pick another trap shape.' },
   { type: 'dial', key: 'thick', label: 'Trap thickness', min: 0.005, max: 0.5, step: 0.005, def: 0.05, lo: 0.0005, hi: 5, xmax: 2.5, xhi: 50, when: colSolidOn,
     help: 'How close an orbit has to come to the trap shape for the point it started from to be solid.' },
   { type: 'dial', key: 'skip', label: 'Orbit steps skipped at the start', min: 0, max: 12, step: 1, def: 1, lo: 0, hi: 100, xmax: 60, xhi: 1000, int: true, when: colSolidOn,
@@ -148,8 +125,7 @@ const COLOUR_CONTROLS = [
   { type: 'check', key: 'rev', label: 'Reverse the palette', def: true, when: colPalOn },
   { type: 'dial', key: 'bands', label: 'Colour bands, how many', min: 0.1, max: 6, step: 0.01, def: 1, lo: 0.01, hi: 50, xmax: 30, xhi: 500, when: colPalOn },
   { type: 'dial', key: 'shift', label: 'Colour bands, shift', min: 0, max: 2, step: 0.005, def: 0, lo: -50, hi: 50, animate: true, when: colPalOn },
-  // The flat picture. At these defaults it is drawn exactly as it always was: one pixel of outline, no glow,
-  // a plain inside.
+  // The flat picture and the inside of the set
   { type: 'dial', key: 'edge', label: 'Outline width, pixels', min: 0, max: 8, step: 0.1, def: 1, lo: 0, hi: 40, xmax: 40, xhi: 400, when: () => !!S.flat,
     help: 'The outline is drawn from the distance estimate, so threads thinner than a pixel still show. 0 leaves it out. Deep in a spiral the set is a web of such threads: each is drawn about a pixel wide, and where they crowd together they run into soft shapes. More iterations do not change that.' },
   { type: 'dial', key: 'edgeGlow', label: 'Glow beside the outline, pixels', min: 0, max: 60, step: 0.5, def: 0, lo: 0, hi: 400, xmax: 400, xhi: 4000, when: () => !!S.flat,
@@ -165,58 +141,33 @@ const COLOUR_CONTROLS = [
   { type: 'check', key: 'inRev', label: 'Reverse the inside palette', def: false, when: c => colInsideOn(c) && c.inPal >= 0 },
 ];
 
-// Shader hooks. The renderer includes GL_COLOUR after GL_HEAD, so it may use what GL_HEAD declares:
-//   PI, at2(), cmul(), uPow, uBg, uCutCol, uCutInk (linear colours), and the orbit results gIt (smooth step count),
-//   gLast (last orbit point), gEsc (1 when the point is outside the solid) and gFade (see trapAdd).
-// The renderer calls, in this order:
-//   trapStart()            once before each orbit
-//   trapAdd(v, it)         after every orbit step, with the new point and the step number
-//   colourCapture()        once, right after the ray has hit: copy whatever the colour needs out of the live globals,
-//                          because later distance queries (slope, shadows, crevices) overwrite them
-//   pixelColour(kind, p, nor, t, d, px, hatch)   the colour of the pixel, whatever kind of pixel it is (see the
-//                          function). main() calls it in one place only: the compiler behind WebGL on Windows copies
-//                          a function into every place that calls it, and this one carries all the colour code.
-//   colourUnlit()          1.0 if the colour of a surface point should be shown as it is, without lighting
-//   colourFromTrap()       true when a surface point's colour is read from the orbit trap: the renderer then makes
-//                          the query that colour comes from at the surface itself, not where the ray stopped
-//   colourReach(px)        the value gFade gets for that query (and for a volume sample): how many orbit steps
-//                          the trap reads where a page pixel is px across (the dial uTrapReach, or what px can show)
+// Shader hooks. GL_COLOUR follows GL_HEAD in every scene program. The renderer calls, in this order:
+//   trapStart()        once before each orbit
+//   trapAdd(v, it)     after every orbit step, with the new point and the step number
+//   colourCapture()    once, just before pixelColour(): the last distance query was made at the point being coloured
+//   pixelColour(...)   the colour of the pixel, whatever kind of pixel it is; main() calls it in one place only
+//   colourUnlit()      1.0 if the colour of a surface point is shown as it is, without lighting
+//   colourFromTrap()   true when a surface point's colour is read from the orbit trap: the renderer then makes
+//                      the query that colour comes from at the surface itself, not where the ray stopped
+//   colourReach(px)    the value gFade gets for that query and for a volume sample
 // pal(t, inside) reads the palette (the inside one when asked): t = 0 is its first stop, t = 1 its last, and it
-// repeats with period 2 (a circular palette goes once round per unit, so it also closes up at 2). trapDist(v) is
-// the plain distance from an orbit point to the trap shape in use; it reads only v and uniforms, so other shader
-// code may call it whenever it likes. Everything else in here is private (col*, trap*).
+// repeats with period 2. Other shader code may call pal() and trapDist(); the rest is private (col*, trap*).
 //
-// A program is built for what the colour settings need (colProgramNeeds below, glNeeds in 30-shaders.js): the
-// source is written with TRAP_SOLIDS and COL_INSIDE defined as 1 or 0, and a program built with 0 carries none of
-// that code, which is what keeps the usual program quick to prepare and quick to draw. Such a program reads
-// uTrapSolid, or uInMode and uCutFace, as constants in place of uniforms. A third macro, COL_KLEIN, is 1 in the
-// Kleinian program: its trap never fades, so trapAdd is written there without the weights.
+// The source is written with TRAP_SOLIDS and COL_INSIDE defined as 1 or 0 (colProgramNeeds below, glNeeds in
+// 30-shaders.js). A program built with 0 carries none of that code and reads uTrapSolid, or uInMode and uCutFace,
+// as constants. COL_KLEIN is 1 in the Kleinian program: its trap never fades, so trapAdd has no weights there.
+//
 // Uniforms the renderer's shader code may read: uTrapSolid (0 the trap only colours, 1 it is the solid, 2 it is
-// added to the solid), uTrapW (thickness of that solid), uTrapSkip (orbit points with a lower index do not count:
-// the "skipped at the start" dial, plus 1 where the orbit starts from a fixed value, see colSkipFrom).
-// uTrapReach = the "Orbit steps the trap reads" dial (read through colourReach only).
-// Private uniforms: uColMode, uTrap, uTrapBy = S.colour.mode, .trap, .by; uPal = two palettes, each a closed loop
-// in PAL_MAX slots: the outside one (uPalN stops, gone round uPalF times per unit of t), then the inside one
-// (uPalInN, uPalInF); uPalS, uPalO = bands and shift; uPalInO = added to the shift for the inside palette (half a
-// turn while the inside is coloured by the trap in the outside's own palette, else 0);
-// uTrapC, uTrapR = trap centre and radius; uTrapAx = unit
-// vector along the trap line or ray; uTrapOff = added to the distance to each trap plane (a large number switches
-// that plane off); uColIter = the step limit of the orbit; uGlowK, uGlowP = the glow's narrowness and the power of
-// its fall-off; uColNeed = what trapAdd has to keep (1 the trap measures, 2 the running stretch); uColKlein,
-// uColJulia, uColMu = which kind of orbit this is, for the running stretch; uPalMean = the mean colour of the
-// outside palette; uInMode = how the inside is coloured
-// (0 plain); uEdge, uEdgeGlow = outline width and glow reach of the flat picture, in pixels; uCutFace = 1 when the
-// cut face is coloured like the inside.
+// added to the solid), uTrapW (thickness of that solid), uTrapSkip (orbit points with a lower index do not count),
+// uTrapC (the trap centre), uInMode and uCutFace (how the inside and the cut face are coloured). The Kleinian search
+// also writes the gTouch record itself (see trapAdd).
+// The others are private and set in setColourUniforms. uPal holds two palettes, each a closed loop in PAL_MAX
+// slots: the outside one (uPalN stops, gone round uPalF times per unit of t), then the inside one (uPalInN,
+// uPalInF). uPalS, uPalO: bands and shift; uPalInO: added to the shift for the inside palette. uTrapAx: unit vector
+// along the trap line or ray. uTrapOff: added to the distance to each trap plane. uGlowK, uGlowP: the glow's
+// narrowness and the power of its fall-off. uColNeed: what trapAdd has to keep (1 the trap measures, 2 the running
+// stretch). uColKlein, uColJulia, uColMu: the kind of orbit, for the running stretch.
 const GL_COLOUR = `
-#ifndef TRAP_SOLIDS
-#define TRAP_SOLIDS 1
-#endif
-#ifndef COL_INSIDE
-#define COL_INSIDE 1
-#endif
-#ifndef COL_KLEIN
-#define COL_KLEIN 0
-#endif
 uniform int uColMode, uTrap, uTrapBy, uPalN, uPalInN, uTrapSkip, uColNeed;
 uniform float uPalS, uPalO, uPalF, uPalInF, uPalInO, uTrapR, uColIter, uGlowK, uGlowP, uTrapW, uTrapReach;
 uniform float uEdge, uEdgeGlow, uColKlein, uColJulia;
@@ -235,43 +186,34 @@ const int uInMode = 0; const float uCutFace = 0.0;
 // (w), gNearIt = at which step, and gTrap = its nearest approach to each coordinate plane and to the origin
 // (the three-tone mix). gTouch, gTouchIt = the same for the step that makes a trap solid (see trapAdd),
 // gTouchS its score and gTouchStr the stretch at that step. gStr = the running stretch, gLogS = the sum of the
-// logarithms of its factors over gSteps steps. c* are the captured copies; cOnTrap is the renderer's gOnTrap
-// (the point is on the trap's part of the solid, not on the set's own surface) as it stood at the capture.
+// logarithms of its factors over gSteps steps. c* are the captured copies.
 vec4 gTrap, cTrap, gNear, cNear; float gNearIt, cNearIt, cIt; vec3 cLast;
 #if TRAP_SOLIDS
 vec4 gTouch, cTouch; float gTouchIt, cTouchIt, gTouchS, cTouchS, gTouchStr, cTouchStr, cPix; bool cOnTrap;
 #endif
-// How many orbit steps the trap reads where the colour of a surface is wanted, as the value the renderer gives
-// gFade for that query. px: the size of a page pixel at the point, in the units the orbit runs in.
-// It is the dial "Orbit steps the trap reads" (uTrapReach), or fewer where a pixel cannot show that many: a move
-// of one pixel grows by about the power at every step, so after log(1 / px) / log(power) steps it is as large as
-// the set itself, and a step later than that, less REACH_MARGIN, would only paint noise finer than the picture.
-// So the number depends on the dial and on the zoom and on nothing else: not on the quality settings, not on the
-// step limit, not on where the ray happened to stop. It is a real number: the last step fades in and out as the
-// view zooms. Where the equation is not a plain power of |z| (the renderer's probe says so) 2 stands for the power.
+// How many orbit steps the trap reads for the colour of a surface: the value the renderer gives gFade for that
+// query. px: the size of a page pixel at the point, in the units the orbit runs in. It is the dial (uTrapReach), or
+// fewer where a pixel cannot show that many: a move of one pixel grows by about the power at every step, so after
+// log(1 / px) / log(power) steps it is as large as the set, and a step later than that, less REACH_MARGIN, would
+// only paint noise. Where gPowerLaw is false, 2 stands for the power.
 const float REACH_MARGIN = 3.0;
 float colourReach(float px){
   float k = -log(max(px, 1e-30)) / log(gPowerLaw ? max(abs(uPow), 1.5) : 2.0) - REACH_MARGIN;
   return max(min(uTrapReach, k), 1.0);
 }
-// True when the colour of a surface point is read from the orbit trap. The renderer then reads it from the surface
-// itself and with the fixed number of steps above; every other colouring is read as it always was.
-bool colourFromTrap(){ return uColMode <= 1; }
+bool colourFromTrap(){ return uColMode == 0; }
 #if TRAP_SOLIDS || COL_INSIDE
-float gStr, cStr, gLogS, cLogS, gSteps, cSteps;
+float gStr, gLogS, cLogS, gSteps, cSteps;
 #endif
-// The plain distance from the orbit point v to the trap shape in use, wherever the trap has been moved to.
-// Nothing is read but v and the trap's uniforms and nothing is written, so it may be called from anywhere.
+// The distance from the orbit point v to the trap shape in use. It reads only v and uniforms and writes nothing.
 // The three-tone mix has no shape of its own: it stands for the three coordinate planes through the origin.
-// While the trap makes the solid (uTrapSolid > 0.5) the endless shapes are cut down to the trap radius.
 float trapDist(vec3 v){
   if (uTrap == ${TRAP.tones}){ vec3 a = abs(v) + uTrapOff; return min(a.x, min(a.y, a.z)); }
   vec3 q = v - uTrapC;
   if (uTrap == ${TRAP.point}) return length(q);
 #if TRAP_SOLIDS
   if (uTrapSolid > 0.5 && uTrap <= ${TRAP.planes}){
-    // As a solid, a trap that runs on for ever would fill the picture with sheets out to the drawing radius.
-    // So there the lines stop uTrapR from the centre and the planes become discs of that radius.
+    // As a solid an endless trap would fill the picture: lines stop uTrapR from the centre, planes become discs.
     vec3 o = max(abs(q) - uTrapR, 0.0);
     if (uTrap == ${TRAP.cross}) return sqrt(min(o.x * o.x + q.y * q.y + q.z * q.z, min(q.x * q.x + o.y * o.y + q.z * q.z, q.x * q.x + q.y * q.y + o.z * o.z)));
     if (uTrap == ${TRAP.planes}){
@@ -300,22 +242,13 @@ void trapStart(){
   gStr = 1.0; gLogS = 0.0; gSteps = 0.0;
 #endif
 }
-// One orbit point. Two things in here are not obvious.
-// The fixed reach. On a surface the trap reads a fixed number of orbit steps (colourReach above), because the
-// later steps of an orbit that starts a hair off the surface pass the trap at places that depend on the hair's
-// width, which drew fine rings all over the surface and made the colours follow the quality settings. So a point
-// with step number it counts with the weight clamp(gFade + 1 - it, 0, 1): the renderer sets gFade to the reach
-// (1e9: everything counts, as in the 2D view). Every measure moves the share "weight" of the way to what the
-// point would have made it, so nothing jumps while gFade slides. (The Kleinian search has no fading: its program
-// is built without the weights.)
+// One orbit point. It counts with the weight clamp(gFade + 1 - it, 0, 1) (see gFade in GL_HEAD): every measure
+// moves that share of the way to what the point would have made it, so nothing jumps as gFade slides.
 // The running stretch. On a solid made from the trap, the step that matters is the one that touches the trap,
-// and at a hovering point that is not always the step with the smallest distance: a late step magnifies the
-// hover height hundreds of times. The renderer's solid is the least of (distance - thickness) / stretch, so the
-// same score is kept here, with the stretch of a pure power (n |v|^(n-1) per step, and |v - mu|^2 per map of the
-// Kleinian group) standing in for the true one, which only the renderer knows. That step counts whatever gFade
-// says: the flight is where most trap solids are touched.
-// This runs at every step of every orbit, so a program that needs neither trap solids nor an inside colouring
-// is built without the stretch and the touch record: left in, they slowed the drawing even while switched off.
+// and at a hovering point that is not always the step with the smallest distance. The renderer's solid is the
+// least of (distance - thickness) / stretch, so the same score is kept here, with the stretch of a pure power
+// (n |v|^(n-1) per step, and |v - mu|^2 per map of the Kleinian group) standing in for the true one. That step
+// counts whatever gFade says.
 void trapAdd(vec3 v, float it){
   if (uColNeed == 0) return;
 #if TRAP_SOLIDS || COL_INSIDE
@@ -326,7 +259,6 @@ void trapAdd(vec3 v, float it){
     gLogS += log(g); gSteps += 1.0;
     // an equation's step magnifies what comes after it; a Kleinian map has already magnified the point it made
     gStr = clamp(gStr * g + (uColKlein > 0.5 ? 0.0 : 1.0 - uColJulia), 1e-30, 1e30);
-    if (uColKlein > 0.5) s = gStr;
   }
   if ((uColNeed & 1) == 0) return;
 #endif
@@ -348,16 +280,12 @@ void trapAdd(vec3 v, float it){
     else { gNear = mix(gNear, vec4(v - uTrapC, d), w); gNearIt = mix(gNearIt, it, w); }
   }
 #if TRAP_SOLIDS && !COL_KLEIN
-  // (Not in the Kleinian program: its search leaves out the steps that only come back to a skipped step, so it
-  // keeps the record of the touching step itself. See kde in 30-shaders.js.)
+  // Not in the Kleinian program: its search keeps the record of the touching step itself (kde in 30-shaders.js).
   if (uTrapSolid > 0.5 && it >= float(uTrapSkip)){
-    // The renderer makes a layer thinner than TRAP_THIN pixels lose thickness faster than it naturally would
-    // (orbitDE), and the same is charged here. Without it, at a hovering point the least score went to some late
-    // step, whose huge stretch makes any distance look small: the colour was read from that step, and most of a
-    // Julia set's trap solid came out in one plain colour. (The Kleinian search has no such rule.)
-    // A trap thinner than TRAP_REF fades where one of that thickness would, in proportion (see TRAP_REF).
+    // As in orbitDE, a layer thinner than TRAP_THIN pixels is charged extra. Otherwise, at a hovering point, the
+    // least score goes to a late step, whose huge stretch makes any distance look small. See TRAP_REF for wr.
     float wr = max(uTrapW, TRAP_REF);
-    float sc = (d - uTrapW) / s + (uColKlein > 0.5 ? 0.0 : 2.0 * (uTrapW / wr) * max(TRAP_THIN * gPix - wr / s, 0.0));
+    float sc = (d - uTrapW) / s + 2.0 * (uTrapW / wr) * max(TRAP_THIN * gPix - wr / s, 0.0);
     if (sc < gTouchS){ gTouchS = sc; gTouch = vec4(v - uTrapC, d); gTouchIt = it; gTouchStr = s; }
   }
 #endif
@@ -368,7 +296,7 @@ void colourCapture(){
   cTouch = gTouch; cTouchIt = gTouchIt; cTouchStr = gTouchStr; cTouchS = gTouchS; cOnTrap = gOnTrap; cPix = gPix;
 #endif
 #if TRAP_SOLIDS || COL_INSIDE
-  cStr = gStr; cLogS = gLogS; cSteps = gSteps;
+  cLogS = gLogS; cSteps = gSteps;
 #endif
 }
 vec3 pal(float t, bool inside){
@@ -417,17 +345,15 @@ float colWhere(vec3 q){
 // The colour for every way of colouring that reads the palette, from the captured values. p: the point being
 // coloured. depth: its distance from the camera, or negative where there is none (the flat picture, and anything
 // inside the solid). inside: the point lies in the solid and is coloured by uInMode (1 to 4) with the inside
-// palette; otherwise it is coloured by uColMode (5 or less). deep: how far inside it is, in scene units.
-// The branches only work out places in the palette. The palette itself is read at the end, once for each colour
-// that can be in the mix: every call of pal() is another copy of it for the compiler, and this function, which
-// used to be reached by four paths with seven calls each, was most of the time a new program took to prepare.
+// palette; otherwise it is coloured by uColMode (4 or less). deep: how far inside it is, in scene units.
+// The palette is read only at the end, once for each colour that can be in the mix: every call of pal() is another
+// copy of it for the compiler.
 vec3 colPick(vec3 p, float depth, bool inside, float deep){
-  // Escape count. On a surface nearly every point escapes in the last few steps or not at all, so there it is
-  // counted back from the step limit: "never" always lands on the same bright part of the palette, whatever
-  // the limit is set to. The flat picture counts forward from zero, so its colours stay put when the limit changes.
+  // Escape count. A surface counts back from the step limit, so "never" lands on the same bright part of the
+  // palette whatever the limit is. The flat picture counts forward, so its colours stay put when the limit changes.
   float back = depth > 0.0 ? uColIter - cIt : -cIt;
   float q0 = (depth > 0.0 ? 0.8 : 0.0) - 0.25 * back, q1 = 0.0;   // q0 also stands in for depth in the flat picture
-  bool byTrap = uColMode <= 1, tones = false;
+  bool byTrap = uColMode == 0, tones = false;
 #if TRAP_SOLIDS
   float mixW = 0.0; bool mixed = false, mean = false;
 #endif
@@ -436,27 +362,24 @@ vec3 colPick(vec3 p, float depth, bool inside, float deep){
     byTrap = uInMode == 1;
     // where the orbit ends up: the direction of its last point round the palette, shifted by how far out it is
     if (uInMode == 2) q0 = colDir(cLast) + 0.5 * length(cLast);
-    // how deep: the square root spreads out the rim, where the estimate is at its best. (The Kleinian search has
-    // no orbit that settles: "how quickly the orbit settles" painted every disc the same flat colour there, so in
-    // that view it shows the depth as well, and a note beside the choice says so.)
+    // how deep: the square root spreads out the rim, where the estimate is at its best. The Kleinian search has
+    // no orbit that settles, so there "how quickly the orbit settles" shows the depth as well.
     else if (uInMode == 3 || (uInMode == 4 && uColKlein > 0.5)) q0 = 1.3 * sqrt(max(deep, 0.0));
     // how quickly it settles: the average stretch of a step, which runs from 0 where the orbit is drawn in at
     // once to 1 at the edge of the set, where it is only just held
     else if (uInMode != 1) q0 = clamp(exp(cLogS / max(cSteps, 1.0)), 0.0, 1.0);
   } else
 #endif
-  if (uColMode == 3) q0 = 0.45 * length(p);
+  if (uColMode == 2) q0 = 0.45 * length(p);
   // by ratio, so the colours still change after zooming far in; at the usual viewing distance near is light
-  else if (uColMode == 4 && depth > 0.0) q0 = 1.1 - 1.2 * log2(depth);
-  else if (uColMode == 5) q0 = colDir(cLast);
+  else if (uColMode == 3 && depth > 0.0) q0 = 1.1 - 1.2 * log2(depth);
+  else if (uColMode == 4) q0 = colDir(cLast);
   if (byTrap){
     if (uTrap == ${TRAP.tones}) tones = true;
     else {
-      // A touch lands on the palette's last stop, so palettes that run dark to light are bright along the trap.
-      // The square root spreads out the close calls, where the detail is. "Bands" keeps going through the
-      // palette for as long as the distance grows; "glow" dies away instead, stopping just short of the first
-      // stop, which in most palettes is too dark to show the shape of a solid. How narrow the glow is and how it
-      // falls off depend on the trap (uGlowK, uGlowP: see setColourUniforms).
+      // A touch lands on the palette's last stop. The square root spreads out the close calls, where the detail
+      // is. "Bands" keeps going through the palette as the distance grows; "glow" dies away, stopping just short
+      // of the first stop, which in most palettes is too dark to show the shape of a solid.
       float s = sqrt(min(cNear.w, 1e4)), band = 1.0 - 2.0 * s;
       float tNear = uTrapBy == 2 ? band - 0.1 * back : uTrapBy == 4 ? 0.15 + 0.85 * exp(-2.4 * pow(uGlowK * s, uGlowP)) : band;
       vec4 at = cNear; float atIt = cNearIt;
@@ -478,20 +401,15 @@ vec3 colPick(vec3 p, float depth, bool inside, float deep){
 #if TRAP_SOLIDS
       if (solid){
         // Close to the set the solid is layer upon layer, each a share 1 / stretch of the thickness across. Once a
-        // layer is thinner than a pixel or two its own colours can only sparkle. (The pixel is the renderer's own,
-        // cPix, the one its thin layer rule goes by; it is 0 for a volume sample, which has no pixels. Like that
-        // rule it takes a trap thinner than TRAP_REF for one of that thickness: a thin shell keeps its colours.)
+        // layer is thinner than a pixel or two its own colours can only sparkle. cPix is the pixel the renderer's
+        // thin layer rule goes by (0 for a volume sample); as there, a trap thinner than TRAP_REF counts as that thick.
         float fine = smoothstep(0.5, 1.5, cPix * atStr / max(uTrapW, TRAP_REF));
         mixed = true;
         // Step, side and place give way there to what such a pixel would average out to: the mean of the palette.
         if (uTrapBy == 1 || uTrapBy == 3 || uTrapBy == 5){ mean = true; mixW = fine; }
         else {
-          // The choices by nearness. Nearness is the same all over the trap's part of the solid, so that part shows
-          // the place it was touched instead, and nearness is left to the rest, where it does vary: the fine layers,
-          // and the set's own surface when the trap was added to it. Which part a hit is on is the renderer's to
-          // say (cOnTrap). Judged from here, by how far the touching step lay from the trap, the answer went
-          // wrong wherever a ray stops higher above the surface: at Fast and Ultra fast most of a trap solid
-          // came out in the one colour that "far from the trap" has.
+          // Nearness is the same all over the trap's part of the solid (cOnTrap), so that part shows the place it
+          // was touched. Nearness is left to the fine layers and to the set's own surface when the trap is added to it.
           q0 = tWhere; q1 = tNear; mixW = max(fine, cOnTrap ? 0.0 : 1.0);
         }
       }
@@ -511,7 +429,7 @@ vec3 colPick(vec3 p, float depth, bool inside, float deep){
 #endif
   return c0;
 }
-float colourUnlit(){ return uColMode == 6 ? 1.0 : 0.0; }
+float colourUnlit(){ return uColMode == 5 ? 1.0 : 0.0; }
 // What kind of pixel pixelColour() is asked about.
 const int COL_HIT = 0, COL_FLAT = 1, COL_CUT = 2;
 // The colour of one pixel, from the captured values (call colourCapture() first).
@@ -519,8 +437,8 @@ const int COL_HIT = 0, COL_FLAT = 1, COL_CUT = 2;
 //             Returns the unlit colour.
 //   COL_FLAT  a pixel of the 2D view: p the slice point, d the distance estimate there (<= 0 inside), px the size
 //             of a pixel. Returns the finished colour, outline and all.
-//   COL_CUT   a point of the cut face: p the point, hatch the section hatching. Returns hatch unless the user has
-//             asked for the cut face to be coloured like the inside of the 2D view.
+//   COL_CUT   a point of the cut face: p the point, hatch the section hatching. Returns hatch unless the cut face
+//             is coloured like the inside of the 2D view.
 // Arguments a kind does not use may hold anything.
 vec3 pixelColour(int kind, vec3 p, vec3 nor, float t, float d, float px, vec3 hatch){
   bool flat2 = kind == COL_FLAT, inside = false;
@@ -530,8 +448,7 @@ vec3 pixelColour(int kind, vec3 p, vec3 nor, float t, float d, float px, vec3 ha
     if (uCutFace < 0.5) return hatch;
     if (uInMode == 0) return uCutCol;
     // "How deep inside" goes by the renderer's own estimate at the point of the cut face (d), the one the 2D view
-    // is drawn from, so the same place has the same colour in both. (It used to be worked out here as a pure power
-    // would give it, and the two pictures disagreed.) A volume sample deep inside the solid is coloured this way too.
+    // is drawn from, so the same place has the same colour in both. A volume sample deep inside is coloured so too.
     inside = true;
   }
   // An inside colouring is read from the orbit, and just outside the set the orbit is a different one, so there
@@ -541,23 +458,21 @@ vec3 pixelColour(int kind, vec3 p, vec3 nor, float t, float d, float px, vec3 ha
 #else
   if (kind == COL_CUT) return hatch;
 #endif
-  bool plain = uColMode >= 6 && !inside;   // surface direction and plain clay do not read the palette
+  bool plain = uColMode >= 5 && !inside;   // surface direction and plain clay do not read the palette
   if (plain && !flat2){
-    if (uColMode >= 7) return vec3(0.80, 0.78, 0.74);
+    if (uColMode >= 6) return vec3(0.80, 0.78, 0.74);
     vec3 a = 0.5 + 0.5 * nor;
     return a * a;
   }
   // off the solid those two have nothing to show: the flat picture is left a plain silhouette
   vec3 c = plain ? uBg : colPick(p, depth, inside, deep);
   if (!flat2 || inside) return c;
-  // Far from the set there is nothing left to show, and colour bands that go on repeating would shrink to a
-  // moire once the view is zoomed far out: out there the colours fade into the stage. The 2D view's own range
-  // (40 units from top to bottom at its farthest) ends before the fade begins.
+  // Far from the set, colour bands that go on repeating would shrink to a moire once the view is zoomed far out,
+  // so the colours fade into the stage. The 2D view's own range (40 units from top to bottom) ends before the fade.
   c = mix(c, uBg, smoothstep(40.0, 120.0, length(p.xy)));
-  // The solid is drawn like the cut face of the 3D view, with an outline in the hatching ink so that it stays
-  // distinct from a palette that happens to end in the same colour. The outline lies on the outside, uEdge
-  // pixels wide by the distance estimate, which is what keeps threads thinner than a pixel in the picture; under
-  // one pixel it thins out by fading. Beyond it the ink can die away into the colours as a glow.
+  // The solid is drawn like the cut face of the 3D view, with an outline in the hatching ink. The outline lies on
+  // the outside, uEdge pixels wide by the distance estimate, which keeps threads thinner than a pixel in the
+  // picture; under one pixel it thins out by fading. Beyond it the ink can die away into the colours as a glow.
   if (uEdgeGlow > 0.0) c = mix(c, uCutInk, 0.8 * exp(-max(e - uEdge, 0.0) / uEdgeGlow));
   vec3 ink = uCutInk;
   if (uEdge < 1.0) ink = mix(c, uCutInk, uEdge);
@@ -565,18 +480,16 @@ vec3 pixelColour(int kind, vec3 p, vec3 nor, float t, float d, float px, vec3 ha
   return uInMode == 0 ? mix(uCutCol, outer, clamp(e, 0.0, 1.0)) : outer;
 }`;
 
-// What the scene program has to be able to do for the colour settings in use: the renderer builds one program
-// for each answer (sceneWant in 40-render.js) and keeps it under a key that holds the answer, so changing one of
-// these settings prepares a new program, shown as "Preparing the formula". Only drop-downs and tick boxes are
-// read here, never a dial: moving a dial must not make the page wait. (That is also why the cut face does not
-// ask whether the cut is switched on: the height dial switches it on.)
+// What the scene program has to be able to do for the colour settings in use. The renderer builds one program
+// for each answer (sceneWant in 40-render.js). Only drop-downs and tick boxes are read here, never a dial: moving
+// a dial must not make the page wait. That is why the cut face does not ask whether the cut is switched on.
 //   solid   the trap is, or is added to, the solid. Asked for in the 2D view too, where it is not drawn: a 3D
 //           model made from a 2D picture samples the solid with the same program.
 //   inside  the 2D view colours the inside of the set, or the 3D view paints the cut face (with "Plain" too: a
 //           painted cut face loses its hatching).
 function colProgramNeeds() {
   const c = S.colour;
-  return { solid: c.solid > 0 && c.trap !== TRAP.tones && !colBalls(), inside: S.flat ? (c.inMode | 0) > 0 : !!c.cutFace };
+  return { solid: c.solid > 0 && c.trap !== TRAP.tones && !ballsShown(), inside: S.flat ? (c.inMode | 0) > 0 : !!c.cutFace };
 }
 
 // The palette as the shader wants it: one closed loop of linear colours, and how many loops fit in a unit of t.
@@ -597,68 +510,55 @@ function palLoop(i, rev, C = palLoopCache) {
   }
   return C;
 }
-// A CSS gradient of palette i, for a preview strip.
-function paletteCss(i, rev) {
-  let s = (PALETTES[i] || PALETTES[0]).slice(1);
-  if (rev) s = s[0] === s[s.length - 1] ? [s[0], ...s.slice(1, -1).reverse(), s[0]] : s.slice().reverse();
-  return `linear-gradient(90deg, ${s.join(', ')})`;
-}
-// Several `when` rules above read the page state (the 2D view, the cut, the mode), which other modules change
-// without telling the colour controls. Called once a frame after anything changed: when one of those three is
-// different, every control is asked to show itself again, which re-checks the rules.
+// Several `when` rules above read page state that other modules change (the 2D view, the cut, the mode, the
+// Kleinian group). Called once a frame after anything changed: when that state differs, the rules are re-checked.
 const colSeen = { sig: '' };
 function colViewSync() {
-  const sig = `${!!S.flat}|${!!S.cutOn}|${S.mode}|${S.k.mx !== 0 || S.k.mz !== 0}|${S.k.group}|${S.k.bgrid}`;
+  const sig = `${!!S.flat}|${!!S.cutOn}|${S.mode}|${S.k.mx !== 0 || S.k.mz !== 0}|${S.k.group}`;
   if (sig === colSeen.sig) return;
   colSeen.sig = sig;
   syncControls();
 }
-// Set this module's uniforms. L(name) returns the uniform location in the program in use. raw: the call is for
-// volume sampling (the 3D model): the flat branch of the shader is in use, but what is asked for is the solid
-// and its surface colour as the 3D view has them.
-function setColourUniforms(L, raw) {
+// Set this module's uniforms. L(name) returns the uniform location in the program in use. Volume sampling (the 3D
+// model) runs the flat branch of the shader but hands over a state with the 2D view off, so it gets the solid as
+// the 3D view has it.
+function setColourUniforms(L) {
   if (!hooks.view.includes(colViewSync)) hooks.view.push(colViewSync);
-  const c = S.colour, k = S.k, ax = [0, 0, 0], flat = !!S.flat && !raw, flatOrbits = flat && colOrbitsFlat();
+  const c = S.colour, k = S.k, ax = [0, 0, 0], flat = !!S.flat, flatOrbits = flat && colOrbitsFlat();
   const P = palLoop(c.pal, c.rev), Pin = c.inPal >= 0 ? palLoop(c.inPal, c.inRev, palLoopCacheIn) : P;
   if (c.trap === TRAP.ray) ax[c.ray >> 1] = c.ray & 1 ? -1 : 1; else ax[c.axis] = 1;
   // In the 2D view of the slice z = 0 every orbit stays in that plane, so as one of the three trap planes it
   // would read "touching" everywhere. It is left out there (pushed far away); the other two still cross the picture.
   gl.uniform3f(L('uTrapOff'), 0, 0, flatOrbits && c.tz === 0 ? 1e9 : 0);
-  // The glow. Orbits keep crossing a trap that divides the space they move in (a plane or a shell in 3D, any
-  // line or circle in a flat slice), so its glow can be narrow, which shows the close passes in fine detail.
-  // A trap that is thin in that space (a point anywhere, a line or a ring in 3D) is hardly ever met: the nearest
-  // passes all lie in a small range some way off, where a narrow glow has long since faded, and the whole solid
-  // came out one colour. Such a trap gets a wider glow with a steadier fall-off (the power 0.75 of the distance
-  // in place of its square root).
+  // The glow. Orbits keep crossing a trap that divides the space they move in (a plane or a shell in 3D, any line
+  // or circle in a flat slice), so its glow can be narrow. A trap that is thin in that space (a point anywhere, a
+  // line or a ring in 3D) is hardly ever met, and the nearest passes lie some way off: it gets a wider glow with a
+  // steadier fall-off (the power 0.75 of the distance in place of its square root).
   const thin = c.trap === TRAP.point || (!flatOrbits && c.trap !== TRAP.planes && c.trap !== TRAP.shell);
-  gl.uniform1f(L('uGlowK'), 1 / Math.sqrt((c.glow > 0 ? c.glow : 1) * (thin ? COL_GLOW_THIN : 1)));
+  gl.uniform1f(L('uGlowK'), 1 / Math.sqrt(c.glow * (thin ? COL_GLOW_THIN : 1)));
   gl.uniform1f(L('uGlowP'), thin ? 1.5 : 1);
-  gl.uniform1i(L('uColMode'), c.mode); gl.uniform1f(L('uColIter'), colBalls() ? k.bit : S.mode === 'k' ? k.iter : S.iter);
+  gl.uniform1i(L('uColMode'), c.mode); gl.uniform1f(L('uColIter'), ballsShown() ? k.bit : S.mode === 'k' ? k.iter : S.iter);
   gl.uniform1f(L('uPalS'), c.bands); gl.uniform1f(L('uPalO'), c.shift);
   palBoth.set(P.data); palBoth.set(Pin.data, 3 * PAL_MAX);
   gl.uniform3fv(L('uPal[0]'), palBoth); gl.uniform1i(L('uPalN'), P.n); gl.uniform1f(L('uPalF'), P.f);
   gl.uniform1i(L('uPalInN'), Pin.n); gl.uniform1f(L('uPalInF'), Pin.f); gl.uniform3fv(L('uPalMean'), P.mean);
   gl.uniform1i(L('uTrap'), c.trap); gl.uniform1i(L('uTrapBy'), c.by); gl.uniform1f(L('uTrapR'), c.radius);
   gl.uniform3f(L('uTrapC'), c.tx, c.ty, c.tz); gl.uniform3fv(L('uTrapAx'), ax);
-  // The trap as a solid: never in the 2D view on screen, whose picture is not to change, and only for a trap
-  // that has a shape. Values missing from an older saved state read as the defaults.
-  const solid = !flat && c.trap !== TRAP.tones && c.solid > 0 && !colBalls() ? +c.solid : 0;
-  gl.uniform1f(L('uTrapSolid'), solid); gl.uniform1f(L('uTrapW'), c.thick > 0 ? c.thick : 0.05);
-  gl.uniform1i(L('uTrapSkip'), (c.skip >= 0 ? c.skip : 1) + colSkipFrom());
-  gl.uniform1f(L('uTrapReach'), c.reach >= 1 ? c.reach : COL_REACH);
-  // The inside: always part of the flat picture, and of the cut face when that is asked for (in a 3D model too:
-  // its cut face is coloured as the picture's is).
+  // The trap as a solid: never in the 2D view on screen, and only for a trap that has a shape.
+  const solid = !flat && c.trap !== TRAP.tones && c.solid > 0 && !ballsShown() ? +c.solid : 0;
+  gl.uniform1f(L('uTrapSolid'), solid); gl.uniform1f(L('uTrapW'), c.thick);
+  gl.uniform1i(L('uTrapSkip'), c.skip + colSkipFrom());
+  gl.uniform1f(L('uTrapReach'), c.reach);
+  // The inside: always part of the flat picture, and of the cut face when that is asked for (in a 3D model too).
   const cutFace = !S.flat && !!c.cutFace, inMode = flat || (cutFace && S.cutOn) ? c.inMode | 0 : 0;
   gl.uniform1i(L('uInMode'), inMode); gl.uniform1f(L('uCutFace'), cutFace ? 1 : 0);
-  // The inside coloured by the trap, in the same palette as the outside: orbits that stay inside keep close to the
-  // trap, which lands on the palette's last stop, and far outside the glow has died away to nearly its first, so
-  // in a palette that runs round in a circle the set had the colour of the far background and looked like a hole.
-  // The inside therefore starts half a turn of the palette away (a note beside the choice says so).
+  // The inside coloured by the trap in the outside's own palette starts half a turn away: in a palette that runs
+  // round in a circle it would otherwise have the colour of the far background.
   gl.uniform1f(L('uPalInO'), c.inPal < 0 && inMode === 1 ? 0.5 / Pin.f : 0);
-  gl.uniform1f(L('uEdge'), flat && c.edge >= 0 ? c.edge : 1); gl.uniform1f(L('uEdgeGlow'), flat && c.edgeGlow > 0 ? c.edgeGlow : 0);
+  gl.uniform1f(L('uEdge'), flat ? c.edge : 1); gl.uniform1f(L('uEdgeGlow'), flat ? c.edgeGlow : 0);
   // What trapAdd has to keep while an orbit runs: the trap measures when anything is coloured by the trap, and
   // the running stretch for a trap solid's colours and for the inside colourings that are worked out from it.
-  const byTrap = c.mode <= 1 || inMode === 1;
+  const byTrap = c.mode === 0 || inMode === 1;
   gl.uniform1i(L('uColNeed'), (byTrap ? 1 : 0) | ((byTrap && solid) || inMode >= 3 ? 2 : 0));
   gl.uniform1f(L('uColKlein'), S.mode === 'k' ? 1 : 0); gl.uniform1f(L('uColJulia'), S.mode === 'j' ? 1 : 0);
   gl.uniform3f(L('uColMu'), k.mx, k.my, k.mz);

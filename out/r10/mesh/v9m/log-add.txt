@@ -1,7 +1,0 @@
-subject trapadd: solid = 2
-  picture at rest after 10.0 s (ok)
-  trapadd-128: 5.6 s, facts ['Triangles', '61,548', 'Points', '30,524', 'Size', '100 × 76.5 × 54.5 mm', 'Pieces', 'The largest of 202, with about 42% of the surface', 'mandelbrot-128.stl', '2.9 MB', 'mandelbrot-128.obj', '2.4 MB', 'mandelbrot-128.ply', '1.2 MB', 'Zip to save', '6.5 MB'] | warn 'This solid has parts thinner than one cell of the grid. They came out as 202 loo' | msg 'The model is ready.' | file {'name': 'squaring-lab-mandelbrot-128.zip', 'size': 6856708, 'type': 'application/zip', 'pulled_s': 0.4} | gap max 39 ms (691 turns, 0 over 50 ms, 0 over 100 ms)
-    trapadd-128: Size '100 × 76.5 × 54.5 mm' | Pieces 'The largest of 202, with about 42% of the surface'
-      warn: This solid has parts thinner than one cell of the grid. They came out as 202 loose pieces, and only the largest was kept: about 42% of the surface. So this model does not look like the picture. To get closer, untick "Keep only the largest piece" and choose 256 or 512 cells, then start again. A larger surface offset joins more of the pieces, but it makes the thin parts thick.
-no console errors
-drive exit 0

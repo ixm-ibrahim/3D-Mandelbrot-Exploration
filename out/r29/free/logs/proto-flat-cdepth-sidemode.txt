@@ -1,5 +1,0 @@
-flat X1   size  120.00 second 100.00 grid 0 depth  16 | inside share 0.645 | outside 233917: too long 0 (0.0000 %), worst ratio 1.006 | wrongly under a pixel 71 (0.030 %) | median est/true 0.87
-flat X2   size  130.00 second 100.00 grid 0 depth  16 | inside share 0.878 | outside 80301: too long 0 (0.0000 %), worst ratio 1.018 | wrongly under a pixel 269 (0.335 %) | median est/true 0.81
-flat X6   size  150.00 second  75.00 grid 0 depth  16 | inside share 0.349 | outside 428902: too long 0 (0.0000 %), worst ratio 1.000 | wrongly under a pixel 65 (0.015 %) | median est/true 0.86
-flat X7   size  300.00 second  50.00 grid 0 depth  16 | inside share 0.522 | outside 314633: too long 3939 (1.2519 %), worst ratio 3.212 | wrongly under a pixel 0 (0.000 %) | median est/true 0.50
-flat X9   size  105.00 second 100.00 grid 0 depth  16 | inside share 0.272 | outside 479571: too long 0 (0.0000 %), worst ratio 1.026 | wrongly under a pixel 509 (0.106 %) | median est/true 0.86

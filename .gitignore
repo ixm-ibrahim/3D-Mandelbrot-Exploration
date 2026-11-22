@@ -1,23 +1,12 @@
-# Preview builds: build.py makes them again
+# The page as a complete document for local viewing: build.py makes it again
 dist/
 
-# Research output. The scripts and notes are kept; whatever they make when run again is not
-# (screenshots, zip bundles, number caches, copies of the page).
-out/**
-!out/**/
-!out/**/*.py
-!out/**/*.js
-!out/**/*.glsl
-!out/**/*.md
-!out/**/*.txt
-!out/**/*.diff
-# the pictures that were made to be shown
-!out/**/user-*.png
+# Captures made by tools/compare.py
+compare/
 
-# The text of the paper this work started from is not ours to republish (see README.md for the reference)
+# The text of the paper this work started from is not ours to republish (README.md has the reference)
 notes/paper-kucera.txt
 
-# Python and editor leftovers
 __pycache__/
 *.pyc
 .claude/

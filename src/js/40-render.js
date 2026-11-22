@@ -1,16 +1,15 @@
-// ---------- WebGL plumbing
+// Rendering: WebGL set-up, scene programs, the progressive drawing loop, snapshots and background drawing.
 const canvas = $('view'), stage = $('stage');
 let gl = null, lost = false, floatOK = false, acc = null, prev = null, pickT = null, blitP = null;
 const progs = new Map();   // scene programs by key, least recently used first
-// Bookkeeping of the renderer. Other modules use renderIdle() and leave R alone. Tests may switch off R.warmOn, and
-// may clear R.par or R.tq (while nothing is being drawn) to take the paths of a driver without those extensions.
+// Renderer state. Outside this file only 45-export.js reads it (R.gen); other files ask renderIdle().
 const R = {
   pend: null,                // the preview or band the GPU is working on: { kind, sync, t0, q, flat | rows, frac, ... }
-  pend2: null,               // a second band, handed to the GPU behind the first so that it never waits for the page
+  pend2: null,               // a second band, queued on the GPU behind the first
   pipe: false,               // bands are cheap and timed by the GPU: two may be in flight
-  quick: false,              // the first pass will be over in a moment: it replaces the preview in one go, not band by band
-  gain: 3, rowPrev: 0,       // what a full-size row costs compared with a preview row (learnt from each first pass); the preview row's cost
-  p0: null,                  // the first pass under way: { ms, rows, row } GPU time and rows so far, and the preview row cost it started from
+  quick: false,              // the first pass is short: it replaces the preview in one go, not band by band
+  gain: 3, rowPrev: 0,       // cost of a full-size row over a preview row, learnt from each first pass; the preview row's cost
+  p0: null,                  // the first pass under way: { ms, rows, row } GPU time and rows so far, and the preview row cost at its start
   wantPrev: false,           // a preview is due
   restart: false,            // a full-quality drawing is due once things have stopped moving
   prog: null,                // the full-quality drawing under way: { s: pass, y: next row }
@@ -18,35 +17,31 @@ const R = {
   bg: false,                 // animation frames are paused (a background tab): the loop runs from its timer
   ps: 0.35, ps2: 1,          // preview size as a share of the full picture: ray-marched view, 2D view
   rows: 32,                  // rows in the next band
-  rowMs: 0, rowExact: false, // what one full-size row costs, judged from the last preview, and whether the GPU counted it
+  rowMs: 0, rowExact: false, // cost of one full-size row, judged from the last preview; whether the GPU counted it
   pw: 2, ph: 2, total: 1,    // size of the last preview; passes in the full-quality drawing
-  tq: null, q: null,         // the GPU timer extension (EXT_disjoint_timer_query_webgl2) or null, and the query now running
+  tq: null, q: null,         // EXT_disjoint_timer_query_webgl2 or null; the query now running
   dt: 16.7, lastLoop: 0,     // time between animation frames, smoothed; when a frame last ran the loop
-  par: null,                 // the KHR_parallel_shader_compile extension, or null where the driver lacks it
-  shown: null,               // which target holds the picture on screen: 'prev' the preview, 'acc' the full-size one, null neither
+  par: null,                 // KHR_parallel_shader_compile, or null
+  shown: null,               // the target on screen: 'prev' the preview, 'acc' the full-size picture, or null
   painted: false,            // the canvas has shown a picture since the context was made
-  sig: '', want: null,       // the settings the wanted program was worked out from, and that program's key and source
-  hold: 0, holdKey: '',      // frames waited before a compile that will block (drivers without parallel compile)
+  sig: '', want: null,       // the settings the wanted program was worked out from; its key and source
+  hold: 0, holdKey: '',      // frames waited before a compile that blocks (a driver without parallel compile)
   busy: false, busyP: null,  // the busy label is up for a compile; the program it waits to see a first picture from
   failed: '',                // why nothing can be drawn ('formula' | 'shader'), or ''
   bar: null,                 // the progress bar element
-  warmOn: true, warming: null, warmT: 0,   // preparing likely programs ahead of time: allowed, the one in hand, its timer
-  compiles: 0,               // programs started since the page loaded
-  gen: 0, f32: false,        // how many times the GL context has been set up; whether float pictures can be drawn and read back
-  bgN: 0, bgMs: 0, bgHeld: 0,   // background pieces drawn, the time they took, and the times one was held back for the live picture
-  lostMid: false,            // the graphics went away while a picture was being drawn or was due: it is still owed (see renderIdle)
+  warming: null, warmT: 0,   // preparing likely programs ahead of time: the one in hand, its timer
+  gen: 0, f32: false,        // times the GL context has been set up; whether float pictures can be drawn and read back
+  lostMid: false,            // the graphics went away while a picture was being drawn or was due (see renderIdle)
 };
 
-// A program is compiled and linked without waiting for the result. With KHR_parallel_shader_compile the
-// driver works on another thread and COMPLETION_STATUS_KHR tells when it has finished. Asking anything else
-// about the program before then (link status, a uniform location) makes the page wait for the driver.
+// Programs are compiled and linked without waiting. With KHR_parallel_shader_compile the driver works on another
+// thread and COMPLETION_STATUS_KHR tells when it is done; any other question about the program makes the page wait.
 function progStart(fsSrc) {
   const p = gl.createProgram(), vs = gl.createShader(gl.VERTEX_SHADER), fs = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(vs, VERT); gl.compileShader(vs);
   gl.shaderSource(fs, fsSrc); gl.compileShader(fs);
   gl.attachShader(p, vs); gl.attachShader(p, fs); gl.linkProgram(p);
   const cache = {};
-  R.compiles++;
   return { p, vs, fs, state: 'pending', log: '', told: false, l: n => (n in cache ? cache[n] : (cache[n] = gl.getUniformLocation(p, n))) };
 }
 const progSettled = e => !R.par || !!gl.getProgramParameter(e.p, R.par.COMPLETION_STATUS_KHR);
@@ -64,32 +59,21 @@ function progFree(e) {
   if (e.state === 'pending') { gl.deleteShader(e.vs); gl.deleteShader(e.fs); }
   if (e.state !== 'failed') gl.deleteProgram(e.p);
 }
-// The scene program for one combination of approach, equation and colour needs: its key in the cache and how to
-// write its source. A program holds only the colour code its settings use (trap solids, inside colouring: see
-// colProgramNeeds in 25-colour.js), because the rest costs time to prepare and to draw. The needs are read from
-// the state as it is when this is called and are part of the key, so the same settings always find the same
-// program, and a snapshot, which calls this as it is taken, keeps the program that fits its own frozen state
-// whatever the page is switched to afterwards.
+// The scene program for one combination of approach, equation and colour needs: its cache key and how to write its
+// source. A program holds only the colour code its settings use (see colProgramNeeds), and that is part of the key.
 function sceneWant(a, eq, z0, n2, klein, needs = colProgramNeeds()) {
   const defs = glNeeds(needs, klein), tag = glNeedsKey(needs), keyOf = k => (tag ? k + '|' + tag : k);
-  // The Kleinian view holds two groups, each with a program of its own (klein is true, or 'balls' for the second
-  // group, Balls on balls: see sceneKlein). The second one is built only when it is asked for.
-  // (Round 28: 'balls2' is that group with a second sphere smaller than the first. It is a program text of its own,
-  // GL_BALLS_RHO, under a key of its own, so that 'balls' stays exactly the program it was.)
   if (klein === 'balls') return { key: keyOf('balls'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS + GL_TAIL };
-  if (klein === 'balls2') return { key: keyOf('balls2'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_RHO + GL_TAIL };
-  // (Round 29: 'balls3' is that group for every other pair of its two numbers, where the two spheres cut into each
-  // other or the second lies between 1/2 and 1 of the first: GL_BALLS_FREE, again a text and a key of its own.)
-  if (klein === 'balls3') return { key: keyOf('balls3'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_FREE + GL_TAIL };
+  if (klein === 'ballsSmall') return { key: keyOf('ballsSmall'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_RHO + GL_TAIL };
+  if (klein === 'ballsFree') return { key: keyOf('ballsFree'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_FREE + GL_TAIL };
   if (klein) return { key: keyOf('klein'), src: () => GL_HEAD + defs + GL_COLOUR + GL_KLEIN + GL_TAIL };
   const fc = compileFormula(eq, true, n2), zc = compileFormula(z0, false, n2);
   return { key: keyOf([a.id, fc, zc].join('|')), src: () => GL_HEAD + defs + GL_COLOUR + a.glsl + GL_ORBIT.split('__F__').join(fc).split('__Z0__').join(zc) + GL_TAIL };
 }
-// Which Kleinian program the state asks for: false (not the Kleinian view), true (the group that was always
-// there), or 'balls' / 'balls2' / 'balls3' (the second group, when its module is part of the page: with two equal
-// spheres, with a smaller second sphere, and with every other pair of its two numbers; ballsKind in 32-balls.js).
-const sceneKlein = () => (S.mode !== 'k' ? false : typeof GL_BALLS === 'string' && S.k.group === 1 ? ballsKind() : true);
-const sceneBalls = (kl = sceneKlein()) => kl === 'balls' || kl === 'balls2' || kl === 'balls3';
+// Which Kleinian program the state asks for: false (not the Kleinian view), true (the first group), or for Balls on
+// balls 'balls' (two equal spheres), 'ballsSmall' (a smaller second sphere) or 'ballsFree' (any other pair): see ballsKind.
+const sceneKlein = () => (S.mode !== 'k' ? false : S.k.group === 1 ? ballsKind() : true);
+const sceneBalls = kl => kl === 'balls' || kl === 'ballsSmall' || kl === 'ballsFree';
 function sceneNow() {   // what the current settings need; remembered, because the drawing loop asks every frame
   const klein = sceneKlein(), n2 = Math.abs(S.n - 2) < 1e-9, needs = colProgramNeeds();
   const sig = (klein ? (klein === true ? 'k' : 'k-' + klein) : [S.approach, n2, S.eq, S.z0].join('\n')) + '\n' + glNeedsKey(needs);
@@ -109,8 +93,7 @@ function sceneEntry(w, start) {   // look a program up; with `start`, begin comp
   }
   return e || null;
 }
-// The program to draw with: an entry that is ready, 'wait' while it is being prepared, or 'formula' / 'shader'
-// (the reason) when it cannot be built.
+// The program to draw with: a ready entry, 'wait' while it is being prepared, or why it cannot be built ('formula' / 'shader').
 function sceneAcquire() {
   const w = sceneNow();
   if (!w) return 'formula';
@@ -160,19 +143,16 @@ function setupGL() {
   pickT = f32 ? makeTarget(1, 1, true) : null;
   if (pickT && !pickT.ok) pickT = null;
 }
-// The status line while the browser has taken the graphics away (a lost WebGL context). Everything comes back by
-// itself when the context is restored (touch() then draws again and replaces the text).
+// The status line while the WebGL context is lost. touch() replaces the text when the context is restored.
 const LOST_WORDS = 'The graphics of this page were interrupted. The picture comes back by itself.';
 function initGL() {
   gl = canvas.getContext('webgl2', { antialias: false, alpha: false, powerPreference: 'high-performance' });
   if (!gl) { $('glfail').hidden = false; return; }
-  if (!R.bar) {
-    const bar = document.createElement('div');
-    bar.id = 'drawProgress'; bar.className = 'draw-progress'; bar.hidden = true;
-    bar.setAttribute('aria-hidden', 'true');   // the status line under the stage says the same in words
-    bar.appendChild(document.createElement('span'));
-    stage.appendChild(bar); R.bar = bar;
-  }
+  const bar = document.createElement('div');
+  bar.id = 'drawProgress'; bar.className = 'draw-progress'; bar.hidden = true;
+  bar.setAttribute('aria-hidden', 'true');   // the status line under the stage says the same in words
+  bar.appendChild(document.createElement('span'));
+  stage.appendChild(bar); R.bar = bar;
   const setup = () => {
     try { setupGL(); return true; } catch (err) { console.error(err.message); gl = null; $('glfail').hidden = false; return false; }
   };
@@ -182,13 +162,11 @@ function initGL() {
     R.lostMid = !renderIdle();   // asked before the drawing under way is dropped below
     lost = true; R.pend = R.pend2 = null; R.prog = null;
     stageProgress(null); bgPump();   // background pieces end here: their jobs are told the picture cannot be read
-    if (R.busy) { R.busy = false; setBusy('compile', null); }
-    // the picture stands still until the browser hands the graphics back: say so, in place of "Done" or "Drawing"
+    busyOff();
     say(LOST_WORDS);
   });
   canvas.addEventListener('webglcontextrestored', () => { lost = false; R.lostMid = false; if (setup()) touch(); });
 }
-// The size of the picture on screen, in picture pixels, as the current settings make it.
 function stagePixels() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const w = stage.clientWidth * dpr * S.q.res, h = stage.clientHeight * dpr * S.q.res, cap = Math.min(1, 3200 / Math.max(w, h));
@@ -210,12 +188,10 @@ function ensureTargets() {
 }
 // How the distance is estimated, as the shader's uNT: 3, 1 or 0 neighbouring orbits.
 // An entry may cap the estimate (deMax): for some rules the finer estimates draw things that are not there.
-function sceneDeCap() { const a = typeof APPROACHES !== 'undefined' && S ? APPROACHES[S.approach] : null; return a && a.deMax !== undefined ? a.deMax : 3; }
-function sceneDe(q = S.q) { const d = Math.min(q.de === undefined ? 3 : +q.de, sceneDeCap()); return d >= 3 ? 3 : d >= 1 ? 1 : 0; }
-// Every uniform of the scene program is set here. For the screen the values are the live ones. For a snapshot
-// (see takeSnapshot) they are its frozen copies: the camera is handed over, and the state and theme colours are
-// put into S and theme for the length of this one call and taken out again straight after, because the colour
-// module and apVec() read S themselves. Nothing else runs in between, so the page never sees the stand-in.
+function sceneDeCap() { return ap().deMax ?? 3; }
+function sceneDe(q = S.q) { const d = Math.min(+q.de, sceneDeCap()); return d >= 3 ? 3 : d >= 1 ? 1 : 0; }
+// Sets every uniform of the scene program. For a snapshot (see takeSnapshot) its frozen state and theme colours
+// are put into S and theme for the length of the call, because the colour code and apVec() read S themselves.
 function setScene(P, o, snap) {
   if (!snap) { sceneUniforms(P, o, basis()); return; }
   const liveS = snapSwap(S, snap.S), liveTheme = snapSwap(theme, snap.theme);
@@ -233,29 +209,25 @@ function sceneUniforms(P, o, b) {
   gl.uniform1f(L('uJulia'), S.mode === 'j' ? 1 : 0); gl.uniform3fv(L('uC'), S.c);
   gl.uniform1f(L('uMosaic'), S.mosaic && S.mode === 'm' ? S.mosaicCell : 0);
   gl.uniform3fv(L('uAbs'), S.abs); gl.uniform3f(L('uSgn'), 1, S.flip[0] ? -1 : 1, S.flip[1] ? -1 : 1);
-  const kl = sceneKlein(), balls = sceneBalls(kl);   // the second Kleinian group: its own depth, and its two numbers (uBT, uBGrid; no other program has them)
+  const kl = sceneKlein(), balls = sceneBalls(kl);   // Balls on balls: its own depth, and its two numbers (uBT, uBGrid)
   gl.uniform1f(L('uBail'), 64); gl.uniform1i(L('uIter'), balls ? k.bit : S.mode === 'k' ? k.iter : S.iter);
-  // (uBT: t as the state holds it, ballsTOf. The program for two equal spheres is only chosen with t at 1 or more,
-  //  as it always was; the one for a smaller second sphere is handed the touching value for a t that is a rounding
-  //  hair under it. uBRho: the two programs for a second sphere of any size have it.)
+  // uBT is t as ballsTOf hands it over. Only 'ballsSmall' and 'ballsFree' have uBRho.
   if (balls) { gl.uniform1f(L('uBT'), ballsTOf(kl)); gl.uniform1i(L('uBGrid'), k.bgrid | 0); if (kl !== 'balls') gl.uniform1f(L('uBRho'), ballsRho()); }
   gl.uniform1f(L('uCut'), S.cutOn ? S.cut : 1e9);
   gl.uniform1f(L('uFlat'), S.flat || o.slice ? 1 : 0); gl.uniform2f(L('uFlatC'), v2.x, v2.y); gl.uniform1f(L('uFlatH'), v2.h); gl.uniform1f(L('uSliceZ'), v2.z);
   gl.uniform1f(L('uRaw'), o.raw ? 1 : 0);
-  // (Balls on balls: twice the steps. Its estimate is a certain one, so it is shorter than the true distance, by half
-  // in places; a ray that starts beside a ball needs the extra steps to get clear of it. Round 27, defect A1.)
+  gl.uniform1f(L('uGrid'), S.view.grid && !o.raw && !o.pick && !o.slice ? 1 : 0);
+  // Balls on balls: twice the steps, because its estimate is in places half the true distance.
   gl.uniform1i(L('uSteps'), balls && !o.raw ? 2 * o.steps : o.steps); gl.uniform1i(L('uNT'), o.nt);
-  // The Kleinian distance estimate runs large away from a pearl, so its rays take at most half of it
-  // (measured in notes/klein-presets.md: at 0.8 small pearls come out hollow or are skipped).
-  // (Balls on balls: its estimate is never longer than the true distance, so a ray may take nearly all of it: up to
-  // nine tenths, so that no ray lands on a skin by rounding. Held to half, rays that start beside a ball crept along
-  // it, ran out of steps and left holes: round 27, defect A1.)
+  // The Kleinian distance estimate runs large away from a pearl, so its rays take at most half of it: at 0.8 small
+  // pearls come out hollow or are skipped. The Balls on balls estimate is never longer than the true distance, so
+  // its rays may take up to nine tenths of it.
   gl.uniform1f(L('uDetail'), S.q.detail); gl.uniform1f(L('uStepK'), balls ? Math.min(S.q.stepk, 0.9) : S.mode === 'k' ? Math.min(S.q.stepk, 0.5) : S.q.stepk); gl.uniform1f(L('uNormEps'), o.normEps);
   gl.uniform1f(L('uAO'), o.ao ? 1 : 0); gl.uniform1f(L('uShadow'), o.shadow ? 1 : 0); gl.uniform1i(L('uShSteps'), 28);
   // the exact slope needs all three neighbouring orbits
   gl.uniform1f(L('uAnalytic'), o.sharp && o.nt === 3 && S.mode !== 'k' ? 1 : 0); gl.uniform1f(L('uPick'), o.pick ? 1 : 0);
   gl.uniform1f(L('uPx'), o.px);
-  setColourUniforms(L, !!o.raw);
+  setColourUniforms(L);
   gl.uniform3fv(L('uBg'), lin(theme.stage)); gl.uniform3fv(L('uCutCol'), lin(theme.cut)); gl.uniform3fv(L('uCutInk'), lin(theme.cutInk));
   gl.uniform3f(L('uLight'), Math.cos(el) * Math.cos(az), Math.cos(el) * Math.sin(az), Math.sin(el));
   gl.uniform3f(L('uKMu'), k.mx, k.my, k.mz); gl.uniform3f(L('uKInvC'), k.cx, k.cy, k.cz);
@@ -276,16 +248,15 @@ function blit(useAcc) {
   gl.drawArrays(gl.TRIANGLES, 0, 3);
   R.shown = useAcc ? 'acc' : 'prev'; R.painted = true;
 }
-// Before the first picture exists the canvas would show black: paint the stage colour the display shader gives the background.
+// Before the first picture the canvas would show black: paint the stage colour as the display shader shows it.
 function stageClear() {
-  const c = lin(theme.stage || [0, 0, 0]).map(x => Math.pow(clamp(x / (1 + 0.12 * x) * 1.12, 0, 1), 0.4545));
+  const c = lin(theme.stage).map(x => Math.pow(clamp(x / (1 + 0.12 * x) * 1.12, 0, 1), 0.4545));
   gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.disable(gl.SCISSOR_TEST);
   gl.clearColor(c[0], c[1], c[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
 }
 // The thin bar along the bottom of the stage. f: share of the full-quality drawing done, or null to hide it.
 function stageProgress(f) {
   const el = R.bar;
-  if (!el) return;
   if (f === null) { if (!el.hidden) el.hidden = true; return; }
   el.firstChild.style.transform = `scaleX(${clamp(f, 0, 1).toFixed(4)})`;
   if (el.hidden) el.hidden = false;
@@ -304,32 +275,29 @@ function sceneFail(why) {   // why: 'formula', 'shader', or '' when all is well
   }
 }
 
-// ---------- drawing schedule. A quick preview while anything moves; at rest, a full-size picture
-// drawn in bands so the page never stalls, then refined by adding jittered passes.
+// Drawing schedule: a quick preview while anything moves; at rest a full-size picture drawn in bands, so the page
+// never stalls, then refined by adding jittered passes.
 let uiDirty = false;
 const halton = (i, b) => { let f = 1, r = 0; while (i > 0) { f /= b; r += f * (i % b); i = Math.floor(i / b); } return r; };
 function kick() { // next animation frame, or a timer if the page is in the background and frames are paused
   if (R.raf) return;
   R.raf = requestAnimationFrame(() => kicked(false, true)); R.tmr = setTimeout(() => kicked(true, true), 300);
-  // A finished preview or band need not wait for the next frame: it is looked for between frames, so a preview is on
-  // the canvas in time for the next frame and the next band follows at once, which keeps the GPU busy.
+  // A finished preview or band is looked for between frames, so that it is shown, and the next one started, at once.
   if (R.pend) R.fast = setTimeout(bandPoll, 3);
 }
 function kicked(bg, frame) { cancelAnimationFrame(R.raf); clearTimeout(R.tmr); clearTimeout(R.fast); R.raf = 0; R.bg = bg; loop(frame); }
 function bandPoll() {
   if (!R.raf || !R.pend || !gl || lost) return;
-  // a band may also be handed over while the one before it is still being drawn
+  // a band may also be handed over while the one before it is being drawn
   if (gl.clientWaitSync(R.pend.sync, 0, 0) === gl.TIMEOUT_EXPIRED && !(R.pipe && R.prog && !R.pend2 && !R.wantPrev)) R.fast = setTimeout(bandPoll, 3);
   else kicked(R.bg, false);
 }
 function touch() {
-  // While the Learn tab is on show it draws its own picture on the stage: the solid is not drawn again until
-  // the tab is left (the Learn module then clears S.learn and calls touch()).
-  if (S.learn) { if (typeof learnTouch === 'function') learnTouch(); return; }
+  // The Learn tab draws its own picture on the stage. When it is left, it clears S.learn and calls touch().
+  if (S.learn) { learnTouch(); return; }
   R.wantPrev = true; R.restart = true; R.prog = null; R.lastTouch = performance.now(); uiDirty = true; kick(); }
-// Timing one preview or band. The wall clock counts more than the drawing: the wait for the next look,
-// and for whatever else is using the GPU. Where the driver has a timer, its own count of the drawing is used, so a
-// busy GPU or a slow frame rate cannot talk the schedule into ever smaller bands.
+// Timing one preview or band. The wall clock also counts the wait for the next look and for whatever else uses
+// the GPU. Where the driver has a timer its own count is used, so a busy GPU cannot shrink the bands without end.
 function jobBegin() {
   if (!R.tq) return;
   if (R.q) { gl.endQuery(R.tq.TIME_ELAPSED_EXT); gl.deleteQuery(R.q); }   // left open by a drawing call that threw
@@ -340,7 +308,7 @@ function fence(job) {
   job.sync = gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE, 0); job.t0 = performance.now(); gl.flush();
   if (R.pend) { job.behind = true; R.pend2 = job; } else R.pend = job;
 }
-function jobCost(job) {   // -> { ms, exact }: exact when ms is the GPU's own count
+function jobCost(job) {   // returns { ms, exact }: exact when ms is the GPU's own count
   const wall = Math.max(4, performance.now() - job.t0), c = { ms: wall, exact: false };
   if (job.q) {
     if (!gl.getParameter(R.tq.GPU_DISJOINT_EXT) && gl.getQueryParameter(job.q, gl.QUERY_RESULT_AVAILABLE)) {
@@ -351,38 +319,32 @@ function jobCost(job) {   // -> { ms, exact }: exact when ms is the GPU's own co
   }
   return c;
 }
-// How long one job should take. A preview has to be drawn, noticed and put on the canvas within one frame, so that
-// every frame of a drag shows a new picture. Bands take about half a frame each: counted by the GPU, two are kept in
-// flight, so the GPU always has work and the page's own drawing waits for one band at most. Timed by the clock (which
-// also counts the wait until the page looks again, a few milliseconds) there is one band at a time.
+// How long one job should take, in milliseconds. A preview must be drawn and on the canvas within one frame. A
+// band takes about half a frame: counted by the GPU two are kept in flight, timed by the clock one at a time.
 const bandTarget = exact => (exact ? clamp(0.5 * R.dt, 6, 20) : 0.7 * R.dt + 4);
 const prevTarget = exact => (exact ? clamp(0.55 * R.dt, 8, 20) : 0.55 * R.dt + 4);
-// The fewest rows a band may have. A band that looks slow must not be answered with ever smaller bands: below this the
-// hand-over between bands costs more than the drawing, and a GPU that is left idle most of the time slows its clock
-// down, which makes the next band look slower still. With this floor a pass is never more than 32 bands.
+// The fewest rows a band may have: a pass is never more than 32 bands. Below this the hand-over between bands
+// costs more than the drawing, and a GPU left idle slows its clock, which makes the next band look slower.
 const bandFloor = () => Math.max(2, canvas.height / 32);
 function say(t) { const el = $('status'); if (el.textContent !== t) el.textContent = t; }
-// true once nothing more will be drawn for the current settings: the finished picture is up (or its shader failed).
-// Not while the graphics are away in the middle of a picture: that picture is unfinished, and it is drawn again from
-// the start when the graphics come back. (Graphics that go away under a finished picture leave this true, as before.)
+// true once nothing more will be drawn for the current settings: the finished picture is up, or its shader failed.
+// false while the graphics are away in the middle of a picture: it is drawn again when they come back.
 function renderIdle() { return !(lost && R.lostMid) && !R.restart && !R.prog && !R.pend && !R.wantPrev; }
 // the view moved but the scene itself need not be redrawn: refresh overlays on the next frame
 function viewChanged() { uiDirty = true; kick(); }
 function busyOff() { if (R.busy) { R.busy = false; setBusy('compile', null); } }
-function warmSoon(ms) { if (R.warmOn && R.par) { clearTimeout(R.warmT); R.warmT = setTimeout(sceneWarm, ms); } }
+function warmSoon(ms) { if (R.par) { clearTimeout(R.warmT); R.warmT = setTimeout(sceneWarm, ms); } }
 function drawDone() {
   say(`Done: ${R.total} ${R.total === 1 ? 'pass' : 'passes'} at ${canvas.width} × ${canvas.height}`);
   stageProgress(null); warmSoon(500);
 }
-// A preview or a band has come back from the GPU.
 function jobDone(job, c) {
   const ms = c.ms;
   if (job.P === R.busyP) busyOff();   // a newly prepared program has drawn its first picture: until then the label stays up
   if (job.kind === 'prev') {
     blit(false);
     if (!R.bg) {
-      // What a full-size row costs with the preview's settings. Shadows, crevice shading and extra steps make a row of
-      // the finished picture dearer by a factor that is learnt from each first pass (the 2D view draws the same thing).
+      // What a full-size row costs with the preview's settings, then with the finished picture's (R.gain times as much).
       R.rowPrev = ms / R.ph * (canvas.width / R.pw); R.rowMs = R.rowPrev * (job.flat ? 1 : R.gain); R.rowExact = c.exact;
       const k = Math.sqrt(prevTarget(c.exact) / ms);
       if (job.flat) R.ps2 = clamp(R.ps2 * clamp(k, 0.4, 1.25), 0.2, 1);
@@ -403,7 +365,7 @@ function jobDone(job, c) {
   if (job.show) blit(true);
   if (R.prog || R.pend) stageProgress(job.frac);
   else drawDone();
-  if (job.p0 && job.last) warmSoon(500);   // the first pass is up: start preparing the programs a next click may need
+  if (job.p0 && job.last) warmSoon(500);   // the first pass is up
 }
 function loop(frame) {
   R.raf = 0;
@@ -444,12 +406,12 @@ function loop(frame) {
     if (!R.pend || (R.pipe && !R.pend2)) band(P);
     return kick();
   }
-  if (R.pend) return kick();   // the last bands of the picture are still being drawn
+  if (R.pend) return kick();   // the last bands of the picture are in flight
   if (R.restart) {
     ensureTargets();
     const W = canvas.width, H = canvas.height, first = R.rowMs * H;   // what the first pass will cost, judged from the preview
-    // A picture that is quick to draw starts almost at once (two frames without a change). A slow one waits until things
-    // have been still for about as long as its first pass takes, so a pause in a drag does not start a drawing that is dropped again.
+    // A picture that is quick to draw starts after two frames without a change. A slow one waits about as long as
+    // its first pass takes, so that a pause in a drag does not start a drawing that is dropped again.
     const rest = clamp(first, Math.max(30, 2.2 * R.dt), 170) - (performance.now() - R.lastTouch);
     if (rest <= 0) {
       R.restart = false;
@@ -491,7 +453,7 @@ function preview(P) {
   const o = { w, h, off: [0, 0], px: w / Math.max(1, stage.clientWidth), nt: sceneDe(), sharp: S.q.normals === 'sharp' };
   // the 2D preview is drawn exactly like a first pass, so at full size it can be kept as one
   setScene(P, flat ? Object.assign(o, { steps: S.q.steps, normEps: S.q.smooth, ao: S.q.ao, shadow: S.q.shadow })
-    // the ray-marched preview is lit like the finished picture (shadows, crevice shading), so the two do not differ in brightness
+    // the ray-marched preview is lit like the finished picture, so the two do not differ in brightness
     : Object.assign(o, { steps: Math.min(S.q.steps, 120), normEps: 1.5, ao: S.q.ao, shadow: S.q.shadow }));
   gl.drawArrays(gl.TRIANGLES, 0, 3);
   fence({ kind: 'prev', flat, P });
@@ -514,17 +476,12 @@ function band(P) {
   g.y += rows;
   if (g.y >= H) { g.y = 0; g.s++; if (g.s >= R.total) R.prog = null; }
 }
-// Prepare the programs the next click is most likely to need (the other approaches, the other form of the power,
-// the Kleinian view, the equation presets), one at a time on the driver's own thread, so that those switches draw
-// at once instead of waiting for a compile. It starts once the first pass of a picture is up and goes on while the
-// picture is refined; it stands back while the picture is moving or its own program is still being prepared.
-// It also stands back while a picture is being saved or a 3D model is being made: preparing a program takes the
-// driver and the GPU away from the job's pieces, and the same job took 4.5 s with it against 2.4 s without
-// (measured in round 7, out/r7/export/r7f-kfill.log). It carries on when the job is over.
-const bgJobBusy = () => !!BG.fly || BG.queue.length > 0 || (typeof exportBusy === 'function' && exportBusy()) || (typeof meshBusy === 'function' && meshBusy());
+// Prepares the programs the next click is most likely to need, one at a time on the driver's own thread. It stands
+// back while the picture moves and while a background job runs: a compile takes the GPU away from the job's pieces.
+const bgJobBusy = () => !!BG.fly || BG.queue.length > 0 || exportBusy() || meshBusy();
 function sceneWarm() {
   clearTimeout(R.warmT); R.warmT = 0;
-  if (!gl || lost || !R.par || !R.warmOn || R.failed) return;
+  if (!gl || lost || !R.par || R.failed) return;
   if (bgJobBusy()) { R.warmT = setTimeout(sceneWarm, 500); return; }
   if (R.busy || R.wantPrev || (R.pend && R.pend.kind === 'prev') || (R.restart && !R.prog)) { R.warmT = setTimeout(sceneWarm, 500); return; }
   if (R.warming) {
@@ -533,11 +490,9 @@ function sceneWarm() {
   }
   const n2 = Math.abs(S.n - 2) < 1e-9, a = ap(), list = [];
   const want = (...args) => { try { list.push(sceneWant(...args)); } catch (err) { /* a formula that does not compile is not warmed */ } };
-  // Balls on balls on show: its other two programs first (the one for pairs of numbers whose spheres cut into each
-  // other before the others: that is where the size of the neighbours goes when it is dragged past 100), so that
-  // moving a dial does not stop to prepare one.
+  // Balls on balls on show: its other two programs come first, so that moving a dial does not stop to prepare one.
   const kl = sceneKlein();
-  if (sceneBalls(kl)) for (const other of ['balls3', 'balls2', 'balls']) if (other !== kl) want(a, '', '', false, other);
+  if (sceneBalls(kl)) for (const other of ['ballsFree', 'ballsSmall', 'balls']) if (other !== kl) want(a, '', '', false, other);
   APPROACHES.forEach(x => want(x, S.eq, S.z0, n2, false));
   want(a, S.eq, S.z0, !n2, false);
   want(a, '', '', false, true);
@@ -564,17 +519,15 @@ function pick(px, py) {
   return out[3] > 0.5 ? [out[0], out[1], out[2]] : null;
 }
 
-// ---------- snapshots and background drawing
-// A snapshot freezes everything a picture depends on, so that a background job (a picture to save, a 3D model) can
-// go on drawing the picture as it was while the page moves on. Its drawing goes through the same GL context as the
-// screen, in pieces: one at a time, each short, and no more than a quarter of the time while the live picture is busy.
+// Snapshots and background drawing. A snapshot freezes everything a picture depends on, so that a background job
+// draws the picture as it was. Its pieces share the screen's GL context, one at a time, and give way to the live picture.
 const BG = {
   queue: [], fly: null,      // pieces waiting for their turn; the piece the GPU is working on
   next: 0,                   // while the live picture is busy: the earliest moment the next piece may start
   chan: null, armed: false,  // what wakes the queue: a message channel (a hidden tab does not slow it down) or a timer; one wake-up is on its way
-  pbo: null, pboSize: 0,     // finished pixels are copied into this buffer on the GPU's side, so reading them never waits for the GPU
+  pbo: null, pboSize: 0,     // finished pixels are copied into this buffer on the GPU's side, so reading them never waits
   vol: null,                 // the float target that slices of a volume are drawn into
-  late: [], lateT: 0, lateAt: 0,   // GPU timings still to come in: { q, fn, t, gen }; the timer that looks for them; when they were last looked for
+  late: [], lateT: 0, lateAt: 0,   // GPU timings to come in: { q, fn, t, gen }; the timer that looks for them; when they were last looked for
 };
 const SNAP_NONE = {};        // stands for "this key was not there" while values are swapped
 function snapCopy(v) {
@@ -592,15 +545,15 @@ function snapSwap(obj, vals) {
   }
   return was;
 }
-// The picture as it is now: a deep copy of the state, the camera, the theme colours, the size on screen and the
-// scene program (compiled if it is not yet, and kept alive until releaseSnapshot). Nothing the page does afterwards
-// changes it. Treat it as opaque outside this file and 45-export.js.
+// The picture as it is now: a deep copy of the state, the camera, the theme colours, the height on screen and the
+// scene program, which is kept alive until releaseSnapshot. 45-export.js and 46-mesh.js read S, basis and stage,
+// and 45-export.js adjusts its S for the size and quality of the picture. The other fields belong to this file.
 function takeSnapshot() {
-  const b = basis(), [pw, ph] = stagePixels();
+  const b = basis(), ph = stagePixels()[1];
   const snap = {
     S: snapCopy(S), theme: snapCopy(theme),
     basis: { pos: [...b.pos], right: [...b.right], up: [...b.up], f: [...b.f] },
-    stage: { w: stage.clientWidth, h: stage.clientHeight, pw, ph },   // the picture on screen: CSS pixels; picture pixels
+    stage: { h: stage.clientHeight, ph },   // the picture on screen: its height in CSS pixels and in picture pixels
     want: null, P: null, gen: -1, live: true, vol: null,
     wantRaw: null, PR: null, genR: -1,   // the program volume samples are drawn with (see snapProg), made when first asked for
     pxMs: 0, pxGpu: 0, pxLast: 4096,   // sampling: what a point costs by the clock and by the GPU's count; the points in the last piece
@@ -621,9 +574,7 @@ function releaseSnapshot(snap) {
   snap.P = snap.PR = null;
 }
 // The snapshot's program: an entry that is ready, 'wait' while the driver prepares it, or null when it cannot be had.
-// raw: the program its volume samples are drawn with instead (built with RAW_FIT, see glNeeds). That one is only
-// started when a 3D model first asks for it, so a picture job never waits for it, and the first model of a
-// formula waits a few seconds while the driver prepares it.
+// raw: the program volume samples are drawn with (built with RAW_FIT, see glNeeds), started when first asked for.
 function snapProg(snap, raw) {
   const w = raw ? 'wantRaw' : 'want', p = raw ? 'PR' : 'P', g = raw ? 'genR' : 'gen';
   if (!snap || !snap.live || !snap[w] || !gl || lost) return null;
@@ -641,19 +592,14 @@ async function snapReady(snap, raw) {
     await new Promise(r => setTimeout(r, 30));
   }
 }
-// The live picture needs the GPU: something is moving, or its drawing is not finished. A hidden tab shows no picture.
 const bgLiveBusy = () => !document.hidden && (!renderIdle() || performance.now() - R.lastTouch < 300);
-// What one background piece should cost, in milliseconds. Short while the live picture is busy, so that its frames
-// keep coming; never long, because a drag may begin at any moment and its first preview waits behind the piece.
+// What one background piece should cost, in milliseconds: short, because a drag's first preview waits behind it.
 const bgTarget = () => (bgLiveBusy() ? 5 : 12);
 // One piece of background drawing. draw() issues the GL calls when the piece's turn has come. `read`, if given, is
 // { x, y, w, h, into }: that rectangle of the framebuffer draw() leaves bound is copied into the typed array `into`
-// (a Float32Array reads floats, anything else bytes) once the GPU has finished. Resolves { ms }, or null when the GL
-// context went away or draw() failed. ms is the time by the clock from handing the piece over until it was seen to
-// be done. That counts more than the drawing: waiting behind the live picture, and behind whatever else is using
-// the GPU, which can be several milliseconds for a piece of any size. So a job must not answer a slow piece with
-// ever smaller pieces. The GPU's own count is the measure to size pieces by; it arrives a little after the piece
-// (and not at all on some devices), and is then handed to late(ms).
+// (a Float32Array reads floats, anything else bytes). Resolves { ms }, or null when the context went away or draw()
+// failed. ms is by the clock and includes waiting, so a job must not answer a slow piece with ever smaller pieces.
+// The GPU's own count is the measure to size pieces by: it arrives a little later (on some devices never) in late(ms).
 function bgPiece(draw, read, late) {
   return new Promise(done => { BG.queue.push({ draw, read, late, done, gen: R.gen }); bgPump(); });
 }
@@ -671,11 +617,10 @@ function bgLate(now) {
     if (t > 0) e.fn(t);
     return false;
   });
-  // after the last piece of a job nothing else comes by to collect what is still pending
+  // after the last piece of a job nothing else comes by to collect what is pending
   if (BG.late.length && !BG.lateT) BG.lateT = setTimeout(() => { BG.lateT = 0; bgLate(performance.now()); }, 250);
 }
-// Look at the queue again in `ms` milliseconds. Only one wake-up is ever on its way, so that two jobs running side
-// by side do not each keep a chain of them going.
+// Look at the queue again in `ms` milliseconds. Only one wake-up is ever on its way.
 function bgWake(ms) {
   if (BG.armed) return;
   BG.armed = true;
@@ -696,7 +641,6 @@ function bgPump() {
       if (gl.clientWaitSync(j.sync, 0, 0) === gl.TIMEOUT_EXPIRED) { bgWake(now - j.t0 < 4 ? 0 : 2); return; }
       gl.deleteSync(j.sync);
       c = { ms: Math.max(0.1, now - j.t0) };
-      R.bgN++; R.bgMs += c.ms;
       if (j.q) BG.late.push({ q: j.q, fn: j.late, t: now, gen: j.gen });
       if (j.read) {
         gl.bindBuffer(gl.PIXEL_PACK_BUFFER, BG.pbo);
@@ -709,7 +653,7 @@ function bgPump() {
   }
   while (BG.queue.length) {
     if (dead) { BG.queue.splice(0).forEach(x => x.done(null)); return; }
-    if (bgLiveBusy() && BG.next - now > 0.5) { R.bgHeld++; bgWake(BG.next - now); return; }
+    if (bgLiveBusy() && BG.next - now > 0.5) { bgWake(BG.next - now); return; }
     j = BG.queue.shift();
     if (j.gen !== R.gen) { j.done(null); continue; }   // queued for a context that is gone
     let ok = true, q = null;
@@ -733,9 +677,9 @@ function bgPump() {
     return;
   }
 }
-// Colour and distance over one level slice of the snapshot's scene (see docs/CONTRACT4.md): 4 * N * N numbers for
-// the square of side `side` centred on (cx, cy) at height z, rows from the lowest y upward: r, g, b the surface
-// colour (linear), a the signed distance estimate. null when the picture cannot be sampled.
+// Colour and distance over one level slice of the snapshot's scene: 4 * N * N numbers for the square of side
+// `side` centred on (cx, cy) at height z, rows from the lowest y upward: r, g, b the surface colour (linear),
+// a the signed distance estimate. null when the picture cannot be sampled.
 async function sampleSlice(snap, cx, cy, side, z, N) {
   N = Math.round(N);
   if (!snap || !(N >= 1 && N <= 4096) || !isFinite(cx + cy + side + z)) return null;
@@ -746,9 +690,8 @@ async function sampleSlice(snap, cx, cy, side, z, N) {
   while (y < N) {
     const P = await snapReady(snap, true);
     if (!P || !R.f32) return null;
-    // A piece is sized by what a point costs: by the GPU's count where there is one, else by the clock, which is
-    // not allowed to push a piece below 16384 points (see bgPiece). It may hold four times the points of the piece
-    // before, in case the points have become dearer. The very first is small, to learn the cost.
+    // A piece is sized by what a point costs: by the GPU's count, else by the clock, which may not push a piece below
+    // 16384 points (see bgPiece). It holds at most four times the points of the piece before; the first is small.
     const per = snap.pxGpu || snap.pxMs;
     const px = per > 0 ? Math.min(Math.max(bgTarget() / per, snap.pxGpu ? 1024 : 16384), 4 * snap.pxLast) : snap.pxLast;
     const rows = Math.min(N - y, Math.max(1, Math.round(px / N))), y0 = y;
