@@ -1501,3 +1501,38 @@ round the x-axis), not all over as on Balls on balls. NOT looked at: any c off t
 close zooms, phones.
 
 OPEN (asked of the user): where the buds all over the ball should come from. Three circles is all one mirror gives.
+
+## 2026-11-21, late night: VERSION 32 (entry "Soft mirrors, doubling": bulbs between the planes)
+
+USER (verbatim, on Version 31): "Ok great let's save that as a new better approach - but it's not filled with bulbs
+all over the 3d surface as with the cousin approach. So better, and it seems like there are no seams (idk how tho - if
+the creases are still there and I don't see them then yes you need to address them), but yes you need to work on
+getting bulbs all over the ball". So: "Sphere inversions, soft mirror" is accepted as the new better approach and
+stays; the open job is bulbs all over the ball as on Balls on balls.
+
+THE SEAM, MEASURED (page JavaScript, c = -1, 300 steps, skin found along rays at 50, 70 and 110 degrees from the
+x-axis): the kink of the skin on the mirror is 8.35 degrees with a sharp edge (0.64 at 50 degrees), -0.17 and 0.04
+with soft edge 10, 0.07 and 0.10 with soft edge 20, and the step to 43 degrees is four times the step to 44, so the
+slope goes to 0 on the mirror. The crease is gone, not hidden. Why: the fold's corner is a parabola, so the turn
+round the x-axis has slope 0 on the mirror and the skin crosses it square.
+
+WHY THE BULBS SAT ON CIRCLES (worked out by hand): the bulbs of the middle body are the directions that land on -x
+after some steps. One step sends only +-y and +-z there; the next only directions in the flat and the upright
+plane; and the top and bottom bulb (+-z) have nothing that lands on them at all, because the mirror never sends
+anything beside the upright plane. A rule that keeps shapes and the flat picture cannot turn the pattern from one
+size to the next round a neck, so rows of bulbs along fixed planes are forced; what can change is how many planes.
+
+BUILT: entry `mirrorsdouble`, "Soft mirrors, doubling", last in the list, group Sphere inversions, an entry whose
+orbit carries its step count (CARRY.mirrorsdouble; GL_MIRRORSDOUBLE with gMdCount). At step k the mirrors stand
+every 90/2^(k-1) degrees round the x-axis (smFoldK), so 2, 4, 8, ... planes land on the flat plane; the soft edge
+is the same share of the gap at every step. Dials: "Soft edge" (def 6), "Doubling stops after step" (1..12, def 3).
+Nothing is stretched to make the count grow; every piece is a mirror image. Level-2 bulbs then sit between the
+planes: the 4 diagonal ring directions of the 4-plane step have landing places at 50 and 130 degrees from the
+x-axis, 32.8 and 57.2 degrees round it.
+Checks: first squaring equals the soft mirror (difference 0 on 3,000 points); flat points exact over six steps
+(2e-15); Julia and Learn pictures draw with no console error.
+SEEN (c = -1 only; scratchpad v32/doubling-sheet.png and doubling-pick.png, sent): stop 1 = the soft mirror; stop 2
+and 3 = bulbs between the planes, each big bud ringed by strings of beads; stop 4 and "never" = stacked ridges, the
+ring look of the lathe; soft 20 smears the beads into streaks, soft 6 keeps them round, sharp edges are crispest
+and creased. Opens on soft 6, stop 3 (my pick by eye). The pattern is rings and rows of beads round each bud's
+foot, not the even grid of Balls on balls. NOT looked at: any other c, the Mandelbrot solid, phones.

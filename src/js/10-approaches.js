@@ -42,6 +42,20 @@ function smFold(v, q) {
   const g = smTurn(Math.atan2(Math.abs(z), Math.abs(y)), q);
   return [x, (y < 0 ? -1 : 1) * rho * Math.cos(g), (z < 0 ? -1 : 1) * rho * Math.sin(g)];
 }
+// ---------- helper of "Soft mirrors, doubling" (version 32). The soft mirror of smFold, with twice as many mirrors
+// at each step of an orbit: at step k the mirrors stand every 90°/2^(k−1) round the x-axis, the first of them at half
+// that from the flat plane (45°, 22.5°, 11.25°, ...), so 2, 4, 8, ... planes through the x-axis are sent onto the flat
+// plane. The soft edge shrinks with the gap between the mirrors, so it is always the same share of it.
+//   b = 45°/2^(k−1),  t = how far the turn a is from the nearest mirror (−b .. b),  g = b − |t|, the corner rounded
+// as in smTurn. Nothing is stretched: every piece of the fold is a mirror image. k = 1 is smFold with the mirror at 45°.
+function smFoldK(v, k, soft) {
+  const [x, y, z] = v, rho = Math.hypot(y, z);
+  if (z === 0 || !(rho > 1e-300)) return v;          // a point of the flat plane stays exactly where it is
+  const h = Math.pow(2, 1 - k), b = 0.25 * PI * h, w = aprRad(soft) * h;
+  const a = Math.atan2(Math.abs(z), Math.abs(y)), t = a - 2 * b * Math.floor(a / (2 * b)) - b;
+  const g = !(w > 0) || Math.abs(t) >= w ? b - Math.abs(t) : b - (t * t / (2 * w) + 0.5 * w);
+  return [x, (y < 0 ? -1 : 1) * rho * Math.cos(g), (z < 0 ? -1 : 1) * rho * Math.sin(g)];
+}
 // ---------- helpers of the three rules that were tried and failed (group 'tried'; ported from out/lab2/)
 // Blended planes. sfDir: the direction of the one-plane power of the unit direction d.
 const sfDir = (d, n) => {
@@ -352,6 +366,13 @@ const CARRY = {
     },
     pw: (st, v, n) => ppPower(st, v, n),
   },
+  // Soft mirrors, doubling (version 32). Carried: how many steps have counted, this one included, and the two dials
+  // (pw is not handed them). The mirrors double until the step named by the dial "stop", and stay as they are after it.
+  mirrorsdouble: {
+    start: q => ({ k: 0, soft: smDial(q, 'soft', 6, 0, 45), stop: Math.round(smDial(q, 'stop', 3, 1, 12)) }),
+    step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1, soft: st.soft, stop: st.stop }),
+    pw: (st, v, n) => MATH.mercator(smFoldK(v, clamp(st.k, 1, st.stop), st.soft), n, {}),
+  },
 };
 // The first squaring of a fresh orbit: all that the card and the Learn tab, which look at one squaring, can show.
 const carFirst = (id, v, n, q, c) => { const R = CARRY[id]; return R.pw(R.step(R.start(q), v, c, q), v, n); };
@@ -429,6 +450,8 @@ const MATH = {
   // ----- round 22: the two rules whose orbit carries something (see CARRY). One squaring is not the whole rule, so
   // these give the FIRST squaring of a fresh orbit. c: the constant of that orbit; left out, the page's Julia constant.
   alongonce(v, n) { return carFirst('alongonce', v, n, {}, [0, 0, 0]); },
+  // ----- version 32: the first squaring of a fresh orbit (two planes behind a soft mirror); see CARRY.mirrorsdouble
+  mirrorsdouble(v, n, q = {}) { return carFirst('mirrorsdouble', v, n, q, [0, 0, 0]); },
   pulledplane(v, n, q = {}, c) { return carFirst('pulledplane', v, n, q, c || (typeof S !== 'undefined' && S && S.c) || [0, 0, 0]); },
   bulb(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -1140,6 +1163,28 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return aoPw(a, n); }
 vec3 sqr(vec3 a){ return aoPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
+// Soft mirrors, doubling (see smFoldK and CARRY.mirrorsdouble). Carried: the number of steps that have counted, this
+// one included; a neighbouring orbit takes the rule of the point's own step, as in Along once, then one plane.
+// uA.x: the soft edge of the first mirror, in degrees. uA.y: the step after which the mirrors stop doubling.
+const GL_MIRRORSDOUBLE = GL_APR + GL_TRIED_MERC + GL_CARRY + `
+float gMdCount;
+bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
+void carStart(){ gMdCount = 0.0; gCarI = 0; }
+void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gMdCount += 1.0; }
+void carFit(int i, float s){ }
+vec3 mdFold(vec3 v, float k){
+  float rho = length(v.yz);
+  if (v.z == 0.0 || rho < 1e-20) return v;
+  float h = exp2(1.0 - k), b = 0.25 * PI * h, w = radians(clamp(uA.x, 0.0, 45.0)) * h;
+  float a = atan(abs(v.z), abs(v.y)), t = a - 2.0 * b * floor(a / (2.0 * b)) - b;
+  float g = !(w > 0.0) || abs(t) >= w ? b - abs(t) : b - (t * t / (2.0 * w) + 0.5 * w);
+  return vec3(v.x, (v.y < 0.0 ? -1.0 : 1.0) * rho * cos(g), (v.z < 0.0 ? -1.0 : 1.0) * rho * sin(g));
+}
+float mdStep(){ return clamp(gMdCount, 1.0, clamp(floor(uA.y + 0.5), 1.0, 12.0)); }
+vec3 mul(vec3 a, vec3 b){ return aprMmul(mdFold(a, mdStep()), mdFold(b, mdStep())); }
+vec3 pw(vec3 a, float n){ return aprMpw(mdFold(a, mdStep()), n); }
+vec3 sqr(vec3 a){ return aprMsq(mdFold(a, mdStep())); }
+vec3 cmap(vec3 c){ return mdFold(c, 1.0); }`;
 // Pulled plane (see ppPull, ppPower). Carried: the 2-vector w, one for the point and one for each neighbour.
 // uA.x: how firmly the flat page is held at the start. uA.y: the ease. uA.z: how many times the pull of c counts.
 const GL_PULLEDPLANE = GL_APR + GL_TRIED_MERC + GL_CARRY + `
@@ -1408,6 +1453,10 @@ const ppFormula = (p, n) => {
 const SM_NOTE = 'How it works: every point is first turned about the x-axis as if a mirror stood there, and then the one-plane rule is applied. The mirror is a half-plane through the x-axis. A point on the flat-plane side of it stays where it is. A point beyond it goes to its mirror image. With the mirror at 90° nothing lies beyond it: that is Sphere inversions, one plane. With the mirror at 45° and a sharp edge it is Sphere inversions, two planes. The mirror is what puts bodies off the flat plane, and its edge is what goes wrong. A sharp edge leaves a crease in every body the mirror cuts through. A soft edge takes the crease away and stretches whatever sits beside the mirror instead. No setting has neither.';
 const SM_ABOUT = 'Sphere inversions with one plane, with two planes, and Turning plane, along, are one idea at three settings: the one-plane rule, and a mirror through the x-axis that brings points from beside the upright plane down beside the flat plane. Everything that sits off the flat plane is a mirror image. One plane has no mirror, so it has no such bodies. Two planes has a mirror with a sharp edge, so its bodies keep their shapes and carry a crease. Along has a mirror with a wide soft edge, so it has no crease and its bodies are stretched. This entry puts the place of the mirror and the softness of its edge on two dials. Like two planes it is whole only for c on the x-axis, such as the Basilica.';
 const smSoft = p => +(p && p.soft) > 0;
+// ----- version 32: the texts of "Soft mirrors, doubling"
+const MD_NOTE = 'How it works: Sphere inversions, soft mirror, with twice as many mirrors at each step. At the first squaring of an orbit two planes through the x-axis are brought onto the flat plane, as in that entry. At the second squaring four planes are, at the third eight, and so on. A point of the flat plane is never moved, so the flat picture is exact. Nothing is stretched to make the count grow: every piece is a mirror image. What an orbit carries is a count of its squarings and nothing else. A squaring of the exact origin does not count.';
+const MD_ABOUT = 'In the flat picture each squaring doubles the number of places round the circle that land on one spot: 2, then 4, then 8. That doubling is what lines the edge of every body with smaller bodies at every size. Round the x-axis the soft mirror has no such doubling: two planes at every step, so the bodies stay on a few circles. This entry doubles the mirrors at each step instead. Bodies then sit between the planes as well: 4 round the middle body after one step, 8 more after two, and so on. The cost: far down, where the mirrors are many, a body is ringed by a string of small beads and comes close to the rings of the Quaternion square. The dial “Doubling stops after step” says how far down the doubling goes. Like the soft mirror it is whole only for c on the x-axis, such as the Basilica.';
+const mdPlanes = p => Math.pow(2, clamp(Math.round(+p.stop || 1), 1, 12));
 const APPROACHES = [
   {
     id: 'mercator', name: 'Sphere inversions, one plane', group: 'inversions', glsl: GL_MERCATOR, axis: () => [0, 0, 1],
@@ -1936,5 +1985,25 @@ const APPROACHES = [
       : ['no', (smSoft(p) ? 'No crease on the mirror, but' : 'A crease on the mirror, and') + ' across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
     slice: (ok, p) => (!ok ? 'The plane z = 0 does not follow complex arithmetic.'
       : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.' + (aprIs(+p.mirror, 45) && +p.soft < 45 ? ' With the mirror at 45° the plane y = 0 carries the flat set as well.' : '')),
+  },
+  // ----- Version 32: the soft mirror with twice as many mirrors at each step, to bring bodies between the planes.
+  // An entry whose orbit carries something (CARRY.mirrorsdouble). At the end of this list so that the entries before
+  // it keep their places.
+  {
+    id: 'mirrorsdouble', name: 'Soft mirrors, doubling', group: 'inversions', glsl: GL_MIRRORSDOUBLE, axis: () => [1, 0, 0], deMax: 0,
+    tag: 'The soft mirror with twice as many mirrors at each step: 2 planes at the first squaring, 4 at the second, 8 at the third. Bodies come to sit between the planes too.',
+    params: [
+      { type: 'note', text: MD_NOTE },
+      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 6, lo: 0, hi: 45, help: 'How far to each side of the first mirror its edge is rounded. Every later mirror is rounded by the same share of the gap between mirrors. 0: sharp edges, which leave creases.' },
+      { type: 'dial', key: 'stop', label: 'Doubling stops after step', min: 1, max: 12, step: 1, def: 3, int: true, lo: 1, hi: 12, help: 'The mirrors double at each step up to this one and stay as they are after it. 1: two planes at every step, which is Sphere inversions, soft mirror. 3: 2, 4, then 8 planes. 12: the doubling never stops within the steps a picture takes.' },
+    ],
+    formula: (p, n) => aprMercFormula(n) + ` Before that, at step k of an orbit, the turn a of the point round the x-axis is folded by mirrors that stand every 90°/2ᵏ⁻¹` + (smSoft(p) ? `, each with its corner rounded over the same share of that gap (${aprDeg(p.soft)} at the first step).` : '.') + ` From step ${aprNum(clamp(Math.round(+p.stop || 1), 1, 12))} on the mirrors stay as they are: ${aprNum(mdPlanes(p))} planes through the x-axis.`,
+    about: MD_ABOUT,
+    roundNote: p => 'This card measures the first squaring of an orbit, which is the one of Sphere inversions, soft mirror with the mirror at 45°. ' + (smSoft(p) ? 'Away from a mirror circles on the sphere stay circles. Inside a soft edge they are squashed round the x-axis.' : 'Each piece keeps circles on the sphere as circles. The mirrors leave creases between the pieces.'),
+    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone()
+      : ['part', (smSoft(p) ? 'On each mirror the turn round the x-axis is crushed: a thin slice of directions is spread over the whole soft band.' : 'Nothing but the origin is crushed. Space is creased on the mirrors instead.') + aprPole(n)]),
+    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+      : ['no', (smSoft(p) ? 'No crease on the mirrors, but' : 'A crease on every mirror, and') + ' across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis. The rule changes from step to step, so an orbit is not one formula applied again and again.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step, so that slice is the flat set.'),
   },
 ];
