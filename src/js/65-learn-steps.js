@@ -247,6 +247,22 @@ function learnFold(k) {
   return learnMove('fold', 'Fold', f, say, { hinge: LEARN_X, sheet: LEARN_YZ,
     all: 'every dot turns about the x-axis by its own amount. Dots on two sides of a crease go opposite ways' });
 }
+// Sphere inversions, soft mirror (version 31): the turn about the x-axis that takes the point where smFold puts it
+function learnSoftMirror(q) {
+  const f = (v, t) => {
+    const g = smFold(v, q);
+    if (t >= 1) return g;
+    return learnRx(v, t * learnWrap(Math.atan2(g[2], g[1]) - Math.atan2(v[2], v[1])));
+  };
+  const say = (a, b) => {
+    if (!(Math.hypot(a[1], a[2]) > 0)) return 'The mirror comes first. The point is on the x-axis, where the mirror is hinged, so it stays.';
+    const pa = Math.atan2(a[2], a[1]), pb = Math.atan2(b[2], b[1]);
+    if (len(sub(a, b)) < 1e-12 * len(a)) return `The mirror comes first, but it leaves this point alone: at ${learnDeg(pa)} around the x-axis it is on the flat plane’s side of the mirror.`;
+    return `The mirror comes first. Around the x-axis the point sits at ${learnDeg(pa)}, and the mirror carries it to ${learnDeg(pb)}.`;
+  };
+  return learnMove('fold', 'Soft mirror', f, say, { hinge: LEARN_X, sheet: LEARN_YZ,
+    all: 'every dot beyond the mirror turns about the x-axis to its mirror image. Dots beside a soft edge are turned by less' });
+}
 // Quaternion square: the angle from the axis is multiplied. tau: the tilt (0 for the Lathe), worked in the frame
 // turned by the tilt, exactly as MATH.tilt does.
 function learnLathe(n, tau, tilted) {
@@ -471,14 +487,15 @@ function learnPlan(o = {}) {
   } else {
     power = F;
     const zero = F;                    // asked only for a point at the origin: where the rule itself sends it
-    if (id === 'mercator' || id === 'fold') {
+    if (id === 'mercator' || id === 'fold' || id === 'softmirror') {
       if (id === 'fold') moves.push(learnFold(Math.max(2, q.planes || 2)));
+      if (id === 'softmirror') moves.push(learnSoftMirror(q));      // (version 31)
       moves.push(learnTurnZ(n, 3, 'longitude'), learnLeanMerc(n));
       const turn = id === 'mercator' ? aprRad(q.turn) : 0;
       if (turn) moves.push(learnTurnDial(turn, 'Turn', 'Add the turn'));
       if (+q.lift) moves.push(learnLift(+q.lift));
       moves.push(learnStretch(n, zero));
-      note = (id === 'fold' ? 'The fold is not a turn of space: each point turns about the x-axis by its own amount, and points on two sides of a crease go opposite ways. After it the rule is the one-plane rule. ' : '')
+      note = (id === 'fold' ? 'The fold is not a turn of space: each point turns about the x-axis by its own amount, and points on two sides of a crease go opposite ways. After it the rule is the one-plane rule. ' : id === 'softmirror' ? 'The mirror is not a turn of space: a point beyond it goes to its mirror image, and a point on the flat plane’s side stays. After it the rule is the one-plane rule. ' : '')
         + 'The longitude is multiplied the way the lean is on a page. The latitude is multiplied on the scale a Mercator map uses, so a point comes closer to a pole but never passes over it.';
     } else if (id === 'lathe') {
       const spin = q.spin === undefined ? 1 : +q.spin || 1, odd = learnIs(Math.abs(spin) % 2, 1);

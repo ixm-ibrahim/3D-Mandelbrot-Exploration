@@ -1455,3 +1455,49 @@ Looked at: 2D, the opening screen, one approach. Not looked at: 3D with both sha
 pictures to fill, so each step's new dots take twice as long).
 
 NEXT: back to the search for the right 3D rule (no candidate in hand; nothing running; ask before anything large).
+
+## 2026-11-21, night: BACK TO THE 3D SEARCH; VERSION 31 (entry "Sphere inversions, soft mirror")
+
+USER (verbatim): "Ok great, now let's go back to investigating the 3d Julia and Mandelbrot we're after. The
+distribution and overall structure of the cousin approach, paired with the correct shapes of the spherical inversion
+approach (at least with the basilica), is exactly (or, almost exactly - the exact distribution of the cousin approach
+is not necessarily the final solution, especially since it's arbitrary) what we're after. So let's start with that -
+the issue is somewhere between the 1d and 2d plane approach, because the 1d inflation is great and the 2d having bulbs
+everywhere is great, but the creases and hard edges of the 2d is not great, and the lack of any 3d bulbs in the 1d
+approach is not great. The along approach is also great because of the 3d bulb distribution, but the limits of 3d
+rotation shows because of the stretched and compressed bulbs - unlike the 2d spherical inversion approach that seems to
+preserve the proper shapes on the 3d bulbs. So let's start with that."
+(My reading: "1d" = Sphere inversions, one plane; "2d" = Sphere inversions, two planes; "cousin" = Balls on balls.)
+
+Worked alone, no agents (the user's standing rule). What I worked out, all by hand:
+- The three rules named are ONE idea at three settings: the one-plane rule behind a mirror through the x-axis.
+  One plane = no mirror. Two planes = mirror at 45 degrees with a sharp edge (shapes kept, crease). Along = the same
+  mirror with a wide soft edge and the answer turned back (no crease, stretch). This is what lies "between".
+- With w = (y + iz)/(r + x): one plane about z is A = 2w/(1 - w^2), about y it is B = 2w/(1 + w^2). Their mean
+  (A + B)/2 = 2w/(1 - w^4) keeps every shape, has no fold and treats both planes alike, but on the flat circle it is
+  NOT angle doubling (45 -> 81, 120 -> 313 degrees), so its flat cut is far from the true picture. Not built.
+- A fold before squaring along a curve is the same as a fold after squaring along that curve's image. A crease
+  vanishes only where the folded set is already mirror-symmetric, and then the fold does nothing.
+- "Both planes at once" (keep a point if squaring about either plane keeps it; a union instead of a fold) turns every
+  ridge into a valley and stretches nothing, but its flat cut gains bodies that the true picture does not have (the
+  one-plane rule's cut by its upright plane is the +-45 degree sector of the flat picture stretched to +-90). With
+  the union limited so that the flat cut is exact, cut faces show. Not built.
+- No one-step rule of the kind "length squared times a map of directions" can have all three of: every shape kept,
+  exact flat cut, bodies all over. Any two can be had. (Rounds 17 and 23 said the same in other words.)
+
+BUILT: entry `softmirror`, "Sphere inversions, soft mirror", last in the Approach list, group Sphere inversions.
+Turn a round the x-axis from the flat plane -> g(a) = M - |a - M|, the corner rounded over S degrees to each side
+(g = M - ((a - M)^2/(2S) + S/2) inside), then the one-plane rule; signs of y and z kept as in foldk; c goes through
+the same map. Dials: "Mirror stands at" M 45..90 (def 45), "Soft edge" S 0..45 (def 20). deMax 0.
+Checks (in the page): M 45, S 0 equals two planes to 5e-15 on 4,000 points; M 90, S 0 equals one plane; flat points
+exact to 2e-15. Learn: the move "Soft mirror" (learnSoftMirror; my first name learnMirror overwrote the modifier
+move of the same name, caught by the smoke test and renamed).
+SEEN (c = -1 only, scratchpad v31/soft-mirror-sheet.png and soft-mirror-close.png, both sent): S 0 = the creases of
+two planes; S 10 = no crease, a few small buds left between the planes and two faint ring marks on the skin;
+S 20 = smooth round bodies, the big buds in both planes keep their shape, the small bumps between the planes are
+gone; S 45 = banded like the lathe; M 60 = the top and bottom buds are gone. So the crease can be ironed out by eye,
+and what is lost is the little matter beside the mirror. Buds sit along three circles (flat, upright, the ring
+round the x-axis), not all over as on Balls on balls. NOT looked at: any c off the x-axis, the Mandelbrot solid,
+close zooms, phones.
+
+OPEN (asked of the user): where the buds all over the ball should come from. Three circles is all one mirror gives.

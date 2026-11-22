@@ -22,6 +22,26 @@ function foldk(v, k) {
   a2 *= s;
   return [x, rho * Math.cos(a2), rho * Math.sin(a2)];
 }
+// ---------- helper of "Sphere inversions, soft mirror" (version 31): the dial between one plane and two planes.
+// The turn a of a point round the x-axis, counted from the flat plane (0° in the plane z = 0, 90° in the plane y = 0),
+// is folded by a mirror that stands at `mirror` degrees, and the corner of the fold is rounded over `soft` degrees on
+// each side of the mirror:
+//   g(a) = mirror − |a − mirror|                              where |a − mirror| >= soft
+//   g(a) = mirror − ((a − mirror)² / (2·soft) + soft / 2)     nearer the mirror than that (the same value and slope where they meet)
+// Then the one-plane rule. mirror = 90, soft = 0: the one-plane rule itself. mirror = 45, soft = 0: two planes.
+// The signs of y and z are kept, as in foldk, so the rule jumps across the plane y = 0 the way two planes does.
+const smDial = (q, key, def, lo, hi) => clamp(q && q[key] !== undefined && isFinite(+q[key]) ? +q[key] : def, lo, hi);
+function smTurn(a, q) {
+  const b = aprRad(smDial(q, 'mirror', 45, 45, 90)), w = aprRad(smDial(q, 'soft', 0, 0, 45)), t = a - b;
+  if (!(w > 0) || Math.abs(t) >= w) return b - Math.abs(t);
+  return b - (t * t / (2 * w) + 0.5 * w);
+}
+function smFold(v, q) {
+  const [x, y, z] = v, rho = Math.hypot(y, z);
+  if (z === 0 || !(rho > 1e-300)) return v;          // a point of the flat plane stays exactly where it is
+  const g = smTurn(Math.atan2(Math.abs(z), Math.abs(y)), q);
+  return [x, (y < 0 ? -1 : 1) * rho * Math.cos(g), (z < 0 ? -1 : 1) * rho * Math.sin(g)];
+}
 // ---------- helpers of the three rules that were tried and failed (group 'tried'; ported from out/lab2/)
 // Blended planes. sfDir: the direction of the one-plane power of the unit direction d.
 const sfDir = (d, n) => {
@@ -352,6 +372,8 @@ const MATH = {
   fold(v, n, q = {}) {
     return MATH.mercator(foldk(v, Math.max(2, q.planes || 2)), n, { lift: q.lift });
   },
+  // ----- version 31: the one-plane rule behind a mirror with a soft edge (see smFold)
+  softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
     if (r < 1e-20 && n > 0) return [0, 0, 0];
@@ -582,6 +604,26 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(aprFold(a), aprFold(b)); }
 vec3 pw(vec3 a, float n){ return aprMpw(aprFold(a), n); }
 vec3 sqr(vec3 a){ return uA.y == 0.0 ? aprMsq(aprFold(a)) : aprMpw(aprFold(a), 2.0); }
 vec3 cmap(vec3 c){ return aprFold(c); }`;
+// Sphere inversions, soft mirror (see smFold). uA.x: where the mirror stands, in degrees from the flat plane.
+// uA.y: how many degrees to each side of the mirror the corner of the fold is rounded. No turn and no lift.
+const GL_SOFTMIRROR = GL_APR + `
+float aprTurn(){ return 0.0; }
+float aprLift(){ return 0.0; }
+float smTurn(float a){
+  float b = radians(clamp(uA.x, 45.0, 90.0)), w = radians(clamp(uA.y, 0.0, 45.0)), t = a - b;
+  if (!(w > 0.0) || abs(t) >= w) return b - abs(t);
+  return b - (t * t / (2.0 * w) + 0.5 * w);
+}
+vec3 smFold(vec3 v){
+  float rho = length(v.yz);
+  if (v.z == 0.0 || rho < 1e-20) return v;
+  float g = smTurn(atan(abs(v.z), abs(v.y)));
+  return vec3(v.x, (v.y < 0.0 ? -1.0 : 1.0) * rho * cos(g), (v.z < 0.0 ? -1.0 : 1.0) * rho * sin(g));
+}` + GL_MERC_CORE + `
+vec3 mul(vec3 a, vec3 b){ return aprMmul(smFold(a), smFold(b)); }
+vec3 pw(vec3 a, float n){ return aprMpw(smFold(a), n); }
+vec3 sqr(vec3 a){ return aprMsq(smFold(a)); }
+vec3 cmap(vec3 c){ return smFold(c); }`;
 const GL_LATHE = GL_APR + `
 vec3 aprSpin(vec3 v){
   if (uA.x == 1.0) return v;
@@ -1362,6 +1404,10 @@ const ppFormula = (p, n) => {
 };
 // R22-TEXTS-END
 
+// ----- version 31: the texts of "Sphere inversions, soft mirror"
+const SM_NOTE = 'How it works: every point is first turned about the x-axis as if a mirror stood there, and then the one-plane rule is applied. The mirror is a half-plane through the x-axis. A point on the flat-plane side of it stays where it is. A point beyond it goes to its mirror image. With the mirror at 90° nothing lies beyond it: that is Sphere inversions, one plane. With the mirror at 45° and a sharp edge it is Sphere inversions, two planes. The mirror is what puts bodies off the flat plane, and its edge is what goes wrong. A sharp edge leaves a crease in every body the mirror cuts through. A soft edge takes the crease away and stretches whatever sits beside the mirror instead. No setting has neither.';
+const SM_ABOUT = 'Sphere inversions with one plane, with two planes, and Turning plane, along, are one idea at three settings: the one-plane rule, and a mirror through the x-axis that brings points from beside the upright plane down beside the flat plane. Everything that sits off the flat plane is a mirror image. One plane has no mirror, so it has no such bodies. Two planes has a mirror with a sharp edge, so its bodies keep their shapes and carry a crease. Along has a mirror with a wide soft edge, so it has no crease and its bodies are stretched. This entry puts the place of the mirror and the softness of its edge on two dials. Like two planes it is whole only for c on the x-axis, such as the Basilica.';
+const smSoft = p => +(p && p.soft) > 0;
 const APPROACHES = [
   {
     id: 'mercator', name: 'Sphere inversions, one plane', group: 'inversions', glsl: GL_MERCATOR, axis: () => [0, 0, 1],
@@ -1870,5 +1916,25 @@ const APPROACHES = [
     crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', PP_CRUSH + aprPole(n)]),
     smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant() : ['no', ppSmooth(p, n)]),
     slice: (ok, p, n = S.n) => ppSlice(ok),
+  },
+  // ----- Version 31: the dial between "one plane" and "two planes", asked for by the user. At the end of this list
+  // so that the entries before it keep their places.
+  {
+    id: 'softmirror', name: 'Sphere inversions, soft mirror', group: 'inversions', glsl: GL_SOFTMIRROR, axis: () => [1, 0, 0], deMax: 0,
+    tag: 'Between one plane and two planes: the one-plane rule behind a mirror. One dial says where the mirror stands, the other how soft its edge is.',
+    params: [
+      { type: 'note', text: SM_NOTE },
+      { type: 'dial', key: 'mirror', label: 'Mirror stands at, degrees from the flat plane', min: 45, max: 90, step: 0.5, def: 45, lo: 45, hi: 90, help: 'Counted round the x-axis from the flat plane. 90°: no mirror, so nothing sits off the flat plane (one plane). 45°: the upright plane y = 0 becomes a copy of the flat plane (two planes).' },
+      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 20, lo: 0, hi: 45, help: 'How far to each side of the mirror its edge is rounded. 0: a sharp edge, which leaves a crease. Larger: no crease, and a band this wide on each side of the mirror in which bodies are stretched round the x-axis.' },
+    ],
+    formula: (p, n) => aprMercFormula(n) + ` Before that the turn a of the point round the x-axis, counted from the flat plane, becomes ${aprDeg(p.mirror)} − |a − ${aprDeg(p.mirror)}|` + (smSoft(p) ? `, with the corner rounded over ${aprDeg(p.soft)} on each side.` : '.'),
+    about: SM_ABOUT,
+    roundNote: p => (smSoft(p) ? 'Away from the mirror circles on the sphere stay circles. Inside the soft edge they are squashed round the x-axis, and on the mirror itself squashed flat.' : 'Each piece keeps circles on the sphere as circles. The mirror leaves a crease between the pieces.'),
+    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone()
+      : ['part', (smSoft(p) ? 'On the mirror the turn round the x-axis is crushed: a thin slice of directions is spread over the whole soft band.' : 'Nothing but the origin is crushed. Space is creased on the mirror instead.') + aprPole(n)]),
+    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+      : ['no', (smSoft(p) ? 'No crease on the mirror, but' : 'A crease on the mirror, and') + ' across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
+    slice: (ok, p) => (!ok ? 'The plane z = 0 does not follow complex arithmetic.'
+      : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.' + (aprIs(+p.mirror, 45) && +p.soft < 45 ? ' With the mirror at 45° the plane y = 0 carries the flat set as well.' : '')),
   },
 ];
