@@ -1674,12 +1674,18 @@ const CARRY = {
   // Soft mirrors, doubling (version 32). Carried: how many steps have counted, this one included, and the two dials
   // (pw is not handed them). The mirrors double until the step named by the dial "stop", and stay as they are after it.
   mirrorsdouble: {
-    start: q => ({ k: 0, soft: smDial(q, 'soft', 6, 0, 45), stop: Math.round(smDial(q, 'stop', 3, 1, 12)) }),
+    start: q => ({ k: 0, soft: smDial(q, 'soft', 2, 0, 45), stop: Math.round(smDial(q, 'stop', 3, 1, 12)) }),
     step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1, soft: st.soft, stop: st.stop }),
     pw: (st, v, n) => MATH.mercator(smFoldK(v, clamp(st.k, 1, st.stop), st.soft), n, {}),
   },
   // Sphere inversions, either side (version 33). The page's own orbit is the plain one (every choice "not mirrored"):
   // the picture asks all the choices, in the shader (APR_EITHER). Carried: nothing the page needs.
+  // Blended mirrors, doubling (version 34). The page's own orbit takes the sharp mirrors; the picture blends (APR_BLEND).
+  mirrorsblend: {
+    start: q => ({ k: 0, stop: Math.round(smDial(q, 'stop', 3, 1, 12)) }),
+    step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1, stop: st.stop }),
+    pw: (st, v, n) => MATH.mercator(smFoldK(v, clamp(st.k, 1, st.stop), 0), n, {}),
+  },
   either: {
     start: () => ({ k: 0 }),
     step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1 }),
@@ -1766,6 +1772,26 @@ const MATH = {
   mirrorsdouble(v, n, q = {}) { return carFirst('mirrorsdouble', v, n, q, [0, 0, 0]); },
   // ----- version 33: the plain choice of Sphere inversions, either side (one plane)
   either(v, n) { return MATH.mercator(v, n, {}); },
+  // ----- version 34: the first squaring of Blended mirrors, doubling, with the sharp mirror; see CARRY.mirrorsblend
+  mirrorsblend(v, n, q = {}) { return carFirst('mirrorsblend', v, n, q, [0, 0, 0]); },
+  // ----- version 34: Even pillow. The direction d = (X, Y, Z) is written on a square pillow grid (A, L):
+  //   d = N(cos A, sin A cos L, sin L),  N = "made length 1".  L = 0 is the circle z = 0 (A is the angle there),
+  //   A = 90 degrees is the circle x = 0 (L is the angle there); both are laid at an even speed. The four corners of
+  //   the pillow are the directions (+-1, 0, +-1). Read back: rho^2 = 2 / (1 + sqrt(1 - 4 X^2 Z^2)), cos A = rho X,
+  //   sin L = rho Z, cos L >= 0, sin A with the sign of Y. The power multiplies both A and L by n.
+  evenpillow(v, n) {
+    const [x, y, z] = v, r2 = x * x + y * y + z * z;
+    if (!(r2 > 1e-300)) return [0, 0, 0];
+    const r = Math.sqrt(r2), X = x / r, Y = y / r, Z = z / r;
+    const rho = Math.sqrt(2 / (1 + Math.sqrt(Math.max(1 - 4 * X * X * Z * Z, 0))));
+    const cA = clamp(rho * X, -1, 1), sL = clamp(rho * Z, -1, 1);
+    const sA = (Y < 0 ? -1 : 1) * Math.sqrt(Math.max(1 - cA * cA, 0)), cL = Math.sqrt(Math.max(1 - sL * sL, 0));
+    let w;
+    if (n === 2) w = [2 * cA * cA - 1, 2 * sA * cA * (1 - 2 * sL * sL), 2 * sL * cL];
+    else { const A = Math.atan2(sA, cA) * n, L = Math.asin(sL) * n; w = [Math.cos(A), Math.sin(A) * Math.cos(L), Math.sin(L)]; }
+    const m = Math.pow(r, n) / Math.hypot(w[0], w[1], w[2]);
+    return [w[0] * m, w[1] * m, w[2] * m];
+  },
   pulledplane(v, n, q = {}, c) { return carFirst('pulledplane', v, n, q, c || (typeof S !== 'undefined' && S && S.c) || [0, 0, 0]); },
   bulb(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -2526,6 +2552,65 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(eiFold(a), eiFold(b)); }
 vec3 pw(vec3 a, float n){ return aprMpw(eiFold(a), n); }
 vec3 sqr(vec3 a){ return aprMsq(eiFold(a)); }
 vec3 cmap(vec3 c){ return c; }`;
+// Even pillow (version 34; see MATH.evenpillow for the grid). At the power 2 no angle is taken: the doubled grid
+// point is written with squares and roots only, so the plane z = 0 is complex squaring to the last digit.
+const GL_EVENPILLOW = GL_APR + GL_TRIED_MERC + `
+vec3 epPw(vec3 v, float n){
+  float r2 = dot(v, v);
+  if (!(r2 >= 1e-30)) return vec3(0.0);
+  float r = sqrt(r2);
+  vec3 d = v / r;
+  float rho = sqrt(2.0 / (1.0 + sqrt(max(1.0 - 4.0 * d.x * d.x * d.z * d.z, 0.0))));
+  float cA = clamp(rho * d.x, -1.0, 1.0), sL = clamp(rho * d.z, -1.0, 1.0);
+  float sA = (d.y < 0.0 ? -1.0 : 1.0) * sqrt(max(1.0 - cA * cA, 0.0)), cL = sqrt(max(1.0 - sL * sL, 0.0));
+  vec3 w;
+  if (n == 2.0) w = vec3(2.0 * cA * cA - 1.0, 2.0 * sA * cA * (1.0 - 2.0 * sL * sL), 2.0 * sL * cL);
+  else { float A = atan(sA, cA) * n, L = asin(sL) * n; w = vec3(cos(A), sin(A) * cos(L), sin(L)); }
+  return pow(r, n) * normalize(w);
+}
+vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
+vec3 pw(vec3 a, float n){ return epPw(a, n); }
+vec3 sqr(vec3 a){ return epPw(a, 2.0); }
+vec3 cmap(vec3 c){ return c; }`;
+// Blended mirrors, doubling (version 34). The mirrors of Soft mirrors, doubling, kept sharp. Beside a mirror a point
+// has two places it could be squared from: where the mirror puts it, and the mirror image of that. Within the blend
+// width of a mirror the picture runs both orbits and cross-fades their distances, half and half on the mirror itself.
+// The blended distance has no slope across the mirror, so the skin crosses it square: no crease. Nothing is bent, so
+// nothing is smeared, and a body that sits on a mirror (which is its own mirror image) is left exactly as it is.
+// APR_BLEND makes the orbit code (30-shaders.js) run the orbits: gPick names the run (digit k in base 2: at squaring
+// k + 1 take the mirror image), gBlW is the weight of the run, gBlA1..3 say whether the first three squarings of the
+// run fell within a blend width.  uA.x: the blend width at the first mirror, in degrees.  uA.y: where doubling stops.
+const GL_MIRRORSBLEND = GL_APR + GL_TRIED_MERC + GL_CARRY + `
+#define APR_BLEND 1
+int gPick = 0;
+float gMbCount, gMbDone, gBlW;
+bool gBlA1, gBlA2, gBlA3;
+bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
+void carStart(){ gMbCount = 0.0; gMbDone = 0.0; gBlW = 1.0; gBlA1 = false; gBlA2 = false; gBlA3 = false; gCarI = 0; }
+void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gMbCount += 1.0; }
+void carFit(int i, float s){ }
+float mbStep(){ return clamp(gMbCount, 1.0, clamp(floor(uA.y + 0.5), 1.0, 12.0)); }
+vec3 mbTurn(vec3 v, float g){
+  float rho = length(v.yz);
+  return vec3(v.x, (v.y < 0.0 ? -1.0 : 1.0) * rho * cos(g), (v.z < 0.0 ? -1.0 : 1.0) * rho * sin(g));
+}
+vec3 mbFold(vec3 v, float k, bool blend){
+  if (v.z == 0.0 || length(v.yz) < 1e-20) return v;
+  float h = exp2(1.0 - k), b = 0.25 * PI * h, w = radians(clamp(uA.x, 0.0, 45.0)) * h;
+  float a = atan(abs(v.z), abs(v.y)), t = abs(a - 2.0 * b * floor(a / (2.0 * b)) - b);
+  float g = b - t;
+  if (blend && gMbCount >= 1.0 && gMbCount <= 3.0 && gMbCount > gMbDone){
+    gMbDone = gMbCount;
+    float lam = (w > 0.0 && t < w) ? 0.5 * (1.0 - sin(0.5 * PI * t / w)) : 0.0;
+    if (gMbCount < 1.5) gBlA1 = lam > 0.0; else if (gMbCount < 2.5) gBlA2 = lam > 0.0; else gBlA3 = lam > 0.0;
+    if (mod(floor(float(gPick) / exp2(gMbCount - 1.0)), 2.0) > 0.5){ g = b + t; gBlW *= lam; } else gBlW *= 1.0 - lam;
+  }
+  return mbTurn(v, g);
+}
+vec3 mul(vec3 a, vec3 b){ return aprMmul(mbFold(a, mbStep(), false), mbFold(b, mbStep(), false)); }
+vec3 pw(vec3 a, float n){ return aprMpw(mbFold(a, mbStep(), true), n); }
+vec3 sqr(vec3 a){ return aprMsq(mbFold(a, mbStep(), true)); }
+vec3 cmap(vec3 c){ return mbFold(c, 1.0, false); }`;
 // Pulled plane (see ppPull, ppPower). Carried: the 2-vector w, one for the point and one for each neighbour.
 // uA.x: how firmly the flat page is held at the start. uA.y: the ease. uA.z: how many times the pull of c counts.
 const GL_PULLEDPLANE = GL_APR + GL_TRIED_MERC + GL_CARRY + `
@@ -2801,6 +2886,13 @@ const mdPlanes = p => Math.pow(2, clamp(Math.round(+p.stop || 1), 1, 12));
 // ----- version 33: the texts of "Sphere inversions, either side"
 const EI_NOTE = 'How it works: at each of its first steps a point may be squared as it is (Sphere inversions, one plane), or mirrored first in the plane that stands at 45° round the x-axis and then squared. A point belongs to the solid if any run of such choices keeps it. So the solid is the one-plane solid with mirror images of itself added, and nothing is cut away. A point on the flat side of the mirror has no choice, so the flat picture is exact. No rounded edge is needed: a mirror image is only ever added, so the skin can dip where two pieces meet but can never stand up in a ridge.';
 const EI_ABOUT = 'The mirror entries before this one replace what is behind the mirror with the mirror image. Where the skin crossed the mirror at a slant that left a crease, and rounding the mirror took the crease away at the price of a smeared band beside it. Here the mirror image is added to what is already there instead. Two pieces that are added to each other meet in a valley, the way a bulb meets the body it sits on, never in a ridge, and nothing is smeared. The cost is work: with a choice through step 3 the picture runs 8 orbits for every point. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
+// ----- version 34: the texts of "Blended mirrors, doubling"
+const MB_NOTE = 'How it works: the mirrors of Soft mirrors, doubling, but kept sharp and not bent. Close to a mirror a point could be squared from two places: where the mirror puts it, or the mirror image of that place. Within the blend width the picture works out both and cross-fades between them, half and half on the mirror itself. That takes the crease away without bending anything, so nothing is smeared, and a body that sits right on a mirror is left exactly as it is. This is done at the first three steps of an orbit; later mirrors are sharp. A point of the flat plane is never moved, so the flat picture is exact.';
+const MB_ABOUT = 'A sharp mirror leaves a crease where the skin crosses it at a slant. Soft mirrors, doubling takes the crease away by rounding the mirror, and the rounding smears whatever sits beside the mirror round the x-axis: the striped ovals. Here the mirror stays sharp and the two sides are cross-faded instead. The cost: a bead that sits beside a mirror, but not on it, is lower than it would be, down to half its height right at the mirror. Close to a mirror the picture runs two orbits for a point, or more where blend widths of several steps meet, so it is slower there. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
+// ----- version 34: the texts of "Even pillow"
+const EP_NOTE = 'How it works: the direction of a point is read off a square grid that is wrapped round the sphere like a pillowcase, and both grid numbers are multiplied by the power. One grid number is the angle round the circle z = 0, so the flat picture is exact. The other measures how far the direction is from that circle, and it is doubled the same way, above and below alike. There is no mirror and no rounded edge anywhere. The grid is laid at an even speed along the circle z = 0 and along the circle x = 0, and it is squeezed only at its four corners, the directions (±1, 0, ±1). A product of two different points is taken from Sphere inversions, one plane.';
+const EP_ABOUT = 'Square pillow, the older entry, used the same idea with a grid that is lopsided above and below the flat plane and unevenly stretched, and its picture was streaked. This grid is the same above and below and nearly even. The price at the power 2, and at every even power: along two short arcs through the directions straight up and straight down the rule jumps, and the two sides of the jump are mirror images of each other, left to right. A Julia set with c on the x-axis is its own mirror image, so there the jump does not show. For other c it shows as a tear. At the odd powers, 3 and 5, there is no jump at all and the rule is whole for every c.';
+const epOdd = n => aprWhole(n) && Math.abs(Math.round(n)) % 2 === 1;
 const APPROACHES = [
   {
     id: 'mercator', name: 'Sphere inversions, one plane', group: 'inversions', glsl: GL_MERCATOR, axis: () => [0, 0, 1],
@@ -3338,7 +3430,7 @@ const APPROACHES = [
     tag: 'The soft mirror with twice as many mirrors at each step: 2 planes at the first squaring, 4 at the second, 8 at the third. Bodies come to sit between the planes too.',
     params: [
       { type: 'note', text: MD_NOTE },
-      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 6, lo: 0, hi: 45, help: 'How far to each side of the first mirror its edge is rounded. Every later mirror is rounded by the same share of the gap between mirrors. 0: sharp edges, which leave creases.' },
+      { type: 'dial', key: 'soft', label: 'Soft edge, degrees', min: 0, max: 45, step: 0.5, def: 2, lo: 0, hi: 45, help: 'How far to each side of the first mirror its edge is rounded. Every later mirror is rounded by the same share of the gap between mirrors. 0: sharp edges, which leave thin crease lines. From about 4 up, a bud that sits right on a mirror is smeared into a striped oval. It opened on 6 before Version 34.' },
       { type: 'dial', key: 'stop', label: 'Doubling stops after step', min: 1, max: 12, step: 1, def: 3, int: true, lo: 1, hi: 12, help: 'The mirrors double at each step up to this one and stay as they are after it. 1: two planes at every step, which is Sphere inversions, soft mirror. 3: 2, 4, then 8 planes. 12: the doubling never stops within the steps a picture takes.' },
     ],
     formula: (p, n) => aprMercFormula(n) + ` Before that, at step k of an orbit, the turn a of the point round the x-axis is folded by mirrors that stand every 90°/2ᵏ⁻¹` + (smSoft(p) ? `, each with its corner rounded over the same share of that gap (${aprDeg(p.soft)} at the first step).` : '.') + ` From step ${aprNum(clamp(Math.round(+p.stop || 1), 1, 12))} on the mirrors stay as they are: ${aprNum(mdPlanes(p))} planes through the x-axis.`,
@@ -3354,8 +3446,8 @@ const APPROACHES = [
   // The picture runs one orbit per run of choices (APR_EITHER in 30-shaders.js). At the end of this list so that the
   // entries before it keep their places.
   {
-    id: 'either', name: 'Sphere inversions, either side', group: 'inversions', glsl: GL_EITHER, axis: () => [1, 0, 0], deMax: 0,
-    tag: 'The one-plane solid with its mirror images added, not swapped in: no crease and no smeared band. A point is kept if the plain rule or the mirrored rule keeps it.',
+    id: 'either', name: 'Sphere inversions, either side', group: 'tried', glsl: GL_EITHER, axis: () => [1, 0, 0], deMax: 0,
+    tag: 'Tried: the one-plane solid with its mirror images added, not swapped in. Failed: fewer bulbs, and the ones between the planes are smeared flat. A point is kept if the plain rule or the mirrored rule keeps it.',
     params: [
       { type: 'note', text: EI_NOTE },
       { type: 'dial', key: 'depth', label: 'Choice through step', min: 0, max: 5, step: 1, def: 1, int: true, lo: 0, hi: 5, help: 'For how many steps a point may be mirrored first. 0: never, which is Sphere inversions, one plane. 1: the cleanest picture. From 2 on, flat plates appear between the planes. Each step more doubles the work: 3 means 8 orbits for every point, 5 means 32.' },
@@ -3367,6 +3459,40 @@ const APPROACHES = [
     smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
       : ['no', 'The solid is several solids added together, so it is not the solid of one formula applied again and again. Where two of them meet the skin has a valley. It is whole only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, and a point on it has no choice to make, so that slice is the flat set.'),
+  },
+  // ----- Version 34: a square pillow grid that is the same above and below the plane z = 0, with both of its
+  // coordinates multiplied by the power. No mirror, no rounded edge. At the end of this list so that the entries
+  // before it keep their places.
+  {
+    id: 'evenpillow', name: 'Even pillow', group: 'tried', glsl: GL_EVENPILLOW, axis: () => [1, 0, 0], deMax: 0,
+    tag: 'Tried: read the direction off a square pillow grid and double both grid numbers, the same above and below the flat plane, with no mirror at all. Failed at the power 2: the solid is spiky, with fins. At the power 2 it is whole only for c on the x-axis; at 3 and 5 for every c.',
+    params: [{ type: 'note', text: EP_NOTE }],
+    formula: (p, n) => `vⁿ = |v|ⁿ · N(cos nA, sin nA · cos nL, sin nL)   with n = ${aprNum(n)}, where the direction of v is N(cos A, sin A · cos L, sin L) and N makes a vector length 1. Read back from the direction (X, Y, Z): ρ² = 2 / (1 + √(1 − 4X²Z²)), cos A = ρX, sin L = ρZ, cos L ≥ 0, and sin A has the sign of Y.`,
+    about: EP_ABOUT,
+    roundNote: () => 'On the circles z = 0 and x = 0 a small circle of directions stays a circle. Away from them it becomes an oval, at most about 1.4 times as long as wide before the step and the same again after it. That does not build up from step to step: many steps together stretch a shape no more than one step can.',
+    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed onto one point. Beside the four corners of the grid, the directions (±1, 0, ±1), the stretch is uneven.' + aprPole(n)]),
+    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+      : epOdd(n) ? ['part', 'One formula with no mirror and no jump at this power. The four corners of the grid are the only special directions.']
+      : ['no', 'One formula with no mirror, but at an even power it jumps along two short arcs through the directions straight up and straight down. The two sides of the jump are mirror images, so it does not show when c is on the x-axis.']),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set. No corner of the grid lies in that plane.'),
+  },
+  // ----- Version 34: the doubling mirrors, sharp, with the two sides of each mirror cross-faded (APR_BLEND in
+  // 30-shaders.js). At the end of this list so that the entries before it keep their places.
+  {
+    id: 'mirrorsblend', name: 'Blended mirrors, doubling', group: 'tried', glsl: GL_MIRRORSBLEND, axis: () => [1, 0, 0], deMax: 0,
+    tag: 'Tried: keep the doubling mirrors sharp and cross-fade the two sides of each mirror. Failed: a bud that sits on a mirror gets a smooth bubble round it, and a pale band shows along the mirror.',
+    params: [
+      { type: 'note', text: MB_NOTE },
+      { type: 'dial', key: 'soft', label: 'Blend width, degrees', min: 0, max: 45, step: 0.5, def: 6, lo: 0, hi: 45, help: 'How far to each side of the first mirror the two sides are cross-faded. Every later mirror gets the same share of the gap between mirrors. 0: no blending, plain sharp mirrors, which leave thin crease lines.' },
+      { type: 'dial', key: 'stop', label: 'Doubling stops after step', min: 1, max: 12, step: 1, def: 3, int: true, lo: 1, hi: 12, help: 'The mirrors double at each step up to this one and stay as they are after it. 1: two planes at every step. 3: 2, 4, then 8 planes. 12: the doubling never stops within the steps a picture takes.' },
+    ],
+    formula: (p, n) => aprMercFormula(n) + ` Before that, at step k of an orbit, the turn a of the point round the x-axis is folded by sharp mirrors that stand every 90°/2ᵏ⁻¹. From step ${aprNum(clamp(Math.round(+p.stop || 1), 1, 12))} on the mirrors stay as they are: ${aprNum(mdPlanes(p))} planes through the x-axis.` + (smSoft(p) ? ` Within ${aprDeg(p.soft)} of the first mirror (the same share of the gap later) the picture cross-fades the distance to the solid between the two sides, at the first three steps.` : ''),
+    about: MB_ABOUT,
+    roundNote: () => 'This card measures the first squaring of an orbit with the sharp mirror: each piece keeps circles on the sphere as circles. The cross-fade is done on the finished picture, not on this step, so it bends nothing.',
+    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed, and nothing is smeared: space is folded on the mirrors, and the picture cross-fades the two sides of each fold.' + aprPole(n)]),
+    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+      : ['no', (smSoft(p) ? 'No crease on the mirrors of the first three steps: the two sides are cross-faded. That is done on the picture, so the solid is not the solid of one formula.' : 'A crease on every mirror.') + ' Across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step, so that slice is the flat set.'),
   },
 ];
 
@@ -4298,7 +4424,7 @@ vec3 start(vec3 c){ return __Z0__; }
 // An orbit has escaped once a step lands outside the radius uBail. A step that lands on a pole, or anywhere
 // a float cannot hold, counts as escaped; a pole at the very start is passed through instead (0 goes to
 // infinity, infinity goes to f(infinity)), so that z^-2 + c started from 0 follows the orbit of c.
-#ifdef APR_EITHER
+#if defined(APR_EITHER) || defined(APR_BLEND)
 #define orbitDE orbitOne
 #endif
 float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
@@ -4503,6 +4629,37 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   gPick = 0;
   gEsc = bEsc; gIt = bIt; gGrad = bGrad; gLast = bLast;
   return bd;
+}
+#endif
+#ifdef APR_BLEND
+#undef orbitDE
+// (version 34) An approach that defines APR_BLEND cross-fades the distances of several orbits of one point. Each
+// orbit says how much it counts (gBlW) and at which of its first three squarings a second orbit is wanted (gBlA1..3);
+// only those are run, so away from every blend width there is one orbit and the cost is what it was.
+float gBlAcc, gBlSum, gBlBw, gBlBIt;
+vec3 gBlBGrad, gBlBLast;
+void blOne(int q, vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
+  gPick = q;
+  float d = orbitOne(p, cj, jul, nt, dir, its, swap);
+  gBlAcc += gBlW * d; gBlSum += gBlW;
+  if (gBlW > gBlBw){ gBlBw = gBlW; gBlBIt = gIt; gBlBGrad = gGrad; gBlBLast = gLast; }
+}
+float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
+  gBlAcc = 0.0; gBlSum = 0.0; gBlBw = -1.0;
+  blOne(0, p, cj, jul, nt, dir, its, swap);
+  bool a1 = gBlA1, a2 = gBlA2, a3 = gBlA3;
+  if (a3) blOne(4, p, cj, jul, nt, dir, its, swap);
+  if (a2){ blOne(2, p, cj, jul, nt, dir, its, swap); if (gBlA3) blOne(6, p, cj, jul, nt, dir, its, swap); }
+  if (a1){
+    blOne(1, p, cj, jul, nt, dir, its, swap);
+    bool b2 = gBlA2, b3 = gBlA3;
+    if (b3) blOne(5, p, cj, jul, nt, dir, its, swap);
+    if (b2){ blOne(3, p, cj, jul, nt, dir, its, swap); if (gBlA3) blOne(7, p, cj, jul, nt, dir, its, swap); }
+  }
+  gPick = 0;
+  float d = gBlAcc / max(gBlSum, 1e-6);
+  gEsc = d > 0.0 ? 1.0 : 0.0; gIt = gBlBIt; gGrad = gBlBGrad; gLast = gBlBLast;
+  return d;
 }
 #endif
 float de(vec3 p, int nt, vec3 dir){
@@ -13554,7 +13711,8 @@ void main(){
   function cmapJs(id, c, q, jul) {
     if (id === 'fold') return foldk(c, Math.max(2, q.planes || 2));
     if (id === 'softmirror') return smFold(c, q);      // (version 31)
-    if (id === 'mirrorsdouble') return smFoldK(c, 1, smDial(q, 'soft', 6, 0, 45));      // (version 32)
+    if (id === 'mirrorsdouble') return smFoldK(c, 1, smDial(q, 'soft', 2, 0, 45));      // (version 32)
+    if (id === 'mirrorsblend') return smFoldK(c, 1, 0);      // (version 34)
     if (id === 'quat4') {
       const k = jul ? [c[0], c[1], c[2], fin(q.cw, 0)] : q4Embed(c, q);
       if (k[3] === 0) return [k[0], k[1], k[2]];

@@ -213,7 +213,8 @@ void main(){
   function cmapJs(id, c, q, jul) {
     if (id === 'fold') return foldk(c, Math.max(2, q.planes || 2));
     if (id === 'softmirror') return smFold(c, q);      // (version 31)
-    if (id === 'mirrorsdouble') return smFoldK(c, 1, smDial(q, 'soft', 6, 0, 45));      // (version 32)
+    if (id === 'mirrorsdouble') return smFoldK(c, 1, smDial(q, 'soft', 2, 0, 45));      // (version 32)
+    if (id === 'mirrorsblend') return smFoldK(c, 1, 0);      // (version 34)
     if (id === 'quat4') {
       const k = jul ? [c[0], c[1], c[2], fin(q.cw, 0)] : q4Embed(c, q);
       if (k[3] === 0) return [k[0], k[1], k[2]];

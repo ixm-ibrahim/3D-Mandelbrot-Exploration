@@ -121,7 +121,7 @@ vec3 start(vec3 c){ return __Z0__; }
 // An orbit has escaped once a step lands outside the radius uBail. A step that lands on a pole, or anywhere
 // a float cannot hold, counts as escaped; a pole at the very start is passed through instead (0 goes to
 // infinity, infinity goes to f(infinity)), so that z^-2 + c started from 0 follows the orbit of c.
-#ifdef APR_EITHER
+#if defined(APR_EITHER) || defined(APR_BLEND)
 #define orbitDE orbitOne
 #endif
 float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
@@ -326,6 +326,37 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   gPick = 0;
   gEsc = bEsc; gIt = bIt; gGrad = bGrad; gLast = bLast;
   return bd;
+}
+#endif
+#ifdef APR_BLEND
+#undef orbitDE
+// (version 34) An approach that defines APR_BLEND cross-fades the distances of several orbits of one point. Each
+// orbit says how much it counts (gBlW) and at which of its first three squarings a second orbit is wanted (gBlA1..3);
+// only those are run, so away from every blend width there is one orbit and the cost is what it was.
+float gBlAcc, gBlSum, gBlBw, gBlBIt;
+vec3 gBlBGrad, gBlBLast;
+void blOne(int q, vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
+  gPick = q;
+  float d = orbitOne(p, cj, jul, nt, dir, its, swap);
+  gBlAcc += gBlW * d; gBlSum += gBlW;
+  if (gBlW > gBlBw){ gBlBw = gBlW; gBlBIt = gIt; gBlBGrad = gGrad; gBlBLast = gLast; }
+}
+float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
+  gBlAcc = 0.0; gBlSum = 0.0; gBlBw = -1.0;
+  blOne(0, p, cj, jul, nt, dir, its, swap);
+  bool a1 = gBlA1, a2 = gBlA2, a3 = gBlA3;
+  if (a3) blOne(4, p, cj, jul, nt, dir, its, swap);
+  if (a2){ blOne(2, p, cj, jul, nt, dir, its, swap); if (gBlA3) blOne(6, p, cj, jul, nt, dir, its, swap); }
+  if (a1){
+    blOne(1, p, cj, jul, nt, dir, its, swap);
+    bool b2 = gBlA2, b3 = gBlA3;
+    if (b3) blOne(5, p, cj, jul, nt, dir, its, swap);
+    if (b2){ blOne(3, p, cj, jul, nt, dir, its, swap); if (gBlA3) blOne(7, p, cj, jul, nt, dir, its, swap); }
+  }
+  gPick = 0;
+  float d = gBlAcc / max(gBlSum, 1e-6);
+  gEsc = d > 0.0 ? 1.0 : 0.0; gIt = gBlBIt; gGrad = gBlBGrad; gLast = gBlBLast;
+  return d;
 }
 #endif
 float de(vec3 p, int nt, vec3 dir){

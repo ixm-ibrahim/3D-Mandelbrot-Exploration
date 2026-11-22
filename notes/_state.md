@@ -1566,3 +1566,44 @@ only if the flat picture is its own mirror image across that line, and only c on
 the flat picture has only the half-turn about the origin. Needs a different idea.
 
 Not looked at: c off the x-axis, the Mandelbrot solid, Learn (it shows the plain choice only), phones.
+
+## VERSION 34 (2026-11-21): what the smear is, three failed ways round it, soft edge 6 -> 2
+
+The user's verdict on Version 33 ("either side"), verbatim: "No that definitely does not work, not only are there
+less bulbs, but the diagonal ones are smeared". Entry `either` is now under Tried.
+
+WHAT THE STRETCHED BOUNDARIES ARE (seen, close up, c = -1). The striped ovals are BUDS THAT SIT RIGHT ON A MIRROR.
+With doubling, the mirror of step k is a plane that lands on the flat plane at step k+1, so every mirror carries the
+buds of the next step. Rounding the mirror smears exactly those buds round the x-axis. With a sharp mirror they are
+round (a bud on a mirror is nearly its own mirror image, so the fold through its middle does not show).
+Seen: soft edge 6 = striped ovals; 2 = round buds, line softened; 0 = round buds, thin crease lines between them.
+`mirrorsdouble` now opens on soft edge 2 (was 6). Nothing else about that entry changed.
+
+TRIED AND FAILED THIS ROUND (all three are entries under Tried):
+- `either` (Version 33): add the mirror image instead of swapping it in. Fewer bulbs; flat plates between planes.
+- `evenpillow`: no mirror at all. Direction on a square pillow grid d = N(cos A, sin A cos L, sin L), read back in
+  closed form (rho^2 = 2/(1+sqrt(1-4X^2Z^2)), cos A = rho X, sin L = rho Z), both grid numbers times n. Flat picture
+  exact (4.6e-13). Even about the flat plane, even speed on the circles z = 0 and x = 0. At power 2: SPIKY, fins,
+  bodies do not come apart (like the old Square pillow). Power 3 not looked at.
+- `mirrorsblend`: sharp doubling mirrors, cross-fade the DISTANCES of the two sides near a mirror (APR_BLEND in
+  30-shaders.js runs 1 to 8 orbits, pruned). A bud on a mirror gets a smooth bubble round it; pale band on the mirror.
+  Reason: the side the fold throws away holds bigger bodies, and any scheme that lets it count (add, cross-fade)
+  shows them as plates or bubbles.
+
+WORKED BY HAND THIS ROUND (so it is not done again):
+- Crease or smear, one of the two, for any mirror: a fold that is smooth must have zero slope across the mirror, and
+  zero slope IS the smear. Only the width can be chosen.
+- No mirror at all, shapes kept on spheres, flat picture exact => the rule is one plane (the angle-doubling on the
+  flat circle fixes a shape-keeping direction map completely). A grid doubled both ways (pillow) can keep the flat
+  picture only by giving up even speed somewhere, and then: for ODD powers a grid that is the same above and below
+  exists and is whole for every c (corners map to corners); for EVEN powers it does not (the flat belt would have to
+  sit a third of the way between the seams: that is the lopsided Square pillow), or the rule jumps along two arcs
+  (Even pillow; the jump is hidden only when c is on the x-axis).
+- Why grid doubling is spiky in 3D: a direction map that covers the sphere 4 times has turning points (6 of them),
+  and with bulbs all over their earlier images lie everywhere. At a turning point the direction is squeezed to
+  nothing while the length is still squared, so the solid cannot be near round there. One plane has only two such
+  points (straight up and down) and they never spread. Mirrors get coverage without turning points, and pay in creases.
+- Any Julia: copies that are not bent (mirrors, turns) need the flat picture to be its own mirror image across a
+  line. Only c on the x-axis gives that. Checked for every wedge about any line of the flat plane, and for caps.
+
+NOT LOOKED AT: any c off the x-axis, the Mandelbrot solid, Even pillow at power 3, phones.
