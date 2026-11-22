@@ -47,4 +47,4 @@ All JavaScript files are joined into one function scope in file-name order, so t
 name is its place in the page. Only `90-boot.js` runs code when the page loads. Each 3D rule is one entry in
 `src/js/10-approaches.js`.
 
-This is version 1.00. Each version is tagged, as `v1.00`.
+This is version 1.01. Each version is tagged, as `v1.01`.

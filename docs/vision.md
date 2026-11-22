@@ -105,7 +105,7 @@ look like besides a blown up 2d version which is not what I want".
 
 ## Where the rule may hide
 
-Three hunches, none of them settled.
+Four hunches, none of them settled.
 
 **The turn at each step.**
 
@@ -123,6 +123,14 @@ only the right turn.
 > the 2d case, right? hidden axis, hidden space, etc. [...] and then, same for the 3d case"
 
 So the 3D rule may be what the flat rule becomes when its hidden axis is counted, one dimension up.
+
+**Every turn at once.** In space a point can be reached from the x-axis by many turns, not one.
+
+> "if picking a single rotation is what causes the artifacts we don't want, what then prevents rotating along all
+> axes of rotation and somehow deciding from there?"
+
+Nothing prevents it. What it gives is under "A turn chosen for each point" below: the deciding is the whole
+question.
 
 **Back from the Kleinian side.** The paper goes from squaring to sphere inversions. The cousin is made of sphere
 inversions and already has the look.
@@ -206,7 +214,11 @@ strong lead, not a proof.
     plane* were judged "great".
   - What it leaves open: a rule that uses different ones of those moves in different parts of space. The cousin
     is made that way, of slides and sphere inversions and nothing else, and keeps its detail in every direction.
-    Not known: whether a rule made that way can have the flat picture as its exact cut.
+  - What follows for a rule made that way: none of its parts can reach the flat plane with any width. A
+    shape-keeping move of space that keeps the flat plane in place is fixed by what it does on that plane (up to
+    swapping above and below), and there it is a shape-keeping move of the plane. Squaring is not one, on any
+    patch. So the exact cut needs parts that get smaller without end towards the flat plane. The cousin's parts
+    cross the plane at full width, which is why its cut is a chain of circles and not a flat Julia set.
 - **One smooth rule of the plain kind is one plane.** Take any rule that squares the length and sends each
   direction to a new direction. The most such a rule can do is keep every shape on the sphere of directions, so
   that small circles there stay circles. If it does that and has the exact flat cut, it is *one plane* or its
@@ -232,6 +244,24 @@ strong lead, not a proof.
 - **Quaternions as they stand.** Squaring a quaternion and reading three of its four numbers spins the flat
   picture into rings (*Quaternion square (Lathe)*). Sphere inversions with no plane chosen give that same rule.
   Slices of the 4D sets, twisted copies and rotors (turns, as geometric algebra writes them) are in the lab and none has the flat picture's shapes all over.
+  The quaternion square does not go round the sphere of directions twice, the way squaring goes round the circle
+  twice. It covers it once forwards and once backwards, like a glove turned inside out, and the fold between the
+  two is the plane it crushes.
+- **A turn chosen for each point.** Squaring a flat point is doing one turn twice: the turn that carries the
+  x-axis onto the point. In space many turns do that, and their axes make a full circle of directions.
+  - All of them at once give a ring of answers round the point's own direction. Their average is that direction
+    itself: no turn at all. Keeping every one treats all directions round the x-axis alike, so a set with c on
+    the x-axis comes out the same all the way round that axis: rings.
+  - So one has to be picked, and no way of picking is smooth for every direction. A sphere cannot be combed flat
+    (the hairy ball theorem), and a smooth pick would comb it. The pick jumps or pinches somewhere.
+  - Four picks are in the lab. The shortest turn is *Quaternion square (Lathe)*: rings. The turn that moves the
+    upright axis least is *Rotor square with a frame*: a tear at the z-axis. The turn about the axis nearest to
+    upright is *All axes, nearest to upright*: a whole plane crushed onto a line, and sheets and splinters. The
+    turn about the axis nearest to the one the orbit used last is *All axes, nearest to the last one*: more
+    splinters.
+- **Changing the axis from step to step** (*Quaternion square, axis by step*) breaks the rings, but into one
+  lumpy body with a swirled skin. One step of the quaternion square already crushes a whole plane flat, and no
+  later step gives that back. A rule that changes by the step has to start from a step that crushes nothing.
 - **The hidden axis, read as a turn in 4D.** To carry the x-axis to a point, the plane to turn in is the one that
   holds both. Doing that turn twice is the quaternion square again. 4D adds a second turn, in the plane square to that one, which holds the hidden axis.
   Making it count (*Quaternion square, twisted*) breaks the rings into one body with tunnels, but its skin is
@@ -239,20 +269,75 @@ strong lead, not a proof.
 - **Pillow grids.** The even spread of the cousin comes from sliding a pattern in two directions on a grid.
   Wrapping such a grid on the sphere and doubling it comes out better at odd powers. At power 2 it comes out
   lopsided (*Square pillow*) or spiky (*Even pillow*). A pillow with three corners gives one lump, or fibres
-  (*Pillow*). Another, with one corner on the flat circle, gave lemon-shaped bodies.
+  (*Pillow*). Another, with one corner on the flat circle, gave lemon-shaped bodies. These grids are the one
+  kind of rule found whose stretch does not build up from step to step. Mathematicians call such rules uniformly
+  quasiregular, and Mayer (1997, "Uniformly quasiregular mappings of Lattès type") builds power rules of this
+  kind for space. The paper has not been read closely for this search.
 - **Stamping the cousin's bodies onto the true flat picture** gives needles wherever bodies meet.
+
+## What may have to be let go
+
+> "We're going to have to let go of some assumptions somehow to do this."
+
+Almost every rule tried so far was built the same way, and the roads closed above are roads inside that way of
+building. Each habit below was a natural place to start. For each: what is known while it is kept, and what
+opens when it is dropped. A new attempt should name the habit it breaks. One that breaks none is most likely on
+a road already closed.
+
+1. **"Nothing is chosen", read as "nothing is told apart".** A rule that knows only the point and the x-axis
+   has to treat every direction round the x-axis alike, and draws rings. A rule that knows only the point and the
+   upright axis has to treat every direction round that axis alike, and adds nothing off the flat plane, or a
+   smear, rings or shards. Bodies in many directions need something that tells directions apart round both axes. So the test cannot be
+   that nothing is told apart. It is that whatever tells directions apart comes from the flat rule and not from
+   a dial: the power, the orbit, c, or a grid as in the cousin.
+2. **One formula with no jumps.** Kept, it stretches somewhere (the first line of "What is ruled out"). Dropped,
+   each part of space can have its own shape-keeping move, as in the cousin. The price is known: the parts have
+   to get smaller without end towards the flat plane. A rule built that way has not been tried.
+3. **The same rule at every step.** Dropped in *Along once, then one plane*, *Soft mirrors, doubling* and
+   *Quaternion square, axis by step*. What these taught: a later step does not mend what an earlier step
+   crushed, so every step has to be sound by itself.
+4. **An orbit is a point and nothing else.** Dropped in *Pulled plane*, which carries a plane, and *All axes,
+   nearest to the last one*, which carries an axis. Not tried: carrying the point before, so that a step works
+   from two points, or carrying a size, so that a step moves a small ball and not a point.
+5. **The length is squared and the direction goes to a direction**, so a sphere round the middle goes to a
+   sphere round the middle. Nearly every rule in the lab does this. Inside it two cases stand out: keep circles
+   on the sphere of directions round, and the rule is *one plane*; keep the stretch from building up, and the
+   only rules found are the pillow grids. Dropped, length and direction mix, as they do in a sphere inversion about any other
+   centre. In the flat rule only the middle point is special, and adding c moves it at once.
+6. **Squaring is a turn done twice.** Squaring can be said in several ways. In the plane they all mean the same
+   thing. In space they come apart, and each one that has been built on gave a different family in the lab:
+   - the point times itself, which needs a way to multiply (the quaternion entries);
+   - a turn done twice, with the length squared (the rotor entries, and the picks under "A turn chosen for each
+     point");
+   - every angle doubled (*Mandelbulb* and the other angle rules);
+   - sphere inversions added up (the paper's reading: *one plane*, *two planes* and what grew from them);
+   - doubling on a grid (the pillow entries);
+   - the move that two points share: each point is reached from two points, its roots. This one has not been
+     built on.
+7. **A point has one next point.** Dropped once, in *Sphere inversions, either side*: two choices at a step, and
+   a point is kept if any run of choices keeps it. Not tried: keeping a point only if every run keeps it, or
+   running the rule backwards, where each point has two roots.
+8. **The solid is the points that never get away.** Other ways to get a solid from a rule: where backward steps
+   pile up, or what a set of moves leaves in place. The cousin is the second kind.
+9. **The third direction is more of the same space**, with a height for the point and a height for c. Adding c
+   as a 3D point is the lab's own choice. Not tried: reading the third direction as something the flat rule
+   already has. One candidate is the size of a disc: every shape-keeping move of the plane has one partner in
+   the space above it, which carries the dome over each disc to the dome over the disc's image. Another is the
+   hidden axis itself.
 
 ## Open directions
 
 Not tried, or not finished.
 
 - **The turn at each step.** Rules that turn each point by something taken from the point or its orbit have been
-  tried in a few forms: *Turning plane, away* and *along*, *Wind, then square*, *Along once, then one plane*,
-  *Pulled plane*. *Turning plane, along* gave the best spread and stretched the shapes. Not found: a turn that
-  the orbit itself picks at each step and whose stretch does not show. Each turn by itself stretches nothing. But
-  if the turn changes from point to point with no jump, the rule as a whole is one smooth formula, and the first
-  line of "What is ruled out" says it stretches somewhere. So what can be asked of such a turn is a stretch that
-  does not show.
+  tried in several forms: *Turning plane, away* and *along*, *Wind, then square*, *Along once, then one plane*,
+  *Pulled plane*, and the three entries built on the quaternion square: *Quaternion square, axis by step*, *All
+  axes, nearest to upright* and *All axes, nearest to the last one*. *Turning plane, along* gave the best spread
+  and stretched the shapes. The three built on the quaternion square failed outright, because their one step
+  crushes a plane. Not found: a turn that the orbit itself picks at each step, built on a step that crushes
+  nothing, whose stretch does not show. Each turn by itself stretches nothing. But if the turn changes from
+  point to point with no jump, the rule as a whole is one smooth formula, and the first line of "What is ruled
+  out" says it stretches somewhere. So what can be asked of such a turn is a stretch that does not show.
 - **Back from the Kleinian side.** The cousin's recipe is already a rule applied over and over: slide by the
   nearest whole number of a grid, turn inside out in one of two spheres, repeat, and a point belongs if it never gets out.
   What it lacks is a c, and squaring: each of its moves can be undone, while squaring sends two points to one.
@@ -261,7 +346,9 @@ Not tried, or not finished.
   that act as a squaring rule on one part of the plane and as a group of the Kleinian kind on the rest. Lee,
   Lyubich, Makarov and Mukherjee ("Schwarz reflections and the Tricorn") found rules that act as a mirrored
   squaring rule on one part of the plane and as a group of circle reflections on the other, the basilica among
-  them. Neither has been read closely for this search, and whether either carries over to spheres is open.
+  them. Mj and Mukherjee (2021, "Combining rational maps and Kleinian groups via orbit equivalence") set out
+  when a squaring rule and a group of the Kleinian kind can be joined at all. None of the three has been read
+  closely for this search, and whether any of it carries over to spheres is open.
 - **Mirror spheres that stay clear of the flat plane.** These are the one kind of fold that keeps every shape and
   never tears, for any c. The cousin is made of sphere inversions too, but its spheres sit across the flat plane.
   Spheres round two poles above and below the middle put bodies all over every set, dendrite and Kokopelli

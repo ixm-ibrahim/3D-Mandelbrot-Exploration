@@ -336,6 +336,42 @@ function ppPower(w, v, n) {
   return [o[0], c * o[1] - s * o[2], s * o[1] + c * o[2]];
 }
 const ppDial = (q, key, def) => (q && q[key] !== undefined && isFinite(+q[key]) ? +q[key] : def);
+// Many turns about the origin take the x-axis onto the direction of v: the axis may be any direction that is as far
+// from the x-axis as from v, a full circle of directions. axNear is the one whose axis is nearest to the direction h,
+// as { m, c, s }: the axis, and the cosine and sine of the angle. null: no turn is needed (the origin, the positive
+// x-axis). With h the z-axis a point of the plane z = 0 gets the turn about the z-axis by its own angle, which is
+// the flat rule.
+function axNear(v, h) {
+  const [x, y, z] = v, r = Math.hypot(x, y, z);
+  if (!(r > 1e-20)) return null;
+  const u = [x / r, y / r, z / r];
+  // d: from the x-axis to the direction of v. Its x part is u[0] - 1, written so that no digits are lost near the axis.
+  const d = [x > 0 ? -(y * y + z * z) / (r * (r + x)) : u[0] - 1, u[1], u[2]], d2 = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+  if (!(d2 > 1e-24)) return null;
+  const k = (h[0] * d[0] + h[1] * d[1] + h[2] * d[2]) / d2;
+  let m = [h[0] - k * d[0], h[1] - k * d[1], h[2] - k * d[2]], ml = Math.hypot(m[0], m[1], m[2]);
+  // h points straight from the x-axis to v, so every axis on the circle is as near: take the shortest turn
+  if (!(ml > 1e-9)) { m = [0, -u[2], u[1]]; ml = Math.hypot(m[1], m[2]); }
+  if (!(ml > 1e-9)) { m = [0, 0, 1]; ml = 1; }
+  m = [m[0] / ml, m[1] / ml, m[2] / ml];
+  const s2 = 1 - m[0] * m[0];
+  return s2 > 1e-18 ? { m, c: (u[0] - m[0] * m[0]) / s2, s: (m[2] * u[1] - m[1] * u[2]) / s2 } : null;
+}
+// The power n of v by the turn t of axNear: v is turned n - 1 times more about the same axis, and its length is
+// raised to n. A point of the plane z = 0 turned about the z-axis keeps z exactly 0.
+function axPower(v, n, t) {
+  const [x, y, z] = v, r = Math.hypot(x, y, z);
+  if (r < 1e-20 && n > 0) return [0, 0, 0];
+  const R = aprPow(r, n);
+  if (!(r > 0)) return [R, 0, 0];
+  const u = [x / r, y / r, z / r];
+  if (!t) return [R * u[0], R * u[1], R * u[2]];
+  const a = Math.atan2(t.s, t.c) * (n - 1), ca = Math.cos(a), sa = Math.sin(a), m = t.m;
+  const k = (m[0] * u[0] + m[1] * u[1] + m[2] * u[2]) * (1 - ca);
+  return [R * (u[0] * ca + (m[1] * u[2] - m[2] * u[1]) * sa + m[0] * k),
+          R * (u[1] * ca + (m[2] * u[0] - m[0] * u[2]) * sa + m[1] * k),
+          R * (u[2] * ca + (m[0] * u[1] - m[1] * u[0]) * sa + m[2] * k)];
+}
 const CARRY = {
   // Along once, then one plane. Carried: how many steps have counted, this one included.
   alongonce: {
@@ -374,6 +410,23 @@ const CARRY = {
     start: () => ({ k: 0 }),
     step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1 }),
     pw: (st, v, n) => MATH.mercator(v, n, {}),
+  },
+  // Quaternion square, axis by step. Carried: how many steps have counted, this one included, and the two dials.
+  tiltstep: {
+    start: q => ({ k: 0, first: ppDial(q, 'first', 0), turn: ppDial(q, 'turn', 90) }),
+    step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1, first: st.first, turn: st.turn }),
+    pw: (st, v, n) => MATH.tilt(v, n, { tilt: st.first + (Math.max(st.k, 1) - 1) * st.turn }),
+  },
+  // All axes, nearest to the last one. Carried: h, the axis of the last turn (the z-axis for a fresh orbit), and
+  // t, the turn of the step under way.
+  lastaxis: {
+    start: () => ({ h: [0, 0, 1], t: null }),
+    step(st, z) {
+      if (carOrigin(z)) return { h: st.h, t: null };
+      const t = axNear(z, st.h);
+      return { h: t ? t.m : st.h, t };
+    },
+    pw: (st, v, n) => axPower(v, n, st.t),
   },
 };
 // The first squaring of a fresh orbit: all that the card, which looks at one squaring, can show. (In space the
@@ -452,6 +505,11 @@ const MATH = {
   either(v, n) { return MATH.mercator(v, n, {}); },
   mirrorsblend(v, n, q = {}) { return carFirst('mirrorsblend', v, n, q, [0, 0, 0]); },
   pulledplane(v, n, q = {}, c) { return carFirst('pulledplane', v, n, q, c); },
+  tiltstep(v, n, q = {}) { return carFirst('tiltstep', v, n, q, [0, 0, 0]); },
+  // All axes, nearest to upright: of the turns that take the x-axis onto the point, the one about the axis nearest
+  // to the z-axis.
+  nearaxis(v, n) { return axPower(v, n, axNear(v, [0, 0, 1])); },
+  lastaxis(v, n) { return carFirst('lastaxis', v, n, {}, [0, 0, 0]); },
   // Even pillow. The direction d = (X, Y, Z) is written on a square pillow grid (A, L):
   //   d = N(cos A, sin A cos L, sin L),  N = "made length 1".  L = 0 is the circle z = 0 (A is the angle there),
   //   A = 90 degrees is the circle x = 0 (L is the angle there); both are laid at an even speed. The four corners of
@@ -662,26 +720,29 @@ vec3 pw(vec3 v, float n){
 }
 vec3 sqr(vec3 v){ return aprSpin(aprCap(vec3(v.x * v.x - dot(v.yz, v.yz), 2.0 * v.x * v.yz))); }
 vec3 cmap(vec3 c){ return c; }`;
-// uA.x: the tilt in degrees (see MATH.tilt).
-const GL_TILT = GL_APR + `
+// The quaternion power measured from an axis tilted inside the plane z = 0 (see MATH.tilt). aprTilt() is the tilt.
+const GL_TILT_CORE = `
 vec3 aprRz(vec3 v, float a){ float c = cos(a), s = sin(a); return vec3(c * v.x - s * v.y, s * v.x + c * v.y, v.z); }
 vec3 aprLmul(vec3 a, vec3 b){ return vec3(a.x * b.x - dot(a.yz, b.yz), a.x * b.yz + b.x * a.yz); }
-vec3 mul(vec3 a, vec3 b){ float t = radians(uA.x); return aprCap(aprRz(aprLmul(aprRz(a, t), aprRz(b, t)), -2.0 * t)); }
+vec3 mul(vec3 a, vec3 b){ float t = aprTilt(); return aprCap(aprRz(aprLmul(aprRz(a, t), aprRz(b, t)), -2.0 * t)); }
 vec3 pw(vec3 v, float n){
   float r = length(v);
   if (r < 1e-20 && n > 0.0) return vec3(0.0);
-  float t = radians(uA.x);
+  float t = aprTilt();
   vec3 u = aprRz(v, t);
   float rho = length(u.yz), a = at2(rho, u.x) * n;
   vec2 d = rho > 0.0 ? u.yz / rho : vec2(1.0, 0.0);
   return aprRz(aprPow(r, n) * vec3(cos(a), sin(a) * d), -n * t);
 }
 vec3 sqr(vec3 v){
-  float t = radians(uA.x);
+  float t = aprTilt();
   vec3 u = aprRz(v, t);
   return aprCap(aprRz(vec3(u.x * u.x - dot(u.yz, u.yz), 2.0 * u.x * u.yz), -2.0 * t));
 }
 vec3 cmap(vec3 c){ return c; }`;
+// uA.x: the tilt in degrees.
+const GL_TILT = GL_APR + `
+float aprTilt(){ return radians(uA.x); }` + GL_TILT_CORE;
 // uA.x, uA.y: phases in degrees, added to the latitude and the longitude after they are multiplied
 const GL_BULB = GL_APR + `
 vec3 aprSph(float r, float be, float ph){ float cb = cos(be); return r * vec3(cb * cos(ph), cb * sin(ph), sin(be)); }
@@ -1290,6 +1351,76 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return ppPw(a, n); }
 vec3 sqr(vec3 a){ return ppPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
+// Quaternion square, axis by step. Carried: the number of steps that have counted, this one included; a
+// neighbouring orbit takes the rule of the point's own step. uA.x: the tilt at the first step, in degrees.
+// uA.y: how far the tilt moves on at each later step.
+const GL_TILTSTEP = GL_APR + GL_CARRY + `
+float gTsCount;
+void carStart(){ gTsCount = 0.0; gCarI = 0; }
+void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gTsCount += 1.0; }
+void carFit(int i, float s){ }
+float aprTilt(){ return radians(mod(uA.x + (max(gTsCount, 1.0) - 1.0) * uA.y, 360.0)); }` + GL_TILT_CORE;
+// The turn of axNear and the power of axPower, as in the JavaScript above. axNear returns the axis and puts the
+// cosine and sine of the angle in cs; an axis of length 0 means that no turn is needed.
+const GL_AXNEAR = `
+vec3 axNear(vec3 v, vec3 h, out vec2 cs){
+  cs = vec2(1.0, 0.0);
+  float r = length(v);
+  if (!(r > 1e-20)) return vec3(0.0);
+  vec3 u = v / r;
+  vec3 d = vec3(v.x > 0.0 ? -dot(v.yz, v.yz) / (r * (r + v.x)) : u.x - 1.0, u.yz);
+  float d2 = dot(d, d);
+  if (!(d2 > 1e-14)) return vec3(0.0);
+  vec3 m = h - (dot(h, d) / d2) * d;
+  float ml = length(m);
+  if (!(ml > 1e-5)){ m = vec3(0.0, -u.z, u.y); ml = length(m); }
+  if (!(ml > 1e-5)){ m = vec3(0.0, 0.0, 1.0); ml = 1.0; }
+  m /= ml;
+  float s2 = 1.0 - m.x * m.x;
+  if (!(s2 > 1e-10)) return vec3(0.0);
+  cs = vec2(u.x - m.x * m.x, m.z * u.y - m.y * u.z) / s2;
+  return m;
+}
+vec3 axTurned(vec3 v, vec3 m, float ca, float sa){ return v * ca + cross(m, v) * sa + m * (dot(m, v) * (1.0 - ca)); }
+vec3 axPw(vec3 v, vec3 m, vec2 cs, float n){
+  float r = length(v);
+  if (r < 1e-20 && n > 0.0) return vec3(0.0);
+  float R = aprPow(r, n);
+  if (!(r > 0.0)) return vec3(R, 0.0, 0.0);
+  if (m == vec3(0.0)) return R * (v / r);
+  float a = at2(cs.y, cs.x) * (n - 1.0);
+  return R * axTurned(v / r, m, cos(a), sin(a));
+}
+// At the power 2 no angle is taken, and a point of the plane z = 0 turned about the z-axis is squared as a complex number.
+vec3 axSq(vec3 v, vec3 m, vec2 cs){
+  if (m == vec3(0.0)) return aprCap(length(v) * v);
+  if (v.z == 0.0 && m.z == 1.0) return aprCap(vec3(v.x * v.x - v.y * v.y, 2.0 * v.x * v.y, 0.0));
+  return aprCap(length(v) * axTurned(v, m, cs.x, cs.y));
+}
+vec3 axLmul(vec3 a, vec3 b){ return aprCap(vec3(a.x * b.x - dot(a.yz, b.yz), a.x * b.yz + b.x * a.yz)); }`;
+const GL_NEARAXIS = GL_APR + GL_AXNEAR + `
+vec3 mul(vec3 a, vec3 b){ return axLmul(a, b); }
+vec3 pw(vec3 v, float n){ vec2 cs; vec3 m = axNear(v, vec3(0.0, 0.0, 1.0), cs); return axPw(v, m, cs, n); }
+vec3 sqr(vec3 v){ vec2 cs; vec3 m = axNear(v, vec3(0.0, 0.0, 1.0), cs); return axSq(v, m, cs); }
+vec3 cmap(vec3 c){ return c; }`;
+// All axes, nearest to the last one. Carried by the point's own orbit: the axis of its last turn (the z-axis at
+// the start) and the turn of the step under way. A neighbouring orbit takes the turn of the point's own step.
+const GL_LASTAXIS = GL_APR + GL_AXNEAR + GL_CARRY + `
+vec3 gLaH, gLaM;
+vec2 gLaCs;
+void carStart(){ gLaH = vec3(0.0, 0.0, 1.0); gLaM = vec3(0.0); gLaCs = vec2(1.0, 0.0); gCarI = 0; }
+void carStep(vec3 z, vec3 c){
+  if (gCarI != 0) return;
+  gLaM = vec3(0.0); gLaCs = vec2(1.0, 0.0);
+  if (carOrigin(z)) return;
+  gLaM = axNear(z, gLaH, gLaCs);
+  if (gLaM != vec3(0.0)) gLaH = gLaM;
+}
+void carFit(int i, float s){ }
+vec3 mul(vec3 a, vec3 b){ return axLmul(a, b); }
+vec3 pw(vec3 v, float n){ return axPw(v, gLaM, gLaCs, n); }
+vec3 sqr(vec3 v){ return axSq(v, gLaM, gLaCs); }
+vec3 cmap(vec3 c){ return c; }`;
 // Wording helpers for the approach texts
 const aprIs = (a, b) => Math.abs(a - b) < 1e-9;
 const aprWhole = n => aprIs(n, Math.round(n));
@@ -1525,6 +1656,26 @@ const MB_ABOUT = 'A sharp mirror leaves a crease where the skin crosses it at a 
 const EP_NOTE = 'How it works: the direction of a point is read off a square grid that is wrapped round the sphere like a pillowcase, and both grid numbers are multiplied by the power. One grid number is the angle round the circle z = 0, so the flat picture is exact. The other measures how far the direction is from that circle, and it is doubled the same way, above and below alike. There is no mirror and no rounded edge anywhere. The grid is laid at an even speed along the circle z = 0 and along the circle x = 0, and it is squeezed only at its four corners, the directions (±1, 0, ±1). A product of two different points is taken from Sphere inversions, one plane.';
 const EP_ABOUT = 'Square pillow uses the same idea with a grid that is lopsided above and below the flat plane and unevenly stretched, and its picture is streaked. This grid is the same above and below and nearly even. The price at the power 2, and at every even power: along two short arcs through the directions straight up and straight down the rule jumps, and the two sides of the jump are mirror images of each other, left to right. A Julia set with c on the x-axis is its own mirror image, so there the jump does not show. For other c it shows as a tear. At the odd powers, 3 and 5, there is no jump at all and the rule is whole for every c.';
 const epOdd = n => aprWhole(n) && Math.abs(Math.round(n)) % 2 === 1;
+// Texts of Quaternion square, axis by step
+const TS_TAG = 'Tried: the quaternion square with the axis its angle is measured from turned on at every step of an orbit, so that no direction is the one left out at every step. Failed: the rings do break up, but into one lumpy body with a swirled skin and no smaller bodies on it.';
+const TS_NOTE = 'How it works: the quaternion square leaves one direction alone at every point, the spin round the axis its angle is measured from. That is what turns every shape of the flat picture into a ring. Here that axis moves on at each step of an orbit, inside the plane z = 0, so the direction left alone is a different one each time. Each step is turned back the way Quaternion square, twisted does it, which keeps the plane z = 0 exact at every step.';
+const TS_ABOUT = 'The thought behind it: a ring shows where the same direction is left out step after step, so changing that direction from step to step might keep the losses from piling up. It does break the rings. But a single step of the quaternion square already crushes a whole plane flat, and a later step cannot give back what an earlier one has flattened. So the solid is smooth sheets and swirls, as in Quaternion square, twisted, and not bodies upon bodies. With the turn at 0 this is Quaternion square, twisted. With the turn at 180 the Basilica is made of rings again.';
+// Texts of All axes, nearest to upright and All axes, nearest to the last one
+const axFormula = n => (aprIs(n, 2) ? 'v² = |v| · T(v)' : `vⁿ = |v|ⁿ⁻¹ · Tⁿ⁻¹(v)   with n = ${aprNum(n)}`)
+  + '   where T is a turn that takes the x-axis onto the direction of v. Its axis can be any direction as far from the x-axis as from v, and T is the one whose axis is nearest to a direction h.';
+const NA_TAG = 'Tried: of all the turns that carry the x-axis onto a point, take the one whose axis is nearest to upright, and do it twice. Failed: thin curved sheets and splinters, with no bodies.';
+const NA_NOTE = 'How it works: squaring a point of the flat picture is doing a turn twice, the turn that carries the x-axis onto the point. In space that is not one turn. Its axis may be any direction that is as far from the x-axis as from the point, and those directions make a full circle. The quaternion square takes the shortest of these turns. This entry takes the one whose axis is nearest to the z-axis, the axis that every turn of the flat picture is about. For a point of the flat plane that is the z-axis itself, so the flat picture is exact.';
+const NA_ABOUT = 'Doing all of those turns at once gives a ring of answers round the point’s own direction. Their average is the point’s own direction, which is no turn at all. Keeping every one of them treats all directions round the x-axis alike, so for a c on the x-axis, the Basilica among them, it can only draw rings. So one turn has to be picked, and something has to pick it. Here it is the one direction the flat picture supplies besides the x-axis: the axis its own turns are about. The price shows on the plane y = 0. For a point there the nearest axis is the direction halfway between the x-axis and the point, the turn is a half turn, and doing it twice puts the point back on the x-axis. That whole plane is crushed onto a line, and the space beside it is pulled out into threads. Rotor square with a frame picks by a different test, the turn that moves the upright axis least, and tears at the z-axis instead. Some such flaw is certain: a turn cannot be chosen for every direction without a jump or a pinch somewhere, for the same reason that a hairy ball cannot be combed flat.';
+const NA_ROUND = 'Near the flat plane and away from the plane y = 0 a tiny ball stays nearly round. Higher up it is squashed, and beside the plane y = 0 it is pulled out into a thread, more so the closer to the positive x-axis: about 200 times as long as it is wide at 20° above that axis.';
+const NA_HALF = 'For a point of the plane y = 0 the turn is a half turn about the direction halfway between the x-axis and the point.';
+const naCrush = n => (!aprWhole(n) ? ['part', NA_HALF + ' At this power that swings the point out of the plane.']
+  : Math.abs(Math.round(n)) % 2 ? ['part', NA_HALF + ' An even number of half turns is no turn, so at an odd power such a point keeps its direction: in that plane the angle is not multiplied at all.']
+  : ['no', NA_HALF + ' An odd number of half turns puts the point on the positive x-axis, so the whole plane y = 0 is crushed onto that line.']);
+const NA_SMOOTH = 'One formula with no jump, but not a smooth one: beside the plane y = 0 it stretches without limit towards the positive x-axis, and on that axis it pinches.';
+const LA_TAG = 'Tried: the same choice among all turns, but nearest to the axis the orbit’s last turn was about, so that an orbit keeps turning the way it was turning. Failed: sheets and splinters again, and the Dendrite falls to dust.';
+const LA_NOTE = 'How it works: as in All axes, nearest to upright, a step is one of the turns that carry the x-axis onto the point, done twice. Here the turn picked is the one whose axis is nearest to the axis of the step before, and nearest to the z-axis at the first step. An orbit that starts in the flat plane turns about the z-axis at every step, so the flat picture is exact.';
+const LA_ABOUT = 'The thought behind it: let the orbit itself pick the axis, with no direction chosen from outside after the start, the way a spinning top keeps its axis. The orbit then carries a memory, and two orbits that land on the same spot may go on differently. It does not help. A step still crushes a sheet of points onto a line, as in All axes, nearest to upright, only a different sheet for each orbit: the plane through the x-axis and the axis the orbit carries. The solid comes apart into more splinters, not fewer.';
+const LA_SMOOTH = 'What a step does depends on the axis the orbit has picked up, so an orbit is not one formula applied again and again. Each step stretches without limit beside the sheet it crushes.';
 const APPROACHES = [
   {
     id: 'mercator', name: 'Sphere inversions, one plane', group: 'inversions', glsl: GL_MERCATOR, axis: () => [0, 0, 1],
@@ -2096,5 +2247,57 @@ const APPROACHES = [
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', (smSoft(p) ? 'No crease on the mirrors of the first three steps: the two sides are cross-faded. That is done on the picture, so the solid is not the solid of one formula.' : 'A crease on every mirror.') + ' Across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step, so that slice is the flat set.'),
+  },
+  // The orbit of this entry carries its count of steps (CARRY.tiltstep).
+  {
+    id: 'tiltstep', name: 'Quaternion square, axis by step', group: 'tried', glsl: GL_TILTSTEP, deMax: 0,
+    axis: p => [Math.cos(aprRad(p.first)), -Math.sin(aprRad(p.first)), 0],
+    tag: TS_TAG,
+    params: [
+      { type: 'note', text: TS_NOTE },
+      { type: 'dial', key: 'first', label: 'Tilt of the axis at the first step, degrees', min: -180, max: 180, step: 1, def: 0, lo: -360, hi: 360, animate: true, help: 'Where the axis that the angle is measured from points at the first step of an orbit, counted inside the plane z = 0 from the x-axis. With the dial below at 0 this entry is Quaternion square, twisted at this tilt.' },
+      { type: 'dial', key: 'turn', label: 'Turn of the axis at each step, degrees', min: -180, max: 180, step: 0.5, def: 90, lo: -360, hi: 360, animate: true, help: 'How far the axis moves on, inside the plane z = 0, from one step of an orbit to the next. 0: the axis never moves, which is Quaternion square, twisted. 90: it points along x, then y, then −x, then −y, and so on. 180: it flips at every step.' },
+    ],
+    formula: (p, n) => `At step k of an orbit: vⁿ = turn(−n·t) · qⁿ(turn(t) · v)   with t = ${aprDeg(p.first)}${aprPlus(+p.turn || 0, '°')}·(k − 1), qⁿ the quaternion power and turn a turn about the z-axis.`,
+    about: TS_ABOUT,
+    roundNote: () => 'This card measures the first squaring of an orbit. The squash is in the spin direction around the tilted axis, and that direction changes from step to step.',
+    crush: (p, n) => {
+      const a = Math.abs(n);
+      if (aprIs(n, 0)) return aprNone();
+      if (a < 1 + 1e-9) return ['ok', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
+      return ['no', 'At each step it crushes every direction whose angle from that step’s axis, times n, is a multiple of 180°.' + (aprIs(a, 2) ? ` For n = ${aprNum(n)} that is the whole plane through the origin at right angles to the axis.` : '') + aprPole(n)];
+    },
+    smooth: (p, n) => {
+      if (aprIs(n, 0)) return aprConstant();
+      const steps = ' The rule changes from step to step, so an orbit is not one formula applied again and again.';
+      if (!aprWhole(n)) return ['no', 'Each step is a polynomial (built from plain multiplying and adding) for whole positive powers only. A power that is not a whole number also tears space along a line, the way zⁿ tears the plane along the negative x-axis.' + steps];
+      return ['part', (n < 0 ? 'Each step is a polynomial divided by a power of |v|²: smooth everywhere except the origin, which is a pole.' : 'Each step is a polynomial: built from plain multiplying and adding.') + steps];
+    },
+    slice: (ok, p, n) => (ok ? 'The plane z = 0 follows complex arithmetic exactly at every step, wherever the axis points.'
+      : !aprWhole(n) ? 'For a power that is not a whole number the plane z = 0 follows complex arithmetic except in a wedge beside the negative x-axis, as wide as that step’s tilt. Whole powers are exact at every step.'
+      : 'The plane z = 0 does not follow complex arithmetic.'),
+  },
+  {
+    id: 'nearaxis', name: 'All axes, nearest to upright', group: 'tried', glsl: GL_NEARAXIS, axis: () => [1, 0, 0], deMax: 0,
+    tag: NA_TAG,
+    params: [{ type: 'note', text: NA_NOTE }],
+    formula: (p, n) => axFormula(n) + ' Here h is the z-axis.',
+    about: NA_ABOUT,
+    roundNote: () => NA_ROUND,
+    crush: (p, n) => { if (aprIs(n, 0)) return aprNone(); const [k, t] = naCrush(n); return [k, t + aprPole(n)]; },
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['no', NA_SMOOTH]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: for a point of that plane the nearest axis is the z-axis itself, and the turn is the flat one.'),
+  },
+  // The orbit of this entry carries the axis of its last turn (CARRY.lastaxis).
+  {
+    id: 'lastaxis', name: 'All axes, nearest to the last one', group: 'tried', glsl: GL_LASTAXIS, axis: () => [1, 0, 0], deMax: 0,
+    tag: LA_TAG,
+    params: [{ type: 'note', text: LA_NOTE }],
+    formula: (p, n) => axFormula(n) + ' Here h is the axis the step before turned about, and the z-axis at the first step.',
+    about: LA_ABOUT,
+    roundNote: () => 'This card measures the first squaring of an orbit, which is the one of All axes, nearest to upright. ' + NA_ROUND,
+    crush: (p, n) => { if (aprIs(n, 0)) return aprNone(); const [k, t] = naCrush(n); return [k, 'At the first step of an orbit: ' + t + ' At a later step the same holds for the plane through the x-axis and the axis the orbit carries.' + aprPole(n)]; },
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['no', LA_SMOOTH]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step: an orbit that starts in that plane turns about the z-axis and never picks up another axis.'),
   },
 ];
