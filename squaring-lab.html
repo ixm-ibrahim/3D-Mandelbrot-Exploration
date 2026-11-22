@@ -1678,6 +1678,13 @@ const CARRY = {
     step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1, soft: st.soft, stop: st.stop }),
     pw: (st, v, n) => MATH.mercator(smFoldK(v, clamp(st.k, 1, st.stop), st.soft), n, {}),
   },
+  // Sphere inversions, either side (version 33). The page's own orbit is the plain one (every choice "not mirrored"):
+  // the picture asks all the choices, in the shader (APR_EITHER). Carried: nothing the page needs.
+  either: {
+    start: () => ({ k: 0 }),
+    step: (st, z) => (carOrigin(z) ? st : { k: st.k + 1 }),
+    pw: (st, v, n) => MATH.mercator(v, n, {}),
+  },
 };
 // The first squaring of a fresh orbit: all that the card and the Learn tab, which look at one squaring, can show.
 const carFirst = (id, v, n, q, c) => { const R = CARRY[id]; return R.pw(R.step(R.start(q), v, c, q), v, n); };
@@ -1757,6 +1764,8 @@ const MATH = {
   alongonce(v, n) { return carFirst('alongonce', v, n, {}, [0, 0, 0]); },
   // ----- version 32: the first squaring of a fresh orbit (two planes behind a soft mirror); see CARRY.mirrorsdouble
   mirrorsdouble(v, n, q = {}) { return carFirst('mirrorsdouble', v, n, q, [0, 0, 0]); },
+  // ----- version 33: the plain choice of Sphere inversions, either side (one plane)
+  either(v, n) { return MATH.mercator(v, n, {}); },
   pulledplane(v, n, q = {}, c) { return carFirst('pulledplane', v, n, q, c || (typeof S !== 'undefined' && S && S.c) || [0, 0, 0]); },
   bulb(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -2490,6 +2499,33 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(mdFold(a, mdStep()), mdFold(b, mdStep()
 vec3 pw(vec3 a, float n){ return aprMpw(mdFold(a, mdStep()), n); }
 vec3 sqr(vec3 a){ return aprMsq(mdFold(a, mdStep())); }
 vec3 cmap(vec3 c){ return mdFold(c, 1.0); }`;
+// Sphere inversions, either side (version 33). At each of the first steps of an orbit a point may be squared as it is,
+// or mirrored first (the sharp mirror at 45 degrees round the x-axis, which moves nothing on the flat side of it).
+// A point belongs to the solid if ANY run of such choices keeps it. APR_EITHER makes the orbit code (30-shaders.js)
+// run one orbit per run of choices, gPick naming the run: choice k (0 at the first squaring) is "mirrored" when
+// digit k of gPick in base 2 is 1. Carried: the number of squarings so far.  uA.x: through which step there is a choice.
+const GL_EITHER = GL_APR + GL_TRIED_MERC + GL_CARRY + `
+#define APR_EITHER 1
+int gPick = 0;
+float gEiCount;
+bool carOrigin(vec3 z){ float r2 = dot(z, z); return !(r2 >= 1e-30) || r2 >= 1e17; }
+void carStart(){ gEiCount = 0.0; gCarI = 0; }
+void carStep(vec3 z, vec3 c){ if (gCarI == 0 && !carOrigin(z)) gEiCount += 1.0; }
+void carFit(int i, float s){ }
+float eiDepth(){ return clamp(floor(uA.x + 0.5), 0.0, 5.0); }
+int eitherCount(){ return int(exp2(eiDepth()) + 0.5); }
+vec3 eiFold(vec3 v){
+  float k = gEiCount - 1.0;
+  if (k < 0.0 || k >= eiDepth() || mod(floor(float(gPick) / exp2(k)), 2.0) < 0.5) return v;
+  float rho = length(v.yz);
+  if (v.z == 0.0 || rho < 1e-20) return v;
+  float g = 0.25 * PI - abs(atan(abs(v.z), abs(v.y)) - 0.25 * PI);
+  return vec3(v.x, (v.y < 0.0 ? -1.0 : 1.0) * rho * cos(g), (v.z < 0.0 ? -1.0 : 1.0) * rho * sin(g));
+}
+vec3 mul(vec3 a, vec3 b){ return aprMmul(eiFold(a), eiFold(b)); }
+vec3 pw(vec3 a, float n){ return aprMpw(eiFold(a), n); }
+vec3 sqr(vec3 a){ return aprMsq(eiFold(a)); }
+vec3 cmap(vec3 c){ return c; }`;
 // Pulled plane (see ppPull, ppPower). Carried: the 2-vector w, one for the point and one for each neighbour.
 // uA.x: how firmly the flat page is held at the start. uA.y: the ease. uA.z: how many times the pull of c counts.
 const GL_PULLEDPLANE = GL_APR + GL_TRIED_MERC + GL_CARRY + `
@@ -2762,6 +2798,9 @@ const smSoft = p => +(p && p.soft) > 0;
 const MD_NOTE = 'How it works: Sphere inversions, soft mirror, with twice as many mirrors at each step. At the first squaring of an orbit two planes through the x-axis are brought onto the flat plane, as in that entry. At the second squaring four planes are, at the third eight, and so on. A point of the flat plane is never moved, so the flat picture is exact. Nothing is stretched to make the count grow: every piece is a mirror image. What an orbit carries is a count of its squarings and nothing else. A squaring of the exact origin does not count.';
 const MD_ABOUT = 'In the flat picture each squaring doubles the number of places round the circle that land on one spot: 2, then 4, then 8. That doubling is what lines the edge of every body with smaller bodies at every size. Round the x-axis the soft mirror has no such doubling: two planes at every step, so the bodies stay on a few circles. This entry doubles the mirrors at each step instead. Bodies then sit between the planes as well: 4 round the middle body after one step, 8 more after two, and so on. The cost: far down, where the mirrors are many, a body is ringed by a string of small beads and comes close to the rings of the Quaternion square. The dial “Doubling stops after step” says how far down the doubling goes. Like the soft mirror it is whole only for c on the x-axis, such as the Basilica.';
 const mdPlanes = p => Math.pow(2, clamp(Math.round(+p.stop || 1), 1, 12));
+// ----- version 33: the texts of "Sphere inversions, either side"
+const EI_NOTE = 'How it works: at each of its first steps a point may be squared as it is (Sphere inversions, one plane), or mirrored first in the plane that stands at 45° round the x-axis and then squared. A point belongs to the solid if any run of such choices keeps it. So the solid is the one-plane solid with mirror images of itself added, and nothing is cut away. A point on the flat side of the mirror has no choice, so the flat picture is exact. No rounded edge is needed: a mirror image is only ever added, so the skin can dip where two pieces meet but can never stand up in a ridge.';
+const EI_ABOUT = 'The mirror entries before this one replace what is behind the mirror with the mirror image. Where the skin crossed the mirror at a slant that left a crease, and rounding the mirror took the crease away at the price of a smeared band beside it. Here the mirror image is added to what is already there instead. Two pieces that are added to each other meet in a valley, the way a bulb meets the body it sits on, never in a ridge, and nothing is smeared. The cost is work: with a choice through step 3 the picture runs 8 orbits for every point. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
 const APPROACHES = [
   {
     id: 'mercator', name: 'Sphere inversions, one plane', group: 'inversions', glsl: GL_MERCATOR, axis: () => [0, 0, 1],
@@ -3310,6 +3349,24 @@ const APPROACHES = [
     smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
       : ['no', (smSoft(p) ? 'No crease on the mirrors, but' : 'A crease on every mirror, and') + ' across the plane y = 0 a jump, whose effect cancels only when c is on the x-axis. The rule changes from step to step, so an orbit is not one formula applied again and again.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step, so that slice is the flat set.'),
+  },
+  // ----- Version 33: the mirror image is ADDED to the one-plane solid instead of replacing what is behind the mirror.
+  // The picture runs one orbit per run of choices (APR_EITHER in 30-shaders.js). At the end of this list so that the
+  // entries before it keep their places.
+  {
+    id: 'either', name: 'Sphere inversions, either side', group: 'inversions', glsl: GL_EITHER, axis: () => [1, 0, 0], deMax: 0,
+    tag: 'The one-plane solid with its mirror images added, not swapped in: no crease and no smeared band. A point is kept if the plain rule or the mirrored rule keeps it.',
+    params: [
+      { type: 'note', text: EI_NOTE },
+      { type: 'dial', key: 'depth', label: 'Choice through step', min: 0, max: 5, step: 1, def: 1, int: true, lo: 0, hi: 5, help: 'For how many steps a point may be mirrored first. 0: never, which is Sphere inversions, one plane. 1: the cleanest picture. From 2 on, flat plates appear between the planes. Each step more doubles the work: 3 means 8 orbits for every point, 5 means 32.' },
+    ],
+    formula: (p, n) => aprMercFormula(n) + ` At each of the first ${aprNum(clamp(Math.round(+p.depth || 0), 0, 5))} steps the point may first be mirrored in the plane at 45° round the x-axis. A point is kept if any run of such choices keeps it.`,
+    about: EI_ABOUT,
+    roundNote: () => 'This card measures the plain choice, which is Sphere inversions, one plane: circles on the sphere stay circles. The mirrored choice is a mirror image of it, so it keeps them too.',
+    crush: (p, n = S.n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed, and nothing is smeared: every piece is the one-plane rule or a mirror image of it.' + aprPole(n)]),
+    smooth: (p, n = S.n) => (aprIs(n, 0) ? aprConstant()
+      : ['no', 'The solid is several solids added together, so it is not the solid of one formula applied again and again. Where two of them meet the skin has a valley. It is whole only when c is on the x-axis.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, and a point on it has no choice to make, so that slice is the flat set.'),
   },
 ];
 
@@ -4241,6 +4298,9 @@ vec3 start(vec3 c){ return __Z0__; }
 // An orbit has escaped once a step lands outside the radius uBail. A step that lands on a pole, or anywhere
 // a float cannot hold, counts as escaped; a pole at the very start is passed through instead (0 goes to
 // infinity, infinity goes to f(infinity)), so that z^-2 + c started from 0 follows the orbit of c.
+#ifdef APR_EITHER
+#define orbitDE orbitOne
+#endif
 float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   // Neighbour i (1 to 3) sits at z + dvI * exp(-lsI) with the constant c + dcI * exp(-lsI).
   // With no neighbours, slot 1 holds the running stretch instead: dv1.x * exp(ls1), fed by dc1.x.
@@ -4426,6 +4486,25 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   gEsc = outside ? 1.0 : 0.0;
   return d;
 }
+#ifdef APR_EITHER
+#undef orbitDE
+// (version 33) An approach that defines APR_EITHER has several orbits for one point, one per run of choices (gPick,
+// eitherCount() of them). The point belongs to the solid if any of them keeps it, so the distance is the least one.
+float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
+  float bd = 1e30, bEsc = 1.0, bIt = 0.0;
+  vec3 bGrad = vec3(0.0), bLast = vec3(0.0);
+  int n = eitherCount();
+  for (int q = 0; q < 32; q++){
+    if (q >= n) break;
+    gPick = q;
+    float d = orbitOne(p, cj, jul, nt, dir, its, swap);
+    if (q == 0 || d < bd){ bd = d; bEsc = gEsc; bIt = gIt; bGrad = gGrad; bLast = gLast; }
+  }
+  gPick = 0;
+  gEsc = bEsc; gIt = bIt; gGrad = bGrad; gLast = bLast;
+  return bd;
+}
+#endif
 float de(vec3 p, int nt, vec3 dir){
   bool jul = uJulia > 0.5, swap = gInsideOut;
   vec3 q = p, cj = uC;

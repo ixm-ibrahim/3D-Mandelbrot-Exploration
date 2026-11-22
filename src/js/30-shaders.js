@@ -121,6 +121,9 @@ vec3 start(vec3 c){ return __Z0__; }
 // An orbit has escaped once a step lands outside the radius uBail. A step that lands on a pole, or anywhere
 // a float cannot hold, counts as escaped; a pole at the very start is passed through instead (0 goes to
 // infinity, infinity goes to f(infinity)), so that z^-2 + c started from 0 follows the orbit of c.
+#ifdef APR_EITHER
+#define orbitDE orbitOne
+#endif
 float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   // Neighbour i (1 to 3) sits at z + dvI * exp(-lsI) with the constant c + dcI * exp(-lsI).
   // With no neighbours, slot 1 holds the running stretch instead: dv1.x * exp(ls1), fed by dc1.x.
@@ -306,6 +309,25 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
   gEsc = outside ? 1.0 : 0.0;
   return d;
 }
+#ifdef APR_EITHER
+#undef orbitDE
+// (version 33) An approach that defines APR_EITHER has several orbits for one point, one per run of choices (gPick,
+// eitherCount() of them). The point belongs to the solid if any of them keeps it, so the distance is the least one.
+float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
+  float bd = 1e30, bEsc = 1.0, bIt = 0.0;
+  vec3 bGrad = vec3(0.0), bLast = vec3(0.0);
+  int n = eitherCount();
+  for (int q = 0; q < 32; q++){
+    if (q >= n) break;
+    gPick = q;
+    float d = orbitOne(p, cj, jul, nt, dir, its, swap);
+    if (q == 0 || d < bd){ bd = d; bEsc = gEsc; bIt = gIt; bGrad = gGrad; bLast = gLast; }
+  }
+  gPick = 0;
+  gEsc = bEsc; gIt = bIt; gGrad = bGrad; gLast = bLast;
+  return bd;
+}
+#endif
 float de(vec3 p, int nt, vec3 dir){
   bool jul = uJulia > 0.5, swap = gInsideOut;
   vec3 q = p, cj = uC;

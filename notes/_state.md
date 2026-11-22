@@ -1536,3 +1536,33 @@ and 3 = bulbs between the planes, each big bud ringed by strings of beads; stop 
 ring look of the lathe; soft 20 smears the beads into streaks, soft 6 keeps them round, sharp edges are crispest
 and creased. Opens on soft 6, stop 3 (my pick by eye). The pattern is rings and rows of beads round each bud's
 foot, not the even grid of Balls on balls. NOT looked at: any other c, the Mandelbrot solid, phones.
+
+## VERSION 33 (2026-11-21): "Sphere inversions, either side"
+
+The user's verdict on Version 32, verbatim: "Ok keep this new approach - but something is still off. Namely, the
+"edges" of or visual boundaries between how the distribution of the bulbs is looks stretched - that shouldn't be the
+case. Either the approach is close but not quite it, and/or you need to modify how you're doing it now. Note that it
+needs to work for any Julia, not just this one".
+
+What the stretched boundaries are: the soft edge. A rounded mirror has slope 0 on the mirror, so a thin slice of
+directions is spread over the whole band. Sharp mirror = crease, rounded mirror = smear; one rule cannot avoid both.
+
+What was built: entry `either` (last under Sphere inversions). At each of the first steps a point may be squared as it
+is, or mirrored first (sharp mirror at 45 degrees round the x-axis). The solid is every point that ANY run of choices
+keeps: mirror images are added, not swapped in. Two added pieces can only meet in a valley, never a ridge, and nothing
+is smeared. A flat point has no choice (the mirror moves nothing on the flat side), so the flat picture is exact.
+Shader: APR_EITHER in 30-shaders.js renames the orbit to orbitOne and wraps it: one orbit per run of choices (gPick),
+least distance wins. Dial "Choice through step" 0..5 (2^n orbits), opens on 1.
+
+Tried first on cross-sections (scratch script slice.py, numpy): the one-sided form keeps the flat cut exactly (0
+pixels differ); allowing every plane everywhere does not (1324 of 129600 differ).
+
+Seen (c = -1 only): depth 1 is clean: the smooth one-plane body with bulbs on the flat and the upright plane, no
+crease, no smear. Depth 2 and 3 add bodies between the planes, but they are flat plates with a small bud in the
+middle, not round bulbs. So "bulbs all over" is NOT solved by this entry.
+
+Any Julia: not solved, and by hand it cannot be with mirrors through a line of the flat plane. Such a mirror is whole
+only if the flat picture is its own mirror image across that line, and only c on the x-axis gives that. For other c
+the flat picture has only the half-turn about the origin. Needs a different idea.
+
+Not looked at: c off the x-axis, the Mandelbrot solid, Learn (it shows the plain choice only), phones.
