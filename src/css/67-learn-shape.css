@@ -75,7 +75,10 @@ body.is-learn-shape .learn-space .learn-space-1 + .seg input:checked + span { bo
 
 /* ----- (round 29) Each step: At once | Move by move, and Dots */
 /* the third group of the transport's row: it takes a line of its own where the row has no room left */
-.learn-shape-how { flex: 0 1 auto; }
+/* (version 30) it holds five controls now: where they do not fit on one line they go on to a second one, and the
+   two-part choice keeps its own width (squeezed, its words ran over the menu beside it) */
+.learn-shape-how { flex: 0 1 auto; flex-wrap: wrap; row-gap: 6px; }
+.learn-shape-how > .learn-shape-seg { flex: none; }
 .learn-shape-dots { display: inline-flex; align-items: center; gap: 6px; flex: none; margin-left: 4px; }
 .learn-shape-dots select, #learnShapeDots, .learn-shape-sel { max-width: 100%; font-family: var(--f-mono); font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
 .learn-shape-dots select { min-height: 40px; padding: 3px 6px; }

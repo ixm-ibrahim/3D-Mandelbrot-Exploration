@@ -539,7 +539,10 @@ body.is-learn-shape .learn-space .learn-space-1 + .seg input:checked + span { bo
 
 /* ----- (round 29) Each step: At once | Move by move, and Dots */
 /* the third group of the transport's row: it takes a line of its own where the row has no room left */
-.learn-shape-how { flex: 0 1 auto; }
+/* (version 30) it holds five controls now: where they do not fit on one line they go on to a second one, and the
+   two-part choice keeps its own width (squeezed, its words ran over the menu beside it) */
+.learn-shape-how { flex: 0 1 auto; flex-wrap: wrap; row-gap: 6px; }
+.learn-shape-how > .learn-shape-seg { flex: none; }
 .learn-shape-dots { display: inline-flex; align-items: center; gap: 6px; flex: none; margin-left: 4px; }
 .learn-shape-dots select, #learnShapeDots, .learn-shape-sel { max-width: 100%; font-family: var(--f-mono); font-size: 13px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
 .learn-shape-dots select { min-height: 40px; padding: 3px 6px; }
@@ -10828,7 +10831,7 @@ const LEARN_SHAPE_NAMED = [
 ];
 const LEARN_SHAPE_MISSING = 'The 3D picture is missing from this copy of the page.';
 const LEARN_SHAPE = {
-  kind: 'm',                     // 'm' Mandelbrot shape | 'j' Julia shape | 'both'
+  kind: 'both',                  // 'm' Mandelbrot shape | 'j' Julia shape | 'both' (the one Learn opens on, since version 30)
   each: 'moves',                 // (round 29) 'once': a step shows only what it leaves | 'moves': the moves inside it, played on dots
   dots: 'some',                  // 'few' | 'some' | 'many' | 'most': how close the dots lie (LEARN_SHAPE_SPACING)
   // (version 24)
@@ -12714,7 +12717,7 @@ function learnShapeDefaults() {
   const L = LEARN, Sh = LEARN_SHAPE;
   learnShapeStop();
   L.follow = 'shape';      // (version 26: Learn opens on the whole shape, where the dots and their choices are)
-  Sh.kind = 'm'; Sh.c = LEARN_V_START[2].c.slice(); Sh.pos = 0; Sh.gone = ''; Sh.thin = ''; Sh.place = null; Sh.above = {};
+  Sh.kind = 'both'; Sh.c = LEARN_V_START[2].c.slice(); Sh.pos = 0;      // (version 30: both shapes side by side) Sh.gone = ''; Sh.thin = ''; Sh.place = null; Sh.above = {};
   Sh.each = 'moves'; Sh.dots = 'some'; Sh.endSide = false; Sh.D = {}; Sh.sig3 = '';      // (round 29)
   Sh.after = 'go'; Sh.orbits = 'few'; Sh.lay = 'both'; Sh.tint = 'mix'; Sh.refill = true; Sh.see = 'dots'; Sh.K = {}; Sh.Nt = {}; Sh.Lv = {};      // (versions 24 to 28)
   Sh.view2 = { m: { x: 0, y: 0, zoom: 1 }, j: { x: 0, y: 0, zoom: 1 } }; Sh.view3 = learnVCopy(LEARN_SHAPE_VIEW3);

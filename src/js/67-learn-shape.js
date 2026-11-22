@@ -51,7 +51,7 @@ const LEARN_SHAPE_NAMED = [
 ];
 const LEARN_SHAPE_MISSING = 'The 3D picture is missing from this copy of the page.';
 const LEARN_SHAPE = {
-  kind: 'm',                     // 'm' Mandelbrot shape | 'j' Julia shape | 'both'
+  kind: 'both',                  // 'm' Mandelbrot shape | 'j' Julia shape | 'both' (the one Learn opens on, since version 30)
   each: 'moves',                 // (round 29) 'once': a step shows only what it leaves | 'moves': the moves inside it, played on dots
   dots: 'some',                  // 'few' | 'some' | 'many' | 'most': how close the dots lie (LEARN_SHAPE_SPACING)
   // (version 24)
@@ -1937,7 +1937,7 @@ function learnShapeDefaults() {
   const L = LEARN, Sh = LEARN_SHAPE;
   learnShapeStop();
   L.follow = 'shape';      // (version 26: Learn opens on the whole shape, where the dots and their choices are)
-  Sh.kind = 'm'; Sh.c = LEARN_V_START[2].c.slice(); Sh.pos = 0; Sh.gone = ''; Sh.thin = ''; Sh.place = null; Sh.above = {};
+  Sh.kind = 'both'; Sh.c = LEARN_V_START[2].c.slice(); Sh.pos = 0;      // (version 30: both shapes side by side) Sh.gone = ''; Sh.thin = ''; Sh.place = null; Sh.above = {};
   Sh.each = 'moves'; Sh.dots = 'some'; Sh.endSide = false; Sh.D = {}; Sh.sig3 = '';      // (round 29)
   Sh.after = 'go'; Sh.orbits = 'few'; Sh.lay = 'both'; Sh.tint = 'mix'; Sh.refill = true; Sh.see = 'dots'; Sh.K = {}; Sh.Nt = {}; Sh.Lv = {};      // (versions 24 to 28)
   Sh.view2 = { m: { x: 0, y: 0, zoom: 1 }, j: { x: 0, y: 0, zoom: 1 } }; Sh.view3 = learnVCopy(LEARN_SHAPE_VIEW3);

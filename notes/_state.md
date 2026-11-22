@@ -1439,3 +1439,19 @@ F. TO DO when the tracks return: read each final NOTES.md and the result; merge 
 - Layout 'both' (sheets and shells, half the dots each) and its select under the picture (In 3D). Colouring 'mix':
   the hue says how far from the centre, light to dark says how high. Opens on lay 'both', tint 'mix'.
 - One approach looked at. NOTHING IS RUNNING. No candidate rule in hand.
+
+## 2026-11-21, night: VERSION 30 (Learn: the row under the picture no longer overlaps; opens on both shapes)
+
+User, after Version 29: "much better", then two things, and "after this, we'll go back to investigating the 3d".
+
+1. The row under the picture overlapped: the words "Move by move" ran over the Dots menu beside them.
+   Cause: the group "Each step" holds five controls since Version 29 and is wider than the picture's column. It was
+   allowed to shrink but not to wrap, so its two-part choice was squeezed while its words (nowrap) kept their width.
+   Fix (src/css/67-learn-shape.css): `.learn-shape-how` wraps on to a second line, and its two-part choice keeps its
+   own width. Measured with no overlap and nothing cut at window widths 1300, 1000, 760 and 390.
+2. Learn opens on Both (Mandelbrot and Julia side by side): `LEARN_SHAPE.kind` and `learnShapeDefaults` say 'both'.
+
+Looked at: 2D, the opening screen, one approach. Not looked at: 3D with both shapes at "Very many" dots (two
+pictures to fill, so each step's new dots take twice as long).
+
+NEXT: back to the search for the right 3D rule (no candidate in hand; nothing running; ask before anything large).
