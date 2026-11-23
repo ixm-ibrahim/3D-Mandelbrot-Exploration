@@ -17,6 +17,12 @@ addEventListener('load', () => {
   document.head.appendChild(l);
 }, { once: true });
 
+// The page opens at its top. A browser that keeps the place a page was scrolled to would otherwise put a page
+// that is loaded again back there.
+try { history.scrollRestoration = 'manual'; } catch (err) { /* not allowed here: the browser decides */ }
+scrollTo(0, 0);
+addEventListener('load', () => scrollTo(0, 0), { once: true });
+
 boot();
 customInit();
 learnInit();

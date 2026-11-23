@@ -89,7 +89,9 @@ function camListed() {
 // the dials stand on is used, then the equation preset in use; those are scaled from CAM_FOV0 to the current field of view.
 function camHome(preset) {
   const jul = S.mode === 'j', kl = S.mode === 'k', wide = !jul && !kl && Math.abs(S.n - 2) < 0.5;
-  const v = { yaw: jul ? -1.25 : kl ? 0.35 : -1.0, pitch: jul ? 1.0 : kl ? 0.35 : 0.55, dist: kl ? 7 : wide ? 5.2 : 4.8, target: wide ? [-0.6, 0, 0] : [0, 0, 0] };
+  // The Mandelbrot solid of a squaring rule has its middle at -0.6. An approach that writes the whole step itself
+  // may put its solid anywhere, and the play of its steps begins with a ball about the origin: it turns about that.
+  const v = { yaw: jul ? -1.25 : kl ? 0.35 : -1.0, pitch: jul ? 1.0 : kl ? 0.35 : 0.55, dist: kl ? 7 : wide ? 5.2 : 4.8, target: wide && !ap().whole ? [-0.6, 0, 0] : [0, 0, 0] };
   // A negative power turns the solid inside out: it reaches about 1.3 + 1/|n| from the centre, for n from -8 to -1.
   if (!kl && S.n < 0) v.dist = 3.8 * (1.3 + 1 / Math.max(1, -S.n));
   // Balls on balls: the whole chain in the picture, for the size of its neighbours and the shape of the stage

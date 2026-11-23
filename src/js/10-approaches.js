@@ -499,15 +499,16 @@ const CARRY = {
   },
   // Custom (12-custom.js). One pass of the user's steps is the whole step of an orbit, c included, so the power
   // handed back here is that pass with c taken off again: whoever adds c to it has the whole step. Carried: c, and
-  // for the names first, last, mean and count the number of steps that have counted (n), the orbit's first point,
+  // for the names first, last, mean, count and point( ) the number of steps that have counted (n), the orbit's first point,
   // the point of the step before (last; prev is the point of this step, for the next one) and the sum of its points.
   custom: {
-    start: () => ({ n: 0, first: [0, 0, 0], prev: [0, 0, 0], last: [0, 0, 0], sum: [0, 0, 0], c: [0, 0, 0] }),
+    start: () => ({ n: 0, first: [0, 0, 0], prev: [0, 0, 0], last: [0, 0, 0], sum: [0, 0, 0], c: [0, 0, 0], hist: [] }),
     step(st, z, c) {
       const cc = c || [0, 0, 0];
       if (carOrigin(z)) return { ...st, c: cc };
       const one = st.n === 0;
-      return { n: st.n + 1, first: one ? z : st.first, last: one ? z : st.prev, prev: z, sum: add(st.sum, z), c: cc };
+      // hist: the orbit's first points in order, for point( ) (as many as the shader keeps, CU_HIST)
+      return { n: st.n + 1, first: one ? z : st.first, last: one ? z : st.prev, prev: z, sum: add(st.sum, z), c: cc, hist: st.hist.length < CU_HIST ? st.hist.concat([z]) : st.hist };
     },
     pw: (st, v, n) => sub(cuRun(v, st.c, n, st), st.c),
   },
@@ -2557,7 +2558,7 @@ const APPROACHES = [
     tag: 'A rule you put together yourself, one step after another: lengths and angles, turns about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
     params: [],
     formula: () => cuWords(),
-    about: 'The steps stand under the picture. One pass through them is one step of an orbit, so they take the place of the equation: c is added where the step “Add c” stands, and nowhere else. A step can be switched off, moved, or broken down: a block into the formulas it is made of, and a formula into its single operations. The bar under the picture plays the steps, iteration by iteration: the solid on show is every starting point that has not been thrown out so far. The card below measures one pass with c set to 0.',
+    about: 'The steps stand under the picture. One pass through them is one step of an orbit, so they take the place of the equation: c is added where the step “Add c” stands, and nowhere else. A step can be switched off, moved, or broken down: a block into the formulas it is made of, and a formula into its single operations. The bar under the picture plays the steps, iteration by iteration: the solid on show is every starting point that has not been thrown out so far, and the dots are some of those points, each drawn where the steps have carried it. The card below measures one pass with c set to 0.',
     roundNote: () => '',
     crush: () => ['part', 'Not worked out for a rule of your own. The rows above are measured from your steps.'],
     smooth: () => ['part', 'Not worked out for a rule of your own. A fold, a comparison or an axis that moves with the point can each break a rule into parts.'],

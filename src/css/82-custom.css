@@ -1,7 +1,9 @@
 /* The custom approach (82-custom-ui.js). While it is chosen, body carries .is-custom: under the picture stand the
    bar that plays the steps (.cu-bar) and the steps themselves (.cu-dock). */
 .ap-custom { width: 100%; }
-body.is-learn .cu-bar, body.is-learn .cu-dock { display: none; }
+body.is-learn .cu-bar, body.is-learn .cu-dock, body.is-learn .cu-dots { display: none; }
+/* the dots that the steps carry, drawn over the picture and under everything else on the stage */
+.stage canvas.cu-dots { pointer-events: none; cursor: default; }
 
 /* A wide window: the page may be wider, so that more steps stand side by side, and the picture, the bar and the
    steps share the height of the window. The picture gives up some height, and the steps scroll by themselves. */
@@ -36,6 +38,9 @@ body.is-learn .cu-bar, body.is-learn .cu-dock { display: none; }
 .cu-group { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
 .cu-group select { max-width: 17em; min-width: 0; font-family: var(--f-mono); font-size: 13px; padding: 5px 6px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
 .cu-tools-row .btn:disabled { opacity: .45; cursor: default; }
+#cuSaveName { width: 11em; }
+/* what the tools last did, kept in view with them */
+.cu-say { flex: 1 1 100%; margin: 0; }
 .cu-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px; align-items: start; min-width: 0; }
 .cu-step { border: 1px solid var(--line); border-left: 3px solid var(--line); background: var(--panel); padding: 7px 9px 9px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .cu-step.is-bad { border-left-color: var(--bad); }
@@ -48,7 +53,9 @@ body.is-learn .cu-bar, body.is-learn .cu-dock { display: none; }
 .cu-on { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; flex: none; }
 .cu-on input { accent-color: var(--brass); margin: 0; }
 .cu-no { font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); min-width: 1.4em; }
-.cu-title { flex: 1 1 9em; min-width: 0; font-weight: 600; font-size: 14px; line-height: 1.25; }
+.cu-title { flex: 1 1 9em; min-width: 0; margin: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; font-weight: 600; font-size: 14px; line-height: 1.25; text-align: left; cursor: pointer; }
+.cu-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.cu-title:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 .cu-tools { display: flex; gap: 4px; flex: none; margin-left: auto; }
 .cu-tool { font-family: var(--f-cond); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; padding: 2px 6px; min-width: 24px; cursor: pointer; }
 .cu-tool:hover:not(:disabled) { border-color: var(--ink-2); }
