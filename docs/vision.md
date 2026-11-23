@@ -219,6 +219,37 @@ strong lead, not a proof.
     swapping above and below), and there it is a shape-keeping move of the plane. Squaring is not one, on any
     patch. So the exact cut needs parts that get smaller without end towards the flat plane. The cousin's parts
     cross the plane at full width, which is why its cut is a chain of circles and not a flat Julia set.
+- **Parts that each have a shape-keeping move, cut by a grid or by the orbit.** Space was cut into parts that get
+  smaller towards the flat plane. Each part was moved by the shape-keeping move that fits the flat rule at the flat
+  point under its middle: a turn and a scaling, or a Möbius move (one sphere inversion with a turn, a scaling and a
+  slide), which fits the bend of the flat rule too. The flat cut is exact in all of them. Four ways of cutting
+  were drawn on the basilica, the dendrite, the rabbit, Kokopelli and the Mandelbrot set:
+  - Boxes on the grid that the power itself lays out, so that squaring carries the middle of a box onto the middle
+    of a box. With the turn and the scaling (*Parts on a doubling grid, turn and scale*): low faceted shells and
+    shards. With the Möbius move (*Parts on a doubling grid, Möbius*): full, round bodies, cut into plates along the
+    walls of the boxes. In both, the dendrite and Kokopelli are lost almost entirely.
+  - Boxes on a plain square grid, like the cousin's (*Parts on a square grid*): bodies built of blocks, and shards.
+  - No grid: an orbit keeps the part it starts in (*Parts carried by the orbit*). No wall and no crack, and no top:
+    the solid is the flat picture drawn straight up.
+  - Parts of no size (*Parts of no size*): one smooth formula again. Full bodies close to balls, whole on all five
+    sets, and nothing new off the flat plane.
+
+  What they taught:
+  - A wall is a jump or a mirror. Two shape-keeping moves that agree all along a wall are the same move, or one is
+    the other behind a mirror in that wall. Two neighbouring fits of the flat rule are neither.
+  - A jump shows as a crack unless the solid looks the same from both sides of it, which needs the two moves to
+    differ by a move that leaves the solid as it is. The cousin is left as it is by every one of its own moves, and
+    that is why its walls do not show. Every move tried here is carried up from the plane, so it keeps the flat
+    plane in place, and so does the move by which two of them differ. A flat Julia set is left as it is by the half
+    turn, and by a mirror when c is on the x-axis. No other such move is known for it.
+  - Smaller parts close the cracks, because the jumps shrink faster than the parts do. But the jumps were the only
+    thing that told one direction round the upright axis from another. Without them the rule is smooth and falls
+    under the line on treating every direction alike, below.
+  - A body gets its top from the fit being taken afresh at each step. A chain of shape-keeping moves fitted along
+    one flat orbit keeps every height above the inside of the flat set.
+  - What this does not close: parts whose moves do not keep the flat plane in place. The cousin has such a move,
+    the slide square to its flat plane, and its bodies off the plane come from it: with the slide along the plane
+    alone (its setting "A line only") the buds sit round the flat picture only.
 - **One smooth rule of the plain kind is one plane.** Take any rule that squares the length and sends each
   direction to a new direction. The most such a rule can do is keep every shape on the sphere of directions, so
   that small circles there stay circles. If it does that and has the exact flat cut, it is *one plane* or its
@@ -240,7 +271,8 @@ strong lead, not a proof.
 - **A plane taken from c** gives the flat picture spun round a line: rings. A plane that follows the orbit
   (*Pulled plane*) is "too simplistic": bulbs mirrored on two planes, and nothing between them.
 - **Treating every direction round the upright axis alike** (the z-axis, which stands up out of the flat plane)
-  adds nothing off the flat plane, or a smear, rings or shards.
+  adds nothing off the flat plane, or a smear, rings or shards. *Parts of no size* is one more rule of this kind.
+  It raises the length to the power exactly and its bodies are close to balls, with nothing new on them.
 - **Quaternions as they stand.** Squaring a quaternion and reading three of its four numbers spins the flat
   picture into rings (*Quaternion square (Lathe)*). Sphere inversions with no plane chosen give that same rule.
   Slices of the 4D sets, twisted copies and rotors (turns, as geometric algebra writes them) are in the lab and none has the flat picture's shapes all over.
@@ -292,7 +324,10 @@ a road already closed.
    a dial: the power, the orbit, c, or a grid as in the cousin.
 2. **One formula with no jumps.** Kept, it stretches somewhere (the first line of "What is ruled out"). Dropped,
    each part of space can have its own shape-keeping move, as in the cousin. The price is known: the parts have
-   to get smaller without end towards the flat plane. A rule built that way has not been tried.
+   to get smaller without end towards the flat plane. Dropped in the five *Parts* entries, with parts cut by a
+   grid or by the orbit and moves carried up from the plane. What these taught: the walls show as cracks, and
+   closing the cracks brings back one smooth formula. Not tried: parts whose moves do not keep the flat plane in
+   place.
 3. **The same rule at every step.** Dropped in *Along once, then one plane*, *Soft mirrors, doubling* and
    *Quaternion square, axis by step*. What these taught: a later step does not mend what an earlier step
    crushed, so every step has to be sound by itself.

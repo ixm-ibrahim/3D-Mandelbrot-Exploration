@@ -372,6 +372,63 @@ function axPower(v, n, t) {
           R * (u[1] * ca + (m[2] * u[0] - m[0] * u[2]) * sa + m[1] * k),
           R * (u[2] * ca + (m[0] * u[1] - m[1] * u[0]) * sa + m[2] * k)];
 }
+// Parts. The flat power is fitted at one flat point, the centre u, by a move of the plane that keeps every shape, and
+// that move is carried into space: each such move has one partner there that keeps the side z > 0. A part of space
+// is moved as a whole by the move of its centre. ptPow: the power n of a flat point.
+function ptPow(u, n) {
+  if (n === 2) return [u[0] * u[0] - u[1] * u[1], 2 * u[0] * u[1]];
+  const R = aprPow(Math.hypot(u[0], u[1]), n), a = Math.atan2(u[1], u[0]) * n;
+  return [R * Math.cos(a), R * Math.sin(a)];
+}
+const ptMul = (a, b) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0]];
+const ptCap = o => { const m = Math.max(Math.abs(o[0]), Math.abs(o[1]), Math.abs(o[2])), cap = 1.74e18; return m > cap ? scl(o, cap / m) : o; };   // aprCap in the shader
+// what a point of the flat plane gets: the flat power itself
+const ptFlat = (v, n) => { const o = ptPow(v, n); return ptCap([o[0], o[1], 0]); };
+// The turn-and-scale with the value and the slope of the power at u:  z -> u^n + n·u^(n−1)·(z − u).
+// Heights are scaled as lengths in the plane are.
+function ptTurn(v, u, n) {
+  const a = ptPow(u, n), b = n === 2 ? [2 * u[0], 2 * u[1]] : ptPow(u, n - 1).map(x => n * x), o = ptMul(b, [v[0] - u[0], v[1] - u[1]]);
+  return ptCap([a[0] + o[0], a[1] + o[1], Math.hypot(b[0], b[1]) * v[2]]);
+}
+// The Möbius move with the value, the slope and the bend of the power at u:
+//   z -> a + b·d / (1 − k·d),   d = z − u,  a = u^n,  b = n·u^(n−1),  k = (n − 1) / (2u).
+// Its pole is p = (1 + s)·u with s = 2 / (n − 1). In space it is the sphere inversion about p with a mirror, then a
+// turn, a scaling and a slide:  (z, h) -> ((1 − n·s)·a − g·conj(z − p) / D,  |g|·h / D),  D = |z − p|² + h²,  g = n·s²·a·u.
+function ptMob(v, u, n) {
+  if (Math.abs(n - 1) < 1e-6) return v;
+  const s = 2 / (n - 1), a = ptPow(u, n), g = ptMul(a, u).map(x => n * s * s * x), q = [v[0] - (1 + s) * u[0], v[1] - (1 + s) * u[1]];
+  const D = Math.max(q[0] * q[0] + q[1] * q[1] + v[2] * v[2], 1e-30), o = ptMul(g, [q[0], -q[1]]);
+  return ptCap([(1 - n * s) * a[0] - o[0] / D, (1 - n * s) * a[1] - o[1] / D, Math.hypot(g[0], g[1]) * v[2] / D]);
+}
+// The doubling grid, for the whole power m (2 or more). A point is read as rho = log|v|, its longitude th and its
+// elevation phi above the flat plane: near that plane the power multiplies all three by m. Layer j (1, 2, ...) is
+// the band of elevations from 90°/m^j up to 90°/m^(j−1); the cones between the layers are the ones the power
+// carries, step by step, onto the upright axis. In layer j the parts are boxes of side a = 90°/m^j in rho and in
+// th, centred on the whole multiples of a, and the power carries those centres onto the centres of layer j − 1.
+// `finer` divides a by m that many more times. Returns the flat point under the centre of the part that holds v.
+function ptGrid(v, n, finer = 0) {
+  const m = Math.max(2, Math.floor(Math.abs(n) + 0.5)), phi = Math.atan2(Math.abs(v[2]), Math.hypot(v[0], v[1]));
+  if (phi < 2e-5) return [v[0], v[1]];          // the parts are too small to tell from points
+  const a = 0.5 * PI * Math.pow(m, -Math.floor(Math.log(0.5 * PI / phi) / Math.log(m)) - 1 - finer);
+  const rho = a * Math.floor(Math.log(Math.hypot(v[0], v[1], v[2])) / a + 0.5), th = a * Math.floor(Math.atan2(v[1], v[0]) / a + 0.5);
+  return [Math.exp(rho) * Math.cos(th), Math.exp(rho) * Math.sin(th)];
+}
+const ptFiner = q => clamp(Math.round((q && +q.finer) || 0), 0, 6);
+// The square grid: boxes that halve towards the flat plane. A point at the height h above or below the plane lies
+// in a box of side s, the power of 2 with s <= h < 2s, and the boxes of that side stand on the whole multiples of
+// s. Returns the flat point under the middle of the box, which is never the origin.
+function ptSquare(v) {
+  const h = Math.abs(v[2]);
+  if (h < 1e-5 * (Math.hypot(v[0], v[1]) + 1e-5)) return [v[0], v[1]];
+  const s = Math.pow(2, Math.floor(Math.log2(h)));
+  return [s * (Math.floor(v[0] / s) + 0.5), s * (Math.floor(v[1] / s) + 0.5)];
+}
+// Parts of no size: every point is its own part. Its centre is where the quarter circle through the point, about
+// the origin and square to the flat plane, comes down on that plane.
+function ptFoot(v) {
+  const r = Math.hypot(v[0], v[1]), R = Math.hypot(v[0], v[1], v[2]);
+  return r > 0 ? [R * v[0] / r, R * v[1] / r] : [R, 0];
+}
 const CARRY = {
   // Along once, then one plane. Carried: how many steps have counted, this one included.
   alongonce: {
@@ -427,6 +484,18 @@ const CARRY = {
       return { h: t ? t.m : st.h, t };
     },
     pw: (st, v, n) => axPower(v, n, st.t),
+  },
+  // Parts carried by the orbit. Carried: u, the flat point the moves of the orbit are fitted at. It starts under
+  // the first point of the orbit and goes on by the flat rule z^n + c, with n the power of the page.
+  partsorbit: {
+    start: () => ({ u: null }),
+    step(st, z, c) {
+      if (carOrigin(z)) return st;
+      if (!st.u) return { u: [z[0], z[1]] };
+      const w = ptPow(st.u, S.n);
+      return { u: [w[0] + c[0], w[1] + c[1]] };
+    },
+    pw: (st, v, n) => (v[2] === 0 ? ptFlat(v, n) : ptMob(v, st.u || [v[0], v[1]], n)),
   },
 };
 // The first squaring of a fresh orbit: all that the card, which looks at one squaring, can show. (In space the
@@ -616,6 +685,12 @@ const MATH = {
     const u = rho > 0 ? [y / rho, z / rho] : [1, 0];     // the direction of (y, z) by division, not by angle: exact on the planes
     return axbTurn([R * Math.cos(a), R * sa * u[0], R * sa * u[1]], q);
   },
+  // Parts (see ptGrid, ptSquare, ptFoot, ptTurn and ptMob). A point of the flat plane takes the flat power itself.
+  partsturn(v, n) { return v[2] === 0 ? ptFlat(v, n) : ptTurn(v, ptGrid(v, n), n); },
+  partsbend(v, n, q = {}) { return v[2] === 0 ? ptFlat(v, n) : ptMob(v, ptGrid(v, n, ptFiner(q)), n); },
+  partssquare(v, n) { return v[2] === 0 ? ptFlat(v, n) : ptTurn(v, ptSquare(v), n); },
+  partsorbit(v, n) { return carFirst('partsorbit', v, n, {}, [0, 0, 0]); },
+  partsnone(v, n) { return v[2] === 0 ? ptFlat(v, n) : ptMob(v, ptFoot(v), n); },
   // Pillow: a flat sheet of triangles wrapped onto the sphere of directions, in one of two layouts.
   pillow(v, n, q = {}) { return q.layout > 0.5 ? psPower(v, n) : pbPower(v, n); },
 };
@@ -1421,6 +1496,68 @@ vec3 mul(vec3 a, vec3 b){ return axLmul(a, b); }
 vec3 pw(vec3 v, float n){ return axPw(v, gLaM, gLaCs, n); }
 vec3 sqr(vec3 v){ return axSq(v, gLaM, gLaCs); }
 vec3 cmap(vec3 c){ return c; }`;
+// Parts: the moves and the grids of ptPow, ptTurn, ptMob, ptGrid, ptSquare and ptFoot in the JavaScript above.
+const GL_PARTS = GL_APR + GL_MERC_PLAIN + `
+vec2 ptPow(vec2 u, float n){
+  if (n == 2.0) return cmul(u, u);
+  float a = at2(u.y, u.x) * n;
+  return aprPow(length(u), n) * vec2(cos(a), sin(a));
+}
+vec3 ptFlat(vec3 v, float n){ return aprCap(vec3(ptPow(v.xy, n), 0.0)); }
+vec3 ptTurn(vec3 v, vec2 u, float n){
+  vec2 b = n == 2.0 ? 2.0 * u : n * ptPow(u, n - 1.0);
+  return aprCap(vec3(ptPow(u, n) + cmul(b, v.xy - u), length(b) * v.z));
+}
+vec3 ptMob(vec3 v, vec2 u, float n){
+  if (abs(n - 1.0) < 1e-6) return v;
+  float s = 2.0 / (n - 1.0);
+  vec2 a = ptPow(u, n), g = n * s * s * cmul(a, u), q = v.xy - (1.0 + s) * u;
+  float D = max(dot(q, q) + v.z * v.z, 1e-30);
+  return aprCap(vec3((1.0 - n * s) * a - cmul(g, vec2(q.x, -q.y)) / D, length(g) * v.z / D));
+}`;
+const GL_PARTS_GRID = `
+vec2 ptGrid(vec3 v, float n, float finer){
+  float m = max(2.0, floor(abs(n) + 0.5)), phi = atan(abs(v.z), length(v.xy));
+  if (phi < 2e-5) return v.xy;
+  float a = 0.5 * PI * pow(m, -floor(log(0.5 * PI / phi) / log(m)) - 1.0 - finer);
+  float rho = a * floor(log(length(v)) / a + 0.5), th = a * floor(at2(v.y, v.x) / a + 0.5);
+  return exp(rho) * vec2(cos(th), sin(th));
+}`;
+// The four functions every approach defines, for a rule of parts: `move` is the GLSL expression that moves the
+// point v, with the power n, when v is off the flat plane.
+const glParts = move => `
+vec3 ptPw(vec3 v, float n){ return v.z == 0.0 ? ptFlat(v, n) : ${move}; }
+vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
+vec3 pw(vec3 a, float n){ return ptPw(a, n); }
+vec3 sqr(vec3 a){ return ptPw(a, 2.0); }
+vec3 cmap(vec3 c){ return c; }`;
+const GL_PARTSTURN = GL_PARTS + GL_PARTS_GRID + glParts('ptTurn(v, ptGrid(v, n, 0.0), n)');
+// uA.x: how many more times the boxes are divided.
+const GL_PARTSBEND = GL_PARTS + GL_PARTS_GRID + glParts('ptMob(v, ptGrid(v, n, clamp(floor(uA.x + 0.5), 0.0, 6.0)), n)');
+const GL_PARTSSQUARE = GL_PARTS + `
+vec2 ptSquare(vec3 v){
+  float h = abs(v.z);
+  if (h < 1e-5 * (length(v.xy) + 1e-5)) return v.xy;
+  float s = exp2(floor(log2(h)));
+  return s * (floor(v.xy / s) + 0.5);
+}` + glParts('ptTurn(v, ptSquare(v), n)');
+// Parts carried by the orbit (see CARRY.partsorbit). Carried by the point's own orbit: the flat point its moves are
+// fitted at, and whether it has one yet.
+const GL_PARTSORBIT = GL_PARTS + GL_CARRY + `
+vec2 gPoU;
+bool gPoOn;
+void carStart(){ gPoU = vec2(0.0); gPoOn = false; gCarI = 0; }
+void carStep(vec3 z, vec3 c){
+  if (gCarI != 0 || carOrigin(z)) return;
+  if (gPoOn) gPoU = ptPow(gPoU, uPow) + c.xy;
+  else { gPoU = z.xy; gPoOn = true; }
+}
+void carFit(int i, float s){ }` + glParts('ptMob(v, gPoOn ? gPoU : v.xy, n)');
+const GL_PARTSNONE = GL_PARTS + `
+vec2 ptFoot(vec3 v){
+  float r = length(v.xy), R = length(v);
+  return r > 0.0 ? (R / r) * v.xy : vec2(R, 0.0);
+}` + glParts('ptMob(v, ptFoot(v), n)');
 // Wording helpers for the approach texts
 const aprIs = (a, b) => Math.abs(a - b) < 1e-9;
 const aprWhole = n => aprIs(n, Math.round(n));
@@ -1676,6 +1813,24 @@ const LA_TAG = 'Tried: the same choice among all turns, but nearest to the axis 
 const LA_NOTE = 'How it works: as in All axes, nearest to upright, a step is one of the turns that carry the x-axis onto the point, done twice. Here the turn picked is the one whose axis is nearest to the axis of the step before, and nearest to the z-axis at the first step. An orbit that starts in the flat plane turns about the z-axis at every step, so the flat picture is exact.';
 const LA_ABOUT = 'The thought behind it: let the orbit itself pick the axis, with no direction chosen from outside after the start, the way a spinning top keeps its axis. The orbit then carries a memory, and two orbits that land on the same spot may go on differently. It does not help. A step still crushes a sheet of points onto a line, as in All axes, nearest to upright, only a different sheet for each orbit: the plane through the x-axis and the axis the orbit carries. The solid comes apart into more splinters, not fewer.';
 const LA_SMOOTH = 'What a step does depends on the axis the orbit has picked up, so an orbit is not one formula applied again and again. Each step stretches without limit beside the sheet it crushes.';
+// Parts: the wording shared by the entries whose rule moves each part of space by a move that keeps every shape
+const PT_HEAD = 'A single smooth formula that squares has to stretch somewhere. Here space is cut into parts instead, and each part is moved as a whole by a move that keeps every shape. Such a move can agree with the flat rule at one flat point only, the point under the middle of the part, so the parts have to get smaller towards the flat plane, without end. ';
+const PT_GRID = ' How the boxes lie: a point is read by three numbers, its distance from the middle, which way it lies round the upright axis, and how steeply it stands above the flat plane. At the power 2 the points steeper than 45° make the top layer, with eight boxes round the axis. From 22.5° to 45° is the next layer, with boxes half as wide, and so on down: each layer is half as steep as the one above it, and its boxes are half as wide. Squaring carries the point under the middle of a box onto the point under the middle of a box one layer up. At another whole power n the top layer is the points steeper than 90°/n, and layers and boxes shrink n times at each step down.';
+const PT_FLAT = ' A point of the flat plane takes the flat rule itself.';
+const PT_GAPS = ' After the move the parts overlap in some places and leave gaps in others.';
+const PT_NEAREST = ' A power that is not a whole number takes the grid of the nearest whole number.';
+const PT_STAYS = 'At n = 1 every point stays where it is.';
+const ptKept = n => (n < 0 ? 'Nothing is crushed' : 'Nothing but the origin is crushed');
+const ptSlice = ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'A point of the plane z = 0 takes the complex power itself, and the parts shrink to nothing towards that plane, so that slice is the flat set.');
+const ptGridWords = (n, finer) => {
+  const m = Math.max(2, Math.floor(Math.abs(n) + 0.5));
+  return ` The parts: for a point whose elevation above the plane z = 0 lies between 90°/${m}ʲ and 90°/${m}ʲ⁻¹, take a = 90°/${m}ʲ${finer ? '⁺' + aprSup(finer) : ''} in radians. Then u has the length e^ρ and the longitude θ, with ρ and θ the whole multiples of a nearest to log|v| and to the longitude of v.`;
+};
+const ptTurnFormula = n => `In each part: (z, h) → (uⁿ + n·uⁿ⁻¹·(z − u), n·|u|ⁿ⁻¹·h)   with n = ${aprNum(n)}, z = x + iy the flat part of the point, h its height, and u the flat point under the middle of its part.`;
+const ptMobFormula = (n, lead) => (aprIs(n, 1) ? PT_STAYS
+  : `${lead}: (z, h) → ((1 − n·s)·uⁿ − g·conj(z − p) / D, |g|·h / D)   with n = ${aprNum(n)}, s = 2/(n − 1), p = (1 + s)·u, g = n·s²·uⁿ⁺¹ and D = |z − p|² + h²; z = x + iy is the flat part of the point and h its height.`);
+// Parts of no size: the elevation of the cone that lands on the upright axis, in degrees, or null when there is none
+const ptCone = n => (Math.abs(n) > 1 + 1e-9 ? Math.acos((n * n - 1) / (n * n + 1)) * 180 / PI : null);
 const APPROACHES = [
   {
     id: 'mercator', name: 'Sphere inversions, one plane', group: 'inversions', glsl: GL_MERCATOR, axis: () => [0, 0, 1],
@@ -2299,5 +2454,79 @@ const APPROACHES = [
     crush: (p, n) => { if (aprIs(n, 0)) return aprNone(); const [k, t] = naCrush(n); return [k, 'At the first step of an orbit: ' + t + ' At a later step the same holds for the plane through the x-axis and the axis the orbit carries.' + aprPole(n)]; },
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['no', LA_SMOOTH]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly at every step: an orbit that starts in that plane turns about the z-axis and never picks up another axis.'),
+  },
+  {
+    id: 'partsturn', name: 'Parts on a doubling grid, turn and scale', group: 'tried', glsl: GL_PARTSTURN, axis: () => [0, 0, 1], deMax: 0,
+    tag: 'Tried: cut space into boxes that get smaller towards the flat plane, on a grid that squaring carries onto itself, and move each box by the turn-and-scale that fits squaring under its middle. Failed: low, faceted shells, cracked along every wall of a box, with loose shards. A twig set is lost almost entirely.',
+    params: [{ type: 'note', text: 'How it works: every box has a flat point under its middle. The whole box is turned, scaled and slid by the one move of that kind that agrees with the flat rule at that point, in value and in slope.' + PT_FLAT + PT_GRID }],
+    formula: (p, n) => ptTurnFormula(n) + ptGridWords(n, 0),
+    about: PT_HEAD + 'This entry takes the plainest move, a turn and a scaling, on the grid that the power itself lays out. Across a wall between two boxes the two moves disagree. Close to the flat plane the gap is small beside the box. Where a box is as big as the body it cuts, the gap is a good part of the box, and the body breaks along the wall.',
+    roundNote: () => 'Inside a part the move is a turn and a scaling, which keeps every shape. The measurement also takes in the jumps between parts.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : aprIs(n, 1) ? ['ok', 'Crushes nothing: ' + PT_STAYS.toLowerCase()]
+      : ['part', ptKept(n) + ': every part is turned and scaled as a whole.' + PT_GAPS + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : aprIs(n, 1) ? ['ok', PT_STAYS]
+      : ['no', 'Not one formula: the rule jumps across every wall between two parts. Towards the flat plane the jumps shrink faster than the parts do. They are largest in the top layers.' + aprTear(n, PT_NEAREST)]),
+    slice: ptSlice,
+  },
+  {
+    id: 'partsbend', name: 'Parts on a doubling grid, Möbius', group: 'tried', glsl: GL_PARTSBEND, axis: () => [0, 0, 1], deMax: 0,
+    tag: 'Tried: the same boxes, each moved by the Möbius move that fits squaring under its middle in value, slope and bend. Failed: full, round bodies, but cracked into plates along the walls of the boxes, and a twig set is lost. Finer boxes close the cracks and leave smooth balls with nothing new off the flat plane.',
+    params: [
+      { type: 'note', text: 'How it works: as in Parts on a doubling grid, turn and scale, but the move of a box also has the bend of the flat rule at the point under its middle. Such a move is one sphere inversion with a turn, a scaling and a slide (a Möbius move), and it keeps every shape.' + PT_FLAT + PT_GRID },
+      { type: 'dial', key: 'finer', label: 'Boxes made finer, in steps', min: 0, max: 6, step: 1, def: 0, int: true, help: 'At 0 a box is about as wide as it stands high above the flat plane, which is as large as a part may be. Each step divides the width of every box by the power once more: at the power 2 it halves it. The cracks close, and what told one direction round the upright axis from another goes with them: at 6 the picture is nearly the one of Parts of no size. Nothing in the rule fixes this number.' },
+    ],
+    formula: (p, n) => ptMobFormula(n, 'In each part') + (aprIs(n, 1) ? '' : ' u is the flat point under the middle of the part.' + ptGridWords(n, ptFiner(p))),
+    about: PT_HEAD + 'This entry gives each box the closest move there is: it has the value, the slope and the bend of the flat rule under the middle of the box. The bodies come out full and round, and the gaps across the walls are smaller than with a turn and a scaling. But they are still there, and the body is cut into plates. Making the boxes finer closes the gaps. In the end the walls are gone, and with them everything that told directions apart: what is left is Parts of no size.',
+    roundNote: () => 'Inside a part the move is one sphere inversion with a turn and a scaling, which keeps every shape. The measurement also takes in the jumps between parts.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : aprIs(n, 1) ? ['ok', 'Crushes nothing: ' + PT_STAYS.toLowerCase()]
+      : ['part', 'Nothing is crushed inside a part: its move can be undone. Each move sends one point of the flat plane to infinity.' + PT_GAPS]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : aprIs(n, 1) ? ['ok', PT_STAYS]
+      : ['no', 'Not one formula: the rule jumps across every wall between two parts. The jumps are smaller than with a turn and a scaling, and largest in the top layers.' + aprTear(n, PT_NEAREST)]),
+    slice: ptSlice,
+  },
+  {
+    id: 'partssquare', name: 'Parts on a square grid', group: 'tried', glsl: GL_PARTSSQUARE, axis: () => [0, 0, 1], deMax: 0,
+    tag: 'Tried: boxes on a square grid that halve towards the flat plane, each moved by the turn-and-scale that fits squaring under its middle. Failed: bodies built of square blocks, like step pyramids, with shards round them. A twig set is lost almost entirely.',
+    params: [{ type: 'note', text: 'How it works: a point at the height h above the flat plane lies in a square box about h wide, on a square grid like the one Balls on balls slides by. Half as high, the boxes are half as wide. The whole box is turned, scaled and slid by the one move of that kind that agrees with the flat rule, in value and in slope, at the flat point under the middle of the box.' + PT_FLAT }],
+    formula: (p, n) => ptTurnFormula(n) + ' The parts: with s the power of 2 between |h|/2 and |h|, the box of a point reaches from one whole multiple of s to the next along x and along y.',
+    about: PT_HEAD + 'This entry uses a grid that owes nothing to the power: plain squares. Squaring does not carry this grid onto itself, so a box lands across many boxes of the next step, and the walls show as flat faces and steps. With the Möbius move in place of the turn and the scaling this grid does worse: the picture breaks up into shards.',
+    roundNote: () => 'Inside a part the move is a turn and a scaling, which keeps every shape. The measurement also takes in the jumps between parts.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : aprIs(n, 1) ? ['ok', 'Crushes nothing: ' + PT_STAYS.toLowerCase()]
+      : ['part', ptKept(n) + ': every part is turned and scaled as a whole, and no box has its middle over the origin.' + PT_GAPS + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : aprIs(n, 1) ? ['ok', PT_STAYS]
+      : ['no', 'Not one formula: the rule jumps across every wall between two parts, and the power does not carry the grid onto itself.']),
+    slice: ptSlice,
+  },
+  // The orbit of this entry carries the flat point its moves are fitted at (CARRY.partsorbit).
+  {
+    id: 'partsorbit', name: 'Parts carried by the orbit', group: 'tried', glsl: GL_PARTSORBIT, axis: () => [0, 0, 1], deMax: 0,
+    tag: 'Tried: no grid. Every orbit keeps one part for good: the flat point its moves are fitted at starts under the orbit’s first point and goes on by the flat rule. Failed: the flat picture drawn straight up into columns with no top.',
+    params: [{ type: 'note', text: 'How it works: an orbit that starts above the flat point u carries u with it, and u goes on by the flat rule: it takes the power of the page and c is added. At every step the point of the orbit is moved by the Möbius move that has the value, the slope and the bend of the flat power at the u of that step. Each of these moves keeps every shape, so a whole orbit is a chain of moves that keep every shape.' + PT_FLAT }],
+    formula: (p, n) => ptMobFormula(n, 'At each step') + (aprIs(n, 1) ? '' : ' u is the flat point the orbit carries: at the first step the point under the orbit’s first point, and after each step u → uⁿ + c.'),
+    about: PT_HEAD + 'Here a part is not a box. It is everything above one flat point, and an orbit keeps its part for good: its moves are fitted along the flat orbit of the point it started above. There is no wall, so there is no crack. But the picture shows what that costs: above the inside of the flat set every height stays in the solid, and above the outside every height leaves it. The solid is the flat picture drawn straight up. In the other entries of this kind the fit is taken afresh at every step, and that is what closes a body over.',
+    roundNote: () => 'This card measures the first squaring of an orbit. There the points above one flat point share one Möbius move, and the points above the next flat point have another. Along one orbit every step keeps every shape.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : aprIs(n, 1) ? ['ok', 'Crushes nothing: ' + PT_STAYS.toLowerCase()]
+      : ['part', 'At the first step the points above one flat point share one Möbius move, which crushes nothing. The line that stands on the origin is the exception: its move is fitted at the origin, where the flat power has no slope, and the whole line lands on one point.']),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : aprIs(n, 1) ? ['ok', PT_STAYS]
+      : ['part', 'No wall and no jump: the move changes smoothly from one starting point to the next. But what a step does depends on the flat point the orbit carries, so an orbit is not one formula applied again and again.']),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'A point of the plane z = 0 takes the complex power itself at every step, so that slice is the flat set.'),
+  },
+  {
+    id: 'partsnone', name: 'Parts of no size', group: 'tried', glsl: GL_PARTSNONE, axis: () => [0, 0, 1], deMax: 0,
+    tag: 'Tried: shrink the parts to nothing, so that every point is moved by the Möbius move fitted under itself. Failed: it is one smooth formula again. The flat cut is exact and the bodies are full and close to balls, but there is nothing new off the flat plane.',
+    params: [{ type: 'note', text: 'How it works: the flat point under a point is taken along the quarter circle about the middle that stands square to the flat plane: as far from the middle as the point itself, and the same way round the upright axis. The point is moved by the Möbius move that has the value, the slope and the bend of the flat power there. Worked out for a power above 0, that is a plain rule: the length is raised to the power, the longitude is multiplied by it, and the elevation φ above the flat plane goes to φ′ with e^(iφ′) = ((n + 1)·e^(iφ) − (n − 1)) / ((n + 1) − (n − 1)·e^(iφ)).' + PT_FLAT }],
+    formula: (p, n) => ptMobFormula(n, 'For every point') + (aprIs(n, 1) ? '' : ' u has the length |v| and the longitude of v.'),
+    about: 'What Parts on a doubling grid, Möbius becomes when its boxes are made finer without end. The walls are gone, and so are the cracks, but the rule is one smooth formula again, and it treats every direction round the upright axis alike. Its bodies are full and close to balls, the flat cut is exact, and the solid is whole for the Basilica, the Dendrite, the Douady rabbit, Kokopelli and the Mandelbrot set. Off the flat plane it adds nothing: the shapes of the flat picture sit along the flat plane only, as with Sphere inversions, one plane. The two rules differ in what they do higher up. One plane keeps circles on the sphere of directions round and leaves the upright axis in place. This rule flattens them, crushes one cone of directions onto the upright axis, and tears that axis open.',
+    roundNote: (p, n) => (aprIs(n, -1) ? APR_MIRROR : 'On the flat plane a small circle of directions stays a circle. Higher up it is flattened.'),
+    crush: (p, n) => {
+      if (aprIs(n, 0)) return aprNone();
+      if (aprIs(Math.abs(n), 1)) return ['ok', n < 0 ? 'Crushes nothing: at n = −1 the rule is one sphere inversion. The origin is sent to infinity.' : 'Crushes nothing: ' + PT_STAYS.toLowerCase()];
+      const cone = ptCone(n);
+      if (cone === null) return ['part', (n < 0 ? 'Crushes nothing at this power.' : 'Crushes nothing but the origin at this power.') + aprPole(n)];
+      return ['no', `Crushes the cone of directions that stand ${aprDeg(cone)} above the flat plane onto the upright axis, and the cone as far below it likewise.` + aprPole(n)];
+    },
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : aprIs(n, 1) ? ['ok', PT_STAYS] : aprIs(n, -1) ? ['part', 'Smooth everywhere except the origin, which is a pole.']
+      : ['part', 'One smooth formula, except on the upright axis: a point beside that axis lands in a direction that depends on the side it stands on, so the axis is torn open.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.'),
   },
 ];
