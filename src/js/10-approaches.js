@@ -505,12 +505,16 @@ const CARRY = {
     start: () => ({ n: 0, first: [0, 0, 0], prev: [0, 0, 0], last: [0, 0, 0], sum: [0, 0, 0], c: [0, 0, 0], hist: [] }),
     step(st, z, c) {
       const cc = c || [0, 0, 0];
-      if (carOrigin(z)) return { ...st, c: cc };
+      // keptIn: what the rule's own kept values hold as this step begins, which is what the pass before left (keptOut)
+      const keptIn = st.keptOut || st.keptIn;
+      // cm: c as the rule's step "Before the orbit: change c" makes it, which is what the pass works with
+      const cm = cuCmap(cc);
+      if (carOrigin(z)) return { ...st, c: cc, cm, keptIn, keptOut: undefined };
       const one = st.n === 0;
       // hist: the orbit's first points in order, for point( ) (as many as the shader keeps, CU_HIST)
-      return { n: st.n + 1, first: one ? z : st.first, last: one ? z : st.prev, prev: z, sum: add(st.sum, z), c: cc, hist: st.hist.length < CU_HIST ? st.hist.concat([z]) : st.hist };
+      return { n: st.n + 1, first: one ? z : st.first, last: one ? z : st.prev, prev: z, sum: add(st.sum, z), c: cc, hist: st.hist.length < CU_HIST ? st.hist.concat([z]) : st.hist, keptIn, cm };
     },
-    pw: (st, v, n) => sub(cuRun(v, st.c, n, st), st.c),
+    pw: (st, v, n) => sub(cuRun(v, st.cm || st.c, n, st), st.c),
   },
 };
 // The first squaring of a fresh orbit: all that the card, which looks at one squaring, can show. (In space the
@@ -2555,6 +2559,7 @@ const APPROACHES = [
     id: 'custom', name: 'Custom: your own steps', group: 'custom', axis: () => [0, 0, 1],
     get glsl() { return cuProgram().glsl; }, glslKey: () => cuProgram().key, whole: 'cuRun(z, c, uPow)',
     uniforms: (gl, loc) => cuUniforms(gl, loc), scene: () => cuScene(),
+    get deMax() { return cuRough() ? 0 : undefined; },   // a rule may ask for the plain distance estimate
     tag: 'A rule you put together yourself, one step after another: lengths and angles, turns about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
     params: [],
     formula: () => cuWords(),

@@ -19,7 +19,9 @@ come closest and what is known not to work. No rule passes yet.
   formulas of one's own). A step can be switched off, moved, or broken down: a block into its formulas, a formula
   into its single operations. A bar under the picture plays the steps, iteration by iteration, in the picture
   itself, with dots that show where the steps carry the solid's points and guides for the step on show (its axis,
-  plane, sphere or arrow). A rule can be saved under a name and loaded again, and the Mandelbrot and the Julia picture can be shown side by side;
+  plane, sphere or arrow). A rule can be saved under a name and loaded again, and the Mandelbrot and the Julia picture can be shown side by side.
+  Thirty-two of the approaches of the list can be loaded as steps (`13-custom-rules.js`), each giving that approach's
+  own numbers;
 - a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models;
 - **Balls on balls**, a picture made only of slides by whole numbers and sphere inversions. It has no c and is not
   the goal, but its placement and spacing of bodies is the look the 3D basilica should have;
@@ -54,4 +56,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.05. Each version is tagged, as `v1.05`.
+This is version 1.07. Each version is tagged, as `v1.07`.

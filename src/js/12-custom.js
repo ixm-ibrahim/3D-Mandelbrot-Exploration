@@ -32,7 +32,7 @@ const CU_VEC3 = new RegExp(`^vec\\(\\s*(${CU_NUM})\\s*,\\s*(${CU_NUM})\\s*,\\s*(
 const CU_NAME = /^[A-Za-z][A-Za-z0-9]*$/;
 // what a formula may read besides the names it has made itself
 const CU_GIVEN = { z: 'v', c: 'v', n: 's', pi: 's', radius: 's', theta: 's', phi: 's', first: 'v', last: 'v', mean: 'v', count: 's' };
-const cuFlt = x => (Number.isInteger(x) && Math.abs(x) < 1e15 ? x + '.0' : String(x));
+const cuFlt = x => (!Number.isInteger(x) ? String(x) : Math.abs(x) < 1e15 ? x + '.0' : x.toExponential());
 const cuDash = text => String(text).replace(/[−–]/g, '-').trim();
 const cuNum = text => parseFloat(cuDash(text));
 const cuIsNum = text => CU_NUMBER.test(cuDash(text));
@@ -140,35 +140,67 @@ vec3 cuBlend(vec3 a, vec3 b, float t){
     p = a * cos(PI * t) + cross(k, a) * sin(PI * t);
   }
   return p * (mix(la, lb, t) / max(length(p), 1e-30));
+}
+// The fold round the x-axis that sends the nearest of k planes through that axis onto the flat plane (foldk in
+// 10-approaches.js), and the mirror at the angle b from the flat plane with its corner rounded over w (smFold).
+vec3 cuFoldx(vec3 v, float kk){
+  float k = max(2.0, floor(kk + 0.5)), rho = length(v.yz);
+  if (rho < 1e-30) return v;
+  float w = PI / k, psi = at2(v.z, v.y), a = abs(psi), j = floor(a / w + 0.5), d = a - j * w, a2;
+  if (2.0 * j < k || (2.0 * j == k && d < 0.0)) a2 = mod(j, 2.0) < 0.5 ? d : -d;
+  else a2 = PI + (mod(k - j, 2.0) < 0.5 ? d : -d);
+  if (psi < 0.0) a2 = -a2;
+  return vec3(v.x, rho * cos(a2), rho * sin(a2));
+}
+vec3 cuSoftMirror(vec3 v, float b, float w){
+  float rho = length(v.yz);
+  if (v.z == 0.0 || !(rho > 1e-30)) return v;
+  float t = at2(abs(v.z), abs(v.y)) - b, g = !(w > 0.0) || abs(t) >= w ? b - abs(t) : b - (t * t / (2.0 * w) + 0.5 * w);
+  return vec3(v.x, (v.y < 0.0 ? -1.0 : 1.0) * rho * cos(g), (v.z < 0.0 ? -1.0 : 1.0) * rho * sin(g));
 }`;
 // What an orbit carries. gCuPass: how many passes of the point's own orbit have counted, this one included (a play
 // reads it). For the names first, last, mean and count (the same steps as CARRY.custom), per orbit: the number of
 // steps that have counted, its first point, the point of the step before, and the sum of its points.
 const CU_HIST = 16;   // how many points of an orbit are kept by number, for point( )
-// hist: the rule asks for a point of the orbit by its number, so the first CU_HIST points of each orbit are kept.
-const cuOrbitGlsl = hist => `
-float gCuN[4]; vec3 gCuF[4], gCuP[4], gCuL[4], gCuS[4];${hist ? `
-vec3 gCuH[${4 * CU_HIST}];` : ''}
+// What the shader keeps for an orbit, and the three hooks of GL_CARRY that look after it. Always: the c of the step
+// under way and the count of the point's own passes. orbit: the rule reads first, last, mean or count. hist: it asks
+// for a point by its number, so the first CU_HIST points of each orbit are kept. kept: the values the rule itself
+// keeps from one iteration to the next ("A value the orbit keeps"), each { t, gl0 } with gl0 what it starts as.
+function cuCarryGlsl(orbit, hist, kept) {
+  const decl = [], start = [], fit = [];
+  if (orbit) {
+    decl.push('float gCuN[4]; vec3 gCuF[4], gCuP[4], gCuL[4], gCuS[4];');
+    start.push('for (int i = 0; i < 4; i++){ gCuN[i] = 0.0; gCuF[i] = vec3(0.0); gCuP[i] = vec3(0.0); gCuL[i] = vec3(0.0); gCuS[i] = vec3(0.0); }');
+    fit.push('gCuN[i] = gCuN[0];', 'gCuF[i] = gCuF[0] + (gCuF[i] - gCuF[0]) * s; gCuP[i] = gCuP[0] + (gCuP[i] - gCuP[0]) * s;', 'gCuL[i] = gCuL[0] + (gCuL[i] - gCuL[0]) * s; gCuS[i] = gCuS[0] + (gCuS[i] - gCuS[0]) * s;');
+  }
+  if (hist) {
+    decl.push(`vec3 gCuH[${4 * CU_HIST}];`);
+    start.push(`for (int i = 0; i < ${4 * CU_HIST}; i++) gCuH[i] = vec3(0.0);`);
+    fit.push(`for (int k = 0; k < ${CU_HIST}; k++) gCuH[i * ${CU_HIST} + k] = gCuH[k] + (gCuH[i * ${CU_HIST} + k] - gCuH[k]) * s;`);
+  }
+  kept.forEach((k, j) => {
+    decl.push(`${CU_GLTYPE[k.t]} gCuK${j}[4];`);
+    start.push(`for (int i = 0; i < 4; i++) gCuK${j}[i] = ${k.gl0};`);
+    fit.push(`gCuK${j}[i] = gCuK${j}[0] + (gCuK${j}[i] - gCuK${j}[0]) * s;`);
+  });
+  return `
+${decl.join('\n')}
 void carStart(){
-  for (int i = 0; i < 4; i++){ gCuN[i] = 0.0; gCuF[i] = vec3(0.0); gCuP[i] = vec3(0.0); gCuL[i] = vec3(0.0); gCuS[i] = vec3(0.0); }${hist ? `
-  for (int i = 0; i < ${4 * CU_HIST}; i++) gCuH[i] = vec3(0.0);` : ''}
+  ${start.join('\n  ')}
   gCuC = vec3(0.0); gCuPass = 0.0; gCarI = 0;
 }
 void carStep(vec3 z, vec3 c){
   gCuC = c;
   if (carOrigin(z)) return;
-  if (gCarI == 0) gCuPass += 1.0;
+  if (gCarI == 0) gCuPass += 1.0;${orbit ? `
   int i = gCarI;
   gCuN[i] += 1.0;
   if (gCuN[i] == 1.0){ gCuF[i] = z; gCuP[i] = z; }
-  gCuL[i] = gCuP[i]; gCuP[i] = z; gCuS[i] += z;${hist ? `
+  gCuL[i] = gCuP[i]; gCuP[i] = z; gCuS[i] += z;` : ''}${hist ? `
   if (gCuN[i] <= ${CU_HIST}.0) gCuH[i * ${CU_HIST} + int(gCuN[i]) - 1] = z;` : ''}
 }
 void carFit(int i, float s){
-  gCuN[i] = gCuN[0];
-  gCuF[i] = gCuF[0] + (gCuF[i] - gCuF[0]) * s; gCuP[i] = gCuP[0] + (gCuP[i] - gCuP[0]) * s;
-  gCuL[i] = gCuL[0] + (gCuL[i] - gCuL[0]) * s; gCuS[i] = gCuS[0] + (gCuS[i] - gCuS[0]) * s;${hist ? `
-  for (int k = 0; k < ${CU_HIST}; k++) gCuH[i * ${CU_HIST} + k] = gCuH[k] + (gCuH[i * ${CU_HIST} + k] - gCuH[k]) * s;` : ''}
+  ${fit.join('\n  ')}
 }${hist ? `
 // The point of this orbit with the number k: 1 is its first point, 2 its second. 0 is the point this iteration
 // began with, -1 the one before it. A number the orbit has not reached, or past the ones kept, gives the nearest kept.
@@ -177,21 +209,19 @@ vec3 cuPoint(float k){
   j = clamp(floor(j + 0.5), 1.0, max(1.0, min(cnt, ${CU_HIST}.0)));
   return gCuH[gCarI * ${CU_HIST} + int(j) - 1];
 }` : ''}`;
+}
 // the same in JavaScript, from what CARRY.custom keeps (E.hist, E.count)
 function cuPointOf(E, k) {
   const j = clamp(Math.floor((k > 0.5 ? k : E.count + k) + 0.5), 1, Math.max(1, Math.min(E.count, CU_HIST)));
   return E.hist[j - 1] || [0, 0, 0];
 }
-const CU_GLSL_PLAIN = `
-void carStart(){ gCuC = vec3(0.0); gCuPass = 0.0; gCarI = 0; }
-void carStep(vec3 z, vec3 c){ gCuC = c; if (gCarI == 0 && !carOrigin(z)) gCuPass += 1.0; }
-void carFit(int i, float s){ }`;
 
 // The functions of the language: CU_FN[name] is a list of forms, each with the kinds of its arguments (args), the
 // kind of its answer (ret), its shader text (gl, from the arguments' shader texts) and its JavaScript (js, from values).
 const CU_FN = {};
 const cuDef = (name, args, ret, gl, js) => { (CU_FN[name] = CU_FN[name] || []).push({ args, ret, gl, js }); };
 for (const name of ['sin', 'cos', 'tan', 'atan', 'sinh', 'cosh', 'tanh', 'abs', 'floor', 'ceil', 'sign']) cuDef(name, 's', 's', a => `${name}(${a})`, Math[name]);
+cuDef('asinh', 's', 's', a => `asinh(${a})`, Math.asinh);
 cuDef('asin', 's', 's', a => `asin(clamp(${a}, -1.0, 1.0))`, a => Math.asin(clamp(a, -1, 1)));
 cuDef('acos', 's', 's', a => `acos(clamp(${a}, -1.0, 1.0))`, a => Math.acos(clamp(a, -1, 1)));
 cuDef('atanh', 's', 's', a => `atanh(clamp(${a}, -0.999999, 0.999999))`, a => Math.atanh(clamp(a, -0.999999, 0.999999)));
@@ -231,6 +261,14 @@ cuDef('lat', 'v', 's', a => `cuLat(${a})`, cuLat);
 cuDef('sph', 'sss', 'v', (a, b, c) => `cuSph(${a}, ${b}, ${c})`, cuSph);
 cuDef('flat', 'v', 'v', a => `vec3(${a}.xy, 0.0)`, a => [a[0], a[1], 0]);
 cuDef('cpow', 'vs', 'v', (a, b) => `cuCpow(${a}, ${b})`, cuCpow);
+cuDef('foldx', 'vs', 'v', (a, b) => `cuFoldx(${a}, ${b})`, (v, k) => foldk(v, Math.max(2, Math.floor(k + 0.5))));
+cuDef('softmirror', 'vss', 'v', (a, b, c) => `cuSoftMirror(${a}, ${b}, ${c})`, (v, b, w) => {
+  const rho = Math.hypot(v[1], v[2]);
+  if (v[2] === 0 || !(rho > 1e-300)) return v;
+  const t = Math.atan2(Math.abs(v[2]), Math.abs(v[1])) - b, g = !(w > 0) || Math.abs(t) >= w ? b - Math.abs(t) : b - (t * t / (2 * w) + 0.5 * w);
+  return [v[0], (v[1] < 0 ? -1 : 1) * rho * Math.cos(g), (v[2] < 0 ? -1 : 1) * rho * Math.sin(g)];
+});
+cuDef('cmul', 'vv', 'v', (a, b) => `vec3(cmul(${a}.xy, ${b}.xy), 0.0)`, (a, b) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0], 0]);
 cuDef('conj', 'v', 'v', a => `(${a} * vec3(1.0, -1.0, -1.0))`, a => [a[0], -a[1], -a[2]]);
 cuDef('quat', 'ssss', 'q', (w, x, y, z) => `vec4(${x}, ${y}, ${z}, ${w})`, (w, x, y, z) => [x, y, z, w]);
 cuDef('quat', 'v', 'q', a => `vec4(${a}, 0.0)`, a => [a[0], a[1], a[2], 0]);
@@ -356,6 +394,14 @@ function cuParse(text, ctx) {
       const A = args[0].js;
       return { t: 'v', gl: `cuPoint(${args[0].gl})`, tree: { fn: 'point', a: [args[0].tree] }, js: E => cuPointOf(E, A(E)) };
     }
+    if (name === 'same') {
+      // The picture's distance estimate follows a few orbits right beside each point. Inside same( ) they take the
+      // value the point's own orbit has there, which the point's pass leaves in gCuW (it runs first, see orbitDE).
+      if (args.length !== 1 || (args[0].t !== 's' && args[0].t !== 'v')) fail('same( ) takes one number or one point.');
+      const sites = ctx.same || (ctx.same = []), k = sites.length;
+      sites.push(args[0].t);
+      return { t: args[0].t, gl: `(gCarI == 0 ? (gCuW${k} = ${args[0].gl}) : gCuW${k})`, tree: { fn: 'same', a: [args[0].tree] }, js: args[0].js };
+    }
     const forms = CU_FN[name];
     if (!forms) fail(`“${name}( )” is not a function a formula knows.`);
     const sig = args.map(a => a.t).join(''), f = forms.find(o => o.args === sig);
@@ -434,7 +480,7 @@ function cuLine(line, ctx, internal) {
     if (node.t !== 'v') throw new Error(`z is a point, and this formula gives ${CU_KINDS[node.t]}. A point is written vec(x, y, z).`);
     return { gl: `z = ${node.gl};`, z: true, js: E => { E.z = J(E); } };
   }
-  if (target in CU_GIVEN || CU_FN[target] || target === 'point') throw new Error(`“${target}” already means something here, so it cannot be a name of your own. Pick another.`);
+  if (target in CU_GIVEN || CU_FN[target] || target === 'point' || target === 'same') throw new Error(`“${target}” already means something here, so it cannot be a name of your own. Pick another.`);
   if (target[0] !== '@' && !CU_NAME.test(target)) throw new Error('A name is made of letters and digits and starts with a letter.');
   let v = ctx.vars.get(target);
   if (v && v.t !== node.t) throw new Error(`“${target}” was ${CU_KINDS[v.t]} in an earlier step and would be ${CU_KINDS[node.t]} here. Use another name.`);
@@ -564,6 +610,18 @@ const CU_BLOCKS = {
     params: [{ key: 'text', label: 'name = formula', type: 'text', def: 'r = len(z)' }],
     lines: P => [P.text],
     words: p => p.text },
+  // What c becomes before an orbit starts (the shader's cmap, which also looks after the orbits beside a point that
+  // land across a fold of it). The step is read by cuBuild, not through lines, and is no part of a pass.
+  cmap: { title: 'Before the orbit: change c', group: 'Adding', plain: true, basic: true,
+    params: [{ key: 'text', label: 'c becomes (a formula of c, n, numbers and sliders)', type: 'text', def: 'c' }],
+    lines: () => [],
+    words: p => `before the orbit starts, c becomes ${p.text}` },
+  // What the name holds when an iteration ends is what it holds when the next one comes to this step. The step
+  // itself is read by cuBuild, not through lines.
+  keep: { title: 'A value the orbit keeps', group: 'Your own', plain: true, basic: true,
+    params: [{ key: 'name', label: 'Name', type: 'name', def: 'kept' }, { key: 'start', label: 'It starts as (a number, or a point of numbers)', type: 'text', def: '0' }],
+    lines: () => [],
+    words: p => `${p.name} is kept from one iteration to the next, and starts as ${p.start}` },
   slider: { title: 'A number with a slider', group: 'Your own', plain: true, basic: true,
     params: [{ key: 'name', label: 'Name', type: 'name', def: 't' }, { key: 'value', label: 'Value', type: 'num', def: '0.5', min: 0, max: 1, step: 0.01, ranged: true, own: true },
       { key: 'min', label: 'Slider from', type: 'num', def: '0', bare: true, fixed: true }, { key: 'max', label: 'to', type: 'num', def: '1', bare: true, fixed: true }],
@@ -624,6 +682,9 @@ const CU_OPS = [
   ['f_invert', 'Turn a point inside out through a sphere', 'Points', 'pt', [['Point', 'z'], ['centre', 'vec(0, 0, 0)'], ['radius', '1']]],
   ['f_mirror', 'Mirror a point in a plane', 'Points', 'pt', [['Point', 'z'], ['the plane is square to', 'vec(0, 1, 0)']]],
   ['f_cpow', 'Flat power of x and y', 'Points', 'pt', [['Point', 'z'], ['power', 'n']]],
+  ['f_foldx', 'Fold a point round the x-axis onto the flat plane', 'Points', 'pt', [['Point', 'c'], ['planes that land on the flat plane', '2']]],
+  ['f_softmirror', 'Mirror a point at an angle from the flat plane, with a soft corner', 'Points', 'pt', [['Point', 'c'], ['the mirror’s angle, in radians', 'rad(45)'], ['how wide the soft corner is, in radians', 'rad(20)']]],
+  ['f_cmul', 'Multiply two flat points, as complex numbers', 'Points', 'pt', [['This', 'flat(z)'], ['times this', 'flat(z)']]],
   ['f_conj', 'Flip the signs of y and z', 'Points', 'pt', [['Of', 'z']]],
   ['f_point', 'A point of the orbit, by its number', 'Points', 'pt', [['Which: 1 the first, 0 this one, −1 the one before', '1']]],
   ['o_lt', 'Is it less?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['less than this', '1']], (a, b) => `${a} < ${b}`],
@@ -664,7 +725,7 @@ const CU_GROUPS = ['Length and angles', 'Moves of space', 'Quaternions and matri
 // lab: the rule is the approach of that id in the Approach list, written as steps (the same numbers, at any power above 0).
 const CU_STARTS = [
   { name: 'Sphere inversions, one plane', lab: 'mercator', steps: [['len'], ['lon'], ['merc'], ['addc']] },
-  { name: 'Sphere inversions, two planes', lab: 'fold', steps: [['foldx'], ['len'], ['lon'], ['merc'], ['addc']] },
+  { name: 'Sphere inversions, two planes', lab: 'fold', steps: [['cmap', { text: 'foldx(c, 2)' }], ['foldx'], ['len'], ['lon'], ['merc'], ['addc']] },
   { name: 'Quaternion square (Lathe)', lab: 'lathe', steps: [['quatpow'], ['addc']] },
   { name: 'Quaternion square, twisted', lab: 'tilt', steps: [['slider', { name: 'tilt', value: '45', min: '-90', max: '90' }], ['rot', { angle: 'tilt' }], ['quatpow'], ['rot', { angle: '-n*tilt' }], ['addc']] },
   { name: 'Mandelbulb', lab: 'bulb', steps: [['len'], ['lon'], ['lat'], ['addc']] },
@@ -682,7 +743,7 @@ const CU_STARTS = [
 ];
 const cuStepOf = (kind, p, id) => ({ id, kind, on: true, p: { ...Object.fromEntries(CU_BLOCKS[kind].params.map(s => [s.key, s.def])), ...p } });
 const cuStartSteps = k => CU_STARTS[k].steps.map(([kind, p], i) => cuStepOf(kind, p, i + 1));
-const cuDefault = () => { const steps = cuStartSteps(0); return { steps, next: steps.length + 1, rev: 0, bail: CU_BAIL, play: null, dots: true, guides: true, both: false }; };
+const cuDefault = () => { const steps = cuStartSteps(0); return { steps, next: steps.length + 1, rev: 0, bail: CU_BAIL, play: null, dots: true, guides: true, both: false, rough: false }; };
 const cuBailOf = x => clamp(+x || CU_BAIL, 1.2, 64);
 // A list of steps from text of any origin (a saved rule, pasted text): every step checked, every id made afresh.
 // Returns null when the text holds no step that can be used.
@@ -701,13 +762,13 @@ function cuClean(list) {
 // A whole rule from such text: the steps alone (a list), or the steps with how far a point may go.
 function cuRuleOf(o) {
   const steps = cuClean(Array.isArray(o) ? o : o && o.steps);
-  return steps ? { steps, next: steps.length + 1, rev: 0, bail: cuBailOf(o && o.bail), play: null, dots: true, guides: true, both: false } : null;
+  return steps ? { steps, next: steps.length + 1, rev: 0, bail: cuBailOf(o && o.bail), play: null, dots: true, guides: true, both: false, rough: !!(o && o.rough) } : null;
 }
 function cuStored() {
   try { return cuRuleOf(JSON.parse(localStorage.getItem(CU_KEY) || 'null')); }
   catch (err) { return null; }   // storage is blocked, or what it holds is not a rule
 }
-const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, steps: S.custom.steps.map(s => ({ kind: s.kind, on: s.on !== false, p: s.p })) });
+const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, rough: !!S.custom.rough, steps: S.custom.steps.map(s => ({ kind: s.kind, on: s.on !== false, p: s.p })) });
 function cuStore() {
   try { localStorage.setItem(CU_KEY, cuRuleText()); } catch (err) { /* storage blocked: the rule lasts for this visit */ }
 }
@@ -741,23 +802,66 @@ function cuSettings(st, B, ctx) {
   }
   return P;
 }
-// Reads the whole rule. Returns the shader text (glsl) and its short key, the numbers for uCu (K), the steps as
+// What a kept value starts as: a number or a point made of numbers, as { t, value, gl }.
+function cuStartValue(text) {
+  const node = cuParse(String(text), { vars: new Map(), zero: [], uses: new Set(), K: [], internal: false });
+  let plain = node.t === 's' || node.t === 'v';
+  (function walk(tr) {
+    if (tr.leaf === undefined) { if (tr.fn === 'point') plain = false; (tr.a || [tr.of]).forEach(walk); }
+    else if (/^[A-Za-z]/.test(tr.leaf) && tr.leaf !== 'pi') plain = false;
+  })(node.tree);
+  if (!plain) throw new Error('It starts as a number, or a point made of numbers, as in 0 or vec(0, 0, 1). What it becomes after that is for the steps to say.');
+  const value = node.js({ z: [0, 0, 0], c: [0, 0, 0], n: 2, K: [], v: [], tt: 1, first: [0, 0, 0], last: [0, 0, 0], mean: [0, 0, 0], count: 0, hist: [], keptIn: [] });
+  return { t: node.t, value, gl: node.t === 's' ? cuFlt(value) : `vec3(${value.map(cuFlt).join(', ')})` };
+}
+// Reads the whole rule. Returns the shader text (glsl) and its short key, the numbers for uCu (K, and Kd: the same
+// numbers as they were typed, for the JavaScript side), the steps as
 // JavaScript (run: [{ id, sw, ord, moves, tween, fns }]: sw the slot of the step's switch or -1, ord its place in
 // the shader's own count, moves whether it changes the point, tween whether it works out its own in-between), the kinds of the names (zero), scopes[id]: the names
 // of the user's own that a step can read, as [name, kind] pairs, and errs[id]: why a step could not be read. Such a
 // step is left out, and so is one that is off and has no slot.
 function cuBuild(steps) {
-  const ctx = { vars: new Map(), zero: [], uses: new Set(), K: [], internal: false };
+  const ctx = { vars: new Map(), zero: [], uses: new Set(), K: [], kept: [], same: [], sliders: new Map(), cmap: null, internal: false };
   const body = [], run = [], errs = {}, scopes = {};
   steps.slice(0, CU_MAX_STEPS).forEach(st => {
-    const B = CU_BLOCKS[st.kind], keep = { vars: new Map(ctx.vars), zero: ctx.zero.length };
+    const B = CU_BLOCKS[st.kind], keep = { vars: new Map(ctx.vars), zero: ctx.zero.length, kept: ctx.kept.length, same: ctx.same.length };
     scopes[st.id] = [...ctx.vars].filter(([name]) => name[0] !== '@').map(([name, v]) => [name, v.t]);
     let sw = -1;
     if (ctx.K.length < CU_FREE) { sw = ctx.K.length; ctx.K.push(st.on === false ? 0 : 1); }
     else if (st.on === false) return;
     try {
       if (!B) throw new Error('This kind of step is not known.');
+      if (st.kind === 'cmap') {
+        // The formula is read with nothing of the orbit in reach: c, n, numbers, and the sliders before this step,
+        // which stand in it as their slots.
+        if (ctx.cmap) throw new Error('A rule can change c before the orbit only once. Put both changes into one formula.');
+        let src = String(st.p.text);
+        for (const [name, slot] of ctx.sliders) src = src.replace(new RegExp('\\b' + name + '\\b', 'g'), slot);
+        const node = cuParse(src, { vars: new Map(), zero: [], uses: new Set(), K: [], same: [], internal: true });
+        let plain = node.t === 'v';
+        (function walk(tr) {
+          if (tr.leaf === undefined) { if (tr.fn === 'point' || tr.fn === 'same') plain = false; (tr.a || [tr.of]).forEach(walk); }
+          else if (/^[A-Za-z]/.test(tr.leaf) && !['pi', 'n', 'c'].includes(tr.leaf)) plain = false;
+        })(node.tree);
+        if (!plain) throw new Error('c becomes: a point made from c, n, numbers and sliders, as in foldx(c, 2). The orbit has not begun, so z and its names have no value yet.');
+        ctx.cmap = { gl: node.gl, js: node.js, sw };
+        return;
+      }
+      if (st.kind === 'keep') {
+        // The name begins this iteration with what the iteration before left in it (gCuK in the shader, keptIn
+        // in JavaScript), and cuRun puts what it holds at the end away for the next one.
+        const name = String(st.p.name).trim(), first = cuStartValue(st.p.start);
+        if (!CU_NAME.test(name)) throw new Error('Name: a name is made of letters and digits and starts with a letter.');
+        if (name in CU_GIVEN || CU_FN[name] || name === 'point') throw new Error(`“${name}” already means something here, so it cannot be a name of your own. Pick another.`);
+        if (ctx.vars.has(name)) throw new Error(`“${name}” has a value already. A kept value has to be the first step that names it.`);
+        const v = { t: first.t, idx: ctx.zero.length, gl: 'u_' + name }, j = ctx.kept.length, at = v.idx, was = first.value, ord = body.length;
+        ctx.zero.push(first.t); ctx.vars.set(name, v); ctx.kept.push({ t: first.t, idx: at, gl: v.gl, gl0: first.gl });
+        body.push(`if (${sw < 0 ? '' : `uCu[${sw}] > 0.5 && `}${ord}.0 <= cuAt){ ${v.gl} = gCuK${j}[gCarI]; }`);
+        run.push({ id: st.id, sw, ord, moves: false, tween: false, fns: [E => { const k = E.keptIn[j]; E.v[at] = k === undefined ? was : k; }] });
+        return;
+      }
       const P = cuSettings(st, B, ctx), names = {};
+      if (st.kind === 'slider') ctx.sliders.set(P.name, P.value);
       const lines = B.lines(P, base => names[base] || (names[base] = '@b' + st.id + '_' + base), B.tween ? '@tt' : null).map(l => cuLine(l, ctx, st.kind !== 'formula'));
       const ord = body.length, moves = lines.some(l => l.z), inner = lines.map(l => l.gl).join(' ');
       const when = (sw < 0 ? '' : `uCu[${sw}] > 0.5 && `) + `${ord}.0 <= cuAt`;
@@ -766,9 +870,9 @@ function cuBuild(steps) {
       body.push(!moves ? `if (${when}){ ${inner} }` : B.tween ? `if (${when}){ float tt = ${ord}.0 == cuAt ? cuT : 1.0; ${inner} }`
         : `if (${when}){ vec3 zb = z; ${inner} if (${ord}.0 == cuAt) z = cuBlend(zb, z, cuT); }`);
       run.push({ id: st.id, sw, ord, moves, tween: !!B.tween, fns: lines.map(l => l.js) });
-    } catch (e) { errs[st.id] = e.message; ctx.vars = keep.vars; ctx.zero.length = keep.zero; }
+    } catch (e) { errs[st.id] = e.message; ctx.vars = keep.vars; ctx.zero.length = keep.zero; ctx.kept.length = keep.kept; ctx.same.length = keep.same; }
   });
-  const orbit = ctx.uses.has('orbit');
+  const orbit = ctx.uses.has('orbit'), kept = ctx.kept, cm = ctx.cmap;
   const decl = [...ctx.vars.values()].map(v => `${CU_GLTYPE[v.t]} ${v.gl} = ${CU_GLZERO[v.t]};`).join(' ');
   // APR_FAR: the far-away point of the picture's probe stands where it does for the lab's own escape radius of 64
   const code = `
@@ -783,25 +887,30 @@ vec2 cuOffNow(){ return uCu[${CU_BOTH}] > 0.5 && uRaw < 0.5 ? uOff + vec2(gl_Fra
 #define uJulia cuJuliaNow()
 #define uOff cuOffNow()
 #endif
-vec3 gCuC; float gCuPass;` + (orbit ? cuOrbitGlsl(ctx.uses.has('hist')) : CU_GLSL_PLAIN) + `
-vec3 cuRun(vec3 z, vec3 c, float n){
+vec3 gCuC; float gCuPass; ${ctx.same.map((t, k) => `${CU_GLTYPE[t]} gCuW${k};`).join(' ')}` + cuCarryGlsl(orbit, ctx.uses.has('hist'), kept) + `
+vec3 cuRun(vec3 z, vec3 c, float n){${kept.length ? `
+  bool cuKeeps = !carOrigin(z);   // a step that starts at the origin leaves what the orbit keeps as it is` : ''}
   // where a play stands: steps up to cuAt are taken, the one at cuAt as far as cuT, and the rest are left out
   float cuAt = 1e9, cuT = 1.0;
   if (uCu[${CU_PLAY_ON}] > 0.5){ if (gCuPass > uCu[${CU_PLAY_PASS}]) cuAt = -1.0; else if (gCuPass == uCu[${CU_PLAY_PASS}]){ cuAt = uCu[${CU_PLAY_ORD}]; cuT = uCu[${CU_PLAY_T}]; } }
   ${orbit ? 'vec3 oFirst = gCuF[gCarI], oLast = gCuL[gCarI], oMean = gCuS[gCarI] / max(gCuN[gCarI], 1.0); float oCount = gCuN[gCarI];' : ''}
   ${decl}
-  ${body.join('\n  ')}
+  ${body.join('\n  ')}${kept.length ? `
+  if (cuKeeps){ ${kept.map((k, j) => `gCuK${j}[gCarI] = ${k.gl};`).join(' ')} }` : ''}
   return aprCap(z);
 }
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return cuRun(a, gCuC, n) - gCuC; }
 vec3 sqr(vec3 a){ return cuRun(a, gCuC, 2.0) - gCuC; }
-vec3 cmap(vec3 c){ return c; }`;
+vec3 cmap(vec3 c){ float n = uPow; return ${!cm ? 'c' : cm.sw < 0 ? cm.gl : `(uCu[${cm.sw}] > 0.5 ? ${cm.gl} : c)`}; }`;
   let h = 5381;
   for (let i = 0; i < code.length; i++) h = ((h << 5) + h + code.charCodeAt(i)) | 0;
   const K = new Float32Array(CU_SLOTS);
   K.set(ctx.K);
-  return { glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + code, key: (h >>> 0).toString(36) + '.' + code.length, K, run, zero: ctx.zero, errs, scopes, orbit };
+  // the same change of c in JavaScript (cuCmap)
+  const Kd = ctx.K.slice(), cmap = !cm ? null : (c, n) => (cm.sw >= 0 && !(K[cm.sw] > 0.5) ? c
+    : cm.js({ z: [0, 0, 0], c, n, K: Kd, v: [], tt: 1, first: [0, 0, 0], last: [0, 0, 0], mean: [0, 0, 0], count: 0, hist: [], keptIn: [] }));
+  return { Kd, cmap, vars: ctx.vars, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + code, key: (h >>> 0).toString(36) + '.' + code.length, K, run, zero: ctx.zero, errs, scopes, orbit, kept };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).
 const cuKept = new Map();
@@ -835,10 +944,13 @@ function cuBlend(a, b, t) {
 // One pass of the rule in JavaScript, the twin of cuRun in the shader. st: what the orbit carries (CARRY.custom),
 // or nothing for a point with no orbit behind it. part: { ord, t } stops the pass where a play stands, as cuAt and
 // cuT do in the shader; left out, the pass is whole.
+function cuEnv(P, z, c, n, st) {   // what a pass begins with: the point, and every name at its start
+  const k = st ? st.n : 0;
+  return { z: [z[0], z[1], z[2]], c: c || [0, 0, 0], n, K: P.Kd, tt: 1, v: P.zero.map(t => CU_ZERO[t]()),
+    first: st ? st.first : [0, 0, 0], last: st ? st.last : [0, 0, 0], mean: k > 0 ? scl(st.sum, 1 / k) : [0, 0, 0], count: k, hist: (st && st.hist) || [], keptIn: (st && st.keptIn) || [] };
+}
 function cuRun(z, c, n, st, part) {
-  const P = cuProgram(), k = st ? st.n : 0;
-  const E = { z: [z[0], z[1], z[2]], c: c || [0, 0, 0], n, K: P.K, tt: 1, v: P.zero.map(t => CU_ZERO[t]()),
-    first: st ? st.first : [0, 0, 0], last: st ? st.last : [0, 0, 0], mean: k > 0 ? scl(st.sum, 1 / k) : [0, 0, 0], count: k, hist: (st && st.hist) || [] };
+  const P = cuProgram(), E = cuEnv(P, z, c, n, st);
   for (const s of P.run) {
     if (part && s.ord > part.ord) break;
     if (s.sw >= 0 && !(P.K[s.sw] > 0.5)) continue;
@@ -847,7 +959,30 @@ function cuRun(z, c, n, st, part) {
     for (const f of s.fns) f(E);
     if (zb) E.z = cuBlend(zb, E.z, part.t);
   }
+  // what the rule keeps for the next iteration goes into the orbit's state, which CARRY.custom.step hands on
+  if (st && P.kept.length && !carOrigin(z)) st.keptOut = P.kept.map(k => { const x = E.v[k.idx]; return Array.isArray(x) ? x.slice() : x; });
   return cuCapped(E.z);
+}
+// The point and the names as they are when the step at the place `ord` is about to begin, for a point with this
+// orbit behind it; and the value one setting has there (null where its formula cannot be read or is of another kind).
+function cuEnvAt(z, c, n, st, ord) {
+  const P = cuProgram(), E = cuEnv(P, z, c, n, st);
+  for (const s of P.run) {
+    if (s.ord >= ord) break;
+    if (s.sw < 0 || P.K[s.sw] > 0.5) for (const f of s.fns) f(E);
+  }
+  return E;
+}
+function cuValueFor(text, kind, E) {
+  try {
+    const node = cuParse(String(text), { vars: cuProgram().vars, zero: [], uses: new Set(), K: [], internal: false });
+    return node.t === kind ? node.js(E) : null;
+  } catch (err) { return null; }
+}
+// c as the orbit gets it: what the rule's step "Before the orbit: change c" makes of it, at the power of the page.
+function cuCmap(c) {
+  const P = cuProgram();
+  return P.cmap ? P.cmap(c, S.n) : c;
 }
 function cuCapped(z) {
   const m = Math.max(Math.abs(z[0]), Math.abs(z[1]), Math.abs(z[2]));
@@ -910,7 +1045,7 @@ function cuSplit(text, scope, taken) {
 function cuTaken(steps) {
   const out = [];
   for (const s of steps) {
-    if (s.kind === 'slider') out.push(String(s.p.name));
+    if (s.kind === 'slider' || s.kind === 'keep') out.push(String(s.p.name));
     else if (s.kind === 'formula') { const m = /^\s*([A-Za-z][A-Za-z0-9]*)\s*=(?!=)/.exec(String(s.p.text)); if (m) out.push(m[1]); }
     else if (s.p.out !== undefined) out.push(String(s.p.out));
   }
@@ -950,6 +1085,9 @@ function cuUniforms(gl, loc) {
   K[CU_BOTH] = cuBoth() ? 1 : 0;
   gl.uniform1fv(loc('uCu[0]'), K);
 }
+// The plain distance estimate (one number in place of neighbouring orbits) for the finished solid, where the rule
+// asks for it. A play always takes the fine one: the plain one holds only for whole steps of a power.
+const cuRough = () => !!(S.custom && S.custom.rough) && !cuPlayNow();
 function cuScene() {
   const at = cuPlayNow();
   return { bail: cuBailOf(S.custom.bail), iter: at ? at.iter : 0 };
