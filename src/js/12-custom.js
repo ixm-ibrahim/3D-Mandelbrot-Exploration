@@ -748,7 +748,10 @@ const CU_STARTS = [
 ];
 const cuStepOf = (kind, p, id) => ({ id, kind, on: true, p: { ...Object.fromEntries(CU_BLOCKS[kind].params.map(s => [s.key, s.def])), ...p } });
 const cuStartSteps = k => CU_STARTS[k].steps.map(([kind, p], i) => cuStepOf(kind, p, i + 1));
-const cuDefault = () => { const steps = cuStartSteps(0); return { steps, next: steps.length + 1, rev: 0, bail: CU_BAIL, play: null, dots: true, guides: true, both: false, rough: false }; };
+// What the play shows and how, apart from the rule: the dots (how many, where they start, what their colour says,
+// whose whole paths are drawn, whether new ones come in for those thrown out), the guides, both pictures, the speed.
+const cuShowDefault = () => ({ dots: true, guides: true, both: false, speed: 'normal', count: 'some', lay: 'both', tint: 'mix', orbits: 'few', refill: true });
+const cuDefault = () => { const steps = cuStartSteps(0); return { steps, next: steps.length + 1, rev: 0, bail: CU_BAIL, play: null, ...cuShowDefault(), rough: false }; };
 const cuBailOf = x => clamp(+x || CU_BAIL, 1.2, 64);
 // A list of steps from text of any origin (a saved rule, pasted text): every step checked, every id made afresh.
 // Returns null when the text holds no step that can be used.
@@ -767,7 +770,7 @@ function cuClean(list) {
 // A whole rule from such text: the steps alone (a list), or the steps with how far a point may go.
 function cuRuleOf(o) {
   const steps = cuClean(Array.isArray(o) ? o : o && o.steps);
-  return steps ? { steps, next: steps.length + 1, rev: 0, bail: cuBailOf(o && o.bail), play: null, dots: true, guides: true, both: false, rough: !!(o && o.rough) } : null;
+  return steps ? { steps, next: steps.length + 1, rev: 0, bail: cuBailOf(o && o.bail), play: null, ...cuShowDefault(), rough: !!(o && o.rough) } : null;
 }
 function cuStored() {
   try { return cuRuleOf(JSON.parse(localStorage.getItem(CU_KEY) || 'null')); }
