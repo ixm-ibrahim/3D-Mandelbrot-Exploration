@@ -143,6 +143,10 @@ function uiApPaint() {
   document.querySelectorAll('#apPanels .ap-panel').forEach(el => { el.hidden = el.dataset.ap !== a.id; });
   // "Reset the approach dials" has nothing to do for an approach without dials
   $('approachReset').hidden = !(a.params || []).some(s => s.key !== undefined);
+  // An approach that writes the whole step of the orbit itself (the custom one) has no use for the equation box.
+  const whole = !!a.whole;
+  $('eqPreset').closest('.field').hidden = whole; $('eq').closest('.field').hidden = whole; $('eqWhole').hidden = !whole;
+  $('apCustomBtn').setAttribute('aria-pressed', String(a.id === 'custom')); $('apCustomBtn').classList.toggle('is-on', a.id === 'custom');
   const about = $('apAbout');
   if (!about.hidden && about.dataset.ap !== a.id) { about.dataset.ap = a.id; about.textContent = ''; about.append(...uiApText(a, false).childNodes); }
   if (UI.apInfo) { const r = APPROACHES.find(x => x.id === UI.apInfo), f = $('apInfo').querySelector('code'); if (r && f) f.textContent = r.formula(S.param[r.id], S.n); }

@@ -405,5 +405,8 @@ Not tried, or not finished.
   where it has any, its own dials. Some of the rules that failed are grouped there under "Tried, and failed".
 - *Balls on balls* is under the Kleinian tab.
 - The Learn tab plays one step of any rule, move by move, for a point or for a whole shape.
+- The button "Custom approach" under the Approach list opens a rule that is put together on the page, step by
+  step, from the same pieces the rules above are made of. It is the place to try a new idea before it is written
+  as an entry.
 - Each rule is one entry in `src/js/10-approaches.js`: its shader text, the same rule in JavaScript, and its
   texts. A new rule is a new entry, never a dial setting of an old one.

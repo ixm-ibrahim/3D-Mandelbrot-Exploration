@@ -497,6 +497,20 @@ const CARRY = {
     },
     pw: (st, v, n) => (v[2] === 0 ? ptFlat(v, n) : ptMob(v, st.u || [v[0], v[1]], n)),
   },
+  // Custom (12-custom.js). One pass of the user's steps is the whole step of an orbit, c included, so the power
+  // handed back here is that pass with c taken off again: whoever adds c to it has the whole step. Carried: c, and
+  // for the names first, last, mean and count the number of steps that have counted (n), the orbit's first point,
+  // the point of the step before (last; prev is the point of this step, for the next one) and the sum of its points.
+  custom: {
+    start: () => ({ n: 0, first: [0, 0, 0], prev: [0, 0, 0], last: [0, 0, 0], sum: [0, 0, 0], c: [0, 0, 0] }),
+    step(st, z, c) {
+      const cc = c || [0, 0, 0];
+      if (carOrigin(z)) return { ...st, c: cc };
+      const one = st.n === 0;
+      return { n: st.n + 1, first: one ? z : st.first, last: one ? z : st.prev, prev: z, sum: add(st.sum, z), c: cc };
+    },
+    pw: (st, v, n) => sub(cuRun(v, st.c, n, st), st.c),
+  },
 };
 // The first squaring of a fresh orbit: all that the card, which looks at one squaring, can show. (In space the
 // Learn tab follows the orbit through CARRY itself.)
@@ -691,6 +705,7 @@ const MATH = {
   partssquare(v, n) { return v[2] === 0 ? ptFlat(v, n) : ptTurn(v, ptSquare(v), n); },
   partsorbit(v, n) { return carFirst('partsorbit', v, n, {}, [0, 0, 0]); },
   partsnone(v, n) { return v[2] === 0 ? ptFlat(v, n) : ptMob(v, ptFoot(v), n); },
+  custom(v, n, q, c) { return carFirst('custom', v, n, q, c || [0, 0, 0]); },
   // Pillow: a flat sheet of triangles wrapped onto the sphere of directions, in one of two layouts.
   pillow(v, n, q = {}) { return q.layout > 0.5 ? psPower(v, n) : pbPower(v, n); },
 };
@@ -1600,6 +1615,7 @@ const APPROACH_GROUPS = [
   { id: 'angles', title: 'Angle rules' },
   { id: 'other', title: 'Side by side' },
   { id: 'tried', title: 'Tried, and failed' },
+  { id: 'custom', title: 'Your own' },
 ];
 // The one-plane rule in words, shared by the entries built on it.
 function aprMercFormula(n) {
@@ -2528,5 +2544,22 @@ const APPROACHES = [
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : aprIs(n, 1) ? ['ok', PT_STAYS] : aprIs(n, -1) ? ['part', 'Smooth everywhere except the origin, which is a pole.']
       : ['part', 'One smooth formula, except on the upright axis: a point beside that axis lands in a direction that depends on the side it stands on, so the axis is torn open.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.'),
+  },
+  {
+    // The rule the user builds from steps (12-custom.js; its panel is 82-custom-ui.js). Its shader text changes
+    // with the steps, so glsl is worked out when asked for, and glslKey tells two such texts apart. whole: the
+    // text of a whole step of the orbit, which takes the place of the page's equation. uniforms: what its shader
+    // reads besides uA.
+    id: 'custom', name: 'Custom: your own steps', group: 'custom', axis: () => [0, 0, 1],
+    get glsl() { return cuProgram().glsl; }, glslKey: () => cuProgram().key, whole: 'cuRun(z, c, uPow)',
+    uniforms: (gl, loc) => gl.uniform1fv(loc('uCu[0]'), cuProgram().K),
+    tag: 'A rule you put together yourself, one step after another: lengths and angles, turns about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
+    params: [],
+    formula: () => cuWords(),
+    about: 'The steps stand under this text. One pass through them is one step of an orbit, so they take the place of the equation: c is added where the step “Add c” stands, and nowhere else. A step can be switched off, moved up or down, or broken into the plain formulas it is made of. The figure above the steps plays one pass on a ball. The card below measures one pass with c set to 0.',
+    roundNote: () => '',
+    crush: () => ['part', 'Not worked out for a rule of your own. The rows above are measured from your steps.'],
+    smooth: () => ['part', 'Not worked out for a rule of your own. A fold, a comparison or an axis that moves with the point can each break a rule into parts.'],
+    slice: ok => (ok ? 'With these steps the plane z = 0 follows complex arithmetic, so that slice is the flat set.' : 'With these steps the plane z = 0 does not follow complex arithmetic.'),
   },
 ];

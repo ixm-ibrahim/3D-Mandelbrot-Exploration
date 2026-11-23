@@ -1,0 +1,46 @@
+/* The custom approach (82-custom-ui.js): the button under the Approach menu, the ball figure, and the list of steps
+   with their settings, all inside the panel of the approach. */
+.ap-custom { width: 100%; }
+.cu-fig { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cu-fig canvas { display: block; width: 100%; aspect-ratio: 4 / 3; max-height: 320px; background: var(--stage); border: 1px solid var(--line); touch-action: none; cursor: grab; }
+.cu-fig canvas:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+.cu-fig-bar { display: flex; gap: 8px; align-items: center; }
+.cu-fig-bar .btn { flex: none; min-width: 5.5em; }
+.cu-fig-bar input[type=range] { flex: 1 1 auto; min-width: 0; accent-color: var(--brass); }
+
+.cu-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cu-step { border: 1px solid var(--line); border-left: 3px solid var(--line); background: var(--panel); padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cu-step.is-now { border-left-color: var(--brass); }
+.cu-step.is-bad { border-left-color: var(--bad); }
+.cu-step.is-off .cu-body, .cu-step.is-off .cu-title { opacity: .45; }
+.cu-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; }
+.cu-on { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; flex: none; }
+.cu-on input { accent-color: var(--brass); margin: 0; }
+.cu-no { font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); min-width: 1.4em; }
+.cu-title { flex: 1 1 11em; min-width: 0; font-weight: 600; font-size: 14px; line-height: 1.25; }
+.cu-tools { display: flex; gap: 4px; flex: none; margin-left: auto; }
+.cu-tool { font-family: var(--f-cond); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; padding: 3px 7px; min-width: 26px; cursor: pointer; }
+.cu-tool:hover:not(:disabled) { border-color: var(--ink-2); }
+.cu-tool:disabled { opacity: .35; cursor: default; }
+.cu-tool:focus-visible, .cu-in:focus-visible, .cu-pick:focus-visible, .cu-range:focus-visible, .cu textarea:focus-visible, .cu-more > summary:focus-visible, #cuText:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
+.cu-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cu-row { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cu-pair { display: flex; gap: 6px; align-items: center; min-width: 0; }
+.cu-pair > .cu-in, .cu-pair > select:not(.cu-pick) { flex: 1 1 8em; min-width: 0; }
+.cu-pair > .btn { flex: none; }
+.cu-in, .cu-pick, .cu-pair > select, #cuText { font-family: var(--f-mono); font-size: 13px; padding: 5px 7px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; min-width: 0; }
+.cu-row > .cu-in { width: 100%; }
+.cu-pick { flex: 0 0 5.6em; width: 5.6em; }
+.cu-range { flex: 1 1 6em; min-width: 0; accent-color: var(--brass); }
+.cu-pair > .cu-in:has(+ .cu-range:not([hidden])) { flex: 0 0 6.5em; width: 6.5em; }
+.cu-out { flex: 0 0 3.5em; font-family: var(--f-mono); font-size: 13px; }
+/* a matrix: nine boxes in three rows, their labels kept for screen readers only */
+.cu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.cu-grid .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.cu-err { margin: 0; }
+.cu-more { border-top: 1px solid var(--line); padding-top: 8px; }
+.cu-more > summary { cursor: pointer; font-size: 13.5px; color: var(--ink-2); }
+.cu-more[open] { display: flex; flex-direction: column; gap: 8px; }
+.cu-more code { font-family: var(--f-mono); font-size: 12.5px; overflow-wrap: anywhere; }
+#cuText { width: 100%; resize: vertical; }
+@media (pointer: coarse) { .cu-in, .cu-pick, .cu-pair > select, #cuText { font-size: 16px; } .cu-tool { padding: 7px 10px; } }

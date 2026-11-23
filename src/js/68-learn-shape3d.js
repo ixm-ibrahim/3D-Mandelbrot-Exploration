@@ -307,7 +307,7 @@ void main(){
     setup();
 
     function program(a, n2) {
-      const key = a.id + (n2 ? '|2' : '|n');
+      const key = (a.glslKey ? a.id + '#' + a.glslKey() : a.id) + (n2 ? '|2' : '|n');
       let e = progs.get(key);
       if (e) { progs.delete(key); progs.set(key, e); return e; }
       e = { ok: false, p: null, log: '', loc: {} };
@@ -330,6 +330,7 @@ void main(){
     // the uniforms the rule reads: the lab's state, as 40-render.js hands it to the solid
     function ruleUniforms(e, c) {
       gl.uniform4fv(U(e, 'uA'), apVec()); gl.uniform1f(U(e, 'uPow'), S.n);
+      if (ap().uniforms) ap().uniforms(gl, name => U(e, name));
       gl.uniform3fv(U(e, 'uAbs'), S.abs); gl.uniform3f(U(e, 'uSgn'), 1, S.flip[0] ? -1 : 1, S.flip[1] ? -1 : 1);
       gl.uniform3f(U(e, 'uC'), fin(c && c[0], 0), fin(c && c[1], 0), fin(c && c[2], 0));
     }

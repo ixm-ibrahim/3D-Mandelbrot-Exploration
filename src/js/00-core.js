@@ -42,6 +42,7 @@ const S = {
        group: 0, bt: 1.4, bgrid: 0, bit: 16,     // the second group, Balls on balls (32-balls.js): group 1 chooses it; its dial t, its grid, its rounds
        brho: 1 },           // radius of its second sphere (1: as large as the first)
   extreme: false,           // "extreme ranges": while on, dials that define wide limits (xmin, xmax, xlo, xhi) use them
+  custom: null,             // the custom approach (12-custom.js): { steps, next, ball }, filled by initState()
 };
 const ap = () => APPROACHES[S.approach];
 const apP = () => S.param[ap().id];          // the current approach's parameters, as an object keyed by spec key
@@ -53,6 +54,7 @@ const apVec = () => {                        // the same as four numbers, in spe
 function initState() {
   APPROACHES.forEach(a => { S.param[a.id] = specDefaults(a.params || []); });
   S.colour = specDefaults(COLOUR_CONTROLS);
+  S.custom = cuStored() || cuDefault();
 }
 
 // Hooks: other modules push a function.

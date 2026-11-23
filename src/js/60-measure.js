@@ -17,9 +17,9 @@ const powerF = () => { const a = ap(), q = { ...apP() }, n = cardPower(); return
 // dial shows ('z^-n + c' takes -n), and the first one written counts. A formula with no power leaves the dial's n.
 const cardPow = { key: null, n: 2, several: false };
 function cardPower() {
-  const key = S.eq + '\n' + S.n;
+  const whole = !!ap().whole, key = (whole ? '' : S.eq) + '\n' + S.n;   // an approach that writes the whole step has the dial's n
   if (cardPow.key !== key) {
-    const all = formulaPowers(S.eq, S.n).filter(x => Math.abs(x) <= 64);
+    const all = whole ? [] : formulaPowers(S.eq, S.n).filter(x => Math.abs(x) <= 64);
     cardPow.key = key; cardPow.n = all.length ? all[0] : S.n; cardPow.several = all.some(x => Math.abs(x - all[0]) > 1e-9);
   }
   return cardPow.n;

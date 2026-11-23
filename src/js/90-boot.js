@@ -18,5 +18,6 @@ addEventListener('load', () => {
 }, { once: true });
 
 boot();
+customInit();
 learnInit();
 pinInit();

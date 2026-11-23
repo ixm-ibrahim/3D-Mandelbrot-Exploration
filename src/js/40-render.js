@@ -67,8 +67,10 @@ function sceneWant(a, eq, z0, n2, klein, needs = colProgramNeeds()) {
   if (klein === 'ballsSmall') return { key: keyOf('ballsSmall'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_RHO + GL_TAIL };
   if (klein === 'ballsFree') return { key: keyOf('ballsFree'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_FREE + GL_TAIL };
   if (klein) return { key: keyOf('klein'), src: () => GL_HEAD + defs + GL_COLOUR + GL_KLEIN + GL_TAIL };
-  const fc = compileFormula(eq, true, n2), zc = compileFormula(z0, false, n2);
-  return { key: keyOf([a.id, fc, zc].join('|')), src: () => GL_HEAD + defs + GL_COLOUR + a.glsl + GL_ORBIT.split('__F__').join(fc).split('__Z0__').join(zc) + GL_TAIL };
+  // An approach whose shader text changes (the custom one) says which text it is now with glslKey, and one that
+  // writes the whole step of the orbit itself (whole) takes the place of the equation.
+  const glsl = a.glsl, fc = a.whole || compileFormula(eq, true, n2), zc = compileFormula(z0, false, n2);
+  return { key: keyOf([a.glslKey ? a.id + '#' + a.glslKey() : a.id, fc, zc].join('|')), src: () => GL_HEAD + defs + GL_COLOUR + glsl + GL_ORBIT.split('__F__').join(fc).split('__Z0__').join(zc) + GL_TAIL };
 }
 // Which Kleinian program the state asks for: false (not the Kleinian view), true (the first group), or for Balls on
 // balls 'balls' (two equal spheres), 'ballsSmall' (a smaller second sphere) or 'ballsFree' (any other pair): see ballsKind.
@@ -76,7 +78,7 @@ const sceneKlein = () => (S.mode !== 'k' ? false : S.k.group === 1 ? ballsKind()
 const sceneBalls = kl => kl === 'balls' || kl === 'ballsSmall' || kl === 'ballsFree';
 function sceneNow() {   // what the current settings need; remembered, because the drawing loop asks every frame
   const klein = sceneKlein(), n2 = Math.abs(S.n - 2) < 1e-9, needs = colProgramNeeds();
-  const sig = (klein ? (klein === true ? 'k' : 'k-' + klein) : [S.approach, n2, S.eq, S.z0].join('\n')) + '\n' + glNeedsKey(needs);
+  const sig = (klein ? (klein === true ? 'k' : 'k-' + klein) : [S.approach, ap().glslKey ? ap().glslKey() : '', n2, S.eq, S.z0].join('\n')) + '\n' + glNeedsKey(needs);
   if (R.sig !== sig) {
     R.sig = sig; R.want = null;
     try { R.want = sceneWant(ap(), S.eq, S.z0, n2, klein, needs); } catch (err) { console.error('The formula could not be read: ' + err.message); }
@@ -206,6 +208,7 @@ function sceneUniforms(P, o, b) {
   gl.uniform3fv(L('uCamPos'), b.pos); gl.uniformMatrix3fv(L('uCam'), false, [...b.right, ...b.up, ...b.f]);
   gl.uniform1f(L('uFov'), v.fov); gl.uniform1f(L('uBound'), v.bound);
   gl.uniform1f(L('uPow'), S.n); gl.uniform4fv(L('uA'), apVec());
+  if (ap().uniforms) ap().uniforms(gl, L);
   gl.uniform1f(L('uJulia'), S.mode === 'j' ? 1 : 0); gl.uniform3fv(L('uC'), S.c);
   gl.uniform1f(L('uMosaic'), S.mosaic && S.mode === 'm' ? S.mosaicCell : 0);
   gl.uniform3fv(L('uAbs'), S.abs); gl.uniform3f(L('uSgn'), 1, S.flip[0] ? -1 : 1, S.flip[1] ? -1 : 1);
