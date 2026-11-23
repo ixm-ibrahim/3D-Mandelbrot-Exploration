@@ -4,6 +4,8 @@
 body.is-learn .cu-bar, body.is-learn .cu-dock, body.is-learn .cu-dots { display: none; }
 /* the dots that the steps carry, drawn over the picture and under everything else on the stage */
 .stage canvas.cu-dots { pointer-events: none; cursor: default; }
+/* a play that shows the dots alone: the picture behind them is faint */
+body.cu-faint .stage > #view { opacity: .34; }
 
 /* A wide window: the page may be wider, so that more steps stand side by side, and the picture, the bar and the
    steps share the height of the window. The picture gives up some height, and the steps scroll by themselves. */
@@ -56,6 +58,7 @@ body.is-learn .cu-bar, body.is-learn .cu-dock, body.is-learn .cu-dots { display:
 .cu-title { flex: 1 1 9em; min-width: 0; margin: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; font-weight: 600; font-size: 14px; line-height: 1.25; text-align: left; cursor: pointer; }
 .cu-title:hover { text-decoration: underline; text-underline-offset: 3px; }
 .cu-title:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.cu-kind { flex: 1 1 9em; min-width: 0; }
 .cu-tools { display: flex; gap: 4px; flex: none; margin-left: auto; }
 .cu-tool { font-family: var(--f-cond); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; padding: 2px 6px; min-width: 24px; cursor: pointer; }
 .cu-tool:hover:not(:disabled) { border-color: var(--ink-2); }

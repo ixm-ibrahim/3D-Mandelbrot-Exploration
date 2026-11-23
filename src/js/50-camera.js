@@ -120,6 +120,13 @@ function camHome(preset) {
     v.dist *= CAM_FIT0 / camFit();
     // a trap that is the solid, or is added to it, can reach further out than the set: stand back for it
     v.dist = Math.max(v.dist, camTrapDist(v.target));
+    // an approach may name a ball about the middle that the start view has to hold (its `ball`), in each half
+    // of the stage when it draws two pictures side by side (its `halves`)
+    const A = ap(), ball = !kl && A.ball ? A.ball() : 0;
+    if (ball > 0) {
+      const wide = stage.clientWidth * (A.halves && A.halves() ? 0.5 : 1), t = S.view.fov * Math.min(1, wide / Math.max(1, stage.clientHeight) || 1);
+      v.dist = Math.max(v.dist, 1.16 * (ball + len(v.target)) * Math.hypot(1, t) / t);   // with room for the bar at the foot of the stage
+    }
   }
   v.given = asGiven;
   return v;

@@ -507,7 +507,7 @@ const CARRY = {
       const cc = c || [0, 0, 0];
       // keptIn: what the rule's own kept values hold as this step begins, which is what the pass before left (keptOut)
       const keptIn = st.keptOut || st.keptIn;
-      // cm: c as the rule's step "Before the orbit: change c" makes it, which is what the pass works with
+      // cm: c as the rule's step before the orbit makes it, which is what the pass works with
       const cm = cuCmap(cc);
       if (carOrigin(z)) return { ...st, c: cc, cm, keptIn, keptOut: undefined };
       const one = st.n === 0;
@@ -2558,7 +2558,7 @@ const APPROACHES = [
     // being played, how many iterations the picture takes (iter; 0: as many as the page's dial says).
     id: 'custom', name: 'Custom: your own steps', group: 'custom', axis: () => [0, 0, 1],
     get glsl() { return cuProgram().glsl; }, glslKey: () => cuProgram().key, whole: 'cuRun(z, c, uPow)',
-    uniforms: (gl, loc) => cuUniforms(gl, loc), scene: () => cuScene(),
+    uniforms: (gl, loc) => cuUniforms(gl, loc), scene: () => cuScene(), ball: () => cuReach(), halves: () => cuBoth(),
     get deMax() { return cuRough() ? 0 : undefined; },   // a rule may ask for the plain distance estimate
     tag: 'A rule you put together yourself, one step after another: lengths and angles, turns about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
     params: [],

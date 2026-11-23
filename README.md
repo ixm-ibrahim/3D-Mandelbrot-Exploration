@@ -16,14 +16,16 @@ come closest and what is known not to work. No rule passes yet.
 - an **Approach** list: the 3D rules that were tried and kept, each as its own entry;
 - a **Custom approach**: a rule put together on the page from steps (lengths and angles, turns about any axis,
   sphere inversions, mirrors and folds, quaternions, matrices, adding c, single operations of arithmetic, and
-  formulas of one's own). A step can be switched off, moved, or broken down: a block into its formulas, a formula
-  into its single operations. A bar under the picture plays the steps, iteration by iteration, in the picture
-  itself, at three speeds, with dots that show where the steps carry the solid's points and guides for the step
-  on show: its axis, plane, sphere or arrow, and the way one ringed dot takes through it. A step that moves no
-  point shows the value it works out for that dot. The dots have the choices of the Learn tab: how many there
-  are, where they start (a full grid, level sheets, shells), what their colours say, whose orbits are drawn, and
-  whether new dots come in for those thrown out. A rule can be saved under a name and loaded again, and the
-  Mandelbrot and the Julia picture can be shown side by side.
+  formulas of one's own). A step can be switched off, moved, made another kind where it stands, or broken down: a
+  block into its formulas, a formula into its single operations. A bar under the picture plays the steps,
+  iteration by iteration from the first, in the picture itself, at three speeds, with dots that show where the
+  steps carry the solid's points and guides for the step on show: its axis, plane, sphere or arrow, and the way
+  one ringed dot takes through it. A step that moves no point shows the value it works out for that dot, and a
+  step that changes c before the orbit is played before the first iteration, with each dot's c as a ring. The
+  play has the choices of the Learn tab: dots, the surface or both; how many dots there are, where they start (a
+  full grid, level sheets, shells) and how far out; what their colours say; whose orbits are drawn; and whether
+  new dots come in for those thrown out. A rule can be saved under a name and loaded again, and the Mandelbrot
+  and the Julia picture can be shown side by side.
   Thirty-two of the approaches of the list can be loaded as steps (`13-custom-rules.js`), each giving that approach's
   own numbers;
 - a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models;
@@ -60,4 +62,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.09. Each version is tagged, as `v1.09`.
+This is version 1.10. Each version is tagged, as `v1.10`.
