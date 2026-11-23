@@ -213,7 +213,9 @@ function sceneUniforms(P, o, b) {
   gl.uniform1f(L('uMosaic'), S.mosaic && S.mode === 'm' ? S.mosaicCell : 0);
   gl.uniform3fv(L('uAbs'), S.abs); gl.uniform3f(L('uSgn'), 1, S.flip[0] ? -1 : 1, S.flip[1] ? -1 : 1);
   const kl = sceneKlein(), balls = sceneBalls(kl);   // Balls on balls: its own depth, and its two numbers (uBT, uBGrid)
-  gl.uniform1f(L('uBail'), 64); gl.uniform1i(L('uIter'), balls ? k.bit : S.mode === 'k' ? k.iter : S.iter);
+  // an approach may say how far a point may go, and how many iterations a picture of its steps being played takes
+  const own = S.mode !== 'k' && ap().scene ? ap().scene() : null;
+  gl.uniform1f(L('uBail'), own ? own.bail : 64); gl.uniform1i(L('uIter'), balls ? k.bit : S.mode === 'k' ? k.iter : own && own.iter ? own.iter : S.iter);
   // uBT is t as ballsTOf hands it over. Only 'ballsSmall' and 'ballsFree' have uBRho.
   if (balls) { gl.uniform1f(L('uBT'), ballsTOf(kl)); gl.uniform1i(L('uBGrid'), k.bgrid | 0); if (kl !== 'balls') gl.uniform1f(L('uBRho'), ballsRho()); }
   gl.uniform1f(L('uCut'), S.cutOn ? S.cut : 1e9);

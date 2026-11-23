@@ -2549,14 +2549,15 @@ const APPROACHES = [
     // The rule the user builds from steps (12-custom.js; its panel is 82-custom-ui.js). Its shader text changes
     // with the steps, so glsl is worked out when asked for, and glslKey tells two such texts apart. whole: the
     // text of a whole step of the orbit, which takes the place of the page's equation. uniforms: what its shader
-    // reads besides uA.
+    // reads besides uA. scene: how far a point may go before it is thrown out (bail) and, while its steps are
+    // being played, how many iterations the picture takes (iter; 0: as many as the page's dial says).
     id: 'custom', name: 'Custom: your own steps', group: 'custom', axis: () => [0, 0, 1],
     get glsl() { return cuProgram().glsl; }, glslKey: () => cuProgram().key, whole: 'cuRun(z, c, uPow)',
-    uniforms: (gl, loc) => gl.uniform1fv(loc('uCu[0]'), cuProgram().K),
+    uniforms: (gl, loc) => cuUniforms(gl, loc), scene: () => cuScene(),
     tag: 'A rule you put together yourself, one step after another: lengths and angles, turns about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
     params: [],
     formula: () => cuWords(),
-    about: 'The steps stand under this text. One pass through them is one step of an orbit, so they take the place of the equation: c is added where the step “Add c” stands, and nowhere else. A step can be switched off, moved up or down, or broken into the plain formulas it is made of. The figure above the steps plays one pass on a ball. The card below measures one pass with c set to 0.',
+    about: 'The steps stand under the picture. One pass through them is one step of an orbit, so they take the place of the equation: c is added where the step “Add c” stands, and nowhere else. A step can be switched off, moved, or broken down: a block into the formulas it is made of, and a formula into its single operations. The bar under the picture plays the steps, iteration by iteration: the solid on show is every starting point that has not been thrown out so far. The card below measures one pass with c set to 0.',
     roundNote: () => '',
     crush: () => ['part', 'Not worked out for a rule of your own. The rows above are measured from your steps.'],
     smooth: () => ['part', 'Not worked out for a rule of your own. A fold, a comparison or an axis that moves with the point can each break a rule into parts.'],

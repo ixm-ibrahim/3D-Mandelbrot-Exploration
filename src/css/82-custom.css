@@ -1,46 +1,82 @@
-/* The custom approach (82-custom-ui.js): the button under the Approach menu, the ball figure, and the list of steps
-   with their settings, all inside the panel of the approach. */
+/* The custom approach (82-custom-ui.js). While it is chosen, body carries .is-custom: under the picture stand the
+   bar that plays the steps (.cu-bar) and the steps themselves (.cu-dock). */
 .ap-custom { width: 100%; }
-.cu-fig { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.cu-fig canvas { display: block; width: 100%; aspect-ratio: 4 / 3; max-height: 320px; background: var(--stage); border: 1px solid var(--line); touch-action: none; cursor: grab; }
-.cu-fig canvas:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
-.cu-fig-bar { display: flex; gap: 8px; align-items: center; }
-.cu-fig-bar .btn { flex: none; min-width: 5.5em; }
-.cu-fig-bar input[type=range] { flex: 1 1 auto; min-width: 0; accent-color: var(--brass); }
+body.is-learn .cu-bar, body.is-learn .cu-dock { display: none; }
 
-.cu-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.cu-step { border: 1px solid var(--line); border-left: 3px solid var(--line); background: var(--panel); padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.cu-step.is-now { border-left-color: var(--brass); }
+/* A wide window: the page may be wider, so that more steps stand side by side, and the picture, the bar and the
+   steps share the height of the window. The picture gives up some height, and the steps scroll by themselves. */
+@media (min-width: 921px) {
+  body.is-custom:not(.is-learn) .page { max-width: 1760px; }
+  body.is-custom:not(.is-learn) .bench-main { max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px)); }
+  body.is-custom:not(.is-learn) .stage { flex: none; height: clamp(240px, 42vh, 560px); }
+  body.is-custom .cu-dock { flex: 1 1 auto; min-height: 140px; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; }
+}
+
+/* The bar */
+.cu-bar { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: none; }
+.cu-bar-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; }
+.cu-bar-row .btn { flex: none; }
+.cu-bar-row .btn:disabled { opacity: .45; cursor: default; }
+.cu-gap { flex: 1 1 12px; }
+.cu-of { color: var(--ink-2); font-size: 13.5px; }
+.cu-bar .cu-play { min-width: 5.5em; background: var(--ink); color: var(--paper); border-color: var(--ink); }
+#cuIt, #cuItAll, #cuBail, #cuN { width: 4.6em; }
+.cu-track { position: relative; padding-bottom: 18px; }
+.cu-track input { display: block; width: 100%; height: 22px; margin: 0; accent-color: var(--brass); cursor: pointer; }
+.cu-ticks { position: absolute; left: 8px; right: 8px; bottom: 0; height: 18px; }
+.cu-ticks button { position: absolute; top: 0; transform: translateX(-50%); margin: 0; padding: 0 4px; font-family: var(--f-mono); font-size: 11.5px; line-height: 18px; color: var(--ink-2); background: none; border: 0; cursor: pointer; }
+.cu-ticks button:hover { color: var(--ink); }
+.cu-now { font-size: 15px; line-height: 1.4; color: var(--ink); min-height: 1.4em; }
+.cu-bar-small .note { flex: 1 1 22em; min-width: 0; }
+.cu-bar-small .cu-range { flex: 0 1 9em; }
+
+/* The steps */
+.cu-dock { display: flex; flex-direction: column; gap: 8px; min-width: 0; border-top: 1px solid var(--line); }
+.cu-tools-row { position: sticky; top: 0; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 8px 0 6px; background: var(--paper); }
+.cu-group { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.cu-group select { max-width: 17em; min-width: 0; font-family: var(--f-mono); font-size: 13px; padding: 5px 6px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 0; }
+.cu-tools-row .btn:disabled { opacity: .45; cursor: default; }
+.cu-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px; align-items: start; min-width: 0; }
+.cu-step { border: 1px solid var(--line); border-left: 3px solid var(--line); background: var(--panel); padding: 7px 9px 9px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .cu-step.is-bad { border-left-color: var(--bad); }
+/* the step the bar stands on */
+.cu-step.is-now { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 16%, var(--panel)); box-shadow: 0 0 0 1px var(--brass); }
+.cu-flag { display: none; flex: none; font-family: var(--f-cond); font-weight: 600; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; line-height: 1.5; color: var(--paper); background: var(--brass); padding: 0 6px; }
+.cu-step.is-now .cu-flag { display: inline-block; }
 .cu-step.is-off .cu-body, .cu-step.is-off .cu-title { opacity: .45; }
-.cu-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; }
+.cu-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-width: 0; }
 .cu-on { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; flex: none; }
 .cu-on input { accent-color: var(--brass); margin: 0; }
 .cu-no { font-family: var(--f-mono); font-size: 12.5px; color: var(--ink-2); min-width: 1.4em; }
-.cu-title { flex: 1 1 11em; min-width: 0; font-weight: 600; font-size: 14px; line-height: 1.25; }
+.cu-title { flex: 1 1 9em; min-width: 0; font-weight: 600; font-size: 14px; line-height: 1.25; }
 .cu-tools { display: flex; gap: 4px; flex: none; margin-left: auto; }
-.cu-tool { font-family: var(--f-cond); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; padding: 3px 7px; min-width: 26px; cursor: pointer; }
+.cu-tool { font-family: var(--f-cond); font-size: 12px; letter-spacing: .03em; text-transform: uppercase; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; padding: 2px 6px; min-width: 24px; cursor: pointer; }
 .cu-tool:hover:not(:disabled) { border-color: var(--ink-2); }
 .cu-tool:disabled { opacity: .35; cursor: default; }
-.cu-tool:focus-visible, .cu-in:focus-visible, .cu-pick:focus-visible, .cu-range:focus-visible, .cu textarea:focus-visible, .cu-more > summary:focus-visible, #cuText:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
-.cu-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.cu-row { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.cu-pair { display: flex; gap: 6px; align-items: center; min-width: 0; }
-.cu-pair > .cu-in, .cu-pair > select:not(.cu-pick) { flex: 1 1 8em; min-width: 0; }
-.cu-pair > .btn { flex: none; }
-.cu-in, .cu-pick, .cu-pair > select, #cuText { font-family: var(--f-mono); font-size: 13px; padding: 5px 7px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; min-width: 0; }
-.cu-row > .cu-in { width: 100%; }
-.cu-pick { flex: 0 0 5.6em; width: 5.6em; }
-.cu-range { flex: 1 1 6em; min-width: 0; accent-color: var(--brass); }
-.cu-pair > .cu-in:has(+ .cu-range:not([hidden])) { flex: 0 0 6.5em; width: 6.5em; }
-.cu-out { flex: 0 0 3.5em; font-family: var(--f-mono); font-size: 13px; }
+.cu-tool:focus-visible, .cu-in:focus-visible, .cu-src:focus-visible, .cu-range:focus-visible, .cu-group select:focus-visible, .cu-track input:focus-visible, .cu-ticks button:focus-visible, .cu-more > summary:focus-visible, #cuText:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
+.cu-body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.cu-row { display: grid; grid-template-columns: minmax(5.5em, 32%) minmax(0, 1fr); gap: 3px 8px; align-items: center; min-width: 0; }
+.cu-row > .label { font-size: 11.5px; letter-spacing: .05em; line-height: 1.25; }
+.cu-row-text { grid-template-columns: minmax(0, 1fr); }
+.cu-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
+.cu-in, .cu-src, #cuText { font-family: var(--f-mono); font-size: 13px; padding: 4px 6px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; min-width: 0; }
+.cu-cell > input[type=text], .cu-cell > select { flex: 1 1 7em; }
+.cu-nbox { flex: 0 0 auto; width: 5.4em; }
+.cu-range { flex: 1 1 5em; min-width: 3em; margin: 0; accent-color: var(--brass); }
+.cu-xyz { display: flex; flex: 1 1 100%; gap: 4px; min-width: 0; }
+.cu-xyz label { display: flex; flex: 1 1 0; align-items: center; gap: 3px; min-width: 0; font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); }
+.cu-xyz .cu-nbox { flex: 1 1 0; width: 0; min-width: 0; padding: 4px 3px; }
 /* a matrix: nine boxes in three rows, their labels kept for screen readers only */
-.cu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.cu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+.cu-grid .cu-row { display: block; }
 .cu-grid .label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.cu-grid .cu-in { width: 100%; }
 .cu-err { margin: 0; }
+
+/* in the controls column: the help and the rule as text */
 .cu-more { border-top: 1px solid var(--line); padding-top: 8px; }
 .cu-more > summary { cursor: pointer; font-size: 13.5px; color: var(--ink-2); }
 .cu-more[open] { display: flex; flex-direction: column; gap: 8px; }
 .cu-more code { font-family: var(--f-mono); font-size: 12.5px; overflow-wrap: anywhere; }
 #cuText { width: 100%; resize: vertical; }
-@media (pointer: coarse) { .cu-in, .cu-pick, .cu-pair > select, #cuText { font-size: 16px; } .cu-tool { padding: 7px 10px; } }
+@media (pointer: coarse) { .cu-in, .cu-src, .cu-group select, #cuText { font-size: 16px; } .cu-tool { padding: 7px 10px; } }

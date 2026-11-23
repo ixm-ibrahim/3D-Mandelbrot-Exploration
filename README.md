@@ -15,9 +15,10 @@ come closest and what is known not to work. No rule passes yet.
 
 - an **Approach** list: the 3D rules that were tried and kept, each as its own entry;
 - a **Custom approach**: a rule put together on the page from steps (lengths and angles, turns about any axis,
-  sphere inversions, mirrors and folds, quaternions, matrices, adding c, and formulas of one's own). A step can be
-  switched off, moved, or broken down into the plain formulas it is made of, and a small figure plays one pass of
-  the steps on a ball;
+  sphere inversions, mirrors and folds, quaternions, matrices, adding c, single operations of arithmetic, and
+  formulas of one's own). A step can be switched off, moved, or broken down: a block into its formulas, a formula
+  into its single operations. A bar under the picture plays the steps, iteration by iteration, in the picture
+  itself;
 - a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models;
 - **Balls on balls**, a picture made only of slides by whole numbers and sphere inversions. It has no c and is not
   the goal, but its placement and spacing of bodies is the look the 3D basilica should have;
@@ -52,4 +53,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.03. Each version is tagged, as `v1.03`.
+This is version 1.04. Each version is tagged, as `v1.04`.

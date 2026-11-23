@@ -4,7 +4,9 @@
 //
 // An approach's GLSL defines mul, pw, sqr and cmap. It may define APR_ZMAP with zmap (see orbitDE), and APR_CARRY
 // with carStart, carStep, carFit and gCarI when its orbit carries something besides its point (see GL_CARRY in
-// 10-approaches.js).
+// 10-approaches.js). An approach that sets its own escape radius defines APR_FAR, how far from the middle the probe
+// point stands (see farLimit in main): by default that follows the escape radius, which a small radius brings too
+// close to be a far-away point.
 //
 // Compile time shapes this file. The D3D compiler behind WebGL on Windows copies a function into every place that
 // calls it, and its time also grows with every value a loop has to carry from one turn to the next. So f(),
@@ -521,7 +523,11 @@ void main(){
   vec3 ro = uCamPos, rd = normalize(uCam * vec3(uv * uFov, 1.0)), L = uLight, nor = vec3(0.0);
   vec3 slicePoint = vec3(uFlatC + 0.5 * uFlatH * uv, uSliceZ);
   if (flat2 && picking){ o = vec4(slicePoint, 1.0); return; }
+#ifdef APR_FAR
+  float pix = 2.0 * uFov / uRes.y, farLimit = APR_FAR;
+#else
   float pix = 2.0 * uFov / uRes.y, farLimit = 0.45 * uBail;
+#endif
   // An inside-out solid would also take in everything beyond the escape radius, so its picture stops short of it.
   vec2 spanOut = span(ro, rd, uBound), spanIn = span(ro, rd, min(uBound, farLimit));
   bool mosaic = ORBIT_SCENE && uMosaic > 0.0 && uJulia < 0.5, cellKnown = false;
