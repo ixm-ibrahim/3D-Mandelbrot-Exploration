@@ -507,12 +507,14 @@ const CARRY = {
       const cc = c || [0, 0, 0];
       // keptIn: what the rule's own kept values hold as this step begins, which is what the pass before left (keptOut)
       const keptIn = st.keptOut || st.keptIn;
-      // cm: c as the rule's step that changes c makes it, which is what the pass works with
+      // cIn: c as the passes before have left it, where a step of the iterations changes c (cOut); else nothing
+      const cIn = st.cOut || st.cIn;
+      // cm: c as the steps taken once before the iterations make it, which is what the first pass works with
       const cm = cuCmap(cc);
-      if (carOrigin(z)) return { ...st, c: cc, cm, keptIn, keptOut: undefined };
+      if (carOrigin(z)) return { ...st, c: cc, cm, keptIn, keptOut: undefined, cIn, cOut: undefined };
       const one = st.n === 0;
       // hist: the orbit's first points in order, for point( ) (as many as the shader keeps, CU_HIST)
-      return { n: st.n + 1, first: one ? z : st.first, last: one ? z : st.prev, prev: z, sum: add(st.sum, z), c: cc, hist: st.hist.length < CU_HIST ? st.hist.concat([z]) : st.hist, keptIn, cm };
+      return { n: st.n + 1, first: one ? z : st.first, last: one ? z : st.prev, prev: z, sum: add(st.sum, z), c: cc, hist: st.hist.length < CU_HIST ? st.hist.concat([z]) : st.hist, keptIn, cm, cIn };
     },
     pw: (st, v, n) => sub(cuRun(v, st.cm || st.c, n, st), st.c),
   },
@@ -2559,7 +2561,7 @@ const APPROACHES = [
     id: 'custom', name: 'Custom: your own steps', group: 'custom', axis: () => [0, 0, 1],
     get glsl() { return cuProgram().glsl; }, glslKey: () => cuProgram().key, whole: 'cuRun(z, c, uPow)',
     uniforms: (gl, loc) => cuUniforms(gl, loc), scene: () => cuScene(), ball: () => cuReach(), halves: () => cuBoth(),
-    start: z0 => `cuPreZ(${z0}, c)`,   // the start value of a Mandelbrot orbit, after the steps taken once before the iterations
+    start: z0 => `cuPreZ(${z0}, gCuRaw, c)`,   // the start value of a Mandelbrot orbit, after the steps taken once before the iterations
     get deMax() { return cuRough() ? 0 : undefined; },   // a rule may ask for the plain distance estimate
     tag: 'A rule you put together yourself, one step after another: lengths and angles, turns about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
     params: [],

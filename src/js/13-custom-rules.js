@@ -2,8 +2,8 @@
 // CU_STARTS begins. Each gives the numbers of the approach it is named after, with that approach's dials at their
 // starting values; a dial becomes a slider step. `lab` is the approach's id, `q` the dials the rule stands for where
 // they differ from the approach's own start, and `say` a sentence for the moment the rule is loaded. Three of the
-// approaches fold c as they fold the point (their cmap in the shader): their rules have a step that changes c, which
-// stands among the steps taken once before the iterations, and so does a slider that step reads (once).
+// approaches fold c as they fold the point (their cmap in the shader): their rules have a fold or a mirror set to
+// work on c, which stands among the steps taken once before the iterations, and so does a slider that step reads (once).
 // Where the lab's picture lets the orbits beside a point borrow the point's own value, the rule says same( ).
 // A rule that is longer than a few lines is the approach's arithmetic line for line (see MATH in 10-approaches.js).
 {
@@ -18,10 +18,6 @@
   const fitTurn = [F('pw = cpow(u, n)'), F('b = cpow(u, n - 1)*n'), F('o = cmul(b, flat(z) - u)'), F('z = vec(pw.x + o.x, pw.y + o.y, len(b)*z.z)')];
   const fitBend = [F('s = 2/(n - 1)'), F('pw = cpow(u, n)'), F('g = cmul(pw, u)*(n*s*s)'), F('q = flat(z) - u*(1 + s)'), F('dd = max(dot(q, q) + z.z*z.z, 1e-30)'),
     F('o = cmul(g, vec(q.x, -q.y, 0))'), F('z = vec((1 - n*s)*pw.x - o.x/dd, (1 - n*s)*pw.y - o.y/dd, len(g)*z.z/dd)')];
-  // the soft mirror round the x-axis, at the angle b with its corner rounded over w (both in radians, as formulas)
-  const softMirror = (b, w) => [F('rho = len(vec(0, z.y, z.z))'), F(`t = atan2(abs(z.z), abs(z.y)) - ${b}`),
-    F(`g = ${b} - if(abs(t) >= ${w}, abs(t), t*t/(2*${w}) + ${w}/2)`),
-    F('z = vec(z.x, if(z.y < 0, -1, 1)*rho*cos(g), if(z.z < 0, -1, 1)*rho*sin(g))')];
   // one pull at the plane the orbit carries (Pulled plane): by a thing at (y, z) with the weight k
   const pull = (i, y, zz, k) => [F(`m${i} = min(${k}(${y}*${y} + ${zz}*${zz}), 1e18)`), F(`p${i} = atan2(w.y, w.x)`),
     F(`t${i} = atan2(2*${y}*${zz}, ${y}*${y} - ${zz}*${zz}) - p${i}`), F(`t${i} = t${i} - 2*pi*floor(t${i}/(2*pi) + 0.5)`),
@@ -79,8 +75,8 @@
     { name: 'Pulled plane', lab: 'pulledplane', steps: [['keep', { name: 'w', start: 'vec(0.05, 0, 0)' }], num('ease', 0.7, 0, 1), num('cpull', 16, 0, 64),
       ...pull(1, 'c.y', 'c.z', 'cpull*'), ...pull(2, 'z.y', 'z.z', ''), F('psi = atan2(w.y, w.x)/2'),
       F('z = rot(z, vec(1, 0, 0), -psi)'), ...onePlane, F('z = rot(z, vec(1, 0, 0), psi)'), ['addc']] },
-    { name: 'Sphere inversions, soft mirror', lab: 'softmirror', steps: [once(num('mir', 45, 45, 90)), once(num('soft', 20, 0, 45)), ['csoft', { angle: 'mir', soft: 'soft' }], ...softMirror('rad(mir)', 'rad(soft)'), ...onePlane, ['addc']] },
-    { name: 'Soft mirrors, doubling', lab: 'mirrorsdouble', steps: [once(num('soft', 2, 0, 45)), num('stop', 3, 1, 12), ['csoft', { angle: '45', soft: 'soft' }],
+    { name: 'Sphere inversions, soft mirror', lab: 'softmirror', steps: [once(num('mir', 45, 45, 90)), once(num('soft', 20, 0, 45)), once(['softx', { on: 'c', angle: 'mir', soft: 'soft' }]), ['softx', { angle: 'mir', soft: 'soft' }], ...onePlane, ['addc']] },
+    { name: 'Soft mirrors, doubling', lab: 'mirrorsdouble', steps: [once(num('soft', 2, 0, 45)), num('stop', 3, 1, 12), once(['softx', { on: 'c', angle: '45', soft: 'soft' }]),
       F('half = 2^(1 - clamp(count, 1, round(stop)))'), F('b = pi/4*half'), F('w = rad(soft)*half'), F('rho = len(vec(0, z.y, z.z))'),
       F('a = atan2(abs(z.z), abs(z.y))'), F('t = a - 2*b*floor(a/(2*b)) - b'), F('g = b - if(abs(t) >= w, abs(t), t*t/(2*w) + w/2)'),
       F('z = vec(z.x, if(z.y < 0, -1, 1)*rho*cos(g), if(z.z < 0, -1, 1)*rho*sin(g))'), ...onePlane, ['addc']] },
