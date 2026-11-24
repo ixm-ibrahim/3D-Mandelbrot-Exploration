@@ -250,6 +250,14 @@ strong lead, not a proof.
   - What this does not close: parts whose moves do not keep the flat plane in place. The cousin has such a move,
     the slide square to its flat plane, and its bodies off the plane come from it: with the slide along the plane
     alone (its setting "A line only") the buds sit round the flat picture only.
+- **A rule under which only the flat plane lands on the flat plane.** A shape sits on a body where the two pinch
+  together, and each step carries a pinch onto a pinch, until it is one of the flat picture's own. So if a rule
+  gives each point one next point, keeps the flat cut exact, and carries no point from off the flat plane onto it,
+  every pinch lies in the flat plane, and nothing can sit on a body off the plane. *One plane* is such a rule.
+  *Two planes* is not: its fold lays the upright plane on the flat plane before the squaring, and that is where its
+  bulbs in the second plane come from. So a rule needs a move that carries points from off the flat plane onto it.
+  Of such moves only a mirror plane and a mirror sphere keep every shape. A winding stretches three to one, and a
+  soft mirror smears.
 - **One smooth rule of the plain kind is one plane.** Take any rule that squares the length and sends each
   direction to a new direction. The most such a rule can do is keep every shape on the sphere of directions, so
   that small circles there stay circles. If it does that and has the exact flat cut, it is *one plane* or its
@@ -389,6 +397,13 @@ Not tried, or not finished.
   Spheres round two poles above and below the middle put bodies all over every set, dendrite and Kokopelli
   included, but they came out ribbed and lumpy, and the height of the poles had to be set by hand for each set.
   That rule is not in the lab. Where the spheres should sit, and what in the flat rule would place them, is open.
+  In the custom approach the step "Sphere inversion" can be set to move only the points inside its sphere, which
+  is such a mirror. One sphere above the flat plane and one below, placed by hand, were drawn on the basilica, the
+  rabbit, the dendrite and Kokopelli. The flat cut stays exact and nothing tears. A round bulb with a neck stands
+  where the sphere is, and smaller ones lower down: each step back halves their height, so they crowd towards the
+  flat plane and most of a body stays bare. A sphere whose middle lies inside a body leaves a pit. A sphere that
+  does not touch the set leaves loose pieces, as on the dendrite and Kokopelli. Spheres on the upright axis keep
+  their copies on that axis, in stacks and rings, which is the ribbed look.
 - **The set's own spine.** The doubling mirrors turn about the x-axis, which is the basilica's own line of
   symmetry. Every Julia set has a line of its own through the middle and a fixed point (a point the rule leaves
   where it is), though for most sets it is not a line of symmetry. Turning the mirrors about that line has not

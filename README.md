@@ -16,7 +16,8 @@ come closest and what is known not to work. No rule passes yet.
 - an **Approach** list: the 3D rules that were tried and kept, each as its own entry;
 - a **Custom approach**: a rule put together on the page from steps (lengths and angles, rotations about any axis,
   sphere inversions, mirrors and folds, quaternions, matrices, adding c, single operations of arithmetic, and
-  formulas of one's own). A rule has three sections: steps taken once before the iterations, the steps of every
+  formulas of one's own). A length is measured straight, the Manhattan way (|x| + |y| + |z|) or by its largest
+  part, and a sphere inversion moves every point, or only the points on one side of its sphere. A rule has three sections: steps taken once before the iterations, the steps of every
   iteration, and steps taken once after the last iteration. A step that moves a point works on the point z, on
   c, or on a point the rule has named, in whichever section it stands, and a change of c lasts for the rest of
   the orbit. A formula has the length and the two angles of every point, written after the point, as in `z.phi` and `c.phi`,
@@ -75,4 +76,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.15. Each version is tagged, as `v1.15`.
+This is version 1.16. Each version is tagged, as `v1.16`.

@@ -579,11 +579,18 @@ function cuLinesOf(B, P, v, t) {
 const cuTw1 = (x, t) => (t ? `(1 + (${x} - 1)*${t})` : x), cuTw0 = (x, t) => (t ? `((${x})*${t})` : `(${x})`), cuTwBy = t => (t ? '*' + t : '');
 // the lines that split z by an axis: h is how far along the axis the point is, w the rest of it
 const cuSplitZ = (P, v) => [`${v('axis')} = unit(${P.axis})`, `${v('h')} = dot(z, ${v('axis')})`, `${v('w')} = z - ${v('axis')}*${v('h')}`];
+// The ways a length is measured: [value, name in the menu, the formula for z, the words]. Straight is the usual
+// length. The Manhattan way adds up how far the point is along each of the three axes, and the third takes the
+// largest of those three. Length 1 is a ball for the first, an eight-sided diamond for the second, a cube for the third.
+const CU_MEASURES = [['straight', 'straight (the usual way)', 'len(z)', ''],
+  ['manhattan', 'the Manhattan way: |x| + |y| + |z|', 'abs(z.x) + abs(z.y) + abs(z.z)', ', measured the Manhattan way,'],
+  ['largest', 'by the largest of |x|, |y|, |z|', 'max(abs(z.x), max(abs(z.y), abs(z.z)))', ', measured by its largest part,']];
+const cuMeasure = id => CU_MEASURES.find(m => m[0] === id) || CU_MEASURES[0];
 const CU_BLOCKS = {
   len: { title: 'Raise the length to a power', group: 'Length and angles',
-    params: [cuTimes('p', 'Power')],
-    tween: true, lines: (P, v, t) => [`${v('r')} = len(z)`, `z = z * ${v('r')}^${cuTw0(`${P.p} - 1`, t)}`],
-    words: p => `raise the length to the power ${p.p}` },
+    params: [cuTimes('p', 'Power'), { key: 'measure', label: 'The length is measured', type: 'choice', def: 'straight', options: CU_MEASURES.map(m => [m[0], m[1]]) }],
+    tween: true, lines: (P, v, t) => [`${v('r')} = ${cuMeasure(P.measure)[2]}`, `z = z * ${v('r')}^${cuTw0(`${P.p} - 1`, t)}`],
+    words: p => `raise the length${cuMeasure(p.measure)[3]} to the power ${p.p}` },
   lon: { title: 'Multiply the angle round an axis', group: 'Length and angles',
     params: [cuAxis('axis', 'Axis', 'vec(0, 0, 1)'), cuAxis('from', 'Angle counted from', 'vec(1, 0, 0)'), cuTimes('times', 'Multiply by'), cuDegrees('plus', 'Then add, degrees', '0')],
     tween: true, lines: (P, v, t) => [...cuSplitZ(P, v),
@@ -605,9 +612,12 @@ const CU_BLOCKS = {
       `z = (unit(${v('w')}) / cosh(${v('m')}) + ${v('axis')}*tanh(${v('m')}))*${v('r')}`],
     words: p => `multiply the height along ${cuAx(p.axis)} by ${p.times} on the scale of a Mercator map` },
   inv: { title: 'Sphere inversion', group: 'Moves of space',
-    params: [cuPlace('centre', 'Centre of the sphere', 'vec(0, 0, 0)'), { key: 'radius', label: 'Radius', type: 'num', def: '1', min: 0.05, max: 4, step: 0.01 }],
-    lines: (P, v) => [`${v('d')} = z - ${P.centre}`, `z = ${P.centre} + ${v('d')}*(${P.radius}*${P.radius} / dot(${v('d')}, ${v('d')}))`],
-    words: p => `invert space through the sphere of radius ${p.radius} round ${cuPl(p.centre)}` },
+    params: [cuPlace('centre', 'Centre of the sphere', 'vec(0, 0, 0)'), { key: 'radius', label: 'Radius', type: 'num', def: '1', min: 0.05, max: 4, step: 0.01 },
+      { key: 'side', label: 'It moves', type: 'choice', def: 'all', options: [['all', 'every point'], ['in', 'only the points inside the sphere'], ['out', 'only the points outside the sphere']] }],
+    // with one side only, the sphere is a mirror that the other side looks into: the points of that side stay
+    lines: (P, v) => { const to = `${P.centre} + ${v('d')}*(${P.radius}*${P.radius} / dot(${v('d')}, ${v('d')}))`;
+      return [`${v('d')} = z - ${P.centre}`, P.side === 'in' || P.side === 'out' ? `z = if(dot(${v('d')}, ${v('d')}) ${P.side === 'in' ? '<' : '>'} ${P.radius}*${P.radius}, ${to}, z)` : `z = ${to}`]; },
+    words: p => (p.side === 'in' || p.side === 'out' ? `invert what is ${p.side === 'in' ? 'inside' : 'outside'} the sphere of radius ${p.radius} round ${cuPl(p.centre)}, and leave the rest` : `invert space through the sphere of radius ${p.radius} round ${cuPl(p.centre)}`) },
   rot: { title: 'Rotate about an axis', group: 'Moves of space',
     params: [cuAxis('axis', 'Axis', 'vec(0, 0, 1)'), cuDegrees('angle', 'Angle, degrees', '90')],
     tween: true, lines: (P, v, t) => [`${v('axis')} = unit(${P.axis})`, `${v('ang')} = rad(${P.angle})${cuTwBy(t)}`,

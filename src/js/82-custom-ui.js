@@ -1152,7 +1152,11 @@ function cuGuides(st, R, mode, M, tests, who) {
       if (w && len(w) > 1e-9 * Math.max(r, 1e-30)) shapes.push({ ring: [O, norm(cross(u, w)), r], solid: true, label: 'the ringed dot moves along this circle' }, { line: [O, M.zs], faint: true }, { line: [O, M.ze], faint: true });
     }
   } else if (st.kind === 'len') {
-    sphere(O, 1, 'length 1: points here stay');
+    // length 1, the shape whose points stay: a ball, the diamond of the Manhattan way, or the cube of the largest part
+    const edges = (pts, joined, label) => pts.forEach((a, i) => pts.forEach((b, j) => { if (j > i && joined(a, b)) shapes.push({ line: [a, b], label: shapes.some(sh => sh.label === label) ? '' : label }); }));
+    if (p.measure === 'manhattan') edges([[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]], (a, b) => Math.abs(dot(a, b)) < 0.5, 'Manhattan length 1: points here stay');
+    else if (p.measure === 'largest') edges([-1, 1].flatMap(x => [-1, 1].flatMap(y => [-1, 1].map(zz => [x, y, zz]))), (a, b) => Math.abs(len(sub(a, b)) - 2) < 1e-9, 'largest part 1: points here stay');
+    else sphere(O, 1, 'length 1: points here stay');
     if (M && len(M.zs) > 1e-9) shapes.push({ line: [O, scl(norm(M.zs), Math.max(len(M.zs), len(M.ze), 1))], faint: true, label: 'the ringed dot moves along this line' });
   } else if (st.kind === 'scale') {
     const k = num('by');
@@ -1167,8 +1171,10 @@ function cuGuides(st, R, mode, M, tests, who) {
     if (!c || r === null) missing('sphere');
     else if (!(Math.abs(r) > 1e-9)) notes.push('The radius is 0 here, so every point lands on the centre.');
     else {
-      sphere(c, Math.abs(r), 'the sphere: what is inside it goes outside, and the other way');
-      if (M) { const far = len(sub(M.zs, c)) > len(sub(M.ze, c)) ? M.zs : M.ze; shapes.push({ line: [c, far], faint: true, label: 'the ringed dot moves along this line from the centre' }); }
+      const one = p.side === 'in' || p.side === 'out', stays = one && M && (len(sub(M.zs, c)) < Math.abs(r)) !== (p.side === 'in');
+      sphere(c, Math.abs(r), !one ? 'the sphere: what is inside it goes outside, and the other way' : p.side === 'in' ? 'the sphere: what is inside it goes outside, the rest stays' : 'the sphere: what is outside it comes inside, the rest stays');
+      if (stays) notes.push(`The ringed dot is ${p.side === 'in' ? 'outside' : 'inside'} the sphere here, so this step leaves it where it is.`);
+      else if (M) { const far = len(sub(M.zs, c)) > len(sub(M.ze, c)) ? M.zs : M.ze; shapes.push({ line: [c, far], faint: true, label: 'the ringed dot moves along this line from the centre' }); }
     }
   } else if (st.kind === 'mirror' || st.kind === 'fold') {
     const nrm = vec('normal'), at = vec('through');
