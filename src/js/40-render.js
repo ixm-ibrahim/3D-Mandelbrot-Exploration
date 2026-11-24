@@ -68,8 +68,9 @@ function sceneWant(a, eq, z0, n2, klein, needs = colProgramNeeds()) {
   if (klein === 'ballsFree') return { key: keyOf('ballsFree'), src: () => GL_HEAD + defs + GL_COLOUR + GL_BALLS_FREE + GL_TAIL };
   if (klein) return { key: keyOf('klein'), src: () => GL_HEAD + defs + GL_COLOUR + GL_KLEIN + GL_TAIL };
   // An approach whose shader text changes (the custom one) says which text it is now with glslKey, and one that
-  // writes the whole step of the orbit itself (whole) takes the place of the equation.
-  const glsl = a.glsl, fc = a.whole || compileFormula(eq, true, n2), zc = compileFormula(z0, false, n2);
+  // writes the whole step of the orbit itself (whole) takes the place of the equation. It may also say what becomes
+  // of the start value before the orbit begins (start).
+  const glsl = a.glsl, fc = a.whole || compileFormula(eq, true, n2), z0c = compileFormula(z0, false, n2), zc = a.start ? a.start(z0c) : z0c;
   return { key: keyOf([a.glslKey ? a.id + '#' + a.glslKey() : a.id, fc, zc].join('|')), src: () => GL_HEAD + defs + GL_COLOUR + glsl + GL_ORBIT.split('__F__').join(fc).split('__Z0__').join(zc) + GL_TAIL };
 }
 // Which Kleinian program the state asks for: false (not the Kleinian view), true (the first group), or for Balls on
