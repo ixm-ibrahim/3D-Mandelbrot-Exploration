@@ -12,7 +12,7 @@ const CUI = {
   look: null,            // the id of a step that moves no point and whose name was clicked: its value is on show
   wasOn: false,          // the custom approach was on show when customSync last looked
   saved: [],             // the rules the user has saved: [{ name, rule }], rule as cuRuleText writes it
-  kinds: '',             // the menu of every kind of step, as options
+  kept: [],              // the steps the user has saved: [{ name, kind, p }]
   home: null,            // the start distance of the camera for what customSync last saw (null: a Kleinian picture)
 };
 // Saved rules are kept in localStorage; where that is blocked every access throws, and the list stays empty.
@@ -26,12 +26,82 @@ function cuSavedLoad() {
 function cuSavedStore() {
   try { localStorage.setItem(CU_SAVED_KEY, JSON.stringify(CUI.saved)); return true; } catch (err) { return false; }
 }
+// Saved steps: a step with its settings, kept under a name. They have the first group of the list of kinds
+// (83-custom-pick.js; their values there are @0, @1, ...). One that is added, or chosen under Change, is an
+// ordinary step of its kind with those settings, which carries the name. They are kept in localStorage like the
+// saved approaches; where that is blocked they last for the visit.
+const CU_KEPT_KEY = 'squaringLab.customSteps';
+function cuKeptOf(x) {
+  const B = x && CU_BLOCKS[x.kind], p = {};
+  if (!B || typeof x.name !== 'string' || !x.name.trim()) return null;
+  for (const sp of B.params) { const v = x.p && x.p[sp.key]; if (typeof v === 'string' || typeof v === 'number') p[sp.key] = String(v).slice(0, 400); }
+  return { name: x.name.trim().slice(0, 40), kind: x.kind, p };
+}
+function cuKeptLoad() {
+  try { const list = JSON.parse(localStorage.getItem(CU_KEPT_KEY) || '[]'); CUI.kept = (Array.isArray(list) ? list : []).map(cuKeptOf).filter(Boolean).slice(0, 60); } catch (err) { CUI.kept = []; }
+}
+function cuKeptStore() {
+  try { localStorage.setItem(CU_KEPT_KEY, JSON.stringify(CUI.kept)); return true; } catch (err) { return false; }
+}
+const cuKeptAt = v => (String(v)[0] === '@' ? CUI.kept[+String(v).slice(1)] || null : null);
+// The button beside "Add step": its value is what Add step adds (a kind, or a saved step), and it shows that by
+// name. value: a new choice; left out, the one it has is shown afresh. A choice that is no more gives way to the
+// first kind.
+function cuAddSet(value) {
+  const btn = $('cuAddSel');
+  if (value !== undefined) btn.value = String(value);
+  if (!cuKeptAt(btn.value) && !CU_BLOCKS[btn.value]) btn.value = Object.keys(CU_BLOCKS).find(k => CU_BLOCKS[k].group === CU_GROUPS[0]);
+  const mine = cuKeptAt(btn.value);
+  btn.textContent = mine ? mine.name : CU_BLOCKS[btn.value].title;
+}
+// Gives a saved step another name, on the list and on every step of the approach that carries it. Returns what
+// stands in the way, as a sentence, or '' when it is done.
+function cuKeptRename(k, name) {
+  const mine = CUI.kept[k], as = String(name).trim().slice(0, 40);
+  if (!mine || !as || as === mine.name) return '';
+  if (CUI.kept.some((s, j) => j !== k && s.name.toLowerCase() === as.toLowerCase())) return 'Another saved step has that name already.';
+  const steps = S.custom.steps.filter(st => st.name === mine.name);
+  if (steps.length) cuSnap();
+  mine.name = as;
+  for (const st of steps) st.name = as;
+  cuKeptStore();
+  if (steps.length) cuChanged(true);
+  cuAddSet();
+  return '';
+}
+// Takes a saved step off the list. The button beside "Add step" goes on showing the step it showed.
+function cuKeptDrop(k) {
+  const v = $('cuAddSel').value, at = v[0] === '@' ? +v.slice(1) : -1;
+  if (!CUI.kept[k]) return;
+  CUI.kept.splice(k, 1);
+  cuKeptStore();
+  cuAddSet(at === k ? '' : at > k ? '@' + (at - 1) : v);
+}
+// Makes a step one of the saved steps where it stands: its kind, its settings and its name.
+function cuTake(st, mine) {
+  for (const f of [...CUI.formula]) if (f.startsWith(st.id + ':')) CUI.formula.delete(f);
+  st.kind = mine.kind; st.p = { ...Object.fromEntries(CU_BLOCKS[mine.kind].params.map(sp => [sp.key, sp.def])), ...mine.p }; st.name = mine.name;
+  cuSetSec(st, cuSecOf(st));
+  S.custom.steps = cuSorted(S.custom.steps);
+}
+// Saves a step as it is now under a name. A name that is taken already gets this step in the place of the earlier one.
+function cuKeep(st, name) {
+  const entry = cuKeptOf({ name, kind: st.kind, p: st.p }), at = CUI.kept.findIndex(s => s.name.toLowerCase() === entry.name.toLowerCase());
+  if (at < 0 && CUI.kept.length >= 60) { cuSay('Sixty steps are saved already. To make room, choose one beside “Add step” and press Delete.'); return; }
+  if (at >= 0) CUI.kept[at] = entry; else CUI.kept.push(entry);
+  const held = cuKeptStore();
+  cuSnap(); st.name = entry.name;
+  cuAddSet('@' + (at >= 0 ? at : CUI.kept.length - 1));
+  cuChanged(true);
+  cuSay((at >= 0 ? `“${entry.name}” is saved again, as this step is now.` : `Saved as “${entry.name}”. It is in the list of steps, which opens beside “Add step” and under “Change”: at the top, under “Your saved steps”.`)
+    + (held ? '' : ' This browser’s storage is blocked or full, so it is kept for this visit only.'));
+}
 // The menu of rules to load: the user's saved ones (values s0, s1, ...) above the lab's own (0, 1, ...).
 function cuStartMenu(value) {
   const sel = $('cuStart'), opt = (v, t) => `<option value="${v}">${cuEsc(t)}</option>`;
   const starts = lab => CU_STARTS.map((s, k) => (!!s.lab === lab ? opt(k, s.name) : '')).join('');
-  sel.innerHTML = (CUI.saved.length ? `<optgroup label="Your saved rules">${CUI.saved.map((s, k) => opt('s' + k, s.name)).join('')}</optgroup>` : '')
-    + `<optgroup label="The lab’s approaches, as steps">${starts(true)}</optgroup><optgroup label="Other rules to start from">${starts(false)}</optgroup>`;
+  sel.innerHTML = (CUI.saved.length ? `<optgroup label="Your saved approaches">${CUI.saved.map((s, k) => opt('s' + k, s.name)).join('')}</optgroup>` : '')
+    + `<optgroup label="The lab’s approaches, as steps">${starts(true)}</optgroup><optgroup label="Other approaches to start from">${starts(false)}</optgroup>`;
   if (value !== undefined && [...sel.options].some(o => o.value === String(value))) sel.value = String(value);
   $('cuDelBtn').hidden = sel.value[0] !== 's';
 }
@@ -43,7 +113,7 @@ const cuSpec = (st, key) => CU_BLOCKS[st.kind].params.find(x => x.key === key);
 const CU_HELP = `<p class="note"><b>A point</b> is written <code>vec(x, y, z)</code>, as in <code>vec(0, 0, 1)</code> for one step straight up. Every box for a point takes that, a name such as <code>c</code> or <code>z</code>, or a formula.</p>
 <p class="note"><b>A formula step</b> is one line, <code>name = formula</code>. The name <code>z</code> is the point: a line that starts <code>z =</code> moves it. Any other name is yours and can be used in every step after it.</p>
 <p class="note"><b>Given:</b> <code>z</code> the point, <code>c</code>, <code>n</code> the Power dial, <code>pi</code>; every point as a length and two angles, written after the point: <code>z.radius</code> (how far from the middle), <code>z.theta</code> (the angle round the upright axis) and <code>z.phi</code> (the angle of the height above the flat plane), so that <code>sph(z.radius, z.theta, z.phi)</code> is z itself, and the same for c and for a point you have named, as in <code>c.phi</code> (<code>radius</code>, <code>theta</code> and <code>phi</code> alone are short for those of z); and from the orbit <code>first</code> (its first point), <code>last</code> (the point of the iteration before), <code>point(2)</code> (its second point, and so on by number; <code>point(0)</code> is the point this iteration began with and <code>point(-1)</code> the one before), <code>mean</code> (the average of its points so far) and <code>count</code> (which iteration this is). <code>z</code> is always the point where it is now, after the steps before this one.</p>
-<p class="note"><b>Three sections.</b> The steps under “Every iteration” are the rule that is repeated. The steps under “Once, before the iterations” are taken one time, before iteration 1: they move the point where it starts. The steps under “Once, after the iterations” are taken one time, after the last iteration. A slider can be used by every step after it, in any section; any other name stays in its own section.</p>
+<p class="note"><b>Three sections.</b> The steps under “Every iteration” are the part that is repeated. The steps under “Once, before the iterations” are taken one time, before iteration 1: they move the point where it starts. The steps under “Once, after the iterations” are taken one time, after the last iteration. A slider can be used by every step after it, in any section; any other name stays in its own section.</p>
 <p class="note"><b>Works on.</b> A step that moves a point has a “Works on” menu: the point <code>z</code>, <code>c</code>, or a point you have named in an earlier step of the same section, as in <code>w = z</code>. A formula can change c too: <code>c = c*0.9</code>. A change of c lasts: the orbit carries the new c on to its next iteration. Before the iterations a step that changes c can use c, n, numbers and sliders, but not z: for c’s own angle there write <code>c.phi</code>, not <code>z.phi</code>.</p>
 <p class="note"><b><code>same(x)</code></b> is for the picture’s distance estimate, which follows a few orbits right beside each point: inside it they take the value the point itself has. Use it for a value that jumps from one point to its neighbour, such as a box’s middle.</p>
 <p class="note"><b>A value the orbit keeps</b> (a kind of step) gives a name that does not start afresh: what it holds when an iteration ends is what it holds in the next. Any later step may give it a new value, as in <code>total = total + radius</code>.</p>
@@ -134,8 +204,8 @@ const cuNamesHtml = st => Object.keys(CU_GIVEN).concat(Object.keys(CU_POLAR).fla
 // The three sections of the list, each with a line that says when its steps are taken.
 const CU_SEC_SAY = {
   pre: ['Once, before the iterations', 'Taken one time, before iteration 1.'],
-  main: ['Every iteration', 'Taken in every iteration, in this order. This is the rule that is repeated.'],
-  post: ['Once, after the iterations', 'Taken one time, after the last iteration. A point these steps land beyond “Thrown out beyond” is thrown out, as in any iteration.'],
+  main: ['Every iteration', 'Taken in every iteration, in this order. This is the part that is repeated.'],
+  post: ['Once, after the iterations', 'Taken one time, after the last iteration. A point these steps land beyond the bailout radius is thrown out, as in any iteration.'],
 };
 // Can a step go one place earlier (d = -1) or later (d = 1)? Inside its section it changes places with its
 // neighbour. From the end of its section it goes over to the section beside, where its kind may stand there.
@@ -149,13 +219,15 @@ function cuStepEl(st, i) {
   li.className = 'cu-step' + (st.on === false ? ' is-off' : ''); li.dataset.id = st.id;
   const tool = (act, label, title, text, off) => `<button type="button" class="cu-tool" data-act="${act}" aria-label="${label}" title="${title}"${off ? ' disabled' : ''}>${text}</button>`;
   li.innerHTML = `<div class="cu-head"><label class="cu-on" title="Switch this step off to see the solid without it."><input type="checkbox" data-act="on"${st.on === false ? '' : ' checked'} aria-label="Step ${k} is on"><span class="cu-no">${k}</span></label>` +
-    `<button type="button" class="cu-title" data-act="show" title="Show this step in the play: one that moves the point is played from its start to its end, and one that only works a value out shows that value.">${cuEsc(B.title)}</button><span class="cu-flag">now</span><span class="cu-tools">` +
+    `<button type="button" class="cu-title" data-act="show" title="Show this step in the play: one that moves the point is played from its start to its end, and one that only works a value out shows that value.">${st.name ? `${cuEsc(st.name)}<span class="cu-of-kind">${cuEsc(B.title)}</span>` : cuEsc(B.title)}</button><span class="cu-flag">now</span>` +
+    tool('remove', `Remove step ${k}`, 'Remove', '✕') + '<span class="cu-tools">' +
     tool('up', `Move step ${k} earlier`, 'Move earlier. From the first place of its section a step goes over to the section before.', '←', !cuCanMove(st, -1)) +
     tool('down', `Move step ${k} later`, 'Move later. From the last place of its section a step goes over to the section after.', '→', !cuCanMove(st, 1)) +
     (B.basic ? '' : tool('break', `Break step ${k} down`, B.plain ? 'Show this formula as its single operations, each a step of its own.' : 'Show this step as the formulas it is made of, each a step you can change. Those can be broken down again.', 'Break down')) +
     (st.kind === 'formula' ? '' : tool('reset', `Reset step ${k}`, 'Put the settings of this step back to what a new step of this kind has. A name it gives stays.', 'Reset')) +
-    tool('kind', `Change the kind of step ${k}`, 'Make this step another kind, here in its place. Settings that both kinds have are kept.', 'Change') +
-    tool('remove', `Remove step ${k}`, 'Remove', '✕') + '</span></div>' +
+    tool('kind', `Change the kind of step ${k}`, 'Make this step another kind, or one of your saved steps, here in its place. Settings that both kinds have are kept.', 'Change') +
+    tool('save', `Save step ${k} under a name`, 'Keep this step with its settings under a name. It then stands in the list of steps, under “Your saved steps”, to be added again anywhere.', 'Save') +
+    '</span></div>' +
     (B.grid ? `<div class="cu-body">${B.params.filter(sp => sp.type === 'target').map(sp => cuRow(st, sp)).join('')}</div>` : '') +
     `<div class="cu-body${B.grid ? ' cu-grid' : ''}">${B.params.filter(sp => !B.grid || sp.type !== 'target').map(sp => cuRow(st, sp)).join('')}</div><datalist id="cu-dl-${st.id}">${cuNamesHtml(st)}</datalist><p class="err cu-err" hidden></p>`;
   cuRangeSync(li, st);
@@ -229,7 +301,7 @@ function cuSwap(st, kind) {
   const a = named(A), b = named(B);
   if (b) p[b.key] = a ? st.p[a.key] : cuFresh(cuTaken(S.custom.steps))(b.def);
   for (const f of [...CUI.formula]) if (f.startsWith(st.id + ':')) CUI.formula.delete(f);
-  st.kind = kind; st.p = p;
+  st.kind = kind; st.p = p; delete st.name;   // it is no longer the saved step it was named after
   // a kind that belongs to one section takes the step there
   cuSetSec(st, cuSecOf(st));
   S.custom.steps = cuSorted(S.custom.steps);
@@ -267,7 +339,11 @@ function cuGo(pass, u, look) {
   pass = clamp(Math.round(pass), cuFirst(), np); u = clamp(u, cuLow(pass), cuHigh(pass));
   S.custom.play = peek !== undefined ? { pass, u, peek } : pass >= np && u >= cuHigh(np) ? null : { pass, u };
   CUI.look = look === undefined || !S.custom.play ? null : look;
-  cuBarSync(); cuOverDraw(); touch();
+  cuBarSync(); cuOverDraw();
+  // The picture changes only when a pass is done (cuPlayPic). Between those moments the dots alone are drawn
+  // afresh, and the picture goes on getting finer.
+  const pic = JSON.stringify(cuPlayPic());
+  if (pic !== CUI.pic) { CUI.pic = pic; touch(); }
 }
 function cuPlayFrame(now) {
   CUI.raf = 0;
@@ -277,6 +353,9 @@ function cuPlayFrame(now) {
   CUI.last = now;
   let u = at.u + dt / (CU_SPEEDS[S.custom.speed] || CU_SPEEDS.normal);
   const stop = CUI.until === null ? hi : Math.min(CUI.until, hi);
+  // Play stops when the iteration is done, or runs on into the next one where that is asked for (through). One
+  // step that is shown by itself (until) always ends with that step.
+  if (u >= stop && CUI.until === null && S.custom.through !== false && at.pass < cuPasses()) { cuGo(at.pass + 1, cuLow(at.pass + 1)); CUI.raf = requestAnimationFrame(cuPlayFrame); return; }
   if (u >= stop) { u = stop; cuPlayStop(); }
   cuGo(at.pass, u);
   if (CUI.playing) CUI.raf = requestAnimationFrame(cuPlayFrame);
@@ -314,7 +393,7 @@ function cuBarSync() {
   }
   // the words, and the step they are about
   const w = cuPlaySec(at), whole = Math.abs(w.x - Math.round(w.x)) < 1e-6, j = whole ? Math.round(w.x) - 1 : Math.floor(w.x), cur = m && j >= 0 && !at.end ? w.list[j] : null;
-  const named = st => { const t = CU_BLOCKS[st.kind].title; return `step ${no(st.id)}, ${t[0].toLowerCase() + t.slice(1)}` + (st.p.on && st.p.on !== 'z' ? ` (on ${st.p.on})` : ''); };
+  const named = st => { const t = CU_BLOCKS[st.kind].title; return `step ${no(st.id)}, ${st.name ? `“${st.name}”` : t[0].toLowerCase() + t.slice(1)}` + (st.p.on && st.p.on !== 'z' ? ` (on ${st.p.on})` : ''); };
   const title = s => named(steps[cuStepAt(s.id)]);
   const I = at.pass + lead, far = cuShort(S.custom.bail);
   // a step that moves no point and is looked at: the play stands where that step is
@@ -323,10 +402,10 @@ function cuBarSync() {
   // the iteration of a Mandelbrot picture that moves no dot, in a sentence
   const still = 'In a Mandelbrot picture z starts at the middle, so iteration 1 only puts each dot on its own c, where it is drawn already.';
   const begin = `Every point no further than ${far} from the middle is in.` + (lead && at.pass === first ? ' ' + still : '');
-  // a switched-off step that is tried: the play shows what it would do, and the rule stays without it
+  // a switched-off step that is tried: the play shows what it would do, and your approach stays without it
   const tried = cur && cur.id === peek && !seen;
   $('cuNow').textContent = seen ? `${where}, at ${named(seen)}. It moves no point: what it works out is shown for the ringed dot.`
-    : tried ? `${where}, ${whole ? 'after trying' : 'trying'} ${title(cur)}. It is switched off, so the rule leaves it out: this is only what it would do here.`
+    : tried ? `${where}, ${whole ? 'after trying' : 'trying'} ${title(cur)}. It is switched off, so your approach leaves it out: this is only what it would do here.`
     : !m ? 'No step of “Every iteration” that is switched on moves the point, so there is nothing to play.'
     : at.end ? `The finished solid: all ${S.iter} iterations${cuHasPost() ? ', and the steps taken once after them' : ''}. It is every starting point that was never thrown out.`
     : w.sec === 'pre' && w.x === 0 ? `The very start, before ${title(w.list[0])}. Every point no further than ${far} from the middle is in.`
@@ -381,12 +460,11 @@ function customSync() {
 
 function customInit() {
   const C = S.custom, opt = (v, t) => `<option value="${v}">${cuEsc(t)}</option>`;
-  CUI.kinds = CU_GROUPS.map(g => `<optgroup label="${g}">${Object.entries(CU_BLOCKS).filter(([, B]) => B.group === g).map(([k, B]) => opt(k, B.title)).join('')}</optgroup>`).join('');
   $('pd-custom').innerHTML = `<p class="note">Your steps stand under the picture, with the bar that plays them. A step works on the point z and hands it to the next one. One run through the steps is one iteration.</p>
 <details class="cu-more" open><summary>What a formula can use</summary>${CU_HELP}</details>
-<details class="cu-more" id="cuTextBox"><summary>Your rule as text</summary>
-  <p class="note">Copy this text to keep a rule or to send it to someone. To use a rule you were sent, paste it here and press the button.</p>
-  <textarea id="cuText" rows="5" spellcheck="false" aria-label="Your rule as text"></textarea>
+<details class="cu-more" id="cuTextBox"><summary>Your approach as text</summary>
+  <p class="note">Copy this text to keep an approach or to send it to someone. To use an approach you were sent, paste it here and press the button.</p>
+  <textarea id="cuText" rows="5" spellcheck="false" aria-label="Your approach as text"></textarea>
   <div class="row-btns"><button class="btn" id="cuTextUse" type="button">Use this text</button></div>
 </details>`;
   $('cuBar').innerHTML = `<div class="cu-bar-row">
@@ -403,40 +481,43 @@ function customInit() {
   <button class="btn" id="cuStepNext" type="button" title="On one step">Step ▶</button>
   <button class="btn" id="cuEnd" type="button" aria-pressed="true" title="All the iterations: the solid as the page usually shows it">Finished solid</button>
   <label class="cu-group" title="How fast Play takes the steps."><span class="label">Speed</span><select id="cuSpeed">${opt('slow', 'Slow')}${opt('normal', 'Normal')}${opt('fast', 'Fast')}</select></label>
+  <label class="check" title="Ticked: Play runs on from one iteration into the next, to the finished solid. Unticked: Play stops when the iteration is done, and pressing it again takes the next one."><input type="checkbox" id="cuThrough"> <span>Play all iterations</span></label>
 </div>
 <div class="cu-track"><input type="range" id="cuAt" min="0" max="1" step="0.005" value="0" aria-label="How far through the steps of this iteration"><div class="cu-ticks" id="cuTicks"></div></div>
 <p class="cu-now" id="cuNow" role="status"></p>
 <div class="cu-bar-row cu-bar-small">
-  <label class="label" for="cuBail">Thrown out beyond</label>
+  <label class="label" for="cuBail">Bailout radius</label>
   <input type="number" id="cuBail" class="cu-in cu-nbox" min="1.2" max="64" step="0.1">
-  <input type="range" id="cuBailR" class="cu-range" min="1.2" max="16" step="0.1" aria-label="Thrown out beyond, slider">
-  <span class="note">A point is thrown out when a step lands it further than this from the middle: beyond the dashed circle.</span>
+  <input type="range" id="cuBailR" class="cu-range" min="1.2" max="16" step="0.1" aria-label="Bailout radius, slider">
+  <span class="note">A point is thrown out, and its dot goes, when an iteration ends with it further than this from the middle: beyond the dashed circle.</span>
 </div>
 <div class="cu-bar-row cu-bar-small">
   <label class="cu-group" title="What a play shows. Dots: some points of the solid, each drawn where the steps have carried it by now, with the picture faint behind them. Surface: the solid alone. Both: the dots over the solid at its full strength."><span class="label">Show</span><select id="cuSee">${opt('dots', 'Dots')}${opt('skin', 'Surface')}${opt('both', 'Both')}</select></label>
+  <label class="cu-group" title="How strongly the dots are drawn, from faint to full."><span class="label">Dots opacity</span><input type="range" id="cuDotsA" class="cu-range" min="5" max="100" step="5"></label>
+  <label class="cu-group" title="How strongly the surface is drawn, from see-through to full. With Show at Dots it is fainter still, so that the dots stand out."><span class="label">Surface opacity</span><input type="range" id="cuSkinA" class="cu-range" min="0" max="100" step="5"></label>
   <label class="cu-group" title="How many dots there are when the first iteration begins: the Learn tab’s four choices, with as many dots as it has."><span class="label">How many</span><select id="cuCount">${opt('few', 'Few')}${opt('some', 'Some')}${opt('many', 'Many')}${opt('most', 'Very many')}</select></label>
   <label class="cu-group" title="Where the dots start: on a full grid, on level sheets one above the other, on shells (one ball inside the other), or on sheets and shells together."><span class="label">Laid out as</span><select id="cuLay">${opt('grid', 'Full grid')}${opt('sheets', 'Sheets')}${opt('shells', 'Shells')}${opt('both', 'Sheets and shells')}</select></label>
-  <label class="cu-group" title="The dots start in a ball of this radius about the middle, and the layout is stretched to fill it. It is never larger than “Thrown out beyond”. Reset view shows all of this ball."><span class="label">Out to</span><input type="number" id="cuReach" class="cu-in cu-nbox" min="0.25" max="16" step="0.25" aria-label="How far from the middle the dots start"></label>
+  <label class="cu-group" title="The dots start in a ball of this radius about the middle, and the layout is stretched to fill it. It is never larger than the bailout radius. Reset view shows all of this ball."><span class="label">Out to</span><input type="number" id="cuReach" class="cu-in cu-nbox" min="0.25" max="16" step="0.25" aria-label="How far from the middle the dots start"></label>
   <label class="cu-group" title="What a dot’s colour says about the place it started from: which way from the middle, how high, how far from the middle, or how far and how high together. A dot keeps its colour."><span class="label">Coloured by</span><select id="cuTint">${opt('dir', 'Which way it started')}${opt('height', 'How high it started')}${opt('dist', 'How far out it started')}${opt('mix', 'How far out and how high')}</select></label>
   <label class="cu-group" title="Whose whole path is drawn: the way a dot has come from its starting place, iteration by iteration, and through the steps of the iteration on show."><span class="label">Orbits</span><select id="cuOrbits">${opt('few', 'A few dots, drawn larger')}${opt('all', 'Every dot')}${opt('none', 'None')}</select></label>
   <label class="check" title="Ticked: as dots are thrown out, dots that start between the ones that are left take their place, so there are always about as many. Such a dot has taken every step so far and was only not drawn. Not ticked: the dots of the start, fewer with every iteration."><input type="checkbox" id="cuRefill" checked> <span>Add new dots as dots are thrown out</span></label>
 </div>
 <div class="cu-bar-row cu-bar-small">
   <label class="check" title="What the step on show works with: the axis of a rotation, the plane of a mirror, the sphere of an inversion, the arrow of a slide. One dot gets a ring, and its way through the step is drawn."><input type="checkbox" id="cuGuidesOn" checked> <span>Guides</span></label>
-  <label class="check" title="One number in place of the neighbouring orbits when the finished solid is drawn: quicker and plainer. Many of the lab’s own approaches are drawn this way, and their rules come with it ticked. A play always uses the fine estimate, and so does a rule with a step taken once that moves the point."><input type="checkbox" id="cuRoughOn"> <span>Plain distance estimate</span></label>
+  <label class="check" title="One number in place of the neighbouring orbits when the finished solid is drawn: quicker and plainer. Many of the lab’s own approaches are drawn this way, and they come with it ticked. A play always uses the fine estimate, and so does an approach with a step taken once that moves the point."><input type="checkbox" id="cuRoughOn"> <span>Plain distance estimate</span></label>
   <label class="check" title="The Mandelbrot picture on the left and the Julia picture on the right, with one camera. The Julia half uses the c of the Julia panel, which then shows in the column on the right."><input type="checkbox" id="cuBothOn"> <span>Mandelbrot and Julia side by side</span></label>
   <span class="note" id="cuDotsSay" hidden></span>
 </div>`;
   $('cuDock').innerHTML = `<div class="cu-tools-row">
-  <span class="cu-group"><select id="cuAddSel" aria-label="The kind of step to add">${CUI.kinds}</select><select id="cuAddSec" aria-label="The section the new step goes to" title="Where the new step goes: among the steps of every iteration, or among those taken once, before or after the iterations.">${opt('main', 'to every iteration')}${opt('pre', 'to once, before')}${opt('post', 'to once, after')}</select><button class="btn" id="cuAddBtn" type="button">Add step</button></span>
-  <span class="cu-group"><select id="cuStart" aria-label="A rule to load: one you saved, or one to start again from"></select><button class="btn" id="cuStartBtn" type="button" title="Puts these steps in the place of yours. Undo brings yours back.">Load</button><button class="btn" id="cuDelBtn" type="button" hidden title="Takes the chosen saved rule off the list. Your steps on the page stay.">Delete</button></span>
-  <span class="cu-group"><input type="text" id="cuSaveName" class="cu-in" maxlength="40" placeholder="Name for this rule" aria-label="The name to save this rule under" autocomplete="off" spellcheck="false"><button class="btn" id="cuSaveBtn" type="button" title="Keeps the steps as they are now, under this name, in the list beside it. Saved rules stay in this browser.">Save</button></span>
+  <span class="cu-group"><button type="button" class="cu-in cu-pick-btn" id="cuAddSel" value="" aria-haspopup="dialog" aria-expanded="false" title="What Add step adds: a kind of step, or one of your saved steps. Click for the list, which can be searched."></button><select id="cuAddSec" aria-label="The section the new step goes to" title="Where the new step goes: among the steps of every iteration, or among those taken once, before or after the iterations.">${opt('main', 'to every iteration')}${opt('pre', 'to once, before')}${opt('post', 'to once, after')}</select><button class="btn" id="cuAddBtn" type="button">Add step</button></span>
+  <span class="cu-group"><select id="cuStart" aria-label="An approach to load: one you saved, or one to start again from"></select><button class="btn" id="cuStartBtn" type="button" title="Puts these steps in the place of yours. Undo brings yours back.">Load</button><button class="btn" id="cuDelBtn" type="button" hidden title="Takes the chosen saved approach off the list. Your steps on the page stay.">Delete</button></span>
+  <span class="cu-group"><input type="text" id="cuSaveName" class="cu-in" maxlength="40" placeholder="Name for this approach" aria-label="The name to save this approach under" autocomplete="off" spellcheck="false"><button class="btn" id="cuSaveBtn" type="button" title="Keeps the steps as they are now, under this name, in the list beside it. Saved approaches stay in this browser.">Save</button></span>
   <button class="btn" id="cuUndo" type="button" disabled>Undo</button>
   <span class="cu-group"><label class="label" for="cuN" title="The Power dial of the page. A step whose menu says “n (Power dial)” follows it.">Power n</label><input type="number" id="cuN" class="cu-in cu-nbox" step="0.1"></span>
   <p class="note cu-say" id="cuSay" role="status" hidden></p>
 </div>
 <div class="cu-secs" id="cuSteps"></div>
-<p class="note" id="cuEmpty" hidden>There are no steps, so every point stays where it is. Add a step, or load a rule to start from.</p>`;
+<p class="note" id="cuEmpty" hidden>There are no steps, so every point stays where it is. Add a step, or load an approach to start from.</p>`;
   const list = $('cuSteps'), at = e => { const li = e.target.closest('.cu-step'); return li ? { li, i: cuStepAt(li.dataset.id), st: C.steps[cuStepAt(li.dataset.id)] } : {}; };
   // a number moved, by its box or its slider, or one of a point's three numbers: nothing else changes, so the picture follows at once
   // A formula is one line, however many rows its box shows: Enter takes it as it is, and a line break that comes
@@ -520,29 +601,46 @@ function customInit() {
         return;
       }
       // play this step from its start to its end
-      if (tried) { S.custom.play = { pass, u: base + j, peek: st.id }; cuSay('This step is switched off. The play shows what it would do here, and the rule stays without it.'); }
+      if (tried) { S.custom.play = { pass, u: base + j, peek: st.id }; cuSay('This step is switched off. The play shows what it would do here, and your approach stays without it.'); }
       cuGo(pass, base + j);
       CUI.until = base + j + 1; CUI.playing = true; CUI.last = performance.now(); $('cuPlay').textContent = 'Pause';
       if (!CUI.raf) CUI.raf = requestAnimationFrame(cuPlayFrame);
       return;
     }
+    if (act === 'save') {
+      // the step's name gives way to a box for the name to keep it under, with Save and Cancel beside it
+      const li = b.closest('.cu-step'), name = li.querySelector('.cu-title'), row = document.createElement('span');
+      if (li.classList.contains('is-naming')) return;
+      row.className = 'cu-naming';
+      row.innerHTML = `<input type="text" class="cu-in" maxlength="40" spellcheck="false" autocomplete="off" aria-label="The name to save step ${i + 1} under" value="${cuEsc(st.name || CU_BLOCKS[st.kind].title)}">` +
+        '<button type="button" class="cu-tool" data-act="save-ok">Save</button><button type="button" class="cu-tool" data-act="save-no">Cancel</button>';
+      name.hidden = true; name.after(row); li.classList.add('is-naming');
+      const box = row.firstChild;
+      box.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter') { ev.preventDefault(); row.querySelector('[data-act=save-ok]').click(); }
+        else if (ev.key === 'Escape') row.querySelector('[data-act=save-no]').click();
+      });
+      box.focus(); box.select();
+      cuSay('Type a name for this step, then press Save or Enter.');
+      return;
+    }
+    if (act === 'save-ok' || act === 'save-no') {
+      const li = b.closest('.cu-step'), row = li.querySelector('.cu-naming'), as = row.querySelector('input').value.trim();
+      row.remove(); li.querySelector('.cu-title').hidden = false; li.classList.remove('is-naming');
+      if (act === 'save-ok' && as) cuKeep(st, as);
+      return;
+    }
     if (act === 'kind') {
-      // the step's name gives way to a menu of every kind; a choice changes the step where it stands
-      const sel = document.createElement('select'), name = b.closest('.cu-head').querySelector('.cu-title');
-      sel.className = 'cu-src cu-kind'; sel.setAttribute('aria-label', `The kind of step ${i + 1}`);
-      sel.innerHTML = CUI.kinds; sel.value = st.kind;
-      const back = () => { if (sel.isConnected) { sel.remove(); name.hidden = false; } };
-      sel.addEventListener('change', () => {
-        const kind = sel.value;
-        if (kind === st.kind || !CU_BLOCKS[kind]) { back(); return; }
-        cuSnap(); cuSwap(st, kind); cuChanged(true);
+      // the list of kinds opens under the button; a choice changes the step where it stands
+      cuPickOpen(b, st.kind, kind => {
+        const mine = cuKeptAt(kind);
+        if (!mine && (kind === st.kind || !CU_BLOCKS[kind])) return;
+        cuSnap();
+        if (mine) cuTake(st, mine); else cuSwap(st, kind);
+        cuChanged(true);
         const again = list.querySelector(`.cu-step[data-id="${st.id}"] [data-act="kind"]`);
         if (again) again.focus({ preventScroll: true });
       });
-      sel.addEventListener('blur', back);
-      sel.addEventListener('keydown', ev => { if (ev.key === 'Escape') back(); });
-      name.hidden = true; name.after(sel); sel.focus();
-      try { sel.showPicker(); } catch (err) { /* the menu opens with the next click or key */ }
       return;
     }
     if (act === 'break') {
@@ -550,13 +648,14 @@ function customInit() {
       try { parts = st.kind === 'formula' ? cuSplit(st.p.text, cuProgram().scopes[st.id] || [], cuTaken(C.steps)) : cuBroken(st, cuTaken(C.steps)); }
       catch (err) { cuSay('This step cannot be broken down yet: ' + err.message); return; }
       if (!parts) { cuSay('This step is one operation already.'); return; }
-      if (C.steps.length - 1 + parts.length > CU_MAX_STEPS) { cuSay(`A rule can hold ${CU_MAX_STEPS} steps, and breaking this one down would pass that.`); return; }
+      if (C.steps.length - 1 + parts.length > CU_MAX_STEPS) { cuSay(`An approach can hold ${CU_MAX_STEPS} steps, and breaking this one down would pass that.`); return; }
       cuSnap();
       C.steps.splice(i, 1, ...parts.map(x => Object.assign(cuStepOf(x.kind, x.p, C.next++, cuSecOf(st)), { on: st.on !== false })));
     } else if (act === 'reset') {
       // back to the settings of a new step of this kind; the name it gives stays, since later steps may use it
       cuSnap();
       for (const sp of CU_BLOCKS[st.kind].params) { if (sp.type !== 'name') st.p[sp.key] = sp.def; CUI.formula.delete(st.id + ':' + sp.key); }
+      delete st.name;
     } else {
       cuSnap();
       if (act === 'remove') C.steps.splice(i, 1);
@@ -575,9 +674,12 @@ function customInit() {
   });
   $('cuAddBtn').addEventListener('click', () => {
     cuSay('');
-    if (C.steps.length >= CU_MAX_STEPS) { cuSay(`A rule can hold ${CU_MAX_STEPS} steps.`); return; }
+    if (C.steps.length >= CU_MAX_STEPS) { cuSay(`An approach can hold ${CU_MAX_STEPS} steps.`); return; }
     cuSnap();
-    const asked = $('cuAddSec').value, st = cuStepOf($('cuAddSel').value, {}, C.next++, asked), named = st.kind === 'slider' ? 'name' : st.p.out !== undefined ? 'out' : '';
+    // one of the saved steps comes with its settings and its name
+    const asked = $('cuAddSec').value, mine = cuKeptAt($('cuAddSel').value), st = mine ? cuStepOf(mine.kind, { ...mine.p }, C.next++, asked) : cuStepOf($('cuAddSel').value, {}, C.next++, asked);
+    const named = st.kind === 'slider' ? 'name' : st.p.out !== undefined ? 'out' : '';
+    if (mine) st.name = mine.name;
     if (named) st.p[named] = cuFresh(cuTaken(C.steps))(st.p[named]);   // a name the rule does not have yet
     // the step goes to the end of its section; a kind that belongs to one section goes there whatever was asked
     const sec = cuSecOf(st), rank = CU_SECS.indexOf(sec);
@@ -590,6 +692,12 @@ function customInit() {
     if (f) f.focus({ preventScroll: true });
   });
   cuSavedLoad(); cuStartMenu();
+  cuKeptLoad(); cuAddSet('');
+  // the button beside "Add step" opens the list of steps, and a choice there is what Add step adds
+  $('cuAddSel').addEventListener('click', () => {
+    const btn = $('cuAddSel');
+    if (CUP.anchor === btn) cuPickClose(true); else cuPickOpen(btn, btn.value, v => cuAddSet(v));
+  });
   $('cuStart').addEventListener('change', () => {
     const v = $('cuStart').value;
     $('cuDelBtn').hidden = v[0] !== 's';
@@ -604,21 +712,22 @@ function customInit() {
       cuSay(`“${mine.name}” is loaded. Undo brings the steps you had back.`);
       return;
     }
-    // One of the lab's approaches comes with what its own picture is drawn with: points are thrown out beyond 64,
-    // and the distance estimate is the plain one where the approach asks for that.
+    // One of the lab's approaches comes with the distance estimate its own picture is drawn with: the plain one
+    // where the approach asks for that. Its bailout radius starts at 2, as for any approach, so that the dots of a
+    // play go where they leave the ball they start in; the lab's own picture throws a point out beyond 64.
     const k = +v, steps = cuStartSteps(k), lab = CU_STARTS[k].lab ? APPROACHES.find(x => x.id === CU_STARTS[k].lab) : null;
     C.reach = CU_STARTS[k].reach || 2; $('cuReach').value = cuShort(C.reach);   // how far out the dots start comes with the rule
-    cuSnap(); cuUse({ steps, next: steps.length + 1, bail: CU_STARTS[k].bail || (lab ? 64 : CU_BAIL), rough: !!lab && lab.deMax === 0 });
-    cuSay('Loaded. Undo brings your own steps back.' + (lab ? ' “Thrown out beyond” stands at 64, as in the lab’s own picture of this rule; for the play, 2 shows more in the first iterations.' : '') + (CU_STARTS[k].say ? ' ' + CU_STARTS[k].say : ''));
+    cuSnap(); cuUse({ steps, next: steps.length + 1, bail: CU_STARTS[k].bail || CU_BAIL, rough: !!lab && lab.deMax === 0 });
+    cuSay('Loaded. Undo brings your own steps back.' + (lab ? ' The bailout radius stands at 2. The lab’s own picture of this approach uses 64: set it there for exactly that picture.' : '') + (CU_STARTS[k].say ? ' ' + CU_STARTS[k].say : ''));
   });
   $('cuSaveBtn').addEventListener('click', () => {
     const name = $('cuSaveName').value.trim().slice(0, 40);
-    if (!name) { cuSay('Type a name for the rule in the box beside Save first.'); $('cuSaveName').focus(); return; }
+    if (!name) { cuSay('Type a name for the approach in the box beside Save first.'); $('cuSaveName').focus(); return; }
     const at = CUI.saved.findIndex(s => s.name.toLowerCase() === name.toLowerCase()), entry = { name, rule: JSON.parse(cuRuleText()) }, was = CUI.saved.slice();
     if (at >= 0) CUI.saved[at] = entry; else CUI.saved.push(entry);
-    if (!cuSavedStore()) { CUI.saved = was; cuSay('This browser would not keep the rule: its storage is blocked or full. The text under “Your rule as text”, in the column on the right, can be copied and kept instead.'); return; }
+    if (!cuSavedStore()) { CUI.saved = was; cuSay('This browser would not keep the approach: its storage is blocked or full. The text under “Your approach as text”, in the column on the right, can be copied and kept instead.'); return; }
     cuStartMenu('s' + (at >= 0 ? at : CUI.saved.length - 1));
-    cuSay((at >= 0 ? `“${name}” now holds the steps as they are.` : `Saved as “${name}”.`) + ' It is in the list beside Load, under “Your saved rules”, and is kept in this browser.');
+    cuSay((at >= 0 ? `“${name}” now holds the steps as they are.` : `Saved as “${name}”.`) + ' It is in the list beside Load, under “Your saved approaches”, and is kept in this browser.');
   });
   $('cuSaveName').addEventListener('keydown', e => { if (e.key === 'Enter') $('cuSaveBtn').click(); });
   $('cuDelBtn').addEventListener('click', () => {
@@ -639,8 +748,8 @@ function customInit() {
   $('cuTextUse').addEventListener('click', () => {
     let rule = null;
     try { rule = cuRuleOf(JSON.parse($('cuText').value)); } catch (err) { /* not a rule */ }
-    if (!rule) { cuSay('That text is not a rule: nothing was changed. A rule is the text this box shows for your own steps.'); return; }
-    cuSnap(); cuUse(rule); cuSay('The rule from the text is in use. Undo brings the earlier one back.');
+    if (!rule) { cuSay('That text is not an approach: nothing was changed. An approach is the text this box shows for your own steps.'); return; }
+    cuSnap(); cuUse(rule); cuSay('The approach from the text is in use. Undo brings the earlier one back.');
   });
   // the bar
   const move = d => { const p = cuPlayAt(); cuPlayStop(); if (d < 0 && p.pass === cuFirst()) cuGo(p.pass, -1e9); else cuGo(p.pass + d, 1e9); };
@@ -1157,7 +1266,7 @@ function cuOverDraw() {
   const play = on && !S.flat ? cuShown() : null, at = dotsOn || guidesOn ? play : null, b = basis(), say = $('cuDotsSay');
   // with the dots alone on show, the picture behind them is faint while a play is under way
   document.body.classList.toggle('cu-faint', !!play && see === 'dots');
-  const sig = [both, w, h, dpr, theme.brass, theme.ink2, theme.dark, at ? [at.sec, at.pass, at.ord, at.t, at.look, at.on, see, guidesOn, C.count, C.lay, C.tint, C.orbits, C.refill, C.reach, C.rev, C.bail, S.mode, S.c, S.n, S.abs, S.flip, S.z0, b.pos, b.right, b.up, S.view.fov] : ''].join('|');
+  const sig = [both, w, h, dpr, theme.brass, theme.ink2, theme.dark, at ? [at.sec, at.pass, at.ord, at.t, at.look, at.on, see, guidesOn, C.count, C.lay, C.tint, C.orbits, C.dotsA, C.refill, C.reach, C.rev, C.bail, S.mode, S.c, S.n, S.abs, S.flip, S.z0, b.pos, b.right, b.up, S.view.fov] : ''].join('|');
   if (sig === CUD.drawn) return;
   CUD.drawn = sig;
   if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
@@ -1237,10 +1346,14 @@ function cuOverDraw() {
     const place = (d, back) => (waits ? cuWhole(d) : cuPart(d, sh.ord, Math.max(0, sh.t - back), onC ? 'c' : undefined));
     const moving = sh.t > 0 && !waits && (!onC || tgt === 'c');
     let turned = !onC, tested = 0;   // of the first sixty dots, none has come nearer to the middle or gone further from it in this step
+    // A point is thrown out when a pass is done: until the last step of the pass has been taken whole, a dot that
+    // is beyond the bailout radius is drawn all the same, since a later step may bring it back.
+    const passDone = sh.t >= 1 && j === mov.length - 1, dA = clamp(+C.dotsA || 1, 0.05, 1);
+    let beyond = false;
     for (const d of shown) {
       const now = place(d, 0);
       if (!onC && tested < 60) { tested++; const before = len(cuPart(d, sh.ord, 0)); if (Math.abs(len(now) - before) > 1e-6 * Math.max(before, 1e-6)) turned = false; }
-      if (!(len(now) <= bail) && d !== mark) continue;   // thrown out at this moment
+      if (!(len(now) <= bail)) { if (passDone && d !== mark) continue; beyond = beyond || !passDone; }   // thrown out, once the pass is done
       const A = scr(now);
       if (A) (hand.has(d) ? large : small).push({ A, B: !plain && moving ? scr(place(d, CU_DOTS_TAIL)) : null, d, now, r: rad(A[2]), al: shade(A[2]) });
     }
@@ -1259,19 +1372,19 @@ function cuOverDraw() {
       }
       return { old: d.was.concat([d.z]), cur };
     };
-    const tail = (o, r) => { if (o.B) { g.strokeStyle = o.d.col; g.globalAlpha = 0.55 * o.al; g.lineWidth = Math.max(1, 0.6 * r); g.beginPath(); g.moveTo(o.B[0], o.B[1]); g.lineTo(o.A[0], o.A[1]); g.stroke(); } };
+    const tail = (o, r) => { if (o.B) { g.strokeStyle = o.d.col; g.globalAlpha = 0.55 * o.al * dA; g.lineWidth = Math.max(1, 0.6 * r); g.beginPath(); g.moveTo(o.B[0], o.B[1]); g.lineTo(o.A[0], o.A[1]); g.stroke(); } };
     // every dot's orbit: thin lines, the dots of one colour in one go (the handful get theirs further down)
     if (dotsOn && orbits === 'all' && away) {
       const by = new Map();
       for (const o of small) { let l = by.get(o.d.col); if (!l) by.set(o.d.col, l = []); l.push(o); }
-      g.lineWidth = 1; g.globalAlpha = 0.3;
+      g.lineWidth = 1; g.globalAlpha = 0.3 * dA;
       for (const [col, l] of by) { g.strokeStyle = col; g.beginPath(); for (const o of l) { const t = orbitOf(o, false); trace(t.old); trace(t.cur); } g.stroke(); }
     }
     small.sort((x, y) => y.A[2] - x.A[2]);   // the far ones first
     for (const o of small) {
-      if (plain) { const q = 0.89 * o.r; g.globalAlpha = o.al; g.fillStyle = o.d.col; g.fillRect(o.A[0] - q, o.A[1] - q, 2 * q, 2 * q); continue; }
+      if (plain) { const q = 0.89 * o.r; g.globalAlpha = o.al * dA; g.fillStyle = o.d.col; g.fillRect(o.A[0] - q, o.A[1] - q, 2 * q, 2 * q); continue; }
       tail(o, o.r);
-      g.globalAlpha = o.al; g.fillStyle = o.d.col;
+      g.globalAlpha = o.al * dA; g.fillStyle = o.d.col;
       circ(o.A, o.r); g.fill();
       if (o.r >= 2) { g.strokeStyle = 'rgba(0, 0, 0, 0.6)'; g.lineWidth = 0.8; g.stroke(); }
     }
@@ -1335,25 +1448,26 @@ function cuOverDraw() {
     if (dotsOn && all.length) {
       if (idle) add1('Julia waits here: its points start where they stand, so it has no iteration that only adds c.');
       if (C.refill === false) add1(`${both ? (P.mode === 'm' ? 'Mandelbrot: ' : 'Julia: ') : ''}${all.length} of the ${all.start} dots of the start are still in.`);
-      if (turned && sh.t > 0 && !looked && !tgt) add1('This step throws no point out: it leaves each one as far from the middle as it was.');
+      if (turned && sh.t > 0 && !looked && !tgt) add1('This step leaves each point as far from the middle as it was.');
+      if (beyond) add1(`A dot beyond the dashed circle stays until ${at.sec === 'main' ? 'the iteration is' : 'these steps are'} done: a point is thrown out only if it ends beyond it.`);
     }
     // the handful, over the guides: each one's orbit in its own colour, then the dot itself, larger
     large.sort((x, y) => y.A[2] - x.A[2]);
     if (dotsOn && orbits !== 'none' && away) for (const o of large) {
       const t = orbitOf(o, true);
       for (const [pts, al] of [[t.old, 0.5], [t.cur, 1]]) {
-        g.strokeStyle = 'rgba(0, 0, 0, 0.6)'; g.lineWidth = 4; g.globalAlpha = 0.7 * al; g.beginPath(); trace(pts); g.stroke();
-        g.strokeStyle = o.d.col; g.lineWidth = 1.8; g.globalAlpha = al; g.beginPath(); trace(pts); g.stroke();
+        g.strokeStyle = 'rgba(0, 0, 0, 0.6)'; g.lineWidth = 4; g.globalAlpha = 0.7 * al * dA; g.beginPath(); trace(pts); g.stroke();
+        g.strokeStyle = o.d.col; g.lineWidth = 1.8; g.globalAlpha = al * dA; g.beginPath(); trace(pts); g.stroke();
       }
     }
     const big = r => 1.5 * Math.max(r, 1.8) + 1;
     for (const o of large) {
       const r = big(o.r);
       if (orbits === 'none' || !dotsOn) tail(o, r);
-      g.globalAlpha = 1; g.fillStyle = o.d.col; g.strokeStyle = 'rgba(0, 0, 0, 0.8)'; g.lineWidth = 1.5;
+      g.globalAlpha = dA; g.fillStyle = o.d.col; g.strokeStyle = 'rgba(0, 0, 0, 0.8)'; g.lineWidth = 1.5;
       circ(o.A, r); g.fill(); g.stroke();
       g.strokeStyle = ink; g.lineWidth = 1.3; circ(o.A, r + 2); g.stroke();
-      if (o.d === mark) { g.lineWidth = 2.5; circ(o.A, r + 6.5); g.stroke(); }
+      if (o.d === mark) { g.globalAlpha = 1; g.lineWidth = 2.5; circ(o.A, r + 6.5); g.stroke(); }   // the ring stays at full strength
     }
     // the words, last and over everything; one that would cover another is put under it
     const taken = [];
@@ -1386,7 +1500,13 @@ function cuOverInit() {
   const again = () => { CUD.drawn = ''; cuOverDraw(); };
   // the choices for the dots (how many, where they start and how far out, their colours, the orbits, new dots) need the dots
   const picks = [['cuCount', 'count'], ['cuLay', 'lay'], ['cuTint', 'tint'], ['cuOrbits', 'orbits']];
-  const able = () => { for (const id of [...picks.map(x => x[0]), 'cuRefill', 'cuReach']) $(id).disabled = S.custom.see === 'skin'; };
+  const able = () => { for (const id of [...picks.map(x => x[0]), 'cuRefill', 'cuReach', 'cuDotsA']) $(id).disabled = S.custom.see === 'skin'; };
+  // how strongly the dots and the surface are drawn: the dots on their own canvas, the surface by the style sheet (--cu-skin)
+  const skin = () => document.documentElement.style.setProperty('--cu-skin', String(clamp(+(S.custom.skinA ?? 1), 0, 1)));
+  $('cuDotsA').value = Math.round(100 * (S.custom.dotsA ?? 1)); $('cuSkinA').value = Math.round(100 * (S.custom.skinA ?? 1));
+  $('cuDotsA').addEventListener('input', () => { S.custom.dotsA = clamp(+$('cuDotsA').value / 100, 0.05, 1); again(); });
+  $('cuSkinA').addEventListener('input', () => { S.custom.skinA = clamp(+$('cuSkinA').value / 100, 0, 1); skin(); });
+  skin();
   for (const [id, key] of [['cuGuidesOn', 'guides'], ['cuRefill', 'refill']]) {
     $(id).checked = S.custom[key] !== false;
     $(id).addEventListener('change', () => { S.custom[key] = $(id).checked; again(); });
@@ -1399,6 +1519,8 @@ function cuOverInit() {
   $('cuReach').addEventListener('change', () => { S.custom.reach = clamp(+$('cuReach').value || 2, 0.25, 16); $('cuReach').value = cuShort(S.custom.reach); again(); });
   able();
   // both pictures at once: the shader draws the two halves (see cuUniforms), and the Julia panel shows for its c
+  $('cuThrough').checked = S.custom.through !== false;
+  $('cuThrough').addEventListener('change', () => { S.custom.through = $('cuThrough').checked; });
   $('cuBothOn').checked = !!S.custom.both;
   $('cuBothOn').addEventListener('change', () => { S.custom.both = $('cuBothOn').checked; CUI.barSig = ''; refresh(); });
   hooks.view.push(cuOverDraw); hooks.refresh.push(again);

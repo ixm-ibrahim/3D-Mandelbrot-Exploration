@@ -829,8 +829,10 @@ function cuStepOf(kind, p, id, sec) {
 const cuStartSteps = k => cuSorted(CU_STARTS[k].steps.map(([kind, p, sec], i) => cuStepOf(kind, p, i + 1, sec)));
 // What the play shows and how, apart from the rule: the dots, the surface or both (see), the dots themselves (how
 // many, where they start and how far out, what their colour says, whose whole paths are drawn, whether new ones come
-// in for those thrown out), the guides, both pictures, the speed. The starting values are the Learn tab's.
-const cuShowDefault = () => ({ see: 'dots', guides: true, both: false, speed: 'normal', count: 'some', lay: 'both', tint: 'mix', orbits: 'few', refill: true, reach: 2 });
+// in for those thrown out), how strongly the dots and the surface are drawn (dotsA, skinA: 1 is full), the guides,
+// both pictures, the speed, and whether Play runs on from one iteration into the next (through). The starting values are the Learn tab's, but for
+// the dots, of which there are many; both pictures stand side by side, and Play runs through every iteration.
+const cuShowDefault = () => ({ see: 'dots', guides: true, both: true, speed: 'normal', through: true, dotsA: 1, skinA: 1, count: 'many', lay: 'both', tint: 'mix', orbits: 'few', refill: true, reach: 2 });
 const cuDefault = () => { const steps = cuStartSteps(0); return { steps, next: steps.length + 1, rev: 0, bail: CU_BAIL, play: null, ...cuShowDefault(), rough: false }; };
 const cuBailOf = x => clamp(+x || CU_BAIL, 1.2, 64);
 // A list of steps from text of any origin (a saved rule, pasted text): every step checked, every id made afresh.
@@ -847,7 +849,9 @@ function cuClean(list) {
     // `what` is another word a rule's text may have for the point a fold or a mirror works on
     if ((raw.kind === 'foldx' || raw.kind === 'softx') && raw.p && raw.p.on === undefined && raw.p.what === 'c') p.on = 'c';
     if (also && first < 0) first = steps.length;
-    steps.push({ id: steps.length + 1, kind: raw.kind, on: raw.on !== false, p, sec: raw.sec });
+    // a step may carry a name of the user's own: the saved step it was made from
+    const name = typeof raw.name === 'string' ? raw.name.trim().slice(0, 40) : '';
+    steps.push({ id: steps.length + 1, kind: raw.kind, on: raw.on !== false, p, sec: raw.sec, ...(name ? { name } : {}) });
   }
   // A rule that names no section: a slider that stands before such a change of c is there for it to read, so it
   // goes to the first section with it.
@@ -865,7 +869,7 @@ function cuStored() {
   try { return cuRuleOf(JSON.parse(localStorage.getItem(CU_KEY) || 'null')); }
   catch (err) { return null; }   // storage is blocked, or what it holds is not a rule
 }
-const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, rough: !!S.custom.rough, steps: S.custom.steps.map(s => ({ kind: s.kind, on: s.on !== false, p: s.p, ...(cuSecOf(s) === 'main' ? {} : { sec: cuSecOf(s) }) })) });
+const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, rough: !!S.custom.rough, steps: S.custom.steps.map(s => ({ kind: s.kind, on: s.on !== false, p: s.p, ...(cuSecOf(s) === 'main' ? {} : { sec: cuSecOf(s) }), ...(s.name ? { name: s.name } : {}) })) });
 function cuStore() {
   try { localStorage.setItem(CU_KEY, cuRuleText()); } catch (err) { /* storage blocked: the rule lasts for this visit */ }
 }
@@ -1331,12 +1335,22 @@ function cuPlayNow() {
   // in the shader), so the second changes nothing.
   return { pass: at.pass, ord: s.ord, t: w.x - j, iter: Math.max(2, at.pass + lead), last: 0 };
 }
+// What the picture is drawn for in a play. A point is thrown out when a pass is done, not in the middle of it: until
+// the last step of the pass on show has been taken whole, the picture is the solid as that pass found it. The dots
+// and the guides follow every moment of a step (cuShown in 82-custom-ui.js), and a dot goes by the same rule.
+function cuPlayPic() {
+  const at = cuPlayNow();
+  if (!at) return null;
+  const w = cuPlaySec(), list = w.list;
+  if (!list.length) return at;
+  return w.x >= list.length - 1e-9 ? { ...at, ord: list[list.length - 1].ord, t: 1 } : { ...at, ord: list[0].ord, t: 0 };
+}
 // Has the rule a turn after the last iteration: a step of "once, after" that moves the point and is on. The Learn
 // tab leaves the steps taken once out, but for the step that changes c.
 const cuHasPost = () => !S.learn && cuPlayable('post').length > 0;
 // The custom approach's own part of the scene's uniforms (see `uniforms` and `scene` in its entry).
 function cuUniforms(gl, loc) {
-  const K = cuProgram().K, at = cuPlayNow();
+  const K = cuProgram().K, at = cuPlayPic();
   K[CU_PLAY_ON] = at ? 1 : 0; K[CU_PLAY_PASS] = at ? at.pass : 0; K[CU_PLAY_ORD] = at ? at.ord : 0; K[CU_PLAY_T] = at ? at.t : 1;
   K[CU_BOTH] = cuBoth() ? 1 : 0;
   K[CU_ONCE] = S.learn ? 0 : 1;
@@ -1348,7 +1362,7 @@ function cuUniforms(gl, loc) {
 // step taken once that moves the point.
 const cuRough = () => !!(S.custom && S.custom.rough) && !cuPlayNow() && !cuHasPost() && !cuPlayable('pre').some(s => s.moves);
 function cuScene() {
-  const at = cuPlayNow();
+  const at = cuPlayPic();
   return { bail: cuBailOf(S.custom.bail), iter: at ? at.iter : cuHasPost() ? Math.round(S.iter) + 1 : 0 };
 }
 // The ball the dots of a play start in: no further from the middle than a point may go. The start view of the

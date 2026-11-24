@@ -20,21 +20,24 @@ come closest and what is known not to work. No rule passes yet.
   iteration, and steps taken once after the last iteration. A step that moves a point works on the point z, on
   c, or on a point the rule has named, in whichever section it stands, and a change of c lasts for the rest of
   the orbit. A formula has the length and the two angles of every point, written after the point, as in `z.phi` and `c.phi`,
-  and its box wraps and grows with its text. A step can be switched off, moved, made another kind where it stands, or broken down: a
-  block into its formulas, a formula into its single operations. A bar under the picture plays the steps,
-  iteration by iteration from the first, in the picture itself, at three speeds, with dots that show where the
+  and its box wraps and grows with its text. A step can be switched off, moved, made another kind where it stands, saved with its settings under a name to be
+  added again from the list of steps, or broken down: a
+  block into its formulas, a formula into its single operations. The list of steps can be searched, and its groups shut. A bar under the picture plays the steps,
+  iteration by iteration from the first or straight through them all, in the picture itself, at three speeds, with dots that show where the
   steps carry the solid's points and guides for the step on show: its axis, plane, sphere or arrow, and the way
   one ringed dot takes through it. A step that moves no point shows the value it works out for that dot. The
-  steps taken once are played at the two ends. A step that is switched off can still be played, to see what it
+  steps taken once are played at the two ends. A point is thrown out when an iteration is done and it lies beyond
+  the bailout radius: the dots and the surface both change then, and not in the middle of a step. The dots and the
+  surface can each be drawn fainter. A step that is switched off can still be played, to see what it
   would do where it stands: the rule stays without it. A dot of a Mandelbrot picture is drawn on its own c until its
   first iteration, which only puts it there, is done, so a step that changes c before the iterations moves the
   dots. A step that works on c anywhere else, or on a named point, shows that point of the ringed dot as a
   ring of its own. The play has the choices of the Learn tab: dots, the surface or both; how many dots there are, where they start (a
   full grid, level sheets, shells) and how far out; what their colours say; whose orbits are drawn; and whether
   new dots come in for those thrown out. A rule can be saved under a name and loaded again, and the Mandelbrot
-  and the Julia picture can be shown side by side.
+  and the Julia picture stand side by side, or the one that is chosen stands alone.
   Thirty-two of the approaches of the list can be loaded as steps (`13-custom-rules.js`), each giving that approach's
-  own numbers;
+  own numbers, and its own picture with the bailout radius at 64;
 - a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models. On a wide
   window the picture's lower and right edges can be dragged to set its size. The camera takes the picture's new
   shape, so nothing is stretched, and the room that is freed goes to the controls, or in the custom approach to
@@ -72,4 +75,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.14. Each version is tagged, as `v1.14`.
+This is version 1.15. Each version is tagged, as `v1.15`.

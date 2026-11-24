@@ -2563,13 +2563,13 @@ const APPROACHES = [
     uniforms: (gl, loc) => cuUniforms(gl, loc), scene: () => cuScene(), ball: () => cuReach(), halves: () => cuBoth(),
     start: z0 => `cuPreZ(${z0}, gCuRaw, c)`,   // the start value of a Mandelbrot orbit, after the steps taken once before the iterations
     get deMax() { return cuRough() ? 0 : undefined; },   // a rule may ask for the plain distance estimate
-    tag: 'A rule you put together yourself, one step after another: lengths and angles, turns about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
+    tag: 'An approach you put together yourself, one step after another: lengths and angles, rotations about any axis, sphere inversions, mirrors, quaternions, matrices, adding c, and formulas of your own.',
     params: [],
     formula: () => cuWords(),
     about: 'The steps stand under the picture. One pass through them is one step of an orbit, so they take the place of the equation: c is added where the step “Add c” stands, and nowhere else. A step can be switched off, moved, or broken down: a block into the formulas it is made of, and a formula into its single operations. The bar under the picture plays the steps, iteration by iteration: the solid on show is every starting point that has not been thrown out so far, and the dots are some of those points, each drawn where the steps have carried it. The card below measures one pass with c set to 0.',
     roundNote: () => '',
-    crush: () => ['part', 'Not worked out for a rule of your own. The rows above are measured from your steps.'],
-    smooth: () => ['part', 'Not worked out for a rule of your own. A fold, a comparison or an axis that moves with the point can each break a rule into parts.'],
+    crush: () => ['part', 'Not worked out for an approach of your own. The rows above are measured from your steps.'],
+    smooth: () => ['part', 'Not worked out for an approach of your own. A fold, a comparison or an axis that moves with the point can each break an approach into parts.'],
     slice: ok => (ok ? 'With these steps the plane z = 0 follows complex arithmetic, so that slice is the flat set.' : 'With these steps the plane z = 0 does not follow complex arithmetic.'),
   },
 ];
