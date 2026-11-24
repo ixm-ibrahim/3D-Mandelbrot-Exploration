@@ -14,17 +14,19 @@ come closest and what is known not to work. No rule passes yet.
 `squaring-lab.html` is the built page. It holds:
 
 - an **Approach** list: the 3D rules that were tried and kept, each as its own entry;
-- a **Custom approach**: a rule put together on the page from steps (lengths and angles, turns about any axis,
+- a **Custom approach**: a rule put together on the page from steps (lengths and angles, rotations about any axis,
   sphere inversions, mirrors and folds, quaternions, matrices, adding c, single operations of arithmetic, and
   formulas of one's own). A rule has three sections: steps taken once before the iterations, the steps of every
   iteration, and steps taken once after the last iteration. A step that moves a point works on the point z, on
   c, or on a point the rule has named, in whichever section it stands, and a change of c lasts for the rest of
-  the orbit. A step can be switched off, moved, made another kind where it stands, or broken down: a
+  the orbit. A formula has the length and the two angles of every point, written after the point, as in `z.phi` and `c.phi`,
+  and its box wraps and grows with its text. A step can be switched off, moved, made another kind where it stands, or broken down: a
   block into its formulas, a formula into its single operations. A bar under the picture plays the steps,
   iteration by iteration from the first, in the picture itself, at three speeds, with dots that show where the
   steps carry the solid's points and guides for the step on show: its axis, plane, sphere or arrow, and the way
   one ringed dot takes through it. A step that moves no point shows the value it works out for that dot. The
-  steps taken once are played at the two ends. A dot of a Mandelbrot picture is drawn on its own c until its
+  steps taken once are played at the two ends. A step that is switched off can still be played, to see what it
+  would do where it stands: the rule stays without it. A dot of a Mandelbrot picture is drawn on its own c until its
   first iteration, which only puts it there, is done, so a step that changes c before the iterations moves the
   dots. A step that works on c anywhere else, or on a named point, shows that point of the ringed dot as a
   ring of its own. The play has the choices of the Learn tab: dots, the surface or both; how many dots there are, where they start (a
@@ -70,4 +72,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.13. Each version is tagged, as `v1.13`.
+This is version 1.14. Each version is tagged, as `v1.14`.

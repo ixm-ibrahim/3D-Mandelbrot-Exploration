@@ -76,6 +76,8 @@ body.cu-faint .stage > #view { opacity: .34; }
 .cu-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
 .cu-in, .cu-src, #cuText { font-family: var(--f-mono); font-size: 13px; padding: 4px 6px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; min-width: 0; }
 .cu-cell > input[type=text], .cu-cell > select { flex: 1 1 7em; }
+/* a formula: a box as wide as the step, which wraps its text and is as tall as the text needs (cuAreasFit) */
+.cu-area { display: block; flex: 1 1 100%; grid-column: 1 / -1; width: 100%; min-height: 0; margin: 0; resize: none; overflow: hidden; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
 .cu-nbox { flex: 0 0 auto; width: 5.4em; }
 .cu-range { flex: 1 1 5em; min-width: 3em; margin: 0; accent-color: var(--brass); }
 .cu-xyz { display: flex; flex: 1 1 100%; gap: 4px; min-width: 0; }

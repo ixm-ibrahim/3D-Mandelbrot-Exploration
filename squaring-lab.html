@@ -720,6 +720,8 @@ body.cu-faint .stage > #view { opacity: .34; }
 .cu-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-width: 0; }
 .cu-in, .cu-src, #cuText { font-family: var(--f-mono); font-size: 13px; padding: 4px 6px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; min-width: 0; }
 .cu-cell > input[type=text], .cu-cell > select { flex: 1 1 7em; }
+/* a formula: a box as wide as the step, which wraps its text and is as tall as the text needs (cuAreasFit) */
+.cu-area { display: block; flex: 1 1 100%; grid-column: 1 / -1; width: 100%; min-height: 0; margin: 0; resize: none; overflow: hidden; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
 .cu-nbox { flex: 0 0 auto; width: 5.4em; }
 .cu-range { flex: 1 1 5em; min-width: 3em; margin: 0; accent-color: var(--brass); }
 .cu-xyz { display: flex; flex: 1 1 100%; gap: 4px; min-width: 0; }
@@ -3877,7 +3879,7 @@ const APPROACHES = [
 //
 // Everything is written in one small formula language. A line is `name = formula`, and every kind of step is a
 // few such lines with its settings put in (CU_BLOCKS[kind].lines). There are three levels of step: a block (a
-// sphere inversion, a turn about an axis, ...), a formula line, and a single operation (add, dot product, sine,
+// sphere inversion, a rotation about an axis, ...), a formula line, and a single operation (add, dot product, sine,
 // ...). "Break down" goes one level down: a block becomes its lines, a line becomes its operations.
 // A line is read once (cuParse) into both of its forms: shader text, and a JavaScript function that works out the
 // same thing, so the picture, the scorecard and the Learn tab all follow one text.
@@ -3909,6 +3911,9 @@ const CU_NAME = /^[A-Za-z][A-Za-z0-9]*$/;
 const CU_NO_ORBIT = 'Before the iterations the orbit has not begun: it has no first point, no point before, no average and no count yet.';
 // what a formula may read besides the names it has made itself
 const CU_GIVEN = { z: 'v', c: 'v', n: 's', pi: 's', radius: 's', theta: 's', phi: 's', first: 'v', last: 'v', mean: 'v', count: 's' };
+// The length and the two angles of any point, written after it: z.radius, z.theta, z.phi, and the same for c or a
+// point of the rule's own. Each is the function named here. The bare names of CU_GIVEN are short for those of z.
+const CU_POLAR = { radius: 'len', theta: 'lon', phi: 'lat' };
 const cuFlt = x => (!Number.isInteger(x) ? String(x) : Math.abs(x) < 1e15 ? x + '.0' : x.toExponential());
 const cuDash = text => String(text).replace(/[−–]/g, '-').trim();
 const cuNum = text => parseFloat(cuDash(text));
@@ -4001,8 +4006,8 @@ mat3 cuRotmat(vec3 ax, float a){
 }
 mat3 cuMinv(mat3 m){ float d = determinant(m); return abs(d) < 1e-30 ? mat3(0.0) : inverse(m); }
 // A point part of the way from a to b, for a step that does not say itself what lies in between. Where a and b
-// are equally far from the middle the step is a turn, and the point goes round the middle by the shorter way (for
-// two opposite points: half a turn, about the upright axis where that can be); otherwise it goes straight across.
+// are equally far from the middle the step is a rotation, and the point goes round the middle by the shorter way
+// (for two opposite points: half way round, about the upright axis where that can be); otherwise it goes straight across.
 vec3 cuBlend(vec3 a, vec3 b, float t){
   float la = length(a), lb = length(b);
   if (abs(la - lb) > 1e-3 * max(la, lb) || la < 1e-20) return mix(a, b, t);
@@ -4162,6 +4167,8 @@ cuDef('conj', 'q', 'q', a => `cuQconj(${a})`, cuQconj);
 cuDef('inv', 'q', 'q', a => `cuQinv(${a})`, cuQinv);
 cuDef('qpow', 'qs', 'q', (a, b) => `cuQpow(${a}, ${b})`, cuQpow);
 cuDef('re', 'q', 's', a => `${a}.w`, a => a[3]);
+// a point rotated by a quaternion: rot(v, q), beside rot(v, axis, angle). turn(v, q) is its earlier name, which rules kept as text may hold
+cuDef('rot', 'vq', 'v', (a, b) => `cuTurn(${a}, ${b})`, cuTurn);
 cuDef('turn', 'vq', 'v', (a, b) => `cuTurn(${a}, ${b})`, cuTurn);
 cuDef('asquat', 'v', 'q', a => `vec4(${a}.y, ${a}.z, 0.0, ${a}.x)`, a => [a[1], a[2], 0, a[0]]);
 cuDef('aspoint', 'q', 'v', a => `vec3(${a}.w, ${a}.x, ${a}.y)`, a => [a[3], a[0], a[1]]);
@@ -4267,7 +4274,8 @@ function cuParse(text, ctx) {
       const name = /^[A-Za-z]+/.exec(s.slice(i))[0], A = a.js, at = 'xyzw'.indexOf(name);
       i += name.length;
       if (a.t !== 'v' && a.t !== 'q') fail(`“.${name}” needs a point or a quaternion in front of it.`);
-      if (name.length !== 1 || at < 0 || (a.t === 'v' && at > 2)) fail(a.t === 'v' ? 'A point has the parts .x, .y and .z.' : 'A quaternion has the parts .w, .x, .y and .z.');
+      if (a.t === 'v' && CU_POLAR[name]) { a = call(CU_POLAR[name], [a]); continue; }
+      if (name.length !== 1 || at < 0 || (a.t === 'v' && at > 2)) fail(a.t === 'v' ? 'A point has the parts .x, .y and .z, and its length and two angles: .radius, .theta and .phi.' : 'A quaternion has the parts .w, .x, .y and .z.');
       a = { t: 's', gl: `${a.gl}.${name}`, tree: { part: name, of: a.tree }, js: E => A(E)[at] };
     }
     return a;
@@ -4334,7 +4342,7 @@ function cuParse(text, ctx) {
     if (name === 'c') return { t: 'v', gl: 'c', tree, js: E => E.c };
     if (name === 'n') return { t: 's', gl: 'n', tree, js: E => E.n };
     if (name === 'pi') return { t: 's', gl: cuFlt(PI), lit: PI, tree, js: () => PI };
-    // the point as a length and two angles, as it is when the formula is worked out: sph(radius, theta, phi) is z
+    // z as a length and two angles, as it is when the formula is worked out, by the short names: sph(radius, theta, phi) is z
     if (name === 'radius') return { t: 's', gl: 'length(z)', tree, js: E => len(E.z) };
     if (name === 'theta') return { t: 's', gl: 'at2(z.y, z.x)', tree, js: E => Math.atan2(E.z[1], E.z[0]) };
     if (name === 'phi') return { t: 's', gl: 'cuLat(z)', tree, js: E => cuLat(E.z) };
@@ -4357,24 +4365,24 @@ function cuHalves(line) {
   const m = /^\s*(@?[A-Za-z][A-Za-z0-9_]*)\s*=(?!=)([\s\S]*)$/.exec(String(line));
   return m ? { target: m[1], src: m[2] } : { target: 'z', src: String(line) };
 }
-// Reads one line. Returns { gl, js, z, c, free }: the shader statement, js(E), which carries it out on E, whether the
-// line moves the point (z) or changes c (c), and whether its formula can be worked out before the point is known
-// (free: it reads neither z nor anything made from z). A name that is new is added to ctx.vars; internal: the line
+// Reads one line. Returns { gl, js, z, c, free, needs }: the shader statement, js(E), which carries it out on E, whether
+// the line moves the point (z) or changes c (c), and whether its formula can be worked out before the point is known
+// (free: it reads neither z nor anything made from z; needs: the first name it reads that is z or made from z). A name that is new is added to ctx.vars; internal: the line
 // comes from a block.
 function cuLine(line, ctx, internal) {
   const { target, src } = cuHalves(line);
   if (!src.trim()) throw new Error('The formula is empty.');
   ctx.internal = internal;
   const node = cuParse(src, ctx), J = node.js;
-  let free = true;
+  let free = true, needs = '';
   (function walk(tr) {
-    if (tr.leaf === undefined) { if (tr.fn === 'point' || tr.fn === 'same') free = false; (tr.a || [tr.of]).forEach(walk); return; }
+    if (tr.leaf === undefined) { if (tr.fn === 'point' || tr.fn === 'same') { free = false; needs = needs || tr.fn + '( )'; } (tr.a || [tr.of]).forEach(walk); return; }
     const u = ctx.vars.get(tr.leaf);
-    if (['z', 'radius', 'theta', 'phi', 'first', 'last', 'mean', 'count'].includes(tr.leaf) || (u && u.free === false)) free = false;
+    if (['z', 'radius', 'theta', 'phi', 'first', 'last', 'mean', 'count'].includes(tr.leaf) || (u && u.free === false)) { free = false; needs = needs || tr.leaf; }
   })(node.tree);
   if (target === 'z' || target === 'c') {
     if (node.t !== 'v') throw new Error(`${target} is a point, and this formula gives ${CU_KINDS[node.t]}. A point is written vec(x, y, z).`);
-    return target === 'z' ? { gl: `z = ${node.gl};`, z: true, free, js: E => { E.z = J(E); } } : { gl: `c = ${node.gl};`, z: false, c: true, free, js: E => { E.c = J(E); } };
+    return target === 'z' ? { gl: `z = ${node.gl};`, z: true, free, needs, js: E => { E.z = J(E); } } : { gl: `c = ${node.gl};`, z: false, c: true, free, needs, js: E => { E.c = J(E); } };
   }
   if (target in CU_GIVEN || CU_FN[target] || target === 'point' || target === 'same') throw new Error(`“${target}” already means something here, so it cannot be a name of your own. Pick another.`);
   if (target[0] !== '@' && !CU_NAME.test(target)) throw new Error('A name is made of letters and digits and starts with a letter.');
@@ -4389,7 +4397,7 @@ function cuLine(line, ctx, internal) {
   }
   v.free = free;
   const at = v.idx;
-  return { gl: `${v.gl} = ${node.gl};`, z: false, free, js: E => { E.v[at] = J(E); } };
+  return { gl: `${v.gl} = ${node.gl};`, z: false, free, needs, js: E => { E.v[at] = J(E); } };
 }
 
 // The kinds of step. params: the settings a step of that kind has, each { key, label, type, def } with type
@@ -4420,7 +4428,7 @@ const cuPlace = (key, label, def) => ({ key, label, type: 'vec', def, picks: CU_
 const cuCalled = (list, text) => { const t = String(text).replace(/\s+/g, ''), hit = list.find(o => o[1].replace(/\s+/g, '') === t); return hit ? hit[0] : String(text); };
 const cuAx = text => cuCalled(CU_AXES, text), cuPl = text => cuCalled(CU_PLACES, text);
 const cuTimes = (key, label) => ({ key, label, type: 'num', def: 'n', min: -4, max: 8, step: 0.05 });
-const cuDegrees = (key, label, def) => ({ key, label, type: 'num', def, min: -180, max: 180, step: 1 });
+const cuDegrees = (key, label, def) => ({ key, label, type: 'num', def, min: -180, max: 180, step: 1, deg: true });   // deg: the setting is an angle in degrees
 const cuQuatParts = [['w', 'Real part', '0.7071'], ['x', 'i part', '0'], ['y', 'j part', '0'], ['z', 'k part', '0.7071']]
   .map(([key, label, def]) => ({ key, label, type: 'num', def, min: -2, max: 2, step: 0.01 }));
 // Which point a move works on: the point z, c, or a point the rule has named. Every block that moves a point has
@@ -4469,12 +4477,12 @@ const CU_BLOCKS = {
   inv: { title: 'Sphere inversion', group: 'Moves of space',
     params: [cuPlace('centre', 'Centre of the sphere', 'vec(0, 0, 0)'), { key: 'radius', label: 'Radius', type: 'num', def: '1', min: 0.05, max: 4, step: 0.01 }],
     lines: (P, v) => [`${v('d')} = z - ${P.centre}`, `z = ${P.centre} + ${v('d')}*(${P.radius}*${P.radius} / dot(${v('d')}, ${v('d')}))`],
-    words: p => `turn space inside out through the sphere of radius ${p.radius} round ${cuPl(p.centre)}` },
-  rot: { title: 'Turn about an axis', group: 'Moves of space',
+    words: p => `invert space through the sphere of radius ${p.radius} round ${cuPl(p.centre)}` },
+  rot: { title: 'Rotate about an axis', group: 'Moves of space',
     params: [cuAxis('axis', 'Axis', 'vec(0, 0, 1)'), cuDegrees('angle', 'Angle, degrees', '90')],
     tween: true, lines: (P, v, t) => [`${v('axis')} = unit(${P.axis})`, `${v('ang')} = rad(${P.angle})${cuTwBy(t)}`,
       `z = z*cos(${v('ang')}) + cross(${v('axis')}, z)*sin(${v('ang')}) + ${v('axis')}*(dot(${v('axis')}, z)*(1 - cos(${v('ang')})))`],
-    words: p => `turn by ${p.angle}° about ${cuAx(p.axis)}` },
+    words: p => `rotate by ${p.angle}° about ${cuAx(p.axis)}` },
   mirror: { title: 'Mirror in a plane', group: 'Moves of space',
     params: [cuAxis('normal', 'The plane is square to', 'vec(0, 1, 0)'), cuPlace('through', 'and passes through', 'vec(0, 0, 0)')],
     tween: true, lines: (P, v, t) => [`${v('k')} = unit(${P.normal})`, `z = z - ${v('k')}*(2*dot(z - ${P.through}, ${v('k')}))${cuTwBy(t)}`],
@@ -4492,13 +4500,13 @@ const CU_BLOCKS = {
     tween: true, lines: (P, v, t) => [`${v('rho')} = len(vec(0, z.y, z.z))`, `${v('gap')} = pi / ${P.planes}`, `${v('psi')} = atan2(z.z, z.y)`, `${v('a')} = abs(${v('psi')})`,
       `${v('j')} = floor(${v('a')} / ${v('gap')} + 0.5)`, `${v('d')} = ${v('a')} - ${v('j')}*${v('gap')}`,
       `${v('near')} = if(2*${v('j')} < ${P.planes}, 1, if(2*${v('j')} == ${P.planes}, ${v('d')} < 0, 0))`,
-      `${v('turn')} = if(${v('near')}, if(mod(${v('j')}, 2) < 0.5, ${v('d')}, -${v('d')}), pi + if(mod(${P.planes} - ${v('j')}, 2) < 0.5, ${v('d')}, -${v('d')}))*if(${v('psi')} < 0, -1, 1)`,
-      ...(t ? [`${v('turn')} = ${v('psi')}*(1 - ${t}) + ${v('turn')}*${t}`] : []),
-      `z = vec(z.x, ${v('rho')}*cos(${v('turn')}), ${v('rho')}*sin(${v('turn')}))`],
+      `${v('ang')} = if(${v('near')}, if(mod(${v('j')}, 2) < 0.5, ${v('d')}, -${v('d')}), pi + if(mod(${P.planes} - ${v('j')}, 2) < 0.5, ${v('d')}, -${v('d')}))*if(${v('psi')} < 0, -1, 1)`,
+      ...(t ? [`${v('ang')} = ${v('psi')}*(1 - ${t}) + ${v('ang')}*${t}`] : []),
+      `z = vec(z.x, ${v('rho')}*cos(${v('ang')}), ${v('rho')}*sin(${v('ang')}))`],
     words: p => `fold towards the flat plane, across ${p.planes} creases along the x-axis` },
   softx: { title: 'Mirror at an angle along the x-axis, with a soft corner', group: 'Moves of space',
-    params: [{ key: 'angle', label: 'The mirror’s angle from the flat plane, degrees', type: 'num', def: '45', min: 0, max: 90, step: 1 },
-      { key: 'soft', label: 'How wide the soft corner is, degrees', type: 'num', def: '20', min: 0, max: 45, step: 1 }],
+    params: [{ key: 'angle', label: 'The mirror’s angle from the flat plane, degrees', type: 'num', def: '45', min: 0, max: 90, step: 1, deg: true },
+      { key: 'soft', label: 'How wide the soft corner is, degrees', type: 'num', def: '20', min: 0, max: 45, step: 1, deg: true }],
     // on its way the point goes round the x-axis, the short way, to where the mirror puts it; the whole step is the mirror itself
     tween: true, lines: (P, v, t) => (!t ? [`z = softmirror(z, rad(${P.angle}), rad(${P.soft}))`] : [`${v('to')} = softmirror(z, rad(${P.angle}), rad(${P.soft}))`,
       `${v('rho')} = len(vec(0, z.y, z.z))`, `${v('a')} = atan2(z.z, z.y)`, `${v('d')} = atan2(${v('to')}.z, ${v('to')}.y) - ${v('a')}`, `${v('d')} = ${v('d')} - 2*pi*floor(${v('d')}/(2*pi) + 0.5)`,
@@ -4521,13 +4529,13 @@ const CU_BLOCKS = {
     params: [...cuQuatParts, { key: 'side', label: 'The quaternion stands', type: 'choice', def: 'right', options: [['right', 'on the right: z · q'], ['left', 'on the left: q · z']] }],
     lines: P => [`z = aspoint(${P.side === 'left' ? `quat(${P.w}, ${P.x}, ${P.y}, ${P.z}) * asquat(z)` : `asquat(z) * quat(${P.w}, ${P.x}, ${P.y}, ${P.z})`})`],
     words: p => `multiply the point, read as x + yi + zj, by the quaternion ${p.w} + ${p.x}i + ${p.y}j + ${p.z}k` },
-  quatturn: { title: 'Turn by a quaternion', group: 'Quaternions and matrices',
+  quatturn: { title: 'Rotate by a quaternion', group: 'Quaternions and matrices',
     params: [...cuQuatParts],
-    // on its way the point goes round the quaternion's axis, the short way; the whole step is the quaternion's own turn
-    tween: true, lines: (P, v, t) => (!t ? [`z = turn(z, quat(${P.w}, ${P.x}, ${P.y}, ${P.z}))`] : [`${v('q')} = quat(${P.w}, ${P.x}, ${P.y}, ${P.z})`, `${v('ax')} = vec(${v('q')})`,
+    // on its way the point goes round the quaternion's axis, the short way; the whole step is the quaternion's own rotation
+    tween: true, lines: (P, v, t) => (!t ? [`z = rot(z, quat(${P.w}, ${P.x}, ${P.y}, ${P.z}))`] : [`${v('q')} = quat(${P.w}, ${P.x}, ${P.y}, ${P.z})`, `${v('ax')} = vec(${v('q')})`,
       `${v('ang')} = 2*atan2(len(${v('ax')}), abs(re(${v('q')})))*if(re(${v('q')}) < 0, -1, 1)`,
-      `z = if(${t} < 1, rot(z, ${v('ax')}, ${v('ang')}*${t}), turn(z, ${v('q')}))`]),
-    words: p => `turn by the quaternion ${p.w} + ${p.x}i + ${p.y}j + ${p.z}k (q · z · q⁻¹)` },
+      `z = if(${t} < 1, rot(z, ${v('ax')}, ${v('ang')}*${t}), rot(z, ${v('q')}))`]),
+    words: p => `rotate by the quaternion ${p.w} + ${p.x}i + ${p.y}j + ${p.z}k (q · z · q⁻¹)` },
   matrix: { title: 'Multiply by a matrix', group: 'Quaternions and matrices', grid: 3,
     params: ['1', '0', '0', '0', '1', '0', '0', '0', '1'].map((def, k) => ({ key: 'm' + k, label: `Row ${Math.floor(k / 3) + 1}, column ${k % 3 + 1}`, type: 'num', def, bare: true, step: 0.05 })),
     lines: P => [`z = mat(${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(k => P['m' + k]).join(', ')}) * z`],
@@ -4605,8 +4613,8 @@ const CU_OPS = [
   ['f_lon', 'Angle round the upright axis', 'Points', 'ang', [['Of', 'z']]],
   ['f_lat', 'Angle above the flat plane', 'Points', 'ang', [['Of', 'z']]],
   ['f_sph', 'A point from a length and two angles', 'Points', 'pt', [['Length', '1'], ['angle round', 'rad(0)'], ['angle above the plane', 'rad(45)']]],
-  ['f_rot', 'Turn a point about an axis', 'Points', 'pt', [['Point', 'z'], ['axis', 'vec(0, 0, 1)'], ['angle, in radians', 'rad(90)']]],
-  ['f_invert', 'Turn a point inside out through a sphere', 'Points', 'pt', [['Point', 'z'], ['centre', 'vec(0, 0, 0)'], ['radius', '1']]],
+  ['f_rot', 'Rotate a point about an axis', 'Points', 'pt', [['Point', 'z'], ['axis', 'vec(0, 0, 1)'], ['angle, in radians', 'rad(90)']]],
+  ['f_invert', 'Invert a point through a sphere', 'Points', 'pt', [['Point', 'z'], ['centre', 'vec(0, 0, 0)'], ['radius', '1']]],
   ['f_mirror', 'Mirror a point in a plane', 'Points', 'pt', [['Point', 'z'], ['the plane is square to', 'vec(0, 1, 0)']]],
   ['f_cpow', 'Flat power of x and y', 'Points', 'pt', [['Point', 'z'], ['power', 'n']]],
   ['f_foldx', 'Fold a point round the x-axis onto the flat plane', 'Points', 'pt', [['Point', 'c'], ['planes that land on the flat plane', '2']]],
@@ -4624,13 +4632,13 @@ const CU_OPS = [
   ['f_asquat', 'Read a point as a quaternion', 'Quaternion and matrix pieces', 'q', [['Point', 'z']]],
   ['f_aspoint', 'Read a quaternion as a point', 'Quaternion and matrix pieces', 'pt', [['Quaternion', 'asquat(z)']]],
   ['f_quat', 'Make a quaternion from four numbers', 'Quaternion and matrix pieces', 'q', [['Real part', '1'], ['i part', '0'], ['j part', '0'], ['k part', '0']]],
-  ['f_qrot', 'The quaternion of a turn about an axis', 'Quaternion and matrix pieces', 'q', [['Axis', 'vec(0, 0, 1)'], ['angle, in radians', 'rad(90)']]],
+  ['f_qrot', 'The quaternion of a rotation about an axis', 'Quaternion and matrix pieces', 'q', [['Axis', 'vec(0, 0, 1)'], ['angle, in radians', 'rad(90)']]],
   ['f_qpow', 'A quaternion to a power', 'Quaternion and matrix pieces', 'q', [['Quaternion', 'asquat(z)'], ['power', 'n']]],
   ['f_inv', 'One over a quaternion or a matrix', 'Quaternion and matrix pieces', 'q', [['Of', 'asquat(z)']]],
   ['f_re', 'Real part of a quaternion', 'Quaternion and matrix pieces', 'real', [['Of', 'asquat(z)']]],
-  ['f_turn', 'Turn a point by a quaternion', 'Quaternion and matrix pieces', 'pt', [['Point', 'z'], ['quaternion', 'qrot(vec(0, 0, 1), rad(90))']]],
+  ['f_turn', 'Rotate a point by a quaternion', 'Quaternion and matrix pieces', 'pt', [['Point', 'z'], ['quaternion', 'qrot(vec(0, 0, 1), rad(90))']]],
   ['f_mat', 'Make a matrix from nine numbers', 'Quaternion and matrix pieces', 'mx', ['1', '0', '0', '0', '1', '0', '0', '0', '1'].map((d, k) => [`Row ${Math.floor(k / 3) + 1}, column ${k % 3 + 1}`, d])],
-  ['f_rotmat', 'The matrix of a turn about an axis', 'Quaternion and matrix pieces', 'mx', [['Axis', 'vec(0, 0, 1)'], ['angle, in radians', 'rad(90)']]],
+  ['f_rotmat', 'The matrix of a rotation about an axis', 'Quaternion and matrix pieces', 'mx', [['Axis', 'vec(0, 0, 1)'], ['angle, in radians', 'rad(90)']]],
   ['f_transpose', 'Swap the rows and columns of a matrix', 'Quaternion and matrix pieces', 'mx', [['Of', 'rotmat(vec(0, 0, 1), rad(90))']]],
   ['f_det', 'Determinant of a matrix', 'Quaternion and matrix pieces', 'det3', [['Of', 'rotmat(vec(0, 0, 1), rad(90))']]],
 ];
@@ -4673,13 +4681,13 @@ const CU_STARTS = [
   { name: 'Mandelbulb, classic', lab: 'classic', steps: [['len'], ['lon'], ['lat', { from: 'axis' }], ['addc']] },
   { name: 'Split', lab: 'split', steps: [['formula', { text: 'z = vec(cpow(z, n).x, cpow(z, n).y, z.z^n)' }], ['addc']] },
   { name: 'Parts of no size', lab: 'partsnone', steps: [
-    ['formula', { text: 'lift = atan2((n + 1)*sin(phi), (n + 1)*cos(phi) - (n - 1)) - atan2(-(n - 1)*sin(phi), (n + 1) - (n - 1)*cos(phi))' }],
-    ['formula', { text: 'z = sph(radius^n, theta*n, lift)' }], ['addc']] },
+    ['formula', { text: 'lift = atan2((n + 1)*sin(z.phi), (n + 1)*cos(z.phi) - (n - 1)) - atan2(-(n - 1)*sin(z.phi), (n + 1) - (n - 1)*cos(z.phi))' }],
+    ['formula', { text: 'z = sph(z.radius^n, z.theta*n, lift)' }], ['addc']] },
   { name: 'Burning ship: two folds, then one plane', steps: [['fold', { normal: 'vec(1, 0, 0)' }], ['fold', { normal: 'vec(0, 1, 0)' }], ['len'], ['lon'], ['merc'], ['addc']] },
   { name: 'Box folds and a sphere fold (the Mandelbox)', bail: 12, reach: 4, say: 'This solid is wide, so the dots of the play start within 4 of the middle. Reset view, at the foot of the picture, shows all of that ball.', steps: [
     ['formula', { text: 'z = vec(clamp(z.x, -1, 1), clamp(z.y, -1, 1), clamp(z.z, -1, 1))*2 - z' }], ['formula', { text: 'rr = dot(z, z)' }],
     ['formula', { text: 'z = z * if(rr < 0.25, 4, if(rr < 1, 1/rr, 1))' }], ['scale', { by: '-1.5' }], ['addc']] },
-  { name: 'The two angles by name: radius, theta, phi', steps: [['formula', { text: 'z = sph(radius^n, theta*n, phi*n)' }], ['addc']] },
+  { name: 'The two angles by name: z.radius, z.theta, z.phi', steps: [['formula', { text: 'z = sph(z.radius^n, z.theta*n, z.phi*n)' }], ['addc']] },
   { name: 'A bare start: the length, then add c', steps: [['len'], ['addc']] },
 ];
 function cuStepOf(kind, p, id, sec) {
@@ -4838,9 +4846,16 @@ function cuBuild(steps) {
       // c). A step that only names a value changes none.
       const on = P.on !== undefined ? P.on : lines.some(l => l.z) ? 'z' : lines.some(l => l.c) ? 'c' : null;
       const tv = on && on !== 'z' && on !== 'c' ? ctx.vars.get(on) : null, T = tv ? tv.gl : on;
-      if (on === 'c' && sec === 'pre' && lines.some(l => !l.free)) throw new Error('Before the iterations, a step that changes c can use c, n, numbers, sliders and names made from those. The picture needs c before it knows the point, so z has no value for it yet. Among the steps of every iteration it can use anything.');
+      if (on === 'c' && sec === 'pre' && lines.some(l => !l.free)) {
+        // say which name it is, and for z's length or angle, how c's own is written
+        const name = lines.find(l => !l.free).needs, polar = name in CU_POLAR;
+        throw new Error(`“${name}” ${name === 'z' ? 'is the point' : polar ? `is the ${name === 'radius' ? 'length' : 'angle'} of the point z` : 'is made from the point z'}, and before the iterations a step that changes c cannot use z: the picture needs c before it knows the point.`
+          + (polar ? ` “${name}” is short for z.${name}: for c’s own, write c.${name}${name === 'radius' ? '' : ` (in degrees: deg(c.${name}))`}.` : '') + ' Among the steps of every iteration it can use anything.');
+      }
       const o = ord++, inner = lines.map(l => l.gl).join(' ');
-      const when = (sw < 0 ? '' : `uCu[${sw}] > 0.5 && `) + `${o}.0 <= cuAt`;
+      // A step that is switched off is left out, but for the one a play stands in: that one is taken as far as the
+      // play has come, so that it can be tried without being part of the rule.
+      const when = sw < 0 ? `${o}.0 <= cuAt` : `(uCu[${sw}] > 0.5 ? ${o}.0 <= cuAt : ${o}.0 == cuAt)`;
       // A step that changes a point can be taken part of the way, for a play that stands in the middle of it. A
       // block that knows its own in-between reads how far from tt; any other step is blended from start to end.
       const core = !on ? inner : B.tween ? `float tt = ${o}.0 == cuAt ? cuT : 1.0; ${inner}` : `vec3 zb = ${T}; ${inner} if (${o}.0 == cuAt) ${T} = cuBlend(zb, ${T}, cuT);`;
@@ -4976,8 +4991,9 @@ function cuRun(z, c, n, st, part, sec) {
   const P = cuProgram(), E = cuEnv(P, z, c, n, st, sec);
   for (const s of P.lists[E.sec]) {
     if (part && s.ord > part.ord) break;
-    if (s.sw >= 0 && !(P.K[s.sw] > 0.5)) continue;
-    const here = !!part && s.ord === part.ord, zb = here && s.on && !s.tween ? cuOnOf(E, s) : null;
+    const here = !!part && s.ord === part.ord;
+    if (s.sw >= 0 && !(P.K[s.sw] > 0.5) && !here) continue;   // switched off, and no play stands in it
+    const zb = here && s.on && !s.tween ? cuOnOf(E, s) : null;
     E.tt = here ? part.t : 1;
     for (const f of s.fns) f(E);
     if (zb) cuOnSet(E, s, cuBlend(zb, cuOnOf(E, s), part.t));
@@ -5017,9 +5033,10 @@ function cuEnvOn(E0, from, ord) {
   return E;
 }
 // what: left out, where the point z is then; 'on', where the point is that the step changes; 'c', what c is then.
+// The step is taken whether it is switched on or not: a play may stand in one that is off.
 function cuStepOn(E0, ord, t, what) {
   const P = cuProgram(), s = P.at[ord], of = E => (!s || !what ? E.z : what === 'c' ? E.c : cuOnOf(E, s));
-  if (!s || (s.sw >= 0 && !(P.K[s.sw] > 0.5))) return cuCapped(of(E0));
+  if (!s) return cuCapped(of(E0));
   const E = { ...E0, v: E0.v.slice(), tt: t };
   for (const f of s.fns) f(E);
   if (s.on && !s.tween) cuOnSet(E, s, cuBlend(cuOnOf(E0, s), cuOnOf(E, s), t));
@@ -5093,7 +5110,7 @@ function cuSplit(text, scope, taken) {
     else if (tr.part) { kind = 'o_part'; p.a0 = emit(tr.of); p.part = tr.part; }
     else {
       const args = tr.a.map(x => emit(x));
-      kind = tr.op ? 'o_' + tr.op : 'f_' + tr.fn;
+      kind = tr.op ? 'o_' + tr.op : tr.fn === 'rot' && args.length === 2 ? 'f_turn' : 'f_' + tr.fn;
       if (!CU_BLOCKS[kind] || CU_BLOCKS[kind].arity !== args.length) { kind = 'formula'; p.text = `${name === undefined ? (name = fresh('t')) : name} = ${tr.fn}(${args.join(', ')})`; }
       else args.forEach((x, k) => { p['a' + k] = x; });
     }
@@ -5127,6 +5144,8 @@ function cuTaken(steps) {
 // The steps taken once stand at the two ends: before the first pass u runs below 0, one for each step of "once,
 // before" that a play can stand in (cuLow), and after the last pass it runs on above the steps of the pass, one for
 // each such step of "once, after" (cuHigh).
+// A step that is switched off can be tried: S.custom.play.peek is its id. For as long as it is tried it counts among
+// the steps a play can stand in, and it is taken only while the play stands in it (see `when` in cuBuild).
 const cuBoth = () => !!S.custom.both && !S.learn && S.mode !== 'k';   // both pictures side by side
 // Do the steps taken once before leave the middle where it is? Asked for one c that is no special case. Then the
 // first iteration of a Mandelbrot picture finds every point there.
@@ -5139,7 +5158,11 @@ const cuLead = () => ((S.mode === 'm' || cuBoth()) && S.z0.trim() === '0' && cuP
 const cuFirst = () => 1 - cuLead();
 const cuPasses = () => Math.max(1, Math.round(S.iter) - cuLead());
 // the steps of a section that a play can stand in: those that change a point, which is z, c or a point of the rule's own
-const cuPlayable = (sec, P = cuProgram()) => P.lists[sec].filter(s => s.on && (s.sw < 0 || P.K[s.sw] > 0.5));
+function cuPeek(P = cuProgram()) {
+  const id = S.custom && S.custom.play ? S.custom.play.peek : undefined;
+  return id !== undefined && P.run.some(s => s.id === id && s.on && s.sw >= 0 && !(P.K[s.sw] > 0.5)) ? id : null;
+}
+const cuPlayable = (sec, P = cuProgram()) => { const peek = cuPeek(P); return P.lists[sec].filter(s => s.on && (s.sw < 0 || P.K[s.sw] > 0.5 || s.id === peek)); };
 const cuMoving = (P = cuProgram()) => cuPlayable('main', P);
 const cuCstep = (P = cuProgram()) => cuPlayable('pre', P).find(s => s.on === 'c') || null;   // the first step that changes c before the iterations
 const cuLow = pass => (pass === cuFirst() ? -cuPlayable('pre').length : 0);                          // where u begins in this pass
@@ -5149,7 +5172,8 @@ function cuPlayAt() {
   const np = cuPasses(), m = cuMoving().length, pl = S.custom.play;
   if (!pl || !m) return { pass: np, u: cuHigh(np), end: true };
   const pass = clamp(Math.round(pl.pass), cuFirst(), np), u = clamp(+pl.u || 0, cuLow(pass), cuHigh(pass));
-  return { pass, u, end: pass >= np && u >= cuHigh(np) };
+  // a step that is tried keeps the play, also where it is the last of the last iteration
+  return { pass, u, end: pass >= np && u >= cuHigh(np) && cuPeek() === null };
 }
 // Where the play stands, as the section and the step of it: { sec, pass, list, x } with list the steps of that
 // section a play can stand in and x how many of them are taken (0 to list.length; it need not be whole).
@@ -5215,10 +5239,10 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
   const once = step => [step[0], step[1], 'pre'];
   const onePlane = [['len'], ['lon'], ['merc']];
   // the grid of Parts on a doubling grid: the flat point u under the middle of the box that holds the point
-  const grid = finer => [F('m = max(2, round(abs(n)))'), F('el = abs(phi)'),
+  const grid = finer => [F('m = max(2, round(abs(n)))'), F('el = abs(z.phi)'),
     F(`a = pi/2*m^(-floor(log(pi/2/el)/log(m)) - 1${finer})`),
-    F('u = if(el < 0.00002, flat(z), vec(cos(a*floor(theta/a + 0.5)), sin(a*floor(theta/a + 0.5)), 0)*exp(a*floor(log(radius)/a + 0.5)))')];
-  // the turn and scaling that fits the flat power at u, and the Möbius move that fits its bend as well
+    F('u = if(el < 0.00002, flat(z), vec(cos(a*floor(z.theta/a + 0.5)), sin(a*floor(z.theta/a + 0.5)), 0)*exp(a*floor(log(z.radius)/a + 0.5)))')];
+  // the rotation and scaling that fits the flat power at u, and the Möbius move that fits its bend as well
   const fitTurn = [F('pw = cpow(u, n)'), F('b = cpow(u, n - 1)*n'), F('o = cmul(b, flat(z) - u)'), F('z = vec(pw.x + o.x, pw.y + o.y, len(b)*z.z)')];
   const fitBend = [F('s = 2/(n - 1)'), F('pw = cpow(u, n)'), F('g = cmul(pw, u)*(n*s*s)'), F('q = flat(z) - u*(1 + s)'), F('dd = max(dot(q, q) + z.z*z.z, 1e-30)'),
     F('o = cmul(g, vec(q.x, -q.y, 0))'), F('z = vec((1 - n*s)*pw.x - o.x/dd, (1 - n*s)*pw.y - o.y/dd, len(g)*z.z/dd)')];
@@ -5242,24 +5266,24 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       F('pa = if(on, vec(d.x, rho*cos(t*w), rho*sin(t*w)), d)'), F('aa = sph(1, lon(pa)*n, asin(tanh(n*atanh(pa.z))))'),
       F('pb = vec(d.x, rho*cos(t*w - w), rho*sin(t*w - w))'), F('bb = rot(sph(1, lon(pb)*n, asin(tanh(n*atanh(pb.z)))), vec(1, 0, 0), w)'),
       F('co = clamp(dot(aa, bb), -1, 1)'), F('e = bb - aa*co'), F('om = atan2(len(e), co)*s'), F('dd = aa*cos(om) + e*(sin(om)/max(len(e), 1e-30))'),
-      F('z = vec(dd.x, fl*(dd.y*cj - dd.z*sj), fl*(dd.y*sj + dd.z*cj))*radius^n'), ['addc']] },
+      F('z = vec(dd.x, fl*(dd.y*cj - dd.z*sj), fl*(dd.y*sj + dd.z*cj))*z.radius^n'), ['addc']] },
     { name: 'Bulbs about the axis', lab: 'axisbulb', steps: [num('bulbs', 1, -4, 4), num('wob', 0.2, -1, 1), num('reach', 45, 1, 90), ['quatpow'],
-      F('rho = len(vec(0, z.y, z.z))'), F('co = z.y/rho'), F('si = z.z/rho'), F('t = clamp(rho/(radius*sin(rad(reach))), 0, 1)'),
+      F('rho = len(vec(0, z.y, z.z))'), F('co = z.y/rho'), F('si = z.z/rho'), F('t = clamp(rho/(z.radius*sin(rad(reach))), 0, 1)'),
       F('ang = atan2(si, co)*round(bulbs) + wob*t*t*(3 - 2*t)*2*(2*co*si)*(co*co - si*si)'),
       F('z = if(rho > 0, vec(z.x, rho*cos(ang), rho*sin(ang)), z)'), ['addc']] },
     { name: 'Pillow (the smooth layout, power 2)', lab: 'pillow', q: { layout: 1 }, only2: true, say: 'These steps are the second layout of the Pillow entry, at the power 2. Its first layout, the creased one, is not written as steps.', steps: [
       F('d = unit(z)'), F('w = vec(d.x, d.y, 0)/(1 + abs(d.z))'), F('w3 = cpow(w, 3)'), F('nu = w3*2 - vec(1, 0, 0)'), F('de = cmul(w, vec(2, 0, 0) - w3)'),
-      F('z = vec(2*dot(nu, de), 2*(nu.y*de.x - nu.x*de.y), if(d.z > 0, dot(de, de) - dot(nu, nu), dot(nu, nu) - dot(de, de))*(d.z != 0))*(radius^2/(dot(nu, nu) + dot(de, de)))'), ['addc']] },
+      F('z = vec(2*dot(nu, de), 2*(nu.y*de.x - nu.x*de.y), if(d.z > 0, dot(de, de) - dot(nu, nu), dot(nu, nu) - dot(de, de))*(d.z != 0))*(z.radius^2/(dot(nu, nu) + dot(de, de)))'), ['addc']] },
     { name: 'Quaternions, 4D (the slice it starts with)', lab: 'quat4', say: 'With its dials at their start this entry is the quaternion power: its slice of four dimensions is the three you see. The dials that move the slice are not part of these steps.', steps: [['quatpow'], ['addc']] },
     { name: 'Rotor square (geometric algebra)', lab: 'rotor', steps: [['len'], ['lat', { axis: 'vec(0, 0, 1)', from: 'axis' }], ['addc']] },
     { name: 'Rotor square with a frame', lab: 'rotorframe', steps: [
-      F('q = quat(cos(phi/2)*cos(theta/2), sin(phi/2)*sin(theta/2), -sin(phi/2)*cos(theta/2), cos(phi/2)*sin(theta/2))'),
-      F('z = turn(vec(1, 0, 0), q^n)*radius^n'), ['addc']] },
-    { name: 'Kleinian squaring, one plane', lab: 'kleinsq', steps: [F('d = unit(z)'), ...caps, F('z = h*radius^n'), ['addc']] },
+      F('q = quat(cos(z.phi/2)*cos(z.theta/2), sin(z.phi/2)*sin(z.theta/2), -sin(z.phi/2)*cos(z.theta/2), cos(z.phi/2)*sin(z.theta/2))'),
+      F('z = rot(vec(1, 0, 0), q^n)*z.radius^n'), ['addc']] },
+    { name: 'Kleinian squaring, one plane', lab: 'kleinsq', steps: [F('d = unit(z)'), ...caps, F('z = h*z.radius^n'), ['addc']] },
     { name: 'Kleinian squaring, two planes', lab: 'kleinsq2', steps: [F('sw = abs(unit(z).z) > abs(unit(z).y)'), F('d = if(sw, vec(unit(z).x, unit(z).z, unit(z).y), unit(z))'), ...caps,
-      F('z = if(sw, vec(h.x, h.z, h.y), h)*radius^n'), ['addc']] },
+      F('z = if(sw, vec(h.x, h.z, h.y), h)*z.radius^n'), ['addc']] },
     { name: 'Square pillow (power 2)', lab: 'sqpillow', only2: true, say: 'These steps are the Square pillow at the power 2: four of their numbers are the layout worked out for that power.', steps: [
-      F('den = radius + abs(z.z)'), F('px = z.x/den'), F('py = z.y/den'), F('xx = 4*px*px'), F('yy = py*py'), F('c1 = 1 - xx - 2*yy'), F('a1 = 2 - yy'), F('s1 = sqrt(c1*c1 + 4*a1*yy)'),
+      F('den = z.radius + abs(z.z)'), F('px = z.x/den'), F('py = z.y/den'), F('xx = 4*px*px'), F('yy = py*py'), F('c1 = 1 - xx - 2*yy'), F('a1 = 2 - yy'), F('s1 = sqrt(c1*c1 + 4*a1*yy)'),
       F('b = min(1, min(px*px + yy, if(c1 >= 0, 2*yy/(c1 + s1), (s1 - c1)/(2*a1))))'), newton, newton, newton, newton, newton,
       F('beta = if(yy > 0, b, max(0, 2*abs(px) - 1))'), F('bb = sqrt(beta)'),
       F('cn = if(bb > 0, 2*px/(1 + beta), clamp(2*px, -1, 1))'), F('sn = if(bb > 0, py/bb, sqrt(max(1 - cn*cn, 0)))'), F('ln = sqrt(cn*cn + sn*sn)'),
@@ -5267,7 +5291,7 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       F('wr = 2*t - floor(2*t)'), F('back = wr > 0.5'), F('t2 = if(back, 1 - wr, wr)'), F('north = t2 >= 1/3'),
       F('b2 = clamp(if(north, sinh(2.268416057338147*(0.5 - t2))/0.38714057818890835, sinh(6.066845545340116*t2)/3.7115963892637227), 0, 1)'),
       F('qx = (1 + b2*b2)/2*(cn*cn - sn*sn)/(ln*ln)'), F('qy = b2*if(back, 1, -1)*2*cn*sn/(ln*ln)'), F('q2 = qx*qx + qy*qy'),
-      F('z = vec(2*qx, 2*qy, if(north, 1 - q2, q2 - 1))*(radius^n/(1 + q2))'), ['addc']] },
+      F('z = vec(2*qx, 2*qy, if(north, 1 - q2, q2 - 1))*(z.radius^n/(1 + q2))'), ['addc']] },
     { name: 'Turning plane, away', lab: 'turnaway', steps: [F('m = max(1, round(abs(n)))'), F('ang = atan2(z.z, z.y)'), F('psi = (1 - m)*(ang - sin(2*m*ang)/(2*m))'),
       F('z = rot(z, vec(1, 0, 0), -psi)'), ...onePlane, F('z = rot(z, vec(1, 0, 0), psi)'), ['addc']] },
     { name: 'Turning plane, along', lab: 'turnalong', steps: [F('m = max(1, round(abs(n)))'), F('ang = atan2(z.z, z.y)'), F('psi = ang - sin(2*m*ang)/(2*m)'),
@@ -5285,14 +5309,14 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       F('a = atan2(abs(z.z), abs(z.y))'), F('t = a - 2*b*floor(a/(2*b)) - b'), F('g = b - if(abs(t) >= w, abs(t), t*t/(2*w) + w/2)'),
       F('z = vec(z.x, if(z.y < 0, -1, 1)*rho*cos(g), if(z.z < 0, -1, 1)*rho*sin(g))'), ...onePlane, ['addc']] },
     { name: 'Even pillow', lab: 'evenpillow', steps: [F('d = unit(z)'), F('rr = sqrt(2/(1 + sqrt(max(1 - 4*d.x*d.x*d.z*d.z, 0))))'), F('ca = clamp(rr*d.x, -1, 1)'), F('sl = clamp(rr*d.z, -1, 1)'),
-      F('sa = if(d.y < 0, -1, 1)*sqrt(max(1 - ca*ca, 0))'), F('z = unit(vec(cos(atan2(sa, ca)*n), sin(atan2(sa, ca)*n)*cos(asin(sl)*n), sin(asin(sl)*n)))*radius^n'), ['addc']] },
+      F('sa = if(d.y < 0, -1, 1)*sqrt(max(1 - ca*ca, 0))'), F('z = unit(vec(cos(atan2(sa, ca)*n), sin(atan2(sa, ca)*n)*cos(asin(sl)*n), sin(asin(sl)*n)))*z.radius^n'), ['addc']] },
     { name: 'Quaternion square, axis by step', lab: 'tiltstep', steps: [num('tilt0', 0, -90, 90), num('more', 90, -180, 180), F('tilt = tilt0 + (max(count, 1) - 1)*more'),
       ['rot', { angle: 'tilt' }], ['quatpow'], ['rot', { angle: '-n*tilt' }], ['addc']] },
     { name: 'All axes, nearest to upright', lab: 'nearaxis', steps: [F('u = unit(z)'), F('d = u - vec(1, 0, 0)'), F('m = unit(vec(0, 0, 1) - d*(d.z/dot(d, d)))'), F('s2 = 1 - m.x*m.x'),
-      F('z = rot(u, m, atan2((m.z*u.y - m.y*u.z)/s2, (u.x - m.x*m.x)/s2)*(n - 1))*radius^n'), ['addc']] },
+      F('z = rot(u, m, atan2((m.z*u.y - m.y*u.z)/s2, (u.x - m.x*m.x)/s2)*(n - 1))*z.radius^n'), ['addc']] },
     { name: 'All axes, nearest to the last one', lab: 'lastaxis', steps: [['keep', { name: 'h', start: 'vec(0, 0, 1)' }], F('u = unit(z)'), F('d = u - vec(1, 0, 0)'),
       F('m = same(unit(h - d*(dot(h, d)/dot(d, d))))'), F('s2 = 1 - m.x*m.x'), F('h = m'),
-      F('more = same(atan2((m.z*u.y - m.y*u.z)/s2, (u.x - m.x*m.x)/s2)*(n - 1))'), F('z = rot(u, m, more)*radius^n'), ['addc']] },
+      F('more = same(atan2((m.z*u.y - m.y*u.z)/s2, (u.x - m.x*m.x)/s2)*(n - 1))'), F('z = rot(u, m, more)*z.radius^n'), ['addc']] },
     { name: 'Parts on a doubling grid, turn and scale', lab: 'partsturn', steps: [...grid(''), ...fitTurn, ['addc']] },
     { name: 'Parts on a doubling grid, Möbius', lab: 'partsbend', steps: [num('finer', 0, 0, 6), ...grid(' - round(finer)'), ...fitBend, ['addc']] },
     { name: 'Parts on a square grid', lab: 'partssquare', steps: [F('hh = abs(z.z)'), F('sz = 2^floor(log(hh)/log(2))'),
@@ -15806,16 +15830,16 @@ const cuOn = () => ap().id === 'custom' && S.mode !== 'k';
 const cuSpec = (st, key) => CU_BLOCKS[st.kind].params.find(x => x.key === key);
 const CU_HELP = `<p class="note"><b>A point</b> is written <code>vec(x, y, z)</code>, as in <code>vec(0, 0, 1)</code> for one step straight up. Every box for a point takes that, a name such as <code>c</code> or <code>z</code>, or a formula.</p>
 <p class="note"><b>A formula step</b> is one line, <code>name = formula</code>. The name <code>z</code> is the point: a line that starts <code>z =</code> moves it. Any other name is yours and can be used in every step after it.</p>
-<p class="note"><b>Given:</b> <code>z</code> the point, <code>c</code>, <code>n</code> the Power dial, <code>pi</code>; the point as a length and two angles: <code>radius</code> (how far from the middle), <code>theta</code> (the angle round the upright axis) and <code>phi</code> (the angle of the height above the flat plane), so that <code>sph(radius, theta, phi)</code> is the point itself; and from the orbit <code>first</code> (its first point), <code>last</code> (the point of the iteration before), <code>point(2)</code> (its second point, and so on by number; <code>point(0)</code> is the point this iteration began with and <code>point(-1)</code> the one before), <code>mean</code> (the average of its points so far) and <code>count</code> (which iteration this is). <code>z</code> is always the point where it is now, after the steps before this one.</p>
+<p class="note"><b>Given:</b> <code>z</code> the point, <code>c</code>, <code>n</code> the Power dial, <code>pi</code>; every point as a length and two angles, written after the point: <code>z.radius</code> (how far from the middle), <code>z.theta</code> (the angle round the upright axis) and <code>z.phi</code> (the angle of the height above the flat plane), so that <code>sph(z.radius, z.theta, z.phi)</code> is z itself, and the same for c and for a point you have named, as in <code>c.phi</code> (<code>radius</code>, <code>theta</code> and <code>phi</code> alone are short for those of z); and from the orbit <code>first</code> (its first point), <code>last</code> (the point of the iteration before), <code>point(2)</code> (its second point, and so on by number; <code>point(0)</code> is the point this iteration began with and <code>point(-1)</code> the one before), <code>mean</code> (the average of its points so far) and <code>count</code> (which iteration this is). <code>z</code> is always the point where it is now, after the steps before this one.</p>
 <p class="note"><b>Three sections.</b> The steps under “Every iteration” are the rule that is repeated. The steps under “Once, before the iterations” are taken one time, before iteration 1: they move the point where it starts. The steps under “Once, after the iterations” are taken one time, after the last iteration. A slider can be used by every step after it, in any section; any other name stays in its own section.</p>
-<p class="note"><b>Works on.</b> A step that moves a point has a “Works on” menu: the point <code>z</code>, <code>c</code>, or a point you have named in an earlier step of the same section, as in <code>w = z</code>. A formula can change c too: <code>c = c*0.9</code>. A change of c lasts: the orbit carries the new c on to its next iteration. Before the iterations a step that changes c can use c, n, numbers and sliders, but not z.</p>
+<p class="note"><b>Works on.</b> A step that moves a point has a “Works on” menu: the point <code>z</code>, <code>c</code>, or a point you have named in an earlier step of the same section, as in <code>w = z</code>. A formula can change c too: <code>c = c*0.9</code>. A change of c lasts: the orbit carries the new c on to its next iteration. Before the iterations a step that changes c can use c, n, numbers and sliders, but not z: for c’s own angle there write <code>c.phi</code>, not <code>z.phi</code>.</p>
 <p class="note"><b><code>same(x)</code></b> is for the picture’s distance estimate, which follows a few orbits right beside each point: inside it they take the value the point itself has. Use it for a value that jumps from one point to its neighbour, such as a box’s middle.</p>
 <p class="note"><b>A value the orbit keeps</b> (a kind of step) gives a name that does not start afresh: what it holds when an iteration ends is what it holds in the next. Any later step may give it a new value, as in <code>total = total + radius</code>.</p>
 <p class="note"><b>Kinds:</b> a number, a point with the parts <code>.x .y .z</code>, a quaternion <code>quat(w, x, y, z)</code>, and a matrix <code>mat( )</code> of nine numbers row by row, or of three points as its columns.</p>
 <p class="note"><b>Signs:</b> <code>+ − * / ^</code>, and <code>&lt; &gt; &lt;= &gt;= == !=</code>, which give 1 or 0. A number times a point stretches it, a matrix times a point moves it, and two quaternions multiply as quaternions.</p>
-<p class="note"><b>Numbers:</b> <code>sin cos tan asin acos atan atan2(y, x) sinh cosh tanh atanh exp log sqrt abs floor ceil round fract sign min max mod pow clamp(x, lo, hi) mix(a, b, t) step smoothstep rad(degrees) deg(radians) if(test, a, b)</code>. Angles are in radians: write <code>rad(90)</code> for 90°.</p>
+<p class="note"><b>Numbers:</b> <code>sin cos tan asin acos atan atan2(y, x) sinh cosh tanh atanh exp log sqrt abs floor ceil round fract sign min max mod pow clamp(x, lo, hi) mix(a, b, t) step smoothstep rad(degrees) deg(radians) if(test, a, b)</code>. Angles are in radians, in what <code>sin</code>, <code>cos</code> and <code>tan</code> take, in what <code>asin</code>, <code>acos</code>, <code>atan</code> and <code>atan2</code> give, and in <code>z.theta</code> and <code>z.phi</code>: write <code>rad(90)</code> for 90°, and <code>deg(z.phi)</code> for an angle in degrees, which is what a box that asks for degrees needs.</p>
 <p class="note"><b>Points:</b> <code>len dot cross unit dist abs each(a, b) flat(v) lon(v) lat(v) sph(length, lon, lat) rot(v, axis, angle) invert(v, centre, radius) mirror(v, normal) cpow(v, n) conj(v)</code>.</p>
-<p class="note"><b>Quaternions and matrices:</b> <code>asquat(v)</code> reads a point as x + yi + zj and <code>aspoint(q)</code> reads it back; <code>quat(v) vec(q) re(q) conj(q) inv(q) q^n qrot(axis, angle) turn(v, q)</code>; <code>rotmat(axis, angle) transpose(m) det(m) inv(m)</code>.</p>`;
+<p class="note"><b>Quaternions and matrices:</b> <code>asquat(v)</code> reads a point as x + yi + zj and <code>aspoint(q)</code> reads it back; <code>quat(v) vec(q) re(q) conj(q) inv(q) q^n qrot(axis, angle) rot(v, q)</code>; <code>rotmat(axis, angle) transpose(m) det(m) inv(m)</code>.</p>`;
 
 // The menu of a number or a point setting: where its value comes from. Returns { mode, html } for the value the
 // step holds now: mode is the menu's choice ('#num' a number, '#xyz' three numbers, '#f' a formula, or the name
@@ -15829,9 +15853,17 @@ function cuSource(st, sp) {
     opts = [...sp.picks.map(o => [o[1], o[0]]), ['#xyz', 'my own numbers x, y, z'], ...mine.map(name => [name, 'your point ' + name]), ['#f', 'a formula']];
     mode = CUI.formula.has(st.id + ':' + sp.key) ? '#f' : pick ? pick[1] : cuXyz(raw) ? '#xyz' : mine.includes(raw) ? raw : '#f';
   } else {
-    const given = [['n', `n (Power dial: ${cuShort(S.n)})`], ['radius', 'radius: how far the point is from the middle'], ['theta', 'theta: its angle round the upright axis'], ['phi', 'phi: the angle of its height']];
+    // n, and the length and the two angles of every point at hand, each written after its point: of z, of c and of
+    // the rule's own points. An angle is in radians, so a setting in degrees gets deg( ) of it. Before the
+    // iterations a step that changes c cannot read z, and is not offered what belongs to z. A setting that holds
+    // one of the short names (theta for z.theta) shows as that choice.
+    const ang = name => (sp.deg ? `deg(${name})` : name), unit = sp.deg ? ', in degrees' : '';
+    const polar = (pre, the, its) => [[pre + 'radius', `${pre}radius: how far ${the} is from the middle`], [ang(pre + 'theta'), `${ang(pre + 'theta')}: ${its} angle round the upright axis${unit}`], [ang(pre + 'phi'), `${ang(pre + 'phi')}: the angle of ${its} height${unit}`]];
+    const noZ = cuSecOf(st) === 'pre' && st.p.on === 'c';
+    const given = [['n', `n (Power dial: ${cuShort(S.n)})`], ...(noZ ? [] : polar('z.', 'z', 'z’s')), ...polar('c.', 'c', 'c’s'), ...scope.filter(x => x[1] === 'v').flatMap(x => polar(x[0] + '.', x[0], x[0] + '’s'))];
     opts = [['#num', 'a number'], ...given, ...mine.map(name => [name, 'your number ' + name]), ['#f', 'a formula']];
-    mode = CUI.formula.has(st.id + ':' + sp.key) ? '#f' : cuIsNum(raw) ? '#num' : given.some(o => o[0] === raw) || mine.includes(raw) ? raw : '#f';
+    const full = raw.replace(/(^|[^\w.])(radius|theta|phi)(?![\w(])/g, '$1z.$2');
+    mode = CUI.formula.has(st.id + ':' + sp.key) ? '#f' : cuIsNum(raw) ? '#num' : given.some(o => o[0] === full) ? full : mine.includes(raw) ? raw : '#f';
   }
   return { mode, html: opts.map(o => `<option value="${cuEsc(o[0])}"${o[0] === mode ? ' selected' : ''}>${cuEsc(o[1])}</option>`).join('') };
 }
@@ -15849,21 +15881,28 @@ function cuRow(st, sp) {
   const text = extra => `<input type="text" id="${id}" class="cu-in" data-key="${key}" value="${cuEsc(raw)}" spellcheck="false" autocomplete="off" autocapitalize="off"${extra || ''}>`;
   const box = (own, more) => `<input type="number" ${own ? `id="${id}" ` : ''}class="cu-in cu-nbox" data-num="${key}" step="${sp.step || 'any'}" value="${cuIsNum(raw) ? cuNum(raw) : ''}"${more || ''}>`;
   const range = `<input type="range" class="cu-range" data-num="${key}" aria-label="${lab}, slider">`;
-  let cell;
+  // a formula has a box as wide as the step, which wraps its text and is as tall as the text needs (cuAreasFit)
+  const area = extra => `<textarea class="cu-in cu-area" data-key="${key}" rows="1" spellcheck="false" autocomplete="off" autocapitalize="off"${extra || ''}>${cuEsc(raw)}</textarea>`;
+  let cell, under = '';
   if (sp.type === 'choice') cell = `<select id="${id}" class="cu-in" data-key="${key}">${sp.options.map(o => `<option value="${o[0]}"${o[0] === st.p[key] ? ' selected' : ''}>${cuEsc(o[1])}</option>`).join('')}</select>`;
   else if (sp.type === 'target') cell = `<select id="${id}" class="cu-in cu-on-pick" data-key="${key}" title="The point this step works on: the point z, c, or a point that an earlier step of this section has named.">${cuTargets(st)}</select>`;
-  else if (sp.type === 'text' || sp.type === 'name') cell = text();
+  else if (sp.type === 'text') cell = area(` id="${id}"`);
+  else if (sp.type === 'name') cell = text();
   else if (sp.type === 'any') cell = text(` list="cu-dl-${st.id}"`) + range;
   else if (sp.type === 'num' && (sp.bare || sp.fixed)) cell = cuIsNum(raw) ? box(true) : text();
   else if (sp.type === 'num' && sp.own) cell = box(true) + range;
   else {
     const src = cuSource(st, sp), xyz = sp.type === 'vec' ? cuXyz(raw) : null;
     cell = `<select id="${id}" class="cu-src" data-src="${key}" title="Where this value comes from">${src.html}</select>`;
-    if (src.mode === '#f') cell += `<input type="text" class="cu-in" data-key="${key}" value="${cuEsc(raw)}" aria-label="${lab}, formula" spellcheck="false" autocomplete="off" autocapitalize="off" list="cu-dl-${st.id}">`;
+    if (src.mode === '#f') under = area(` aria-label="${lab}, formula"`);   // on a line of its own, under the menu
     else if (xyz) cell += '<span class="cu-xyz">' + xyz.map((x, k) => `<label>${'xyz'[k]}<input type="number" class="cu-in cu-nbox" data-xyz="${key}" step="0.05" value="${x}" aria-label="${lab}, ${'xyz'[k]}"></label>`).join('') + '</span>';
     else if (src.mode === '#num') cell += box(false, ` aria-label="${lab}, number"`) + range;
   }
-  return `<div class="cu-row${sp.type === 'text' ? ' cu-row-text' : ''}" data-row="${key}"><label class="label" for="${id}">${lab}</label><div class="cu-cell">${cell}</div></div>`;
+  return `<div class="cu-row${sp.type === 'text' ? ' cu-row-text' : ''}" data-row="${key}"><label class="label" for="${id}">${lab}</label><div class="cu-cell">${cell}</div>${under}</div>`;
+}
+// A formula's box is as tall as its text needs at the width it has now. root: one step; left out, the whole list.
+function cuAreasFit(root) {
+  for (const t of (root || $('cuSteps')).querySelectorAll('.cu-area')) { t.style.height = 'auto'; t.style.height = t.scrollHeight + 2 + 'px'; }
 }
 // A slider shows only while its setting is a plain number, and reaches as far as that number.
 function cuRangeSync(li, st) {
@@ -15879,7 +15918,7 @@ function cuRangeSync(li, st) {
   });
 }
 // The names a formula of this step can use, for the lists its boxes offer.
-const cuNamesHtml = st => Object.keys(CU_GIVEN).concat((cuProgram().scopes[st.id] || []).map(x => x[0])).map(name => `<option value="${name}">`).join('');
+const cuNamesHtml = st => Object.keys(CU_GIVEN).concat(Object.keys(CU_POLAR).flatMap(k => ['z.' + k, 'c.' + k]), (cuProgram().scopes[st.id] || []).map(x => x[0])).map(name => `<option value="${name}">`).join('');
 // The three sections of the list, each with a line that says when its steps are taken.
 const CU_SEC_SAY = {
   pre: ['Once, before the iterations', 'Taken one time, before iteration 1.'],
@@ -15922,6 +15961,7 @@ function cuRender() {
   }
   $('cuEmpty').hidden = steps.length > 0;
   CUI.now = null; CUI.barSig = '';
+  cuAreasFit();
 }
 // The menus and name lists follow the rule without the boxes being made again: a name may have come or gone, and
 // the Power dial may have moved.
@@ -15987,17 +16027,41 @@ function cuSetSec(st, sec) { if (sec === 'main') delete st.sec; else st.sec = se
 // The bar under the picture: which iteration is on show, how far through its steps, and the buttons that move it.
 const CU_SPEEDS = { slow: 3.2, normal: 1.6, fast: 0.8 };   // seconds a play takes for one step
 function cuPlayStop() { CUI.playing = false; CUI.until = null; const b = $('cuPlay'); if (b) b.textContent = 'Play'; }
+// A switched-off step that is tried (cuPeek) has a place of its own on the bar for as long as the play stands in it.
+// cuPeekSlot is that place, { sec, a }: from a to a + 1 in u (null: no step is tried). cuPeekOut is where a place u
+// of the bar lies once the step is no longer counted: what came after it is one lower, and among the steps taken
+// once before, which are counted back from 0, what came before it is one higher. cuUnpeek ends the trial: the play
+// then stands where that step is, without it.
+function cuPeekSlot() {
+  const id = cuPeek();
+  if (id === null) return null;
+  const me = cuProgram().run.find(s => s.id === id), list = cuPlayable(me.sec);
+  return { sec: me.sec, a: (me.sec === 'pre' ? -list.length : me.sec === 'post' ? cuMoving().length : 0) + list.findIndex(s => s.id === id) };
+}
+const cuPeekOut = (slot, u) => (slot.sec === 'pre' ? (u <= slot.a ? u + 1 : Math.max(u, slot.a + 1)) : u >= slot.a + 1 ? u - 1 : Math.min(u, slot.a));
+function cuUnpeek() {
+  const pl = S.custom.play, slot = cuPeekSlot();
+  if (pl && pl.peek !== undefined) S.custom.play = { pass: pl.pass, u: slot ? cuPeekOut(slot, pl.u) : pl.u };
+}
 function cuGo(pass, u, look) {
+  // a move out of the place of the step that is tried, or to another iteration, ends the trial
+  const slot = cuPeekSlot(), was = S.custom.play;
+  let peek;
+  if (slot) {
+    if (clamp(Math.round(pass), cuFirst(), cuPasses()) === was.pass && u >= slot.a && u <= slot.a + 1) peek = was.peek;
+    else { u = cuPeekOut(slot, u); S.custom.play = { pass: was.pass, u: was.u }; }
+  }
   const np = cuPasses();
   pass = clamp(Math.round(pass), cuFirst(), np); u = clamp(u, cuLow(pass), cuHigh(pass));
-  S.custom.play = pass >= np && u >= cuHigh(np) ? null : { pass, u };
+  S.custom.play = peek !== undefined ? { pass, u, peek } : pass >= np && u >= cuHigh(np) ? null : { pass, u };
   CUI.look = look === undefined || !S.custom.play ? null : look;
   cuBarSync(); cuOverDraw(); touch();
 }
 function cuPlayFrame(now) {
   CUI.raf = 0;
   if (!CUI.playing || !cuOn()) { cuPlayStop(); return; }
-  const at = cuPlayAt(), hi = cuHigh(at.pass), dt = Math.min((now - CUI.last) / 1000, 0.1);
+  // a frame's own time can lie before the click that started the play: the play never runs backwards
+  const at = cuPlayAt(), hi = cuHigh(at.pass), dt = clamp((now - CUI.last) / 1000, 0, 0.1);
   CUI.last = now;
   let u = at.u + dt / (CU_SPEEDS[S.custom.speed] || CU_SPEEDS.normal);
   const stop = CUI.until === null ? hi : Math.min(CUI.until, hi);
@@ -16008,7 +16072,7 @@ function cuPlayFrame(now) {
 function cuBarSync() {
   if (!cuOn() || !$('cuAt')) return;
   const at = cuPlayAt(), mov = cuMoving(), m = mov.length, np = cuPasses(), lead = cuLead(), first = cuFirst(), lo = cuLow(at.pass), hi = cuHigh(at.pass), steps = S.custom.steps;
-  const sig = [at.pass, at.u, at.end, np, lead, lo, hi, S.iter, S.custom.bail, S.custom.rough, S.custom.rev, CUI.playing, CUI.look].join('|');
+  const sig = [at.pass, at.u, at.end, np, lead, lo, hi, S.iter, S.custom.bail, S.custom.rough, S.custom.rev, CUI.playing, CUI.look, cuPeek()].join('|');
   if (sig === CUI.barSig) return;
   CUI.barSig = sig;
   const it = $('cuIt'), all = $('cuItAll'), slider = $('cuAt');
@@ -16030,10 +16094,11 @@ function cuBarSync() {
   // The iteration of a Mandelbrot picture that only puts each point on its c has no step of its own to stand in.
   const no = id => cuStepAt(id) + 1, span = top - lo;
   const marks = [...(lo < 0 ? cuPlayable('pre').map((s, j) => [lo + j + 1, s]) : []), ...(hi >= m ? mov.map((s, j) => [j + 1, s]) : []), ...(hi > m ? cuPlayable('post').map((s, j) => [m + j + 1, s]) : [])];
-  const ticks = marks.map(([u, s]) => u + ':' + no(s.id)).join(',');
+  // the mark of a switched-off step that is tried stands in brackets
+  const peek = cuPeek(), ticks = marks.map(([u, s]) => u + ':' + no(s.id)).join(',') + '|' + peek;
   if ($('cuTicks').dataset.sig !== ticks) {
     $('cuTicks').dataset.sig = ticks;
-    $('cuTicks').innerHTML = marks.map(([u, s]) => `<button type="button" data-u="${u}" style="left:${(100 * (u - lo) / span).toFixed(2)}%" title="To the end of step ${no(s.id)}">${no(s.id)}</button>`).join('');
+    $('cuTicks').innerHTML = marks.map(([u, s]) => `<button type="button" data-u="${u}" style="left:${(100 * (u - lo) / span).toFixed(2)}%" title="To the end of step ${no(s.id)}${s.id === peek ? ', which is switched off and only tried here' : ''}">${s.id === peek ? `(${no(s.id)})` : no(s.id)}</button>`).join('');
   }
   // the words, and the step they are about
   const w = cuPlaySec(at), whole = Math.abs(w.x - Math.round(w.x)) < 1e-6, j = whole ? Math.round(w.x) - 1 : Math.floor(w.x), cur = m && j >= 0 && !at.end ? w.list[j] : null;
@@ -16046,7 +16111,10 @@ function cuBarSync() {
   // the iteration of a Mandelbrot picture that moves no dot, in a sentence
   const still = 'In a Mandelbrot picture z starts at the middle, so iteration 1 only puts each dot on its own c, where it is drawn already.';
   const begin = `Every point no further than ${far} from the middle is in.` + (lead && at.pass === first ? ' ' + still : '');
+  // a switched-off step that is tried: the play shows what it would do, and the rule stays without it
+  const tried = cur && cur.id === peek && !seen;
   $('cuNow').textContent = seen ? `${where}, at ${named(seen)}. It moves no point: what it works out is shown for the ringed dot.`
+    : tried ? `${where}, ${whole ? 'after trying' : 'trying'} ${title(cur)}. It is switched off, so the rule leaves it out: this is only what it would do here.`
     : !m ? 'No step of “Every iteration” that is switched on moves the point, so there is nothing to play.'
     : at.end ? `The finished solid: all ${S.iter} iterations${cuHasPost() ? ', and the steps taken once after them' : ''}. It is every starting point that was never thrown out.`
     : w.sec === 'pre' && w.x === 0 ? `The very start, before ${title(w.list[0])}. Every point no further than ${far} from the middle is in.`
@@ -16142,7 +16210,7 @@ function customInit() {
   <label class="check" title="Ticked: as dots are thrown out, dots that start between the ones that are left take their place, so there are always about as many. Such a dot has taken every step so far and was only not drawn. Not ticked: the dots of the start, fewer with every iteration."><input type="checkbox" id="cuRefill" checked> <span>Add new dots as dots are thrown out</span></label>
 </div>
 <div class="cu-bar-row cu-bar-small">
-  <label class="check" title="What the step on show works with: the axis of a turn, the plane of a mirror, the sphere of an inversion, the arrow of a slide. One dot gets a ring, and its way through the step is drawn."><input type="checkbox" id="cuGuidesOn" checked> <span>Guides</span></label>
+  <label class="check" title="What the step on show works with: the axis of a rotation, the plane of a mirror, the sphere of an inversion, the arrow of a slide. One dot gets a ring, and its way through the step is drawn."><input type="checkbox" id="cuGuidesOn" checked> <span>Guides</span></label>
   <label class="check" title="One number in place of the neighbouring orbits when the finished solid is drawn: quicker and plainer. Many of the lab’s own approaches are drawn this way, and their rules come with it ticked. A play always uses the fine estimate, and so does a rule with a step taken once that moves the point."><input type="checkbox" id="cuRoughOn"> <span>Plain distance estimate</span></label>
   <label class="check" title="The Mandelbrot picture on the left and the Julia picture on the right, with one camera. The Julia half uses the c of the Julia panel, which then shows in the column on the right."><input type="checkbox" id="cuBothOn"> <span>Mandelbrot and Julia side by side</span></label>
   <span class="note" id="cuDotsSay" hidden></span>
@@ -16159,8 +16227,15 @@ function customInit() {
 <p class="note" id="cuEmpty" hidden>There are no steps, so every point stays where it is. Add a step, or load a rule to start from.</p>`;
   const list = $('cuSteps'), at = e => { const li = e.target.closest('.cu-step'); return li ? { li, i: cuStepAt(li.dataset.id), st: C.steps[cuStepAt(li.dataset.id)] } : {}; };
   // a number moved, by its box or its slider, or one of a point's three numbers: nothing else changes, so the picture follows at once
+  // A formula is one line, however many rows its box shows: Enter takes it as it is, and a line break that comes
+  // with pasted text becomes a space. When the list gets another width the boxes are fitted again, a frame later,
+  // so that the list's new height is no answer to its own change.
+  list.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('cu-area')) { e.preventDefault(); e.target.blur(); } });
+  let wide = 0;
+  new ResizeObserver(() => { if (list.clientWidth !== wide) { wide = list.clientWidth; requestAnimationFrame(() => cuAreasFit()); } }).observe(list);
   list.addEventListener('input', e => {
     const t = e.target, { li, st } = at(e), key = t.dataset.num || t.dataset.xyz;
+    if (li && t.classList.contains('cu-area')) { if (/[\r\n]/.test(t.value)) t.value = t.value.replace(/\s*[\r\n]+\s*/g, ' '); cuAreasFit(li); return; }
     if (!st || !key) return;
     let next;
     if (t.dataset.num) { if (t.value === '' || !isFinite(+t.value)) return; next = cuShort(t.value); }
@@ -16198,7 +16273,7 @@ function customInit() {
       cuSnap();
       st.p[sp.key] = t.value.trim() || sp.def; t.value = st.p[sp.key];
       cuChanged(false);
-      cuRangeSync(li, st); cuOptionsSync();
+      cuRangeSync(li, st); cuOptionsSync(); cuAreasFit(li);
     }
   });
   list.addEventListener('click', e => {
@@ -16207,11 +16282,17 @@ function customInit() {
     cuSay('');
     const act = b.dataset.act;
     if (act === 'show') {
-      const me = cuProgram().run.find(s => s.id === st.id), sec = cuSecOf(st), mov = cuMoving(), list = cuPlayable(sec), j = list.findIndex(s => s.id === st.id), now = cuPlayAt(), np = cuPasses();
-      if (st.on === false) { cuSay('This step is switched off, so the play has no place for it.'); return; }
+      cuUnpeek();   // a step that was tried before this click is left first
+      const me = cuProgram().run.find(s => s.id === st.id), sec = cuSecOf(st), now = cuPlayAt(), np = cuPasses(), held = S.custom.play;
       if (cuProgram().errs[st.id] || !me) { cuSay('This step cannot be read yet, so the play has no place for it.'); return; }
-      if (!mov.length) { cuSay('No step of “Every iteration” that is switched on moves the point, so there is no play to stand in.'); return; }
-      if (!list.length) { cuSay('No step of this section moves the point or changes c, so the play has no place there to stand in.'); return; }
+      // A step that is switched off and changes a point is tried: for as long as the play stands in it, it counts
+      // among the steps a play can stand in, and the rule itself stays without it.
+      const tried = st.on === false && !!me.on;
+      if (tried) S.custom.play = { pass: now.pass, u: now.u, peek: st.id };
+      const mov = cuMoving(), list = cuPlayable(sec), j = list.findIndex(s => s.id === st.id);
+      const none = text => { if (tried) S.custom.play = held; cuSay(text); };
+      if (!mov.length) { none('No step of “Every iteration” that is switched on moves the point, so there is no play to stand in.'); return; }
+      if (!list.length) { none('No step of this section moves the point or changes c, so the play has no place there to stand in.'); return; }
       cuPlayStop();
       // Where the section lies on the bar. The steps taken once stand before the first pass and after the last;
       // a step of every iteration is shown in the iteration on show, or in the first that moves a dot: from the
@@ -16227,6 +16308,7 @@ function customInit() {
         return;
       }
       // play this step from its start to its end
+      if (tried) { S.custom.play = { pass, u: base + j, peek: st.id }; cuSay('This step is switched off. The play shows what it would do here, and the rule stays without it.'); }
       cuGo(pass, base + j);
       CUI.until = base + j + 1; CUI.playing = true; CUI.last = performance.now(); $('cuPlay').textContent = 'Pause';
       if (!CUI.raf) CUI.raf = requestAnimationFrame(cuPlayFrame);
@@ -16404,14 +16486,14 @@ function customInit() {
 // halves while both pictures are on show. All of it is worked out here, in JavaScript, and drawn on a canvas of its
 // own with the picture's camera.
 //
-// The dots. The solid is drawn where its points started, so a step that only turns points changes nothing in it.
+// The dots. The solid is drawn where its points started, so a step that only rotates points changes nothing in it.
 // The dots are some of those points, each drawn where the steps have carried it by now, with a short tail that says
 // where it just came from. The bar has the Learn tab's choices for them: dots, the surface or both; how many there
 // are; where they start (a full grid, level sheets, shells, or sheets and shells together) and how far out; what a
 // dot's colour says about that place; whose orbits are drawn; and whether new dots come in for the ones that are
 // thrown out. A handful are drawn larger, and the orbits are the whole paths of those, or of every dot.
 //
-// The guides. What the step on show works with: the axis of a turn, the plane of a mirror, the sphere of an
+// The guides. What the step on show works with: the axis of a rotation, the plane of a mirror, the sphere of an
 // inversion, the arrow of a slide. One dot gets a ring and stands for the others: its way through the step is drawn
 // from start to end, and whatever the step works out afresh for every point (an axis that follows the point, say)
 // is drawn as it is for that dot. A step that moves no point has a value in place of a move, and its guide is that
@@ -16475,11 +16557,17 @@ function cuPart(d, ord, t, what) {
   }
   return cuStepOn(d.e, ord, t, what);
 }
-function cuEndOf(d, mov, q) { const e = d.ends || (d.ends = []); return e[q] || (e[q] = cuPart(d, mov[q].ord, 1)); }
+function cuEndOf(d, mov, q) { const e = d.ends || (d.ends = {}), o = mov[q].ord; return e[o] || (e[o] = cuPart(d, o, 1)); }
 function cuWayOf(d, mov, q) {
-  const w = d.ways || (d.ways = []);
-  if (!w[q]) { w[q] = []; for (let a = 1; a <= CU_WAY; a++) w[q].push(cuPart(d, mov[q].ord, a / CU_WAY)); }
-  return w[q];
+  const w = d.ways || (d.ways = {}), o = mov[q].ord;
+  if (!w[o]) { w[o] = []; for (let a = 1; a <= CU_WAY; a++) w[o].push(cuPart(d, o, a / CU_WAY)); }
+  return w[o];
+}
+// The dot's names when the step at `ord` has been taken, whether that step is switched on or not.
+function cuDotEnvAfter(d, ord) {
+  const E0 = cuDotEnv(d, ord), s = cuProgram().at[ord], E = { ...E0, v: E0.v.slice(), tt: 1 };
+  if (s) for (const f of s.fns) f(E);
+  return E;
 }
 // The dot one pass on, or null when that pass throws it out. post: the pass it comes to is the one after the last
 // iteration.
@@ -16680,7 +16768,7 @@ function cuStepInfo(shown, mode, dots) {
   } else if (!looked) mover = cuMarkOf(mode, dots).find(d => far(d) > 1e-6) || dots.find(d => far(d) > 1e-6) || null;
   const mark = mover || cuMarkOf(mode, dots)[0], lead = [mark, ...cuHandful(mode, dots).filter(d => d !== mark)];
   const envs = lead.slice(0, 3).map(d => cuDotEnv(d, ord));
-  info.M = { dot: mark, on, still: !looked && !mover, env: envs[0], zs: at(mark, 0), ze: at(mark, 1), after: looked && shown.lookOrd >= 0 ? cuDotEnv(mark, shown.lookOrd + 1) : null };
+  info.M = { dot: mark, on, still: !looked && !mover, env: envs[0], zs: at(mark, 0), ze: at(mark, 1), after: looked && shown.lookOrd >= 0 ? cuDotEnvAfter(mark, shown.lookOrd) : null };
   if (envs.length > 1) info.tests = envs;
   for (let j = 0; j <= 96; j++) info.path.push(at(mark, j / 96));
   return info;
@@ -16708,12 +16796,12 @@ function cuGuides(st, R, mode, M, tests, who) {
   const sphere = (c, r, label, solid) => { AX.forEach((k, i) => shapes.push({ ring: [c, k, r], solid, label: i ? '' : label })); };
   const axis = (a, label) => { const u = norm(a); shapes.push({ line: [scl(u, -1.25 * R), scl(u, 1.25 * R)], label }); return u; };
   const missing = what => notes.push(M ? `The ${what} of this step cannot be worked out here, so it is not drawn.` : `The ${what} of this step follows the point, and no dot is left to show it for.`);
-  // a turn about the axis u: the circle the ringed dot goes round, and the spokes to where it starts and ends.
+  // a rotation about the axis u: the circle the ringed dot goes round, and the spokes to where it starts and ends.
   // Returns the middle of that circle, or null when the dot lies on the axis and has no circle.
   const round = u => {
-    if (!M) { shapes.push({ ring: [O, u, 0.9 * R], label: 'the turn goes round' }); return O; }
+    if (!M) { shapes.push({ ring: [O, u, 0.9 * R], label: 'the rotation goes round' }); return O; }
     const C = scl(u, dot(M.zs, u));
-    if (len(sub(M.zs, C)) < 1e-9 * Math.max(1, len(M.zs))) { notes.push('The ringed dot lies on the axis here, so the turn leaves it where it is.'); return null; }
+    if (len(sub(M.zs, C)) < 1e-9 * Math.max(1, len(M.zs))) { notes.push('The ringed dot lies on the axis here, so the rotation leaves it where it is.'); return null; }
     shapes.push({ ring: [C, u, len(sub(M.zs, C))], label: 'the ringed dot goes round this circle' }, { line: [C, M.zs], faint: true }, { line: [C, M.ze], faint: true });
     return C;
   };
@@ -16721,7 +16809,7 @@ function cuGuides(st, R, mode, M, tests, who) {
   if (st.kind === 'lon' || st.kind === 'rot') {
     const a = vec('axis');
     if (!a) missing('axis');
-    else if (!(len(a) > 1e-9)) notes.push('The axis has no length here, so there is nothing to turn about.');
+    else if (!(len(a) > 1e-9)) notes.push('The axis has no length here, so there is nothing to rotate about.');
     else {
       const u = axis(a, 'axis'), f = st.kind === 'lon' ? vec('from') : null, flat = f ? sub(f, scl(u, dot(f, u))) : null;
       if (flat && !(len(flat) > 1e-9)) notes.push('“Angle counted from” points along the axis here, so there is no direction to count the angle from, and the step puts every point on the axis.');
@@ -16737,7 +16825,7 @@ function cuGuides(st, R, mode, M, tests, who) {
     else if (!(len(a) > 1e-9)) notes.push('The axis has no length here, so there is no height to count.');
     else {
       const u = axis(a, down ? 'axis: the angle is counted down from it' : 'axis: the height is counted along it'), r = M ? len(M.zs) : 0.9 * R;
-      shapes.push({ ring: [O, u, r], label: st.kind === 'merc' ? 'height 0' : down ? 'a quarter turn down from the axis' : 'the angle is counted up from this circle' });
+      shapes.push({ ring: [O, u, r], label: st.kind === 'merc' ? 'height 0' : down ? '90° down from the axis' : 'the angle is counted up from this circle' });
       const w = M ? sub(M.zs, scl(u, dot(M.zs, u))) : null;
       if (w && !(len(w) > 1e-9 * Math.max(r, 1e-30))) notes.push('The ringed dot lies on the axis here.');
       if (w && len(w) > 1e-9 * Math.max(r, 1e-30)) shapes.push({ ring: [O, norm(cross(u, w)), r], solid: true, label: 'the ringed dot moves along this circle' }, { line: [O, M.zs], faint: true }, { line: [O, M.ze], faint: true });
@@ -16779,13 +16867,13 @@ function cuGuides(st, R, mode, M, tests, who) {
     if (!w || k === null) missing('slide');
     else shapes.push({ arrow: own ? [M.zs, add(M.zs, scl(w, k))] : [O, scl(w, k)], label: own ? 'the ringed dot slides by this' : 'every point slides by this' });
   } else if (st.kind === 'quatpow') {
-    axis([1, 0, 0], 'the x-axis: each point turns away from it');
+    axis([1, 0, 0], 'the x-axis: each point rotates away from it');
     const side = M ? [0, M.zs[1], M.zs[2]] : null;
     if (side && len(side) > 1e-9) shapes.push({ disc: [O, norm(cross([1, 0, 0], side)), Math.max(len(M.zs), len(M.ze), 0.25 * R)], label: 'the flat sheet that holds the x-axis and the ringed dot: the dot stays in it' }, { line: [O, M.zs], faint: true }, { line: [O, M.ze], faint: true });
   } else if (st.kind === 'quatturn') {
     const q = ['x', 'y', 'z'].map(num);
     if (q.some(x => x === null)) missing('axis');
-    else if (!(len(q) > 1e-9)) notes.push('This quaternion has no i, j or k part, so it turns nothing.');
+    else if (!(len(q) > 1e-9)) notes.push('This quaternion has no i, j or k part, so it rotates nothing.');
     else round(axis(q, 'axis: the i, j and k parts'));
   } else if (st.kind === 'quatmul' || st.kind === 'matrix') {
     // a move that takes straight lines to straight lines: where one step along x, along y and along z land
@@ -16841,7 +16929,7 @@ function cuValueGuide(st, mode, M) {
   if (val.t === 's') notes.push(`${who}${name} = ${cuShort(x)}` + (/^f_(asin|acos|atan|atan2|rad|lon|lat)$/.test(st.kind) ? `, an angle of ${cuShort(x * 180 / PI)}°.` : '.'));
   else if (val.t === 'v') { shapes.push({ arrow: [O, x], label: name }); notes.push(`${who}${name} = ${pt(x)}: the arrow from the middle.`); }
   else if (val.t === 'q') {
-    notes.push(`${who}${name} = ${cuShort(x[3])} + ${cuShort(x[0])}i + ${cuShort(x[1])}j + ${cuShort(x[2])}k` + (len(x.slice(0, 3)) > 1e-9 ? ': the line is the axis it would turn a point about.' : '.'));
+    notes.push(`${who}${name} = ${cuShort(x[3])} + ${cuShort(x[0])}i + ${cuShort(x[1])}j + ${cuShort(x[2])}k` + (len(x.slice(0, 3)) > 1e-9 ? ': the line is the axis it would rotate a point about.' : '.'));
     if (len(x.slice(0, 3)) > 1e-9) shapes.push({ line: [scl(norm(x.slice(0, 3)), -1), norm(x.slice(0, 3))], label: name });
   } else {
     notes.push(`${who}${name} is the matrix with the rows ${[0, 1, 2].map(r => pt([x[r], x[r + 3], x[r + 6]])).join(', ')}: the arrows are where 1 along x, y and z land.`);
