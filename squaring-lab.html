@@ -739,6 +739,50 @@ body.cu-faint .stage > #view { opacity: .34; }
 .cu-more code { font-family: var(--f-mono); font-size: 12.5px; overflow-wrap: anywhere; }
 #cuText { width: 100%; resize: vertical; }
 @media (pointer: coarse) { .cu-in, .cu-src, .cu-group select, #cuText { font-size: 16px; } .cu-tool { padding: 7px 10px; } }
+/* ==== 84-size.css ==== */
+/* The picture's size by hand, built and applied by sizeInit() in 84-size.js: a grip along the lower edge of the
+   stage sets its height and one along its right edge its width. Wide windows only: at 920 px or less the picture
+   fills the width, and 85-pin.css sets its height.
+   Classes on <html>, set by the script together with --size-h and --size-w:
+     size-h     the height is set
+     size-col   the width is set: the picture's column takes it, and the controls take the rest of the page
+     size-in    the custom approach, the width is set: the picture is narrower than its column, the steps under it
+     size-side  the custom approach, the width is set and there is room: the steps stand beside the picture */
+.size-grip { display: none; }
+@media (min-width: 921px) {
+  .size-grip { display: block; position: absolute; z-index: 4; touch-action: none; }
+  /* the mark in the middle of the edge; its rim keeps it readable where the solid passes behind it */
+  .size-grip::after { content: ""; position: absolute; background: var(--ink-2); box-shadow: 0 0 0 1px var(--stage); }
+  .size-s { left: 0; right: 0; bottom: 0; height: 10px; cursor: ns-resize; }
+  .size-s::after { left: calc(50% - 22px); bottom: 4px; width: 44px; height: 3px; }
+  .size-e { top: 0; bottom: 0; right: 0; width: 10px; cursor: ew-resize; }
+  .size-e::after { top: calc(50% - 22px); right: 3px; width: 3px; height: 44px; }
+  .size-grip:hover::after, .size-grip.is-drag::after { background: var(--brass); }
+  .size-grip:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+
+  /* The height. The block stays within the window: should what stands under the picture need more room than is
+     left, the picture gives way, after the custom approach's steps have come down to the height they keep. */
+  html.size-h .bench-main { max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px)); }
+  html.size-h .bench-main > :not(#stage):not(.cu-dock) { flex-shrink: 0; }
+  html.size-h #stage { flex: 0 0.0001 auto; height: var(--size-h); min-height: 160px; }
+
+  /* The width */
+  html.size-col .bench { grid-template-columns: var(--size-w) minmax(0, 1fr); }
+  html.size-in #stage { width: var(--size-w); }
+  /* The steps beside the picture: the picture, the status line and the bar stand in the first column, and the
+     steps take the whole height of the second. The block is as tall as the window. The picture keeps its height
+     and the bar has what is left under it, with a scroll bar of its own when that is too little: 304 px are kept
+     for the bar, the status line and the gaps. */
+  html.size-side .bench-main {
+    display: grid; grid-template-columns: var(--size-w) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr);
+    gap: 8px 16px; height: calc(100vh - 24px - env(safe-area-inset-top, 0px));
+  }
+  html.size-side .bench-main > * { grid-column: 1; }
+  html.size-side #stage { height: min(var(--size-h, clamp(240px, 42vh, 560px)), max(160px, calc(100vh - 304px))); }
+  html.size-side .bench-main > .cu-bar { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  html.size-side .cu-bar > * { flex-shrink: 0; }
+  html.size-side .bench-main > .cu-dock { grid-column: 2; grid-row: 1 / -1; min-height: 0; border-top: 0; }
+}
 /* ==== 85-pin.css ==== */
 /* The picture stays in view on a narrow window (a phone held upright), built and switched by pinInit() in 85-pin.js.
    Wider than 920 px nothing here applies: there the picture column is sticky already (00-base.css). */
@@ -17061,6 +17105,132 @@ function cuOverInit() {
   addEventListener('resize', again);
 }
 
+// ==================== 84-size.js ====================
+// The picture's size by hand. A grip along the lower edge of the stage sets its height and one along its right
+// edge its width; the upper and the left edge stay where they are. A double click on a grip gives that side back
+// to the page. This file keeps the two numbers and decides what they may be; 84-size.css does the layout from the
+// classes and the two variables set here, on wide windows only.
+// Nothing here touches the camera. It reads the stage's shape whenever it draws (50-camera.js), so the picture is
+// drawn afresh for the new shape and is never stretched.
+const SIZE_KEY = 'squaringLab.size.v1';
+const SIZE_MIN_W = CAM_ROW + 20;   // the narrowest picture (px): the zoom slider stays in it (50-camera.js)
+const SIZE_MIN_H = 160;    // the lowest picture (px)
+const SIZE_DIALS = 360;    // the width the controls column has when the page decides (.bench in 00-base.css), and its least
+const SIZE_SIDE = 320;     // the custom approach: its steps stand beside the picture when this much (px) is free there,
+const SIZE_GAP = 16;       // this far from it (84-size.css)
+const SIZE_DOCK = 140;     // the height the steps keep while they stand under the picture (.cu-dock in 82-custom.css)
+const SIZE_BAR = 240;      // the height kept for the bar while the steps stand beside the picture (84-size.css)
+const SIZE_SLACK = 24;     // px left over at the tallest, so a line more under the picture does not move it
+const SIZE = {
+  w: 0, h: 0,              // what was set, in px; 0: the page decides
+  how: '', wNow: 0, hNow: 0,   // what the page was last given: the width's layout ('col', 'in', 'side' or '') and the two sizes
+  main: null, bench: null, mq: null, raf: 0,
+};
+
+function sizeSave() {
+  try { localStorage.setItem(SIZE_KEY, JSON.stringify({ w: SIZE.w, h: SIZE.h })); } catch (err) { /* storage blocked: the size lasts for this visit */ }
+}
+// The width the picture's column has when the page decides it, and whether the custom approach's layout is on show.
+function sizeRoom() {
+  const body = document.body.classList;
+  return {
+    col: SIZE.bench.clientWidth - (parseFloat(getComputedStyle(SIZE.bench).columnGap) || 0) - SIZE_DIALS,
+    custom: body.contains('is-custom') && !body.contains('is-learn'),
+  };
+}
+// The tallest picture that leaves the rest of its block on one screen: whatever stands under it, as it is now.
+// What scrolls by itself counts for the height it keeps: the custom approach's steps under the picture, and its
+// bar while the steps stand beside the picture.
+function sizeMostH() {
+  const gap = parseFloat(getComputedStyle(SIZE.main).rowGap) || 0, side = SIZE.how === 'side';
+  let rest = 0;
+  for (const el of SIZE.main.children) {
+    if (el === stage || !el.offsetHeight || getComputedStyle(el).position === 'absolute') continue;
+    if (el.id === 'cuDock') { if (!side) rest += SIZE_DOCK + gap; continue; }
+    rest += (side && el.id === 'cuBar' ? Math.min(SIZE_BAR, el.scrollHeight) : el.offsetHeight) + gap;
+  }
+  return Math.max(SIZE_MIN_H, innerHeight - 24 - SIZE_SLACK - rest);
+}
+function sizeApply() {
+  const root = document.documentElement, on = SIZE.mq.matches;
+  let w = 0, how = '';
+  if (on && SIZE.w) {
+    const room = sizeRoom(), want = Math.max(SIZE_MIN_W, Math.round(SIZE.w));
+    if (want < room.col) { w = want; how = !room.custom ? 'col' : room.col - w - SIZE_GAP >= SIZE_SIDE ? 'side' : 'in'; }
+  }
+  if (how !== SIZE.how || w !== SIZE.wNow) {
+    SIZE.how = how; SIZE.wNow = w;
+    for (const k of ['col', 'in', 'side']) root.classList.toggle('size-' + k, how === k);
+    if (w) root.style.setProperty('--size-w', w + 'px'); else root.style.removeProperty('--size-w');
+  }
+  // the height is measured against the block as the width has just left it
+  const h = on && SIZE.h ? clamp(Math.round(SIZE.h), SIZE_MIN_H, sizeMostH()) : 0;
+  if (h !== SIZE.hNow) {
+    SIZE.hNow = h;
+    root.classList.toggle('size-h', h > 0);
+    if (h) root.style.setProperty('--size-h', h + 'px'); else root.style.removeProperty('--size-h');
+  }
+}
+function sizeSoon() {
+  if (SIZE.raf) return;
+  SIZE.raf = requestAnimationFrame(() => { SIZE.raf = 0; sizeApply(); });
+}
+// One grip. side 's': the lower edge, which sets the height; 'e': the right edge, which sets the width.
+function sizeGrip(side) {
+  const el = document.createElement('div'), tall = side === 's', word = tall ? 'height' : 'width';
+  el.className = 'size-grip size-' + side;
+  el.tabIndex = 0;
+  el.setAttribute('role', 'separator'); el.setAttribute('aria-orientation', tall ? 'horizontal' : 'vertical');
+  el.setAttribute('aria-label', `The picture's ${word}`);
+  el.setAttribute('aria-valuemin', String(tall ? SIZE_MIN_H : SIZE_MIN_W));
+  el.title = `Drag to set the picture's ${word}. Double-click to let the page set it again.`;
+  el.addEventListener('focus', () => el.setAttribute('aria-valuenow', String(tall ? stage.offsetHeight : stage.offsetWidth)));
+  // The edge goes to v px from the stage's opposite edge. The lower edge stays inside the window, where it can be
+  // taken hold of again; a width that fills the column is the page's own again.
+  const to = v => {
+    if (tall) SIZE.h = clamp(v, SIZE_MIN_H, Math.min(sizeMostH(), innerHeight - 8 - stage.getBoundingClientRect().top));
+    else SIZE.w = v >= sizeRoom().col ? 0 : Math.max(SIZE_MIN_W, v);
+    sizeSoon();
+  };
+  el.addEventListener('pointerdown', e => {
+    if (e.button) return;
+    e.preventDefault();
+    const r = stage.getBoundingClientRect(), off = tall ? r.bottom - e.clientY : r.right - e.clientX;   // the edge keeps its place under the pointer
+    const move = ev => { const q = stage.getBoundingClientRect(); to(tall ? ev.clientY + off - q.top : ev.clientX + off - q.left); };
+    const end = () => {
+      el.classList.remove('is-drag');
+      el.removeEventListener('pointermove', move); el.removeEventListener('pointerup', end); el.removeEventListener('pointercancel', end);
+      sizeSave();
+    };
+    el.setPointerCapture(e.pointerId); el.classList.add('is-drag');
+    el.addEventListener('pointermove', move); el.addEventListener('pointerup', end); el.addEventListener('pointercancel', end);
+  });
+  el.addEventListener('dblclick', () => { if (tall) SIZE.h = 0; else SIZE.w = 0; sizeApply(); sizeSave(); });
+  el.addEventListener('keydown', e => {
+    const d = (tall ? { ArrowUp: -1, ArrowDown: 1 } : { ArrowLeft: -1, ArrowRight: 1 })[e.key];
+    if (!d || e.ctrlKey || e.metaKey || e.altKey) return;
+    e.preventDefault();
+    to((tall ? stage.offsetHeight : stage.offsetWidth) + d * (e.shiftKey ? 64 : 16));
+    sizeSave();
+  });
+  return el;
+}
+function sizeInit() {
+  SIZE.main = document.querySelector('.bench-main'); SIZE.bench = document.querySelector('.bench');
+  SIZE.mq = matchMedia('(min-width: 921px)');
+  try {
+    const o = JSON.parse(localStorage.getItem(SIZE_KEY) || 'null');
+    if (o) { SIZE.w = Math.max(0, +o.w || 0); SIZE.h = Math.max(0, +o.h || 0); }
+  } catch (err) { /* storage blocked or unreadable: the page decides the size */ }
+  stage.append(sizeGrip('s'), sizeGrip('e'));
+  // The limits are taken again when the window changes or another approach or tab comes on show, and not when
+  // a line under the picture grows or shrinks: the picture keeps one size through a play.
+  SIZE.mq.addEventListener('change', sizeApply);
+  window.addEventListener('resize', sizeSoon);
+  new MutationObserver(sizeSoon).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  sizeApply();
+}
+
 // ==================== 85-pin.js ====================
 // Pinning: on a narrow window that is tall enough, .bench-main (the picture and whatever stands under it) is held
 // at the top while the controls scroll under it. This file decides and measures; 85-pin.css does the rest from
@@ -17202,6 +17372,7 @@ addEventListener('load', () => scrollTo(0, 0), { once: true });
 boot();
 customInit();
 learnInit();
+sizeInit();
 pinInit();
 })();
 </script>

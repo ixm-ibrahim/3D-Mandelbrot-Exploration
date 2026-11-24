@@ -33,7 +33,10 @@ come closest and what is known not to work. No rule passes yet.
   and the Julia picture can be shown side by side.
   Thirty-two of the approaches of the list can be loaded as steps (`13-custom-rules.js`), each giving that approach's
   own numbers;
-- a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models;
+- a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models. On a wide
+  window the picture's lower and right edges can be dragged to set its size. The camera takes the picture's new
+  shape, so nothing is stretched, and the room that is freed goes to the controls, or in the custom approach to
+  the steps, which then stand beside the picture;
 - **Balls on balls**, a picture made only of slides by whole numbers and sphere inversions. It has no c and is not
   the goal, but its placement and spacing of bodies is the look the 3D basilica should have;
 - a **Learn** tab that plays one step of a rule move by move, for one point or for a whole shape.
@@ -67,4 +70,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.12. Each version is tagged, as `v1.12`.
+This is version 1.13. Each version is tagged, as `v1.13`.

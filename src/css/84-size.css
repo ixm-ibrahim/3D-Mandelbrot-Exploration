@@ -1,0 +1,43 @@
+/* The picture's size by hand, built and applied by sizeInit() in 84-size.js: a grip along the lower edge of the
+   stage sets its height and one along its right edge its width. Wide windows only: at 920 px or less the picture
+   fills the width, and 85-pin.css sets its height.
+   Classes on <html>, set by the script together with --size-h and --size-w:
+     size-h     the height is set
+     size-col   the width is set: the picture's column takes it, and the controls take the rest of the page
+     size-in    the custom approach, the width is set: the picture is narrower than its column, the steps under it
+     size-side  the custom approach, the width is set and there is room: the steps stand beside the picture */
+.size-grip { display: none; }
+@media (min-width: 921px) {
+  .size-grip { display: block; position: absolute; z-index: 4; touch-action: none; }
+  /* the mark in the middle of the edge; its rim keeps it readable where the solid passes behind it */
+  .size-grip::after { content: ""; position: absolute; background: var(--ink-2); box-shadow: 0 0 0 1px var(--stage); }
+  .size-s { left: 0; right: 0; bottom: 0; height: 10px; cursor: ns-resize; }
+  .size-s::after { left: calc(50% - 22px); bottom: 4px; width: 44px; height: 3px; }
+  .size-e { top: 0; bottom: 0; right: 0; width: 10px; cursor: ew-resize; }
+  .size-e::after { top: calc(50% - 22px); right: 3px; width: 3px; height: 44px; }
+  .size-grip:hover::after, .size-grip.is-drag::after { background: var(--brass); }
+  .size-grip:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+
+  /* The height. The block stays within the window: should what stands under the picture need more room than is
+     left, the picture gives way, after the custom approach's steps have come down to the height they keep. */
+  html.size-h .bench-main { max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px)); }
+  html.size-h .bench-main > :not(#stage):not(.cu-dock) { flex-shrink: 0; }
+  html.size-h #stage { flex: 0 0.0001 auto; height: var(--size-h); min-height: 160px; }
+
+  /* The width */
+  html.size-col .bench { grid-template-columns: var(--size-w) minmax(0, 1fr); }
+  html.size-in #stage { width: var(--size-w); }
+  /* The steps beside the picture: the picture, the status line and the bar stand in the first column, and the
+     steps take the whole height of the second. The block is as tall as the window. The picture keeps its height
+     and the bar has what is left under it, with a scroll bar of its own when that is too little: 304 px are kept
+     for the bar, the status line and the gaps. */
+  html.size-side .bench-main {
+    display: grid; grid-template-columns: var(--size-w) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr);
+    gap: 8px 16px; height: calc(100vh - 24px - env(safe-area-inset-top, 0px));
+  }
+  html.size-side .bench-main > * { grid-column: 1; }
+  html.size-side #stage { height: min(var(--size-h, clamp(240px, 42vh, 560px)), max(160px, calc(100vh - 304px))); }
+  html.size-side .bench-main > .cu-bar { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  html.size-side .cu-bar > * { flex-shrink: 0; }
+  html.size-side .bench-main > .cu-dock { grid-column: 2; grid-row: 1 / -1; min-height: 0; border-top: 0; }
+}

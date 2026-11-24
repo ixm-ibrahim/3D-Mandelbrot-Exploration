@@ -26,4 +26,5 @@ addEventListener('load', () => scrollTo(0, 0), { once: true });
 boot();
 customInit();
 learnInit();
+sizeInit();
 pinInit();
