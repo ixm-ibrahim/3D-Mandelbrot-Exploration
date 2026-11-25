@@ -76,6 +76,25 @@ body.is-custom.cu-faint:not(.is-learn) .stage > #view { opacity: calc(.34 * var(
 .cu-naming { display: flex; flex: 1 1 9em; gap: 4px; min-width: 0; }
 .cu-naming input { flex: 1 1 6em; min-width: 0; }
 .cu-step.is-naming .cu-head > .cu-tool, .cu-step.is-naming .cu-flag { display: none; }
+/* A container: one card that holds the cards of its steps. Shut, it is as wide as any card and says what it holds.
+   Open, it takes the whole row and shows them. */
+.cu-box { border: 1px solid var(--ink-2); border-left: 3px double var(--ink-2); background: var(--panel); padding: 7px 9px 9px; display: flex; flex-direction: column; gap: 6px; min-width: 0; box-shadow: 4px 4px 0 var(--line); }
+.cu-box.is-open { grid-column: 1 / -1; }
+.cu-box.is-bad { border-left-color: var(--bad); }
+.cu-box.is-off > .cu-head .cu-title, .cu-box.is-off > .cu-box-holds { opacity: .45; }
+.cu-box-holds, .cu-box-err { margin: 0; }
+.cu-box-steps[hidden] { display: none; }
+.cu-box.is-naming > .cu-head > .cu-tool, .cu-box.is-naming > .cu-head > .cu-flag { display: none; }
+/* a container that is shut while the bar stands on a step inside it */
+.cu-box:not(.is-open):has(.cu-step.is-now) { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 16%, var(--panel)); box-shadow: 0 0 0 1px var(--brass), 4px 4px 0 var(--line); }
+.cu-box:not(.is-open):has(.cu-step.is-now) > .cu-head > .cu-flag { display: inline-block; }
+/* Selecting cards, to save several as one: a Shift-click or a Ctrl-click on a card's head. The bar stands before
+   the first selected card and takes the whole row. */
+.cu-head { -webkit-user-select: none; user-select: none; }
+.cu-step.is-sel, .cu-box.is-sel { outline: 2px solid var(--ink); outline-offset: 1px; }
+.cu-selbar { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 6px 9px; border: 1px dashed var(--ink-2); background: var(--paper); min-width: 0; }
+.cu-selbar .note { margin: 0; flex: 1 1 16em; min-width: 0; }
+.cu-selbar .cu-in { flex: 0 1 18em; min-width: 8em; }
 
 /* The list of the kinds of step (83-custom-pick.js): the button that shows the choice, and the panel under it */
 .cu-pick-btn { position: relative; min-width: 9em; max-width: 17em; padding: 5px 24px 5px 6px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: var(--panel); cursor: pointer; }

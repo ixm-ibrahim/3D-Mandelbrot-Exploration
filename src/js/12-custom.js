@@ -852,13 +852,50 @@ const cuStartSteps = k => cuSorted(CU_STARTS[k].steps.map(([kind, p, sec], i) =>
 const cuShowDefault = () => ({ see: 'dots', guides: true, both: true, speed: 'normal', through: true, dotsA: 1, skinA: 1, count: 'many', lay: 'both', tint: 'mix', orbits: 'few', refill: true, reach: 2 });
 const cuDefault = () => { const steps = cuStartSteps(0); return { steps, next: steps.length + 1, rev: 0, bail: CU_BAIL, play: null, ...cuShowDefault(), rough: false }; };
 const cuBailOf = x => clamp(+x || CU_BAIL, 1.2, 64);
+// Containers. A step may stand inside containers: st.box lists them, the outermost first, each { id, name }. The
+// steps of one container stand next to each other, in one section. A container changes how the list of steps is
+// shown and handled (82-custom-ui.js), and never what the rule works out: nothing in this file reads st.box but
+// the text of a rule, which writes a container as { kind: 'group', name, steps }, and cuClean, which reads that.
+const cuBoxOf = (st, depth) => (st.box && st.box[depth]) || null;
+// The steps as the text of a rule holds them, from `depth` containers deep. bare: without their sections.
+function cuTree(steps, depth = 0, bare = false) {
+  const out = [], sec = st => (bare || cuSecOf(st) === 'main' ? {} : { sec: cuSecOf(st) });
+  for (let i = 0; i < steps.length;) {
+    const st = steps[i], b = cuBoxOf(st, depth);
+    if (!b) { out.push({ kind: st.kind, on: st.on !== false, p: st.p, ...sec(st), ...(st.name ? { name: st.name } : {}) }); i++; continue; }
+    let j = i;
+    while (j < steps.length && (cuBoxOf(steps[j], depth) || {}).id === b.id) j++;
+    out.push({ kind: 'group', name: b.name, ...sec(st), steps: cuTree(steps.slice(i, j), depth + 1, true) });
+    i = j;
+  }
+  return out;
+}
+// A container whose steps no longer stand next to each other in one section is no container: its steps go free.
+function cuBoxFix(steps) {
+  const at = new Map();
+  steps.forEach((st, i) => { for (const b of st.box || []) at.set(b.id, [...(at.get(b.id) || []), i]); });
+  const gone = new Set([...at].filter(([, on]) => on[on.length - 1] - on[0] + 1 !== on.length || on.some(i => cuSecOf(steps[i]) !== cuSecOf(steps[on[0]]))).map(x => x[0]));
+  for (const st of steps) if (st.box) { st.box = st.box.filter(b => !gone.has(b.id)); if (!st.box.length) delete st.box; }
+  return steps;
+}
 // A list of steps from text of any origin (a saved rule, pasted text): every step checked, every id made afresh.
-// Returns null when the text holds no step that can be used.
+// Returns null when the text holds no step that can be used. The steps of a container come out one after another,
+// each with the container among its boxes, and take the container's section.
 function cuClean(list) {
   if (!Array.isArray(list)) return null;
-  const steps = [];
+  const steps = [], boxes = [], flat = [];
+  const walk = (items, path, sec) => {
+    for (const told of items) {
+      if (!told || told.kind !== 'group') { flat.push([told, path, sec]); continue; }
+      if (!Array.isArray(told.steps)) continue;
+      const box = { id: 0, name: typeof told.name === 'string' && told.name.trim() ? told.name.trim().slice(0, 40) : 'Steps' };
+      boxes.push(box);
+      walk(told.steps, [...path, box], path.length ? sec : told.sec || 'main');
+    }
+  };
+  walk(list, [], null);
   let first = -1;   // the first step that the text names by a kind of CU_ALSO: a change of c before the iterations
-  for (const told of list.slice(0, CU_MAX_STEPS)) {
+  for (const [told, path, sec] of flat.slice(0, CU_MAX_STEPS)) {
     const also = told && CU_ALSO[told.kind], raw = also ? { ...told, ...also(told.p || {}) } : told, B = raw && CU_BLOCKS[raw.kind];
     if (!B) continue;
     const p = {};
@@ -868,25 +905,30 @@ function cuClean(list) {
     if (also && first < 0) first = steps.length;
     // a step may carry a name of the user's own: the saved step it was made from
     const name = typeof raw.name === 'string' ? raw.name.trim().slice(0, 40) : '';
-    steps.push({ id: steps.length + 1, kind: raw.kind, on: raw.on !== false, p, sec: raw.sec, ...(name ? { name } : {}) });
+    steps.push({ id: steps.length + 1, kind: raw.kind, on: raw.on !== false, p, sec: sec || raw.sec, ...(name ? { name } : {}), ...(path.length ? { box: path } : {}) });
   }
   // A rule that names no section: a slider that stands before such a change of c is there for it to read, so it
   // goes to the first section with it.
-  if (first > 0 && !list.some(told => told && told.sec)) for (const st of steps.slice(0, first)) if (st.kind === 'slider') st.sec = 'pre';
+  if (first > 0 && !list.some(told => told && told.sec)) for (const st of steps.slice(0, first)) if (st.kind === 'slider' && !st.box) st.sec = 'pre';
   // each step in its section; a section that is the iterations is not written down
   for (const st of steps) { const sec = cuSecOf(st); if (sec === 'main') delete st.sec; else st.sec = sec; }
-  return steps.length ? cuSorted(steps) : null;
+  // the containers get their ids after the steps, and every step its own copy of the ones it stands in
+  boxes.forEach((b, k) => { b.id = steps.length + 1 + k; });
+  for (const st of steps) if (st.box) st.box = st.box.map(b => ({ id: b.id, name: b.name }));
+  return steps.length ? cuBoxFix(cuSorted(steps)) : null;
 }
+// the first id that neither a step nor a container of these steps has
+const cuNextId = steps => 1 + Math.max(0, ...steps.map(st => Math.max(st.id, ...(st.box || []).map(b => b.id))));
 // A whole rule from such text: the steps alone (a list), or the steps with how far a point may go.
 function cuRuleOf(o) {
   const steps = cuClean(Array.isArray(o) ? o : o && o.steps);
-  return steps ? { steps, next: steps.length + 1, rev: 0, bail: cuBailOf(o && o.bail), play: null, ...cuShowDefault(), rough: !!(o && o.rough) } : null;
+  return steps ? { steps, next: cuNextId(steps), rev: 0, bail: cuBailOf(o && o.bail), play: null, ...cuShowDefault(), rough: !!(o && o.rough) } : null;
 }
 function cuStored() {
   try { return cuRuleOf(JSON.parse(localStorage.getItem(CU_KEY) || 'null')); }
   catch (err) { return null; }   // storage is blocked, or what it holds is not a rule
 }
-const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, rough: !!S.custom.rough, steps: S.custom.steps.map(s => ({ kind: s.kind, on: s.on !== false, p: s.p, ...(cuSecOf(s) === 'main' ? {} : { sec: cuSecOf(s) }), ...(s.name ? { name: s.name } : {}) })) });
+const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, rough: !!S.custom.rough, steps: cuTree(S.custom.steps) });
 function cuStore() {
   try { localStorage.setItem(CU_KEY, cuRuleText()); } catch (err) { /* storage blocked: the rule lasts for this visit */ }
 }

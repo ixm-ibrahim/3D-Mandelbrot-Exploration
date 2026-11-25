@@ -720,6 +720,25 @@ body.is-custom.cu-faint:not(.is-learn) .stage > #view { opacity: calc(.34 * var(
 .cu-naming { display: flex; flex: 1 1 9em; gap: 4px; min-width: 0; }
 .cu-naming input { flex: 1 1 6em; min-width: 0; }
 .cu-step.is-naming .cu-head > .cu-tool, .cu-step.is-naming .cu-flag { display: none; }
+/* A container: one card that holds the cards of its steps. Shut, it is as wide as any card and says what it holds.
+   Open, it takes the whole row and shows them. */
+.cu-box { border: 1px solid var(--ink-2); border-left: 3px double var(--ink-2); background: var(--panel); padding: 7px 9px 9px; display: flex; flex-direction: column; gap: 6px; min-width: 0; box-shadow: 4px 4px 0 var(--line); }
+.cu-box.is-open { grid-column: 1 / -1; }
+.cu-box.is-bad { border-left-color: var(--bad); }
+.cu-box.is-off > .cu-head .cu-title, .cu-box.is-off > .cu-box-holds { opacity: .45; }
+.cu-box-holds, .cu-box-err { margin: 0; }
+.cu-box-steps[hidden] { display: none; }
+.cu-box.is-naming > .cu-head > .cu-tool, .cu-box.is-naming > .cu-head > .cu-flag { display: none; }
+/* a container that is shut while the bar stands on a step inside it */
+.cu-box:not(.is-open):has(.cu-step.is-now) { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 16%, var(--panel)); box-shadow: 0 0 0 1px var(--brass), 4px 4px 0 var(--line); }
+.cu-box:not(.is-open):has(.cu-step.is-now) > .cu-head > .cu-flag { display: inline-block; }
+/* Selecting cards, to save several as one: a Shift-click or a Ctrl-click on a card's head. The bar stands before
+   the first selected card and takes the whole row. */
+.cu-head { -webkit-user-select: none; user-select: none; }
+.cu-step.is-sel, .cu-box.is-sel { outline: 2px solid var(--ink); outline-offset: 1px; }
+.cu-selbar { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 6px 9px; border: 1px dashed var(--ink-2); background: var(--paper); min-width: 0; }
+.cu-selbar .note { margin: 0; flex: 1 1 16em; min-width: 0; }
+.cu-selbar .cu-in { flex: 0 1 18em; min-width: 8em; }
 
 /* The list of the kinds of step (83-custom-pick.js): the button that shows the choice, and the panel under it */
 .cu-pick-btn { position: relative; min-width: 9em; max-width: 17em; padding: 5px 24px 5px 6px; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: var(--panel); cursor: pointer; }
@@ -4757,13 +4776,50 @@ const cuStartSteps = k => cuSorted(CU_STARTS[k].steps.map(([kind, p, sec], i) =>
 const cuShowDefault = () => ({ see: 'dots', guides: true, both: true, speed: 'normal', through: true, dotsA: 1, skinA: 1, count: 'many', lay: 'both', tint: 'mix', orbits: 'few', refill: true, reach: 2 });
 const cuDefault = () => { const steps = cuStartSteps(0); return { steps, next: steps.length + 1, rev: 0, bail: CU_BAIL, play: null, ...cuShowDefault(), rough: false }; };
 const cuBailOf = x => clamp(+x || CU_BAIL, 1.2, 64);
+// Containers. A step may stand inside containers: st.box lists them, the outermost first, each { id, name }. The
+// steps of one container stand next to each other, in one section. A container changes how the list of steps is
+// shown and handled (82-custom-ui.js), and never what the rule works out: nothing in this file reads st.box but
+// the text of a rule, which writes a container as { kind: 'group', name, steps }, and cuClean, which reads that.
+const cuBoxOf = (st, depth) => (st.box && st.box[depth]) || null;
+// The steps as the text of a rule holds them, from `depth` containers deep. bare: without their sections.
+function cuTree(steps, depth = 0, bare = false) {
+  const out = [], sec = st => (bare || cuSecOf(st) === 'main' ? {} : { sec: cuSecOf(st) });
+  for (let i = 0; i < steps.length;) {
+    const st = steps[i], b = cuBoxOf(st, depth);
+    if (!b) { out.push({ kind: st.kind, on: st.on !== false, p: st.p, ...sec(st), ...(st.name ? { name: st.name } : {}) }); i++; continue; }
+    let j = i;
+    while (j < steps.length && (cuBoxOf(steps[j], depth) || {}).id === b.id) j++;
+    out.push({ kind: 'group', name: b.name, ...sec(st), steps: cuTree(steps.slice(i, j), depth + 1, true) });
+    i = j;
+  }
+  return out;
+}
+// A container whose steps no longer stand next to each other in one section is no container: its steps go free.
+function cuBoxFix(steps) {
+  const at = new Map();
+  steps.forEach((st, i) => { for (const b of st.box || []) at.set(b.id, [...(at.get(b.id) || []), i]); });
+  const gone = new Set([...at].filter(([, on]) => on[on.length - 1] - on[0] + 1 !== on.length || on.some(i => cuSecOf(steps[i]) !== cuSecOf(steps[on[0]]))).map(x => x[0]));
+  for (const st of steps) if (st.box) { st.box = st.box.filter(b => !gone.has(b.id)); if (!st.box.length) delete st.box; }
+  return steps;
+}
 // A list of steps from text of any origin (a saved rule, pasted text): every step checked, every id made afresh.
-// Returns null when the text holds no step that can be used.
+// Returns null when the text holds no step that can be used. The steps of a container come out one after another,
+// each with the container among its boxes, and take the container's section.
 function cuClean(list) {
   if (!Array.isArray(list)) return null;
-  const steps = [];
+  const steps = [], boxes = [], flat = [];
+  const walk = (items, path, sec) => {
+    for (const told of items) {
+      if (!told || told.kind !== 'group') { flat.push([told, path, sec]); continue; }
+      if (!Array.isArray(told.steps)) continue;
+      const box = { id: 0, name: typeof told.name === 'string' && told.name.trim() ? told.name.trim().slice(0, 40) : 'Steps' };
+      boxes.push(box);
+      walk(told.steps, [...path, box], path.length ? sec : told.sec || 'main');
+    }
+  };
+  walk(list, [], null);
   let first = -1;   // the first step that the text names by a kind of CU_ALSO: a change of c before the iterations
-  for (const told of list.slice(0, CU_MAX_STEPS)) {
+  for (const [told, path, sec] of flat.slice(0, CU_MAX_STEPS)) {
     const also = told && CU_ALSO[told.kind], raw = also ? { ...told, ...also(told.p || {}) } : told, B = raw && CU_BLOCKS[raw.kind];
     if (!B) continue;
     const p = {};
@@ -4773,25 +4829,30 @@ function cuClean(list) {
     if (also && first < 0) first = steps.length;
     // a step may carry a name of the user's own: the saved step it was made from
     const name = typeof raw.name === 'string' ? raw.name.trim().slice(0, 40) : '';
-    steps.push({ id: steps.length + 1, kind: raw.kind, on: raw.on !== false, p, sec: raw.sec, ...(name ? { name } : {}) });
+    steps.push({ id: steps.length + 1, kind: raw.kind, on: raw.on !== false, p, sec: sec || raw.sec, ...(name ? { name } : {}), ...(path.length ? { box: path } : {}) });
   }
   // A rule that names no section: a slider that stands before such a change of c is there for it to read, so it
   // goes to the first section with it.
-  if (first > 0 && !list.some(told => told && told.sec)) for (const st of steps.slice(0, first)) if (st.kind === 'slider') st.sec = 'pre';
+  if (first > 0 && !list.some(told => told && told.sec)) for (const st of steps.slice(0, first)) if (st.kind === 'slider' && !st.box) st.sec = 'pre';
   // each step in its section; a section that is the iterations is not written down
   for (const st of steps) { const sec = cuSecOf(st); if (sec === 'main') delete st.sec; else st.sec = sec; }
-  return steps.length ? cuSorted(steps) : null;
+  // the containers get their ids after the steps, and every step its own copy of the ones it stands in
+  boxes.forEach((b, k) => { b.id = steps.length + 1 + k; });
+  for (const st of steps) if (st.box) st.box = st.box.map(b => ({ id: b.id, name: b.name }));
+  return steps.length ? cuBoxFix(cuSorted(steps)) : null;
 }
+// the first id that neither a step nor a container of these steps has
+const cuNextId = steps => 1 + Math.max(0, ...steps.map(st => Math.max(st.id, ...(st.box || []).map(b => b.id))));
 // A whole rule from such text: the steps alone (a list), or the steps with how far a point may go.
 function cuRuleOf(o) {
   const steps = cuClean(Array.isArray(o) ? o : o && o.steps);
-  return steps ? { steps, next: steps.length + 1, rev: 0, bail: cuBailOf(o && o.bail), play: null, ...cuShowDefault(), rough: !!(o && o.rough) } : null;
+  return steps ? { steps, next: cuNextId(steps), rev: 0, bail: cuBailOf(o && o.bail), play: null, ...cuShowDefault(), rough: !!(o && o.rough) } : null;
 }
 function cuStored() {
   try { return cuRuleOf(JSON.parse(localStorage.getItem(CU_KEY) || 'null')); }
   catch (err) { return null; }   // storage is blocked, or what it holds is not a rule
 }
-const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, rough: !!S.custom.rough, steps: S.custom.steps.map(s => ({ kind: s.kind, on: s.on !== false, p: s.p, ...(cuSecOf(s) === 'main' ? {} : { sec: cuSecOf(s) }), ...(s.name ? { name: s.name } : {}) })) });
+const cuRuleText = () => JSON.stringify({ bail: S.custom.bail, rough: !!S.custom.rough, steps: cuTree(S.custom.steps) });
 function cuStore() {
   try { localStorage.setItem(CU_KEY, cuRuleText()); } catch (err) { /* storage blocked: the rule lasts for this visit */ }
 }
@@ -15866,8 +15927,11 @@ const CUI = {
   look: null,            // the id of a step that moves no point and whose name was clicked: its value is on show
   wasOn: false,          // the custom approach was on show when customSync last looked
   saved: [],             // the rules the user has saved: [{ name, rule }], rule as cuRuleText writes it
-  kept: [],              // the steps the user has saved: [{ name, kind, p }]
+  kept: [],              // the steps the user has saved: [{ name, kind, p }], or for a container [{ name, steps }]
   home: null,            // the start distance of the camera for what customSync last saw (null: a Kleinian picture)
+  open: new Set(),       // the containers that stand open, by id
+  sel: [],               // the cards that are selected, by key ('s' + a step's id, 'b' + a container's id): all of one list
+  selFrom: null,         // the card a Shift-click counts from
 };
 // Saved rules are kept in localStorage; where that is blocked every access throws, and the list stays empty.
 const CU_SAVED_KEY = 'squaringLab.customSaved';
@@ -15883,13 +15947,16 @@ function cuSavedStore() {
 // Saved steps: a step with its settings, kept under a name. They have the first group of the list of kinds
 // (83-custom-pick.js; their values there are @0, @1, ...). One that is added, or chosen under Change, is an
 // ordinary step of its kind with those settings, which carries the name. They are kept in localStorage like the
-// saved approaches; where that is blocked they last for the visit.
+// saved approaches; where that is blocked they last for the visit. A saved container holds its steps as the text of
+// a rule writes them (cuTree): added, it is a container of that name with those steps in it.
 const CU_KEPT_KEY = 'squaringLab.customSteps';
 function cuKeptOf(x) {
-  const B = x && CU_BLOCKS[x.kind], p = {};
-  if (!B || typeof x.name !== 'string' || !x.name.trim()) return null;
+  if (!x || typeof x.name !== 'string' || !x.name.trim()) return null;
+  const name = x.name.trim().slice(0, 40), B = CU_BLOCKS[x.kind], p = {};
+  if (Array.isArray(x.steps)) { const flat = cuClean(x.steps); return flat ? { name, steps: cuTree(flat, 0, true) } : null; }
+  if (!B) return null;
   for (const sp of B.params) { const v = x.p && x.p[sp.key]; if (typeof v === 'string' || typeof v === 'number') p[sp.key] = String(v).slice(0, 400); }
-  return { name: x.name.trim().slice(0, 40), kind: x.kind, p };
+  return { name, kind: x.kind, p };
 }
 function cuKeptLoad() {
   try { const list = JSON.parse(localStorage.getItem(CU_KEPT_KEY) || '[]'); CUI.kept = (Array.isArray(list) ? list : []).map(cuKeptOf).filter(Boolean).slice(0, 60); } catch (err) { CUI.kept = []; }
@@ -15914,10 +15981,12 @@ function cuKeptRename(k, name) {
   const mine = CUI.kept[k], as = String(name).trim().slice(0, 40);
   if (!mine || !as || as === mine.name) return '';
   if (CUI.kept.some((s, j) => j !== k && s.name.toLowerCase() === as.toLowerCase())) return 'Another saved step has that name already.';
-  const steps = S.custom.steps.filter(st => st.name === mine.name);
+  // a saved container gives its name to the containers of the approach that carry it
+  const was = mine.name, boxed = st => (st.box || []).filter(b => b.name === was);
+  const steps = S.custom.steps.filter(st => (mine.steps ? boxed(st).length : st.name === was));
   if (steps.length) cuSnap();
   mine.name = as;
-  for (const st of steps) st.name = as;
+  for (const st of steps) { if (mine.steps) for (const b of boxed(st)) b.name = as; else st.name = as; }
   cuKeptStore();
   if (steps.length) cuChanged(true);
   cuAddSet();
@@ -15938,17 +16007,94 @@ function cuTake(st, mine) {
   cuSetSec(st, cuSecOf(st));
   S.custom.steps = cuSorted(S.custom.steps);
 }
+// Puts an entry among the saved steps: in the place of the one that has its name already, or at the end. Returns
+// { k, again, held }: its place, whether it took another's place, and whether the browser kept the list. Returns
+// null, and says why, when the list is full.
+function cuKeptPut(entry) {
+  const at = CUI.kept.findIndex(s => s.name.toLowerCase() === entry.name.toLowerCase());
+  if (at < 0 && CUI.kept.length >= 60) { cuSay('Sixty steps are saved already. To make room, choose one beside “Add step” and press Delete.'); return null; }
+  if (at >= 0) CUI.kept[at] = entry; else CUI.kept.push(entry);
+  return { k: at >= 0 ? at : CUI.kept.length - 1, again: at >= 0, held: cuKeptStore() };
+}
+const CU_KEPT_WHERE = 'It is in the list of steps, which opens beside “Add step” and under “Change”: at the top, under “Your saved steps”.';
+const CU_KEPT_LOST = ' This browser’s storage is blocked or full, so it is kept for this visit only.';
 // Saves a step as it is now under a name. A name that is taken already gets this step in the place of the earlier one.
 function cuKeep(st, name) {
-  const entry = cuKeptOf({ name, kind: st.kind, p: st.p }), at = CUI.kept.findIndex(s => s.name.toLowerCase() === entry.name.toLowerCase());
-  if (at < 0 && CUI.kept.length >= 60) { cuSay('Sixty steps are saved already. To make room, choose one beside “Add step” and press Delete.'); return; }
-  if (at >= 0) CUI.kept[at] = entry; else CUI.kept.push(entry);
-  const held = cuKeptStore();
+  const entry = cuKeptOf({ name, kind: st.kind, p: st.p }), put = cuKeptPut(entry);
+  if (!put) return;
   cuSnap(); st.name = entry.name;
-  cuAddSet('@' + (at >= 0 ? at : CUI.kept.length - 1));
+  cuAddSet('@' + put.k);
   cuChanged(true);
-  cuSay((at >= 0 ? `“${entry.name}” is saved again, as this step is now.` : `Saved as “${entry.name}”. It is in the list of steps, which opens beside “Add step” and under “Change”: at the top, under “Your saved steps”.`)
-    + (held ? '' : ' This browser’s storage is blocked or full, so it is kept for this visit only.'));
+  cuSay((put.again ? `“${entry.name}” is saved again, as this step is now.` : `Saved as “${entry.name}”. ${CU_KEPT_WHERE}`) + (put.held ? '' : CU_KEPT_LOST));
+}
+
+// Containers: one card that holds the cards of several steps (st.box, see cuTree in 12-custom.js). A container is
+// moved, switched, played, removed and saved as one. Open, it shows its steps, which can be changed there. Breaking
+// it down sets them free.
+// The places a to z - 1 of the steps a container holds, and how many containers deep it stands; null: no such one.
+function cuBoxSpan(id) {
+  const steps = S.custom.steps, has = st => !!st.box && st.box.some(b => b.id === id), a = steps.findIndex(has);
+  if (a < 0) return null;
+  let z = a;
+  while (z < steps.length && has(steps[z])) z++;
+  return { a, z, depth: steps[a].box.findIndex(b => b.id === id) };
+}
+// A unit is what stands in the list as one card: a step, or a container with all it holds. cuCard(i) is the step
+// at place i, and cuCard(i, id) the container `id` that this step stands in. Its steps are a to z - 1, it is
+// `depth` containers deep, and it stands among the units of lo to hi - 1: its section, or the container it is in.
+function cuCard(i, id) {
+  const steps = S.custom.steps, st = steps[i], path = st.box || [], depth = id === undefined ? path.length : path.findIndex(b => b.id === id), sec = cuSecOf(st);
+  const near = (j, d) => j >= 0 && j < steps.length && cuSecOf(steps[j]) === sec && path.slice(0, d).every((b, k) => (cuBoxOf(steps[j], k) || {}).id === b.id);
+  let a = i, z = i + 1, lo = i, hi = i + 1;
+  if (id !== undefined) { while (near(a - 1, depth + 1)) a--; while (near(z, depth + 1)) z++; }
+  while (near(lo - 1, depth)) lo--;
+  while (near(hi, depth)) hi++;
+  return { a, z, depth, lo, hi };
+}
+// the unit beside u, earlier (d = -1) or later (d = 1); null where u is the first or the last of its list
+function cuCardBeside(u, d) {
+  const steps = S.custom.steps, j = d < 0 ? u.a - 1 : u.z, b = j >= u.lo && j < u.hi ? cuBoxOf(steps[j], u.depth) : null;
+  return j < u.lo || j >= u.hi ? null : b ? cuCard(j, b.id) : cuCard(j);
+}
+// Can a unit go one place earlier (d = -1) or later (d = 1)? Inside its list it changes places with the unit beside
+// it. From the end of its section a unit that stands in no container goes over to the section beside, where every
+// kind it holds may stand there.
+function cuCardCan(u, d) {
+  const steps = S.custom.steps, k = CU_SECS.indexOf(cuSecOf(steps[u.a])) + d;
+  return !!cuCardBeside(u, d) || (u.depth === 0 && k >= 0 && k < CU_SECS.length && !steps.slice(u.a, u.z).some(st => st.kind === 'keep'));
+}
+function cuCardMove(u, d) {
+  const steps = S.custom.steps, o = cuCardBeside(u, d);
+  if (o) { const mine = steps.splice(u.a, u.z - u.a); steps.splice(d < 0 ? o.a : o.z - mine.length, 0, ...mine); return; }
+  // over to the section beside: its place in the list stays
+  const sec = CU_SECS[CU_SECS.indexOf(cuSecOf(steps[u.a])) + d];
+  for (const st of steps.slice(u.a, u.z)) cuSetSec(st, sec);
+}
+// Steps made from a tree of a rule's text (cuTree), each with an id of its own, for the section `sec` and inside
+// the containers of `path`.
+function cuGrow(items, sec, path = []) {
+  const C = S.custom, out = [];
+  for (const it of items) {
+    if (it.kind === 'group') { out.push(...cuGrow(it.steps, sec, [...path, { id: C.next++, name: it.name }])); continue; }
+    const st = cuStepOf(it.kind, { ...it.p }, C.next++, sec);
+    if (it.on === false) st.on = false;
+    if (it.name) st.name = it.name;
+    if (path.length) st.box = path.map(b => ({ ...b }));
+    out.push(st);
+  }
+  return out;
+}
+const cuLeaves = items => items.reduce((n, it) => n + (it.kind === 'group' ? cuLeaves(it.steps) : 1), 0);
+const cuHolds = (items, kind) => items.some(it => (it.kind === 'group' ? cuHolds(it.steps, kind) : it.kind === kind));
+// Saves a container as it is now under a name, which it then carries, among the saved steps.
+function cuKeepBox(id, name) {
+  const span = cuBoxSpan(id), steps = span ? S.custom.steps.slice(span.a, span.z) : [], entry = span && cuKeptOf({ name, steps: cuTree(steps, span.depth + 1, true) }), put = entry && cuKeptPut(entry);
+  if (!put) return;
+  cuSnap();
+  for (const st of steps) st.box[span.depth].name = entry.name;
+  cuAddSet('@' + put.k);
+  cuChanged(true);
+  cuSay((put.again ? `“${entry.name}” is saved again, with the steps it holds now.` : `Saved as “${entry.name}”. ${CU_KEPT_WHERE}`) + (put.held ? '' : CU_KEPT_LOST));
 }
 // The menu of rules to load: the user's saved ones (values s0, s1, ...) above the lab's own (0, 1, ...).
 function cuStartMenu(value) {
@@ -16061,19 +16207,54 @@ const CU_SEC_SAY = {
   main: ['Every iteration', 'Taken in every iteration, in this order. This is the part that is repeated.'],
   post: ['Once, after the iterations', 'Taken one time, after the last iteration. A point these steps land beyond the bailout radius is thrown out, as in any iteration.'],
 };
-// Can a step go one place earlier (d = -1) or later (d = 1)? Inside its section it changes places with its
-// neighbour. From the end of its section it goes over to the section beside, where its kind may stand there.
-function cuCanMove(st, d) {
-  const steps = S.custom.steps, other = steps[steps.indexOf(st) + d], sec = cuSecOf(st), k = CU_SECS.indexOf(sec) + d;
-  if (other && cuSecOf(other) === sec) return true;
-  return k >= 0 && k < CU_SECS.length && st.kind !== 'keep';
+// Can a step go one place earlier (d = -1) or later (d = 1)? See cuCardCan: a step is a unit of one.
+const cuCanMove = (st, d) => cuCardCan(cuCard(S.custom.steps.indexOf(st)), d);
+const CU_SEL_HINT = 'Shift-click or Ctrl-click selects steps, to save several as one.';
+const cuToolHtml = (act, label, title, text, off) => `<button type="button" class="cu-tool" data-act="${act}" aria-label="${label}" title="${title}"${off ? ' disabled' : ''}>${text}</button>`;
+// what a card is called in a sentence: a step's own name, or its kind
+const cuCardName = st => (st.name ? `“${st.name}”` : CU_BLOCKS[st.kind].title[0].toLowerCase() + CU_BLOCKS[st.kind].title.slice(1));
+// The card of a container: the steps a to z - 1, which stand `depth` containers deep, inside it.
+function cuBoxEl(box, a, z, depth) {
+  const steps = S.custom.steps, li = document.createElement('li'), open = CUI.open.has(box.id), on = steps.slice(a, z).some(st => st.on !== false), u = cuCard(a, box.id);
+  const span = `${a + 1}–${z}`, tool = cuToolHtml, held = [];
+  for (let i = a; i < z;) {
+    const b = cuBoxOf(steps[i], depth + 1);
+    if (!b) { held.push(cuCardName(steps[i++])); continue; }
+    held.push(`“${b.name}”`);
+    while (i < z && (cuBoxOf(steps[i], depth + 1) || {}).id === b.id) i++;
+  }
+  li.className = 'cu-box' + (open ? ' is-open' : '') + (on ? '' : ' is-off'); li.dataset.box = box.id; li.dataset.key = 'b' + box.id;
+  li.innerHTML = `<div class="cu-head cu-box-head"><label class="cu-on" title="Switch every step in it off, or on."><input type="checkbox" data-act="on"${on ? ' checked' : ''} aria-label="Steps ${span} are on"><span class="cu-no">${span}</span></label>` +
+    `<button type="button" class="cu-title" data-act="show" title="Play the steps it holds, from the first to the last. ${CU_SEL_HINT}">${cuEsc(box.name)}<span class="cu-of-kind">${z - a} step${z - a === 1 ? '' : 's'} in one</span></button><span class="cu-flag">now</span>` +
+    tool('remove', `Remove steps ${span}`, 'Remove, with the steps it holds', '✕') + '<span class="cu-tools">' +
+    tool('up', `Move steps ${span} earlier`, 'Move earlier, with the steps it holds.', '←', !cuCardCan(u, -1)) +
+    tool('down', `Move steps ${span} later`, 'Move later, with the steps it holds.', '→', !cuCardCan(u, 1)) +
+    tool('break', `Break steps ${span} down`, 'Set the steps it holds free: each stands in the list by itself again.', 'Break down') +
+    tool('open', open ? `Close steps ${span}` : `Open steps ${span}`, open ? 'Put the steps it holds away again.' : 'Show the steps it holds, to change them where they stand.', open ? 'Close' : 'Open') +
+    tool('save', `Save steps ${span} under a name`, 'Keep it, with the steps it holds as they are now, under a name. It then stands in the list of steps, under “Your saved steps”, to be added again anywhere.', 'Save') +
+    `</span></div><p class="note cu-box-holds">Holds ${cuEsc(held.slice(0, 6).join(', '))}${held.length > 6 ? `, and ${held.length - 6} more` : ''}.</p>` +
+    `<ol class="cu-steps cu-box-steps"${open ? '' : ' hidden'}></ol><p class="err cu-box-err" hidden></p>`;
+  cuFill(li.querySelector('ol'), a, z, depth + 1);
+  return li;
+}
+// the cards of the steps lo to hi - 1, which stand `depth` containers deep, into a list
+function cuFill(ol, lo, hi, depth) {
+  const steps = S.custom.steps;
+  for (let i = lo; i < hi;) {
+    const b = cuBoxOf(steps[i], depth);
+    if (!b) { ol.appendChild(cuStepEl(steps[i], i)); i++; continue; }
+    let j = i;
+    while (j < hi && (cuBoxOf(steps[j], depth) || {}).id === b.id) j++;
+    ol.appendChild(cuBoxEl(b, i, j, depth));
+    i = j;
+  }
 }
 function cuStepEl(st, i) {
   const B = CU_BLOCKS[st.kind], li = document.createElement('li'), k = i + 1;
-  li.className = 'cu-step' + (st.on === false ? ' is-off' : ''); li.dataset.id = st.id;
-  const tool = (act, label, title, text, off) => `<button type="button" class="cu-tool" data-act="${act}" aria-label="${label}" title="${title}"${off ? ' disabled' : ''}>${text}</button>`;
+  li.className = 'cu-step' + (st.on === false ? ' is-off' : ''); li.dataset.id = st.id; li.dataset.key = 's' + st.id;
+  const tool = cuToolHtml;
   li.innerHTML = `<div class="cu-head"><label class="cu-on" title="Switch this step off to see the solid without it."><input type="checkbox" data-act="on"${st.on === false ? '' : ' checked'} aria-label="Step ${k} is on"><span class="cu-no">${k}</span></label>` +
-    `<button type="button" class="cu-title" data-act="show" title="Show this step in the play: one that moves the point is played from its start to its end, and one that only works a value out shows that value.">${st.name ? `${cuEsc(st.name)}<span class="cu-of-kind">${cuEsc(B.title)}</span>` : cuEsc(B.title)}</button><span class="cu-flag">now</span>` +
+    `<button type="button" class="cu-title" data-act="show" title="Show this step in the play: one that moves the point is played from its start to its end, and one that only works a value out shows that value. ${CU_SEL_HINT}">${st.name ? `${cuEsc(st.name)}<span class="cu-of-kind">${cuEsc(B.title)}</span>` : cuEsc(B.title)}</button><span class="cu-flag">now</span>` +
     tool('remove', `Remove step ${k}`, 'Remove', '✕') + '<span class="cu-tools">' +
     tool('up', `Move step ${k} earlier`, 'Move earlier. From the first place of its section a step goes over to the section before.', '←', !cuCanMove(st, -1)) +
     tool('down', `Move step ${k} later`, 'Move later. From the last place of its section a step goes over to the section after.', '→', !cuCanMove(st, 1)) +
@@ -16091,15 +16272,96 @@ function cuRender() {
   const host = $('cuSteps'), steps = S.custom.steps;
   host.textContent = '';
   for (const sec of CU_SECS) {
-    const box = document.createElement('div'), mine = steps.filter(st => cuSecOf(st) === sec);
+    // the steps of a section stand next to each other in the list
+    const box = document.createElement('div'), lo = steps.findIndex(st => cuSecOf(st) === sec), n = steps.filter(st => cuSecOf(st) === sec).length;
     box.className = 'cu-sec'; box.dataset.sec = sec;
-    box.innerHTML = `<p class="cu-sec-head"><span class="label">${CU_SEC_SAY[sec][0]}</span> <span class="note">${cuEsc(CU_SEC_SAY[sec][1])}${mine.length ? '' : ' No step stands here.'}</span></p><ol class="cu-steps"></ol>`;
-    for (const st of mine) box.lastElementChild.appendChild(cuStepEl(st, steps.indexOf(st)));
+    box.innerHTML = `<p class="cu-sec-head"><span class="label">${CU_SEC_SAY[sec][0]}</span> <span class="note">${cuEsc(CU_SEC_SAY[sec][1])}${n ? '' : ' No step stands here.'}</span></p><ol class="cu-steps"></ol>`;
+    if (n) cuFill(box.lastElementChild, lo, lo + n, 0);
     host.appendChild(box);
   }
   $('cuEmpty').hidden = steps.length > 0;
   CUI.now = null; CUI.barSig = '';
   cuAreasFit();
+  cuSelShow();
+}
+// Selecting cards, to save several as one. A Ctrl-click (Cmd on a Mac) on a card's head adds the card or takes it
+// away, and a Shift-click takes the run from the card clicked before to this one. The selected cards are all of
+// one list: a click in another list starts afresh there. While any are selected a bar stands before the first.
+function cuSelClick(li, run) {
+  const host = $('cuSteps'), key = li.dataset.key, home = li.parentNode, one = CUI.sel.length ? host.querySelector(`[data-key="${CUI.sel[0]}"]`) : null;
+  if (!one || one.parentNode !== home) { CUI.sel = []; CUI.selFrom = null; }
+  const sibs = [...home.children].filter(x => x.dataset.key), from = run && CUI.selFrom ? sibs.findIndex(x => x.dataset.key === CUI.selFrom) : -1, to = sibs.indexOf(li);
+  if (from >= 0) CUI.sel = sibs.slice(Math.min(from, to), Math.max(from, to) + 1).map(x => x.dataset.key);
+  else { CUI.sel = CUI.sel.includes(key) ? CUI.sel.filter(k => k !== key) : [...CUI.sel, key]; CUI.selFrom = key; }
+  cuSelShow();
+}
+function cuSelClear() { CUI.sel = []; CUI.selFrom = null; cuSelShow(); }
+// The selected cards in the order they stand in, with whether they stand next to each other; null: none.
+function cuSelNow() {
+  const host = $('cuSteps'), lis = CUI.sel.map(k => host.querySelector(`[data-key="${k}"]`)).filter(Boolean);
+  if (!lis.length || lis.some(li => li.parentNode !== lis[0].parentNode)) return null;
+  const sibs = [...lis[0].parentNode.children].filter(x => x.dataset.key), at = lis.map(li => sibs.indexOf(li)).sort((x, y) => x - y);
+  return { lis: at.map(k => sibs[k]), run: at[at.length - 1] - at[0] + 1 === at.length };
+}
+// Marks the selected cards and puts the bar before the first of them. A card that is no longer there, or no longer
+// in the list of the others, ends the selection.
+function cuSelShow() {
+  const host = $('cuSteps'), old = host.querySelector('.cu-selbar'), typed = old ? old.querySelector('input') : null, name = typed ? typed.value : '', had = typed && document.activeElement === typed;
+  if (old) old.remove();
+  host.querySelectorAll('.is-sel').forEach(x => x.classList.remove('is-sel'));
+  const now = cuSelNow();
+  if (!now) { CUI.sel = []; CUI.selFrom = null; return; }
+  CUI.sel = now.lis.map(li => li.dataset.key);
+  for (const li of now.lis) li.classList.add('is-sel');
+  const n = now.lis.length, bar = document.createElement('li'), no = '<button type="button" class="cu-tool" data-sel="no">Cancel</button>';
+  bar.className = 'cu-selbar';
+  bar.innerHTML = n < 2 ? `<span class="note">1 step selected. Shift-click another for the run between the two, or Ctrl-click to add one.</span>${no}`
+    : !now.run ? `<span class="note">${n} steps selected, with others between them. One step can hold only steps that stand next to each other.</span>${no}`
+    : `<span class="label">${n} steps selected</span><input type="text" class="cu-in" id="cuSelName" maxlength="40" spellcheck="false" autocomplete="off" placeholder="Name for the one step" aria-label="The name of the step that will hold the selected steps">` +
+      `<button type="button" class="cu-tool" data-sel="save" title="Makes one step that holds the selected steps, under this name, and keeps it among your saved steps. Break down, on that step, sets them free again.">Save as one step</button>${no}`;
+  now.lis[0].before(bar);
+  const box = bar.querySelector('input');
+  if (box) { box.value = name; if (had) box.focus({ preventScroll: true }); }
+}
+// Makes one container of the selected cards, under the name in the bar, and keeps it among the saved steps.
+function cuSelSave() {
+  const C = S.custom, now = cuSelNow(), box = $('cuSelName'), name = box ? box.value.trim().slice(0, 40) : '';
+  if (!now || !now.run || now.lis.length < 2) return;
+  if (!name) { cuSay('Type a name for the one step in the box first.'); box.focus(); return; }
+  // the steps the cards stand for: from the first step of the first card to the last step of the last
+  const ends = li => (li.dataset.box ? cuBoxSpan(+li.dataset.box) : { a: cuStepAt(li.dataset.id), z: cuStepAt(li.dataset.id) + 1 });
+  const a = ends(now.lis[0]).a, z = ends(now.lis[now.lis.length - 1]).z, first = now.lis[0], depth = first.dataset.box ? cuBoxSpan(+first.dataset.box).depth : (C.steps[a].box || []).length;
+  const entry = cuKeptOf({ name, steps: cuTree(C.steps.slice(a, z), depth, true) }), put = entry && cuKeptPut(entry);
+  if (!put) return;
+  cuSnap();
+  const id = C.next++;
+  for (const st of C.steps.slice(a, z)) { const path = st.box || []; st.box = [...path.slice(0, depth), { id, name: entry.name }, ...path.slice(depth)]; }
+  CUI.sel = []; CUI.selFrom = null;
+  cuAddSet('@' + put.k);
+  cuChanged(true);
+  cuSay(`Saved as “${entry.name}”: one step that holds ${z - a}. Open shows them, and Break down sets them free again. ${CU_KEPT_WHERE}` + (put.held ? '' : CU_KEPT_LOST));
+}
+// A card's name gives way to a box for the name to save it under, with Save and Cancel beside it.
+function cuNameAsk(li, value, label) {
+  const name = li.querySelector(':scope > .cu-head > .cu-title'), row = document.createElement('span');
+  if (li.classList.contains('is-naming')) return;
+  row.className = 'cu-naming';
+  row.innerHTML = `<input type="text" class="cu-in" maxlength="40" spellcheck="false" autocomplete="off" aria-label="${label}" value="${cuEsc(value)}">` +
+    '<button type="button" class="cu-tool" data-act="save-ok">Save</button><button type="button" class="cu-tool" data-act="save-no">Cancel</button>';
+  name.hidden = true; name.after(row); li.classList.add('is-naming');
+  const box = row.firstChild;
+  box.addEventListener('keydown', ev => {
+    if (ev.key === 'Enter') { ev.preventDefault(); row.querySelector('[data-act=save-ok]').click(); }
+    else if (ev.key === 'Escape') { ev.stopPropagation(); row.querySelector('[data-act=save-no]').click(); }
+  });
+  box.focus(); box.select();
+  cuSay('Type a name for this step, then press Save or Enter.');
+}
+// the name that was typed, with the card as it was before
+function cuNameDone(li) {
+  const row = li.querySelector(':scope > .cu-head > .cu-naming'), as = row.querySelector('input').value.trim();
+  row.remove(); li.querySelector(':scope > .cu-head > .cu-title').hidden = false; li.classList.remove('is-naming');
+  return as;
 }
 // The menus and name lists follow the rule without the boxes being made again: a name may have come or gone, and
 // the Power dial may have moved.
@@ -16120,6 +16382,12 @@ function cuErrors() {
     p.textContent = msg ? 'This step is left out: ' + msg : ''; p.hidden = !msg;
     li.classList.toggle('is-bad', !!msg);
   });
+  // a container that is shut hides the step that is left out, so it says that one is
+  document.querySelectorAll('#cuSteps .cu-box').forEach(li => {
+    const bad = !!li.querySelector('.cu-step.is-bad'), p = li.querySelector(':scope > .cu-box-err');
+    p.textContent = bad ? 'A step in here is left out. Open shows which, and why.' : ''; p.hidden = !bad;
+    li.classList.toggle('is-bad', bad);
+  });
 }
 function cuSnap() {
   const t = cuRuleText();
@@ -16129,7 +16397,7 @@ function cuSnap() {
 // After the rule changed. render: the list itself changed (a step added, moved, removed, a menu turned), not only a value.
 function cuChanged(render) {
   S.custom.rev = (S.custom.rev || 0) + 1;
-  if (render) cuRender();
+  if (render) { cuBoxFix(S.custom.steps); cuRender(); }
   cuStore();
   cuErrors();
   $('cuUndo').disabled = CUI.undo.length === 0;
@@ -16273,11 +16541,14 @@ function cuBarSync() {
   if (now !== CUI.now) {
     CUI.now = now;
     document.querySelectorAll('#cuSteps .cu-step').forEach(li => li.classList.toggle('is-now', li.dataset.id === now));
-    const li = now && document.querySelector(`#cuSteps .cu-step[data-id="${now}"]`), dock = $('cuDock');
+    let li = now && document.querySelector(`#cuSteps .cu-step[data-id="${now}"]`);
+    // a step inside a container that is shut is not on show: the outermost such container stands for it
+    for (let b = li && li.parentNode.closest('.cu-box'); b; b = b.parentNode.closest('.cu-box')) if (!b.classList.contains('is-open')) li = b;
+    const dock = $('cuDock');
     // bring the marked step into view inside the list of steps, which scrolls by itself on a wide window
     if (li && dock.scrollHeight > dock.clientHeight + 4) {
       // a step in the first row of its section comes into view with the section's heading
-      const box = li.closest('.cu-sec'), top = box && box.querySelector('.cu-step'), ref = top && top.offsetTop === li.offsetTop ? box : li;
+      const box = li.closest('.cu-sec'), top = box && box.querySelector('.cu-step, .cu-box'), ref = top && top.offsetTop === li.offsetTop ? box : li;
       const a = li.getBoundingClientRect(), r = ref.getBoundingClientRect(), b = dock.getBoundingClientRect();
       const bar = dock.querySelector('.cu-tools-row').offsetHeight + 6;   // the tools stay at the top of the list
       if (r.top < b.top + bar || a.bottom > b.bottom) dock.scrollTop += r.top - b.top - bar;
@@ -16377,7 +16648,12 @@ function customInit() {
   // A formula is one line, however many rows its box shows: Enter takes it as it is, and a line break that comes
   // with pasted text becomes a space. When the list gets another width the boxes are fitted again, a frame later,
   // so that the list's new height is no answer to its own change.
-  list.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('cu-area')) { e.preventDefault(); e.target.blur(); } });
+  list.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.classList.contains('cu-area')) { e.preventDefault(); e.target.blur(); }
+    // the selection: Enter in the box for the name saves the selected steps as one, and Escape lets them go
+    else if (e.key === 'Enter' && e.target.id === 'cuSelName') { e.preventDefault(); cuSelSave(); }
+    else if (e.key === 'Escape' && CUI.sel.length) cuSelClear();
+  });
   let wide = 0;
   new ResizeObserver(() => { if (list.clientWidth !== wide) { wide = list.clientWidth; requestAnimationFrame(() => cuAreasFit()); } }).observe(list);
   list.addEventListener('input', e => {
@@ -16397,7 +16673,16 @@ function customInit() {
     cuChanged(false);
   });
   list.addEventListener('change', e => {
-    const t = e.target, { li, st } = at(e);
+    const t = e.target, { li, st } = at(e), head = t.closest('.cu-box-head');
+    // a container's switch is the switch of every step it holds
+    if (head && t.dataset.act === 'on') {
+      const span = cuBoxSpan(+head.parentNode.dataset.box);
+      if (!span) return;
+      cuSay(''); cuSnap();
+      for (const x of C.steps.slice(span.a, span.z)) x.on = t.checked;
+      cuChanged(true);
+      return;
+    }
     if (!st) return;
     cuSay('');
     if (t.dataset.act === 'on') { cuSnap(); st.on = t.checked; li.classList.toggle('is-off', !t.checked); cuChanged(false); return; }
@@ -16423,8 +16708,66 @@ function customInit() {
       cuRangeSync(li, st); cuOptionsSync(); cuAreasFit(li);
     }
   });
+  // Starts a play that runs from the place `from` of the bar to the place `to`, in the iteration `pass`.
+  const playRun = (pass, from, to) => {
+    cuGo(pass, from);
+    CUI.until = to; CUI.playing = true; CUI.last = performance.now(); $('cuPlay').textContent = 'Pause';
+    if (!CUI.raf) CUI.raf = requestAnimationFrame(cuPlayFrame);
+  };
+  // where a section lies on the bar, for a play of its steps: { base, pass }
+  const playAt = (sec, list) => {
+    const now = cuPlayAt(), np = cuPasses();
+    return { base: sec === 'pre' ? -list.length : sec === 'post' ? cuMoving().length : 0, pass: sec === 'pre' ? cuFirst() : sec === 'post' ? np : now.end ? 1 : Math.max(1, now.pass) };
+  };
+  // a click on a tool or on the name of a container
+  const boxAct = (b, li) => {
+    const id = +li.dataset.box, span = cuBoxSpan(id), act = b.dataset.act;
+    if (!span) return;
+    const mine = C.steps.slice(span.a, span.z), words = `steps ${span.a + 1} to ${span.z}`;
+    cuSay('');
+    if (act === 'show') {
+      // play the steps it holds that a play can stand in, from the first to the last
+      cuUnpeek();
+      const sec = cuSecOf(mine[0]), ids = new Set(mine.map(st => st.id)), run = cuPlayable(sec), on = run.map((s, j) => (ids.has(s.id) ? j : -1)).filter(j => j >= 0);
+      if (!cuMoving().length) { cuSay('No step of “Every iteration” that is switched on moves the point, so there is no play to stand in.'); return; }
+      if (!on.length) { cuSay('No step in here that is switched on moves the point or changes c, so there is nothing of it to play.'); return; }
+      cuPlayStop();
+      const where = playAt(sec, run);
+      playRun(where.pass, where.base + on[0], where.base + on[on.length - 1] + 1);
+      return;
+    }
+    if (act === 'open') {
+      if (CUI.open.has(id)) CUI.open.delete(id); else CUI.open.add(id);
+      cuRender(); cuErrors(); cuBarSync();
+      const again = list.querySelector(`.cu-box[data-box="${id}"] > .cu-head [data-act="open"]`);
+      if (again) again.focus({ preventScroll: true });
+      return;
+    }
+    if (act === 'save') { cuNameAsk(li, mine[0].box[span.depth].name, `The name to save ${words} under`); return; }
+    if (act === 'save-ok' || act === 'save-no') { const as = cuNameDone(li); if (act === 'save-ok' && as) cuKeepBox(id, as); return; }
+    if (act === 'break') {
+      cuSnap();
+      for (const st of mine) { st.box = st.box.filter(x => x.id !== id); if (!st.box.length) delete st.box; }
+      CUI.open.delete(id);
+    } else if (act === 'remove') { cuSnap(); C.steps.splice(span.a, span.z - span.a); }
+    else {
+      const u = cuCard(span.a, id), d = act === 'up' ? -1 : 1;
+      if (!cuCardCan(u, d)) return;
+      cuSnap(); cuCardMove(u, d);
+    }
+    cuChanged(true);
+    if (act === 'break') cuSay(`The ${mine.length} steps stand in the list by themselves again.`);
+    const again = act === 'up' || act === 'down' ? list.querySelector(`.cu-box[data-box="${id}"] > .cu-head [data-act="${act}"]`) : null;
+    if (again && !again.disabled) again.focus({ preventScroll: true });
+  };
   list.addEventListener('click', e => {
+    // the bar of the selection
+    const pick = e.target.closest('[data-sel]'), head = e.target.closest('.cu-head');
+    if (pick) { cuSay(''); if (pick.dataset.sel === 'save') cuSelSave(); else cuSelClear(); return; }
+    // a Shift-click or a Ctrl-click on a card's head selects the card, and does nothing else
+    if (head && (e.shiftKey || e.ctrlKey || e.metaKey) && !e.target.closest('.cu-tool, .cu-on, .cu-naming')) { e.preventDefault(); cuSay(''); cuSelClick(head.parentNode, e.shiftKey); return; }
     const b = e.target.closest('.cu-tool, .cu-title'), { i, st } = b ? at(e) : {};
+    if (b && head && head.classList.contains('cu-box-head')) { boxAct(b, head.parentNode); return; }
     if (!st) return;
     cuSay('');
     const act = b.dataset.act;
@@ -16461,26 +16804,9 @@ function customInit() {
       if (!CUI.raf) CUI.raf = requestAnimationFrame(cuPlayFrame);
       return;
     }
-    if (act === 'save') {
-      // the step's name gives way to a box for the name to keep it under, with Save and Cancel beside it
-      const li = b.closest('.cu-step'), name = li.querySelector('.cu-title'), row = document.createElement('span');
-      if (li.classList.contains('is-naming')) return;
-      row.className = 'cu-naming';
-      row.innerHTML = `<input type="text" class="cu-in" maxlength="40" spellcheck="false" autocomplete="off" aria-label="The name to save step ${i + 1} under" value="${cuEsc(st.name || CU_BLOCKS[st.kind].title)}">` +
-        '<button type="button" class="cu-tool" data-act="save-ok">Save</button><button type="button" class="cu-tool" data-act="save-no">Cancel</button>';
-      name.hidden = true; name.after(row); li.classList.add('is-naming');
-      const box = row.firstChild;
-      box.addEventListener('keydown', ev => {
-        if (ev.key === 'Enter') { ev.preventDefault(); row.querySelector('[data-act=save-ok]').click(); }
-        else if (ev.key === 'Escape') row.querySelector('[data-act=save-no]').click();
-      });
-      box.focus(); box.select();
-      cuSay('Type a name for this step, then press Save or Enter.');
-      return;
-    }
+    if (act === 'save') { cuNameAsk(b.closest('.cu-step'), st.name || CU_BLOCKS[st.kind].title, `The name to save step ${i + 1} under`); return; }
     if (act === 'save-ok' || act === 'save-no') {
-      const li = b.closest('.cu-step'), row = li.querySelector('.cu-naming'), as = row.querySelector('input').value.trim();
-      row.remove(); li.querySelector('.cu-title').hidden = false; li.classList.remove('is-naming');
+      const as = cuNameDone(b.closest('.cu-step'));
       if (act === 'save-ok' && as) cuKeep(st, as);
       return;
     }
@@ -16489,6 +16815,16 @@ function customInit() {
       cuPickOpen(b, st.kind, kind => {
         const mine = cuKeptAt(kind);
         if (!mine && (kind === st.kind || !CU_BLOCKS[kind])) return;
+        if (mine && mine.steps) {
+          // a saved container takes the step's place, in the section and the containers the step stands in
+          const here = C.steps.indexOf(st), sec = cuSecOf(st);
+          if (sec !== 'main' && cuHolds(mine.steps, 'keep')) { cuSay(`“${mine.name}” holds a value the orbit keeps, which stands under “Every iteration”, so it cannot take this step’s place.`); return; }
+          if (C.steps.length - 1 + cuLeaves(mine.steps) > CU_MAX_STEPS) { cuSay(`An approach can hold ${CU_MAX_STEPS} steps, and “${mine.name}” here would pass that.`); return; }
+          cuSnap();
+          C.steps.splice(here, 1, ...cuGrow([{ kind: 'group', name: mine.name, steps: mine.steps }], sec, st.box || []));
+          cuChanged(true);
+          return;
+        }
         cuSnap();
         if (mine) cuTake(st, mine); else cuSwap(st, kind);
         cuChanged(true);
@@ -16504,7 +16840,8 @@ function customInit() {
       if (!parts) { cuSay('This step is one operation already.'); return; }
       if (C.steps.length - 1 + parts.length > CU_MAX_STEPS) { cuSay(`An approach can hold ${CU_MAX_STEPS} steps, and breaking this one down would pass that.`); return; }
       cuSnap();
-      C.steps.splice(i, 1, ...parts.map(x => Object.assign(cuStepOf(x.kind, x.p, C.next++, cuSecOf(st)), { on: st.on !== false })));
+      // the parts stand where the step stood: in its section, and in the containers it stood in
+      C.steps.splice(i, 1, ...parts.map(x => Object.assign(cuStepOf(x.kind, x.p, C.next++, cuSecOf(st)), { on: st.on !== false }, st.box ? { box: st.box.map(bx => ({ ...bx })) } : {})));
     } else if (act === 'reset') {
       // back to the settings of a new step of this kind; the name it gives stays, since later steps may use it
       cuSnap();
@@ -16514,12 +16851,11 @@ function customInit() {
       cuSnap();
       if (act === 'remove') C.steps.splice(i, 1);
       else {
-        // inside its section a step changes places with its neighbour; from the end of the section it goes over
-        // to the section beside, and its place in the list stays
-        const d = act === 'up' ? -1 : 1, other = C.steps[i + d], sec = cuSecOf(st);
-        if (!cuCanMove(st, d)) return;
-        if (other && cuSecOf(other) === sec) C.steps.splice(i + d, 0, C.steps.splice(i, 1)[0]);
-        else cuSetSec(st, CU_SECS[CU_SECS.indexOf(sec) + d]);
+        // inside its list a step changes places with the card beside it, which may be a container; from the end of
+        // its section it goes over to the section beside, and its place in the list stays
+        const d = act === 'up' ? -1 : 1, u = cuCard(i);
+        if (!cuCardCan(u, d)) return;
+        cuCardMove(u, d);
       }
     }
     cuChanged(true);
@@ -16529,9 +16865,23 @@ function customInit() {
   $('cuAddBtn').addEventListener('click', () => {
     cuSay('');
     if (C.steps.length >= CU_MAX_STEPS) { cuSay(`An approach can hold ${CU_MAX_STEPS} steps.`); return; }
+    const asked = $('cuAddSec').value, mine = cuKeptAt($('cuAddSel').value);
+    if (mine && mine.steps) {
+      // a saved container comes as a container, with the steps it holds; one that holds a value the orbit keeps
+      // stands under "Every iteration" whatever was asked
+      if (C.steps.length + cuLeaves(mine.steps) > CU_MAX_STEPS) { cuSay(`An approach can hold ${CU_MAX_STEPS} steps, and “${mine.name}” would pass that.`); return; }
+      cuSnap();
+      const sec = cuHolds(mine.steps, 'keep') ? 'main' : asked, rank = CU_SECS.indexOf(sec), made = cuGrow([{ kind: 'group', name: mine.name, steps: mine.steps }], sec);
+      C.steps.splice(C.steps.filter(x => CU_SECS.indexOf(cuSecOf(x)) <= rank).length, 0, ...made);
+      cuChanged(true);
+      if (sec !== asked) cuSay(`“${mine.name}” holds a value the orbit keeps, which goes from one iteration to the next, so it stands under “Every iteration”.`);
+      const li = list.querySelector(`.cu-box[data-box="${made[0].box[0].id}"]`);
+      if (li) { li.scrollIntoView({ block: 'nearest' }); li.querySelector('.cu-title').focus({ preventScroll: true }); }
+      return;
+    }
     cuSnap();
     // one of the saved steps comes with its settings and its name
-    const asked = $('cuAddSec').value, mine = cuKeptAt($('cuAddSel').value), st = mine ? cuStepOf(mine.kind, { ...mine.p }, C.next++, asked) : cuStepOf($('cuAddSel').value, {}, C.next++, asked);
+    const st = mine ? cuStepOf(mine.kind, { ...mine.p }, C.next++, asked) : cuStepOf($('cuAddSel').value, {}, C.next++, asked);
     const named = st.kind === 'slider' ? 'name' : st.p.out !== undefined ? 'out' : '';
     if (mine) st.name = mine.name;
     if (named) st.p[named] = cuFresh(cuTaken(C.steps))(st.p[named]);   // a name the rule does not have yet
@@ -17401,8 +17751,10 @@ const CUP = {
 };
 
 // The groups with their entries: { v, t, sub, k }, the value, the name, for a saved step its kind and its place.
+// A saved container has, in the place of a kind, how many steps it holds.
 function cuPickGroups() {
-  return [[CU_PICK_MINE, CUI.kept.map((s, k) => ({ v: '@' + k, t: s.name, sub: CU_BLOCKS[s.kind].title, k }))],
+  const held = s => { const n = cuLeaves(s.steps); return `${n} step${n === 1 ? '' : 's'} in one`; };
+  return [[CU_PICK_MINE, CUI.kept.map((s, k) => ({ v: '@' + k, t: s.name, sub: s.steps ? held(s) : CU_BLOCKS[s.kind].title, k }))],
     ...CU_GROUPS.map(g => [g, Object.entries(CU_BLOCKS).filter(([, B]) => B.group === g).map(([v, B]) => ({ v, t: B.title }))])];
 }
 function cuPickSay(text) { const p = $('cuPickSay'); p.textContent = text || ''; p.hidden = !text; }
@@ -17416,7 +17768,7 @@ function cuPickDraw() {
     found += items.length;
     const open = words.length > 0 || !CUP.shut.has(g);   // a search looks into every group
     html += `<section class="cu-pick-sec"><button type="button" class="cu-pick-head" data-g="${cuEsc(g)}" aria-expanded="${open}">${cuEsc(g)}<span class="note">${items.length}</span></button>`;
-    if (open && mine && !all.length) html += '<p class="note cu-pick-none">None yet. Save, among a step’s tools, keeps that step here with its settings.</p>';
+    if (open && mine && !all.length) html += '<p class="note cu-pick-none">None yet. Save, among a step’s tools, keeps that step here with its settings. Several steps that are selected (Shift-click, Ctrl-click) can be saved as one.</p>';
     if (open) {
       html += '<ul>' + items.map(o => (mine && CUP.edit === o.k
         ? `<li class="cu-pick-mine"><input type="text" class="cu-in" id="cuPickName" maxlength="40" value="${cuEsc(o.t)}" aria-label="The new name of this saved step" spellcheck="false" autocomplete="off">` +

@@ -23,7 +23,10 @@ come closest and what is known not to work. No rule passes yet.
   the orbit. A formula has the length and the two angles of every point, written after the point, as in `z.phi` and `c.phi`,
   and its box wraps and grows with its text. A step can be switched off, moved, made another kind where it stands, saved with its settings under a name to be
   added again from the list of steps, or broken down: a
-  block into its formulas, a formula into its single operations. The list of steps can be searched, and its groups shut. A bar under the picture plays the steps,
+  block into its formulas, a formula into its single operations. Steps that stand next to each other can be
+  selected, with a Shift-click for a run or a Ctrl-click one by one, and saved under a name as one step that holds
+  them. It is moved, switched, played and added again as one, it can be opened to change the steps inside, and
+  breaking it down sets them free. The rule works out the same with it or without. The list of steps can be searched, and its groups shut. A bar under the picture plays the steps,
   iteration by iteration from the first or straight through them all, in the picture itself, at three speeds, with dots that show where the
   steps carry the solid's points and guides for the step on show: its axis, plane, sphere or arrow, and the way
   one ringed dot takes through it. A step that moves no point shows the value it works out for that dot. The
@@ -76,4 +79,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.17. Each version is tagged, as `v1.17`.
+This is version 1.18. Each version is tagged, as `v1.18`.

@@ -11,8 +11,10 @@ const CUP = {
 };
 
 // The groups with their entries: { v, t, sub, k }, the value, the name, for a saved step its kind and its place.
+// A saved container has, in the place of a kind, how many steps it holds.
 function cuPickGroups() {
-  return [[CU_PICK_MINE, CUI.kept.map((s, k) => ({ v: '@' + k, t: s.name, sub: CU_BLOCKS[s.kind].title, k }))],
+  const held = s => { const n = cuLeaves(s.steps); return `${n} step${n === 1 ? '' : 's'} in one`; };
+  return [[CU_PICK_MINE, CUI.kept.map((s, k) => ({ v: '@' + k, t: s.name, sub: s.steps ? held(s) : CU_BLOCKS[s.kind].title, k }))],
     ...CU_GROUPS.map(g => [g, Object.entries(CU_BLOCKS).filter(([, B]) => B.group === g).map(([v, B]) => ({ v, t: B.title }))])];
 }
 function cuPickSay(text) { const p = $('cuPickSay'); p.textContent = text || ''; p.hidden = !text; }
@@ -26,7 +28,7 @@ function cuPickDraw() {
     found += items.length;
     const open = words.length > 0 || !CUP.shut.has(g);   // a search looks into every group
     html += `<section class="cu-pick-sec"><button type="button" class="cu-pick-head" data-g="${cuEsc(g)}" aria-expanded="${open}">${cuEsc(g)}<span class="note">${items.length}</span></button>`;
-    if (open && mine && !all.length) html += '<p class="note cu-pick-none">None yet. Save, among a step’s tools, keeps that step here with its settings.</p>';
+    if (open && mine && !all.length) html += '<p class="note cu-pick-none">None yet. Save, among a step’s tools, keeps that step here with its settings. Several steps that are selected (Shift-click, Ctrl-click) can be saved as one.</p>';
     if (open) {
       html += '<ul>' + items.map(o => (mine && CUP.edit === o.k
         ? `<li class="cu-pick-mine"><input type="text" class="cu-in" id="cuPickName" maxlength="40" value="${cuEsc(o.t)}" aria-label="The new name of this saved step" spellcheck="false" autocomplete="off">` +
