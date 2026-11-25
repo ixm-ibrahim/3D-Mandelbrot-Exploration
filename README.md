@@ -21,7 +21,8 @@ come closest and what is known not to work. No rule passes yet.
   iteration, and steps taken once after the last iteration. A step that moves a point works on the point z, on
   c, or on a point the rule has named, in whichever section it stands, and a change of c lasts for the rest of
   the orbit. A formula has the length and the two angles of every point, written after the point, as in `z.phi` and `c.phi`,
-  and its box wraps and grows with its text. A step can be switched off, moved, made another kind where it stands, saved with its settings under a name to be
+  and its box wraps and grows with its text. A step can name a function of the rule's own, with a name, the
+  names of what it is given and a formula, and every step after it can call that function in its formulas. A step can be switched off, moved, made another kind where it stands, saved with its settings under a name to be
   added again from the list of steps, or broken down: a
   block into its formulas, a formula into its single operations. Steps that stand next to each other can be
   selected, with a Shift-click for a run or a Ctrl-click one by one, and saved under a name as one step that holds
@@ -79,4 +80,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.20. Each version is tagged, as `v1.20`.
+This is version 1.21. Each version is tagged, as `v1.21`.

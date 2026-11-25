@@ -202,6 +202,7 @@ const CU_HELP = `<p class="note"><b>A point</b> is written <code>vec(x, y, z)</c
 <p class="note"><b>Works on.</b> A step that moves a point has a “Works on” menu: the point <code>z</code>, <code>c</code>, or a point you have named in an earlier step of the same section, as in <code>w = z</code>. A formula can change c too: <code>c = c*0.9</code>. A change of c lasts: the orbit carries the new c on to its next iteration. Before the iterations a step that changes c can use c, n, numbers and sliders, but not z: for c’s own angle there write <code>c.phi</code>, not <code>z.phi</code>.</p>
 <p class="note"><b><code>same(x)</code></b> is for the picture’s distance estimate, which follows a few orbits right beside each point: inside it they take the value the point itself has. Use it for a value that jumps from one point to its neighbour, such as a box’s middle.</p>
 <p class="note"><b>A value the orbit keeps</b> (a kind of step) gives a name that does not start afresh: what it holds when an iteration ends is what it holds in the next. Any later step may give it a new value, as in <code>total = total + radius</code>.</p>
+<p class="note"><b>A function of your own</b> (a kind of step) gives a formula a name and says what it is given, as in <code>grow(p, k)</code> for <code>p * len(p)^(k - 1)</code>. Every step after it, in any section, can call it: <code>z = grow(z, n)</code>. It reads what it is given, <code>z</code>, <code>c</code>, <code>n</code> and the sliders that stand before it, and it can call the functions of the steps before it.</p>
 <p class="note"><b>Kinds:</b> a number, a point with the parts <code>.x .y .z</code>, a quaternion <code>quat(w, x, y, z)</code>, and a matrix <code>mat( )</code> of nine numbers row by row, or of three points as its columns.</p>
 <p class="note"><b>Signs:</b> <code>+ − * / ^</code>, and <code>&lt; &gt; &lt;= &gt;= == !=</code>, which give 1 or 0. A number times a point stretches it, a matrix times a point moves it, and two quaternions multiply as quaternions.</p>
 <p class="note"><b>Numbers:</b> <code>sin cos tan asin acos atan atan2(y, x) sinh cosh tanh atanh exp log sqrt abs floor ceil round fract sign min max mod pow clamp(x, lo, hi) mix(a, b, t) step smoothstep rad(degrees) deg(radians) if(test, a, b)</code>. Angles are in radians, in what <code>sin</code>, <code>cos</code> and <code>tan</code> take, in what <code>asin</code>, <code>acos</code>, <code>atan</code> and <code>atan2</code> give, and in <code>z.theta</code> and <code>z.phi</code>: write <code>rad(90)</code> for 90°, and <code>deg(z.phi)</code> for an angle in degrees, which is what a box that asks for degrees needs.</p>
@@ -255,6 +256,7 @@ function cuRow(st, sp) {
   else if (sp.type === 'target') cell = `<select id="${id}" class="cu-in cu-on-pick" data-key="${key}" title="The point this step works on: the point z, c, or a point that an earlier step of this section has named.">${cuTargets(st)}</select>`;
   else if (sp.type === 'text') cell = area(` id="${id}"`);
   else if (sp.type === 'name') cell = text();
+  else if (sp.type === 'names') cell = text(' placeholder="names, with commas: p, k" title="The names of what the function is given, with commas between them, as in p, k. Left empty, it is given nothing and is called with empty brackets."');
   else if (sp.type === 'any') cell = text(` list="cu-dl-${st.id}"`) + range;
   else if (sp.type === 'num' && (sp.bare || sp.fixed)) cell = cuIsNum(raw) ? box(true) : text();
   else if (sp.type === 'num' && sp.own) cell = box(true) + range;
@@ -285,7 +287,8 @@ function cuRangeSync(li, st) {
   });
 }
 // The names a formula of this step can use, for the lists its boxes offer.
-const cuNamesHtml = st => Object.keys(CU_GIVEN).concat(Object.keys(CU_POLAR).flatMap(k => ['z.' + k, 'c.' + k]), (cuProgram().scopes[st.id] || []).map(x => x[0])).map(name => `<option value="${name}">`).join('');
+const cuNamesHtml = st => Object.keys(CU_GIVEN).concat(Object.keys(CU_POLAR).flatMap(k => ['z.' + k, 'c.' + k]), (cuProgram().scopes[st.id] || []).map(x => x[0]),
+  [...cuProgram().fns.values()].map(f => `${f.name}(${f.args.join(', ')})`)).map(name => `<option value="${name}">`).join('');
 // The three sections of the list, each with a line that says when its steps are taken.
 const CU_SEC_SAY = {
   pre: ['Once, before the iterations', 'Taken one time, before iteration 1.'],
@@ -860,6 +863,7 @@ function customInit() {
       cuUnpeek();   // a step that was tried before this click is left first
       const me = cuProgram().run.find(s => s.id === st.id), sec = cuSecOf(st), now = cuPlayAt(), np = cuPasses(), held = S.custom.play;
       if (cuProgram().errs[st.id] || !me) { cuSay('This step cannot be read yet, so the play has no place for it.'); return; }
+      if (st.kind === 'func') { cuSay(`This step moves no point and works nothing out, so the play has nothing to show for it. It names a function, which a later step calls as ${st.p.name}( ).`); return; }
       // A step that is switched off and changes a point is tried: for as long as the play stands in it, it counts
       // among the steps a play can stand in, and the rule itself stays without it.
       const tried = st.on === false && !!me.on;
@@ -967,7 +971,7 @@ function customInit() {
     cuSnap();
     // one of the saved steps comes with its settings and its name
     const st = mine ? cuStepOf(mine.kind, { ...mine.p }, C.next++, asked) : cuStepOf($('cuAddSel').value, {}, C.next++, asked);
-    const named = st.kind === 'slider' ? 'name' : st.p.out !== undefined ? 'out' : '';
+    const named = st.kind === 'slider' || st.kind === 'keep' || st.kind === 'func' ? 'name' : st.p.out !== undefined ? 'out' : '';
     if (mine) st.name = mine.name;
     if (named) st.p[named] = cuFresh(cuTaken(C.steps))(st.p[named]);   // a name the rule does not have yet
     // the step goes to the end of its section; a kind that belongs to one section goes there whatever was asked
@@ -1280,10 +1284,10 @@ function cuShown() {
 // the rule made.
 function cuFixed(text, kind, mode) {
   try {
-    const node = cuParse(String(text), { vars: new Map(), zero: [], uses: new Set(), K: [], internal: false });
+    const node = cuParse(String(text), { vars: new Map(), zero: [], uses: new Set(), K: [], internal: false, fns: cuProgram().fns });
     let fixed = node.t === kind;
     (function walk(tr) {
-      if (tr.leaf === undefined) (tr.a || [tr.of]).forEach(walk);
+      if (tr.leaf === undefined) (tr.inner ? [tr.inner] : tr.a || [tr.of]).forEach(walk);
       else if (/^[A-Za-z]/.test(tr.leaf) && tr.leaf !== 'pi' && tr.leaf !== 'n' && !(tr.leaf === 'c' && mode === 'j' && !cuProgram().cRun)) fixed = false;
       if (tr.fn === 'point') fixed = false;
     })(node.tree);
@@ -1293,7 +1297,7 @@ function cuFixed(text, kind, mode) {
 // The value a formula has for a point with the names E, of whatever kind it is: { t, value }, or null.
 function cuValueAny(text, E) {
   try {
-    const P = cuProgram(), node = cuParse(String(text), { vars: P.varsOf[E.sec] || P.vars, zero: [], uses: new Set(), K: [], internal: false });
+    const P = cuProgram(), node = cuParse(String(text), { vars: P.varsOf[E.sec] || P.vars, zero: [], uses: new Set(), K: [], internal: false, fns: P.fns });
     return { t: node.t, value: node.js(E) };
   } catch (err) { return null; }
 }

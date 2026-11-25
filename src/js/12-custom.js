@@ -48,6 +48,8 @@ const cuFlt = x => (!Number.isInteger(x) ? String(x) : Math.abs(x) < 1e15 ? x + 
 const cuDash = text => String(text).replace(/[−–]/g, '-').trim();
 const cuNum = text => parseFloat(cuDash(text));
 const cuIsNum = text => CU_NUMBER.test(cuDash(text));
+// the names of what a function of the rule's own is given, as they are typed: p, k
+const cuArgs = text => String(text).split(',').map(s => s.trim()).filter(Boolean);
 // the three numbers of a point typed as vec(1, 0, 0), or null for any other formula
 const cuXyz = text => { const m = CU_VEC3.exec(cuDash(text)); return m ? [parseFloat(m[1]), parseFloat(m[2]), parseFloat(m[3])] : null; };
 
@@ -314,13 +316,19 @@ cuDef('inv', 'm', 'm', a => `cuMinv(${a})`, cuMinv);
 // own lines may hold: a slot $7 and a hidden name @b12_r. Returns { t, gl, js, tree }: the kind, the shader text,
 // js(E), which works the value out of E = { z, c, n, K, v, first, last, mean, count }, and the formula as a tree
 // for cuSplit: { leaf: text } | { op, a: [trees] } | { part, of: tree } | { fn, a: [trees] }.
+// ctx.fns: the functions of the rule's own that the formula may call (name -> { name, args, text, fns }, see
+// cuFuncOf). Such a call stands in the formula as the function's own formula, with what it is given in the places
+// of the names it was written with (ctx.args, while that formula is read; ctx.inFn: the function's name). Its tree
+// is { fn, a, inner }, with inner the tree of that formula, so that what it reads can be seen. ctx.lost: the names
+// of functions whose step is switched off or cannot be read, each with those words.
 const CU_COMPARE = { '<': ['lt', (x, y) => x < y], '>': ['gt', (x, y) => x > y], '<=': ['le', (x, y) => x <= y], '>=': ['ge', (x, y) => x >= y], '==': ['eq', (x, y) => x === y], '!=': ['ne', (x, y) => x !== y] };
 function cuParse(text, ctx) {
   const s = aprPlain(String(text));
   let i = 0;
-  const fail = m => { throw new Error(m); };
+  // sure: the formula is wrong whatever kinds its names have (a sign out of place, a name that is not there)
+  const fail = (m, sure) => { const e = new Error(m); if (sure) e.sure = true; throw e; };
   const peek = () => { while (i < s.length && /\s/.test(s[i])) i++; return s[i]; };
-  const need = ch => { if (peek() !== ch) fail(`A “${ch}” is missing.`); i++; };
+  const need = ch => { if (peek() !== ch) fail(`A “${ch}” is missing.`, true); i++; };
   const shown = name => name.replace(/^@b\d+_/, '');
   const scale = (A, B) => E => { const k = A(E); return B(E).map(u => u * k); };
   function compare() {
@@ -361,7 +369,7 @@ function cuParse(text, ctx) {
     const A = a.js, B = b.js, tree = { op: 'div', a: [a.tree, b.tree] };
     if (b.t === 'q') fail('To divide by a quaternion, multiply by inv( ) of it.');
     if (b.t !== 's') fail(`“/” can divide by a number only, and here it has ${CU_KINDS[b.t]}.`);
-    if (b.lit === 0) fail('The formula divides by zero.');
+    if (b.lit === 0) fail('The formula divides by zero.', true);
     if (b.lit !== undefined) {
       const k = 1 / b.lit, gl = `(${a.gl} / ${b.gl})`;
       return a.t === 's' ? { t: 's', gl, tree, js: E => A(E) * k } : { t: a.t, gl, tree, js: E => A(E).map(u => u * k) };
@@ -427,8 +435,19 @@ function cuParse(text, ctx) {
       sites.push(args[0].t);
       return { t: args[0].t, gl: `(gCarI == 0 ? (gCuW${k} = ${args[0].gl}) : gCuW${k})`, tree: { fn: 'same', a: [args[0].tree] }, js: args[0].js };
     }
+    const own = ctx.fns && ctx.fns.get(name);
+    if (own) {
+      // it reads what it is given, the given names and the sliders that stand before it, and no other name of the rule
+      if (args.length !== own.args.length) fail(`${name}( ) is given ${args.length === 1 ? '1 thing' : args.length + ' things'}. It takes ${own.args.length ? own.args.length + ': ' + own.args.join(', ') : `none: write ${name}( )`}.`, true);
+      const inner = { vars: own.sliders, zero: ctx.zero, uses: ctx.uses, K: ctx.K, internal: false, sec: ctx.sec,
+        same: ctx.same || (ctx.same = []), fns: own.fns, lost: ctx.lost, args: new Map(own.args.map((a, k) => [a, args[k]])), inFn: name };
+      let node;
+      try { node = cuParse(own.text, inner); } catch (e) { fail(`${name}( ), given ${args.length ? args.map(a => CU_KINDS[a.t]).join(', ') : 'nothing'}: ${e.message}`, e.sure); }
+      return { t: node.t, gl: node.gl, js: node.js, tree: { fn: name, a: args.map(a => a.tree), inner: node.tree } };
+    }
     const forms = CU_FN[name];
-    if (!forms) fail(`“${name}( )” is not a function a formula knows.`);
+    if (!forms) fail(ctx.inFn === name ? `${name}( ) cannot call itself.` : ctx.lost && ctx.lost.has(name) ? `${name}( ) is the function of a step that ${ctx.lost.get(name)}.`
+      : `“${name}( )” is not a function a formula knows.` + (ctx.inFn ? ' A function can call the functions of the steps before it.' : ''), true);
     const sig = args.map(a => a.t).join(''), f = forms.find(o => o.args === sig);
     if (!f) {
       const say = k => [...k].map(t => CU_KINDS[t]).join(', ');
@@ -442,7 +461,7 @@ function cuParse(text, ctx) {
   }
   function atom() {
     const ch = peek();
-    if (ch === undefined) fail('The formula stops too early.');
+    if (ch === undefined) fail('The formula stops too early.', true);
     if (ch === '(') { i++; const a = compare(); need(')'); return a; }
     if (ch === '$' && ctx.internal) {
       const k = +/^\$(\d+)/.exec(s.slice(i))[1];
@@ -453,11 +472,11 @@ function cuParse(text, ctx) {
     if (num) {
       i += num[0].length;
       const x = parseFloat(num[0]);
-      if (!(Math.abs(x) <= 1e30)) fail(`The number ${num[0]} is too large. Numbers up to 1e30 work.`);
+      if (!(Math.abs(x) <= 1e30)) fail(`The number ${num[0]} is too large. Numbers up to 1e30 work.`, true);
       return { t: 's', gl: cuFlt(x), lit: x, tree: { leaf: num[0] }, js: () => x };
     }
     const id = (ctx.internal ? /^@?[A-Za-z][A-Za-z0-9_]*/ : /^[A-Za-z][A-Za-z0-9_]*/).exec(s.slice(i));
-    if (!id) fail(`“${ch}” is not something a formula can use here.`);
+    if (!id) fail(`“${ch}” is not something a formula can use here.`, true);
     i += id[0].length;
     const name = id[0], tree = { leaf: name };
     if (name === '@tt') return { t: 's', gl: 'tt', tree, js: E => E.tt };   // how far a play has taken this step
@@ -481,13 +500,17 @@ function cuParse(text, ctx) {
       ctx.uses.add('orbit');
       return { t: CU_GIVEN[name], gl: 'o' + name[0].toUpperCase() + name.slice(1), tree, js: E => E[name] };
     }
+    const given = ctx.args && ctx.args.get(name);   // inside a function of the rule's own: what it was given by this name
+    if (given) return given;
     const v = ctx.vars.get(name);
-    if (!v) fail(CU_FN[name] ? `“${name}” is a function: write ${name}( ) with what it works on between the brackets.` : `“${shown(name)}” has no value yet. A name gets its value in an earlier step, as in ${shown(name)} = len(z).`);
+    if (!v) fail(CU_FN[name] || (ctx.fns && ctx.fns.has(name)) ? `“${name}” is a function: write ${name}( ) with what it works on between the brackets.`
+      : ctx.inFn ? `“${shown(name)}” is not something ${ctx.inFn}( ) is given. A function reads what it is given, z, c, n and the sliders that stand before it: hand it “${shown(name)}” as one more thing.`
+      : `“${shown(name)}” has no value yet. A name gets its value in an earlier step, as in ${shown(name)} = len(z).`, true);
     const at = v.idx;
     return { t: v.t, gl: v.gl, tree, js: E => E.v[at] };
   }
   const out = compare();
-  if (peek() !== undefined) fail(`“${s[i]}” is unexpected here.`);
+  if (peek() !== undefined) fail(`“${s[i]}” is unexpected here.`, true);
   return out;
 }
 // A line, `name = formula`, as its two halves; a formula alone is the new z.
@@ -506,7 +529,7 @@ function cuLine(line, ctx, internal) {
   const node = cuParse(src, ctx), J = node.js;
   let free = true, needs = '';
   (function walk(tr) {
-    if (tr.leaf === undefined) { if (tr.fn === 'point' || tr.fn === 'same') { free = false; needs = needs || tr.fn + '( )'; } (tr.a || [tr.of]).forEach(walk); return; }
+    if (tr.leaf === undefined) { if (tr.fn === 'point' || tr.fn === 'same') { free = false; needs = needs || tr.fn + '( )'; } (tr.inner ? [tr.inner] : tr.a || [tr.of]).forEach(walk); return; }
     const u = ctx.vars.get(tr.leaf);
     if (['z', 'radius', 'theta', 'phi', 'first', 'last', 'mean', 'count'].includes(tr.leaf) || (u && u.free === false)) { free = false; needs = needs || tr.leaf; }
   })(node.tree);
@@ -514,7 +537,7 @@ function cuLine(line, ctx, internal) {
     if (node.t !== 'v') throw new Error(`${target} is a point, and this formula gives ${CU_KINDS[node.t]}. A point is written vec(x, y, z).`);
     return target === 'z' ? { gl: `z = ${node.gl};`, z: true, free, needs, js: E => { E.z = J(E); } } : { gl: `c = ${node.gl};`, z: false, c: true, free, needs, js: E => { E.c = J(E); } };
   }
-  if (target in CU_GIVEN || CU_FN[target] || target === 'point' || target === 'same') throw new Error(`“${target}” already means something here, so it cannot be a name of your own. Pick another.`);
+  if (target in CU_GIVEN || CU_FN[target] || target === 'point' || target === 'same' || (ctx.fns && ctx.fns.has(target))) throw new Error(`“${target}” already means something here, so it cannot be a name of your own. Pick another.`);
   if (target[0] !== '@' && !CU_NAME.test(target)) throw new Error('A name is made of letters and digits and starts with a letter.');
   let v = ctx.vars.get(target);
   if (v && v.t !== node.t) throw new Error(`“${target}” was ${CU_KINDS[v.t]} in an earlier step and would be ${CU_KINDS[node.t]} here. Use another name.`);
@@ -704,6 +727,14 @@ const CU_BLOCKS = {
       { key: 'min', label: 'Slider from', type: 'num', def: '0', bare: true, fixed: true }, { key: 'max', label: 'to', type: 'num', def: '1', bare: true, fixed: true }],
     lines: P => [`${P.name} = ${P.value}`],
     words: p => `${p.name} = ${p.value}` },
+  // A function of the rule's own: a name, the names of what it is given, and a formula in those names. Every step
+  // after it, in whichever section, can call it as name( ... ), like a function of the language. The step itself
+  // moves nothing and is read by cuBuild (cuFuncOf), not through lines.
+  func: { title: 'A function of your own', group: 'Your own', plain: true, basic: true,
+    params: [{ key: 'name', label: 'Name', type: 'name', def: 'f' }, { key: 'args', label: 'It is given', type: 'names', def: 'p' },
+      { key: 'text', label: 'It gives back', type: 'text', def: 'p * len(p)' }],
+    lines: () => [],
+    words: p => `${p.name}(${cuArgs(p.args).join(', ')}) is short for ${p.text}` },
 };
 // the blocks that move a point: each can be set to work on z, on c, or on a point the rule has named
 const CU_MOVES = ['len', 'lon', 'lat', 'merc', 'inv', 'rot', 'mirror', 'fold', 'foldx', 'softx', 'scale', 'shift', 'quatpow', 'quatmul', 'quatturn', 'matrix', 'addc'];
@@ -997,6 +1028,36 @@ function cuStartValue(text) {
   const value = node.js({ z: [0, 0, 0], c: [0, 0, 0], n: 2, K: [], v: [], tt: 1, first: [0, 0, 0], last: [0, 0, 0], mean: [0, 0, 0], count: 0, hist: [], keptIn: [] });
   return { t: node.t, value, gl: node.t === 's' ? cuFlt(value) : `vec3(${value.map(cuFlt).join(', ')})` };
 }
+// A function of the rule's own, from the settings of its step: { name, args, text, fns, sliders }. fns: the
+// functions its formula may call, which are those of the steps before it, so no function can call itself; sliders:
+// the sliders it may read, which are those that stand before it. The formula is tried with every kind of thing it
+// could be given, and is wrong as it stands when no kinds fit. What it says then is what is wrong whatever the
+// kinds are, where a try found such a thing, and otherwise what most of the tries said.
+const CU_FN_ARGS = 6;
+function cuFuncOf(p, ctx) {
+  const of = key => String(p[key] === undefined ? CU_BLOCKS.func.params.find(sp => sp.key === key).def : p[key]).trim();
+  const name = of('name'), args = cuArgs(of('args')), text = of('text'), means = x => x in CU_GIVEN || !!CU_FN[x] || x === 'point' || x === 'same';
+  if (!CU_NAME.test(name)) throw new Error('Name: a name is made of letters and digits and starts with a letter.');
+  if (means(name)) throw new Error(`“${name}” already means something here, so it cannot be the name of a function of your own. Pick another.`);
+  if (ctx.fns.has(name)) throw new Error(`An earlier step has a function named ${name}( ) already. Pick another name.`);
+  if (ctx.vars.has(name)) throw new Error(`“${name}” is the name of a value here already. Pick another name.`);
+  if (args.length > CU_FN_ARGS) throw new Error(`A function is given ${CU_FN_ARGS} things at most.`);
+  for (const a of args) {
+    if (!CU_NAME.test(a)) throw new Error(`“${a}” is not a name. Each thing the function is given has a name of letters and digits that starts with a letter, with commas between them, as in p, k.`);
+    if (means(a) || ctx.fns.has(a) || a === name) throw new Error(`“${a}” already means something here, so it cannot be the name of something the function is given. Pick another.`);
+  }
+  if (new Set(args).size < args.length) throw new Error('Two of the things the function is given have the same name.');
+  if (!text) throw new Error('The formula is empty.');
+  const f = { name, args, text, fns: ctx.fns, sliders: new Map([...ctx.vars].filter(([, v]) => v.slider)) }, said = new Map();   // said: why a try failed -> how many did
+  let sure = '';
+  const kinds = Object.keys(CU_KINDS), all = kinds.length ** args.length;
+  for (let k = 0; k < all; k++) {
+    const given = new Map(args.map((a, j) => { const t = kinds[Math.floor(k / kinds.length ** (args.length - 1 - j)) % kinds.length]; return [a, { t, gl: CU_GLZERO[t], tree: { leaf: a }, js: CU_ZERO[t] }]; }));
+    try { cuParse(text, { vars: f.sliders, zero: [], uses: new Set(), K: [], internal: false, sec: 'main', same: [], fns: f.fns, lost: ctx.lost, args: given, inFn: name }); return f; }
+    catch (e) { said.set(e.message, (said.get(e.message) || 0) + 1); if (e.sure && !sure) sure = e.message; }
+  }
+  throw new Error(sure || [...said].sort((a, b) => b[1] - a[1])[0][0]);
+}
 // Reads the whole rule. Returns the shader text (glsl) and its short key, the numbers for uCu (K, and Kd: the same
 // numbers as they were typed, for the JavaScript side), the steps as JavaScript (run: [{ id, sw, ord, sec, on, idx,
 // moves, tween, fns }]: sw the slot of the step's switch or -1, ord its place in the count that runs through all
@@ -1004,7 +1065,8 @@ function cuStartValue(text) {
 // with idx its place among the names, or null for a step that only names a value), moves whether that point is z,
 // tween whether it works out its own in-between), the same steps by section (lists), the kinds of the names (zero),
 // scopes[id]: the names of the user's own that a step can read, as [name, kind] pairs, and errs[id]: why a step
-// could not be read. Such a step is left out, and so is one that is off and has no slot. at[ord] is the step of run
+// could not be read. Such a step is left out, and so is one that is off and has no slot. fns: the functions of the
+// rule's own, by name (cuFuncOf). at[ord] is the step of run
 // at that place, sliders the steps that are numbers with a slider, varsOf the names each section ends with. cPre: a
 // step taken once before the iterations changes c; cRun: a step of the iterations, or one taken after them, does.
 //
@@ -1019,7 +1081,7 @@ function cuStartValue(text) {
 // one turn that follows the last iteration, the section taken once after them. The places of the steps (ord) run on
 // from section to section, so one number says where a play stands in any of them.
 function cuBuild(steps) {
-  const ctx = { vars: new Map(), all: [], zero: [], uses: new Set(), K: [], kept: [], same: [], sites: 0, internal: false, sec: 'pre' };
+  const ctx = { vars: new Map(), all: [], zero: [], uses: new Set(), K: [], kept: [], same: [], sites: 0, internal: false, sec: 'pre', fns: new Map(), lost: new Map() };
   const bodies = { pre: [], main: [], post: [] }, hoist = [], run = [], errs = {}, scopes = {}, varsOf = {};
   let ord = 0, lastC = 0;   // lastC: how many lines the first section has when its last change of c is done
   steps.slice(0, CU_MAX_STEPS).forEach(st => {
@@ -1038,12 +1100,24 @@ function cuBuild(steps) {
         // in JavaScript), and cuRun puts what it holds at the end away for the next one.
         const name = String(st.p.name).trim(), first = cuStartValue(st.p.start);
         if (!CU_NAME.test(name)) throw new Error('Name: a name is made of letters and digits and starts with a letter.');
-        if (name in CU_GIVEN || CU_FN[name] || name === 'point') throw new Error(`“${name}” already means something here, so it cannot be a name of your own. Pick another.`);
+        if (name in CU_GIVEN || CU_FN[name] || name === 'point' || ctx.fns.has(name)) throw new Error(`“${name}” already means something here, so it cannot be a name of your own. Pick another.`);
         if (ctx.vars.has(name)) throw new Error(`“${name}” has a value already. A kept value has to be the first step that names it.`);
         const v = { t: first.t, idx: ctx.zero.length, gl: 'u_' + name, sec }, j = ctx.kept.length, at = v.idx, was = first.value, o = ord++;
         ctx.zero.push(first.t); ctx.vars.set(name, v); ctx.all.push(v); ctx.kept.push({ t: first.t, idx: at, gl: v.gl, gl0: first.gl });
         bodies.main.push(`if (${sw < 0 ? '' : `uCu[${sw}] > 0.5 && `}${o}.0 <= cuAt){ ${v.gl} = gCuK${j}[gCarI]; }`);
         run.push({ id: st.id, sw, ord: o, sec, moves: false, tween: false, fns: [E => { const k = E.keptIn[j]; E.v[at] = k === undefined ? was : k; }] });
+        return;
+      }
+      if (st.kind === 'func') {
+        // The function is known to every step after this one, in whichever section. A step that is off names none.
+        const called = String(st.p.name === undefined ? '' : st.p.name).trim();
+        if (st.on === false) { if (!ctx.fns.has(called)) ctx.lost.set(called, 'is switched off'); }
+        else {
+          let f;
+          try { f = cuFuncOf(st.p, ctx); } catch (e) { if (!ctx.fns.has(called)) ctx.lost.set(called, 'cannot be read yet'); throw e; }
+          ctx.fns = new Map(ctx.fns).set(f.name, f); ctx.lost.delete(f.name);
+        }
+        run.push({ id: st.id, sw, ord: ord++, sec, moves: false, tween: false, fns: [] });
         return;
       }
       const P = cuSettings(st, B, ctx), names = {};
@@ -1151,7 +1225,7 @@ vec3 zmap(vec3 P, vec3 c){ return ${preZ ? 'cuPreZ(P, c, cmap(c))' : 'P'}; }`;
   const at = [], lists = { pre: [], main: [], post: [] };
   for (const r of run) { at[r.ord] = r; lists[r.sec].push(r); }
   return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + code, key: (h >>> 0).toString(36) + '.' + code.length,
-    K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept };
+    K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept, fns: ctx.fns };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).
 const cuKept = new Map();
@@ -1250,7 +1324,7 @@ function cuStepOn(E0, ord, t, what) {
 }
 function cuValueFor(text, kind, E) {
   try {
-    const P = cuProgram(), node = cuParse(String(text), { vars: P.varsOf[E.sec] || P.vars, zero: [], uses: new Set(), K: [], internal: false });
+    const P = cuProgram(), node = cuParse(String(text), { vars: P.varsOf[E.sec] || P.vars, zero: [], uses: new Set(), K: [], internal: false, fns: P.fns });
     return node.t === kind ? node.js(E) : null;
   } catch (err) { return null; }
 }
@@ -1304,7 +1378,8 @@ function cuBroken(st, taken) {
 // a line as its single operations, innermost first. scope: the names the line can read, as cuBuild gives them.
 function cuSplit(text, scope, taken) {
   const { target, src } = cuHalves(text), fresh = cuFresh(taken), out = [];
-  const node = cuParse(src, { vars: new Map(scope.map(([name, t]) => [name, { t, gl: '', idx: 0 }])), zero: [], uses: new Set(), K: [], internal: false });
+  // every name stands as a slider here, so that a function of the rule's own that reads one can be read
+  const node = cuParse(src, { vars: new Map(scope.map(([name, t]) => [name, { t, gl: '', idx: 0, slider: true }])), zero: [], uses: new Set(), K: [], internal: false, fns: cuProgram().fns });
   // what can stand in a step's box as it is: a name, a number, a part of a name, or one of these with a minus
   const leaf = tr => (tr.leaf !== undefined ? tr.leaf : tr.part && tr.of.leaf !== undefined ? `${tr.of.leaf}.${tr.part}` : tr.op === 'neg' && tr.a[0].leaf !== undefined ? `-${tr.a[0].leaf}` : null);
   const emit = (tr, name) => {
@@ -1332,7 +1407,7 @@ function cuSplit(text, scope, taken) {
 function cuTaken(steps) {
   const out = [];
   for (const s of steps) {
-    if (s.kind === 'slider' || s.kind === 'keep') out.push(String(s.p.name));
+    if (s.kind === 'slider' || s.kind === 'keep' || s.kind === 'func') out.push(String(s.p.name));
     else if (s.kind === 'formula') { const m = /^\s*([A-Za-z][A-Za-z0-9]*)\s*=(?!=)/.exec(String(s.p.text)); if (m) out.push(m[1]); }
     else if (s.p.out !== undefined) out.push(String(s.p.out));
   }
