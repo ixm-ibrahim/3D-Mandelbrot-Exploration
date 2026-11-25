@@ -77,6 +77,9 @@ picture. A dial for a "number of planes" must not.
 > somehow, if not fully, so the resulting object is not stretched or otherwise revealing the limitations of 3d
 > rotations"
 
+> "we want to inflate the 2d fractals according to their shapes, such that the surfaces of the 3d equivalents has
+> the same recognizable (not-stretched) pattern all over it, not just at the z=0 plane"
+
 A flat picture that is merely blown up, with nothing new off the flat plane, is "not what I want".
 
 **The spread of the cousin, with the true shapes.** *Balls on balls* is not a Julia set. It has no c and its cut is
@@ -258,6 +261,15 @@ strong lead, not a proof.
   bulbs in the second plane come from. So a rule needs a move that carries points from off the flat plane onto it.
   Of such moves only a mirror plane and a mirror sphere keep every shape. A winding stretches three to one, and a
   soft mirror smears.
+- **A step that sends two points to one.** In the flat picture two points land on one at each step, so each step
+  back makes two copies of a shape at about half the size. That is just enough to line an edge with shapes at
+  every size. To cover a surface at the same spacing takes four copies at half the size. So a rule that sends two
+  points to one has too few copies to cover a body: they stay along a line, or each one is drawn out into a ring
+  or a rib to make up the area. *One plane* sends two to one and has nothing off the flat plane. *Two planes* adds
+  a fold, which doubles the count, and has bulbs in a second plane. The cousin shows the same: its second slide,
+  square to the flat plane, is what puts bodies all over. So at power 2 a rule with shapes all over needs a step
+  that sends four points to one: the flat count, squared. This is a count and not a proof, and no picture was
+  drawn to test it.
 - **One smooth rule of the plain kind is one plane.** Take any rule that squares the length and sends each
   direction to a new direction. The most such a rule can do is keep every shape on the sphere of directions, so
   that small circles there stay circles. If it does that and has the exact flat cut, it is *one plane* or its
@@ -399,7 +411,8 @@ Not tried, or not finished.
   That rule is not in the lab. Where the spheres should sit, and what in the flat rule would place them, is open.
   In the custom approach the step "Sphere inversion" can be set to move only the points inside its sphere, which
   is such a mirror. One sphere above the flat plane and one below, placed by hand, were drawn on the basilica, the
-  rabbit, the dendrite and Kokopelli. The flat cut stays exact and nothing tears. A round bulb with a neck stands
+  rabbit, the dendrite and Kokopelli. The custom approach has this rule to load, as *One plane, with a mirror sphere
+  above and below*, with sliders for where the spheres sit. The flat cut stays exact and nothing tears. A round bulb with a neck stands
   where the sphere is, and smaller ones lower down: each step back halves their height, so they crowd towards the
   flat plane and most of a body stays bare. A sphere whose middle lies inside a body leaves a pit. A sphere that
   does not touch the set leaves loose pieces, as on the dendrite and Kokopelli. Spheres on the upright axis keep

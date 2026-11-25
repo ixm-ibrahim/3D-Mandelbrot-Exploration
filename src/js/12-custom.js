@@ -823,6 +823,13 @@ const CU_STARTS = [
   { name: 'Parts of no size', lab: 'partsnone', steps: [
     ['formula', { text: 'lift = atan2((n + 1)*sin(z.phi), (n + 1)*cos(z.phi) - (n - 1)) - atan2(-(n - 1)*sin(z.phi), (n + 1) - (n - 1)*cos(z.phi))' }],
     ['formula', { text: 'z = sph(z.radius^n, z.theta*n, lift)' }], ['addc']] },
+  // A mirror sphere: the inversion moves only what is inside its sphere, so the rest of space looks into it. One
+  // above the flat plane and one below, placed by the sliders, in front of the one-plane rule.
+  { name: 'One plane, with a mirror sphere above and below', bail: 64, say: 'The sliders place the two spheres: what is inside a sphere is inverted before the squaring. While height is above size the spheres stay clear of the flat plane, and the flat cut is exact.', steps: [
+    ['slider', { name: 'alongx', value: '0.3', min: '-1.5', max: '1.5' }], ['slider', { name: 'alongy', value: '0.4', min: '-1.5', max: '1.5' }],
+    ['slider', { name: 'height', value: '0.9', min: '0', max: '2' }], ['slider', { name: 'size', value: '0.45', min: '0.05', max: '1.5' }],
+    ['inv', { centre: 'vec(alongx, alongy, height)', radius: 'size', side: 'in' }], ['inv', { centre: 'vec(alongx, alongy, -height)', radius: 'size', side: 'in' }],
+    ['len'], ['lon'], ['merc'], ['addc']] },
   { name: 'Burning ship: two folds, then one plane', steps: [['fold', { normal: 'vec(1, 0, 0)' }], ['fold', { normal: 'vec(0, 1, 0)' }], ['len'], ['lon'], ['merc'], ['addc']] },
   { name: 'Box folds and a sphere fold (the Mandelbox)', bail: 12, reach: 4, say: 'This solid is wide, so the dots of the play start within 4 of the middle. Reset view, at the foot of the picture, shows all of that ball.', steps: [
     ['formula', { text: 'z = vec(clamp(z.x, -1, 1), clamp(z.y, -1, 1), clamp(z.z, -1, 1))*2 - z' }], ['formula', { text: 'rr = dot(z, z)' }],
