@@ -268,8 +268,65 @@ strong lead, not a proof.
   or a rib to make up the area. *One plane* sends two to one and has nothing off the flat plane. *Two planes* adds
   a fold, which doubles the count, and has bulbs in a second plane. The cousin shows the same: its second slide,
   square to the flat plane, is what puts bodies all over. So at power 2 a rule with shapes all over needs a step
-  that sends four points to one: the flat count, squared. This is a count and not a proof, and no picture was
-  drawn to test it.
+  that sends four points to one: the flat count, squared. This is a count and not a proof. For rules whose
+  stretch stays bounded there is a theorem of the same kind (Fletcher and Nicks, building on Martio, Rickman and
+  Väisälä): with the length squared, a rule that sends more than four points to one has to stretch. Four to one
+  is not enough by itself. A fold on cones of equal Mercator height sends four points to one, with an exact cut
+  and a stretch that stays bounded, and the basilica came out a ragged lump with fins and creases.
+- **A fold put in front of *one plane*.** A fold can lay a copy of a shape off the flat plane, but the steps after
+  it are *one plane* steps, and each of those squashes whatever is off the flat plane: 1.2 to 1 at 20 degrees up,
+  1.4 to 1 at 30, 2.1 to 1 at 45. Carried back over many steps, a copy that started 45 degrees up ends 1.4 to 1,
+  and one from 60 degrees ends 2 to 1. Only copies below about 30 degrees keep their shape to the eye. *Two
+  planes* and the mirror rules after it are of this kind, and so are the mirror spheres below. So the squaring
+  step itself has to change, and not only what stands in front of it.
+- **Mirror spheres standing on the flat rule's fixed point.** The flat rule has a point of its own where bodies
+  pinch together: the fixed point nearer the middle (a fixed point is a point the rule leaves where it is). One
+  mirror sphere above the flat plane and one below, each touching the plane at that point, then *one plane*. The
+  spheres touch the flat plane at one point only, so the cut is exact, and each step back copies them onto every
+  earlier pinch. Drawn four times over: with spheres of several sizes, with and without the spheres' mirror
+  images of each other, and with the same pair at the one other point that lands on the fixed point. On the
+  basilica, the rabbit, the dendrite and Kokopelli nothing tears, and buds stand off the flat plane on every
+  body. What is wrong:
+  - The basilica's main body gets a hard ridge along its top, and the rabbit's bodies get corners. Such a sphere
+    leaves a body unmarked only if the body is an exact ball, and the bodies of *one plane* are close to balls and
+    not balls.
+  - The buds are mirror images of the neighbouring bodies and not the set's own shapes spread out, so the same
+    lumps cover every set. The dendrite and Kokopelli are buried under a crust.
+  - Between the rows of buds the flanks stay bare.
+  - The size of the spheres acts as a dial. Half, one, one and a half, two and three times the fixed point's
+    distance from the middle give different solids, and nothing in the flat rule picks one.
+  - Off the panel it breaks. Where the fixed point lies inside a body or at a cusp (San Marco, the cauliflower,
+    the Siegel disc) the bodies get pits or a bite. The airplane becomes a lump, and the Mandelbrot solid is torn.
+  - The other fixed point, at the tip of the set, puts copies at that end only.
+
+  The custom approach has this rule to load, as *One plane, with mirror spheres on the fixed point*, with a slider
+  for the size of the spheres.
+- **Mirror spheres sized or placed by what the orbit carries.** A sphere sized by a carried stretch or by the
+  point's own length changes from point to point as fast as the points do, so it is a bent fold and not a sphere:
+  fins and ribs. A ball standing under the point before leaves a crater and a smear. Spheres on a grid scaled by
+  the height, or on the doubling grid of the Mercator scale, leave pits and a cloud of loose pieces.
+- **The set's own line in place of the x-axis.** With the mirrors rotated about the line through the middle and
+  the fixed point, the flat cut is wrong at about half of the points tested on the rabbit, the dendrite and
+  Kokopelli. The x-axis is not the basilica's own: it is the direction squaring itself leaves in place.
+- **The swapped squaring.** *One plane* has one twin of its kind with an exact cut: invert in the sphere of
+  radius √2 round the point at height 1 on the upright axis, which swaps the flat plane with the unit sphere, do
+  the *one plane* step, and invert again. It is exactly squaring on the flat plane and keeps shapes on the unit
+  sphere, where *one plane* keeps them on the flat plane. But it sends the same two points to one as *one plane*
+  does, so no mix of the two is a second doubling. And it pushes points away from the flat plane where *one
+  plane* pulls them towards it, so with c added it has no bodies. Every mix drawn is *one plane* warped: flatter,
+  taller or lumpier, with nothing new off the flat plane.
+- **Two choices at a step.** A point takes the step as it is, or first a move and then the step.
+  - Kept only if every run of choices keeps it: the run that never takes the move is one of the runs, so this can
+    only cut away from *one plane*.
+  - Kept if any run keeps it, with the choice offered to every point: the flat cut is no longer exact.
+  - Kept if any run keeps it, with the choice offered only away from the flat plane: for c off the x-axis the
+    solid grows with every further step that has a choice and never settles. Of 3000 sample points the rabbit
+    keeps 63 under *one plane*, 190 with a choice through step 3 and 336 through step 11. A picture of it is a
+    cut-off, set by a dial.
+  - Drawn backwards from four roots: a cloud round the two planes, or the flat Julia set with a dust of small
+    copies above it and no body.
+  - One thing found on the way: a third of a rotation about the x-axis lays the flat picture into two more planes
+    the right way round for every c, where a mirror or a quarter rotation has to mirror one half.
 - **One smooth rule of the plain kind is one plane.** Take any rule that squares the length and sends each
   direction to a new direction. The most such a rule can do is keep every shape on the sphere of directions, so
   that small circles there stay circles. If it does that and has the exact flat cut, it is *one plane* or its
@@ -324,7 +381,11 @@ strong lead, not a proof.
   (*Pillow*). Another, with one corner on the flat circle, gave lemon-shaped bodies. These grids are the one
   kind of rule found whose stretch does not build up from step to step. Mathematicians call such rules uniformly
   quasiregular, and Mayer (1997, "Uniformly quasiregular mappings of Lattès type") builds power rules of this
-  kind for space. The paper has not been read closely for this search.
+  kind for space. The paper was read through later papers that describe it, and they explain the lopsided look.
+  For the cut to be exact, the flat circle has to be a straight line of the grid that the doubling lays onto
+  itself, with no corner of the pillow on it. At power 2 that puts the corners one third and two thirds of the
+  way from the line. At power 3 they sit half way on both sides. So at power 2 a pillow with an exact cut cannot
+  treat above and below alike.
 - **Stamping the cousin's bodies onto the true flat picture** gives needles wherever bodies meet.
 
 ## What may have to be let go
@@ -352,8 +413,8 @@ a road already closed.
    *Quaternion square, axis by step*. What these taught: a later step does not mend what an earlier step
    crushed, so every step has to be sound by itself.
 4. **An orbit is a point and nothing else.** Dropped in *Pulled plane*, which carries a plane, and *All axes,
-   nearest to the last one*, which carries an axis. Not tried: carrying the point before, so that a step works
-   from two points, or carrying a size, so that a step moves a small ball and not a point.
+   nearest to the last one*, which carries an axis. Carrying the point before, or a size, was drawn too, each to
+   place a mirror sphere: closed under "Mirror spheres sized or placed by what the orbit carries".
 5. **The length is squared and the direction goes to a direction**, so a sphere round the middle goes to a
    sphere round the middle. Nearly every rule in the lab does this. Inside it two cases stand out: keep circles
    on the sphere of directions round, and the rule is *one plane*; keep the stretch from building up, and the
@@ -367,11 +428,11 @@ a road already closed.
    - every angle doubled (*Mandelbulb* and the other angle rules);
    - sphere inversions added up (the paper's reading: *one plane*, *two planes* and what grew from them);
    - doubling on a grid (the pillow entries);
-   - the move that two points share: each point is reached from two points, its roots. This one has not been
-     built on.
+   - the move that two points share: each point is reached from two points, its roots. Built on once, by drawing
+     the set backwards from four roots: closed under "Two choices at a step".
 7. **A point has one next point.** Dropped once, in *Sphere inversions, either side*: two choices at a step, and
-   a point is kept if any run of choices keeps it. Not tried: keeping a point only if every run keeps it, or
-   running the rule backwards, where each point has two roots.
+   a point is kept if any run of choices keeps it. Keeping a point only if every run keeps it, and running the
+   rule backwards from roots, were drawn as well: closed under "Two choices at a step".
 8. **The solid is the points that never get away.** Other ways to get a solid from a rule: where backward steps
    pile up, or what a set of moves leaves in place. The cousin is the second kind.
 9. **The third direction is more of the same space**, with a height for the point and a height for c. Adding c
@@ -402,13 +463,18 @@ Not tried, or not finished.
   Lyubich, Makarov and Mukherjee ("Schwarz reflections and the Tricorn") found rules that act as a mirrored
   squaring rule on one part of the plane and as a group of circle reflections on the other, the basilica among
   them. Mj and Mukherjee (2021, "Combining rational maps and Kleinian groups via orbit equivalence") set out
-  when a squaring rule and a group of the Kleinian kind can be joined at all. None of the three has been read
-  closely for this search, and whether any of it carries over to spheres is open.
+  when a squaring rule and a group of the Kleinian kind can be joined at all. Read for this search, the first
+  through a later paper and the third by its summary only: the group half of such a join is made of circle
+  inversions and carries over to sphere inversions. The squaring half does not, and the glue used in the plane, a
+  theorem that straightens a bent rule into a shape-keeping one, has no partner in space. What did carry over is
+  where the cousin's spheres sit: the ones in the row next to its flat plane touch that plane at the points where
+  its balls pinch together. Mirror spheres placed that way on a Julia set are closed under "What is ruled out".
 - **Mirror spheres that stay clear of the flat plane.** These are the one kind of fold that keeps every shape and
   never tears, for any c. The cousin is made of sphere inversions too, but its spheres sit across the flat plane.
   Spheres round two poles above and below the middle put bodies all over every set, dendrite and Kokopelli
   included, but they came out ribbed and lumpy, and the height of the poles had to be set by hand for each set.
-  That rule is not in the lab. Where the spheres should sit, and what in the flat rule would place them, is open.
+  That rule is not in the lab. Placed by the flat rule itself, on its fixed point, on a grid or by what the orbit
+  carries, they are closed under "What is ruled out". What else in the flat rule could place them is not known.
   In the custom approach the step "Sphere inversion" can be set to move only the points inside its sphere, which
   is such a mirror. One sphere above the flat plane and one below, placed by hand, were drawn on the basilica, the
   rabbit, the dendrite and Kokopelli. The custom approach has this rule to load, as *One plane, with a mirror sphere
@@ -417,13 +483,10 @@ Not tried, or not finished.
   flat plane and most of a body stays bare. A sphere whose middle lies inside a body leaves a pit. A sphere that
   does not touch the set leaves loose pieces, as on the dendrite and Kokopelli. Spheres on the upright axis keep
   their copies on that axis, in stacks and rings, which is the ribbed look.
-- **The set's own spine.** The doubling mirrors turn about the x-axis, which is the basilica's own line of
-  symmetry. Every Julia set has a line of its own through the middle and a fixed point (a point the rule leaves
-  where it is), though for most sets it is not a line of symmetry. Turning the mirrors about that line has not
-  been tried.
-- **Working backwards.** A flat Julia set can also be drawn backwards: take any point, undo one step of the rule
-  (take away c, then take either of the two square roots), and repeat. The points pile up on the edge of the
-  set. A 3D rule built from roots, with more than two of them spread over the sphere, has not been tried.
+- **A squaring step that sends four points to one by itself.** Every fold tried stands in front of *one plane*
+  and inherits what *one plane* does off the flat plane. Not found: a step that by itself sends four points to
+  one, has the exact cut, keeps its stretch from building up and treats above and below alike. The pillow grids
+  have the first three. At power 2 a grid cannot give the fourth, and at power 3 it can.
 - **The hidden axis, read another way.** It has been tried only through quaternions. Other ways of counting the
   hidden direction have not.
 

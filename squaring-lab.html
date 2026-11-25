@@ -4754,6 +4754,14 @@ const CU_STARTS = [
     ['slider', { name: 'height', value: '0.9', min: '0', max: '2' }], ['slider', { name: 'size', value: '0.45', min: '0.05', max: '1.5' }],
     ['inv', { centre: 'vec(alongx, alongy, height)', radius: 'size', side: 'in' }], ['inv', { centre: 'vec(alongx, alongy, -height)', radius: 'size', side: 'in' }],
     ['len'], ['lon'], ['merc'], ['addc']] },
+  // Mirror spheres that the flat rule places. fix is its fixed point nearer the middle, where bodies pinch together,
+  // and -fix is the one other point that lands on it. A sphere stands on the flat plane at each, above and below.
+  { name: 'One plane, with mirror spheres on the fixed point', bail: 64, say: 'Four spheres stand on the flat plane, above and below it: at the flat rule’s fixed point and at the one other point that lands on it. The slider sets their size, and the flat cut is exact at any size. The fixed point is worked out for power 2.', steps: [
+    ['slider', { name: 'size', value: '1', min: '0.25', max: '3' }],
+    ['formula', { text: 'fix = (vec(1, 0, 0) - cpow(vec(1, 0, 0) - flat(c)*4, 0.5))/2' }], ['formula', { text: 'ball = size*len(fix)' }],
+    ['inv', { centre: 'vec(fix.x, fix.y, ball)', radius: 'ball', side: 'in' }], ['inv', { centre: 'vec(fix.x, fix.y, -ball)', radius: 'ball', side: 'in' }],
+    ['inv', { centre: 'vec(-fix.x, -fix.y, ball)', radius: 'ball', side: 'in' }], ['inv', { centre: 'vec(-fix.x, -fix.y, -ball)', radius: 'ball', side: 'in' }],
+    ['len'], ['lon'], ['merc'], ['addc']] },
   { name: 'Burning ship: two folds, then one plane', steps: [['fold', { normal: 'vec(1, 0, 0)' }], ['fold', { normal: 'vec(0, 1, 0)' }], ['len'], ['lon'], ['merc'], ['addc']] },
   { name: 'Box folds and a sphere fold (the Mandelbox)', bail: 12, reach: 4, say: 'This solid is wide, so the dots of the play start within 4 of the middle. Reset view, at the foot of the picture, shows all of that ball.', steps: [
     ['formula', { text: 'z = vec(clamp(z.x, -1, 1), clamp(z.y, -1, 1), clamp(z.z, -1, 1))*2 - z' }], ['formula', { text: 'rr = dot(z, z)' }],

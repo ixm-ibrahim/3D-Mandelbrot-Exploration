@@ -79,4 +79,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.18. Each version is tagged, as `v1.18`.
+This is version 1.19. Each version is tagged, as `v1.19`.
