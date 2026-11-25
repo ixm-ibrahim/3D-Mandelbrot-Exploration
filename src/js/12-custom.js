@@ -582,9 +582,14 @@ const cuSplitZ = (P, v) => [`${v('axis')} = unit(${P.axis})`, `${v('h')} = dot(z
 // The ways a length is measured: [value, name in the menu, the formula for z, the words]. Straight is the usual
 // length. The Manhattan way adds up how far the point is along each of the three axes, and the third takes the
 // largest of those three. Length 1 is a ball for the first, an eight-sided diamond for the second, a cube for the third.
+// Inside the flat plane those two are not the usual length, so the flat cut changes with them. Each has a twin that
+// is the usual length there: the flat length plus the height (length 1 is two cones, base to base), and the larger
+// of the flat length and the height (length 1 is a round tin).
 const CU_MEASURES = [['straight', 'straight (the usual way)', 'len(z)', ''],
   ['manhattan', 'the Manhattan way: |x| + |y| + |z|', 'abs(z.x) + abs(z.y) + abs(z.z)', ', measured the Manhattan way,'],
-  ['largest', 'by the largest of |x|, |y|, |z|', 'max(abs(z.x), max(abs(z.y), abs(z.z)))', ', measured by its largest part,']];
+  ['largest', 'by the largest of |x|, |y|, |z|', 'max(abs(z.x), max(abs(z.y), abs(z.z)))', ', measured by its largest part,'],
+  ['flatheight', 'as the flat length plus |z| (the flat cut stays)', 'len(flat(z)) + abs(z.z)', ', measured as its flat length plus its height,'],
+  ['flatlargest', 'by the larger of the flat length and |z| (the flat cut stays)', 'max(len(flat(z)), abs(z.z))', ', measured by the larger of its flat length and its height,']];
 const cuMeasure = id => CU_MEASURES.find(m => m[0] === id) || CU_MEASURES[0];
 const CU_BLOCKS = {
   len: { title: 'Raise the length to a power', group: 'Length and angles',

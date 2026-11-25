@@ -4506,9 +4506,14 @@ const cuSplitZ = (P, v) => [`${v('axis')} = unit(${P.axis})`, `${v('h')} = dot(z
 // The ways a length is measured: [value, name in the menu, the formula for z, the words]. Straight is the usual
 // length. The Manhattan way adds up how far the point is along each of the three axes, and the third takes the
 // largest of those three. Length 1 is a ball for the first, an eight-sided diamond for the second, a cube for the third.
+// Inside the flat plane those two are not the usual length, so the flat cut changes with them. Each has a twin that
+// is the usual length there: the flat length plus the height (length 1 is two cones, base to base), and the larger
+// of the flat length and the height (length 1 is a round tin).
 const CU_MEASURES = [['straight', 'straight (the usual way)', 'len(z)', ''],
   ['manhattan', 'the Manhattan way: |x| + |y| + |z|', 'abs(z.x) + abs(z.y) + abs(z.z)', ', measured the Manhattan way,'],
-  ['largest', 'by the largest of |x|, |y|, |z|', 'max(abs(z.x), max(abs(z.y), abs(z.z)))', ', measured by its largest part,']];
+  ['largest', 'by the largest of |x|, |y|, |z|', 'max(abs(z.x), max(abs(z.y), abs(z.z)))', ', measured by its largest part,'],
+  ['flatheight', 'as the flat length plus |z| (the flat cut stays)', 'len(flat(z)) + abs(z.z)', ', measured as its flat length plus its height,'],
+  ['flatlargest', 'by the larger of the flat length and |z| (the flat cut stays)', 'max(len(flat(z)), abs(z.z))', ', measured by the larger of its flat length and its height,']];
 const cuMeasure = id => CU_MEASURES.find(m => m[0] === id) || CU_MEASURES[0];
 const CU_BLOCKS = {
   len: { title: 'Raise the length to a power', group: 'Length and angles',
@@ -17364,10 +17369,19 @@ function cuGuides(st, R, mode, M, tests, who) {
       if (w && len(w) > 1e-9 * Math.max(r, 1e-30)) shapes.push({ ring: [O, norm(cross(u, w)), r], solid: true, label: 'the ringed dot moves along this circle' }, { line: [O, M.zs], faint: true }, { line: [O, M.ze], faint: true });
     }
   } else if (st.kind === 'len') {
-    // length 1, the shape whose points stay: a ball, the diamond of the Manhattan way, or the cube of the largest part
+    // length 1, the shape whose points stay: a ball, the diamond of the Manhattan way, the cube of the largest part,
+    // two cones base to base for the flat length plus the height, a round tin for the larger of those two
     const edges = (pts, joined, label) => pts.forEach((a, i) => pts.forEach((b, j) => { if (j > i && joined(a, b)) shapes.push({ line: [a, b], label: shapes.some(sh => sh.label === label) ? '' : label }); }));
+    const rim = [[1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, -1, 0]], up = [0, 0, 1];
     if (p.measure === 'manhattan') edges([[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]], (a, b) => Math.abs(dot(a, b)) < 0.5, 'Manhattan length 1: points here stay');
     else if (p.measure === 'largest') edges([-1, 1].flatMap(x => [-1, 1].flatMap(y => [-1, 1].map(zz => [x, y, zz]))), (a, b) => Math.abs(len(sub(a, b)) - 2) < 1e-9, 'largest part 1: points here stay');
+    else if (p.measure === 'flatheight') {
+      shapes.push({ ring: [O, up, 1], label: 'flat length plus height 1: points here stay' });
+      rim.forEach(a => [1, -1].forEach(s => shapes.push({ line: [a, scl(up, s)], label: '' })));
+    } else if (p.measure === 'flatlargest') {
+      [1, -1].forEach((s, i) => shapes.push({ ring: [scl(up, s), up, 1], label: i ? '' : 'the larger of flat length and height 1: points here stay' }));
+      rim.forEach(a => shapes.push({ line: [add(a, up), sub(a, up)], label: '' }));
+    }
     else sphere(O, 1, 'length 1: points here stay');
     if (M && len(M.zs) > 1e-9) shapes.push({ line: [O, scl(norm(M.zs), Math.max(len(M.zs), len(M.ze), 1))], faint: true, label: 'the ringed dot moves along this line' });
   } else if (st.kind === 'scale') {

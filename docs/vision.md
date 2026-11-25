@@ -108,7 +108,7 @@ look like besides a blown up 2d version which is not what I want".
 
 ## Where the rule may hide
 
-Four hunches, none of them settled.
+Five hunches, none of them settled.
 
 **The turn at each step.**
 
@@ -146,6 +146,21 @@ inversions and already has the look.
 > "idk if mirrors (or at least how I imagine it, like an arbitrary selection or mirroring something) is the right
 > approach."
 
+**A second plane that follows the set.** For the basilica the upright plane through the x-axis should show the
+flat picture as well: one plane "is not quite right, because the xz plane should match the xy plane (at least in
+the power 2 case". But the x-axis is the basilica's own line and not every set's:
+
+> "the xy plane being the same as the xz plane in the basilica case is just a unique property of the basilica,
+> because it's symmetrical along the x axis while the douady rabbit isn't - which exposes something about how
+> reflections should be working here, it's not really about a specific axis but following the natural shape of
+> the fractal somehow"
+
+> "how can we jump from 1d to 2d, without folding (to avoid creases) and doing it such that it properly follows
+> the emergent symmetry of the fractal? Or, if that's too hard and there is no creaseless fold-equivalent
+> operation and we have to fold, can we get the rest of the things we're looking for?"
+
+Shapes all over the surface "would be the next step after this".
+
 ## How a rule is judged
 
 By eye, in the lab, on pictures and sliders. A rule has to pass all of these:
@@ -175,8 +190,10 @@ and "2d" means two planes.
 
 | Rule in the lab | What is right | What is wrong |
 | --- | --- | --- |
-| Sphere inversions, one plane | Halfway. Exact cut. Full, rounded bodies: "the 1d inflation is great". Whole for every c. | Nothing new off the flat plane. |
-| Sphere inversions, two planes | Bulbs in two planes, with proper shapes. The paper's basilica. | Creases and hard edges between the planes. Bulbs only in the planes. Whole only for c on the x-axis. |
+| Sphere inversions, one plane | Halfway. Exact cut. Full, rounded bodies: "the 1d inflation is great". Whole for every c. | Nothing new off the flat plane. "not quite right, because the xz plane should match the xy plane". |
+| Sphere inversions, two planes | Bulbs in two planes, with proper shapes. The paper's basilica. The upright plane matches the flat one "as expected". | Creases and hard edges between the planes. Bulbs only in the planes. Whole only for c on the x-axis: the rabbit "looks like a completely unrecognizable shape". |
+| Pulled plane | On the basilica it "kind of does this": the upright plane shows the flat picture. | "the douady rabbit still looks like a 1d inflated object". |
+| Even pillow | "goes a step further": it "has bulbs on the 3d surface". | "it's off in how the shapes manifest and the xz plane in the basilica doesn't match its xy plane". |
 | Turning plane, along | The best spread before the cousin: "bulbs growing between things in a natural way". | Bulbs are stretched and squeezed. |
 | Sphere inversions, soft mirror | No crease: "it seems like there are no seams". | Whatever sits beside the mirror is stretched. Bulbs on a few circles only. |
 | Soft mirrors, doubling | Bulbs between the planes, each big one ringed by smaller ones. | The borders between groups of bulbs look stretched. Whole only for c on the x-axis: the rabbit tears. |
@@ -387,6 +404,45 @@ strong lead, not a proof.
   way from the line. At power 3 they sit half way on both sides. So at power 2 a pillow with an exact cut cannot
   treat above and below alike.
 - **Stamping the cousin's bodies onto the true flat picture** gives needles wherever bodies meet.
+- **Measuring the length another way.** In the custom approach the step "Raise the length to a power" can
+  measure the length the Manhattan way, |x| + |y| + |z|. With *one plane* built that way the basilica "starts to
+  look like a 3d version of the 2d fractal, like both in the xy plane and in the xz plane", but "the z=0 plane
+  doesn't match the same 2d fractal anymore".
+  - Why the flat cut goes: the Manhattan length is the usual length only along the axes. Between them it is up to
+    1.41 times longer, so a point there is thrown further out than squaring throws it.
+  - Why it looks right on the basilica: length 1 is a diamond with six corners, one on each axis, and every body
+    takes that shape, a tent with a point. The basilica has its bodies along the x-axis and its buds along the
+    y-axis, so the corners fall where the picture has something. The rabbit's bodies sit in thirds, and it is cut
+    down to a thin twig.
+  - The same length with the usual length kept inside the flat plane (the flat length plus the height, also in
+    that step's menu) has the exact cut. The bodies are then tents over the true flat picture, and the upright
+    cut is a row of diamonds with nothing of the flat picture in it.
+  - A length says how far a point goes and not which way. In the upright plane *one plane* sends each direction
+    to one direction only, so no way of measuring can put the flat picture there.
+  - Squaring each part by itself (x·|x|, y·|y|, z·|z|) and then taking the angles moves the direction as well, so
+    in the flat plane neither the length nor the angle is that of squaring: blocks.
+- **A second plane without a price.** Three ways are known to make another plane show the flat picture: fold it
+  onto the flat plane (*two planes*), wind it onto the flat plane (*Wind, then square*), or double the angle of
+  the height as well (*Mandelbulb*).
+  - The fold leaves a crease.
+  - A winding has no crease. But one that leaves the flat plane in place and lays another plane on it has to go
+    round three times, so it stretches three to one. Kept one to one beside its planes, it is five to one between
+    them, and the skin there is shreds. Its planes stand 60 and 120 degrees from the flat one and not upright:
+    for the rabbit one shows the rabbit and the other the rabbit turned over.
+  - Doubling the angle of the height has no crease either, and for the basilica its upright cut is the flat
+    picture. But it crushes the whole cone of directions 45 degrees up onto the upright axis, and for the rabbit
+    its upright cut is a lump with crumbs.
+  - A rule that treats above and below alike makes every upright cut through the middle its own mirror image.
+    The basilica is its own mirror image and the rabbit is not. So no such rule can stand a rabbit upright
+    through the middle: *two planes* shows half a rabbit and its reflection there.
+  - Rotating the picture about a line keeps a body where it is only if the body's middle lies on the line. The
+    basilica's bodies all sit on the x-axis. No line passes through the rabbit's, so its copies hang as plates.
+    Winding about the set's own line, through the middle and the fixed point where its bodies pinch together, in
+    place of the x-axis, was drawn: the basilica is unchanged, and the rabbit, the dendrite and Kokopelli are
+    shreds either way.
+  - *Pulled plane* stays at *one plane* on the rabbit because c pulls the page flat at every step, 16 times as
+    hard as the point does: c lies in the flat page. With that pull at 0 the upright cut is jagged, and still no
+    rabbit.
 
 ## What may have to be let go
 
@@ -487,6 +543,11 @@ Not tried, or not finished.
   and inherits what *one plane* does off the flat plane. Not found: a step that by itself sends four points to
   one, has the exact cut, keeps its stretch from building up and treats above and below alike. The pillow grids
   have the first three. At power 2 a grid cannot give the fourth, and at power 3 it can.
+- **What stands in for the second plane on a set that is not its own mirror image.** For the basilica it is the
+  upright plane through the x-axis. A rabbit cannot stand upright through the middle of a solid that is alike
+  above and below. Not known: whether its copy should stand tilted, in mirrored pairs as in *Wind, then square*,
+  whether the solid should give up being alike above and below, or whether a set like that has no second plane
+  at all and its shapes have to come onto the bodies some other way.
 - **The hidden axis, read another way.** It has been tried only through quaternions. Other ways of counting the
   hidden direction have not.
 

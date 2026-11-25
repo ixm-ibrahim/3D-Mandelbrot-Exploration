@@ -1441,10 +1441,19 @@ function cuGuides(st, R, mode, M, tests, who) {
       if (w && len(w) > 1e-9 * Math.max(r, 1e-30)) shapes.push({ ring: [O, norm(cross(u, w)), r], solid: true, label: 'the ringed dot moves along this circle' }, { line: [O, M.zs], faint: true }, { line: [O, M.ze], faint: true });
     }
   } else if (st.kind === 'len') {
-    // length 1, the shape whose points stay: a ball, the diamond of the Manhattan way, or the cube of the largest part
+    // length 1, the shape whose points stay: a ball, the diamond of the Manhattan way, the cube of the largest part,
+    // two cones base to base for the flat length plus the height, a round tin for the larger of those two
     const edges = (pts, joined, label) => pts.forEach((a, i) => pts.forEach((b, j) => { if (j > i && joined(a, b)) shapes.push({ line: [a, b], label: shapes.some(sh => sh.label === label) ? '' : label }); }));
+    const rim = [[1, 0, 0], [0, 1, 0], [-1, 0, 0], [0, -1, 0]], up = [0, 0, 1];
     if (p.measure === 'manhattan') edges([[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]], (a, b) => Math.abs(dot(a, b)) < 0.5, 'Manhattan length 1: points here stay');
     else if (p.measure === 'largest') edges([-1, 1].flatMap(x => [-1, 1].flatMap(y => [-1, 1].map(zz => [x, y, zz]))), (a, b) => Math.abs(len(sub(a, b)) - 2) < 1e-9, 'largest part 1: points here stay');
+    else if (p.measure === 'flatheight') {
+      shapes.push({ ring: [O, up, 1], label: 'flat length plus height 1: points here stay' });
+      rim.forEach(a => [1, -1].forEach(s => shapes.push({ line: [a, scl(up, s)], label: '' })));
+    } else if (p.measure === 'flatlargest') {
+      [1, -1].forEach((s, i) => shapes.push({ ring: [scl(up, s), up, 1], label: i ? '' : 'the larger of flat length and height 1: points here stay' }));
+      rim.forEach(a => shapes.push({ line: [add(a, up), sub(a, up)], label: '' }));
+    }
     else sphere(O, 1, 'length 1: points here stay');
     if (M && len(M.zs) > 1e-9) shapes.push({ line: [O, scl(norm(M.zs), Math.max(len(M.zs), len(M.ze), 1))], faint: true, label: 'the ringed dot moves along this line' });
   } else if (st.kind === 'scale') {
