@@ -304,6 +304,82 @@ function wsPower(v, n) {
   const e = spTurn(y / rho, z / rho, k), d = (k - 1) * e[0] * e[1] / k, cd = Math.cos(d), sd = Math.sin(d);
   return tpOne([x, rho * (e[0] * cd + e[1] * sd), rho * (e[1] * cd - e[0] * sd)], n);
 }
+// Four to one, two planes alike: the square only. Any other power is the one-plane power.
+// The direction of a point is written as the number w = tan(α/2)·e, with α its angle from the positive x-axis and
+// e = (y + iz)/ρ its place round that axis. The square has the direction
+//   w -> 2w / (1 − w⁴),
+// which four directions share, and which treats the plane y = 0 exactly as it treats the plane z = 0. Two changes
+// come first. α is replaced by β with tan β + sin β = 2·tan α, so that in both planes the angle from the x-axis is
+// doubled and both carry the complex square. And e is rotated by −q·sin 4ψ (ψ the angle of e), q = (1 − 1/K)/4,
+// with K how much more the change from α to β stretches across a plane than along it: a small shape beside either
+// plane then keeps its shape.
+// t = tan(β/2) is the root between 0 and 1 of s·t⁴ + 2c·t − s, with s and c the sine and cosine of α. Behind the
+// plane x = 0 the root is larger than 1 and its reciprocal is found, the root of s·t⁴ + 2|c|·t³ − s. Newton's steps
+// start above the root and come down onto it.
+const F4_STEPS = 5;
+function f4Planes(v, n) {
+  if (n !== 2) return tpOne(v, n);
+  const [x, y, z] = v;
+  if (z === 0) { const w = tpOne([x, y, 0], 2); return [w[0], w[1], 0]; }
+  if (y === 0) { const w = tpOne([x, z, 0], 2); return [w[0], 0, w[1]]; }
+  const rho = Math.hypot(y, z), r2 = x * x + rho * rho;
+  if (r2 < 1e-30) return [0, 0, 0];
+  const r = Math.sqrt(r2), s = rho / r, c = Math.abs(x) / r, back = x < 0, h = s / Math.max(2 * c, 1e-30);
+  let t = Math.min(1, back ? Math.pow(h, 1 / 3) : h);
+  for (let i = 0; i < F4_STEPS; i++) {
+    const t2 = t * t, d = 4 * s * t2 * t + (back ? 6 * c * t2 : 2 * c);
+    if (d > 1e-20) t -= (s * t2 * t2 + 2 * c * (back ? t2 * t : t) - s) / d;
+  }
+  const l = Math.hypot(t, 1), sg = (back ? 1 : t) / l, cg = (back ? t : 1) / l;   // the sine and cosine of β/2
+  const cb = cg * cg - sg * sg, sb = 2 * sg * cg, K = 2 * (1 - cb + cb * cb) / Math.sqrt(sb * sb * (1 + cb) * (1 + cb) + 4 * cb * cb);
+  const ey = y / rho, ez = z / rho, a = (1 - 1 / K) * (ey * ey - ez * ez) * ey * ez, ca = Math.cos(a), sa = Math.sin(a);
+  const fy = ey * ca + ez * sa, fz = ez * ca - ey * sa, f2r = fy * fy - fz * fz, f2i = 2 * fy * fz;
+  // w = N/D, both multiplied through by cos⁴(β/2), so that neither end of the x-axis needs a case of its own
+  const k = 2 * sg * cg * cg * cg, s4 = sg * sg * sg * sg, Nr = k * fy, Ni = k * fz;
+  const Dr = cg * cg * cg * cg - s4 * (f2r * f2r - f2i * f2i), Di = -2 * s4 * f2r * f2i;
+  const n2 = Nr * Nr + Ni * Ni, d2 = Dr * Dr + Di * Di, m = r2 / (n2 + d2);
+  return [m * (d2 - n2), 2 * m * (Nr * Dr + Ni * Di), 2 * m * (Ni * Dr - Nr * Di)];
+}
+// Four to one, caps flipped over: the square only. Any other power is the one-plane power.
+// The direction (X, Y, Z) of a point is written as the number ζ = (X + iY)/(1 − Z): the circle z = 0 is |ζ| = 1,
+// straight down is 0 and straight up is infinity. The square has the direction
+//   ζ -> (ζ³ − a) / (ζ·(1 − a·ζ³)),   a = tan(half the size of a cap),
+// which four directions share. At a = 0 it is ζ², the one-plane rule. A cap round each end of the z-axis is flipped
+// over onto the far half of the sphere, and the rule is the same above and below the plane z = 0.
+// As it stands it carries the circle z = 0 twice round itself, but unevenly: the direction at the angle B lands at
+// 2B + 2·atan2(a·sin 3B, 1 − a·cos 3B). So a point at the angle θ is first moved to the angle B that lands at 2θ,
+// and its height on a Mercator map is multiplied by dB/dθ, which keeps a small shape beside the plane in shape.
+// Both changes fade with that height m as exp(−(m/F4_BAND)²).
+// u = e^(iB) is a root of a·E²·u⁴ + u³ − E²·u − a, with E = e^(iθ). Newton's steps start at E.
+const F4_CAP = 30, F4_CAP_MOST = 40, F4_BAND = 0.6, F4_CAP_STEPS = 6;
+const f4Cap = q => Math.tan(0.5 * aprRad(clamp(q.cap === undefined ? F4_CAP : +q.cap || 0, 0, F4_CAP_MOST)));
+function f4Caps(v, n, q = {}) {
+  if (n !== 2) return tpOne(v, n);
+  const [x, y, z] = v;
+  if (z === 0) { const w = tpOne([x, y, 0], 2); return [w[0], w[1], 0]; }
+  const r2 = x * x + y * y + z * z;
+  if (r2 < 1e-30) return [0, 0, 0];
+  const a = f4Cap(q);
+  if (!(a > 0)) return tpOne(v, 2);
+  const r = Math.sqrt(r2), rxy = Math.hypot(x, y), E = rxy > 0 ? [x / rxy, y / rxy] : [1, 0], E2 = ptMul(E, E);
+  let u = E;
+  for (let i = 0; i < F4_CAP_STEPS; i++) {
+    const u2 = ptMul(u, u), u3 = ptMul(u2, u), g = ptMul(E2, u), gu = ptMul(g, u3), eu = ptMul(E2, u3);
+    const p = [a * gu[0] + u3[0] - g[0] - a, a * gu[1] + u3[1] - g[1]], d = [4 * a * eu[0] + 3 * u2[0] - E2[0], 4 * a * eu[1] + 3 * u2[1] - E2[1]];
+    const dd = d[0] * d[0] + d[1] * d[1];
+    u = [u[0] - (p[0] * d[0] + p[1] * d[1]) / dd, u[1] - (p[1] * d[0] - p[0] * d[1]) / dd];
+  }
+  const lu = Math.hypot(u[0], u[1]);
+  u = [u[0] / lu, u[1] / lu];
+  const c3 = ptMul(ptMul(u, u), u)[0], slow = 2 / (2 + 6 * a * (c3 - a) / (1 - 2 * a * c3 + a * a));   // dB/dθ
+  const dl = ptMul(u, [E[0], -E[1]]), m = Math.log((r + Math.abs(z)) / Math.max(rxy, 1e-20 * r)), w = Math.exp(-(m / F4_BAND) * (m / F4_BAND));
+  const b = Math.atan2(dl[1], dl[0]) * w, T = ptMul(E, [Math.cos(b), Math.sin(b)]), rh = Math.exp(-m * (1 + (slow - 1) * w));
+  // e is ζ below the plane and 1/ζ above it, so that it never leaves the unit disc
+  const up = z > 0, e = [rh * T[0], (up ? -rh : rh) * T[1]], e3 = ptMul(ptMul(e, e), e);
+  const A = [e3[0] - a, e3[1]], B = ptMul(e, [1 - a * e3[0], -a * e3[1]]), N = up ? B : A, D = up ? A : B;
+  const n2 = N[0] * N[0] + N[1] * N[1], d2 = D[0] * D[0] + D[1] * D[1], k = r2 / (n2 + d2);
+  return [2 * k * (N[0] * D[0] + N[1] * D[1]), 2 * k * (N[1] * D[0] - N[0] * D[1]), k * (n2 - d2)];
+}
 // Rules whose orbit carries something besides its point, so that one squaring is not the whole rule. CARRY[id] has:
 //   start(q)           what a fresh orbit carries (q: the entry's dials)
 //   step(st, z, c, q)  what it carries once the step that starts at the orbit point z, with the constant c, has begun.
@@ -587,6 +663,8 @@ const MATH = {
   turnaway(v, n) { return tpPower(v, n, false); },
   turnalong(v, n) { return tpPower(v, n, true); },
   windsq(v, n) { return wsPower(v, n); },
+  fourplanes(v, n) { return f4Planes(v, n); },
+  fourcaps(v, n, q = {}) { return f4Caps(v, n, q); },
   // Rules whose orbit carries something (see CARRY): each gives the first squaring of a fresh orbit. For
   // pulledplane c is the constant of that orbit.
   alongonce(v, n) { return carFirst('alongonce', v, n, {}, [0, 0, 0]); },
@@ -1283,6 +1361,70 @@ vec3 pw(vec3 a, float n){ return wsPw(a, n); }
 vec3 sqr(vec3 a){ return wsPw(a, 2.0); }
 vec3 cmap(vec3 c){ return c; }`;
 
+// Four to one, two planes alike (see f4Planes). No dials. The product of two different points is the one-plane
+// product (aprMmul).
+const GL_FOURPLANES = GL_APR + GL_MERC_PLAIN + GL_TP_ONE + `
+vec3 f4pPw(vec3 v, float n){
+  if (n != 2.0) return tpOne(v, n);
+  if (v.z == 0.0){ vec3 w = aprMsq(vec3(v.xy, 0.0)); return vec3(w.xy, 0.0); }
+  if (v.y == 0.0){ vec3 w = aprMsq(vec3(v.xz, 0.0)); return vec3(w.x, 0.0, w.y); }
+  float rho = length(v.yz), r2 = dot(v, v);
+  if (r2 < 1e-30) return vec3(0.0);
+  float r = sqrt(r2), s = rho / r, c = abs(v.x) / r, h = s / max(2.0 * c, 1e-30);
+  bool back = v.x < 0.0;
+  float t = min(1.0, back ? pow(h, 1.0 / 3.0) : h);
+  for (int i = 0; i < ${F4_STEPS}; i++){
+    float t2 = t * t, d = 4.0 * s * t2 * t + (back ? 6.0 * c * t2 : 2.0 * c);
+    if (d > 1e-20) t -= (s * t2 * t2 + 2.0 * c * (back ? t2 * t : t) - s) / d;
+  }
+  float l = length(vec2(t, 1.0)), sg = (back ? 1.0 : t) / l, cg = (back ? t : 1.0) / l;
+  float cb = cg * cg - sg * sg, sb = 2.0 * sg * cg, K = 2.0 * (1.0 - cb + cb * cb) / sqrt(sb * sb * (1.0 + cb) * (1.0 + cb) + 4.0 * cb * cb);
+  vec2 e = v.yz / rho;
+  float a = (1.0 - 1.0 / K) * (e.x * e.x - e.y * e.y) * e.x * e.y;
+  vec2 f = cmul(e, vec2(cos(a), -sin(a))), f2 = cmul(f, f);
+  float k = 2.0 * sg * cg * cg * cg, s4 = sg * sg * sg * sg;
+  vec2 N = k * f, D = vec2(cg * cg * cg * cg, 0.0) - s4 * cmul(f2, f2);
+  float n2 = dot(N, N), d2 = dot(D, D), m = min(r2, APR_CAP) / (n2 + d2);
+  return m * vec3(d2 - n2, 2.0 * (N.x * D.x + N.y * D.y), 2.0 * (N.y * D.x - N.x * D.y));
+}
+vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
+vec3 pw(vec3 a, float n){ return f4pPw(a, n); }
+vec3 sqr(vec3 a){ return f4pPw(a, 2.0); }
+vec3 cmap(vec3 c){ return c; }`;
+// Four to one, caps flipped over (see f4Caps). uA.x: the size of a cap, in degrees.
+const GL_FOURCAPS = GL_APR + GL_MERC_PLAIN + GL_TP_ONE + `
+vec2 f4Cube(vec2 a){ return cmul(cmul(a, a), a); }
+vec3 f4cPw(vec3 v, float n){
+  if (n != 2.0) return tpOne(v, n);
+  if (v.z == 0.0){ vec3 w = aprMsq(vec3(v.xy, 0.0)); return vec3(w.xy, 0.0); }
+  float r2 = dot(v, v);
+  if (r2 < 1e-30) return vec3(0.0);
+  float a = tan(0.5 * radians(clamp(uA.x, 0.0, ${F4_CAP_MOST}.0)));
+  if (!(a > 0.0)) return aprMsq(v);
+  float r = sqrt(r2), rxy = length(v.xy);
+  vec2 E = rxy > 0.0 ? v.xy / rxy : vec2(1.0, 0.0), E2 = cmul(E, E), u = E;
+  for (int i = 0; i < ${F4_CAP_STEPS}; i++){
+    vec2 u2 = cmul(u, u), u3 = cmul(u2, u), g = cmul(E2, u);
+    vec2 p = a * cmul(g, u3) + u3 - g - vec2(a, 0.0), d = 4.0 * a * cmul(E2, u3) + 3.0 * u2 - E2;
+    u -= vec2(dot(p, d), p.y * d.x - p.x * d.y) / dot(d, d);
+  }
+  u = normalize(u);
+  float c3 = f4Cube(u).x, slow = 2.0 / (2.0 + 6.0 * a * (c3 - a) / (1.0 - 2.0 * a * c3 + a * a));
+  vec2 dl = cmul(u, vec2(E.x, -E.y));
+  float m = log((r + abs(v.z)) / max(rxy, 1e-20 * r)), w = exp(-(m / ${F4_BAND}) * (m / ${F4_BAND})), b = atan(dl.y, dl.x) * w;
+  vec2 T = cmul(E, vec2(cos(b), sin(b)));
+  float rh = exp(-m * (1.0 + (slow - 1.0) * w));
+  bool up = v.z > 0.0;
+  vec2 e = vec2(rh * T.x, (up ? -rh : rh) * T.y), e3 = f4Cube(e);
+  vec2 A = e3 - vec2(a, 0.0), B = cmul(e, vec2(1.0, 0.0) - a * e3), N = up ? B : A, D = up ? A : B;
+  float n2 = dot(N, N), d2 = dot(D, D), k = min(r2, APR_CAP) / (n2 + d2);
+  return k * vec3(2.0 * (N.x * D.x + N.y * D.y), 2.0 * (N.y * D.x - N.x * D.y), n2 - d2);
+}
+vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
+vec3 pw(vec3 a, float n){ return f4cPw(a, n); }
+vec3 sqr(vec3 a){ return f4cPw(a, 2.0); }
+vec3 cmap(vec3 c){ return c; }`;
+
 // Rules whose orbit carries something besides its point (the same steps as CARRY above). APR_CARRY switches on four
 // hooks in the orbit code (orbitDE and f in 30-shaders.js), and an approach that defines it must define what they call:
 //   carStart()        before an orbit is run (and when the orbit is begun again from a pole): everything carried is
@@ -1616,6 +1758,7 @@ const APR_SLICE_TURNS = ' Away from 0 the slice at z = 0 is no longer the plain 
 // the list shows the approaches of a group in the order they stand in APPROACHES.
 const APPROACH_GROUPS = [
   { id: 'inversions', title: 'Sphere inversions' },
+  { id: 'fourone', title: 'Four points to one in one step' },
   { id: 'kleinian', title: 'Inversions by region (the road of Kučera’s paper)' },
   { id: 'quaternion', title: 'Quaternions' },
   { id: 'pillow', title: 'Doubling on a pillow grid' },
@@ -1809,6 +1952,31 @@ const mdPlanes = p => Math.pow(2, clamp(Math.round(+p.stop || 1), 1, 12));
 // Texts of Sphere inversions, either side
 const EI_NOTE = 'How it works: at each of its first steps a point may be squared as it is (Sphere inversions, one plane), or mirrored first in the plane that stands at 45° round the x-axis and then squared. A point belongs to the solid if any run of such choices keeps it. So the solid is the one-plane solid with mirror images of itself added, and nothing is cut away. A point on the flat side of the mirror has no choice, so the flat picture is exact. No rounded edge is needed: a mirror image is only ever added, so the skin can dip where two pieces meet but can never stand up in a ridge.';
 const EI_ABOUT = 'The other mirror entries replace what is behind the mirror with the mirror image. Where the skin crossed the mirror at a slant that left a crease, and rounding the mirror took the crease away at the price of a smeared band beside it. Here the mirror image is added to what is already there instead. Two pieces that are added to each other meet in a valley, the way a bulb meets the body it sits on, never in a ridge. The bulbs between the planes come out smeared flat all the same. A second cost is work: with a choice through step 3 the picture runs 8 orbits for every point. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
+// Texts of the two Four to one entries. Both are written for the square; at another power they are the one-plane rule.
+const F4_OTHER = 'This entry is written for the square only: at any other power it is Sphere inversions, one plane. ';
+const F4_HOW_OTHER = ' Written for the square only: at any other power this entry is Sphere inversions, one plane. A product of two different points is taken from Sphere inversions, one plane.';
+const f4One = () => APPROACHES.find(a => a.id === 'mercator');
+const f4Else = ([state, text]) => [state, F4_OTHER + text];
+const f4Slice = (ok, n, more) => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly, so that slice is the flat set.' + (aprIs(n, 2) ? more : ''));
+const F4P_TAG = 'One smooth step that sends four points to one and treats the upright plane y = 0 exactly as it treats the flat plane, with no fold and no mirror. For c = −1 both planes show the flat picture and every body has four buds round it. Between the planes the skin is ribbed and hairy, and for a c off the x-axis the solid comes out in shreds.';
+const F4P_NOTE = 'How it works: the direction of a point is written as one complex number w, and the square of the point has the direction 2w / (1 − w⁴). That is one formula for the whole sphere of directions. Four directions share each answer, and a quarter rotation about the x-axis changes nothing, so the plane y = 0 is squared exactly as the plane z = 0 is. Two changes come first: the angle from the x-axis is changed so that it doubles exactly in both planes, and the place round the x-axis is drawn a little towards the planes, so that a small shape beside a plane keeps its shape.' + F4_HOW_OTHER;
+const F4P_ABOUT = 'Sphere inversions, two planes gets its second plane from a fold, and Wind, then square from winding space round the x-axis. Here the step itself sends four points to one, the way squaring sends two points to one in the plane, and nothing is folded or wound first. The price: the directions round the negative x-axis go three times round the positive x-axis, and that uneven stretch builds up from step to step. What the pictures show for c = −1: the cut by the plane y = 0 is the flat picture, and the solid is a row of bodies along the x-axis, each with four buds. Where it falls short: between the two planes the skin is ribbed, swirled and hairy. For the rabbit, for c = i and for the Kokopelli the solid is not a body: it is shreds on a shell.';
+const F4P_ROUND = 'In the planes z = 0 and y = 0 the rule is the complex square, which keeps shapes, and right beside them a small circle of directions stays a circle. Between them it comes out as an oval: for half of all directions less than 1.5 times as long as wide, for one in ten more than 4 times (measured). The longest ovals lie beside the negative x-axis, half way between the planes: five times as long as wide.';
+const F4P_CRUSH = 'Nothing but the origin is sent to one point. At four directions the stretch falls to nothing, as it does at the origin of the flat plane: they stand on the diagonals between the two planes, 66° from the positive x-axis (measured). Nothing is folded over.';
+const F4P_SMOOTH = 'One formula with no fold, no mirror and no seam. It is not a polynomial, and it has a corner on the negative x-axis: the directions round that axis go three times round the positive x-axis.';
+const F4P_SLICE = ' The plane y = 0 follows it too. So the upright cut along the x-axis shows the flat picture as well, for the Mandelbrot solid and for every Julia set with c on the x-axis.';
+const F4P_FORMULA = 'v² = |v|² · dir(2w / (1 − w⁴))   with w = tan(β/2)·e′ the direction of v written as a number. α is the angle of v from the positive x-axis and e = (y + iz)/ρ its place round that axis, ρ its distance from the axis. β is the angle with tan β + sin β = 2·tan α. e′ is e rotated by −q·sin 4ψ, with ψ the angle of e, q = (1 − 1/K)/4 and K = 2(1 − cos β + cos² β) / √(sin² β·(1 + cos β)² + 4·cos² β). dir turns a number back into a direction: its angle from the positive x-axis is 2·atan |w|, and its place round the axis is the angle of w.';
+const F4C_TAG = 'One smooth step that sends four points to one: a cap round each end of the z-axis is flipped over onto the far half of the sphere of directions. The same above and below the flat plane, with no fold and no mirror. Sets like trees (c = i, the Kokopelli) become trees with branches in every direction. The set for c = −1 comes out as one lump.';
+const F4C_NOTE = 'How it works: the direction of a point is written as one complex number ζ, with the flat circle at |ζ| = 1, and the square of the point has the direction (ζ³ − a) / (ζ·(1 − a·ζ³)). With a = 0 that is ζ², which is Sphere inversions, one plane. With a above 0 a cap round each end of the z-axis is flipped over onto the other half of the sphere, and four directions share each answer. The dial sets the size of the caps. One change comes first: the angle round the z-axis is changed so that it doubles exactly in the flat plane, and the height beside the plane with it, so that a small shape there keeps its shape. That change fades away from the plane.' + F4_HOW_OTHER;
+const F4C_HELP = 'How far from each end of the z-axis a cap reaches. 0: no caps, and the entry is Sphere inversions, one plane. 30: the edge of a cap is half as long as the flat circle.';
+const F4C_ABOUT = 'Sphere inversions, one plane sends two directions to one, and its bodies bud round the flat plane only. Here four directions go to one: the two more come from flipping a cap round each end of the z-axis over onto the far half of the sphere. The rule is the same above and below the flat plane, and nothing is folded. What the pictures show: for c = i and for the Kokopelli the flat tree becomes a tree in space, with branches in every direction. The rabbit is one bushy piece with lobes off the flat plane. Where it falls short: the set for c = −1 is one lump and not a row of bodies, and every skin is rough and spiky. Smaller caps do not cure the lump: with caps of 8° and of 17° big bodies still stand above and below its left side.';
+const F4C_ROUND = 'In the plane z = 0 the rule is the complex square, which keeps shapes, and right beside the plane a small circle of directions stays a circle. Further off it comes out as an oval: with caps of 30° less than 1.5 times as long as wide for half of all directions, and more than 3 times for one in ten (measured).';
+const f4cCrush = p => 'Nothing but the origin is sent to one point. At six directions the stretch falls to nothing, as it does at the origin of the flat plane: at 60°, 180° and 300° round the z-axis, the same distance above and below the flat plane' + (aprIs(+p.cap, 30) ? ' (14° with caps of 30°, measured)' : '') + '. Nothing is folded over.';
+const F4C_SMOOTH = 'One formula with no fold, no mirror and no seam. It is not a polynomial.';
+const f4cFormula = p => {
+  const cap = clamp(+p.cap || 0, 0, F4_CAP_MOST);
+  return `v² = |v|² · dir((ζ³ − a) / (ζ·(1 − a·ζ³)))   with ζ = (X + iY)/(1 − Z) the direction (X, Y, Z) of v written as a number, and a = tan(${aprDeg(cap / 2)}) = ${aprNum(Math.tan(0.5 * aprRad(cap)))}, half the size of a cap. Before that the angle θ of v round the z-axis is moved towards the angle B with 2B + 2·atan2(a·sin 3B, 1 − a·cos 3B) = 2θ, and its height m on a Mercator map is multiplied towards dB/dθ, both by the share exp(−(m/${F4_BAND})²). dir turns a number back into a direction.`;
+};
 // Texts of Blended mirrors, doubling
 const MB_NOTE = 'How it works: the mirrors of Soft mirrors, doubling, but kept sharp and not bent. Close to a mirror a point could be squared from two places: where the mirror puts it, or the mirror image of that place. Within the blend width the picture works out both and cross-fades between them, half and half on the mirror itself. That takes the crease away without bending anything, so nothing is smeared. A bud that sits right on a mirror does not come through whole: the cross-fade puts a smooth bubble round it. This is done at the first three steps of an orbit; later mirrors are sharp. A point of the flat plane is never moved, so the flat picture is exact.';
 const MB_ABOUT = 'A sharp mirror leaves a crease where the skin crosses it at a slant. Soft mirrors, doubling takes the crease away by rounding the mirror, and the rounding smears whatever sits beside the mirror round the x-axis: the striped ovals. Here the mirror stays sharp and the two sides are cross-faded instead. The cost: a bead that sits beside a mirror, but not on it, is lower than it would be, down to half its height right at the mirror. Close to a mirror the picture runs two orbits for a point, or more where blend widths of several steps meet, so it is slower there. Like every mirror through the x-axis it is whole only when c is on the x-axis.';
@@ -2314,6 +2482,31 @@ const APPROACHES = [
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', wsCrush(n) + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : [aprWhole(n) ? 'part' : 'no', wsSmooth(n)]),
     slice: (ok, p, n) => wsSlice(ok, n),
+  },
+  {
+    id: 'fourplanes', name: 'Four to one, two planes alike', group: 'fourone', glsl: GL_FOURPLANES, axis: () => [1, 0, 0], deMax: 0,
+    tag: F4P_TAG,
+    params: [{ type: 'note', text: F4P_NOTE }],
+    formula: (p, n) => (aprIs(n, 2) ? F4P_FORMULA : F4_OTHER + aprMercFormula(n)),
+    about: F4P_ABOUT,
+    roundNote: (p, n) => (aprIs(n, 2) ? F4P_ROUND : f4One().roundNote({}, n)),
+    crush: (p, n) => (aprIs(n, 2) ? ['part', F4P_CRUSH] : f4Else(f4One().crush({}, n))),
+    smooth: (p, n) => (aprIs(n, 2) ? ['part', F4P_SMOOTH] : f4Else(f4One().smooth({}, n))),
+    slice: (ok, p, n) => f4Slice(ok, n, F4P_SLICE),
+  },
+  {
+    id: 'fourcaps', name: 'Four to one, caps flipped over', group: 'fourone', glsl: GL_FOURCAPS, axis: () => [0, 0, 1], deMax: 0,
+    tag: F4C_TAG,
+    params: [
+      { type: 'note', text: F4C_NOTE },
+      { type: 'dial', key: 'cap', label: 'Size of the two caps, degrees', min: 0, max: F4_CAP_MOST, step: 0.5, def: F4_CAP, help: F4C_HELP },
+    ],
+    formula: (p, n) => (aprIs(n, 2) ? f4cFormula(p) : F4_OTHER + aprMercFormula(n)),
+    about: F4C_ABOUT,
+    roundNote: (p, n) => (aprIs(n, 2) ? F4C_ROUND : f4One().roundNote({}, n)),
+    crush: (p, n) => (aprIs(n, 2) ? ['part', f4cCrush(p)] : f4Else(f4One().crush({}, n))),
+    smooth: (p, n) => (aprIs(n, 2) ? ['part', F4C_SMOOTH] : f4Else(f4One().smooth({}, n))),
+    slice: (ok, p, n) => f4Slice(ok, n, ''),
   },
   // The orbit of the next two entries carries something besides its point (CARRY, GL_CARRY).
   {
