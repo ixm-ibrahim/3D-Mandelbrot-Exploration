@@ -6,6 +6,8 @@
 // work on c, which stands among the steps taken once before the iterations, and so does a slider that step reads (once).
 // Where the lab's picture lets the orbits beside a point borrow the point's own value, the rule says same( ).
 // A rule that is longer than a few lines is the approach's arithmetic line for line (see MATH in 10-approaches.js).
+// Two approaches draw their picture from several orbits at once (either, mirrorsblend). Steps follow one orbit, so
+// their rules are the orbit the page itself follows for them, and `say` tells what the picture adds.
 {
   const F = text => ['formula', { text }], num = (name, value, min, max) => ['slider', { name, value: String(value), min: String(min), max: String(max) }];
   const once = step => [step[0], step[1], 'pre'];
@@ -28,6 +30,20 @@
     F('h = if(dot(d, a) > cos(gap), vec(cc.x + s*e.x, -(cc.y + s*e.y), s*e.z), vec(d.x, -d.y, d.z))')];
   // one step of Newton for the square pillow's beta
   const newton = F('b = if((b*(1 + b)^2 - xx*b - yy*(1 + b)^2 > 0)*((1 + b)*(1 + 3*b - 2*yy) - xx > 0), max(b - (b*(1 + b)^2 - xx*b - yy*(1 + b)^2)/((1 + b)*(1 + 3*b - 2*yy) - xx), 0), b)');
+  const times = (k, step) => Array.from({ length: k }, () => step);
+  // one step of Newton for Four to one, two planes alike: t is the tangent of half the changed angle from the x-axis
+  const newtonT = F('t = if(4*s*t^3 + if(back, 6*co*t*t, 2*co) > 1e-20, t - (s*t^4 + 2*co*if(back, t^3, t) - s)/(4*s*t^3 + if(back, 6*co*t*t, 2*co)), t)');
+  // The squaring step of the two caps entries, for the number a (a point of the flat plane): f4kPower, line for line.
+  const newtonPsi = F('psi = min(psi - (psi + 3*atan2(rho*sin(psi), 1 - rho*cos(psi)) - ta)/(1 + 3*rho*(cos(psi) - rho)/(1 - 2*rho*cos(psi) + rho*rho)), ta)');
+  const capsStep = [F('rho = len(a)'), F('r = z.radius'), F('rxy = len(flat(z))'), F('eu = if(rxy > 0, flat(z)/max(rxy, 1e-30), vec(1, 0, 0))'),
+    F('et = cmul(cmul(cmul(eu, eu), eu), vec(a.x, -a.y, 0)/max(rho, 1e-30))'), F('tau = atan2(et.y, et.x)'), F('ta = abs(tau)'),
+    F('psi = max(0, ta - 3*asin(rho))'), ...times(6, newtonPsi), F('slow = 1/(1 + 3*rho*(cos(psi) - rho)/(1 - 2*rho*cos(psi) + rho*rho))'),
+    F('m = log((r + abs(z.z))/max(rxy, 1e-20*r))'), F('w = exp(-(m/0.6)^2)'), F('b = if(tau < 0, ta - psi, psi - ta)/3*w'),
+    F('tw = cmul(eu, vec(cos(b), sin(b), 0))'), F('rh = exp(-m*(1 + (slow - 1)*w))'), F('up = z.z > 0'),
+    F('ee = vec(rh*tw.x, if(up, -rh, rh)*tw.y, 0)'), F('e3 = cmul(cmul(ee, ee), ee)'), F('ga = vec(a.x, if(up, -a.y, a.y), 0)'), F('ge = cmul(vec(ga.x, -ga.y, 0), e3)'),
+    F('fa = e3 - ga'), F('fb = cmul(ee, vec(1 - ge.x, -ge.y, 0))'), F('nu = if(up, fb, fa)'), F('de = if(up, fa, fb)'), F('k = r*r/(dot(nu, nu) + dot(de, de))'),
+    F('z = if(z.z == 0, vec(z.x*z.x - z.y*z.y, 2*z.x*z.y, 0), if(rho > 0, vec(2*k*(nu.x*de.x + nu.y*de.y), 2*k*(nu.y*de.x - nu.x*de.y), k*(dot(nu, nu) - dot(de, de))), vec(z.x*z.x - z.y*z.y, 2*z.x*z.y, 2*r*z.z)*(r*r/(r*r + z.z*z.z))))'), ['addc']];
+  const only2 = 'These steps are the entry at the power 2. At any other power the entry itself is Sphere inversions, one plane.';
   CU_STARTS.splice(CU_STARTS.findIndex(s => !s.lab), 0,
     { name: 'Blended planes', lab: 'softfold', steps: [num('planes', 2, 1, 8), num('blend', 0.25, 0, 0.49),
       F('d0 = unit(z)'), F('fl = if(max(d0.z < 0, (d0.z == 0)*(d0.y < 0))*(planes > 1.5), -1, 1)'), F('d = vec(d0.x, d0.y*fl, d0.z*fl)'),
@@ -70,6 +86,19 @@
       F('z = rot(z, vec(1, 0, 0), -psi)'), ...onePlane, F('z = rot(z, vec(1, 0, 0), psi)'), ['addc']] },
     { name: 'Wind, then square', lab: 'windsq', steps: [F('m = max(1, round(abs(n)))'), F('k = m + 1 - mod(m, 2)'), F('rho = len(vec(0, z.y, z.z))'), F('ang = atan2(z.z, z.y)'),
       F('g = k*ang - (k - 1)*sin(2*k*ang)/(2*k)'), F('z = vec(z.x, rho*cos(g), rho*sin(g))'), ...onePlane, ['addc']] },
+    { name: 'Four to one, two planes alike (power 2)', lab: 'fourplanes', only2: true, say: only2, steps: [
+      F('rho = len(vec(0, z.y, z.z))'), F('r = z.radius'), F('s = rho/r'), F('co = abs(z.x)/r'), F('back = z.x < 0'), F('h = s/max(2*co, 1e-30)'),
+      F('t = min(1, if(back, h^(1/3), h))'), ...times(5, newtonT), F('l = sqrt(t*t + 1)'), F('sg = if(back, 1, t)/l'), F('cg = if(back, t, 1)/l'),
+      F('cb = cg*cg - sg*sg'), F('sb = 2*sg*cg'), F('kk = 2*(1 - cb + cb*cb)/sqrt(sb*sb*(1 + cb)*(1 + cb) + 4*cb*cb)'),
+      F('ey = z.y/max(rho, 1e-30)'), F('ez = z.z/max(rho, 1e-30)'), F('a = (1 - 1/kk)*(ey*ey - ez*ez)*ey*ez'),
+      F('fy = ey*cos(a) + ez*sin(a)'), F('fz = ez*cos(a) - ey*sin(a)'), F('f2 = vec(fy*fy - fz*fz, 2*fy*fz, 0)'), F('k = 2*sg*cg*cg*cg'), F('s4 = sg*sg*sg*sg'),
+      F('nu = vec(k*fy, k*fz, 0)'), F('de = vec(cg*cg*cg*cg - s4*(f2.x*f2.x - f2.y*f2.y), -2*s4*f2.x*f2.y, 0)'), F('m = r*r/(dot(nu, nu) + dot(de, de))'),
+      F('z = if(z.z == 0, vec(z.x*z.x - z.y*z.y, 2*z.x*z.y, 0), if(z.y == 0, vec(z.x*z.x - z.z*z.z, 0, 2*z.x*z.z), vec(m*(dot(de, de) - dot(nu, nu)), 2*m*(nu.x*de.x + nu.y*de.y), 2*m*(nu.y*de.x - nu.x*de.y))))'), ['addc']] },
+    { name: 'Four to one, caps flipped over (power 2)', lab: 'fourcaps', only2: true, say: only2, steps: [num('cap', 30, 0, 40),
+      F('a = vec(tan(rad(clamp(cap, 0, 40))/2), 0, 0)'), ...capsStep] },
+    { name: 'Four to one, caps placed by c (power 2)', lab: 'fourcapsc', only2: true, say: only2, steps: [num('cap', 30, 0, 51), num('crot', -90, -180, 180),
+      F('k0 = tan(rad(clamp(cap, 0, 51))/2)'), F('a0 = cmul(vec(k0*cos(rad(crot)), k0*sin(rad(crot)), 0), flat(c))'),
+      F('a = if(len(a0) > tan(rad(25.5)), a0*(tan(rad(25.5))/max(len(a0), 1e-30)), a0)'), ...capsStep] },
     { name: 'Along once, then one plane', lab: 'alongonce', steps: [F('m = max(1, round(abs(n)))'), F('ang = atan2(z.z, z.y)'), F('psi = if(count < 1.5, ang - sin(2*m*ang)/(2*m), 0)'),
       F('z = rot(z, vec(1, 0, 0), -psi)'), ...onePlane, F('z = rot(z, vec(1, 0, 0), psi)'), ['addc']] },
     { name: 'Pulled plane', lab: 'pulledplane', steps: [['keep', { name: 'w', start: 'vec(0.05, 0, 0)' }], num('ease', 0.7, 0, 1), num('cpull', 16, 0, 64),
@@ -79,6 +108,15 @@
     { name: 'Soft mirrors, doubling', lab: 'mirrorsdouble', steps: [once(num('soft', 2, 0, 45)), num('stop', 3, 1, 12), once(['softx', { on: 'c', angle: '45', soft: 'soft' }]),
       F('half = 2^(1 - clamp(count, 1, round(stop)))'), F('b = pi/4*half'), F('w = rad(soft)*half'), F('rho = len(vec(0, z.y, z.z))'),
       F('a = atan2(abs(z.z), abs(z.y))'), F('t = a - 2*b*floor(a/(2*b)) - b'), F('g = b - if(abs(t) >= w, abs(t), t*t/(2*w) + w/2)'),
+      F('z = vec(z.x, if(z.y < 0, -1, 1)*rho*cos(g), if(z.z < 0, -1, 1)*rho*sin(g))'), ...onePlane, ['addc']] },
+    { name: 'Sphere inversions, either side (one run of its choices)', lab: 'either', say: 'The lab’s picture of this entry asks every run of choices and keeps a point if any run keeps it. Steps follow one run: the slider run picks it, and run 0 never takes the mirror.', steps: [
+      num('depth', 1, 0, 5), num('run', 0, 0, 31), F('on = (count - 1 < round(depth))*(mod(floor(round(run)/2^(count - 1)), 2) > 0.5)'),
+      F('rho = len(vec(0, z.y, z.z))'), F('g = pi/4 - abs(atan2(abs(z.z), abs(z.y)) - pi/4)'),
+      F('z = if(on*(z.z != 0)*(rho > 1e-20), vec(z.x, if(z.y < 0, -1, 1)*rho*cos(g), if(z.z < 0, -1, 1)*rho*sin(g)), z)'), ...onePlane, ['addc']] },
+    { name: 'Blended mirrors, doubling (its mirrors, nothing blended)', lab: 'mirrorsblend', say: 'The lab’s picture of this entry runs two orbits beside each mirror and cross-fades them. Steps follow one orbit, so these are its mirrors kept sharp.', steps: [
+      num('stop', 3, 1, 12), once(['softx', { on: 'c', angle: '45', soft: '0' }]),
+      F('half = 2^(1 - clamp(count, 1, round(stop)))'), F('b = pi/4*half'), F('rho = len(vec(0, z.y, z.z))'),
+      F('a = atan2(abs(z.z), abs(z.y))'), F('t = a - 2*b*floor(a/(2*b)) - b'), F('g = b - abs(t)'),
       F('z = vec(z.x, if(z.y < 0, -1, 1)*rho*cos(g), if(z.z < 0, -1, 1)*rho*sin(g))'), ...onePlane, ['addc']] },
     { name: 'Even pillow', lab: 'evenpillow', steps: [F('d = unit(z)'), F('rr = sqrt(2/(1 + sqrt(max(1 - 4*d.x*d.x*d.z*d.z, 0))))'), F('ca = clamp(rr*d.x, -1, 1)'), F('sl = clamp(rr*d.z, -1, 1)'),
       F('sa = if(d.y < 0, -1, 1)*sqrt(max(1 - ca*ca, 0))'), F('z = unit(vec(cos(atan2(sa, ca)*n), sin(atan2(sa, ca)*n)*cos(asin(sl)*n), sin(asin(sl)*n)))*z.radius^n'), ['addc']] },

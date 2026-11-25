@@ -113,6 +113,12 @@ h2 { margin: 0; font-family: var(--f-cond); font-weight: 600; font-size: 23px; l
 .ap-btn:focus-visible, .ap-about-btn:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
 .ap-step { flex: none; width: 38px; min-width: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
 .ap-pop { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 4; display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--ink); box-shadow: 0 10px 28px rgb(0 0 0 / .22); scroll-margin: 96px 0 12px; max-height: var(--ap-room, none); }
+/* the search box over the open list: it hides the entries whose name and heading lack a word typed */
+.ap-find { flex: none; display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.ap-find input { font-family: var(--f-body); font-size: 14px; padding: 6px 8px; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 0; width: 100%; min-width: 0; }
+.ap-find input:focus-visible { outline: 2px solid var(--brass); outline-offset: 1px; }
+.rule[hidden], .rule-group[hidden], .cousin-group[hidden] { display: none; }
+@media (pointer: coarse) { .ap-find input { font-size: 16px; } }
 /* --ap-room: the room the window has for the open list, measured by uiApMenu() in 80-ui.js when it opens */
 .rules { position: relative; display: block; flex: 1 1 auto; min-height: 0; max-height: min(64vh, 640px, var(--ap-room, 100vh)); overflow-y: auto; overscroll-behavior: contain; padding: 2px 0 6px; }
 .rule-group { display: flex; flex-direction: column; min-width: 0; }

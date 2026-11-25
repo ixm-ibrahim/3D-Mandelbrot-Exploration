@@ -99,7 +99,24 @@ function uiHeldTop() {
   const held = matchMedia('(max-width: 920px)').matches && root.classList.contains('pin-on') && !root.classList.contains('pin-let-go');
   return held ? Math.round(document.querySelector('.bench-main').getBoundingClientRect().height) + 8 : 96;
 }
-// Open or close the list. `focus`: the keyboard focus goes along (into the list, or back onto the button).
+// The search box of the open list. An entry stays in the list if its name and the heading it stands under hold
+// every word typed, in any order. A heading with no entry left goes too.
+function uiApFind() {
+  const words = $('apFind').value.toLowerCase().split(/\s+/).filter(Boolean), has = text => words.every(w => text.toLowerCase().includes(w));
+  let left = 0;
+  document.querySelectorAll('#rules .rule-group').forEach(box => {
+    const head = box.querySelector('.rule-group-head').textContent;
+    let any = false;
+    box.querySelectorAll('.rule').forEach(el => { el.hidden = !has(el.querySelector('.name').textContent + ' ' + head); any = any || !el.hidden; });
+    box.hidden = !any;
+    if (any) left++;
+  });
+  const cousin = $('apg-cousin');
+  cousin.hidden = !has(cousin.querySelector('.name').textContent + ' ' + cousin.querySelector('.cousin-group-head').textContent);
+  $('apFindNone').hidden = left > 0 || !cousin.hidden;
+}
+// Open or close the list. `focus`: the keyboard focus goes along (into the list, or back onto the button). The
+// focus goes to the search box, but for a finger, which would call up the keyboard over the list.
 function uiApMenu(open, focus) {
   const pop = $('apPop'), btn = $('apMenuBtn');
   open = !!open;
@@ -107,6 +124,7 @@ function uiApMenu(open, focus) {
   pop.hidden = !open;
   btn.setAttribute('aria-expanded', String(open));
   $('apMenu').classList.toggle('is-open', open);
+  if ($('apFind').value) { $('apFind').value = ''; uiApFind(); }   // the list opens whole, and a search ends when it shuts
   if (!open) {
     document.querySelectorAll('#rules .rule.is-focus').forEach(el => el.classList.remove('is-focus'));
     uiApInfo(null);
@@ -122,7 +140,7 @@ function uiApMenu(open, focus) {
   const on = $('ap-' + ap().id), row = on.closest('.rule'), list = $('rules');
   list.scrollTop = Math.max(0, row.offsetTop - (list.clientHeight - row.offsetHeight) / 2);
   pop.scrollIntoView({ block: 'nearest' });
-  if (focus) on.focus({ preventScroll: true });
+  if (focus) (matchMedia('(pointer: coarse)').matches ? on : $('apFind')).focus({ preventScroll: true });
 }
 // The next (1) or previous (-1) entry in the order the list shows them, round and round.
 function uiApStep(dir) {
@@ -480,7 +498,7 @@ function boot() {
   $('ap-balls').addEventListener('click', uiBallsShow);
   $('ap-balls').addEventListener('keydown', e => {
     if (e.key === 'Escape') { e.preventDefault(); uiApMenu(false, true); }
-    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); const all = $('rules').querySelectorAll('input[type=radio]'); if (all.length) all[all.length - 1].focus(); }
+    else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); const all = apRadios(); (all.length ? all[all.length - 1] : $('apFind')).focus(); }
   });
   // its explanation shows while the mouse is over the row or the keyboard is on it
   cousin.addEventListener('pointerover', e => { if (e.pointerType !== 'touch') uiBallsInfo(); });
@@ -488,7 +506,8 @@ function boot() {
   $('ap-balls').addEventListener('blur', () => { if (UI.apInfo === 'balls' && !cousin.matches(':hover')) uiApInfo(null); });
   // the menu: its button, the two step buttons beside it, and the open list
   const apMenu = $('apMenu'), apBtn = $('apMenuBtn'), apPop = $('apPop'), apList = $('rules');
-  const apById = id => APPROACHES.find(r => r.id === id), apRadios = () => [...apList.querySelectorAll('input[type=radio]')];
+  // apRadios: the entries the list shows, which a search may have cut down
+  const apById = id => APPROACHES.find(r => r.id === id), apRadios = () => [...apList.querySelectorAll('.rule:not([hidden]) input[type=radio]')];
   // The entry the keyboard stands on gets its ring and its explanation here, by hand. The focus events of the
   // radios do the same for the Tab key, but a window that is not in front delivers no focus events.
   const apMark = inp => {
@@ -506,8 +525,25 @@ function boot() {
       // closed, the arrows go straight to the next or previous approach, as on a drop-down; Alt opens the list
       if (apPop.hidden && !e.altKey) uiApStep(e.key === 'ArrowDown' ? 1 : -1);
       else if (apPop.hidden) uiApMenu(true, true);
-      else { UI.apKeys = true; $('ap-' + ap().id).focus(); apMark($('ap-' + ap().id)); }
+      else apInto();
     }
+  });
+  // The keyboard goes into the list: onto the chosen approach, or onto the first entry where a search has put
+  // that one away.
+  const apInto = () => {
+    const all = apRadios(), t = all.includes($('ap-' + ap().id)) ? $('ap-' + ap().id) : all[0];
+    UI.apKeys = true;
+    if (t) { t.focus(); apMark(t); } else if (!$('apg-cousin').hidden) { apMark(null); $('ap-balls').focus(); uiBallsInfo(); }
+  };
+  // The search box: typing cuts the list down, the down arrow goes into it, Enter takes its first entry, and Escape
+  // empties the box, or shuts the list when the box is empty.
+  const apFind = $('apFind');
+  apFind.addEventListener('input', () => { uiApFind(); apList.scrollTop = 0; apMark(null); uiApInfo(null); });
+  apFind.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); apInto(); }
+    else if (e.key === 'Enter') { e.preventDefault(); const t = apRadios()[0]; if (t) t.click(); else if (!$('apg-cousin').hidden) $('ap-balls').click(); }
+    else if (e.key === 'Escape') { e.preventDefault(); if (apFind.value) { apFind.value = ''; uiApFind(); } else uiApMenu(false, true); }
   });
   $('apPrev').addEventListener('click', () => uiApStep(-1));
   $('apNext').addEventListener('click', () => uiApStep(1));
@@ -515,7 +551,9 @@ function boot() {
     const all = apRadios(), at = all.indexOf(e.target);
     if (at < 0 || e.ctrlKey || e.metaKey || e.altKey) return;
     const to = { ArrowDown: at + 1, ArrowRight: at + 1, ArrowUp: at - 1, ArrowLeft: at - 1, Home: 0, End: all.length - 1 }[e.key];
-    if (to === all.length && e.key !== 'End') { e.preventDefault(); UI.apKeys = true; apMark(null); $('ap-balls').focus(); uiBallsInfo(); }   // past the last approach: the row Balls on balls
+    if (to === -1) { e.preventDefault(); apMark(null); uiApInfo(null); apFind.focus(); }   // up from the first entry: the search box
+    else if (to === all.length && e.key !== 'End') { e.preventDefault(); if (!$('apg-cousin').hidden) { UI.apKeys = true; apMark(null); $('ap-balls').focus(); uiBallsInfo(); } }   // past the last approach: the row Balls on balls
+    else if (e.key.length === 1 && e.key !== ' ') { apMark(null); uiApInfo(null); apFind.focus(); }   // a letter goes into the search box
     else if (to !== undefined) { e.preventDefault(); UI.apKeys = true; const t = all[clamp(to, 0, all.length - 1)]; t.focus(); apMark(t); }
     else if (e.key === 'Enter') { e.preventDefault(); e.target.click(); }
     else if (e.key === 'Escape') { e.preventDefault(); uiApMenu(false, true); }
