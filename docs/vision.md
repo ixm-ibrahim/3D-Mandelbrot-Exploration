@@ -200,6 +200,7 @@ and "2d" means two planes.
 | Sphere inversions, either side | Branches off the plane on the twig sets: "the fractals like the dendrite and kokopeli looked like 3d versions of the 2d fractal". | "less bulbs", and "the diagonal ones are smeared". Loose pieces: whole only for c on the x-axis. |
 | Four to one, two planes alike | On the basilica the upright plane shows the flat picture point for point, with no crease, no fold and no mirror. Four buds round each body. | Between the two planes the skin is ribbed, swirled and hairy. The rabbit, the dendrite and Kokopelli are shreds on a shell. |
 | Four to one, caps flipped over | The dendrite and Kokopelli are trees in space, in one piece, with branches in every direction. The rabbit is one bushy piece with lobes off the plane. No crease, no fold, no mirror. | The basilica is one lump. Every skin is rough and spiky. |
+| Four to one, caps placed by c | The basilica and San Marco are a row of bodies with one more above and one below the middle body. The dendrite and Kokopelli are trees in space, and the rabbit is one piece with bodies in several directions. | The rotation of c was fitted by hand. The basilica's two extra bodies lean to one side of the x-axis. A c below the x-axis gives a lump and not the mirror image, so the Mandelbrot solid is lopsided. The airplane is dust. Every skin is rough and striped. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 What is wanted lies "somewhere between" one plane and two planes: "the 1d inflation is great and the 2d
@@ -445,10 +446,10 @@ strong lead, not a proof.
   - *Pulled plane* stays at *one plane* on the rabbit because c pulls the page flat at every step, 16 times as
     hard as the point does: c lies in the flat page. With that pull at 0 the upright cut is jagged, and still no
     rabbit.
-- **Four points to one in one smooth step, with the length squared.** Two such steps are in the lab: *Four to
-  one, two planes alike* and *Four to one, caps flipped over*. Each is one formula for the whole sphere of
-  directions, with no fold, no mirror and no seam. Each has the exact cut, treats above and below alike, and sends
-  four directions to one with none mirrored (the lab's own count). Neither passes.
+- **Four points to one in one smooth step, with the length squared.** Three such steps are in the lab: *Four to
+  one, two planes alike*, *Four to one, caps flipped over* and *Four to one, caps placed by c*. Each is one
+  formula for the whole sphere of directions, with no fold, no mirror and no seam. Each has the exact cut, treats
+  above and below alike, and sends four directions to one with none mirrored (the lab's own count). None passes.
   - *Two planes alike* squares the upright plane through the x-axis exactly as it squares the flat plane. For the
     basilica, San Marco and the airplane the upright cut is the flat cut point for point (129,600 points each),
     and each body of the basilica has four buds. Between the two planes the skin is ribbed, swirled and hairy,
@@ -462,12 +463,29 @@ strong lead, not a proof.
     with lobes off the plane. The basilica is one lump, and every skin is rough and spiky. Its dial sets the size
     of the caps: at 0 it is *one plane*, the entry's own size is 30 degrees, and at 8 and at 17 degrees big bodies
     still stand above and below the basilica's left side.
+  - The six pinched directions of *caps flipped over* can be rotated about the upright axis by any angle without
+    losing the exact cut, if the directions they are sent to are rotated by twice that angle. On the basilica
+    the lump moves with them: on the left as the entry stands, on the right after 60 degrees, and gone after 30
+    degrees, where none lies near the x-axis. With that rotation fixed at 30 degrees the rabbit is a lump and the
+    dendrite a tangle.
+  - *Caps placed by c* takes the size of the caps and that rotation from c: the entry's number a is c, scaled by
+    tan 15° and rotated by −90 degrees. The basilica and San Marco are a row of bodies with one more above and
+    one below the middle body, the rabbit is one piece with bodies in several directions, and the dendrite and
+    Kokopelli are trees in space. The −90 degrees was fitted by hand to the basilica and the dendrite. The two
+    extra bodies of the basilica lean to the same side of the x-axis. A c below the x-axis does not get the
+    mirror image of the set for the c above it: the rabbit and the dendrite mirrored in the x-axis are lumps, and
+    the Mandelbrot solid is lopsided. The airplane is dust, and every skin is rough and striped.
+  - Placing three caps cannot mend that. A set whose c lies on the x-axis is its own mirror image across that
+    axis, and so must its step be. With three caps a third of a rotation apart that puts a pinched direction
+    over the x-axis, where the bodies are, and the basilica is a lump. And a rule that rotates c by a fixed
+    angle gives mirror-image sets for mirror-image c only if the angle is 0 or 180 degrees.
   - A step of this kind pays one of three prices. It is lopsided above and below (*Square pillow*), or it
     pinches lines in the flat plane itself (the three-cornered *Pillow*), or its stretch builds up from step to
-    step (these two).
+    step (these three).
   - A step of this kind with the exact cut cannot be alike above and below and also keep the flat picture's half
-    rotation about the upright axis. These two keep the first and *Square pillow* the second. So the two ends of
-    their basilica differ.
+    rotation about the upright axis. These three keep the first and *Square pillow* the second. So the two ends
+    of their basilica differ. The count decides it: a step with no jump that has the exact cut and both of
+    those sends 2, 6, 10 or more directions to one, never 4.
   - A smooth step that sends two directions to one cannot double the angle on two great circles that cross at
     right angles. So a second plane with no fold needs four to one.
   - The solid of such a step is in one piece whenever the orbit of c stays in, because the middle point is the
@@ -507,7 +525,7 @@ a road already closed.
    sphere round the middle. Nearly every rule in the lab does this. Inside it two cases stand out: keep circles
    on the sphere of directions round, and the rule is *one plane*; keep the stretch from building up, and the
    only rules found are the pillow grids. One smooth step that sends four directions to one, alike above and
-   below, is kept in the two *Four to one* entries, and its stretch builds up. Dropped, length and direction mix, as they do in a sphere inversion about any other
+   below, is kept in the three *Four to one* entries, and its stretch builds up. Dropped, length and direction mix, as they do in a sphere inversion about any other
    centre. In the flat rule only the middle point is special, and adding c moves it at once.
 6. **Squaring is a turn done twice.** Squaring can be said in several ways. In the plane they all mean the same
    thing. In space they come apart, and each one that has been built on gave a different family in the lab:
@@ -573,26 +591,34 @@ Not tried, or not finished.
   does not touch the set leaves loose pieces, as on the dendrite and Kokopelli. Spheres on the upright axis keep
   their copies on that axis, in stacks and rings, which is the ribbed look.
 - **A squaring step that sends four points to one by itself.** Every fold tried stands in front of *one plane*
-  and inherits what *one plane* does off the flat plane. Two steps that send four points to one by themselves,
-  with the exact cut and alike above and below, are in the lab: *Four to one, two planes alike* and *Four to one,
-  caps flipped over* (see "Four points to one in one smooth step" under "What is ruled out"). The first is right
-  on the basilica and the second on the sets that are trees, and each fails where the other is right. Their
-  stretch builds up from step to step. Not found: one step that does on the basilica what the first does and on
-  the trees what the second does; or a step that sends four points to one, has the exact cut, keeps its stretch
-  from building up and treats above and below alike. The pillow grids have the first three of those. At power 2
-  a grid cannot give the fourth, and at power 3 it can.
-- **Caps placed by c.** *Four to one, caps flipped over* has a freedom that keeps the exact cut: its six pinched
-  directions can be rotated about the upright axis by any angle, if the directions they are sent to are rotated
-  by twice that angle. On the basilica the lump moves with them. As the entry stands a pinched direction lies
-  over the left body, and the lump is there. Rotated by 60 degrees it lies over the right end, and so does the
-  lump. Rotated by 30 degrees none lies near the x-axis: the basilica is a row of separate bodies with bodies off
-  the flat plane, and then the rabbit is a lump and the dendrite a tangle. So the angle has to come from the
-  set. One way was drawn: the size and the angle of the caps taken from c (the entry's number a set to
-  −i · tan 15° · c). That one rule drew the basilica, the rabbit and San Marco as separate bodies with bodies off
-  the flat plane, and the dendrite and Kokopelli as trees in space. It is not in the lab. Not settled: the
-  factor −i · tan 15° was fitted to two sets, and nothing in the flat rule gives it; with it the basilica has a
-  body on one side of the x-axis and none on the other, where the flat picture is the same on both sides; the
-  airplane comes out as dust; every skin is rough; the Mandelbrot set and higher powers were not drawn.
+  and inherits what *one plane* does off the flat plane. Three steps that send four points to one by themselves,
+  with the exact cut and alike above and below, are in the lab (see "Four points to one in one smooth step" under
+  "What is ruled out"). *Two planes alike* is right on the basilica and *caps flipped over* on the sets that are
+  trees, and each fails where the other is right. *Caps placed by c* draws both kinds with one rule, but only for
+  c on or above the x-axis, and with a rotation fitted by hand. Their stretch builds up from step to step. Not
+  found: a step that sends four points to one, has the exact cut, keeps its stretch from building up and treats
+  above and below alike. The pillow grids have the first three of those. At power 2 a grid cannot give the
+  fourth, and at power 3 it can.
+- **Six directions to one.** A step with the exact cut that is alike above and below, and the same after a half
+  rotation about the upright axis, has to send six directions to one and not four (see "Four points to one in
+  one smooth step"). One such step is *caps flipped over* with one more corner: the direction ζ goes to
+  (ζ⁴ − a) / (ζ² · (1 − ā·ζ⁴)), after the same change of the flat circle. Measured: the exact cut, six directions
+  to one, the same after a half rotation, alike above and below, and for a real a alike on both sides of the
+  x-axis. Besides straight up and straight down it has eight pinched directions, which stand on the diagonals
+  between the x-axis and the y-axis when a is above 0. Drawn with a script, not in the lab:
+  - The basilica is a middle body with a body left and right of it and four more round it, on the diagonals
+    between the flat plane and the upright plane. The cut at 45 degrees round the x-axis shows those four as clean
+    ovals. The upright cut is close to the flat cut: the middle body and the bodies left and right, with thin
+    spikes on the diagonals where the flat cut has its two small bulbs. Its two ends match and there is no lump.
+    The cuts of San Marco show the same. Every skin is spiky.
+  - The rabbit is a rough lump, with a fixed and with a taken from c. The two simplest laws that give
+    mirror-image sets for mirror-image c and leave the basilica as it is were drawn: a = 0.2 · c² and
+    a = −0.2 · c.
+  - The dendrite is a thicket with a fixed, a tree in the shape of an X with a = 0.2 · c², and a lump with
+    a = −0.2 · c.
+  - Not settled: whether the four bodies on the diagonals belong there; a law for a that the flat rule gives;
+    the rabbit; the Mandelbrot set; higher powers; and whether six to one can be squared with "Count from the
+    power".
 - **What stands in for the second plane on a set that is not its own mirror image.** For the basilica it is the
   upright plane through the x-axis. A rabbit cannot stand upright through the middle of a solid that is alike
   above and below. Not known: whether its copy should stand tilted, in mirrored pairs as in *Wind, then square*,
