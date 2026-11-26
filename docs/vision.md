@@ -108,7 +108,7 @@ look like besides a blown up 2d version which is not what I want".
 
 ## Where the rule may hide
 
-Five hunches, none of them settled.
+Six hunches, none of them settled.
 
 **The turn at each step.**
 
@@ -184,7 +184,24 @@ bodies lie.
 
 ![Every body's own line, for the basilica and for the rabbit](img/own-lines-basilica-rabbit.jpg)
 
-Red: the lines of the big bodies. Blue: the lines of smaller ones.
+Red: the lines of the big bodies. Blue: the lines of smaller ones. Asked whether these are the second axis that
+was meant: "Yes, those lines".
+
+**How many bulbs spring from a pinch point.** A thought set down for later, with the simplest case to come first:
+
+> "see how the rabbit has 2 bulbs spawning from each point? in 2d it's known that it's 2, and in 3d one option is
+> to keep that. but a second option could be to double it, and make it 4 bulbs that spawn from a fixed point - 2
+> higher and 2 lower (at least in the period 2 bulbs, the other ones would just keep the same relative pattern
+> respective to their orientation). I suppose this allows a third option of n bulbs, so like n=3 would be that 6
+> bulbs spawn from that point, etc. But I imagine n=1 is the simplest approach, so let's start with whichever's
+> simplest."
+
+Only n = 1 keeps the exact cut, and for n above 1 that is allowed:
+
+> "anything other than n=1 will violate the z=0 equivalency we're after, even though the n=2+ options would still
+> produce recognizable fractals. and this is not forced btw - like in the basilica case, there's only one bulb
+> for each fixed point, so n=2+ would just look identical to the n=1 case. This is the one time the z=0
+> violation is fine. again, only worry about this when it is relevant"
 
 ## How a rule is judged
 
@@ -227,6 +244,7 @@ and "2d" means two planes.
 | Four to one, two planes alike | On the basilica the upright plane shows the flat picture point for point, with no crease, no fold and no mirror. Four buds round each body. | Between the two planes the skin is ribbed, swirled and hairy. The rabbit, the dendrite and Kokopelli are shreds on a shell. |
 | Four to one, caps flipped over | The dendrite and Kokopelli are trees in space, in one piece, with branches in every direction. The rabbit is one bushy piece with lobes off the plane. No crease, no fold, no mirror. | The basilica is one lump. Every skin is rough and spiky. |
 | Four to one, caps placed by c | The basilica and San Marco are a row of bodies with one more above and one below the middle body. The dendrite and Kokopelli are trees in space, and the rabbit is one piece with bodies in several directions. | The rotation of c was fitted by hand. The basilica's two extra bodies lean to one side of the x-axis. A c below the x-axis gives a lump and not the mirror image, so the Mandelbrot solid is lopsided. The airplane is dust. Every skin is rough and striped. |
+| Two planes, about every body's own line | The rabbit stays a rabbit, in one piece, with buds on the tops and the undersides of its bodies: "excellent". The basilica as under *two planes*. | Corners at 45 degrees round each line. A seam where the reach of a fold ends, and the reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -670,13 +688,24 @@ Not tried, or not finished.
   point, or a solid that is not the points that never get away (habits 7 and 8), is not bound by the count at
   all.
 - **Every body's own line as the second axis.** See "The second axis follows the set" under "Where the rule may
-  hide". The lines are worked out from the flat rule alone, for any c with a cycle of bodies. Drawn with a
-  script, at power 2: the fold of *two planes* taken about the nearest of those lines in place of the x-axis.
-  With the x-axis for a line it gives *two planes* again, point for point in the upright cut. With every body's
-  own line it fails as it stands: a line ends where its body ends, the fold swings round such an end, and a
-  column stands over every end, on the basilica and on the rabbit alike. Not tried: a fold that reaches no
-  further from a line than its body is wide. Not known: what the wall over a line should show where the two
-  sides of the line differ, as they do for the rabbit.
+  hide". The lines are worked out from the flat rule alone, for any c with a cycle of bodies. In the lab as
+  *Two planes, about every body's own line*, for Julia sets at power 2: the fold of *two planes* taken about the
+  nearest of those lines in place of the x-axis, and only where the point lies no further from the line than
+  1.6 times the body's half-width there (a dial). Then *one plane*.
+  - On the basilica it gives *two planes* again. Each step of *two planes* already carries a body's line onto
+    the x-axis, so there every body has bulbs on its own line as it is.
+  - On the rabbit the solid is in one piece: a rabbit that can be recognised, inflated as *one plane* inflates
+    it, with buds on the tops and the undersides of its bodies. The cut along a body's line shows the body's
+    flat outline standing upright, with the buds of its widest point on top. The first drawings: "excellent".
+  - What is wrong so far. Round each line the body has corners at 45 degrees, the creases of *two planes*. A
+    seam shows where the fold stops. Small specks lie loose beside the tops. The 1.6 was picked by hand, and
+    with no such limit a column stands over every end of a line.
+  - The wall over a line can be laid over in two ways: each side of the line kept on its side, as *two planes*
+    does, or the whole wall as one, the right side on top and the left side underneath (the clue). On the
+    rabbit the two differ little.
+  - A set with no bodies, like the dendrite, has no such lines, and the Mandelbrot solid has a different c at
+    every point: the entry draws both as *one plane*. For San Marco, whose bodies are about to come apart, the
+    page finds no lines either. Kokopelli and the airplane have lines, and have not been looked at closely.
 - **The upright wall laid over as a whole.** The clue above, drawn with a script: the fold of *two planes* with
   one mirror plane in place of two, so that the upper half of the upright wall goes to one side of the x-axis
   and the lower half to the other. The upright cut of the rabbit is then a whole rabbit, the same as the flat
