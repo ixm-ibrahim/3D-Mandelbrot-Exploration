@@ -249,8 +249,7 @@ and "2d" means two planes.
 | Two planes, between the middle body's pinch points | The same fold with nothing traced from the picture: a formula gives the middle body's two pinch points and its width from c, and the fold is about the straight line between them. The rabbit of the entry above, bud for bud; the basilica as under *two planes*. Away from the middle of a bulb it is cleaner than the traced line. | The same cracks and corners. A set of one body is not folded. The Mandelbrot solid is folded but not right: flat bulbs with scratches. |
 | Two points side by side | One formula for every point, with no mirror and no pieces: (z, h) goes to (z² − h²u², 2|z|h), then c is added. The skin is in one piece on the whole panel, with no scratch, seam or crack, at 14 iterations as at 60. The basilica has whole buds on top and underneath, and its upright cut is the flat picture. The rabbit is a rabbit. | A body is a roof with a sharp rim all round in the flat plane, not a ball. On the rabbit the buds on the tops are small knobs. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
 | Two points side by side, round | The same formula with the length squared exactly, as *one plane* squares it. The bodies are round again, with no rim and no crease. The basilica and San Marco have whole buds on top and underneath and small ones dotted between. The rabbit is a smooth rabbit: "this is the first time the rabbit in 3d still looks like a rabbit!" One piece on the whole panel, at 14 iterations as at 60. | On the basilica "the bulbs look lathed, rather than being true 3d objects": every bud off the flat plane is spun round its own axis, with its side buds drawn out into rings. On the rabbit the buds on top are small knobs. Few buds away from the two planes. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
-| Two points side by side, up and across alike | The same middle, with the height and the distance across the line following one law. For a c on the x-axis (the basilica, San Marco) a bud on top of a body is a small round body with buds of its own, the same as a bud in the flat plane, and the upright cut is the flat picture. No crease. The rabbit is still a rabbit: "the disconnected surfaces issue we were seeing earlier seems to be much better or at least mitigated". | The rabbit has a seam across its middle body and a ragged bud on top: the rule needs a set that is its own mirror image in its line. Shapes are squashed beside the upright plane across the line. The Mandelbrot solid is not right. |
-| Two points side by side, soft join | The entry above with its jump closed. The rabbit has no seam and a whole bud on top of its middle body. In front of the upright plane across the line, and far behind it, nothing changes. | The far half of every body is smeared, on the basilica too, where the entry above is clean. A body is no longer the same at both ends. The Mandelbrot solid is not right. |
+| Two points side by side, up and across alike | The same middle, with the height and the distance across the line following one law. For a c on the x-axis (the basilica, San Marco) a bud on top of a body is a small round body with buds of its own, the same as a bud in the flat plane, and the upright cut is the flat picture. No crease. The rabbit is still a rabbit: "the disconnected surfaces issue we were seeing earlier seems to be much better or at least mitigated". On the basilica: "the basilica looks amazing". | The rabbit has a seam across its middle body and a ragged bud on top: the rule needs a set that is its own mirror image in its line. Shapes are squashed beside the upright plane across the line. The Mandelbrot solid is not right. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -863,7 +862,7 @@ Not tried, or not finished.
     | --- | --- | --- |
     | spun round its own axis | *round* | "the bulbs look lathed" |
     | two halves, the second rotated half a turn | *up and across alike* | a seam, on every set that is not its own mirror image |
-    | two halves joined softly | *soft join* | the far half of every body is smeared, and a body differs at its two ends |
+    | two halves joined softly | the soft join, in the lab for one version | the far half of every body is smeared, and a body differs at its two ends |
     | wound twice round | the lean, drawn with a script | twice as many buds round it, each squeezed; ribbed skins |
     | a true copy, with a second pair of answers behind it | drawn with a script | shreds, as in the *Four to one* entries |
 
@@ -872,13 +871,19 @@ Not tried, or not finished.
     answer.
   - Soft join. Seen from the line with x counted towards the pinch point: the distance across grows by
     2y·s·√(x² + b²) with b = h²/√(y² + h²), where s runs smoothly from 1 at x = 0 to −1 at x = −w·b, and w is
-    the width of the join. Everything else is *up and across alike*. In the lab as *Two points side by side,
-    soft join*, with w on a dial. Measured: outside the join it is the entry above (598 points, to 1.5e-14); the
+    the width of the join. Everything else is *up and across alike*. It was in the lab for one version, as *Two
+    points side by side, soft join*, with w on a dial, and was taken out at the verdict below. Measured: outside the join it is the entry above (598 points, to 1.5e-14); the
     flat plane is the flat rule (to 3e-15). Drawn at 60 and at 14 iterations: the rabbit has no seam and a whole
     bud on top of its middle body; San Marco, the airplane, the dendrite and Kokopelli are each in one piece.
     What is wrong with it: behind the top of each body the skin is smeared into long soft ridges, plain on the
     far half of the basilica's bodies, which the entry above leaves clean. A narrow join (w under 1) leaves a
     welt where the seam was. A wide one smears more.
+  - The verdict on the soft join: "the newest approach is worse, the 1.31 approach is better - the basilica
+    looks amazing btw. So remove your 1.32 approach, and try again - you need to identify the root cause (or
+    set of them, if there are multiple) for why the seams are there in the rabbit and fix them." And a clue:
+    "I noticed that the rabbit's bulbs on the top middle of the fractal surface are disconnected surfaces at
+    the seam - I wonder if that helps". No new entry is wanted "until that is resolved without smearing and
+    other artifacts". The four bulbs at a pinch point wait: "not until we're done with the n=1 approach".
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
     body is the mirror image of its upper front: it tears the next body along the line. One law for up and
     across with no square root in it, 2y(h²|v| + xy²)/(y² + h²) and the same with y and h swapped: fans and
