@@ -213,7 +213,16 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
       gCarI = i;   // the step that follows belongs to this orbit, and reads and changes what this orbit carries
       bool seam = false;
 #endif
+#ifdef APR_FOLLOW
+      // An approach that defines APR_FOLLOW has a step that jumps, and can take a neighbour's step on the side of
+      // the jump that the point itself took: aprFollow(true) asks for that, aprFollow(false) ends it. The
+      // neighbour then lands beside the point, and the estimate has no line along the jump.
+      aprFollow(i > 0);
+#endif
       vec3 wi = f(v + dz, c + dk);
+#ifdef APR_FOLLOW
+      aprFollow(false);
+#endif
       if (i == 0){
         float w2 = dot(wi, wi);
         bool wild = !(w2 < 1e36);   // not a number, infinite, or too large to work with

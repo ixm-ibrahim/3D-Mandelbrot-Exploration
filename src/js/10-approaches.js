@@ -660,6 +660,47 @@ function twAxis(c, q) {
   const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
   return l > 1e-12 ? [(ax * ax - ay * ay) / l, 2 * ax * ay / l] : [1, 0];
 }
+// The line of the entry "twinswhole", as a direction with a front: it points towards the pinch point where the
+// middle body meets the next one. For a Julia picture whose c has a cycle of bodies the line stands square to
+// the middle body's two side pinch points, the points that one round of the cycle brings to the far pinch point
+// (twSide). The upright axis then lands on the next body's far pinch point. Otherwise, and in the Mandelbrot
+// picture, it runs from 0 to the fixed point 1/2 - sqrt(1/4 - c), as in "twins" (twAlpha).
+function twAlpha(c) {
+  if (!c) return [1, 0];
+  const wx = 0.25 - c[0], wy = -c[1], m = Math.hypot(wx, wy);
+  const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
+  return l > 1e-12 ? [ax / Math.sqrt(l), ay / Math.sqrt(l)] : [1, 0];
+}
+const TW_SIDE = { key: '', at: null };           // the last c asked about, and its answer
+function twSide(c) {
+  if (!c) return null;
+  const key = c[0] + ',' + c[1];
+  if (key === TW_SIDE.key) return TW_SIDE.at;
+  TW_SIDE.key = key; TW_SIDE.at = null;
+  const P = pnOf(c);
+  if (!P || !P.r) return null;
+  let z = [-0.75 * P.r[1], 0.75 * P.r[0]];        // a quarter round from the pinch point r, a little nearer the middle
+  for (let s = 0; s < 40; s++) {
+    const { u, d } = pnSteps(z, c[0], c[1], P.p), t = pnDiv([u[0] + P.r[0], u[1] + P.r[1]], d);
+    z = [z[0] - t[0], z[1] - t[1]];
+  }
+  const at = pnSteps(z, c[0], c[1], P.p), m = Math.hypot(z[0], z[1]), L = Math.hypot(P.r[0], P.r[1]);
+  if (!(Math.hypot(at.u[0] + P.r[0], at.u[1] + P.r[1]) < 1e-9) || !(m > 1e-6)) return null;
+  let u = [z[1] / m, -z[0] / m];
+  if (u[0] * P.r[0] + u[1] * P.r[1] < 0) u = [-u[0], -u[1]];
+  // a side pinch point of the middle body stands close to square to r: anything else is a root of another body
+  if (!((u[0] * P.r[0] + u[1] * P.r[1]) / L > 0.94) || !(m < 1.5 * L)) return null;
+  return (TW_SIDE.at = u);
+}
+const twWholeLine = c => { c = c || (S.mode === 'j' ? S.c : null); return (S.mode === 'j' && twSide(c)) || twAlpha(c); };
+// uTwS: a Julia picture's line (x, y) and 1, or 0 when the shader is to take the line from each orbit's own c.
+function twWholeUniforms(gl, loc) {
+  const u = S.mode === 'j' ? twSide(S.c) : null;
+  gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : 0);
+}
+// How far behind the plane across the line the sign of x starts to count, in units of b = h²/sqrt(y² + h²): on the
+// upright plane on the line that is a sixteenth of a turn behind the top.
+const TW_BACK = Math.SQRT2 - 1;
 // The power maps in JavaScript: MATH[id](v, n, q) with q the approach's parameter object. They mirror the
 // shader code below line for line, so what the scorecard measures is what the picture shows.
 const MATH = {
@@ -700,6 +741,16 @@ const MATH = {
     const xs = Math.max(0.5 * (r2 + tx), 0), ys = Math.max(0.5 * (r2 - tx), 0), s2 = Math.max(ys + h2, 1e-300);
     const X = tx - h2, Y = (ty < 0 ? -2 : 2) * Math.sqrt(ys * (xs + h2 * h2 / s2)), H = 2 * h * Math.sqrt(xs + ys * ys / s2);
     const w = [X * u[0] - Y * u[1], X * u[1] + Y * u[0], H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (r2 + h2) / l : 1;
+    return [w[0] * k, w[1] * k, w[2] * k];
+  },
+  twinswhole(v, n, q = {}, c) {
+    if (n !== 2) return tpOne(v, n);
+    const u = twWholeLine(c), x = v[0] * u[0] + v[1] * u[1], y = u[0] * v[1] - u[1] * v[0], h = v[2];
+    const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300), b2 = h2 * h2 / s2, soft = clamp(+q.soft || 0, 0, 4);
+    const s = -x / Math.max(Math.sqrt(b2), 1e-300), t = soft > 0 ? clamp((s - TW_BACK) / soft, 0, 1) : (s > TW_BACK ? 1 : 0);
+    const X = x2 - y2 - h2, Y = 2 * y * Math.sqrt(x2 + b2) * (1 - 2 * t * t * (3 - 2 * t)), H = 2 * h * Math.sqrt(x2 + y2 * y2 / s2);
+    const gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
+    const w = [X * gx - Y * gy, X * gy + Y * gx, H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (x2 + y2 + h2) / l : 1;
     return [w[0] * k, w[1] * k, w[2] * k];
   },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
@@ -1197,6 +1248,37 @@ vec3 cmap(vec3 c){
 ${kind === 2 ? '  gTwU = gTw.x > -0.999999 ? normalize(gTw + vec2(1.0, 0.0)) : vec2(0.0, 1.0);\n' : ''}  return c;
 }`;
 const GL_TWINS = twGl(0), GL_TWINSROUND = twGl(1), GL_TWINSALIKE = twGl(2);
+// The entry "twinswhole": kind 2 above with two changes. The line has a front and is handed over for a Julia
+// picture (uTwS, see twSide). And the sign of x starts to count only TW_BACK times b behind the plane across the
+// line, b = h²/sqrt(y² + h²): up to there a point behind that plane lands where its mirror image in front lands,
+// so a bud that stands on the plane is one body. uA.x: 0 for a sharp change, or the width over which the sign
+// runs from 1 to -1. APR_FOLLOW tells the orbit code (30-shaders.js) to step a neighbour on the side the point
+// itself took, so the estimate draws no line along a sharp change.
+const GL_TWINSWHOLE = GL_APR + GL_MERC_PLAIN + `
+uniform vec3 uTwS;
+vec2 gTw = vec2(1.0, 0.0), gTwU = vec2(1.0, 0.0);
+float gTwSg = 1.0; bool gTwAs = false;
+#define APR_FOLLOW 1
+void aprFollow(bool on){ gTwAs = on; }
+vec3 twSq(vec3 v){
+  float x = dot(v.xy, gTwU), y = gTwU.x * v.y - gTwU.y * v.x, x2 = x * x, y2 = y * y, h2 = v.z * v.z, s2 = max(y2 + h2, 1e-30), b2 = h2 * h2 / s2;
+  float s = -x / max(sqrt(b2), 1e-20), sg = uA.x > 0.0 ? 1.0 - 2.0 * smoothstep(0.0, 1.0, (s - ${TW_BACK.toFixed(9)}) / uA.x) : (s > ${TW_BACK.toFixed(9)} ? -1.0 : 1.0);
+  if (gTwAs && uA.x <= 0.0) sg = gTwSg; else gTwSg = sg;
+  vec3 w = vec3(cmul(gTw, vec2(x2 - y2 - h2, 2.0 * y * sg * sqrt(x2 + b2))), 2.0 * v.z * sqrt(x2 + y2 * y2 / s2));
+  float l = length(w); return l > 0.0 ? w * (dot(v, v) / l) : w;
+}
+vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
+vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a) : aprMpw(a, n); }
+vec3 sqr(vec3 a){ return twSq(a); }
+vec3 cmap(vec3 c){
+  gTw = vec2(1.0, 0.0); gTwU = gTw;
+  if (uTwS.z > 0.5){ gTwU = uTwS.xy; gTw = cmul(gTwU, gTwU); return c; }
+  vec2 w = vec2(0.25, 0.0) - c.xy; float m = length(w);
+  vec2 a = vec2(0.5, 0.0) - vec2(sqrt(max(0.5 * (m + w.x), 0.0)), (w.y < 0.0 ? -1.0 : 1.0) * sqrt(max(0.5 * (m - w.x), 0.0)));
+  float l = dot(a, a);
+  if (l > 1e-12){ gTwU = a / sqrt(l); gTw = cmul(gTwU, gTwU); }
+  return c;
+}`;
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -2475,6 +2557,21 @@ const APPROACHES = [
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold laid on it. Across the upright plane across the line a point jumps to its mirror image in the line: nothing shows in a set that is its own mirror image there, and a seam shows in any other.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
+  },
+  {
+    id: 'twinswhole', name: 'Two points side by side, whole buds on top', group: 'inversions', glsl: GL_TWINSWHOLE, axis: () => [0, 0, 1],
+    usesC: true, uniforms: twWholeUniforms,
+    tag: 'The entry above with two things put right for a set that is not its own mirror image, like the rabbit: the line stands square to the middle body’s side pinch points, and a bud on top of a body is one whole body. A set that is its own mirror image comes out the same as above.',
+    params: [
+      { type: 'note', text: 'How it works: in the entry above a point just behind the upright plane across the line lands on the far side of the next body, so a bud that stands on that plane is two different halves. Here the far side starts a little further back, behind the bud.' },
+      { type: 'dial', key: 'soft', label: 'Softness of the join', min: 0, max: 1.5, step: 0.05, def: 0, help: 'At 0 the change to the far side is sharp: the shape has no seam, and with an orbit trap the colours of a set that is not its own mirror image break along a line. Above 0 the change is spread out: the colours run through, and a low welt shows in the shape.' },
+    ],
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + b²), 2h·√(x² + y⁴/(y² + h²)))   with x along the line towards the pinch point, y across it, h the height, b = h²/√(y² + h²), and s = 1 in front of x = −' + aprNum(TW_BACK) + '·b and −1 behind it' + (+p.soft > 0 ? ', changing over a width of ' + aprNum(+p.soft) + '·b' : '') : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'Two things in the entry above go wrong on a set that is not its own mirror image. Its line is aimed at the pinch point where the middle body meets the next one, and the upright axis then lands beside the next body’s far pinch point, not on it: on the rabbit by 2°. Here the line stands square to the middle body’s side pinch points, and the axis lands on the far pinch point. And at a pinch point of the rabbit the two bodies are not alike, so a bud on top was half of the one and half of the other. Here a point behind the upright plane across the line keeps landing where its mirror image in front lands, until it is a sixteenth of a turn behind the top. Each bud on top is then one whole body. Where the change is made the shape has no step to speak of, but an orbit trap colours the two sides differently. In the Mandelbrot picture the line is that of the entry above, and the solid is not right.',
+    roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', (+p.soft > 0 ? 'One formula with no jump. Behind the top of a body the change to the far side is spread out, and a low welt shows there.' : 'One formula with no fold laid on it. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there, and an orbit trap colours the two sides differently unless the set is its own mirror image.') + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
   },
   {

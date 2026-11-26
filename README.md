@@ -41,9 +41,9 @@ come closest and what is known not to work. No rule passes yet.
   full grid, level sheets, shells) and how far out; what their colours say; whose orbits are drawn; and whether
   new dots come in for those thrown out. A rule can be saved under a name and loaded again, and the Mandelbrot
   and the Julia picture stand side by side, or the one that is chosen stands alone.
-  Every approach of the list but three can be loaded as steps (`13-custom-rules.js`), each giving that approach's
+  Every approach of the list but four can be loaded as steps (`13-custom-rules.js`), each giving that approach's
   own numbers, and its own picture with the bailout radius at 64. Two approaches draw their picture from several
-  orbits at once, and their steps follow one of those orbits. The three left out fold about lines or pinch points of the
+  orbits at once, and their steps follow one of those orbits. The four left out need lines or pinch points of the
   Julia set on show, which steps cannot work out;
 - a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models. On a wide
   window the picture's lower and right edges can be dragged to set its size. The camera takes the picture's new
@@ -81,7 +81,7 @@ All JavaScript files are joined into one function scope in file-name order, so t
 name is its place in the page. Only `90-boot.js` runs code when the page loads. Each 3D rule is one entry in
 `src/js/10-approaches.js`. `09-lines.js` finds, for the Julia set on show, the line through the middle of each of
 its bodies, for the two entries that fold about such lines, and the middle body's two pinch points from c alone, for
-the entry that folds between them. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
+the entry that folds between them and the entry that lays its line square to the side pinch points. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.33. Each version is tagged, as `v1.33`.
+This is version 1.34. Each version is tagged, as `v1.34`.
