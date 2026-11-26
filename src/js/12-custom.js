@@ -292,6 +292,9 @@ cuDef('softmirror', 'vss', 'v', (a, b, c) => `cuSoftMirror(${a}, ${b}, ${c})`, (
 });
 cuDef('cmul', 'vv', 'v', (a, b) => `vec3(cmul(${a}.xy, ${b}.xy), 0.0)`, (a, b) => [a[0] * b[0] - a[1] * b[1], a[0] * b[1] + a[1] * b[0], 0]);
 cuDef('conj', 'v', 'v', a => `(${a} * vec3(1.0, -1.0, -1.0))`, a => [a[0], -a[1], -a[2]]);
+// The middle body's side pinch point for the flat set of a c (twSideAt in 10-approaches.js; GL_SIDE in the shader,
+// which cuBuild adds for a rule that calls this).
+cuDef('side', 'v', 'v', a => `vec3(twSideOf(${a}), 0.0)`, a => { const s = twSideAt(a); return [s[0], s[1], 0]; });
 cuDef('quat', 'ssss', 'q', (w, x, y, z) => `vec4(${x}, ${y}, ${z}, ${w})`, (w, x, y, z) => [x, y, z, w]);
 cuDef('quat', 'v', 'q', a => `vec4(${a}, 0.0)`, a => [a[0], a[1], a[2], 0]);
 cuDef('qrot', 'vs', 'q', (a, b) => `cuQrot(${a}, ${b})`, cuQrot);
@@ -453,7 +456,11 @@ function cuParse(text, ctx) {
       const say = k => [...k].map(t => CU_KINDS[t]).join(', ');
       fail(`${name}( ) is given ${args.length ? say(sig) : 'nothing'}. It takes ${forms.map(o => say(o.args)).join(', or ')}.`);
     }
-    const J = args.map(a => a.js), g = f.js, gl = f.gl(...args.map(a => a.gl)), tree = { fn: name, a: args.map(a => a.tree) };
+    const J = args.map(a => a.js), g = f.js, tree = { fn: name, a: args.map(a => a.tree) };
+    let gl = f.gl(...args.map(a => a.gl));
+    // In an iteration the orbits beside a point take the side pinch point the point's own orbit found, as inside
+    // same( ): the search is long, and a line that differed from the point's would spoil the distance estimate.
+    if (name === 'side' && ctx.sec !== 'pre') { const sites = ctx.same || (ctx.same = []), k = sites.length; sites.push('v'); gl = `(gCarI == 0 ? (gCuW${k} = ${gl}) : gCuW${k})`; }
     if (J.length === 1) { const [a] = J; return { t: f.ret, gl, tree, js: E => g(a(E)) }; }
     if (J.length === 2) { const [a, b] = J; return { t: f.ret, gl, tree, js: E => g(a(E), b(E)) }; }
     if (J.length === 3) { const [a, b, c] = J; return { t: f.ret, gl, tree, js: E => g(a(E), b(E), c(E)) }; }
@@ -550,7 +557,7 @@ function cuLine(line, ctx, internal) {
   }
   v.free = free;
   const at = v.idx;
-  return { gl: `${v.gl} = ${node.gl};`, z: false, free, needs, js: E => { E.v[at] = J(E); } };
+  return { gl: `${v.gl} = ${node.gl};`, z: false, free, needs, name: target, js: E => { E.v[at] = J(E); } };
 }
 
 // The kinds of step. params: the settings a step of that kind has, each { key, label, type, def } with type
@@ -798,6 +805,9 @@ const CU_OPS = [
   ['f_cmul', 'Multiply two flat points, as complex numbers', 'Points', 'pt', [['This', 'flat(z)'], ['times this', 'flat(z)']]],
   ['f_conj', 'Flip the signs of y and z', 'Points', 'pt', [['Of', 'z']]],
   ['f_point', 'A point of the orbit, by its number', 'Points', 'pt', [['Which: 1 the first, 0 this one, −1 the one before', '1']]],
+  ['f_side', 'The middle body’s side pinch point, for a c', 'Points', 'sd', [['The c', 'c']]],
+  // the name "colours" is the one cuBuild looks for
+  ['o_colours', 'Colours: follow another point', 'Points', 'colours', [['The point the colours follow', 'z']], a => a],
   ['o_lt', 'Is it less?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['less than this', '1']], (a, b) => `${a} < ${b}`],
   ['o_gt', 'Is it more?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['more than this', '1']], (a, b) => `${a} > ${b}`],
   ['o_le', 'Is it less or the same?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['no more than this', '1']], (a, b) => `${a} <= ${b}`],
@@ -1084,6 +1094,10 @@ function cuBuild(steps) {
   const ctx = { vars: new Map(), all: [], zero: [], uses: new Set(), K: [], kept: [], same: [], sites: 0, internal: false, sec: 'pre', fns: new Map(), lost: new Map() };
   const bodies = { pre: [], main: [], post: [] }, hoist = [], run = [], errs = {}, scopes = {}, varsOf = {};
   let ord = 0, lastC = 0;   // lastC: how many lines the first section has when its last change of c is done
+  // paint: the rule names a point "colours". The colour trap then reads that point after an iteration, in place of
+  // the orbit's own (APR_TRAP and APR_ORBIT in 30-shaders.js): what the point's own orbit left in it, where the
+  // step was taken.
+  let paint = false;
   steps.slice(0, CU_MAX_STEPS).forEach(st => {
     const B = CU_BLOCKS[st.kind], sec = cuSecOf(st);
     // A section begins with the sliders alone, which are plain numbers. Any other name stays in its own section.
@@ -1143,7 +1157,10 @@ function cuBuild(steps) {
       // iteration lands across a fold of c keeps its distance from the point's own c, as cmap sees to for a change
       // made before the iterations. The point's own pass runs first and leaves its c of before and after (gCuCb, gCuCa).
       const q = on === 'c' && sec !== 'pre' ? ctx.sites++ : -1;
-      bodies[sec].push(q < 0 ? `if (${when}){ ${core} }`
+      // A point that a step of the iterations names "colours" is the one the colours follow (see paint below).
+      const paints = sec === 'main' && lines.some(l => l.name === 'colours') && ctx.vars.get('colours').t === 'v';
+      if (paints) paint = true;
+      bodies[sec].push(q < 0 ? `if (${when}){ ${core}${paints ? ' cuPaint = true;' : ''} }`
         : `if (${when}){ vec3 cb = c; ${core} if (gCarI == 0){ gCuCb${q} = cb; gCuCa${q} = c; } else { vec3 d0 = cb - gCuCb${q}, d1 = c - gCuCa${q}; if (dot(d1, d1) > 16.0 * dot(d0, d0)) c = gCuCa${q} + d0; } }`);
       if (on === 'c' && sec === 'pre') lastC = bodies.pre.length;
       // a slider is a plain number for every step after it, in whichever section: each turn begins with it
@@ -1176,7 +1193,12 @@ vec2 cuOffNow(){ return uCu[${CU_BOTH}] > 0.5 && uRaw < 0.5 ? uOff + vec2(gl_Fra
 #define uJulia cuJuliaNow()
 #define uOff cuOffNow()
 #endif
-vec3 gCuC, gCuRaw; float gCuPass, gCuCall; ${ctx.same.map((t, k) => `${CU_GLTYPE[t]} gCuW${k};`).join(' ')}${Array.from({ length: ctx.sites }, (x, k) => ` vec3 gCuCb${k}, gCuCa${k};`).join('')}` + cuCarryGlsl(orbit, ctx.uses.has('hist'), kept, cRun) + (preZ || preC ? `
+vec3 gCuC, gCuRaw; float gCuPass, gCuCall; ${ctx.same.map((t, k) => `${CU_GLTYPE[t]} gCuW${k};`).join(' ')}${Array.from({ length: ctx.sites }, (x, k) => ` vec3 gCuCb${k}, gCuCa${k};`).join('')}` + (paint ? `
+#define APR_ORBIT 1
+#define APR_TRAP 1
+vec3 gCuPaint = vec3(0.0); bool gCuPaintOn = false;
+void aprOrbit(vec3 v, vec3 c){ gCuPaintOn = false; }
+vec3 aprTrap(vec3 v, vec3 c){ return !gCuPaintOn ? v : dot(gCuPaint, gCuPaint) < 1e30 ? gCuPaint : vec3(1e15, 0.0, 0.0); }` : '') + cuCarryGlsl(orbit, ctx.uses.has('hist'), kept, cRun) + (preZ || preC ? `
 // The steps taken once, before the iterations, from the point z an orbit starts with and the c of the picture.
 // forC: what they make of c is asked (cmap), and they are taken whole. Otherwise the answer is where they carry the
 // point, as far as a play stands (cuAt and cuT, as in cuRun: their places come before those of every other step).
@@ -1194,7 +1216,7 @@ vec3 cuRun(vec3 z, vec3 c, float n){${kept.length || cRun ? `
   bool cuKeeps = !carOrigin(z);   // a step that starts at the origin leaves what the orbit keeps as it is` : ''}${cRun ? `
   if (gCuCh[gCarI] > 0.5) c = gCuCk[gCarI];   // c as the iterations before have left it` : ''}
   // where a play stands: steps up to cuAt are taken, the one at cuAt as far as cuT, and the rest are left out
-  float cuAt = 1e9, cuT = 1.0;${post ? `
+  float cuAt = 1e9, cuT = 1.0;${paint ? ' bool cuPaint = false;' : ''}${post ? `
   // the turn that follows the last iteration takes the steps of "once, after" in place of the others
   bool cuPost = uCu[${CU_LAST}] > 0.5 && gCuCall == uCu[${CU_LAST}];` : ''}
   if (uCu[${CU_PLAY_ON}] > 0.5){ if (${post ? 'cuPost || ' : ''}gCuPass == uCu[${CU_PLAY_PASS}]){ cuAt = uCu[${CU_PLAY_ORD}]; cuT = uCu[${CU_PLAY_T}]; } else if (gCuPass > uCu[${CU_PLAY_PASS}]) cuAt = -1.0; }
@@ -1206,7 +1228,8 @@ vec3 cuRun(vec3 z, vec3 c, float n){${kept.length || cRun ? `
   } else {` : ''}
   ${bodies.main.join('\n  ')}${kept.length || cRun ? `
   if (cuKeeps){ ${kept.map((k, j) => `gCuK${j}[gCarI] = ${k.gl};`).join(' ')}${cRun ? ' gCuCk[gCarI] = c; gCuCh[gCarI] = 1.0;' : ''} }` : ''}${post ? `
-  }` : ''}
+  }` : ''}${paint ? `
+  if (gCarI == 0){ gCuPaintOn = cuPaint; if (cuPaint) gCuPaint = u_colours; }` : ''}
   return aprCap(z);
 }
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
@@ -1224,7 +1247,7 @@ vec3 zmap(vec3 P, vec3 c){ return ${preZ ? 'cuPreZ(P, c, cmap(c))' : 'P'}; }`;
   K.set(ctx.K);
   const at = [], lists = { pre: [], main: [], post: [] };
   for (const r of run) { at[r.ord] = r; lists[r.sec].push(r); }
-  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + code, key: (h >>> 0).toString(36) + '.' + code.length,
+  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (code.includes('twSideOf(') ? GL_SIDE : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
     K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept, fns: ctx.fns };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).

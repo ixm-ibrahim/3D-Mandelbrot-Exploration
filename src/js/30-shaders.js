@@ -4,7 +4,8 @@
 //
 // An approach's GLSL defines mul, pw, sqr and cmap. It may define APR_ZMAP with zmap (see orbitDE), and APR_CARRY
 // with carStart, carStep, carFit and gCarI when its orbit carries something besides its point (see GL_CARRY in
-// 10-approaches.js). An approach that sets its own escape radius defines APR_FAR, how far from the middle the probe
+// 10-approaches.js). APR_ORBIT with aprOrbit, APR_FOLLOW with aprFollow and APR_TRAP with aprTrap are told of in
+// orbitDE, where each is called. An approach that sets its own escape radius defines APR_FAR, how far from the middle the probe
 // point stands (see farLimit in main): by default that follows the escape radius, which a small radius brings too
 // close to be a far-away point.
 //
@@ -141,6 +142,10 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
     else if (i == 2){ dv2 = s - v; dc2 = d; }
     else { dv3 = s - v; dc3 = d; }
   }
+#ifdef APR_ORBIT
+  // An approach that defines APR_ORBIT is told where an orbit begins: aprOrbit(its first point, its c).
+  aprOrbit(v, c);
+#endif
   float ls1 = -log(h0), ls2 = ls1, ls3 = ls1;
   if (nt == 0){ dv1 = vec3(jul ? 1.0 : 0.0, 0.0, 0.0); dc1 = vec3(jul ? 0.0 : 1.0, 0.0, 0.0); ls1 = 0.0; }
   float r = length(v), rp = r, it = 0.0, steps = float(its), best = 1e30, bestIt = 0.0, d = 0.0, P = 2.0;
@@ -281,7 +286,13 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
     // Where far points never escape, most orbits come to rest within a few steps and will never escape: stop there.
     still = swap && dot(w - v, w - v) < 1e-12 * lw * lw;
     v = w; rp = r; r = lw; it += 1.0;
+#ifdef APR_TRAP
+    // An approach that defines APR_TRAP says which point the colour trap reads after a step: aprTrap(the orbit's
+    // new point, c).
+    trapAdd(aprTrap(v, c), it);
+#else
     trapAdd(v, it);
+#endif
   }
   gLast = v; gIt = it;
   if (esc) gIt = it - log(log(r) / log(uBail)) / log(P);

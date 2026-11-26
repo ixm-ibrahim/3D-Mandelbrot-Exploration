@@ -22,7 +22,7 @@ come closest and what is known not to work. No rule passes yet.
   c, or on a point the rule has named, in whichever section it stands, and a change of c lasts for the rest of
   the orbit. A formula has the length and the two angles of every point, written after the point, as in `z.phi` and `c.phi`,
   and its box wraps and grows with its text. A step can name a function of the rule's own, with a name, the
-  names of what it is given and a formula, and every step after it can call that function in its formulas. A step can be switched off, moved, made another kind where it stands, saved with its settings under a name to be
+  names of what it is given and a formula, and every step after it can call that function in its formulas. A step can find the middle body's side pinch point for a c, and a point that a step names `colours` is the one the colours follow. A step can be switched off, moved, made another kind where it stands, saved with its settings under a name to be
   added again from the list of steps, or broken down: a
   block into its formulas, a formula into its single operations. Steps that stand next to each other can be
   selected, with a Shift-click for a run or a Ctrl-click one by one, and saved under a name as one step that holds
@@ -41,10 +41,10 @@ come closest and what is known not to work. No rule passes yet.
   full grid, level sheets, shells) and how far out; what their colours say; whose orbits are drawn; and whether
   new dots come in for those thrown out. A rule can be saved under a name and loaded again, and the Mandelbrot
   and the Julia picture stand side by side, or the one that is chosen stands alone.
-  Every approach of the list but four can be loaded as steps (`13-custom-rules.js`), each giving that approach's
+  Every approach of the list but three can be loaded as steps (`13-custom-rules.js`), each giving that approach's
   own numbers, and its own picture with the bailout radius at 64. Two approaches draw their picture from several
-  orbits at once, and their steps follow one of those orbits. The four left out need lines or pinch points of the
-  Julia set on show, which steps cannot work out;
+  orbits at once, and their steps follow one of those orbits. The three left out need lines traced from the Julia
+  set on show, or the width of its middle body, which steps cannot work out;
 - a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models. On a wide
   window the picture's lower and right edges can be dragged to set its size. The camera takes the picture's new
   shape, so nothing is stretched, and the room that is freed goes to the controls, or in the custom approach to
@@ -81,7 +81,8 @@ All JavaScript files are joined into one function scope in file-name order, so t
 name is its place in the page. Only `90-boot.js` runs code when the page loads. Each 3D rule is one entry in
 `src/js/10-approaches.js`. `09-lines.js` finds, for the Julia set on show, the line through the middle of each of
 its bodies, for the two entries that fold about such lines, and the middle body's two pinch points from c alone, for
-the entry that folds between them and the entry that lays its line square to the side pinch points. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
+the entry that folds between them. From those the entry that lays its line square to the middle body's side pinch
+points finds that line (`twSideAt` in `10-approaches.js`), and so does the custom approach's `side( )`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.34. Each version is tagged, as `v1.34`.
+This is version 1.35. Each version is tagged, as `v1.35`.

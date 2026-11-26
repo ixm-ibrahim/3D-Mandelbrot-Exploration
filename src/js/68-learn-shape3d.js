@@ -54,6 +54,9 @@ int lsOrb(vec3 p, int km, bool stop){
 #ifdef APR_CARRY
   carStart();
 #endif
+#ifdef APR_ORBIT
+  aprOrbit(z, c);
+#endif
   int res = km + 1;
   // A Mandelbrot dot starts on its own point: the step that carries it there from the start value comes before the
   // count (k = -1) and nothing is asked of it. Step 1 is then the first that can throw a dot out, as for a Julia dot.

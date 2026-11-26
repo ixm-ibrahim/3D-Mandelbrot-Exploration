@@ -661,42 +661,57 @@ function twAxis(c, q) {
   return l > 1e-12 ? [(ax * ax - ay * ay) / l, 2 * ax * ay / l] : [1, 0];
 }
 // The line of the entry "twinswhole", as a direction with a front: it points towards the pinch point where the
-// middle body meets the next one. For a Julia picture whose c has a cycle of bodies the line stands square to
-// the middle body's two side pinch points, the points that one round of the cycle brings to the far pinch point
-// (twSide). The upright axis then lands on the next body's far pinch point. Otherwise, and in the Mandelbrot
-// picture, it runs from 0 to the fixed point 1/2 - sqrt(1/4 - c), as in "twins" (twAlpha).
+// middle body meets the next one. For a c with a cycle of bodies the line stands square to the middle body's two
+// side pinch points, the points that one round of the cycle brings to the far pinch point (twSideAt). The upright
+// axis then lands on the next body's far pinch point. Otherwise it runs from 0 to the fixed point
+// 1/2 - sqrt(1/4 - c), as in "twins" (twAlpha).
 function twAlpha(c) {
   if (!c) return [1, 0];
   const wx = 0.25 - c[0], wy = -c[1], m = Math.hypot(wx, wy);
   const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
   return l > 1e-12 ? [ax / Math.sqrt(l), ay / Math.sqrt(l)] : [1, 0];
 }
-const TW_SIDE = { key: '', at: null };           // the last c asked about, and its answer
-function twSide(c) {
-  if (!c) return null;
+// The middle body's side pinch point for z² + c, as [x, y, found]: the one a quarter round on from the pinch point
+// r where the middle body meets the next one. With no cycle of bodies, found is 0 and the point stands a quarter
+// round on from the direction of twAlpha, one unit out. The shader's twSideFind is this, step for step.
+const TW_SIDE = new Map();                       // answers so far, by c
+const TW_NEWTON = 16;
+function twSideAt(c) {
   const key = c[0] + ',' + c[1];
-  if (key === TW_SIDE.key) return TW_SIDE.at;
-  TW_SIDE.key = key; TW_SIDE.at = null;
-  const P = pnOf(c);
-  if (!P || !P.r) return null;
-  let z = [-0.75 * P.r[1], 0.75 * P.r[0]];        // a quarter round from the pinch point r, a little nearer the middle
-  for (let s = 0; s < 40; s++) {
-    const { u, d } = pnSteps(z, c[0], c[1], P.p), t = pnDiv([u[0] + P.r[0], u[1] + P.r[1]], d);
-    z = [z[0] - t[0], z[1] - t[1]];
+  let at = TW_SIDE.get(key);
+  if (at) return at;
+  const a = twAlpha(c), P = pnFind(c[0], c[1]);
+  at = [-a[1], a[0], 0];
+  if (P && P.r) {
+    let z = [-0.75 * P.r[1], 0.75 * P.r[0]];      // a quarter round from r, a little nearer the middle
+    for (let s = 0; s < TW_NEWTON; s++) {
+      const { u, d } = pnSteps(z, c[0], c[1], P.p), t = pnDiv([u[0] + P.r[0], u[1] + P.r[1]], d);
+      z = [z[0] - t[0], z[1] - t[1]];
+    }
+    const end = pnSteps(z, c[0], c[1], P.p), m = Math.hypot(z[0], z[1]), L = Math.hypot(P.r[0], P.r[1]);
+    let k = z[1] * P.r[0] - z[0] * P.r[1];        // how far the line square to z points towards r
+    if (k < 0) { z = [-z[0], -z[1]]; k = -k; }
+    // a side pinch point of the middle body stands close to square to r: anything else is a root of another body
+    if (Math.hypot(end.u[0] + P.r[0], end.u[1] + P.r[1]) < 1e-4 && m > 1e-6 && k / (m * L) > 0.94 && m < 1.5 * L) at = [z[0], z[1], 1];
   }
-  const at = pnSteps(z, c[0], c[1], P.p), m = Math.hypot(z[0], z[1]), L = Math.hypot(P.r[0], P.r[1]);
-  if (!(Math.hypot(at.u[0] + P.r[0], at.u[1] + P.r[1]) < 1e-9) || !(m > 1e-6)) return null;
-  let u = [z[1] / m, -z[0] / m];
-  if (u[0] * P.r[0] + u[1] * P.r[1] < 0) u = [-u[0], -u[1]];
-  // a side pinch point of the middle body stands close to square to r: anything else is a root of another body
-  if (!((u[0] * P.r[0] + u[1] * P.r[1]) / L > 0.94) || !(m < 1.5 * L)) return null;
-  return (TW_SIDE.at = u);
+  if (TW_SIDE.size > 256) TW_SIDE.clear();
+  TW_SIDE.set(key, at);
+  return at;
 }
-const twWholeLine = c => { c = c || (S.mode === 'j' ? S.c : null); return (S.mode === 'j' && twSide(c)) || twAlpha(c); };
-// uTwS: a Julia picture's line (x, y) and 1, or 0 when the shader is to take the line from each orbit's own c.
+// The line as a direction, or nothing: the side pinch points belong to z² + c with nothing folded or flipped.
+function twSide(c) {
+  if (!c || !lnPlain()) return null;
+  const s = twSideAt(c);
+  if (!s[2]) return null;
+  const m = Math.hypot(s[0], s[1]);
+  return [s[1] / m, -s[0] / m];
+}
+const twWholeLine = c => { c = c || (S.mode === 'j' ? S.c : null); return (c && twSide(c)) || twAlpha(c); };
+// uTwS: a Julia picture's line (x, y) and 1. Or 2 when the shader is to find the line for each orbit's own c, and
+// 0 when it is to take the line of twAlpha.
 function twWholeUniforms(gl, loc) {
   const u = S.mode === 'j' ? twSide(S.c) : null;
-  gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : 0);
+  gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : S.mode !== 'j' && lnPlain() ? 2 : 0);
 }
 // How far behind the plane across the line the sign of x starts to count, in units of b = h²/sqrt(y² + h²): on the
 // upright plane on the line that is a sixteenth of a turn behind the top.
@@ -746,9 +761,9 @@ const MATH = {
   twinswhole(v, n, q = {}, c) {
     if (n !== 2) return tpOne(v, n);
     const u = twWholeLine(c), x = v[0] * u[0] + v[1] * u[1], y = u[0] * v[1] - u[1] * v[0], h = v[2];
-    const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300), b2 = h2 * h2 / s2, soft = clamp(+q.soft || 0, 0, 4);
-    const s = -x / Math.max(Math.sqrt(b2), 1e-300), t = soft > 0 ? clamp((s - TW_BACK) / soft, 0, 1) : (s > TW_BACK ? 1 : 0);
-    const X = x2 - y2 - h2, Y = 2 * y * Math.sqrt(x2 + b2) * (1 - 2 * t * t * (3 - 2 * t)), H = 2 * h * Math.sqrt(x2 + y2 * y2 / s2);
+    const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300), b2 = h2 * h2 / s2;
+    const sg = -x / Math.max(Math.sqrt(b2), 1e-300) > TW_BACK ? -1 : 1;
+    const X = x2 - y2 - h2, Y = 2 * y * sg * Math.sqrt(x2 + b2), H = 2 * h * Math.sqrt(x2 + y2 * y2 / s2);
     const gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
     const w = [X * gx - Y * gy, X * gy + Y * gx, H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (x2 + y2 + h2) / l : 1;
     return [w[0] * k, w[1] * k, w[2] * k];
@@ -1164,10 +1179,7 @@ vec3 cmap(vec3 c){ return c; }`;
 // step). uPn: a Julia picture's pinch point, the body's half-width at 0 (nothing when there is no pinch point) and
 // the slope of its edge at a pinch point. uPnEach: 1 when every orbit is to work these out for its own c. gPn: the
 // four numbers the orbit in hand folds with. uA.x: the reach, in half-widths of the body.
-const GL_PINCH = GL_APR + GL_MERC_PLAIN + `
-uniform vec4 uPn; uniform float uPnEach;
-vec4 gPn = vec4(0.0);
-vec2 pnDiv(vec2 a, vec2 b){ return vec2(a.x * b.x + a.y * b.y, a.y * b.x - a.x * b.y) / max(dot(b, b), 1e-30); }
+const GL_PN = `vec2 pnDiv(vec2 a, vec2 b){ return vec2(a.x * b.x + a.y * b.y, a.y * b.x - a.x * b.y) / max(dot(b, b), 1e-30); }
 void pnSteps(vec2 w, vec2 c, int k, out vec2 u, out vec2 d, out vec2 e){
   u = w; d = vec2(1.0, 0.0); e = vec2(0.0);
   for (int j = 0; j < k; j++){ e = cmul(d, d) + 2.0 * cmul(u, e); d = 2.0 * cmul(u, d); u = cmul(u, u) + c; }
@@ -1176,7 +1188,11 @@ vec2 pnNewton(vec2 w, vec2 c, int k){
   vec2 u, d, e;
   for (int s = 0; s < ${PN_NEWTON}; s++){ pnSteps(w, c, k, u, d, e); w -= pnDiv(u - w, d - vec2(1.0, 0.0)); }
   return w;
-}
+}`;
+const GL_PINCH = GL_APR + GL_MERC_PLAIN + `
+uniform vec4 uPn; uniform float uPnEach;
+vec4 gPn = vec4(0.0);
+${GL_PN}
 vec4 pnFind(vec2 c){
   vec2 z = vec2(0.0), u, d, e; float best = 1e30;
   for (int k = 1; k <= ${PN_MAX}; k++){
@@ -1248,31 +1264,97 @@ vec3 cmap(vec3 c){
 ${kind === 2 ? '  gTwU = gTw.x > -0.999999 ? normalize(gTw + vec2(1.0, 0.0)) : vec2(0.0, 1.0);\n' : ''}  return c;
 }`;
 const GL_TWINS = twGl(0), GL_TWINSROUND = twGl(1), GL_TWINSALIKE = twGl(2);
-// The entry "twinswhole": kind 2 above with two changes. The line has a front and is handed over for a Julia
-// picture (uTwS, see twSide). And the sign of x starts to count only TW_BACK times b behind the plane across the
-// line, b = h²/sqrt(y² + h²): up to there a point behind that plane lands where its mirror image in front lands,
-// so a bud that stands on the plane is one body. uA.x: 0 for a sharp change, or the width over which the sign
-// runs from 1 to -1. APR_FOLLOW tells the orbit code (30-shaders.js) to step a neighbour on the side the point
-// itself took, so the estimate draws no line along a sharp change.
-const GL_TWINSWHOLE = GL_APR + GL_MERC_PLAIN + `
+// The middle body's side pinch point for z² + c, in the shader: twSideFind is twSideAt (above) step for step,
+// with twCycle for the cycle's pinch point r and its length (pnFind of 09-lines.js, less the body's shape).
+// twSideOf keeps the last answer, for an orbit that asks at every step.
+const GL_SIDE = GL_PN + `
+vec3 twCycle(vec2 c){
+  vec2 z = vec2(0.0), u, d, e; float best = 1e30;
+  for (int k = 1; k <= ${PN_MAX}; k++){
+    z = cmul(z, z) + c;
+    float m = dot(z, z);
+    if (!(m < 16.0)) return vec3(0.0);
+    if (m >= best) continue;
+    best = m;
+    vec2 w = pnNewton(z, c, k);
+    pnSteps(w, c, k, u, d, e);
+    if (!(length(u - w) < 1e-4) || !(length(d) < 1.0)) continue;
+    if (k == 1) return vec3(0.0);
+    vec2 r = pnNewton(w + pnDiv(vec2(1.0, 0.0) - d, e), c, k);
+    pnSteps(r, c, k, u, d, e);
+    if (!(length(u - r) < 1e-4) || !(length(d) > 1.0) || !(length(r) > 1e-6)) return vec3(0.0);
+    return vec3(r, float(k));
+  }
+  return vec3(0.0);
+}
+vec2 twSideFind(vec2 c){
+  vec2 w = vec2(0.25, 0.0) - c; float m = length(w);
+  vec2 a = vec2(0.5, 0.0) - vec2(sqrt(max(0.5 * (m + w.x), 0.0)), (w.y < 0.0 ? -1.0 : 1.0) * sqrt(max(0.5 * (m - w.x), 0.0)));
+  float l = dot(a, a);
+  vec2 back = l > 1e-12 ? vec2(-a.y, a.x) / sqrt(l) : vec2(0.0, 1.0);
+  vec3 P = twCycle(c);
+  if (!(P.z > 1.5)) return back;
+  vec2 r = P.xy, z = 0.75 * vec2(-r.y, r.x), u, d, e; int p = int(P.z + 0.5);
+  for (int s = 0; s < ${TW_NEWTON}; s++){ pnSteps(z, c, p, u, d, e); z -= pnDiv(u + r, d); }
+  pnSteps(z, c, p, u, d, e);
+  float k = z.y * r.x - z.x * r.y, L = length(r);
+  if (k < 0.0){ z = -z; k = -k; }
+  m = length(z);
+  return length(u + r) < 1e-4 && m > 1e-6 && k / (m * L) > 0.94 && m < 1.5 * L ? z : back;
+}
+vec2 gTwSdC = vec2(0.0), gTwSdAt = vec2(0.0, 1.0); bool gTwSdHave = false;
+vec2 twSideOf(vec3 c){
+  if (gTwSdHave && c.xy == gTwSdC) return gTwSdAt;
+  gTwSdC = c.xy; gTwSdAt = twSideFind(c.xy); gTwSdHave = true;
+  return gTwSdAt;
+}`;
+// The entry "twinswhole": kind 2 above with two changes. The line has a front, and is handed over for a Julia
+// picture or found where an orbit begins, for the point's own c (uTwS, see twSide; aprOrbit, which APR_ORBIT has
+// the orbit code call). And the sign of x starts to count only TW_BACK times b
+// behind the plane across the line, b = h²/sqrt(y² + h²): up to there a point behind that plane lands where its
+// mirror image in front lands, so a bud that stands on the plane is one body. APR_FOLLOW tells the orbit code
+// (30-shaders.js) to step a neighbour on the side the point itself took, so the estimate draws no line along the
+// change.
+// The colours follow a second point, gTwK (APR_TRAP): it starts where the orbit starts and takes the same steps,
+// but its sign runs from 1 to -1 over a width gTwW of the same measure. The width is uA.x times how far c lies
+// off the line the squaring lands on, which is nothing for a set that is its own mirror image: the second point
+// is then the orbit's own.
+const GL_TWINSWHOLE = GL_APR + GL_MERC_PLAIN + GL_SIDE + `
 uniform vec3 uTwS;
 vec2 gTw = vec2(1.0, 0.0), gTwU = vec2(1.0, 0.0);
-float gTwSg = 1.0; bool gTwAs = false;
+float gTwSg = 1.0, gTwW = 0.0; bool gTwAs = false, gTwSoft = false, gTwTwo = false;
+vec3 gTwK = vec3(0.0);
 #define APR_FOLLOW 1
 void aprFollow(bool on){ gTwAs = on; }
 vec3 twSq(vec3 v){
   float x = dot(v.xy, gTwU), y = gTwU.x * v.y - gTwU.y * v.x, x2 = x * x, y2 = y * y, h2 = v.z * v.z, s2 = max(y2 + h2, 1e-30), b2 = h2 * h2 / s2;
-  float s = -x / max(sqrt(b2), 1e-20), sg = uA.x > 0.0 ? 1.0 - 2.0 * smoothstep(0.0, 1.0, (s - ${TW_BACK.toFixed(9)}) / uA.x) : (s > ${TW_BACK.toFixed(9)} ? -1.0 : 1.0);
-  if (gTwAs && uA.x <= 0.0) sg = gTwSg; else gTwSg = sg;
+  float s = -x / max(sqrt(b2), 1e-20), sg = s > ${TW_BACK.toFixed(9)} ? -1.0 : 1.0;
+  if (gTwSoft) sg = 1.0 - 2.0 * smoothstep(0.0, 1.0, (s - ${TW_BACK.toFixed(9)}) / gTwW);
+  else if (gTwAs) sg = gTwSg; else gTwSg = sg;
+  gTwTwo = true;
   vec3 w = vec3(cmul(gTw, vec2(x2 - y2 - h2, 2.0 * y * sg * sqrt(x2 + b2))), 2.0 * v.z * sqrt(x2 + y2 * y2 / s2));
   float l = length(w); return l > 0.0 ? w * (dot(v, v) / l) : w;
 }
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a) : aprMpw(a, n); }
 vec3 sqr(vec3 a){ return twSq(a); }
+#define APR_ORBIT 1
+void aprOrbit(vec3 v, vec3 c){
+  gTwK = v;
+  if (uTwS.z > 1.5){ vec2 s = twSideOf(c); gTwU = normalize(vec2(s.y, -s.x)); gTw = cmul(gTwU, gTwU); }
+}
+#define APR_TRAP 1
+vec3 f(vec3 z, vec3 c);
+vec3 aprTrap(vec3 v, vec3 c){
+  gTwW = gTwTwo ? uA.x * abs(gTw.x * c.y - gTw.y * c.x) : 0.0;
+  if (!(gTwW > 1e-6)) return v;
+  gTwSoft = true; gTwK = f(gTwK, c); gTwSoft = false;
+  if (!(dot(gTwK, gTwK) < 1e30)) gTwK = vec3(1e15, 0.0, 0.0);
+  return gTwK;
+}
 vec3 cmap(vec3 c){
   gTw = vec2(1.0, 0.0); gTwU = gTw;
-  if (uTwS.z > 0.5){ gTwU = uTwS.xy; gTw = cmul(gTwU, gTwU); return c; }
+  if (uTwS.z > 0.5 && uTwS.z < 1.5){ gTwU = uTwS.xy; gTw = cmul(gTwU, gTwU); return c; }
   vec2 w = vec2(0.25, 0.0) - c.xy; float m = length(w);
   vec2 a = vec2(0.5, 0.0) - vec2(sqrt(max(0.5 * (m + w.x), 0.0)), (w.y < 0.0 ? -1.0 : 1.0) * sqrt(max(0.5 * (m - w.x), 0.0)));
   float l = dot(a, a);
@@ -2565,13 +2647,13 @@ const APPROACHES = [
     tag: 'The entry above with two things put right for a set that is not its own mirror image, like the rabbit: the line stands square to the middle body’s side pinch points, and a bud on top of a body is one whole body. A set that is its own mirror image comes out the same as above.',
     params: [
       { type: 'note', text: 'How it works: in the entry above a point just behind the upright plane across the line lands on the far side of the next body, so a bud that stands on that plane is two different halves. Here the far side starts a little further back, behind the bud.' },
-      { type: 'dial', key: 'soft', label: 'Softness of the join', min: 0, max: 1.5, step: 0.05, def: 0, help: 'At 0 the change to the far side is sharp: the shape has no seam, and with an orbit trap the colours of a set that is not its own mirror image break along a line. Above 0 the change is spread out: the colours run through, and a low welt shows in the shape.' },
+      { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 8, step: 0.25, def: 3, help: 'The colours follow a second point. It takes the same steps as the point itself, but changes to the far side gradually, so an orbit trap’s colours run through. The width is this number times how far c lies off the line the squaring lands on, which is nothing for a set that is its own mirror image. At 0 the colours follow the point itself and break along a line.' },
     ],
-    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + b²), 2h·√(x² + y⁴/(y² + h²)))   with x along the line towards the pinch point, y across it, h the height, b = h²/√(y² + h²), and s = 1 in front of x = −' + aprNum(TW_BACK) + '·b and −1 behind it' + (+p.soft > 0 ? ', changing over a width of ' + aprNum(+p.soft) + '·b' : '') : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
-    about: 'Two things in the entry above go wrong on a set that is not its own mirror image. Its line is aimed at the pinch point where the middle body meets the next one, and the upright axis then lands beside the next body’s far pinch point, not on it: on the rabbit by 2°. Here the line stands square to the middle body’s side pinch points, and the axis lands on the far pinch point. And at a pinch point of the rabbit the two bodies are not alike, so a bud on top was half of the one and half of the other. Here a point behind the upright plane across the line keeps landing where its mirror image in front lands, until it is a sixteenth of a turn behind the top. Each bud on top is then one whole body. Where the change is made the shape has no step to speak of, but an orbit trap colours the two sides differently. In the Mandelbrot picture the line is that of the entry above, and the solid is not right.',
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + b²), 2h·√(x² + y⁴/(y² + h²)))   with x along the line towards the pinch point, y across it, h the height, b = h²/√(y² + h²), and s = 1 in front of x = −' + aprNum(TW_BACK) + '·b and −1 behind it' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'Two things in the entry above go wrong on a set that is not its own mirror image. Its line is aimed at the pinch point where the middle body meets the next one, and the upright axis then lands beside the next body’s far pinch point, not on it: on the rabbit by 2°. Here the line stands square to the middle body’s side pinch points, and the axis lands on the far pinch point. And at a pinch point of the rabbit the two bodies are not alike, so a bud on top was half of the one and half of the other. Here a point behind the upright plane across the line keeps landing where its mirror image in front lands, until it is a sixteenth of a turn behind the top. Each bud on top is then one whole body. Where the change is made the shape has no step to speak of, but an orbit trap would colour the two sides differently, so the colours follow a second point that makes the change gradually. In the Mandelbrot picture every c takes its own line, and the solid is not right.',
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
-    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', (+p.soft > 0 ? 'One formula with no jump. Behind the top of a body the change to the far side is spread out, and a low welt shows there.' : 'One formula with no fold laid on it. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there, and an orbit trap colours the two sides differently unless the set is its own mirror image.') + aprTear(n, APR_HALF)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold laid on it. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there. The colours follow a second point, which makes that change gradually.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
   },
   {

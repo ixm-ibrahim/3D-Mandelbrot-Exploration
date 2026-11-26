@@ -250,7 +250,7 @@ and "2d" means two planes.
 | Two points side by side | One formula for every point, with no mirror and no pieces: (z, h) goes to (z² − h²u², 2|z|h), then c is added. The skin is in one piece on the whole panel, with no scratch, seam or crack, at 14 iterations as at 60. The basilica has whole buds on top and underneath, and its upright cut is the flat picture. The rabbit is a rabbit. | A body is a roof with a sharp rim all round in the flat plane, not a ball. On the rabbit the buds on the tops are small knobs. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
 | Two points side by side, round | The same formula with the length squared exactly, as *one plane* squares it. The bodies are round again, with no rim and no crease. The basilica and San Marco have whole buds on top and underneath and small ones dotted between. The rabbit is a smooth rabbit: "this is the first time the rabbit in 3d still looks like a rabbit!" One piece on the whole panel, at 14 iterations as at 60. | On the basilica "the bulbs look lathed, rather than being true 3d objects": every bud off the flat plane is spun round its own axis, with its side buds drawn out into rings. On the rabbit the buds on top are small knobs. Few buds away from the two planes. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
 | Two points side by side, up and across alike | The same middle, with the height and the distance across the line following one law. For a c on the x-axis (the basilica, San Marco) a bud on top of a body is a small round body with buds of its own, the same as a bud in the flat plane, and the upright cut is the flat picture. No crease. The rabbit is still a rabbit: "the disconnected surfaces issue we were seeing earlier seems to be much better or at least mitigated". On the basilica: "the basilica looks amazing". | The rabbit has a seam across its middle body and a ragged bud on top: the rule needs a set that is its own mirror image in its line. Shapes are squashed beside the upright plane across the line. The Mandelbrot solid is not right. |
-| Two points side by side, whole buds on top | The entry above with its line laid square to the middle body's side pinch points, and the change of sign moved a sixteenth of a turn behind the top. On the rabbit each bud on top is one whole body, its two halves hang on one point, and the shape has no seam: in plain clay it is one smooth body. A set that is its own mirror image comes out as in the entry above. | With an orbit trap the rabbit's colours break along the line where the sign changes. A softness dial lets the colours run through, at the price of a low welt in the shape. The corrected line is for Julia pictures only. The Mandelbrot solid is not right. |
+| Two points side by side, whole buds on top | The entry above with its line laid square to the middle body's side pinch points, and the change of sign moved a sixteenth of a turn behind the top. On the rabbit each bud on top is one whole body, its two halves hang on one point, and the shape has no seam: in plain clay it is one smooth body. The colours follow a second point that makes the change of sign gradually, so an orbit trap's colours run through as well. A set that is its own mirror image comes out as in the entry above. It can be loaded as steps of the custom approach. | On the rabbit a colour stripe still bends sharply in one place low on the middle body, near a side pinch point. The second point is a device for the colours alone: the shape's own change of sign is still a jump. The Mandelbrot solid is not right. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -934,10 +934,38 @@ Not tried, or not finished.
     whole, but the shape gets a welt: a low ridge round behind the top, with ripples at the necks. Landing
     further in or further out inside the soft part does not flatten it (three length laws drawn). Reasoned: the
     soft part has to carry a point from one flank of the next body to the other over that body's top, and the
-    top has a bulge and buds of its own. The entry has the softness on a dial, at 0 when it opens.
+    top has a bulge and buds of its own.
   - The line elsewhere. For a c that is not at the middle of its bulb the two lines can differ more: at
     c = −1 + 0.045i by 3.9 degrees.
-  - Not found: a rabbit whose colours under an orbit trap are unbroken and whose shape has no welt.
+  - The verdict on that entry: "No if you can't do an equivalent in the custom approach, it doesn't count.
+    Keep trying".
+  - The colours, closed with the shape left alone. The shape keeps the sharp change of sign. The colours follow
+    a second point: it starts where the orbit starts and takes the same steps, but its own sign runs from 1 to
+    −1 gradually, from the place of the sharp change on. Drawn on the way, with a script:
+    1. The colours read the landing before the change of sign, for the step just taken only. The edge stays:
+       the steps after it differ too.
+    2. A second point that never changes sides. No edge on the middle body, and wrong colours on the others.
+    3. A second point that changes over a fixed width of 1.5·b. The rabbit's colours run through, with whole
+       buds and a smooth body. But the basilica's bands get kinks: 10,000 to 67,000 of 572,368 pixels change
+       by more than 8 levels in 256.
+    4. The same with the width a number times how far c lies off the line the squaring lands on. For a set that
+       is its own mirror image that is nothing, the second point is the orbit's own, and the picture is the one
+       of before (basilica, three views, and San Marco: at most 32 of 572,368 pixels differ, by rounding). On the rabbit, with the
+       number at 3, the width comes to about 1.4·b: no edge in the colours from above, low, on top of the
+       middle or close on a pinch point. This one is the entry now, and the softness dial for the shape is gone.
+  - In the custom approach. Two pieces were missing and are steps now: one finds the middle body's side pinch
+    point for a c, and a point that a step names "colours" is the one the colours follow. With them the entry
+    is a rule to load, *Two points side by side, whole buds on top (power 2)*. Its numbers are the entry's on
+    every preset (largest difference 1e-15, over some 1,200 steps each). Its pictures are the entry's: drawn at
+    one size with the bailout radius at 64, at most 26 of 271,364 pixels differ by more than 8 levels, on the
+    rabbit from four sides and in plain clay, the basilica, San Marco, Kokopelli, the airplane, the dendrite, the
+    fat rabbit, the cracked basilica and the Mandelbrot picture.
+  - The Mandelbrot picture of the entry takes, for every c, that c's own line. It is the solid of the entry
+    above with small changes in the bulbs, and it is not right.
+  - Still wrong on the rabbit: one colour stripe has a sharp corner low on the middle body, where 1.34 had the
+    break.
+  - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
+    rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
     body is the mirror image of its upper front: it tears the next body along the line. One law for up and
     across with no square root in it, 2y(h²|v| + xy²)/(y² + h²) and the same with y and h swapped: fans and
