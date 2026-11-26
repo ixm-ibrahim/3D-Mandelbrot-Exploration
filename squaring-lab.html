@@ -2480,6 +2480,15 @@ function twAxis(c, q) {
   const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
   return l > 1e-12 ? [(ax * ax - ay * ay) / l, 2 * ax * ay / l] : [1, 0];
 }
+// The same line as a direction with a front and a back (the entry "twinssoft"): the unit vector from 0 towards the
+// fixed point where the bodies pinch together.
+function twLine(c) {
+  c = c || (S.mode === 'j' ? S.c : null);
+  if (!c) return [1, 0];
+  const wx = 0.25 - c[0], wy = -c[1], m = Math.hypot(wx, wy);
+  const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
+  return l > 1e-12 ? [ax / Math.sqrt(l), ay / Math.sqrt(l)] : [1, 0];
+}
 // The power maps in JavaScript: MATH[id](v, n, q) with q the approach's parameter object. They mirror the
 // shader code below line for line, so what the scorecard measures is what the picture shows.
 const MATH = {
@@ -2520,6 +2529,16 @@ const MATH = {
     const xs = Math.max(0.5 * (r2 + tx), 0), ys = Math.max(0.5 * (r2 - tx), 0), s2 = Math.max(ys + h2, 1e-300);
     const X = tx - h2, Y = (ty < 0 ? -2 : 2) * Math.sqrt(ys * (xs + h2 * h2 / s2)), H = 2 * h * Math.sqrt(xs + ys * ys / s2);
     const w = [X * u[0] - Y * u[1], X * u[1] + Y * u[0], H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (r2 + h2) / l : 1;
+    return [w[0] * k, w[1] * k, w[2] * k];
+  },
+  twinssoft(v, n, q = {}, c) {
+    if (n !== 2) return tpOne(v, n);
+    const u = twLine(c), x = v[0] * u[0] + v[1] * u[1], y = u[0] * v[1] - u[1] * v[0], h = v[2];
+    const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300), b2 = h2 * h2 / s2;
+    const t = clamp(-x / (clamp(+q.join || TW_JOIN, 0.05, 20) * Math.sqrt(Math.max(b2, 1e-300))), 0, 1);
+    const X = x2 - y2 - h2, Y = 2 * y * Math.sqrt(x2 + b2) * (1 - 2 * t * t * (3 - 2 * t)), H = 2 * h * Math.sqrt(x2 + y2 * y2 / s2);
+    const gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
+    const w = [X * gx - Y * gy, X * gy + Y * gx, H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (x2 + y2 + h2) / l : 1;
     return [w[0] * k, w[1] * k, w[2] * k];
   },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
@@ -2991,15 +3010,22 @@ vec3 cmap(vec3 c){ gPn = uPnEach > 0.5 ? pnFind(c.xy) : uPn; return c; }`;
 // with the sign of x. The length is |v|² as in kind 1. q is z² seen from the line, xs and ys are x² and y².
 // Across the upright plane that stands across the line the step jumps: a point there lands on one of two mirror
 // images, by the side it is reached from. APR_SEAM tells the orbit code (30-shaders.js) where that is; gTwU is u.
+// kind 3 (the entry "twinssoft"): kind 2 with no jump. x is counted along the line towards the pinch point, so the
+// line has a front and a back, and behind the plane x = 0 the sign that kind 2 switches at once runs smoothly from
+// 1 to -1 while -x grows from 0 to uA.x times b, with b = h²/sqrt(y² + h²). uA.x is the width of the join.
+const TW_JOIN = 2.5;
 const twGl = kind => GL_APR + GL_MERC_PLAIN + `
 vec2 gTw = vec2(1.0, 0.0);
 ${kind === 2 ? `#define APR_SEAM 1
 vec2 gTwU = vec2(1.0, 0.0);
 bool aprSeam(vec3 a, vec3 b){ return dot(a.xy, gTwU) * dot(b.xy, gTwU) < 0.0; }
-` : ''}vec3 twSq(vec3 v){
+` : kind === 3 ? 'vec2 gTwU = vec2(1.0, 0.0);\n' : ''}vec3 twSq(vec3 v){
 ${kind === 2 ? `  vec2 q = cmul(v.xy, v.xy); q = vec2(q.x * gTw.x + q.y * gTw.y, q.y * gTw.x - q.x * gTw.y);
   float h2 = v.z * v.z, r2 = dot(v.xy, v.xy), xs = max(0.5 * (r2 + q.x), 0.0), ys = max(0.5 * (r2 - q.x), 0.0), s2 = max(ys + h2, 1e-30);
   vec3 w = vec3(cmul(gTw, vec2(q.x - h2, (q.y < 0.0 ? -2.0 : 2.0) * sqrt(ys * (xs + h2 * h2 / s2)))), 2.0 * v.z * sqrt(xs + ys * ys / s2));`
+  : kind === 3 ? `  float x = dot(v.xy, gTwU), y = gTwU.x * v.y - gTwU.y * v.x, x2 = x * x, y2 = y * y, h2 = v.z * v.z, s2 = max(y2 + h2, 1e-30), b2 = h2 * h2 / s2;
+  float t = clamp(-x / (clamp(uA.x, 0.05, 20.0) * sqrt(max(b2, 1e-30))), 0.0, 1.0);
+  vec3 w = vec3(cmul(gTw, vec2(x2 - y2 - h2, 2.0 * y * sqrt(x2 + b2) * (1.0 - 2.0 * t * t * (3.0 - 2.0 * t)))), 2.0 * v.z * sqrt(x2 + y2 * y2 / s2));`
   : '  vec3 w = vec3(cmul(v.xy, v.xy) - v.z * v.z * gTw, 2.0 * length(v.xy) * v.z);'}
   ${kind ? 'float l = length(w); return l > 0.0 ? w * (dot(v, v) / l) : w;' : 'return w;'}
 }
@@ -3007,16 +3033,16 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a) : aprMpw(a, n); }
 vec3 sqr(vec3 a){ return twSq(a); }
 vec3 cmap(vec3 c){
-  gTw = vec2(1.0, 0.0);
-  if (uA.x < 0.5){
+  gTw = vec2(1.0, 0.0);${kind === 3 ? ' gTwU = gTw;' : ''}
+  if (${kind === 3 ? 'true' : 'uA.x < 0.5'}){
     vec2 w = vec2(0.25, 0.0) - c.xy; float m = length(w);
     vec2 a = vec2(0.5, 0.0) - vec2(sqrt(max(0.5 * (m + w.x), 0.0)), (w.y < 0.0 ? -1.0 : 1.0) * sqrt(max(0.5 * (m - w.x), 0.0)));
     float l = dot(a, a);
-    if (l > 1e-12) gTw = cmul(a, a) / l;
+    if (l > 1e-12)${kind === 3 ? '{ gTw = cmul(a, a) / l; gTwU = a / sqrt(l); }' : ' gTw = cmul(a, a) / l;'}
   }
 ${kind === 2 ? '  gTwU = gTw.x > -0.999999 ? normalize(gTw + vec2(1.0, 0.0)) : vec2(0.0, 1.0);\n' : ''}  return c;
 }`;
-const GL_TWINS = twGl(0), GL_TWINSROUND = twGl(1), GL_TWINSALIKE = twGl(2);
+const GL_TWINS = twGl(0), GL_TWINSROUND = twGl(1), GL_TWINSALIKE = twGl(2), GL_TWINSSOFT = twGl(3);
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -4295,6 +4321,21 @@ const APPROACHES = [
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold laid on it. Across the upright plane across the line a point jumps to its mirror image in the line: nothing shows in a set that is its own mirror image there, and a seam shows in any other.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
+  },
+  {
+    id: 'twinssoft', name: 'Two points side by side, soft join', group: 'inversions', glsl: GL_TWINSSOFT, axis: () => [0, 0, 1],
+    usesC: true,
+    tag: 'The entry above with its jump closed. The rabbit has no seam and a whole bud on top. The price: the far half of every body is smeared, and a body is no longer the same at both ends.',
+    params: [
+      { type: 'note', text: 'How it works: in the entry above a point just behind the upright plane across the line lands on the mirror image of where a point just in front of it lands. Here the distance across the line passes through nothing on its way from one to the other, so no point jumps.' },
+      { type: 'dial', key: 'join', label: 'Width of the join', min: 0.3, max: 5, step: 0.1, def: TW_JOIN, help: 'How far behind the upright plane across the line the change is spread. Small: a narrow welt where the seam was. Large: a wider smear over the far half of each body.' },
+    ],
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + b²), 2h·√(x² + y⁴/(y² + h²)))   with x along the line towards the pinch point, y across it, h the height, b = h²/√(y² + h²), and s running smoothly from 1 at x = 0 to −1 at x = −' + aprNum(+p.join) + '·b' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'In the entry above the distance across the line takes the sign of x, and so it jumps where x is 0. A set that is its own mirror image in its line hides the jump, and the rabbit shows it as a seam. Here that sign is a number s that runs smoothly from 1 to −1 behind the upright plane across the line. In front of that plane, and far enough behind it, nothing changes. In between, space is folded over softly: the bud on top of a body is whole, and behind it shapes are smeared. The line now has a front, towards the point where the bodies pinch together, and a back. In the Mandelbrot picture the solid is not right.',
+    roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line in front of the top, and squashes them behind the upright plane across the line.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, behind the upright plane across the line. Shapes are squashed there.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no jump and no fold laid on it. It folds space over softly behind the upright plane across the line.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
   },
   {
@@ -6668,6 +6709,12 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       F('u = if(dot(a, a) > 0.000000000001, cmul(a, a)/dot(a, a), vec(1, 0, 0))'), F('t = cmul(cmul(flat(z), flat(z)), vec(u.x, -u.y, 0))'), F('r2 = dot(flat(z), flat(z))'),
       F('xs = max((r2 + t.x)/2, 0)'), F('ys = max((r2 - t.x)/2, 0)'), F('h2 = z.z*z.z'), F('s2 = max(ys + h2, 1e-30)'),
       F('w = cmul(u, vec(t.x - h2, if(t.y < 0, -2, 2)*sqrt(ys*(xs + h2*h2/s2)), 0)) + vec(0, 0, 2*z.z*sqrt(xs + ys*ys/s2))'),
+      F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc']] },
+    { name: 'Two points side by side, soft join (power 2)', lab: 'twinssoft', only2: true, say: only2, steps: [num('join', 2.5, 0.3, 5),
+      F('a = vec(0.5, 0, 0) - cpow(vec(0.25, 0, 0) - flat(c), 0.5)'), F('g = if(dot(a, a) > 0.000000000001, a/len(a), vec(1, 0, 0))'),
+      F('al = dot(flat(z), g)'), F('ac = g.x*z.y - g.y*z.x'), F('h2 = z.z*z.z'), F('s2 = max(ac*ac + h2, 1e-30)'), F('b = h2/sqrt(s2)'),
+      F('t = max(0, 1 - max(0, 1 + al/(join*max(b, 1e-30))))'), F('k = sqrt(al*al + b*b)*(1 - 2*t*t*(3 - 2*t))'),
+      F('w = cmul(cmul(g, g), vec(al*al - ac*ac - h2, 2*ac*k, 0)) + vec(0, 0, 2*z.z*sqrt(al*al + ac*ac*ac*ac/s2))'),
       F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc']] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }

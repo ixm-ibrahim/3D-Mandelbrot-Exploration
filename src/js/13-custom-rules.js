@@ -142,5 +142,11 @@
       F('xs = max((r2 + t.x)/2, 0)'), F('ys = max((r2 - t.x)/2, 0)'), F('h2 = z.z*z.z'), F('s2 = max(ys + h2, 1e-30)'),
       F('w = cmul(u, vec(t.x - h2, if(t.y < 0, -2, 2)*sqrt(ys*(xs + h2*h2/s2)), 0)) + vec(0, 0, 2*z.z*sqrt(xs + ys*ys/s2))'),
       F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc']] },
+    { name: 'Two points side by side, soft join (power 2)', lab: 'twinssoft', only2: true, say: only2, steps: [num('join', 2.5, 0.3, 5),
+      F('a = vec(0.5, 0, 0) - cpow(vec(0.25, 0, 0) - flat(c), 0.5)'), F('g = if(dot(a, a) > 0.000000000001, a/len(a), vec(1, 0, 0))'),
+      F('al = dot(flat(z), g)'), F('ac = g.x*z.y - g.y*z.x'), F('h2 = z.z*z.z'), F('s2 = max(ac*ac + h2, 1e-30)'), F('b = h2/sqrt(s2)'),
+      F('t = max(0, 1 - max(0, 1 + al/(join*max(b, 1e-30))))'), F('k = sqrt(al*al + b*b)*(1 - 2*t*t*(3 - 2*t))'),
+      F('w = cmul(cmul(g, g), vec(al*al - ac*ac - h2, 2*ac*k, 0)) + vec(0, 0, 2*z.z*sqrt(al*al + ac*ac*ac*ac/s2))'),
+      F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc']] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }

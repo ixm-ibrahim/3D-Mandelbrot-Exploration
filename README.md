@@ -84,4 +84,4 @@ its bodies, for the two entries that fold about such lines, and the middle body'
 the entry that folds between them. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.31. Each version is tagged, as `v1.31`.
+This is version 1.32. Each version is tagged, as `v1.32`.
