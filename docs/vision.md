@@ -247,6 +247,7 @@ and "2d" means two planes.
 | Two planes, about every body's own line | The rabbit stays a rabbit, in one piece, with buds on the tops and the undersides of its bodies: "it certainly looks better than every other approach". The basilica as under *two planes*. | "there are these gaps in the fractal surface": cracks beside the pinch points at few iterations, and fine dark scratches all over the skin. Corners at 45 degrees round each line. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Two planes, about the middle body's own line | One fold, about the middle body's line, and the squaring carries it to every other body. The same rabbit with the same buds on the tops, and far fewer scratches on its skin. The basilica as under *two planes*. | Cracks beside the pinch points at few iterations, closing as the iterations go up. Corners at 45 degrees. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Two planes, between the middle body's pinch points | The same fold with nothing traced from the picture: a formula gives the middle body's two pinch points and its width from c, and the fold is about the straight line between them. The rabbit of the entry above, bud for bud; the basilica as under *two planes*. Away from the middle of a bulb it is cleaner than the traced line. | The same cracks and corners. A set of one body is not folded. The Mandelbrot solid is folded but not right: flat bulbs with scratches. |
+| Two points side by side | One formula for every point, with no mirror and no pieces: (z, h) goes to (z² − h²u², 2|z|h), then c is added. The skin is in one piece on the whole panel, with no scratch, seam or crack, at 14 iterations as at 60. The basilica has whole buds on top and underneath, and its upright cut is the flat picture. The rabbit is a rabbit. | A body is a roof with a sharp rim all round in the flat plane, not a ball. On the rabbit the buds on the tops are small knobs. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -769,6 +770,30 @@ Not tried, or not finished.
   - A set with no bodies, like the dendrite, has no such lines, and the Mandelbrot solid has a different c at
     every point: the entry draws both as *one plane*. For San Marco, whose bodies are about to come apart, the
     page finds no lines either. Kokopelli and the airplane have lines, and have not been looked at closely.
+- **A point of space as two flat points.** What the fold does, read with no fold in it. A point over a body's
+  line at the height h was laid down to one side of the line, at the distance h. Take both sides at once: the
+  point stands for two flat points, z + ihu and z − ihu, with z its flat part and u the direction of the line.
+  The flat rule squares both: (z² − h²u²) ± 2ihuz. That is a pair again, with the middle z² − h²u² and the
+  half-distance 2|z|h, and c is added to the middle. Kept as it is, with the direction of the new pair too,
+  this is the flat rule in four numbers (the plane made complex once more), and no 3D rule. Letting go of that
+  direction, so that the pair lies across the line again at every step, leaves three numbers and one formula.
+  In the lab as *Two points side by side*; u points from 0 to the fixed point where the bodies pinch together,
+  ½ − √(¼ − c), which for a c on the x-axis is the x-axis.
+  - Drawn at 60 and at 14 iterations: the basilica, the rabbit, San Marco, the airplane, the dendrite and
+    Kokopelli are each in one piece, with a smooth skin and no scratch, seam or crack. The basilica and San
+    Marco have whole buds on top and underneath, and smaller ones on the slopes between. With the x-axis as
+    the line for every c the rabbit sheds loose pieces: the line has to come from c.
+  - By the formula itself: on the upright plane through the line, for a c on the x-axis, it is the flat rule
+    (with |x| for x, which changes nothing for a set that is its own mirror image).
+  - It is the Mandelbulb's doubling of the height with one change. The Mandelbulb takes h² off along the
+    point's own direction from the middle, the same for every c; this rule takes it off along the set's line.
+  - What is wrong: a body is a roof and not a ball. Its skin meets the flat plane in a sharp rim all the way
+    round, where *one plane* is round (reasoned: beside the flat edge the height grows with every step until
+    its square counts, so the skin leaves the edge at a slope and not straight up). On the rabbit a body's
+    top carries one small knob where the fold put whole buds. The Mandelbrot solid stays flat, with a tall
+    fin beside the cusp, where the line's direction swings round.
+  - Not tried: the pair laid along the direction the foot's own orbit gives at each place (the way the rings
+    of a body run) in place of one line for the whole set; a rounder way to count the height.
 - **The upright wall laid over as a whole.** The clue above, drawn with a script: the fold of *two planes* with
   one mirror plane in place of two, so that the upper half of the upright wall goes to one side of the x-axis
   and the lower half to the other. The upright cut of the rabbit is then a whole rabbit, the same as the flat

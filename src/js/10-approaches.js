@@ -650,6 +650,16 @@ const CARRY = {
 // The first squaring of a fresh orbit: all that the card, which looks at one squaring, can show. (In space the
 // Learn tab follows the orbit through CARRY itself.)
 const carFirst = (id, v, n, q, c) => { const R = CARRY[id]; return R.pw(R.step(R.start(q), v, c, q), v, n); };
+// Two points side by side (the entry "twins"): the square of the direction along which the two points are told
+// apart from their middle. kind 0: the direction from 0 to the fixed point where the bodies pinch together,
+// 1/2 - sqrt(1/4 - c). kind 1: the x-axis.
+function twAxis(c, q) {
+  c = c || (S.mode === 'j' ? S.c : null);
+  if (!c || (q && +q.kind === 1)) return [1, 0];
+  const wx = 0.25 - c[0], wy = -c[1], m = Math.hypot(wx, wy);
+  const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
+  return l > 1e-12 ? [(ax * ax - ay * ay) / l, 2 * ax * ay / l] : [1, 0];
+}
 // The power maps in JavaScript: MATH[id](v, n, q) with q the approach's parameter object. They mirror the
 // shader code below line for line, so what the scorecard measures is what the picture shows.
 const MATH = {
@@ -673,6 +683,11 @@ const MATH = {
   ownlines(v, n, q = {}) { return tpOne(lnFold(v, q), n); },
   midline(v, n, q = {}) { return tpOne(lnFold(v, q, true), n); },
   pinch(v, n, q = {}, c) { return tpOne(pnFold(v, q, c), n); },
+  twins(v, n, q = {}, c) {
+    if (n !== 2) return tpOne(v, n);
+    const [x, y, z] = v, u = twAxis(c, q);
+    return [x * x - y * y - z * z * u[0], 2 * x * y - z * z * u[1], 2 * Math.hypot(x, y) * z];
+  },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -1131,6 +1146,26 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(pnFold(a), pnFold(b)); }
 vec3 pw(vec3 a, float n){ return aprMpw(pnFold(a), n); }
 vec3 sqr(vec3 a){ return aprMsq(pnFold(a)); }
 vec3 cmap(vec3 c){ gPn = uPnEach > 0.5 ? pnFind(c.xy) : uPn; return c; }`;
+// Two points side by side. A point of space stands for two points of the flat plane: its flat part z is their
+// middle, and its height h is how far each lies from the middle, to either side of the set's line. Squaring both
+// gives a middle of z² - h²u² (u the line's direction) and a half-distance of 2|z|h. gTw is u².
+// uA.x: 1 takes the x-axis for the line, for every c.
+const GL_TWINS = GL_APR + GL_MERC_PLAIN + `
+vec2 gTw = vec2(1.0, 0.0);
+vec3 twSq(vec3 v){ return vec3(cmul(v.xy, v.xy) - v.z * v.z * gTw, 2.0 * length(v.xy) * v.z); }
+vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
+vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a) : aprMpw(a, n); }
+vec3 sqr(vec3 a){ return twSq(a); }
+vec3 cmap(vec3 c){
+  gTw = vec2(1.0, 0.0);
+  if (uA.x < 0.5){
+    vec2 w = vec2(0.25, 0.0) - c.xy; float m = length(w);
+    vec2 a = vec2(0.5, 0.0) - vec2(sqrt(max(0.5 * (m + w.x), 0.0)), (w.y < 0.0 ? -1.0 : 1.0) * sqrt(max(0.5 * (m - w.x), 0.0)));
+    float l = dot(a, a);
+    if (l > 1e-12) gTw = cmul(a, a) / l;
+  }
+  return c;
+}`;
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -2365,6 +2400,21 @@ const APPROACHES = [
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', 'The one-plane rule with a mirror on the line between the pinch points before it. The mirror leaves creases, and the rule jumps where the reach of the line ends.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: a point on it is never folded, so that slice is the flat set.'),
+  },
+  {
+    id: 'twins', name: 'Two points side by side', group: 'inversions', glsl: GL_TWINS, axis: () => [0, 0, 1],
+    usesC: true,
+    tag: 'One formula for every point: no mirror, and nothing laid over in pieces. A point of space stands for two points of the flat plane, side by side, and both are squared.',
+    params: [
+      { type: 'note', text: 'How it works: the flat part of a point is the middle of two flat points, and its height is how far each of the two lies from that middle, one to either side of the set’s line. Squaring both and adding c gives two new flat points: their middle and their distance are the new point. The set’s line runs from 0 to the fixed point where the bodies pinch together.' },
+      { type: 'select', key: 'kind', label: 'The line', def: 0, options: [[0, 'From 0 to the pinch point of c'], [1, 'The x-axis, for every c']] },
+    ],
+    formula: (p, n) => (aprIs(n, 2) ? '(z, h)² = (z² − h²u², 2|z|h)   with z the flat part, h the height and u the direction of the line' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'Two flat points z + ihu and z − ihu, side by side across the line, have the squares (z² − h²u²) ± 2ihuz: a new middle and a new distance. The rule keeps those two numbers and lets go of the direction in which the new pair lies, so the pair is laid across the line again at every step. The flat plane (h = 0) is the flat rule exactly, and so is the upright plane on the line when c lies on the x-axis. A body comes out as a roof with a sharp rim in the flat plane, not as a ball. In the Mandelbrot picture the solid stays flat, with one tall fin beside the cusp.',
+    roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes beside the flat plane and squeezes them higher up.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along a surface that stands between the flat plane and the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold. It has a kink on the upright axis, where |z| is 0.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
   },
   {
     id: 'lathe', name: 'Quaternion square (Lathe)', group: 'quaternion', glsl: GL_LATHE, axis: () => [1, 0, 0],

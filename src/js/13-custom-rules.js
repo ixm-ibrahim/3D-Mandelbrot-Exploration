@@ -131,5 +131,8 @@
     { name: 'Parts on a doubling grid, Möbius', lab: 'partsbend', steps: [num('finer', 0, 0, 6), ...grid(' - round(finer)'), ...fitBend, ['addc']] },
     { name: 'Parts on a square grid', lab: 'partssquare', steps: [F('hh = abs(z.z)'), F('sz = 2^floor(log(hh)/log(2))'),
       F('u = if(hh < 0.00001*(len(flat(z)) + 0.00001), flat(z), vec(sz*(floor(z.x/sz) + 0.5), sz*(floor(z.y/sz) + 0.5), 0))'), ...fitTurn, ['addc']] },
+    { name: 'Two points side by side (power 2)', lab: 'twins', only2: true, say: only2, steps: [F('a = vec(0.5, 0, 0) - cpow(vec(0.25, 0, 0) - flat(c), 0.5)'),
+      F('u = if(dot(a, a) > 0.000000000001, cmul(a, a)/dot(a, a), vec(1, 0, 0))'), F('s = cmul(flat(z), flat(z))'),
+      F('z = vec(s.x - z.z*z.z*u.x, s.y - z.z*z.z*u.y, 2*len(flat(z))*z.z)'), ['addc']] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }
