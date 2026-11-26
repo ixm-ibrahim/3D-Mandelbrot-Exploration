@@ -137,5 +137,10 @@
     { name: 'Two points side by side, round (power 2)', lab: 'twinsround', only2: true, say: only2, steps: [F('a = vec(0.5, 0, 0) - cpow(vec(0.25, 0, 0) - flat(c), 0.5)'),
       F('u = if(dot(a, a) > 0.000000000001, cmul(a, a)/dot(a, a), vec(1, 0, 0))'), F('s = cmul(flat(z), flat(z))'),
       F('w = vec(s.x - z.z*z.z*u.x, s.y - z.z*z.z*u.y, 2*len(flat(z))*z.z)'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc']] },
+    { name: 'Two points side by side, up and across alike (power 2)', lab: 'twinsalike', only2: true, say: only2, steps: [F('a = vec(0.5, 0, 0) - cpow(vec(0.25, 0, 0) - flat(c), 0.5)'),
+      F('u = if(dot(a, a) > 0.000000000001, cmul(a, a)/dot(a, a), vec(1, 0, 0))'), F('t = cmul(cmul(flat(z), flat(z)), vec(u.x, -u.y, 0))'), F('r2 = dot(flat(z), flat(z))'),
+      F('xs = max((r2 + t.x)/2, 0)'), F('ys = max((r2 - t.x)/2, 0)'), F('h2 = z.z*z.z'), F('s2 = max(ys + h2, 1e-30)'),
+      F('w = cmul(u, vec(t.x - h2, if(t.y < 0, -2, 2)*sqrt(ys*(xs + h2*h2/s2)), 0)) + vec(0, 0, 2*z.z*sqrt(xs + ys*ys/s2))'),
+      F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc']] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }

@@ -248,7 +248,8 @@ and "2d" means two planes.
 | Two planes, about the middle body's own line | One fold, about the middle body's line, and the squaring carries it to every other body. The same rabbit with the same buds on the tops, and far fewer scratches on its skin. The basilica as under *two planes*. | Cracks beside the pinch points at few iterations, closing as the iterations go up. Corners at 45 degrees. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Two planes, between the middle body's pinch points | The same fold with nothing traced from the picture: a formula gives the middle body's two pinch points and its width from c, and the fold is about the straight line between them. The rabbit of the entry above, bud for bud; the basilica as under *two planes*. Away from the middle of a bulb it is cleaner than the traced line. | The same cracks and corners. A set of one body is not folded. The Mandelbrot solid is folded but not right: flat bulbs with scratches. |
 | Two points side by side | One formula for every point, with no mirror and no pieces: (z, h) goes to (z² − h²u², 2|z|h), then c is added. The skin is in one piece on the whole panel, with no scratch, seam or crack, at 14 iterations as at 60. The basilica has whole buds on top and underneath, and its upright cut is the flat picture. The rabbit is a rabbit. | A body is a roof with a sharp rim all round in the flat plane, not a ball. On the rabbit the buds on the tops are small knobs. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
-| Two points side by side, round | The same formula with the length squared exactly, as *one plane* squares it. The bodies are round again, with no rim and no crease. The basilica and San Marco have whole buds on top and underneath and small ones dotted between. The rabbit is a smooth rabbit. One piece on the whole panel, at 14 iterations as at 60. | The buds that stand on top are narrow across, like stacked plates, and on the rabbit they are small knobs. Few buds away from the two planes. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
+| Two points side by side, round | The same formula with the length squared exactly, as *one plane* squares it. The bodies are round again, with no rim and no crease. The basilica and San Marco have whole buds on top and underneath and small ones dotted between. The rabbit is a smooth rabbit: "this is the first time the rabbit in 3d still looks like a rabbit!" One piece on the whole panel, at 14 iterations as at 60. | On the basilica "the bulbs look lathed, rather than being true 3d objects": every bud off the flat plane is spun round its own axis, with its side buds drawn out into rings. On the rabbit the buds on top are small knobs. Few buds away from the two planes. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
+| Two points side by side, up and across alike | The same middle, with the height and the distance across the line following one law. For a c on the x-axis (the basilica, San Marco) a bud on top of a body is a small round body with buds of its own, the same as a bud in the flat plane, and the upright cut is the flat picture. No crease. The rabbit is still a rabbit. | The rabbit has a seam across its middle body and a ragged bud on top: the rule needs a set that is its own mirror image in its line. Shapes are squashed beside the upright plane across the line. The Mandelbrot solid is not right. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -800,12 +801,51 @@ Not tried, or not finished.
     on the line nothing changes, since there the length was the square already. In the lab as *Two points side
     by side, round*. Drawn at 60 and at 14 iterations on the same six sets: one piece each, smooth, with clean
     pinch points.
-  - What is still wrong with the round one: a bud that stands on top is narrow across, like stacked plates,
-    because beside the upright plane the rule stretches along the plane more than across it. The rabbit's top
-    buds are small knobs. Away from the two planes there are few buds. The Mandelbrot solid stays flat with a
-    fin beside the cusp.
-  - Not tried: the pair laid along the direction the foot's own orbit gives at each place (the way the rings
-    of a body run) in place of one line for the whole set.
+  - The verdict on both entries: "it's a good attempt, but as you can see with the basilica the bulbs look
+    lathed, rather than being true 3d objects. But this is the first time the rabbit in 3d still looks like a
+    rabbit!" Only the buds off the flat plane are meant: "not every bulb was lathed, since the ones on the z=0
+    slice were not lathed".
+  - Why the buds are spun. The height grows by 2|z|h, which asks how long the flat part is and not which way
+    it points. Close to the upright axis every direction round that axis then counts alike: a small circle
+    round the axis lands on one point. So the bud on top of a body is the flat picture's top bud spun round
+    its own axis, with its side buds drawn out into rings, and every other bud off the flat plane is a copy
+    of that one. Measured on one squaring, on the upright plane on the line: a small ball is stretched 1.4 to 1
+    at 45 degrees up, 2 to 1 at 60, 3.9 to 1 at 75 and 11 to 1 at 85. Laying the pair along another direction
+    does not change this, because the half-distance of the new pair is 2|z|h whichever way the pair lies
+    (reasoned). The rabbit's top buds are small knobs for the same reason. The Mandelbrot solid stays flat with
+    a fin beside the cusp.
+  - Drawn with a script, not in the lab: the direction of the new pair kept as a lean. The new point leans
+    across the line by twice the angle the new pair makes with "across the line", in full on the upright axis
+    and not at all on the flat plane. The rings break up into separate buds, about sixteen round the bud on top
+    of the basilica, and buds stand in many more places. But every skin is ribbed with long ridges and the rabbit
+    is rough. The same with the middle of the upright axis made smooth, and the round entry with only its
+    height law made smooth there, give a wide stack of square plates in place of the bud.
+  - Up and across alike. Seen from the line, a point lies x along it, y across it and h high. The height grows
+    by 2h·√(x² + y⁴/(y² + h²)) and the distance across by 2y·√(x² + h⁴/(y² + h²)), with the sign of x. The
+    middle and the length are those of the round entry. On the flat plane this is the flat rule, and beside it
+    the height grows by 2|z|h as before. Beside the upright plane on the line the distance across grows in the
+    same way, so there the rule is the flat rule stood upright, with the third direction carried along
+    unstretched. The top of a body is then its end on the line, rotated a quarter of the way round. In the lab
+    as *Two points side by side, up and across alike*.
+  - Measured on one squaring: no stretch on the upright plane on the line at any height (1.00 to 1.01), nor on
+    the flat plane. Swapping y and h swaps the two answers. For the basilica the upright cut is the flat rule
+    at 12,640 of 12,640 points.
+  - Drawn at 60 and at 14 iterations. The basilica and San Marco: round bodies with no crease, and on top of
+    each a small round body with buds of its own where the round entry has a stack of plates. A row of small
+    buds runs over each body square to the line, as one runs round it in the flat plane. The buds in the flat
+    plane are as the round entry has them. The airplane, the dendrite and Kokopelli are each in one piece. The
+    rabbit is a rabbit.
+  - What is wrong with it. Space is folded over along the upright plane across the line, and shapes are
+    squashed beside it: halfway round from the line, 1.2 to 1 at 10 degrees up, 1.9 at 20, 3.6 at 30, 5.9 at
+    45, 2.5 at 60 and 1.3 at 75. Across that plane a point jumps to its mirror image in the line. A set that
+    is its own mirror image there shows nothing; the rabbit shows a seam across its middle body and across
+    its ears, and its bud on top is ragged with loose specks beside it. With the x-axis as the line for every
+    c the rabbit is a torn lump. The Mandelbrot solid is not right.
+  - Why the rabbit has a seam (reasoned). The top of a body is reached from two sides, and each side brings
+    the body's end on the line the other way round. A copy that is not spun needs the two to match, which they
+    do only when that end is its own mirror image in the line. A rule that gives each point one next point,
+    with no jump, and treats the two sides alike has to spin the copy, wind it twice round or fold it.
+  - Not found: what takes the place of the quarter rotation on a set that is not its own mirror image.
 - **The upright wall laid over as a whole.** The clue above, drawn with a script: the fold of *two planes* with
   one mirror plane in place of two, so that the upper half of the upright wall goes to one side of the x-axis
   and the lower half to the other. The upright cut of the rabbit is then a whole rabbit, the same as the flat

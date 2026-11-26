@@ -693,6 +693,15 @@ const MATH = {
     const w = MATH.twins(v, n, q, c), l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]) / l : 1;
     return [w[0] * k, w[1] * k, w[2] * k];
   },
+  twinsalike(v, n, q = {}, c) {
+    if (n !== 2) return tpOne(v, n);
+    const [x, y, h] = v, u = twAxis(c, q), r2 = x * x + y * y, h2 = h * h;
+    const qx = x * x - y * y, qy = 2 * x * y, tx = qx * u[0] + qy * u[1], ty = qy * u[0] - qx * u[1];
+    const xs = Math.max(0.5 * (r2 + tx), 0), ys = Math.max(0.5 * (r2 - tx), 0), s2 = Math.max(ys + h2, 1e-300);
+    const X = tx - h2, Y = (ty < 0 ? -2 : 2) * Math.sqrt(ys * (xs + h2 * h2 / s2)), H = 2 * h * Math.sqrt(xs + ys * ys / s2);
+    const w = [X * u[0] - Y * u[1], X * u[1] + Y * u[0], H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (r2 + h2) / l : 1;
+    return [w[0] * k, w[1] * k, w[2] * k];
+  },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -1154,13 +1163,25 @@ vec3 cmap(vec3 c){ gPn = uPnEach > 0.5 ? pnFind(c.xy) : uPn; return c; }`;
 // Two points side by side. A point of space stands for two points of the flat plane: its flat part z is their
 // middle, and its height h is how far each lies from the middle, to either side of the set's line. Squaring both
 // gives a middle of z² - h²u² (u the line's direction) and a half-distance of 2|z|h. gTw is u².
-// uA.x: 1 takes the x-axis for the line, for every c. round: the result keeps its direction and takes the length
-// |v|², the square of the point's own length (the entry "twinsround").
-const twGl = round => GL_APR + GL_MERC_PLAIN + `
+// uA.x: 1 takes the x-axis for the line, for every c.
+// kind 1 (the entry "twinsround"): the result keeps its direction and takes the length |v|², the square of the
+// point's own length.
+// kind 2 (the entry "twinsalike"): seen from the line, with x along it and y across it, the height and y follow one
+// law, with the two swapped: the height grows by 2h·sqrt(x² + y⁴/(y² + h²)) and y by 2y·sqrt(x² + h⁴/(y² + h²)),
+// with the sign of x. The length is |v|² as in kind 1. q is z² seen from the line, xs and ys are x² and y².
+// Across the upright plane that stands across the line the step jumps: a point there lands on one of two mirror
+// images, by the side it is reached from. APR_SEAM tells the orbit code (30-shaders.js) where that is; gTwU is u.
+const twGl = kind => GL_APR + GL_MERC_PLAIN + `
 vec2 gTw = vec2(1.0, 0.0);
-vec3 twSq(vec3 v){
-  vec3 w = vec3(cmul(v.xy, v.xy) - v.z * v.z * gTw, 2.0 * length(v.xy) * v.z);
-  ${round ? 'float l = length(w); return l > 0.0 ? w * (dot(v, v) / l) : w;' : 'return w;'}
+${kind === 2 ? `#define APR_SEAM 1
+vec2 gTwU = vec2(1.0, 0.0);
+bool aprSeam(vec3 a, vec3 b){ return dot(a.xy, gTwU) * dot(b.xy, gTwU) < 0.0; }
+` : ''}vec3 twSq(vec3 v){
+${kind === 2 ? `  vec2 q = cmul(v.xy, v.xy); q = vec2(q.x * gTw.x + q.y * gTw.y, q.y * gTw.x - q.x * gTw.y);
+  float h2 = v.z * v.z, r2 = dot(v.xy, v.xy), xs = max(0.5 * (r2 + q.x), 0.0), ys = max(0.5 * (r2 - q.x), 0.0), s2 = max(ys + h2, 1e-30);
+  vec3 w = vec3(cmul(gTw, vec2(q.x - h2, (q.y < 0.0 ? -2.0 : 2.0) * sqrt(ys * (xs + h2 * h2 / s2)))), 2.0 * v.z * sqrt(xs + ys * ys / s2));`
+  : '  vec3 w = vec3(cmul(v.xy, v.xy) - v.z * v.z * gTw, 2.0 * length(v.xy) * v.z);'}
+  ${kind ? 'float l = length(w); return l > 0.0 ? w * (dot(v, v) / l) : w;' : 'return w;'}
 }
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a) : aprMpw(a, n); }
@@ -1173,9 +1194,9 @@ vec3 cmap(vec3 c){
     float l = dot(a, a);
     if (l > 1e-12) gTw = cmul(a, a) / l;
   }
-  return c;
+${kind === 2 ? '  gTwU = gTw.x > -0.999999 ? normalize(gTw + vec2(1.0, 0.0)) : vec2(0.0, 1.0);\n' : ''}  return c;
 }`;
-const GL_TWINS = twGl(false), GL_TWINSROUND = twGl(true);
+const GL_TWINS = twGl(0), GL_TWINSROUND = twGl(1), GL_TWINSALIKE = twGl(2);
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -2439,6 +2460,21 @@ const APPROACHES = [
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes beside the flat plane and squeezes them higher up.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along a surface that stands between the flat plane and the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold. It has a kink on the upright axis, where |z| is 0.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
+  },
+  {
+    id: 'twinsalike', name: 'Two points side by side, up and across alike', group: 'inversions', glsl: GL_TWINSALIKE, axis: () => [0, 0, 1],
+    usesC: true,
+    tag: 'The entry above with one change: the height and the distance across the line follow the same law. A bud on top of a body is then a small body with buds of its own, and not a shape spun round its own axis.',
+    params: [
+      { type: 'note', text: 'How it works: seen from the set’s line, a point lies some way along the line, some way across it and at some height. Swap the height and the distance across, and the answer is the same with its own two swapped. So the upright plane on the line is squared just as the flat plane is, and beside it shapes keep their shape all the way up a body.' },
+      { type: 'select', key: 'kind', label: 'The line', def: 0, options: [[0, 'From 0 to the pinch point of c'], [1, 'The x-axis, for every c']] },
+    ],
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², ±2|y|·√(x² + h⁴/(y² + h²)), 2h·√(x² + y⁴/(y² + h²)))   with x along the line, y across it, h the height, and ± the sign of x·y' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'In the entry above the height grows by 2|z|h, which asks only how long the flat part is. Close to the upright axis every direction round that axis then counts alike, so a bud on top of a body is spun round its own axis and its side buds are drawn out into rings. Here the height grows by 2h·√(x² + y⁴/(y² + h²)): on the flat plane that is 2|z|h again, and beside the upright plane on the line it is 2|x|h, the flat rule stood upright. The distance across the line follows the same law with y and h swapped. The top of a body is then its end on the line, rotated a quarter of the way round. Along the upright plane across the line, space is folded over and shapes are squashed. A set that is not its own mirror image in its line, like the rabbit, has a seam there. In the Mandelbrot picture the solid is not right.',
+    roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold laid on it. Across the upright plane across the line a point jumps to its mirror image in the line: nothing shows in a set that is its own mirror image there, and a seam shows in any other.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
   },
   {

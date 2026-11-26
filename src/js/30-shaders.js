@@ -226,7 +226,13 @@ float orbitDE(vec3 p, vec3 cj, bool jul, int nt, vec3 dir, int its, bool swap){
       } else {
         vec3 dw = wi - w;
         float m = length(dw), was = length(dz) + length(dk);
+#ifdef APR_SEAM
+        // An approach that defines APR_SEAM knows where its own step jumps: aprSeam(a, b) says whether a and b lie
+        // on different sides of that jump. The size of the jump can be anything, so it cannot be told from m.
+        if (aprSeam(v, v + dz) || !(m <= 8.0 * pn * was * (lw + 1.0) / (r + 0.01))){
+#else
         if (!(m <= 8.0 * pn * was * (lw + 1.0) / (r + 0.01))){
+#endif
           // the neighbour landed across a seam (or on a pole): give it the stretch of a pure power instead
           dw = dz * max(pn * length(w - c) / max(r, 1e-6), 1e-3); m = length(dw);
 #ifdef APR_CARRY
