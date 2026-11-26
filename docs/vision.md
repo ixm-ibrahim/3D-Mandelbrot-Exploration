@@ -246,6 +246,7 @@ and "2d" means two planes.
 | Four to one, caps placed by c | The basilica and San Marco are a row of bodies with one more above and one below the middle body. The dendrite and Kokopelli are trees in space, and the rabbit is one piece with bodies in several directions. | The rotation of c was fitted by hand. The basilica's two extra bodies lean to one side of the x-axis. A c below the x-axis gives a lump and not the mirror image, so the Mandelbrot solid is lopsided. The airplane is dust. Every skin is rough and striped. |
 | Two planes, about every body's own line | The rabbit stays a rabbit, in one piece, with buds on the tops and the undersides of its bodies: "it certainly looks better than every other approach". The basilica as under *two planes*. | "there are these gaps in the fractal surface": cracks beside the pinch points at few iterations, and fine dark scratches all over the skin. Corners at 45 degrees round each line. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Two planes, about the middle body's own line | One fold, about the middle body's line, and the squaring carries it to every other body. The same rabbit with the same buds on the tops, and far fewer scratches on its skin. The basilica as under *two planes*. | Cracks beside the pinch points at few iterations, closing as the iterations go up. Corners at 45 degrees. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
+| Two planes, between the middle body's pinch points | The same fold with nothing traced from the picture: a formula gives the middle body's two pinch points and its width from c, and the fold is about the straight line between them. The rabbit of the entry above, bud for bud; the basilica as under *two planes*. Away from the middle of a bulb it is cleaner than the traced line. | The same cracks and corners. A set of one body is not folded. The Mandelbrot solid is folded but not right: flat bulbs with scratches. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -731,6 +732,37 @@ Not tried, or not finished.
     as it carries the fold about the x-axis along the basilica. The skin then has far fewer scratches and the
     buds are less torn. In the lab as *Two planes, about the middle body's own line*. The cracks at few
     iterations are the same.
+  - Asked whether the fold's reach should follow the Iterations dial, to close those cracks: "no".
+  - The formula behind the fold. "now you know the constructed approach, it might be the correct solution to
+    find the mathematical analog to this operation, so we can use the same formula on any c or mandelbrot".
+    What the built fold is, said as mathematics (reasoned): a body is a squashed copy of a round disc, its own
+    line is the copy of the disc's level diameter, and the fold is what *two planes* does to the disc of c = 0.
+    Since one fold is enough, only the body that holds 0 has to be known, and three numbers describe it, all
+    from c with no picture: its pinch point r (the point on its edge that the cycle's own number of steps
+    brings back to itself; for a bulb on the big heart of the Mandelbrot set r = ½ − √(¼ − c)), its half-width
+    at 0, and how pointed it is at a pinch point. Measured on nine values of c, the half-width the formula
+    gives is within about a tenth of the one measured on the flat set. In the lab as *Two planes, between the
+    middle body's pinch points*: the fold is about the straight line from r to the point straight across.
+    Drawn at 60 iterations: on the rabbit the picture of the traced entry, bud for bud; on the basilica that of
+    *two planes*; on Kokopelli and the airplane that of the traced entry; on a c away from the middle of the
+    rabbit's bulb a cleaner rabbit than the traced entry gives; on the middle of the bulb with four bodies a
+    clean set with buds on its tops.
+  - Drawn and dropped on the way: a round reach (a ball about 0 that stops short of the pinch points) cuts the
+    bud on the middle body's top flat and leaves a ring where it ends. A set of one body (a c in the big heart)
+    folded about the line between its two tips is torn into a rough rock when c is off the x-axis: such a body
+    hangs on nothing, is not alike on the two sides of any straight line, and is left unfolded.
+  - The Mandelbrot solid is not found. Two readings were drawn. With a point's height added again at every
+    step, as in every other entry, what the fold lays flat does not stay flat: the bulbs stay flat plates, now
+    with scratches and loose specks. With each point started at its own height in its own Julia solid, and its
+    c kept flat (script only), the bulbs do become lumps with buds on them, but the big heart is a drum far
+    taller than it is wide, with a torn top. Heights are then counted in the Julia set's measure, and a bulb of
+    the Mandelbrot set is smaller than the body it stands for by a factor that changes from bulb to bulb.
+  - The verdict, and what was meant. A formula for where to fold is not the analog that was asked for. The fold
+    is still a patch laid on *one plane*: "this approach still has the disconnected surfaces, as if it's
+    patchwork. I wonder if you misunderstood what I meant by "the mathematical analog" - like how do we
+    implement z -> z^2 + c in 3d to do the same thing". The question is one 3D squaring that gives this picture
+    with no pieces, and "it might be easier to try to figure it out for the basilica, since it's an easier
+    case".
   - The wall over a line can be laid over in two ways: each side of the line kept on its side, as *two planes*
     does, or the whole wall as one, the right side on top and the left side underneath (the clue). On the
     rabbit the two differ little.

@@ -672,6 +672,7 @@ const MATH = {
   },
   ownlines(v, n, q = {}) { return tpOne(lnFold(v, q), n); },
   midline(v, n, q = {}) { return tpOne(lnFold(v, q, true), n); },
+  pinch(v, n, q = {}, c) { return tpOne(pnFold(v, q, c), n); },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -1079,6 +1080,57 @@ vec3 mul(vec3 a, vec3 b){ return aprMmul(lnFold(a), lnFold(b)); }
 vec3 pw(vec3 a, float n){ return aprMpw(lnFold(a), n); }
 vec3 sqr(vec3 a){ return aprMsq(lnFold(a)); }
 vec3 cmap(vec3 c){ return c; }`;
+// Two planes, between the middle body's pinch points (see 09-lines.js, whose pnFind and pnFold these are step for
+// step). uPn: a Julia picture's pinch point, the body's half-width at 0 (nothing when there is no pinch point) and
+// the slope of its edge at a pinch point. uPnEach: 1 when every orbit is to work these out for its own c. gPn: the
+// four numbers the orbit in hand folds with. uA.x: the reach, in half-widths of the body.
+const GL_PINCH = GL_APR + GL_MERC_PLAIN + `
+uniform vec4 uPn; uniform float uPnEach;
+vec4 gPn = vec4(0.0);
+vec2 pnDiv(vec2 a, vec2 b){ return vec2(a.x * b.x + a.y * b.y, a.y * b.x - a.x * b.y) / max(dot(b, b), 1e-30); }
+void pnSteps(vec2 w, vec2 c, int k, out vec2 u, out vec2 d, out vec2 e){
+  u = w; d = vec2(1.0, 0.0); e = vec2(0.0);
+  for (int j = 0; j < k; j++){ e = cmul(d, d) + 2.0 * cmul(u, e); d = 2.0 * cmul(u, d); u = cmul(u, u) + c; }
+}
+vec2 pnNewton(vec2 w, vec2 c, int k){
+  vec2 u, d, e;
+  for (int s = 0; s < ${PN_NEWTON}; s++){ pnSteps(w, c, k, u, d, e); w -= pnDiv(u - w, d - vec2(1.0, 0.0)); }
+  return w;
+}
+vec4 pnFind(vec2 c){
+  vec2 z = vec2(0.0), u, d, e; float best = 1e30;
+  for (int k = 1; k <= ${PN_MAX}; k++){
+    z = cmul(z, z) + c;
+    float m = dot(z, z);
+    if (!(m < 16.0)) return vec4(0.0);
+    if (m >= best) continue;
+    best = m;
+    vec2 w = pnNewton(z, c, k);
+    pnSteps(w, c, k, u, d, e);
+    if (!(length(u - w) < 1e-4) || !(length(d) < 1.0)) continue;
+    if (k == 1) return vec4(0.0);
+    float wide = 1.0 / max(length(e), 1e-9);
+    vec2 r = pnNewton(w + pnDiv(vec2(1.0, 0.0) - d, e), c, k);
+    pnSteps(r, c, k, u, d, e);
+    if (!(length(u - r) < 1e-4) || !(length(d) > 1.0) || !(length(r) > 1e-6)) return vec4(0.0);
+    return vec4(r, wide, tan(0.5 * PI * clamp(log2(length(d)), 0.05, 0.95)));
+  }
+  return vec4(0.0);
+}
+vec3 pnFold(vec3 v){
+  if (!(gPn.z > 0.0) || v.z == 0.0) return v;
+  float L = length(gPn.xy);
+  vec2 u = gPn.xy / L, nr = vec2(-u.y, u.x);
+  float s = dot(v.xy, u), t = dot(v.xy, nr), f = abs(s) / L;
+  if (!(f < 1.0)) return v;
+  float wide = min(gPn.z * sqrt(1.0 - f * f), (L - abs(s)) * gPn.w);
+  if (!(length(vec2(t, v.z)) < clamp(uA.x, 0.5, 4.0) * wide) || abs(v.z) <= abs(t)) return v;
+  return vec3(s * u + (t < 0.0 ? -1.0 : 1.0) * abs(v.z) * nr, (v.z < 0.0 ? -1.0 : 1.0) * abs(t));
+}
+vec3 mul(vec3 a, vec3 b){ return aprMmul(pnFold(a), pnFold(b)); }
+vec3 pw(vec3 a, float n){ return aprMpw(pnFold(a), n); }
+vec3 sqr(vec3 a){ return aprMsq(pnFold(a)); }
+vec3 cmap(vec3 c){ gPn = uPnEach > 0.5 ? pnFind(c.xy) : uPn; return c; }`;
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -2149,6 +2201,10 @@ const ML_TAG = 'For Julia sets at the power 2. Sphere inversions, two planes fol
 const ML_NOTE = 'How it works: for the chosen c the page finds the line of the middle body, the body that holds the point 0: from the pinch point where it hangs on the others, through its middle, to the point opposite. A point within reach of that line is mirrored in the plane that stands at 45° on it. Then the one-plane rule squares it. Nothing else is folded: a point over another body is carried onto the middle body by the squaring, and is folded there.';
 const ML_HELP_REACH = 'How far from the middle body’s line a point is still folded about it, counted in the body’s half-width at that place. At 1 only the body itself is in reach. 1.6, where the dial starts, takes in the buds on its sides. The number was picked by eye: nothing in the flat rule gives it. Too small cuts the buds off the tops. Too large leaves more loose specks round the bodies.';
 const ML_ABOUT = 'Two planes, about every body’s own line folds each body about a line of its own, and its skin is covered in fine dark scratches. Here there is one fold, about the middle body’s line, and the squaring carries it to every other body, as it carries the fold about the x-axis along the Basilica. The same buds stand on the tops, and the skin has far fewer scratches. Where it falls short: the bodies have corners at 45° round their lines. The fold stops where its reach ends. At few iterations the bodies are still joined by thick necks, the folded skin and the skin of a neck do not meet there, and a crack shows beside every pinch point: it closes as the iterations go up. The reach is a number picked by eye. A set with no bodies, like the Dendrite, has no such line, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
+const PN_TAG = 'For z² + c. The fold of the entry above, about a straight line that a formula gives from c: nothing is traced from the picture, so the Mandelbrot picture, where every point is its own c, is folded too.';
+const PN_NOTE = 'How it works: the body that holds the point 0 hangs on the others at a pinch point, and has a second one straight across, on the other side of 0. A formula gives both from c, and the body’s width with them. A point within reach of the straight line between the two is mirrored in the plane that stands at 45° on it. Then the one-plane rule squares it. A set of one body has no pinch points and is not folded.';
+const PN_HELP_REACH = 'How far from the line a point is still folded about it, counted in the body’s half-width at that place. The half-width is not measured on the picture: the formula gives a round disc that ends in a wedge at each pinch point. 1.6, where the dial starts, takes in the buds on the body’s sides, and was picked by eye. Too small cuts the buds off the tops.';
+const PN_ABOUT = 'The body that holds 0 is a small, squashed copy of a round disc, and the line between its two pinch points is the copy of the disc’s level diameter. Sphere inversions, two planes folds the disc of c = 0 about that diameter; this rule does the same to the middle body, with a straight line in place of the body’s own, slightly bent one. The pinch point r is the point on the body’s edge that the cycle’s own number of steps brings back to itself. For a c in a bulb on the big heart of the Mandelbrot set r = ½ − √(¼ − c). Further out Newton’s method finds it from the orbit of 0. The same steps give the body’s width, and how pointed it is at a pinch point. A c with one body, or with no cycle of bodies, has no such point and is not folded. The rule jumps where the reach ends. In the Mandelbrot picture a point’s height is added again at every step, so what the fold lays flat does not stay flat: the bulbs stay flat, with scratches and loose specks on them.';
 const OL_HELP_WALL = 'What stands upright over a body’s line. Each side on its own side: what Sphere inversions, two planes does over the x-axis. The other choice lays the wall over in one piece, so top and underneath differ wherever the two sides of the line differ.';
 const OL_ABOUT = 'Sphere inversions, two planes gives the Basilica buds on the tops of its bodies, because its bodies lie along the x-axis and the fold is about that axis. The rabbit’s bodies point other ways, and that rule tears it. But every body has a line of its own, which the flat rule lays onto the line of the body it lands on: for the Basilica the lines of the big bodies make up the x-axis. Folding each body about its own line is the same rule for the Basilica, and for the rabbit it gives a whole rabbit with buds on the tops of its bodies. Where it falls short: round each line the body has corners at 45°, the creases of two planes. A seam shows where the reach of a fold ends, with loose specks beside it, and the reach is a number picked by eye. A set with no bodies, like the Dendrite, has no lines, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
 const f4kFormula = p => {
@@ -2289,6 +2345,25 @@ const APPROACHES = [
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed. Space is creased on the mirror instead.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', 'The one-plane rule with a mirror on the middle body’s line before it. The mirror leaves creases, and the rule jumps where the reach of the line ends and over the line itself, where the two sides of the body meet.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: a point on it is never folded, so that slice is the flat set.'),
+  },
+  {
+    // The fold of the entry before it about a straight line, which needs two numbers and no table (09-lines.js).
+    id: 'pinch', name: 'Two planes, between the middle body’s pinch points', group: 'inversions', glsl: GL_PINCH, axis: () => [0, 0, 1],
+    usesC: true,
+    uniforms: (gl, loc) => pnUniforms(gl, loc),
+    tag: PN_TAG,
+    params: [
+      { type: 'note', text: PN_NOTE },
+      { type: 'dial', key: 'reach', label: 'Reach of the fold, in half-widths of the body', min: 1, max: 2.5, step: 0.05, def: 1.6, help: PN_HELP_REACH },
+    ],
+    // pnSays works the pinch point out, so it is asked only while this entry is the one on show
+    formula: (p, n) => aprMercFormula(n) + ` Before that, a point no further from the straight line between the middle body’s two pinch points than ${aprNum(pnReach(p))} times the body’s half-width there is mirrored in the plane that stands at 45° on that line.` + (ap().id === 'pinch' ? ' ' + pnSays() : ''),
+    about: PN_ABOUT,
+    roundNote: () => 'This card measures one squaring of the points round the middle, with the pinch points of the c on show. Each piece keeps circles on the sphere as circles. The mirror leaves creases between the pieces.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed. Space is creased on the mirror instead.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
+      : ['no', 'The one-plane rule with a mirror on the line between the pinch points before it. The mirror leaves creases, and the rule jumps where the reach of the line ends.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: a point on it is never folded, so that slice is the flat set.'),
   },
   {

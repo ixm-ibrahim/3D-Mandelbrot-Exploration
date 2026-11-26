@@ -1,5 +1,6 @@
 // Every body's own line, for the entries "Two planes, about every body's own line" and "Two planes, about the middle
-// body's own line" (10-approaches.js).
+// body's own line" (10-approaches.js), and at the end of the file the middle body's two pinch points from c alone,
+// for the entry "Two planes, between the middle body's pinch points".
 //
 // A Julia set of z² + c whose c has a cycle of bodies is made of bodies that hang on one another at pinch points.
 // Each body has a line of its own: through its middle, from the point where it hangs on its parent (its root) to
@@ -277,11 +278,12 @@ const LN_WHY = {
   mandelbrot: 'In the Mandelbrot picture every point has its own c, so there is no one set of lines: the picture is Sphere inversions, one plane.',
   other: 'The lines are those of z² + c with nothing folded or flipped. With this equation, power or modifier the picture is Sphere inversions, one plane.',
 };
+// The lines and the pinch points are those of z² + c with nothing folded or flipped.
+const lnPlain = () => S.n === 2 && String(S.eq).replace(/\s+/g, '') === 'z^n+c' && !S.abs.some(Boolean) && !S.flip.some(Boolean);
 // mid: the table of the middle body's line alone.
 function lnTable(mid) {
   const T = mid ? LN.mid : LN.all;
-  const plain = S.n === 2 && String(S.eq).replace(/\s+/g, '') === 'z^n+c' && !S.abs.some(Boolean) && !S.flip.some(Boolean);
-  const key = S.mode !== 'j' ? 'mandelbrot' : !plain ? 'other' : S.c[0] + ',' + S.c[1];
+  const key = S.mode !== 'j' ? 'mandelbrot' : !lnPlain() ? 'other' : S.c[0] + ',' + S.c[1];
   if (key === T.key) return T;
   const ver = T.ver + 1, why = key === 'mandelbrot' || key === 'other' ? key : lnBuild(T, S.c[0], S.c[1], mid ? 0 : LN_DEPTH);
   if (why) Object.assign(T, lnBlank());
@@ -365,4 +367,98 @@ function lnUniforms(gl, loc, mid) {
   gl.activeTexture(gl.TEXTURE0);
   gl.uniform1i(loc('uLnIdx'), 2); gl.uniform1i(loc('uLnDat'), 3);
   gl.uniform4f(loc('uLn'), T.g, T.rows, 0, T.on ? 1 : 0);
+}
+
+// The middle body's two pinch points from c alone, for the entry "Two planes, between the middle body's pinch
+// points". No table is built: the shader works the same numbers out for itself (its pnFind is this one step for
+// step), so a Julia picture and the Mandelbrot solid, where every point is its own c, follow one formula.
+//   1. Follow the orbit of 0. Each time it comes nearer to 0 than ever before, after k steps, look for a point
+//      there that k steps bring back to itself (Newton's method). The first such point that pulls its
+//      neighbours in is the point of the bodies' cycle in the body that holds 0, and k is the cycle's length.
+//      A cycle of one point means a set of one body, which hangs on nothing and has no pinch point.
+//   2. Beside that point w, k steps are w + d t + e t² to the second order. The other point this short formula
+//      brings back to itself, t = (1 - d) / e, lies near the body's pinch point: Newton's method from there
+//      finds the pinch point r itself, a point that pushes its neighbours away.
+// The flat set looks the same from both sides of 0, so the body's second pinch point is -r, and the straight line
+// between the two runs through 0.
+//   3. The body's shape about that line, from the same numbers. 1 / |e| is its half-width at 0: through the glass
+//      that makes k steps a plain squaring the body is a round disc, and e is that glass. At a pinch point the body
+//      ends in a wedge. k steps push the neighbours of r away m times as far, and a disc's edge twice as far, so the
+//      wedge opens by log2(m) of a straight angle. The half-width at a place along the line is the disc's there, or
+//      the wedge's where that is less.
+const PN_MAX = 12, PN_NEWTON = 6;
+const pnDiv = (a, b) => { const m = Math.max(b[0] * b[0] + b[1] * b[1], 1e-30); return [(a[0] * b[0] + a[1] * b[1]) / m, (a[1] * b[0] - a[0] * b[1]) / m]; };
+// k steps from the point w: where they end (u), their slope (d) and half their second slope (e)
+function pnSteps(w, cx, cy, k) {
+  let u = w, d = [1, 0], e = [0, 0];
+  for (let j = 0; j < k; j++) {
+    e = [d[0] * d[0] - d[1] * d[1] + 2 * (u[0] * e[0] - u[1] * e[1]), 2 * d[0] * d[1] + 2 * (u[0] * e[1] + u[1] * e[0])];
+    d = [2 * (u[0] * d[0] - u[1] * d[1]), 2 * (u[0] * d[1] + u[1] * d[0])];
+    u = [u[0] * u[0] - u[1] * u[1] + cx, 2 * u[0] * u[1] + cy];
+  }
+  return { u, d, e };
+}
+function pnNewton(w, cx, cy, k) {
+  for (let s = 0; s < PN_NEWTON; s++) {
+    const { u, d } = pnSteps(w, cx, cy, k), t = pnDiv([u[0] - w[0], u[1] - w[1]], [d[0] - 1, d[1]]);
+    w = [w[0] - t[0], w[1] - t[1]];
+  }
+  return w;
+}
+// The cycle's length p, the pinch point r, the body's half-width at 0 and the slope of its edge at a pinch point.
+// Only p when the cycle is one point. Nothing when 0 leaves or no cycle of at most PN_MAX points pulls.
+function pnFind(cx, cy) {
+  let z = [0, 0], best = Infinity;
+  for (let k = 1; k <= PN_MAX; k++) {
+    z = [z[0] * z[0] - z[1] * z[1] + cx, 2 * z[0] * z[1] + cy];
+    const m = z[0] * z[0] + z[1] * z[1];
+    if (!(m < 16)) return null;
+    if (m >= best) continue;
+    best = m;
+    const w = pnNewton(z, cx, cy, k), at = pnSteps(w, cx, cy, k);
+    if (!(Math.hypot(at.u[0] - w[0], at.u[1] - w[1]) < 1e-4) || !(Math.hypot(at.d[0], at.d[1]) < 1)) continue;
+    if (k === 1) return { p: 1, r: null };
+    const t = pnDiv([1 - at.d[0], -at.d[1]], at.e), r = pnNewton([w[0] + t[0], w[1] + t[1]], cx, cy, k), far = pnSteps(r, cx, cy, k);
+    if (!(Math.hypot(far.u[0] - r[0], far.u[1] - r[1]) < 1e-4) || !(Math.hypot(far.d[0], far.d[1]) > 1) || !(Math.hypot(r[0], r[1]) > 1e-6)) return null;
+    return { p: k, r, wide: 1 / Math.max(Math.hypot(at.e[0], at.e[1]), 1e-9), tip: Math.tan(0.5 * PI * clamp(Math.log2(Math.hypot(far.d[0], far.d[1])), 0.05, 0.95)) };
+  }
+  return null;
+}
+const PN = { key: '', at: null };                // the last c asked about, and its answer
+// What pnFind says for the constant c, or nothing: it belongs to z² + c with nothing folded or flipped.
+function pnOf(c) {
+  if (!c || !lnPlain()) return null;
+  const key = c[0] + ',' + c[1];
+  if (key !== PN.key) { PN.key = key; PN.at = pnFind(c[0], c[1]); }
+  return PN.at;
+}
+const pnReach = q => clamp(q && isFinite(+q.reach) ? +q.reach : 1.6, 0.5, 4);
+// The fold in JavaScript, the shader's pnFold line for line: a point within reach of the line between the pinch
+// points is mirrored in the plane that stands at 45° on it. c: the orbit's constant.
+function pnFold(v, q, c) {
+  const P = pnOf(c || (S.mode === 'j' ? S.c : null));
+  if (!P || !P.r || v[2] === 0) return v;
+  const L = Math.hypot(P.r[0], P.r[1]), ux = P.r[0] / L, uy = P.r[1] / L, s = v[0] * ux + v[1] * uy, t = v[1] * ux - v[0] * uy, f = Math.abs(s) / L;
+  if (!(f < 1)) return v;
+  const wide = Math.min(P.wide * Math.sqrt(1 - f * f), (L - Math.abs(s)) * P.tip);
+  if (!(Math.hypot(t, v[2]) < pnReach(q) * wide) || Math.abs(v[2]) <= Math.abs(t)) return v;
+  const side = (t < 0 ? -1 : 1) * Math.abs(v[2]);
+  return [s * ux - side * uy, s * uy + side * ux, (v[2] < 0 ? -1 : 1) * Math.abs(t)];
+}
+// uPn: a Julia picture's pinch point (x, y), the body's half-width at 0 (nothing when there is no pinch point) and
+// the slope of its edge at a pinch point. uPnEach: 1 when the shader is to work these out for each point of the
+// picture, as the Mandelbrot solid needs.
+function pnUniforms(gl, loc) {
+  const each = S.mode !== 'j' && lnPlain(), at = each ? null : pnOf(S.mode === 'j' ? S.c : null), P = at && at.r ? at : null;
+  gl.uniform4f(loc('uPn'), P ? P.r[0] : 0, P ? P.r[1] : 0, P ? P.wide : 0, P ? P.tip : 0);
+  gl.uniform1f(loc('uPnEach'), each ? 1 : 0);
+}
+// What the entry says about the picture on show.
+function pnSays() {
+  if (!lnPlain()) return 'The pinch points are those of z² + c with nothing folded or flipped. With this equation, power or modifier the picture is Sphere inversions, one plane.';
+  if (S.mode !== 'j') return 'In the Mandelbrot picture every point is its own c, and has pinch points of its own.';
+  const P = pnOf(S.c);
+  if (!P) return `This c has no cycle of at most ${PN_MAX} bodies, so nothing is folded: the picture is Sphere inversions, one plane.`;
+  if (!P.r) return 'For this c the set is one body, which has no pinch points, so nothing is folded: the picture is Sphere inversions, one plane.';
+  return `For this c: a cycle of ${P.p} ${P.p === 1 ? 'body' : 'bodies'}, and pinch points at (${aprNum(P.r[0])}, ${aprNum(P.r[1])}) and straight across.`;
 }
