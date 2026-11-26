@@ -248,6 +248,7 @@ and "2d" means two planes.
 | Two planes, about the middle body's own line | One fold, about the middle body's line, and the squaring carries it to every other body. The same rabbit with the same buds on the tops, and far fewer scratches on its skin. The basilica as under *two planes*. | Cracks beside the pinch points at few iterations, closing as the iterations go up. Corners at 45 degrees. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Two planes, between the middle body's pinch points | The same fold with nothing traced from the picture: a formula gives the middle body's two pinch points and its width from c, and the fold is about the straight line between them. The rabbit of the entry above, bud for bud; the basilica as under *two planes*. Away from the middle of a bulb it is cleaner than the traced line. | The same cracks and corners. A set of one body is not folded. The Mandelbrot solid is folded but not right: flat bulbs with scratches. |
 | Two points side by side | One formula for every point, with no mirror and no pieces: (z, h) goes to (z² − h²u², 2|z|h), then c is added. The skin is in one piece on the whole panel, with no scratch, seam or crack, at 14 iterations as at 60. The basilica has whole buds on top and underneath, and its upright cut is the flat picture. The rabbit is a rabbit. | A body is a roof with a sharp rim all round in the flat plane, not a ball. On the rabbit the buds on the tops are small knobs. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
+| Two points side by side, round | The same formula with the length squared exactly, as *one plane* squares it. The bodies are round again, with no rim and no crease. The basilica and San Marco have whole buds on top and underneath and small ones dotted between. The rabbit is a smooth rabbit. One piece on the whole panel, at 14 iterations as at 60. | The buds that stand on top are narrow across, like stacked plates, and on the rabbit they are small knobs. Few buds away from the two planes. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -792,8 +793,19 @@ Not tried, or not finished.
     its square counts, so the skin leaves the edge at a slope and not straight up). On the rabbit a body's
     top carries one small knob where the fold put whole buds. The Mandelbrot solid stays flat, with a tall
     fin beside the cusp, where the line's direction swings round.
+  - The roof comes from the length. A point that is both high and off the line lands further out than the
+    square of its length, by 4h²t² under the root (t its distance from the line in the flat plane), so it gets
+    away sooner. With the direction kept and the length set to the square of the point's length, as *one
+    plane* has it, the bodies are round again and the rim is gone. On the flat plane and on the upright plane
+    on the line nothing changes, since there the length was the square already. In the lab as *Two points side
+    by side, round*. Drawn at 60 and at 14 iterations on the same six sets: one piece each, smooth, with clean
+    pinch points.
+  - What is still wrong with the round one: a bud that stands on top is narrow across, like stacked plates,
+    because beside the upright plane the rule stretches along the plane more than across it. The rabbit's top
+    buds are small knobs. Away from the two planes there are few buds. The Mandelbrot solid stays flat with a
+    fin beside the cusp.
   - Not tried: the pair laid along the direction the foot's own orbit gives at each place (the way the rings
-    of a body run) in place of one line for the whole set; a rounder way to count the height.
+    of a body run) in place of one line for the whole set.
 - **The upright wall laid over as a whole.** The clue above, drawn with a script: the fold of *two planes* with
   one mirror plane in place of two, so that the upper half of the upright wall goes to one side of the x-axis
   and the lower half to the other. The upright cut of the rabbit is then a whole rabbit, the same as the flat

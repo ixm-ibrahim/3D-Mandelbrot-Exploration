@@ -2508,6 +2508,11 @@ const MATH = {
     const [x, y, z] = v, u = twAxis(c, q);
     return [x * x - y * y - z * z * u[0], 2 * x * y - z * z * u[1], 2 * Math.hypot(x, y) * z];
   },
+  twinsround(v, n, q = {}, c) {
+    if (n !== 2) return tpOne(v, n);
+    const w = MATH.twins(v, n, q, c), l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]) / l : 1;
+    return [w[0] * k, w[1] * k, w[2] * k];
+  },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -2969,10 +2974,14 @@ vec3 cmap(vec3 c){ gPn = uPnEach > 0.5 ? pnFind(c.xy) : uPn; return c; }`;
 // Two points side by side. A point of space stands for two points of the flat plane: its flat part z is their
 // middle, and its height h is how far each lies from the middle, to either side of the set's line. Squaring both
 // gives a middle of z² - h²u² (u the line's direction) and a half-distance of 2|z|h. gTw is u².
-// uA.x: 1 takes the x-axis for the line, for every c.
-const GL_TWINS = GL_APR + GL_MERC_PLAIN + `
+// uA.x: 1 takes the x-axis for the line, for every c. round: the result keeps its direction and takes the length
+// |v|², the square of the point's own length (the entry "twinsround").
+const twGl = round => GL_APR + GL_MERC_PLAIN + `
 vec2 gTw = vec2(1.0, 0.0);
-vec3 twSq(vec3 v){ return vec3(cmul(v.xy, v.xy) - v.z * v.z * gTw, 2.0 * length(v.xy) * v.z); }
+vec3 twSq(vec3 v){
+  vec3 w = vec3(cmul(v.xy, v.xy) - v.z * v.z * gTw, 2.0 * length(v.xy) * v.z);
+  ${round ? 'float l = length(w); return l > 0.0 ? w * (dot(v, v) / l) : w;' : 'return w;'}
+}
 vec3 mul(vec3 a, vec3 b){ return aprMmul(a, b); }
 vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a) : aprMpw(a, n); }
 vec3 sqr(vec3 a){ return twSq(a); }
@@ -2986,6 +2995,7 @@ vec3 cmap(vec3 c){
   }
   return c;
 }`;
+const GL_TWINS = twGl(false), GL_TWINSROUND = twGl(true);
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -4231,6 +4241,21 @@ const APPROACHES = [
     ],
     formula: (p, n) => (aprIs(n, 2) ? '(z, h)² = (z² − h²u², 2|z|h)   with z the flat part, h the height and u the direction of the line' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
     about: 'Two flat points z + ihu and z − ihu, side by side across the line, have the squares (z² − h²u²) ± 2ihuz: a new middle and a new distance. The rule keeps those two numbers and lets go of the direction in which the new pair lies, so the pair is laid across the line again at every step. The flat plane (h = 0) is the flat rule exactly, and so is the upright plane on the line when c lies on the x-axis. A body comes out as a roof with a sharp rim in the flat plane, not as a ball. In the Mandelbrot picture the solid stays flat, with one tall fin beside the cusp.',
+    roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes beside the flat plane and squeezes them higher up.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along a surface that stands between the flat plane and the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold. It has a kink on the upright axis, where |z| is 0.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
+  },
+  {
+    id: 'twinsround', name: 'Two points side by side, round', group: 'inversions', glsl: GL_TWINSROUND, axis: () => [0, 0, 1],
+    usesC: true,
+    tag: 'The entry above with the length squared exactly, as in Sphere inversions, one plane. The bodies come out round, with buds on top and underneath, and there is no fold and no mirror.',
+    params: [
+      { type: 'note', text: 'How it works: the two flat points of the entry above give the direction of the new point. Its length is the square of the old point’s length, whatever the direction. On the flat plane, and on the upright plane on the set’s line, that is what the entry above gives already.' },
+      { type: 'select', key: 'kind', label: 'The line', def: 0, options: [[0, 'From 0 to the pinch point of c'], [1, 'The x-axis, for every c']] },
+    ],
+    formula: (p, n) => (aprIs(n, 2) ? '(z, h)² = |(z, h)|² · unit(z² − h²u², 2|z|h)   with z the flat part, h the height and u the direction of the line' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'The entry above lets a point that is both high and off the line run away faster than squaring would, which cuts the bodies down to roofs. Here every point goes exactly as far as squaring sends it, |v|², and the two flat points say only in which direction. The flat plane is the flat rule exactly, and so is the upright plane on the line when c lies on the x-axis. In the Mandelbrot picture the solid stays flat.',
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes beside the flat plane and squeezes them higher up.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along a surface that stands between the flat plane and the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold. It has a kink on the upright axis, where |z| is 0.' + aprTear(n, APR_HALF)]),
@@ -6600,6 +6625,9 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
     { name: 'Two points side by side (power 2)', lab: 'twins', only2: true, say: only2, steps: [F('a = vec(0.5, 0, 0) - cpow(vec(0.25, 0, 0) - flat(c), 0.5)'),
       F('u = if(dot(a, a) > 0.000000000001, cmul(a, a)/dot(a, a), vec(1, 0, 0))'), F('s = cmul(flat(z), flat(z))'),
       F('z = vec(s.x - z.z*z.z*u.x, s.y - z.z*z.z*u.y, 2*len(flat(z))*z.z)'), ['addc']] },
+    { name: 'Two points side by side, round (power 2)', lab: 'twinsround', only2: true, say: only2, steps: [F('a = vec(0.5, 0, 0) - cpow(vec(0.25, 0, 0) - flat(c), 0.5)'),
+      F('u = if(dot(a, a) > 0.000000000001, cmul(a, a)/dot(a, a), vec(1, 0, 0))'), F('s = cmul(flat(z), flat(z))'),
+      F('w = vec(s.x - z.z*z.z*u.x, s.y - z.z*z.z*u.y, 2*len(flat(z))*z.z)'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc']] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }
 
