@@ -884,6 +884,34 @@ Not tried, or not finished.
     "I noticed that the rabbit's bulbs on the top middle of the fractal surface are disconnected surfaces at
     the seam - I wonder if that helps". No new entry is wanted "until that is resolved without smearing and
     other artifacts". The four bulbs at a pinch point wait: "not until we're done with the n=1 approach".
+  - Where the rabbit's seam comes from. Measured on the rule itself and then drawn with a script, on *up and
+    across alike*. Nothing of this is in the lab.
+    1. The line. The rule lays its line from 0 to the pinch point where the middle body meets the next one. The
+       upright axis lands on the next body's far pinch point only if the middle body's side pinch points, where
+       its side buds hang, stand square to that line. On the basilica and San Marco they do. On the rabbit they
+       are 1.06 degrees off, and the upright axis lands 2.12 degrees (0.006) beside the far pinch point. The two
+       halves of a bud on top then hang on two different points, 0.015 apart: the "disconnected surfaces at the
+       seam". Across the seam the skin of the middle body steps by up to 3.5 percent. With the line laid square
+       to the side pinch points the halves hang on one point, and the largest step is 0.42 percent. For a c on
+       the x-axis nothing changes (drawn: at most 24 of 572,368 pixels differ, by one step of rounding).
+    2. The two ears. At every pinch point the rabbit has two bodies and they are not alike: in the flat picture
+       one has 1.7 times the area of the other. A bud on top was half of the one and half of the other, 2.1 to
+       1 by volume. With the change of sign moved off the plane across the line, to x = −0.5·b behind it, each
+       bud on top is one whole body: the small ear to one side of the line and the big one to the other, as at a
+       pinch point of the flat picture. The tops of the bodies are then not the same after half a turn.
+    3. The colours. Wherever the change of sign runs, a point lands on one flank of the next body and its
+       neighbour on the other flank. In plain clay, by distance from the centre and by surface direction nothing
+       shows there: the skin steps by 0.5 percent at most, and the rabbit is one smooth shape with whole buds on
+       top. The lab's first colouring measures how near the orbit comes to a sphere round the middle of the
+       picture. The two flanks of a body that stands off the middle are not equally far from it, so the colours
+       break along the change of sign, yellow against teal. Reasoned: a change of sign has to run from each side
+       pinch point to the upright plane on the line, and on the way it crosses the place where the two landing
+       points are furthest apart, so this colouring shows it wherever it is put.
+    4. The drawing. A hairline is drawn along the change of sign even where both sides agree exactly. Seen on
+       the basilica.
+    Also drawn: the change of sign further back, at x = −b and at x = −2b (the step grows to 1.9 percent), and
+    the smooth law 2y(x + b) with no change of sign at all (smeared, as the soft join).
+  - Not found: a rabbit whose first colouring is unbroken as well.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
     body is the mirror image of its upper front: it tears the next body along the line. One law for up and
     across with no square root in it, 2y(h²|v| + xy²)/(y² + h²) and the same with y and h swapped: fans and
