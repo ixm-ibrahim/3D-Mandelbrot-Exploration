@@ -1,9 +1,12 @@
-// Every body's own line, for the entry "Two planes, about every body's own line" (10-approaches.js).
+// Every body's own line, for the entries "Two planes, about every body's own line" and "Two planes, about the middle
+// body's own line" (10-approaches.js).
 //
 // A Julia set of z² + c whose c has a cycle of bodies is made of bodies that hang on one another at pinch points.
 // Each body has a line of its own: through its middle, from the point where it hangs on its parent (its root) to
 // the point opposite. The flat rule lays each line onto another one, and the lines of the bodies of the cycle onto
-// each other in turn. The entry folds a point about the nearest such line, as "two planes" folds it about the x-axis.
+// each other in turn. The first entry folds a point about the nearest such line, as "two planes" folds it about the
+// x-axis. The second folds about the line of the middle body alone, the body that holds 0: the rule lays every other
+// body onto that one sooner or later, and so carries the fold to them itself.
 //
 // The lines are found from the flat rule alone (lnBuild):
 //   1. The cycle the orbit of 0 settles on, and of its points the one in the body that holds 0 (lnCycle).
@@ -21,21 +24,22 @@
 // line it is evened out, since the fold ends where the reach does and an uneven reach leaves a ragged end.
 //
 // The fold (lnAbout) wants the nearest point of a line, and the shader cannot search for it. It is handed a map
-// (LN.idx): for every cell of a grid over the flat plane, a point near the cell on a big body's line, on a
+// (a table's idx): for every cell of a grid over the flat plane, a point near the cell on a big body's line, on a
 // middle-sized body's and on a small body's. From that point it walks along the line to the point beside it and
 // drops onto the stretch between two points, so the foot moves without a jump as the point moves.
 // A point is folded about a big body's line first, then a middle-sized body's, then a small one's (lnFold), so a
 // point over a bud that the first fold lays beside a body is folded again about the bud's own line.
-// LN.idx and LN.dat are the textures the shader reads (lnUniforms). lnFold is the same fold in JavaScript, from the
-// same two arrays.
+// A table's idx and dat are the textures the shader reads (lnUniforms). lnFold is the same fold in JavaScript, from
+// the same two arrays.
 const LN_GRID = 768, LN_HALF = 2, LN_STEP = 0.006, LN_DEPTH = 9, LN_PTS = 96, LN_NONE = 65535, LN_WIDE = 1024;
 const LN_BIG = 0.12, LN_MID = 0.035;          // a line is of a big body, a middle-sized one or a small one by its widest half-width
 const LN_SLACK = 0.02;                        // how much nearer than the map's point a line's nearest point can be
-// LN.dat is a picture LN_WIDE wide. The points fill its upper rows (x, y, direction). The same places in its lower
-// rows hold the half-width there, the numbers of the first and the last point of the point's line, and the gap
-// between two points of that line.
-const LN = { key: '', ver: 0, on: false, count: 0, period: 0, why: '', idx: new Uint16Array(4).fill(LN_NONE), dat: new Float32Array(8 * LN_WIDE), rows: 1, g: 1 };
-const LN_GL = new WeakMap();                    // for each graphics context: its two textures and the version they hold
+// A table's dat is a picture LN_WIDE wide. The points fill its upper rows (x, y, direction). The same places in its
+// lower rows hold the half-width there, the numbers of the first and the last point of the point's line, and the
+// gap between two points of that line.
+const lnBlank = () => ({ key: '', ver: 0, on: false, count: 0, period: 0, why: '', idx: new Uint16Array(4).fill(LN_NONE), dat: new Float32Array(8 * LN_WIDE), rows: 1, g: 1 });
+const LN = { all: lnBlank(), mid: lnBlank() };  // a table for each entry: every body's line, and the middle body's alone
+const LN_GL = new WeakMap();                    // for each graphics context: its two textures, and the table and version they hold
 
 const lnStill = (x, y, cx, cy, n) => {          // does the flat orbit stay within reach for n steps
   for (let i = 0; i < n; i++) { const t = x * x - y * y + cx; y = 2 * x * y + cy; x = t; if (x * x + y * y > 16) return false; }
@@ -139,8 +143,9 @@ function lnGap(z, q) {                           // how near a curve comes to th
   }
   return best;
 }
-// The lines for c: a list of curves, or a word for why there are none.
-function lnCurves(cx, cy) {
+// The lines for c: a list of curves, or a word for why there are none. depth: how many steps back from the middle
+// body's line (0: that line alone).
+function lnCurves(cx, cy, depth) {
   const cyc = lnCycle(cx, cy);
   if (!cyc) return 'no cycle';
   const root = lnRoot(cx, cy, cyc);
@@ -161,7 +166,7 @@ function lnCurves(cx, cy) {
   for (let i = 0; i < LN_PTS; i++) { first[2 * LN_PTS + 2 * i] = -a0[2 * (LN_PTS - 1 - i)]; first[2 * LN_PTS + 2 * i + 1] = -a0[2 * (LN_PTS - 1 - i) + 1]; }
   const out = [first];
   let front = [{ z: first, body: 0 }];            // body: which body of the cycle the line belongs to, or -1
-  for (let lev = 1; lev <= LN_DEPTH && front.length; lev++) {
+  for (let lev = 1; lev <= depth && front.length; lev++) {
     const next = [];
     for (const line of front) {
       if (line.body === 1 % p) continue;
@@ -214,9 +219,9 @@ function lnNearest(seed, G) {
   }
   return out;
 }
-// The lines for c as the two arrays the shader reads. Returns why not, or ''.
-function lnBuild(cx, cy) {
-  const curves = lnCurves(cx, cy);
+// The lines for c as the two arrays the shader reads, put into the table T. Returns why not, or ''.
+function lnBuild(T, cx, cy, depth) {
+  const curves = lnCurves(cx, cy, depth);
   if (typeof curves === 'string') return curves;
   const pts = [], size = [];                    // for each point: x, y, direction x and y, half-width, first and last point of its line, gap; size: 0 big, 1 middle, 2 small
   for (const z of curves) {
@@ -261,7 +266,7 @@ function lnBuild(cx, cy) {
     const near = lnNearest(seed, G);
     for (let j = 0; j < G * G; j++) idx[4 * j + k] = near[j];
   }
-  LN.idx = idx; LN.dat = dat; LN.rows = rows; LN.g = G; LN.count = curves.length; LN.period = curves.period;
+  T.idx = idx; T.dat = dat; T.rows = rows; T.g = G; T.count = curves.length; T.period = curves.period;
   return '';
 }
 // The lines the picture on show is drawn with. They belong to a Julia set of z² + c, so any other picture has none.
@@ -272,20 +277,23 @@ const LN_WHY = {
   mandelbrot: 'In the Mandelbrot picture every point has its own c, so there is no one set of lines: the picture is Sphere inversions, one plane.',
   other: 'The lines are those of z² + c with nothing folded or flipped. With this equation, power or modifier the picture is Sphere inversions, one plane.',
 };
-function lnTable() {
+// mid: the table of the middle body's line alone.
+function lnTable(mid) {
+  const T = mid ? LN.mid : LN.all;
   const plain = S.n === 2 && String(S.eq).replace(/\s+/g, '') === 'z^n+c' && !S.abs.some(Boolean) && !S.flip.some(Boolean);
   const key = S.mode !== 'j' ? 'mandelbrot' : !plain ? 'other' : S.c[0] + ',' + S.c[1];
-  if (key === LN.key) return LN;
-  LN.key = key; LN.ver++;
-  const why = key === 'mandelbrot' || key === 'other' ? key : lnBuild(S.c[0], S.c[1]);
-  LN.on = !why; LN.why = why;
-  if (why) { LN.idx = new Uint16Array(4).fill(LN_NONE); LN.dat = new Float32Array(8 * LN_WIDE); LN.rows = 1; LN.g = 1; LN.count = 0; LN.period = 0; }
-  return LN;
+  if (key === T.key) return T;
+  const ver = T.ver + 1, why = key === 'mandelbrot' || key === 'other' ? key : lnBuild(T, S.c[0], S.c[1], mid ? 0 : LN_DEPTH);
+  if (why) Object.assign(T, lnBlank());
+  T.key = key; T.ver = ver; T.on = !why; T.why = why;
+  return T;
 }
-// What the entry says about the picture on show.
-function lnSays() {
-  const T = lnTable();
-  return T.on ? `For this c: a cycle of ${T.period} ${T.period === 1 ? 'body' : 'bodies'}, and ${T.count} ${T.count === 1 ? 'line' : 'lines'}.` : LN_WHY[T.why];
+// What an entry says about the picture on show.
+function lnSays(mid) {
+  const T = lnTable(mid);
+  if (!T.on) return LN_WHY[T.why];
+  const cycle = `For this c: a cycle of ${T.period} ${T.period === 1 ? 'body' : 'bodies'}`;
+  return mid ? cycle + ', folded about the line of the one that holds 0.' : cycle + `, and ${T.count} ${T.count === 1 ? 'line' : 'lines'}.`;
 }
 const lnReach = q => clamp(q && isFinite(+q.reach) ? +q.reach : 1.6, 0.5, 4);
 // The fold about the line that holds the point number i, in JavaScript: the shader's lnAbout line for line.
@@ -320,9 +328,10 @@ function lnAbout(T, v, i, most, q) {
   const g = 0.5 * PI - ang;
   return [fx + ux * rho * Math.cos(g), fy + uy * rho * Math.cos(g), (v[2] < 0 ? -1 : 1) * rho * Math.sin(g)];
 }
-// The whole fold: about a big body's line, then a middle-sized body's, then a small one's.
-function lnFold(v, q) {
-  const T = lnTable();
+// The whole fold: about a big body's line, then a middle-sized body's, then a small one's. mid: about the middle
+// body's line alone.
+function lnFold(v, q, mid) {
+  const T = lnTable(mid);
   if (!T.on || v[2] === 0) return v;
   const G = T.g, reach = lnReach(q);
   for (let k = 0; k < 3; k++) {
@@ -334,12 +343,12 @@ function lnFold(v, q) {
   return v;
 }
 // Hands the map and the points to the shader, as two textures on the units 2 and 3 (the display uses 0 and 1).
-function lnUniforms(gl, loc) {
-  const T = lnTable();
+function lnUniforms(gl, loc, mid) {
+  const T = lnTable(mid);
   let t = LN_GL.get(gl);
   gl.activeTexture(gl.TEXTURE2);
   if (!t || !gl.isTexture(t.idx)) {
-    t = { idx: gl.createTexture(), dat: gl.createTexture(), ver: -1 };
+    t = { idx: gl.createTexture(), dat: gl.createTexture(), of: null, ver: -1 };
     for (const tex of [t.idx, t.dat]) {
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -347,12 +356,12 @@ function lnUniforms(gl, loc) {
     }
     LN_GL.set(gl, t);
   }
-  const fresh = t.ver !== T.ver;
+  const fresh = t.of !== T || t.ver !== T.ver;
   gl.bindTexture(gl.TEXTURE_2D, t.idx);
   if (fresh) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16UI, T.g, T.g, 0, gl.RGBA_INTEGER, gl.UNSIGNED_SHORT, T.idx);
   gl.activeTexture(gl.TEXTURE3); gl.bindTexture(gl.TEXTURE_2D, t.dat);
   if (fresh) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, LN_WIDE, 2 * T.rows, 0, gl.RGBA, gl.FLOAT, T.dat);
-  t.ver = T.ver;
+  t.of = T; t.ver = T.ver;
   gl.activeTexture(gl.TEXTURE0);
   gl.uniform1i(loc('uLnIdx'), 2); gl.uniform1i(loc('uLnDat'), 3);
   gl.uniform4f(loc('uLn'), T.g, T.rows, 0, T.on ? 1 : 0);

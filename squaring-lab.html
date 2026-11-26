@@ -1352,12 +1352,15 @@ function readTheme() {
 }
 
 // ==================== 09-lines.js ====================
-// Every body's own line, for the entry "Two planes, about every body's own line" (10-approaches.js).
+// Every body's own line, for the entries "Two planes, about every body's own line" and "Two planes, about the middle
+// body's own line" (10-approaches.js).
 //
 // A Julia set of z² + c whose c has a cycle of bodies is made of bodies that hang on one another at pinch points.
 // Each body has a line of its own: through its middle, from the point where it hangs on its parent (its root) to
 // the point opposite. The flat rule lays each line onto another one, and the lines of the bodies of the cycle onto
-// each other in turn. The entry folds a point about the nearest such line, as "two planes" folds it about the x-axis.
+// each other in turn. The first entry folds a point about the nearest such line, as "two planes" folds it about the
+// x-axis. The second folds about the line of the middle body alone, the body that holds 0: the rule lays every other
+// body onto that one sooner or later, and so carries the fold to them itself.
 //
 // The lines are found from the flat rule alone (lnBuild):
 //   1. The cycle the orbit of 0 settles on, and of its points the one in the body that holds 0 (lnCycle).
@@ -1375,21 +1378,22 @@ function readTheme() {
 // line it is evened out, since the fold ends where the reach does and an uneven reach leaves a ragged end.
 //
 // The fold (lnAbout) wants the nearest point of a line, and the shader cannot search for it. It is handed a map
-// (LN.idx): for every cell of a grid over the flat plane, a point near the cell on a big body's line, on a
+// (a table's idx): for every cell of a grid over the flat plane, a point near the cell on a big body's line, on a
 // middle-sized body's and on a small body's. From that point it walks along the line to the point beside it and
 // drops onto the stretch between two points, so the foot moves without a jump as the point moves.
 // A point is folded about a big body's line first, then a middle-sized body's, then a small one's (lnFold), so a
 // point over a bud that the first fold lays beside a body is folded again about the bud's own line.
-// LN.idx and LN.dat are the textures the shader reads (lnUniforms). lnFold is the same fold in JavaScript, from the
-// same two arrays.
+// A table's idx and dat are the textures the shader reads (lnUniforms). lnFold is the same fold in JavaScript, from
+// the same two arrays.
 const LN_GRID = 768, LN_HALF = 2, LN_STEP = 0.006, LN_DEPTH = 9, LN_PTS = 96, LN_NONE = 65535, LN_WIDE = 1024;
 const LN_BIG = 0.12, LN_MID = 0.035;          // a line is of a big body, a middle-sized one or a small one by its widest half-width
 const LN_SLACK = 0.02;                        // how much nearer than the map's point a line's nearest point can be
-// LN.dat is a picture LN_WIDE wide. The points fill its upper rows (x, y, direction). The same places in its lower
-// rows hold the half-width there, the numbers of the first and the last point of the point's line, and the gap
-// between two points of that line.
-const LN = { key: '', ver: 0, on: false, count: 0, period: 0, why: '', idx: new Uint16Array(4).fill(LN_NONE), dat: new Float32Array(8 * LN_WIDE), rows: 1, g: 1 };
-const LN_GL = new WeakMap();                    // for each graphics context: its two textures and the version they hold
+// A table's dat is a picture LN_WIDE wide. The points fill its upper rows (x, y, direction). The same places in its
+// lower rows hold the half-width there, the numbers of the first and the last point of the point's line, and the
+// gap between two points of that line.
+const lnBlank = () => ({ key: '', ver: 0, on: false, count: 0, period: 0, why: '', idx: new Uint16Array(4).fill(LN_NONE), dat: new Float32Array(8 * LN_WIDE), rows: 1, g: 1 });
+const LN = { all: lnBlank(), mid: lnBlank() };  // a table for each entry: every body's line, and the middle body's alone
+const LN_GL = new WeakMap();                    // for each graphics context: its two textures, and the table and version they hold
 
 const lnStill = (x, y, cx, cy, n) => {          // does the flat orbit stay within reach for n steps
   for (let i = 0; i < n; i++) { const t = x * x - y * y + cx; y = 2 * x * y + cy; x = t; if (x * x + y * y > 16) return false; }
@@ -1493,8 +1497,9 @@ function lnGap(z, q) {                           // how near a curve comes to th
   }
   return best;
 }
-// The lines for c: a list of curves, or a word for why there are none.
-function lnCurves(cx, cy) {
+// The lines for c: a list of curves, or a word for why there are none. depth: how many steps back from the middle
+// body's line (0: that line alone).
+function lnCurves(cx, cy, depth) {
   const cyc = lnCycle(cx, cy);
   if (!cyc) return 'no cycle';
   const root = lnRoot(cx, cy, cyc);
@@ -1515,7 +1520,7 @@ function lnCurves(cx, cy) {
   for (let i = 0; i < LN_PTS; i++) { first[2 * LN_PTS + 2 * i] = -a0[2 * (LN_PTS - 1 - i)]; first[2 * LN_PTS + 2 * i + 1] = -a0[2 * (LN_PTS - 1 - i) + 1]; }
   const out = [first];
   let front = [{ z: first, body: 0 }];            // body: which body of the cycle the line belongs to, or -1
-  for (let lev = 1; lev <= LN_DEPTH && front.length; lev++) {
+  for (let lev = 1; lev <= depth && front.length; lev++) {
     const next = [];
     for (const line of front) {
       if (line.body === 1 % p) continue;
@@ -1568,9 +1573,9 @@ function lnNearest(seed, G) {
   }
   return out;
 }
-// The lines for c as the two arrays the shader reads. Returns why not, or ''.
-function lnBuild(cx, cy) {
-  const curves = lnCurves(cx, cy);
+// The lines for c as the two arrays the shader reads, put into the table T. Returns why not, or ''.
+function lnBuild(T, cx, cy, depth) {
+  const curves = lnCurves(cx, cy, depth);
   if (typeof curves === 'string') return curves;
   const pts = [], size = [];                    // for each point: x, y, direction x and y, half-width, first and last point of its line, gap; size: 0 big, 1 middle, 2 small
   for (const z of curves) {
@@ -1615,7 +1620,7 @@ function lnBuild(cx, cy) {
     const near = lnNearest(seed, G);
     for (let j = 0; j < G * G; j++) idx[4 * j + k] = near[j];
   }
-  LN.idx = idx; LN.dat = dat; LN.rows = rows; LN.g = G; LN.count = curves.length; LN.period = curves.period;
+  T.idx = idx; T.dat = dat; T.rows = rows; T.g = G; T.count = curves.length; T.period = curves.period;
   return '';
 }
 // The lines the picture on show is drawn with. They belong to a Julia set of z² + c, so any other picture has none.
@@ -1626,20 +1631,23 @@ const LN_WHY = {
   mandelbrot: 'In the Mandelbrot picture every point has its own c, so there is no one set of lines: the picture is Sphere inversions, one plane.',
   other: 'The lines are those of z² + c with nothing folded or flipped. With this equation, power or modifier the picture is Sphere inversions, one plane.',
 };
-function lnTable() {
+// mid: the table of the middle body's line alone.
+function lnTable(mid) {
+  const T = mid ? LN.mid : LN.all;
   const plain = S.n === 2 && String(S.eq).replace(/\s+/g, '') === 'z^n+c' && !S.abs.some(Boolean) && !S.flip.some(Boolean);
   const key = S.mode !== 'j' ? 'mandelbrot' : !plain ? 'other' : S.c[0] + ',' + S.c[1];
-  if (key === LN.key) return LN;
-  LN.key = key; LN.ver++;
-  const why = key === 'mandelbrot' || key === 'other' ? key : lnBuild(S.c[0], S.c[1]);
-  LN.on = !why; LN.why = why;
-  if (why) { LN.idx = new Uint16Array(4).fill(LN_NONE); LN.dat = new Float32Array(8 * LN_WIDE); LN.rows = 1; LN.g = 1; LN.count = 0; LN.period = 0; }
-  return LN;
+  if (key === T.key) return T;
+  const ver = T.ver + 1, why = key === 'mandelbrot' || key === 'other' ? key : lnBuild(T, S.c[0], S.c[1], mid ? 0 : LN_DEPTH);
+  if (why) Object.assign(T, lnBlank());
+  T.key = key; T.ver = ver; T.on = !why; T.why = why;
+  return T;
 }
-// What the entry says about the picture on show.
-function lnSays() {
-  const T = lnTable();
-  return T.on ? `For this c: a cycle of ${T.period} ${T.period === 1 ? 'body' : 'bodies'}, and ${T.count} ${T.count === 1 ? 'line' : 'lines'}.` : LN_WHY[T.why];
+// What an entry says about the picture on show.
+function lnSays(mid) {
+  const T = lnTable(mid);
+  if (!T.on) return LN_WHY[T.why];
+  const cycle = `For this c: a cycle of ${T.period} ${T.period === 1 ? 'body' : 'bodies'}`;
+  return mid ? cycle + ', folded about the line of the one that holds 0.' : cycle + `, and ${T.count} ${T.count === 1 ? 'line' : 'lines'}.`;
 }
 const lnReach = q => clamp(q && isFinite(+q.reach) ? +q.reach : 1.6, 0.5, 4);
 // The fold about the line that holds the point number i, in JavaScript: the shader's lnAbout line for line.
@@ -1674,9 +1682,10 @@ function lnAbout(T, v, i, most, q) {
   const g = 0.5 * PI - ang;
   return [fx + ux * rho * Math.cos(g), fy + uy * rho * Math.cos(g), (v[2] < 0 ? -1 : 1) * rho * Math.sin(g)];
 }
-// The whole fold: about a big body's line, then a middle-sized body's, then a small one's.
-function lnFold(v, q) {
-  const T = lnTable();
+// The whole fold: about a big body's line, then a middle-sized body's, then a small one's. mid: about the middle
+// body's line alone.
+function lnFold(v, q, mid) {
+  const T = lnTable(mid);
   if (!T.on || v[2] === 0) return v;
   const G = T.g, reach = lnReach(q);
   for (let k = 0; k < 3; k++) {
@@ -1688,12 +1697,12 @@ function lnFold(v, q) {
   return v;
 }
 // Hands the map and the points to the shader, as two textures on the units 2 and 3 (the display uses 0 and 1).
-function lnUniforms(gl, loc) {
-  const T = lnTable();
+function lnUniforms(gl, loc, mid) {
+  const T = lnTable(mid);
   let t = LN_GL.get(gl);
   gl.activeTexture(gl.TEXTURE2);
   if (!t || !gl.isTexture(t.idx)) {
-    t = { idx: gl.createTexture(), dat: gl.createTexture(), ver: -1 };
+    t = { idx: gl.createTexture(), dat: gl.createTexture(), of: null, ver: -1 };
     for (const tex of [t.idx, t.dat]) {
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -1701,12 +1710,12 @@ function lnUniforms(gl, loc) {
     }
     LN_GL.set(gl, t);
   }
-  const fresh = t.ver !== T.ver;
+  const fresh = t.of !== T || t.ver !== T.ver;
   gl.bindTexture(gl.TEXTURE_2D, t.idx);
   if (fresh) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16UI, T.g, T.g, 0, gl.RGBA_INTEGER, gl.UNSIGNED_SHORT, T.idx);
   gl.activeTexture(gl.TEXTURE3); gl.bindTexture(gl.TEXTURE_2D, t.dat);
   if (fresh) gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, LN_WIDE, 2 * T.rows, 0, gl.RGBA, gl.FLOAT, T.dat);
-  t.ver = T.ver;
+  t.of = T; t.ver = T.ver;
   gl.activeTexture(gl.TEXTURE0);
   gl.uniform1i(loc('uLnIdx'), 2); gl.uniform1i(loc('uLnDat'), 3);
   gl.uniform4f(loc('uLn'), T.g, T.rows, 0, T.on ? 1 : 0);
@@ -2386,6 +2395,7 @@ const MATH = {
     return MATH.mercator(foldk(v, Math.max(2, q.planes || 2)), n, { lift: q.lift });
   },
   ownlines(v, n, q = {}) { return tpOne(lnFold(v, q), n); },
+  midline(v, n, q = {}) { return tpOne(lnFold(v, q, true), n); },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -3858,7 +3868,12 @@ const F4K_SMOOTH = 'One formula with no fold, no mirror and no seam. It is not a
 const OL_TAG = 'For Julia sets at the power 2. Every body of the flat set has a line of its own, through its middle. Sphere inversions, two planes folds everything about the x-axis; here each body is folded about its own line, so the buds on a body’s sides also stand on its top and underneath. The Douady rabbit stays a rabbit.';
 const OL_NOTE = 'How it works: for the chosen c the page first finds a line for every body: through the body’s middle, from the point where it hangs on its parent to the point opposite. A point within reach of a line is mirrored in the plane that stands at 45° on that line, as Sphere inversions, two planes mirrors it on the x-axis: about a big body’s line first, then a middle-sized body’s, then a small one’s. Then the one-plane rule squares it. A point in reach of no line takes the one-plane rule as it stands.';
 const OL_HELP_REACH = 'How far from a body’s line a point is still folded about it, counted in the body’s half-width at that place. At 1 only the body itself is in reach. 1.6, where the dial starts, takes in the buds on its sides. The number was picked by eye: nothing in the flat rule gives it. Too small cuts the buds off the tops. Too large leaves more loose specks round the bodies.';
-const OL_HELP_WALL ='What stands upright over a body’s line. Each side on its own side: what Sphere inversions, two planes does over the x-axis. The other choice lays the wall over in one piece, so top and underneath differ wherever the two sides of the line differ.';
+// Texts of Two planes, about the middle body's own line
+const ML_TAG = 'For Julia sets at the power 2. Sphere inversions, two planes folds everything about the x-axis, which is the Basilica’s own line. Here the fold is about the line of the middle body of the set on show, and only within that body’s reach. The squaring lays every other body onto the middle body sooner or later, so the buds come up on the tops of all of them. The Douady rabbit stays a rabbit.';
+const ML_NOTE = 'How it works: for the chosen c the page finds the line of the middle body, the body that holds the point 0: from the pinch point where it hangs on the others, through its middle, to the point opposite. A point within reach of that line is mirrored in the plane that stands at 45° on it. Then the one-plane rule squares it. Nothing else is folded: a point over another body is carried onto the middle body by the squaring, and is folded there.';
+const ML_HELP_REACH = 'How far from the middle body’s line a point is still folded about it, counted in the body’s half-width at that place. At 1 only the body itself is in reach. 1.6, where the dial starts, takes in the buds on its sides. The number was picked by eye: nothing in the flat rule gives it. Too small cuts the buds off the tops. Too large leaves more loose specks round the bodies.';
+const ML_ABOUT = 'Two planes, about every body’s own line folds each body about a line of its own, and its skin is covered in fine dark scratches. Here there is one fold, about the middle body’s line, and the squaring carries it to every other body, as it carries the fold about the x-axis along the Basilica. The same buds stand on the tops, and the skin has far fewer scratches. Where it falls short: the bodies have corners at 45° round their lines. The fold stops where its reach ends. At few iterations the bodies are still joined by thick necks, the folded skin and the skin of a neck do not meet there, and a crack shows beside every pinch point: it closes as the iterations go up. The reach is a number picked by eye. A set with no bodies, like the Dendrite, has no such line, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
+const OL_HELP_WALL = 'What stands upright over a body’s line. Each side on its own side: what Sphere inversions, two planes does over the x-axis. The other choice lays the wall over in one piece, so top and underneath differ wherever the two sides of the line differ.';
 const OL_ABOUT = 'Sphere inversions, two planes gives the Basilica buds on the tops of its bodies, because its bodies lie along the x-axis and the fold is about that axis. The rabbit’s bodies point other ways, and that rule tears it. But every body has a line of its own, which the flat rule lays onto the line of the body it lands on: for the Basilica the lines of the big bodies make up the x-axis. Folding each body about its own line is the same rule for the Basilica, and for the rabbit it gives a whole rabbit with buds on the tops of its bodies. Where it falls short: round each line the body has corners at 45°, the creases of two planes. A seam shows where the reach of a fold ends, with loose specks beside it, and the reach is a number picked by eye. A set with no bodies, like the Dendrite, has no lines, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
 const f4kFormula = p => {
   const cap = smDial(p, 'cap', F4K_CAP, 0, F4K_CAP_MOST), rot = smDial(p, 'rot', F4K_ROT, -360, 360);
@@ -3979,6 +3994,25 @@ const APPROACHES = [
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed. Space is creased on the mirrors instead.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', 'Pieces of the one-plane rule joined by mirrors that stand on the lines. The mirrors leave creases, and the rule jumps where the reach of a line ends and where the reach of one line meets that of another.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: a point on it is never folded, so that slice is the flat set.'),
+  },
+  {
+    // The same fold as the entry before it, about one line: that of the body that holds 0.
+    id: 'midline', name: 'Two planes, about the middle body’s own line', group: 'inversions', glsl: GL_OWNLINES, axis: () => [0, 0, 1],
+    uniforms: (gl, loc) => lnUniforms(gl, loc, true),
+    tag: ML_TAG,
+    params: [
+      { type: 'note', text: ML_NOTE },
+      { type: 'dial', key: 'reach', label: 'Reach of the fold, in half-widths of the body', min: 1, max: 2.5, step: 0.05, def: 1.6, help: ML_HELP_REACH },
+      { type: 'select', key: 'wall', label: 'The wall over the line shows', def: 0, options: [[0, 'Each side of the line, on its own side'], [1, 'The right side on top, the left side underneath']], help: OL_HELP_WALL },
+    ],
+    // lnSays works the line out, so it is asked only while this entry is the one on show
+    formula: (p, n) => aprMercFormula(n) + ` Before that, a point no further from the middle body’s own line than ${aprNum(lnReach(p))} times the body’s half-width there is mirrored in the plane that stands at 45° on that line.` + (ap().id === 'midline' ? ' ' + lnSays(true) : ''),
+    about: ML_ABOUT,
+    roundNote: () => 'This card measures one squaring of the points round the middle, with the line of the c on show. Each piece keeps circles on the sphere as circles. The mirror leaves creases between the pieces.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed. Space is creased on the mirror instead.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
+      : ['no', 'The one-plane rule with a mirror on the middle body’s line before it. The mirror leaves creases, and the rule jumps where the reach of the line ends and over the line itself, where the two sides of the body meet.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: a point on it is never folded, so that slice is the flat set.'),
   },
   {

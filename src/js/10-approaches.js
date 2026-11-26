@@ -671,6 +671,7 @@ const MATH = {
     return MATH.mercator(foldk(v, Math.max(2, q.planes || 2)), n, { lift: q.lift });
   },
   ownlines(v, n, q = {}) { return tpOne(lnFold(v, q), n); },
+  midline(v, n, q = {}) { return tpOne(lnFold(v, q, true), n); },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -2143,7 +2144,12 @@ const F4K_SMOOTH = 'One formula with no fold, no mirror and no seam. It is not a
 const OL_TAG = 'For Julia sets at the power 2. Every body of the flat set has a line of its own, through its middle. Sphere inversions, two planes folds everything about the x-axis; here each body is folded about its own line, so the buds on a body’s sides also stand on its top and underneath. The Douady rabbit stays a rabbit.';
 const OL_NOTE = 'How it works: for the chosen c the page first finds a line for every body: through the body’s middle, from the point where it hangs on its parent to the point opposite. A point within reach of a line is mirrored in the plane that stands at 45° on that line, as Sphere inversions, two planes mirrors it on the x-axis: about a big body’s line first, then a middle-sized body’s, then a small one’s. Then the one-plane rule squares it. A point in reach of no line takes the one-plane rule as it stands.';
 const OL_HELP_REACH = 'How far from a body’s line a point is still folded about it, counted in the body’s half-width at that place. At 1 only the body itself is in reach. 1.6, where the dial starts, takes in the buds on its sides. The number was picked by eye: nothing in the flat rule gives it. Too small cuts the buds off the tops. Too large leaves more loose specks round the bodies.';
-const OL_HELP_WALL ='What stands upright over a body’s line. Each side on its own side: what Sphere inversions, two planes does over the x-axis. The other choice lays the wall over in one piece, so top and underneath differ wherever the two sides of the line differ.';
+// Texts of Two planes, about the middle body's own line
+const ML_TAG = 'For Julia sets at the power 2. Sphere inversions, two planes folds everything about the x-axis, which is the Basilica’s own line. Here the fold is about the line of the middle body of the set on show, and only within that body’s reach. The squaring lays every other body onto the middle body sooner or later, so the buds come up on the tops of all of them. The Douady rabbit stays a rabbit.';
+const ML_NOTE = 'How it works: for the chosen c the page finds the line of the middle body, the body that holds the point 0: from the pinch point where it hangs on the others, through its middle, to the point opposite. A point within reach of that line is mirrored in the plane that stands at 45° on it. Then the one-plane rule squares it. Nothing else is folded: a point over another body is carried onto the middle body by the squaring, and is folded there.';
+const ML_HELP_REACH = 'How far from the middle body’s line a point is still folded about it, counted in the body’s half-width at that place. At 1 only the body itself is in reach. 1.6, where the dial starts, takes in the buds on its sides. The number was picked by eye: nothing in the flat rule gives it. Too small cuts the buds off the tops. Too large leaves more loose specks round the bodies.';
+const ML_ABOUT = 'Two planes, about every body’s own line folds each body about a line of its own, and its skin is covered in fine dark scratches. Here there is one fold, about the middle body’s line, and the squaring carries it to every other body, as it carries the fold about the x-axis along the Basilica. The same buds stand on the tops, and the skin has far fewer scratches. Where it falls short: the bodies have corners at 45° round their lines. The fold stops where its reach ends. At few iterations the bodies are still joined by thick necks, the folded skin and the skin of a neck do not meet there, and a crack shows beside every pinch point: it closes as the iterations go up. The reach is a number picked by eye. A set with no bodies, like the Dendrite, has no such line, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
+const OL_HELP_WALL = 'What stands upright over a body’s line. Each side on its own side: what Sphere inversions, two planes does over the x-axis. The other choice lays the wall over in one piece, so top and underneath differ wherever the two sides of the line differ.';
 const OL_ABOUT = 'Sphere inversions, two planes gives the Basilica buds on the tops of its bodies, because its bodies lie along the x-axis and the fold is about that axis. The rabbit’s bodies point other ways, and that rule tears it. But every body has a line of its own, which the flat rule lays onto the line of the body it lands on: for the Basilica the lines of the big bodies make up the x-axis. Folding each body about its own line is the same rule for the Basilica, and for the rabbit it gives a whole rabbit with buds on the tops of its bodies. Where it falls short: round each line the body has corners at 45°, the creases of two planes. A seam shows where the reach of a fold ends, with loose specks beside it, and the reach is a number picked by eye. A set with no bodies, like the Dendrite, has no lines, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
 const f4kFormula = p => {
   const cap = smDial(p, 'cap', F4K_CAP, 0, F4K_CAP_MOST), rot = smDial(p, 'rot', F4K_ROT, -360, 360);
@@ -2264,6 +2270,25 @@ const APPROACHES = [
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed. Space is creased on the mirrors instead.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
       : ['no', 'Pieces of the one-plane rule joined by mirrors that stand on the lines. The mirrors leave creases, and the rule jumps where the reach of a line ends and where the reach of one line meets that of another.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: a point on it is never folded, so that slice is the flat set.'),
+  },
+  {
+    // The same fold as the entry before it, about one line: that of the body that holds 0.
+    id: 'midline', name: 'Two planes, about the middle body’s own line', group: 'inversions', glsl: GL_OWNLINES, axis: () => [0, 0, 1],
+    uniforms: (gl, loc) => lnUniforms(gl, loc, true),
+    tag: ML_TAG,
+    params: [
+      { type: 'note', text: ML_NOTE },
+      { type: 'dial', key: 'reach', label: 'Reach of the fold, in half-widths of the body', min: 1, max: 2.5, step: 0.05, def: 1.6, help: ML_HELP_REACH },
+      { type: 'select', key: 'wall', label: 'The wall over the line shows', def: 0, options: [[0, 'Each side of the line, on its own side'], [1, 'The right side on top, the left side underneath']], help: OL_HELP_WALL },
+    ],
+    // lnSays works the line out, so it is asked only while this entry is the one on show
+    formula: (p, n) => aprMercFormula(n) + ` Before that, a point no further from the middle body’s own line than ${aprNum(lnReach(p))} times the body’s half-width there is mirrored in the plane that stands at 45° on that line.` + (ap().id === 'midline' ? ' ' + lnSays(true) : ''),
+    about: ML_ABOUT,
+    roundNote: () => 'This card measures one squaring of the points round the middle, with the line of the c on show. Each piece keeps circles on the sphere as circles. The mirror leaves creases between the pieces.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Nothing but the origin is crushed. Space is creased on the mirror instead.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant()
+      : ['no', 'The one-plane rule with a mirror on the middle body’s line before it. The mirror leaves creases, and the rule jumps where the reach of the line ends and over the line itself, where the two sides of the body meet.' + aprTear(n, APR_HALF)]),
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly: a point on it is never folded, so that slice is the flat set.'),
   },
   {

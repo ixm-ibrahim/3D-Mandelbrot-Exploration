@@ -244,7 +244,8 @@ and "2d" means two planes.
 | Four to one, two planes alike | On the basilica the upright plane shows the flat picture point for point, with no crease, no fold and no mirror. Four buds round each body. | Between the two planes the skin is ribbed, swirled and hairy. The rabbit, the dendrite and Kokopelli are shreds on a shell. |
 | Four to one, caps flipped over | The dendrite and Kokopelli are trees in space, in one piece, with branches in every direction. The rabbit is one bushy piece with lobes off the plane. No crease, no fold, no mirror. | The basilica is one lump. Every skin is rough and spiky. |
 | Four to one, caps placed by c | The basilica and San Marco are a row of bodies with one more above and one below the middle body. The dendrite and Kokopelli are trees in space, and the rabbit is one piece with bodies in several directions. | The rotation of c was fitted by hand. The basilica's two extra bodies lean to one side of the x-axis. A c below the x-axis gives a lump and not the mirror image, so the Mandelbrot solid is lopsided. The airplane is dust. Every skin is rough and striped. |
-| Two planes, about every body's own line | The rabbit stays a rabbit, in one piece, with buds on the tops and the undersides of its bodies: "it certainly looks better than every other approach". The basilica as under *two planes*. | Corners at 45 degrees round each line. A seam where the reach of a fold ends, with loose specks beside it, and the reach is a number picked by eye. Julia sets only, and only those with bodies. |
+| Two planes, about every body's own line | The rabbit stays a rabbit, in one piece, with buds on the tops and the undersides of its bodies: "it certainly looks better than every other approach". The basilica as under *two planes*. | "there are these gaps in the fractal surface": cracks beside the pinch points at few iterations, and fine dark scratches all over the skin. Corners at 45 degrees round each line. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
+| Two planes, about the middle body's own line | One fold, about the middle body's line, and the squaring carries it to every other body. The same rabbit with the same buds on the tops, and far fewer scratches on its skin. The basilica as under *two planes*. | Cracks beside the pinch points at few iterations, closing as the iterations go up. Corners at 45 degrees. The reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -710,9 +711,26 @@ Not tried, or not finished.
     was picked by hand: at 1.2 the buds on the tops are cut off, and with no limit at all a column stands over
     every end of a line. A fold that leaves off bit by bit, its mirror standing up from 45 degrees to upright
     over the last part of the reach, ribs every body across its line and takes the buds off the tops.
-  - Reasoned, not checked in a drawing: along the top of a body the two sides of its line meet, each mirrored
-    from its own side. A body of the rabbit is not the same on both sides of its line, so the buds of the two
-    sides cannot match along the top.
+  - With the skin smooth: "yeah much better, but there are these gaps in the fractal surface now, and easier to
+    see on lower iterations actually".
+  - Where the rule tears, worked out point by point at a fixed height: straight over every body's line, where
+    the two sides of the body meet, and across each body near both its ends, where the reach of its fold ends.
+    Nowhere else.
+  - The gaps at few iterations. The bodies are then still joined by thick necks. The reach is measured on the
+    finished set and comes to nothing at a pinch point, so it ends inside the neck: the folded skin and the skin
+    of the neck stand at different heights there, and a crack opens. At 14 iterations it is plain, at 24 the
+    necks have all but closed, at 60 it is gone. A reach that does not come to nothing at a pinch point puts a
+    spire on it, because square to one body's line at a pinch point lie the bodies beside it.
+  - The two sides of a body. Measured along its line, the rabbit's middle body is the same on both sides to
+    within 4 parts in 100, an ear to within about 10. So the skin steps a little along the top of each body.
+  - Drawn, and no help against the gaps: the mirror standing up towards the two ends of a line (the cracks
+    stay); the mirror also standing up across the reach near a pinch point (ribs again); each side of a line
+    measured in its own width, so that both come up to the same height (the scratches stay).
+  - One fold is enough. With the middle body's line alone, the body that holds 0, every body still has its buds
+    on top: the squaring lays every other body onto the middle body sooner or later and carries the fold to it,
+    as it carries the fold about the x-axis along the basilica. The skin then has far fewer scratches and the
+    buds are less torn. In the lab as *Two planes, about the middle body's own line*. The cracks at few
+    iterations are the same.
   - The wall over a line can be laid over in two ways: each side of the line kept on its side, as *two planes*
     does, or the whole wall as one, the right side on top and the left side underneath (the clue). On the
     rabbit the two differ little.

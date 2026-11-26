@@ -41,10 +41,10 @@ come closest and what is known not to work. No rule passes yet.
   full grid, level sheets, shells) and how far out; what their colours say; whose orbits are drawn; and whether
   new dots come in for those thrown out. A rule can be saved under a name and loaded again, and the Mandelbrot
   and the Julia picture stand side by side, or the one that is chosen stands alone.
-  Every approach of the list but one can be loaded as steps (`13-custom-rules.js`), each giving that approach's
+  Every approach of the list but two can be loaded as steps (`13-custom-rules.js`), each giving that approach's
   own numbers, and its own picture with the bailout radius at 64. Two approaches draw their picture from several
-  orbits at once, and their steps follow one of those orbits. The one left out folds about the lines of the Julia
-  set on show, which steps cannot read;
+  orbits at once, and their steps follow one of those orbits. The two left out fold about lines of the Julia set
+  on show, which steps cannot read;
 - a 3D view and a 2D view (the flat cut), cuts, colours, presets, and export of pictures and 3D models. On a wide
   window the picture's lower and right edges can be dragged to set its size. The camera takes the picture's new
   shape, so nothing is stretched, and the room that is freed goes to the controls, or in the custom approach to
@@ -80,7 +80,7 @@ picture, and saves screenshots. The tools need Chrome or Edge and nothing else.
 All JavaScript files are joined into one function scope in file-name order, so the number at the front of a file
 name is its place in the page. Only `90-boot.js` runs code when the page loads. Each 3D rule is one entry in
 `src/js/10-approaches.js`. `09-lines.js` finds, for the Julia set on show, the line through the middle of each of
-its bodies, for the one entry that folds about those lines. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
+its bodies, for the two entries that fold about such lines. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.26. Each version is tagged, as `v1.26`.
+This is version 1.27. Each version is tagged, as `v1.27`.
