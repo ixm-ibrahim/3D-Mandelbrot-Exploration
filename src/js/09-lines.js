@@ -16,17 +16,24 @@
 //      lines of the two bodies that land on its body. The body that holds c is the one body the rule lays two bodies
 //      onto at once, so its line is not taken back: that would lay a second line across the middle body.
 // Each line is then a row of points LN_STEP apart, each with the line's direction there and the body's half-width
-// (how far one can go square to the line, on the nearer side, before leaving the flat set).
+// (how far one can go square to the line, on the nearer side, before leaving the flat set). Both ends of a line lie
+// on the body's edge, so the half-width is nothing there, and it grows no faster than the line runs. Along a long
+// line it is evened out, since the fold ends where the reach does and an uneven reach leaves a ragged end.
 //
-// The shader cannot search the points, so it is handed a map (lnMap): for every cell of a grid over the flat plane,
-// the nearest point of a big body's line, of a middle-sized body's and of a small body's. A point high above a
-// small body lies outside that body's reach and inside a bigger one's, which is why there are three.
-// LN.idx holds the map (three point numbers a cell) and LN.dat the points (x, y, direction; half-width), both as
-// the textures the shader reads (lnUniforms). lnFold is the same fold in JavaScript, from the same two arrays.
+// The fold (lnAbout) wants the nearest point of a line, and the shader cannot search for it. It is handed a map
+// (LN.idx): for every cell of a grid over the flat plane, a point near the cell on a big body's line, on a
+// middle-sized body's and on a small body's. From that point it walks along the line to the point beside it and
+// drops onto the stretch between two points, so the foot moves without a jump as the point moves.
+// A point is folded about a big body's line first, then a middle-sized body's, then a small one's (lnFold), so a
+// point over a bud that the first fold lays beside a body is folded again about the bud's own line.
+// LN.idx and LN.dat are the textures the shader reads (lnUniforms). lnFold is the same fold in JavaScript, from the
+// same two arrays.
 const LN_GRID = 768, LN_HALF = 2, LN_STEP = 0.006, LN_DEPTH = 9, LN_PTS = 96, LN_NONE = 65535, LN_WIDE = 1024;
 const LN_BIG = 0.12, LN_MID = 0.035;          // a line is of a big body, a middle-sized one or a small one by its widest half-width
-// LN.dat is a picture LN_WIDE wide: the points fill its upper rows (x, y, direction), their half-widths the same
-// places in its lower rows.
+const LN_SLACK = 0.02;                        // how much nearer than the map's point a line's nearest point can be
+// LN.dat is a picture LN_WIDE wide. The points fill its upper rows (x, y, direction). The same places in its lower
+// rows hold the half-width there, the numbers of the first and the last point of the point's line, and the gap
+// between two points of that line.
 const LN = { key: '', ver: 0, on: false, count: 0, period: 0, why: '', idx: new Uint16Array(4).fill(LN_NONE), dat: new Float32Array(8 * LN_WIDE), rows: 1, g: 1 };
 const LN_GL = new WeakMap();                    // for each graphics context: its two textures and the version they hold
 
@@ -211,35 +218,43 @@ function lnNearest(seed, G) {
 function lnBuild(cx, cy) {
   const curves = lnCurves(cx, cy);
   if (typeof curves === 'string') return curves;
-  const pts = [], size = [];                    // x, y, direction x, direction y, half-width for each point; size: 0 big, 1 middle, 2 small
+  const pts = [], size = [];                    // for each point: x, y, direction x and y, half-width, first and last point of its line, gap; size: 0 big, 1 middle, 2 small
   for (const z of curves) {
-    const l = lnLength(z), m = Math.max(4, Math.round(l / LN_STEP) + 1), s = lnResample(z, m), at = pts.length / 5;
-    let widest = 0;
+    const l = lnLength(z), m = Math.max(4, Math.round(l / LN_STEP) + 1), s = lnResample(z, m), at = pts.length / 8, gap = l / (m - 1);
+    const dir = new Float64Array(2 * m), wide = new Float64Array(m);
     for (let i = 0; i < m; i++) {
       const a = Math.max(i - 1, 0), b = Math.min(i + 1, m - 1), tx = s[2 * b] - s[2 * a], ty = s[2 * b + 1] - s[2 * a + 1], tl = Math.hypot(tx, ty) || 1;
-      const x = s[2 * i], y = s[2 * i + 1], dx = tx / tl, dy = ty / tl;
-      let wide = Infinity;
+      const x = s[2 * i], y = s[2 * i + 1], dx = dir[2 * i] = tx / tl, dy = dir[2 * i + 1] = ty / tl;
+      if (!i || i === m - 1) continue;          // an end of the line: on the body's edge
+      wide[i] = Infinity;
       for (const side of [1, -1]) {             // out along the line's square, until the flat set ends
         let far = 0.004;
         while (far < 2 && lnStill(x - side * far * dy, y + side * far * dx, cx, cy, 150)) far *= 1.6;
         let lo = far > 0.004 ? far / 1.6 : 0, hi = far;
         for (let it = 0; it < 10; it++) { const mid = 0.5 * (lo + hi); if (lnStill(x - side * mid * dy, y + side * mid * dx, cx, cy, 150)) lo = mid; else hi = mid; }
-        wide = Math.min(wide, lo);
+        wide[i] = Math.min(wide[i], lo);
       }
-      pts.push(x, y, dx, dy, wide); widest = Math.max(widest, wide);
     }
-    for (let i = 0; i < m; i++) size[at + i] = widest > LN_BIG ? 0 : widest > LN_MID ? 1 : 2;
+    // no faster than the line runs: that also drops a width measured through a gap too thin to see into the next body
+    for (let i = 1; i < m; i++) wide[i] = Math.min(wide[i], wide[i - 1] + gap);
+    for (let i = m - 2; i >= 0; i--) wide[i] = Math.min(wide[i], wide[i + 1] + gap);
+    for (let pass = Math.min(m >> 4, 8); pass > 0; pass--) {      // evened out, the ends staying where they are
+      let before = wide[0];
+      for (let i = 1; i < m - 1; i++) { const here = wide[i]; wide[i] = 0.25 * (before + 2 * here + wide[i + 1]); before = here; }
+    }
+    const widest = Math.max(...wide);
+    for (let i = 0; i < m; i++) { pts.push(s[2 * i], s[2 * i + 1], dir[2 * i], dir[2 * i + 1], wide[i], at, at + m - 1, gap); size[at + i] = widest > LN_BIG ? 0 : widest > LN_MID ? 1 : 2; }
   }
-  const n = pts.length / 5;
+  const n = pts.length / 8;
   if (!n || n >= LN_NONE) return 'no lines';
   const G = LN_GRID, rows = Math.ceil(n / LN_WIDE), idx = new Uint16Array(4 * G * G).fill(LN_NONE), dat = new Float32Array(8 * rows * LN_WIDE);
-  for (let i = 0; i < n; i++) { dat.set([pts[5 * i], pts[5 * i + 1], pts[5 * i + 2], pts[5 * i + 3]], 4 * i); dat[4 * (rows * LN_WIDE + i)] = pts[5 * i + 4]; }
+  for (let i = 0; i < n; i++) { dat.set(pts.slice(8 * i, 8 * i + 4), 4 * i); dat.set(pts.slice(8 * i + 4, 8 * i + 8), 4 * (rows * LN_WIDE + i)); }
   for (let k = 0; k < 3; k++) {
     const seed = new Uint16Array(G * G).fill(LN_NONE);
     let any = false;
     for (let i = 0; i < n; i++) {
       if (size[i] !== k) continue;
-      const gx = Math.floor((pts[5 * i] + LN_HALF) / (2 * LN_HALF) * G), gy = Math.floor((pts[5 * i + 1] + LN_HALF) / (2 * LN_HALF) * G);
+      const gx = Math.floor((pts[8 * i] + LN_HALF) / (2 * LN_HALF) * G), gy = Math.floor((pts[8 * i + 1] + LN_HALF) / (2 * LN_HALF) * G);
       if (gx >= 0 && gy >= 0 && gx < G && gy < G) { seed[gy * G + gx] = i; any = true; }
     }
     if (!any) continue;
@@ -273,31 +288,50 @@ function lnSays() {
   return T.on ? `For this c: a cycle of ${T.period} ${T.period === 1 ? 'body' : 'bodies'}, and ${T.count} ${T.count === 1 ? 'line' : 'lines'}.` : LN_WHY[T.why];
 }
 const lnReach = q => clamp(q && isFinite(+q.reach) ? +q.reach : 1.6, 0.5, 4);
-// The fold, in JavaScript: the shader's lnFold line for line.
+// The fold about the line that holds the point number i, in JavaScript: the shader's lnAbout line for line.
+// A point v within reach of the line is mirrored in the plane that stands at 45° on it.
+function lnAbout(T, v, i, most, q) {
+  const d = T.dat, low = 4 * T.rows * LN_WIDE;
+  if (Math.hypot(v[0] - d[4 * i], v[1] - d[4 * i + 1], v[2]) > most) return v;
+  const a = d[low + 4 * i + 1], b = d[low + 4 * i + 2], gap = d[low + 4 * i + 3];
+  for (let k = 0; k < 2; k++) {                 // along the line to the point beside v
+    const j = clamp(i + Math.floor(((v[0] - d[4 * i]) * d[4 * i + 2] + (v[1] - d[4 * i + 1]) * d[4 * i + 3]) / gap + 0.5), a, b);
+    if (j === i) break;
+    i = j;
+  }
+  const px = d[4 * i], py = d[4 * i + 1], tx = d[4 * i + 2], ty = d[4 * i + 3];
+  const j = clamp(i + ((v[0] - px) * tx + (v[1] - py) * ty < 0 ? -1 : 1), a, b);
+  let fx = px, fy = py, wide = d[low + 4 * i];
+  if (j !== i) {                                // onto the stretch between two points
+    const ex = d[4 * j] - px, ey = d[4 * j + 1] - py, t = clamp(((v[0] - px) * ex + (v[1] - py) * ey) / Math.max(ex * ex + ey * ey, 1e-12), 0, 1);
+    fx = px + t * ex; fy = py + t * ey; wide += t * (d[low + 4 * j] - wide);
+  }
+  const ox = v[0] - fx, oy = v[1] - fy, nx = -ty, ny = tx;
+  const dist = Math.hypot(ox, oy), rho = Math.hypot(dist, v[2]), share = rho / Math.max(lnReach(q) * wide, 1e-9);
+  if (share >= 1) return v;
+  const ux = dist > 0 ? ox / dist : nx, uy = dist > 0 ? oy / dist : ny;
+  if (q && +q.wall > 0.5) {
+    if (Math.abs(v[2]) <= dist) return v;
+    const side = ox * nx + oy * ny < 0 ? -1 : 1;
+    return [fx + v[2] * side * ux, fy + v[2] * side * uy, side * dist];
+  }
+  const ang = Math.atan2(Math.abs(v[2]), dist);
+  if (ang <= 0.25 * PI) return v;
+  const g = 0.5 * PI - ang;
+  return [fx + ux * rho * Math.cos(g), fy + uy * rho * Math.cos(g), (v[2] < 0 ? -1 : 1) * rho * Math.sin(g)];
+}
+// The whole fold: about a big body's line, then a middle-sized body's, then a small one's.
 function lnFold(v, q) {
   const T = lnTable();
   if (!T.on || v[2] === 0) return v;
-  const G = T.g, gx = Math.floor((v[0] + LN_HALF) / (2 * LN_HALF) * G), gy = Math.floor((v[1] + LN_HALF) / (2 * LN_HALF) * G);
-  if (!(gx >= 0 && gy >= 0 && gx < G && gy < G)) return v;
-  const reach = lnReach(q), slack = LN_STEP + 2 * (2 * LN_HALF / G), d = T.dat;
-  let best = 1, hit = false, sx = 0, sy = 0, qx = 0, qy = 0, nx = 0, ny = 0;
+  const G = T.g, reach = lnReach(q);
   for (let k = 0; k < 3; k++) {
+    const gx = Math.floor((v[0] + LN_HALF) / (2 * LN_HALF) * G), gy = Math.floor((v[1] + LN_HALF) / (2 * LN_HALF) * G);
+    if (!(gx >= 0 && gy >= 0 && gx < G && gy < G)) return v;
     const i = T.idx[4 * (gy * G + gx) + k];
-    if (i === LN_NONE) continue;
-    const tx = d[4 * i + 2], ty = d[4 * i + 3], along = clamp((v[0] - d[4 * i]) * tx + (v[1] - d[4 * i + 1]) * ty, -slack, slack);
-    const fx = d[4 * i] + along * tx, fy = d[4 * i + 1] + along * ty, ox = v[0] - fx, oy = v[1] - fy;
-    const share = Math.hypot(ox, oy, v[2]) / Math.max(reach * d[4 * (T.rows * LN_WIDE + i)], 1e-9);
-    if (share <= best) { best = share; hit = true; sx = fx; sy = fy; qx = ox; qy = oy; nx = -ty; ny = tx; }
+    if (i !== LN_NONE) v = lnAbout(T, v, i, k ? reach * (k === 1 ? LN_BIG : LN_MID) + LN_SLACK : Infinity, q);
   }
-  if (!hit) return v;
-  const dist = Math.hypot(qx, qy), ux = dist > 0 ? qx / dist : nx, uy = dist > 0 ? qy / dist : ny;
-  if (q && +q.wall > 0.5) {
-    if (Math.abs(v[2]) <= dist) return v;
-    const side = qx * nx + qy * ny < 0 ? -1 : 1;
-    return [sx + v[2] * side * ux, sy + v[2] * side * uy, side * dist];
-  }
-  const a = Math.atan2(Math.abs(v[2]), dist), g = 0.25 * PI - Math.abs(a - 0.25 * PI), rho = Math.hypot(dist, v[2]);
-  return [sx + ux * rho * Math.cos(g), sy + uy * rho * Math.sin(g), (v[2] < 0 ? -1 : 1) * rho * Math.sin(g)];
+  return v;
 }
 // Hands the map and the points to the shader, as two textures on the units 2 and 3 (the display uses 0 and 1).
 function lnUniforms(gl, loc) {
@@ -321,5 +355,5 @@ function lnUniforms(gl, loc) {
   t.ver = T.ver;
   gl.activeTexture(gl.TEXTURE0);
   gl.uniform1i(loc('uLnIdx'), 2); gl.uniform1i(loc('uLnDat'), 3);
-  gl.uniform4f(loc('uLn'), T.g, T.rows, LN_STEP + 2 * (2 * LN_HALF / LN_GRID), T.on ? 1 : 0);
+  gl.uniform4f(loc('uLn'), T.g, T.rows, 0, T.on ? 1 : 0);
 }

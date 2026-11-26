@@ -83,4 +83,4 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 its bodies, for the one entry that folds about those lines. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.25. Each version is tagged, as `v1.25`.
+This is version 1.26. Each version is tagged, as `v1.26`.

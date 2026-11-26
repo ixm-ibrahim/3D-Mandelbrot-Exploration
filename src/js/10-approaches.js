@@ -1022,40 +1022,57 @@ float aprLift(){ return 0.0; }` + GL_MERC_CORE;
 // the one-plane power with no turn and no lift; at n = 2 the closed form (the twin of the JavaScript tpOne)
 const GL_TP_ONE = `
 vec3 tpOne(vec3 v, float n){ return n == 2.0 ? aprMsq(v) : aprMpw(v, n); }`;
-// Two planes, about every body's own line (see 09-lines.js, whose lnFold this is line for line). uLnIdx: for each
-// cell of a grid over the flat plane, the numbers of the nearest point of a big, a middle-sized and a small body's
-// line. uLnDat: the points (x, y, direction) and, the same place further down, the body's half-width there.
-// uLn: the grid's width in cells, the rows of points, how far along its line a foot may lie from its point, and 1
-// when the picture has lines. uA.x: the reach. uA.y: 1 lays the wall over a line in one piece.
+// Two planes, about every body's own line (see 09-lines.js, whose lnAbout and lnFold these are line for line).
+// uLnIdx: for each cell of a grid over the flat plane, the number of a point near it on a big, a middle-sized and a
+// small body's line. uLnDat: the points (x, y, direction) and, the same place further down, the body's half-width
+// there, the first and the last point of the point's line and the gap between its points.
+// uLn: the grid's width in cells, the rows of points, nothing, and 1 when the picture has lines.
+// uA.x: the reach. uA.y: 1 lays the wall over a line in one piece.
 const GL_OWNLINES = GL_APR + GL_MERC_PLAIN + `
 precision highp usampler2D;
 uniform usampler2D uLnIdx; uniform sampler2D uLnDat; uniform vec4 uLn;
-vec3 lnFold(vec3 v){
-  if (uLn.w < 0.5 || v.z == 0.0) return v;
-  vec2 cell = (v.xy + ${LN_HALF}.0) * (uLn.x / ${2 * LN_HALF}.0);
-  if (cell.x < 0.0 || cell.y < 0.0 || cell.x >= uLn.x || cell.y >= uLn.x) return v;
-  uvec4 id = texelFetch(uLnIdx, ivec2(cell), 0);
-  float reach = clamp(uA.x, 0.5, 4.0), best = 1.0;
-  bool hit = false; vec2 S = vec2(0.0), Q = vec2(0.0), NR = vec2(0.0);
-  for (int k = 0; k < 3; k++){
-    int i = int(k == 0 ? id.x : k == 1 ? id.y : id.z);
-    if (i == ${LN_NONE}) continue;
-    ivec2 at = ivec2(i % ${LN_WIDE}, i / ${LN_WIDE});
-    vec4 pt = texelFetch(uLnDat, at, 0);
-    float wide = texelFetch(uLnDat, at + ivec2(0, int(uLn.y)), 0).x;
-    vec2 foot = pt.xy + clamp(dot(v.xy - pt.xy, pt.zw), -uLn.z, uLn.z) * pt.zw, off = v.xy - foot;
-    float share = length(vec3(off, v.z)) / max(reach * wide, 1e-9);
-    if (share <= best){ best = share; hit = true; S = foot; Q = off; NR = vec2(-pt.w, pt.z); }
+vec4 lnPt(int i){ return texelFetch(uLnDat, ivec2(i % ${LN_WIDE}, i / ${LN_WIDE}), 0); }
+vec4 lnOf(int i){ return texelFetch(uLnDat, ivec2(i % ${LN_WIDE}, i / ${LN_WIDE} + int(uLn.y)), 0); }
+vec3 lnAbout(vec3 v, int i, float most){
+  vec4 pt = lnPt(i), ln = lnOf(i);
+  if (length(vec3(v.xy - pt.xy, v.z)) > most) return v;
+  int a = int(ln.y), b = int(ln.z);
+  for (int k = 0; k < 2; k++){
+    int j = clamp(i + int(floor(dot(v.xy - pt.xy, pt.zw) / ln.w + 0.5)), a, b);
+    if (j == i) break;
+    i = j; pt = lnPt(i);
   }
-  if (!hit) return v;
-  float dist = length(Q); vec2 u = dist > 0.0 ? Q / dist : NR;
+  int j = clamp(i + (dot(v.xy - pt.xy, pt.zw) < 0.0 ? -1 : 1), a, b);
+  vec2 foot = pt.xy; float wide = lnOf(i).x;
+  if (j != i){
+    vec2 e = lnPt(j).xy - pt.xy; float t = clamp(dot(v.xy - pt.xy, e) / max(dot(e, e), 1e-12), 0.0, 1.0);
+    foot += t * e; wide += t * (lnOf(j).x - wide);
+  }
+  vec2 off = v.xy - foot, nr = vec2(-pt.w, pt.z);
+  float dist = length(off), rho = length(vec2(dist, v.z)), share = rho / max(clamp(uA.x, 0.5, 4.0) * wide, 1e-9);
+  if (share >= 1.0) return v;
+  vec2 u = dist > 0.0 ? off / dist : nr;
   if (uA.y > 0.5){
     if (abs(v.z) <= dist) return v;
-    float side = dot(Q, NR) < 0.0 ? -1.0 : 1.0;
-    return vec3(S + v.z * side * u, side * dist);
+    float side = dot(off, nr) < 0.0 ? -1.0 : 1.0;
+    return vec3(foot + v.z * side * u, side * dist);
   }
-  float a = atan(abs(v.z), dist), g = 0.25 * PI - abs(a - 0.25 * PI), rho = length(vec2(dist, v.z));
-  return vec3(S + u * rho * cos(g), (v.z < 0.0 ? -1.0 : 1.0) * rho * sin(g));
+  float ang = atan(abs(v.z), dist);
+  if (ang <= 0.25 * PI) return v;
+  float g = 0.5 * PI - ang;
+  return vec3(foot + u * rho * cos(g), (v.z < 0.0 ? -1.0 : 1.0) * rho * sin(g));
+}
+vec3 lnFold(vec3 v){
+  if (uLn.w < 0.5 || v.z == 0.0) return v;
+  float reach = clamp(uA.x, 0.5, 4.0);
+  for (int k = 0; k < 3; k++){
+    vec2 cell = (v.xy + ${LN_HALF}.0) * (uLn.x / ${2 * LN_HALF}.0);
+    if (cell.x < 0.0 || cell.y < 0.0 || cell.x >= uLn.x || cell.y >= uLn.x) return v;
+    uvec4 id = texelFetch(uLnIdx, ivec2(cell), 0);
+    int i = int(k == 0 ? id.x : k == 1 ? id.y : id.z);
+    if (i != ${LN_NONE}) v = lnAbout(v, i, k == 0 ? 1e9 : reach * (k == 1 ? ${LN_BIG} : ${LN_MID}) + ${LN_SLACK});
+  }
+  return v;
 }
 vec3 mul(vec3 a, vec3 b){ return aprMmul(lnFold(a), lnFold(b)); }
 vec3 pw(vec3 a, float n){ return aprMpw(lnFold(a), n); }
@@ -2124,10 +2141,10 @@ const F4K_CRUSH = 'Nothing but the origin is sent to one point. At six direction
 const F4K_SMOOTH = 'One formula with no fold, no mirror and no seam. It is not a polynomial, and c stands inside the squaring step as well as after it.';
 // Texts of Two planes, about every body's own line
 const OL_TAG = 'For Julia sets at the power 2. Every body of the flat set has a line of its own, through its middle. Sphere inversions, two planes folds everything about the x-axis; here each body is folded about its own line, so the buds on a body’s sides also stand on its top and underneath. The Douady rabbit stays a rabbit.';
-const OL_NOTE = 'How it works: for the chosen c the page first finds a line for every body: through the body’s middle, from the point where it hangs on its parent to the point opposite. A point within reach of a line is mirrored in the plane that stands at 45° on that line, as Sphere inversions, two planes mirrors it on the x-axis. Then the one-plane rule squares it. A point in reach of no line takes the one-plane rule as it stands.';
-const OL_HELP_REACH = 'How far from a body’s line a point is still folded about it, counted in the body’s half-width at that place. At 1 only the body itself is in reach. 1.6, where the dial starts, takes in the buds on its sides. The number was picked by eye: nothing in the flat rule gives it. Too small cuts the buds off the tops. Too large lets columns stand over the ends of the lines.';
-const OL_HELP_WALL = 'What stands upright over a body’s line. Each side on its own side: what Sphere inversions, two planes does over the x-axis. The other choice lays the wall over in one piece, so top and underneath differ wherever the two sides of the line differ.';
-const OL_ABOUT = 'Sphere inversions, two planes gives the Basilica buds on the tops of its bodies, because its bodies lie along the x-axis and the fold is about that axis. The rabbit’s bodies point other ways, and that rule tears it. But every body has a line of its own, which the flat rule lays onto the line of the body it lands on: for the Basilica the lines of the big bodies make up the x-axis. Folding each body about its own line is the same rule for the Basilica, and for the rabbit it gives a whole rabbit with buds on the tops of its bodies. Where it falls short: round each line the body has corners at 45°, the creases of two planes. A seam shows where the reach of a fold ends, and the reach is a number picked by eye. A set with no bodies, like the Dendrite, has no lines, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
+const OL_NOTE = 'How it works: for the chosen c the page first finds a line for every body: through the body’s middle, from the point where it hangs on its parent to the point opposite. A point within reach of a line is mirrored in the plane that stands at 45° on that line, as Sphere inversions, two planes mirrors it on the x-axis: about a big body’s line first, then a middle-sized body’s, then a small one’s. Then the one-plane rule squares it. A point in reach of no line takes the one-plane rule as it stands.';
+const OL_HELP_REACH = 'How far from a body’s line a point is still folded about it, counted in the body’s half-width at that place. At 1 only the body itself is in reach. 1.6, where the dial starts, takes in the buds on its sides. The number was picked by eye: nothing in the flat rule gives it. Too small cuts the buds off the tops. Too large leaves more loose specks round the bodies.';
+const OL_HELP_WALL ='What stands upright over a body’s line. Each side on its own side: what Sphere inversions, two planes does over the x-axis. The other choice lays the wall over in one piece, so top and underneath differ wherever the two sides of the line differ.';
+const OL_ABOUT = 'Sphere inversions, two planes gives the Basilica buds on the tops of its bodies, because its bodies lie along the x-axis and the fold is about that axis. The rabbit’s bodies point other ways, and that rule tears it. But every body has a line of its own, which the flat rule lays onto the line of the body it lands on: for the Basilica the lines of the big bodies make up the x-axis. Folding each body about its own line is the same rule for the Basilica, and for the rabbit it gives a whole rabbit with buds on the tops of its bodies. Where it falls short: round each line the body has corners at 45°, the creases of two planes. A seam shows where the reach of a fold ends, with loose specks beside it, and the reach is a number picked by eye. A set with no bodies, like the Dendrite, has no lines, and the Mandelbrot solid has a different c at every point: both are drawn as Sphere inversions, one plane.';
 const f4kFormula = p => {
   const cap = smDial(p, 'cap', F4K_CAP, 0, F4K_CAP_MOST), rot = smDial(p, 'rot', F4K_ROT, -360, 360);
   return `v² = |v|² · dir((ζ³ − a) / (ζ·(1 − ā·ζ³)))   with ζ = (X + iY)/(1 − Z) the direction (X, Y, Z) of v written as a number. a = tan(${aprDeg(cap / 2)}) · c′ = ${aprNum(Math.tan(0.5 * aprRad(cap)))} · c′, with c′ the flat part of c rotated by ${aprDeg(rot)} about the z-axis, and a no longer than ${aprNum(F4K_A_MOST)}. ā is a mirrored in the x-axis. Before that the angle θ of v round the z-axis is moved towards the angle B that the step sends to 2θ, and its height m on a Mercator map is multiplied towards dB/dθ, both by the share exp(−(m/${F4_BAND})²). dir turns a number back into a direction.`;
@@ -2232,7 +2249,7 @@ const APPROACHES = [
   },
   {
     // The fold needs the lines of the Julia set on show (09-lines.js), which reach the shader as two textures.
-    id: 'ownlines', name: 'Two planes, about every body’s own line', group: 'inversions', glsl: GL_OWNLINES, axis: () => [0, 0, 1], deMax: 0,
+    id: 'ownlines', name: 'Two planes, about every body’s own line', group: 'inversions', glsl: GL_OWNLINES, axis: () => [0, 0, 1],
     uniforms: (gl, loc) => lnUniforms(gl, loc),
     tag: OL_TAG,
     params: [

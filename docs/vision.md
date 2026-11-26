@@ -244,7 +244,7 @@ and "2d" means two planes.
 | Four to one, two planes alike | On the basilica the upright plane shows the flat picture point for point, with no crease, no fold and no mirror. Four buds round each body. | Between the two planes the skin is ribbed, swirled and hairy. The rabbit, the dendrite and Kokopelli are shreds on a shell. |
 | Four to one, caps flipped over | The dendrite and Kokopelli are trees in space, in one piece, with branches in every direction. The rabbit is one bushy piece with lobes off the plane. No crease, no fold, no mirror. | The basilica is one lump. Every skin is rough and spiky. |
 | Four to one, caps placed by c | The basilica and San Marco are a row of bodies with one more above and one below the middle body. The dendrite and Kokopelli are trees in space, and the rabbit is one piece with bodies in several directions. | The rotation of c was fitted by hand. The basilica's two extra bodies lean to one side of the x-axis. A c below the x-axis gives a lump and not the mirror image, so the Mandelbrot solid is lopsided. The airplane is dust. Every skin is rough and striped. |
-| Two planes, about every body's own line | The rabbit stays a rabbit, in one piece, with buds on the tops and the undersides of its bodies: "excellent". The basilica as under *two planes*. | Corners at 45 degrees round each line. A seam where the reach of a fold ends, and the reach is a number picked by eye. Julia sets only, and only those with bodies. |
+| Two planes, about every body's own line | The rabbit stays a rabbit, in one piece, with buds on the tops and the undersides of its bodies: "it certainly looks better than every other approach". The basilica as under *two planes*. | Corners at 45 degrees round each line. A seam where the reach of a fold ends, with loose specks beside it, and the reach is a number picked by eye. Julia sets only, and only those with bodies. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -689,17 +689,30 @@ Not tried, or not finished.
   all.
 - **Every body's own line as the second axis.** See "The second axis follows the set" under "Where the rule may
   hide". The lines are worked out from the flat rule alone, for any c with a cycle of bodies. In the lab as
-  *Two planes, about every body's own line*, for Julia sets at power 2: the fold of *two planes* taken about the
-  nearest of those lines in place of the x-axis, and only where the point lies no further from the line than
-  1.6 times the body's half-width there (a dial). Then *one plane*.
+  *Two planes, about every body's own line*, for Julia sets at power 2: the fold of *two planes* taken about a
+  body's own line in place of the x-axis, and only where the point lies no further from the line than 1.6 times
+  the body's half-width there (a dial). A big body's line folds first, then a middle-sized body's, then a small
+  one's. Then *one plane*.
   - On the basilica it gives *two planes* again. Each step of *two planes* already carries a body's line onto
     the x-axis, so there every body has bulbs on its own line as it is.
   - On the rabbit the solid is in one piece: a rabbit that can be recognised, inflated as *one plane* inflates
     it, with buds on the tops and the undersides of its bodies. The cut along a body's line shows the body's
     flat outline standing upright, with the buds of its widest point on top. The first drawings: "excellent".
+    The lab's picture: "it certainly looks better than every other approach".
+  - What it takes to draw it. Both ends of a line are pinch points, and the body's half-width has to be nothing
+    there. Any width at an end and a spire stands over the pinch point, up and down: "at the fixed points there
+    are these large spires that go in both the up and down direction". And the point of a line that a point is
+    folded about has to move without a jump as the point moves. Where it jumps the skin breaks into shards: "the
+    3d surface looks so artifacty I can't make out anything". With both seen to, the skin is smooth at 60
+    iterations.
   - What is wrong so far. Round each line the body has corners at 45 degrees, the creases of *two planes*. A
-    seam shows where the fold stops. Small specks lie loose beside the tops. The 1.6 was picked by hand, and
-    with no such limit a column stands over every end of a line.
+    seam shows where the fold stops, and specks lie loose beside it, more of them the longer the reach. The 1.6
+    was picked by hand: at 1.2 the buds on the tops are cut off, and with no limit at all a column stands over
+    every end of a line. A fold that leaves off bit by bit, its mirror standing up from 45 degrees to upright
+    over the last part of the reach, ribs every body across its line and takes the buds off the tops.
+  - Reasoned, not checked in a drawing: along the top of a body the two sides of its line meet, each mirrored
+    from its own side. A body of the rabbit is not the same on both sides of its line, so the buds of the two
+    sides cannot match along the top.
   - The wall over a line can be laid over in two ways: each side of the line kept on its side, as *two planes*
     does, or the whole wall as one, the right side on top and the left side underneath (the clue). On the
     rabbit the two differ little.
