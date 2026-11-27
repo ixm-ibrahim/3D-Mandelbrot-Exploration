@@ -169,7 +169,9 @@ function learnVBuild() {
   let plan = null, fault = '';
   // carry: what the orbit carries when the step begins (see learnPlan). Left out for the first step and for an
   // entry whose orbit carries nothing.
-  const planFor = carry => learnPlan({ space: sp, id, params: S.param[id], n: S.n, c: P.c.slice(), abs: S.abs.slice(), flip: S.flip.slice(), carry });
+  // an orbit that starts at 0 is a dot of the Mandelbrot picture; any other belongs to the Julia picture of its c
+  const kind = P.z.some(x => x !== 0) ? 'j' : 'm';
+  const planFor = carry => learnPlan({ space: sp, id, params: S.param[id], n: S.n, c: P.c.slice(), abs: S.abs.slice(), flip: S.flip.slice(), carry, kind });
   try { plan = planFor(undefined); }
   catch (e) { fault = 'The moves could not be worked out for these settings.'; console.warn('learnPlan failed', e); }
   let moves = plan && Array.isArray(plan.moves) ? plan.moves : [];
@@ -404,6 +406,8 @@ function learnVDraw() {
       label('hinge', at1[0] + 9, at1[1] + 2, C.ok, 'left', small ? 12.5 : 14, 600);
     }
   }
+  // the line the move works about, where the rule has one of its own: drawn whole, named at its front end
+  if (m && m.line && vk === 's3') { seg(scl(m.line, -E), scl(m.line, E), C.ink, 2, 0.9); tag(scl(m.line, E), 'the set’s line', C.ink, 8, 2); }
 
   // the steps taken before this one
   for (let i = 0; i < L.k; i++) { seg(K.orbit[i], K.orbit[i + 1], C.ink2, 1.25, 0.55); disc(K.orbit[i], 2.75, C.ink2, 0.9); tag(K.orbit[i], String(i), C.ink2, 6, 9, 'left', 10); }

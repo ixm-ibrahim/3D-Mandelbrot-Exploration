@@ -261,7 +261,8 @@ function learnShapeOrbit2(p, kind, c, maxK) {
   return res;
 }
 // The moves of one step for the space on show, as learnPlan gives them. One chain serves every dot; the last move,
-// the slide, is made with each dot's own c (learnShapeMoveAt). Where the orbit carries something: learnShapeOwnMoves.
+// the slide, is made with each dot's own c (learnShapeMoveAt). Where the orbit carries something, or the rule itself
+// depends on c (an entry with usesC): learnShapeOwnMoves.
 function learnShapeMoves() {
   const L = LEARN, Sh = LEARN_SHAPE, a = ap(), three = L.space === 3;
   const sig = [three ? 3 : 2, S.n, S.abs, S.flip, three ? a.id + JSON.stringify(S.param[a.id]) : ''].join('|');
@@ -273,8 +274,8 @@ function learnShapeMoves() {
   } catch (err) { moves = []; }
   // The last move, "Add c" in One point, is named Slide here, and "Add the phase" is named "Add the turn".
   const names = moves.map(m => (m.key === 'shift' ? 'Slide' : m.name === 'Add the phase' ? 'Add the turn' : m.name || 'Move'));
-  // The parts of one step: the moves, then the throwing out. car: each dot's orbit carries something.
-  return (Sh.mv = { sig, moves, names, car: three && !!CARRY[a.id], chips: names.concat(['Thrown out']), keys: moves.map(() => 'move').concat(['gone']) });
+  // The parts of one step: the moves, then the throwing out. car: each dot has a chain of its own.
+  return (Sh.mv = { sig, moves, names, car: three && (!!CARRY[a.id] || !!a.usesC), chips: names.concat(['Thrown out']), keys: moves.map(() => 'move').concat(['gone']) });
 }
 // Which part of a step the fraction u (0 .. 1) of the slider stands in: its number i (the moves come first, so a
 // move's number is its part's number), its key, and how far through it, t. At a joint, a play that stopped there
@@ -619,12 +620,22 @@ function learnShapeDots(kind) {
   return (Sh.D[kind] = { sig, three, h, dots, big: pick, chain: null, n0: dots.length, filled: 0, seq: 0, enter: [], lay: three ? Sh.lay : '', outAt, make, fill: Sh.refill });
 }
 // The moves of one step for one dot of an entry whose orbit carries something (an entry of CARRY in
-// 10-approaches.js): the chain learnPlan gives for what the dot carries when the step begins and for its own c. A chain
-// of another length is fitted to m parts: a dot with fewer moves waits, one with more makes the first in one part.
-function learnShapeOwnMoves(d, k, m) {
+// 10-approaches.js) or whose rule depends on c: the chain learnPlan gives for what the dot carries when the step
+// begins and for its own c. With nothing carried the chain depends on c alone, and the dots of a Julia picture, which
+// share one c, share one chain. A chain of another length is fitted to m parts: a dot with fewer moves waits, one
+// with more makes the first in one part.
+const LEARN_SHAPE_OWN = { key: '', mv: null };
+function learnShapeOwnMoves(d, k, m, kind) {
+  const a = ap(), key = CARRY[a.id] ? '' : [learnShapeMoves().sig, kind, d.c, m].join('|');
+  if (key && LEARN_SHAPE_OWN.key === key) return LEARN_SHAPE_OWN.mv;
+  const mv = learnShapeFit(d, k, m, kind);
+  if (key) { LEARN_SHAPE_OWN.key = key; LEARN_SHAPE_OWN.mv = mv; }
+  return mv;
+}
+function learnShapeFit(d, k, m, kind) {
   const a = ap();
   let mv = [];
-  try { mv = learnPlan({ space: 3, id: a.id, params: S.param[a.id], n: S.n, c: d.c.slice(), abs: S.abs.slice(), flip: S.flip.slice(), carry: d.carry ? d.carry[k] : undefined }).moves; } catch (err) { mv = []; }
+  try { mv = learnPlan({ space: 3, id: a.id, params: S.param[a.id], n: S.n, c: d.c.slice(), abs: S.abs.slice(), flip: S.flip.slice(), carry: d.carry ? d.carry[k] : undefined, kind }).moves; } catch (err) { mv = []; }
   if (mv.length === m) return mv;
   const stay = { key: 'stay', at: v => [v[0], v[1], v[2]] };
   if (!mv.length) return new Array(m).fill(stay);
@@ -657,7 +668,7 @@ function learnShapeChain(kind, k) {
     if (!(d.out > k) || d.from > k || !d.pts[k + 1]) return;
     ch.on++; ch.list.push(i);
     if (d.out === k + 1) ch.thrown++;
-    const own = M.car ? (ch.own[i] = learnShapeOwnMoves(d, k, m)) : null, v = [d.pts[k]];
+    const own = M.car ? (ch.own[i] = learnShapeOwnMoves(d, k, m, kind)) : null, v = [d.pts[k]];
     for (let j = 0; j < m; j++) v.push(learnShapeMoveAt(M, own, d, j, v[j], 1));
     v[m] = d.pts[k + 1]; ch.pos[i] = v;
     for (let j = 0; j < m; j++) if (len(sub(v[j + 1], v[j])) > 1e-9) ch.moved[j] = true;

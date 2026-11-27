@@ -196,7 +196,7 @@ void main(){
   }
   // The step at which p is thrown out: 0 when it starts outside the big ball, maxK + 1 when it is still in after
   // maxK steps. The approach, its dials, the power and the modifiers are the lab's (ap(), S.param, S.n, S.abs, S.flip).
-  function out(p, kind, c, maxK) {
+  function outOf(p, kind, c, maxK) {
     const a = ap(), id = a.id, q = S.param[id] || {}, n = S.n, jul = kind === 'j', ab = S.abs, fl = S.flip;
     if (!(Math.hypot(p[0], p[1], p[2]) <= BALL)) return 0;
     let z = [0, 0, 0], cc;
@@ -223,7 +223,7 @@ void main(){
   //   c       the number that is added at every step (what the approach's own cmap makes of the picture's c)
   //   carry   for an entry whose orbit carries something (CARRY): carry[j] is what it carries when step j + 1
   //           begins; null for every other entry
-  function orbit(p, kind, c, maxK) {
+  function orbitOf(p, kind, c, maxK) {
     const a = ap(), id = a.id, q = S.param[id] || {}, n = S.n, jul = kind === 'j', ab = S.abs, fl = S.flip;
     const res = { out: 0, pts: [], c: [0, 0, 0], carry: null };
     if (!(Math.hypot(p[0], p[1], p[2]) <= BALL)) return res;
@@ -248,6 +248,11 @@ void main(){
     res.out = maxK + 1;
     return res;
   }
+
+  // An entry whose line belongs to one c asks which picture it is working on (twFor in 10-approaches.js): the Learn
+  // picture of this kind with this c, not the lab's own.
+  const out = (p, kind, c, maxK) => twFor(kind === 'j', c, () => outOf(p, kind, c, maxK));
+  const orbit = (p, kind, c, maxK) => twFor(kind === 'j', c, () => orbitOf(p, kind, c, maxK));
 
   // The camera, shared with whoever draws on top of the picture: yaw about the upright z-axis, pitch above the flat
   // plane, as LEARN_V_VIEWS.s3 means them (learnVProj).
@@ -337,6 +342,8 @@ void main(){
       gl.uniform3fv(U(e, 'uAbs'), S.abs); gl.uniform3f(U(e, 'uSgn'), 1, S.flip[0] ? -1 : 1, S.flip[1] ? -1 : 1);
       gl.uniform3f(U(e, 'uC'), fin(c && c[0], 0), fin(c && c[1], 0), fin(c && c[2], 0));
     }
+    // the same for one pane: the entry's own uniforms, asked for this pane's picture (see out)
+    function paneUniforms(e, kind, c) { if (ap().uniforms) twFor(kind === 'j', c, () => ap().uniforms(gl, name => U(e, name))); }
     function current() {
       const a = ap(), e = program(a, Math.abs(S.n - 2) < 1e-9);
       noteText = e.ok ? '' : failWords(a);
@@ -453,6 +460,7 @@ void main(){
         // the slope is read over three quarters of a CSS pixel, whatever the buffer: finer than that only glitters
         gl.uniform1f(U(e, 'uPxw'), pxw); gl.uniform1f(U(e, 'uEps'), Math.max(0.75 * pxw * Math.max(sx, sy), 5e-4));
         gl.uniform1f(U(e, 'uJulia'), pane.kind === 'j' ? 1 : 0);
+        paneUniforms(e, pane.kind, o.c);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
       }
       gl.disable(gl.SCISSOR_TEST);
@@ -495,6 +503,7 @@ void main(){
       ruleUniforms(e, c);
       gl.uniform2f(U(e, 'uColGrid'), half, 2 * half / (size - 1));
       gl.uniform1f(U(e, 'uJulia'), kind === 'j' ? 1 : 0);
+      paneUniforms(e, kind, c);
       gl.uniform1i(U(e, 'uMaxK'), maxK); gl.uniform1i(U(e, 'uBudget'), stops); gl.uniform1i(U(e, 'uColumns'), 1);
       gl.uniform1i(U(e, 'uN'), 1); gl.uniform1i(U(e, 'uBis'), 0); gl.uniform1f(U(e, 'uPxw'), 1); gl.uniform4f(U(e, 'uRect'), 0, 0, size, size);
       gl.drawArrays(gl.TRIANGLES, 0, 3);

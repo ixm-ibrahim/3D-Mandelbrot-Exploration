@@ -81,13 +81,14 @@ function learnOpen(v, e, f, n, t) {
   return add(scl(e, r * Math.cos(a)), scl(s.u, r * Math.sin(a)));
 }
 
-// One move: { key, name, say(a, b), at(v, t), hinge(v), sheet(v), all }. `f(v, t)` is only asked for 0 < t <= 1.
+// One move: { key, name, say(a, b), at(v, t), hinge(v), sheet(v), all, line }. `f(v, t)` is only asked for 0 < t <= 1.
 // at(v, t): where the point v is after the fraction t of the move. Every move works from the point it is given and
 // nothing else, so the view can push any other point through the same chain.
 // all: what the move does to every dot at once, as the end of a sentence that begins with the move's name.
+// line: the direction of a line through the centre that the move works about, where the rule has one of its own.
 function learnMove(key, name, f, say, o = {}) {
   return {
-    key, name, all: o.all || '',
+    key, name, all: o.all || '', line: o.line || null,
     at: (v, t) => (t > 0 ? f(v, Math.min(t, 1)) : [v[0], v[1], v[2]]),
     say,
     hinge: o.hinge || (() => null), sheet: o.sheet || (() => null),
@@ -369,6 +370,103 @@ function learnInvert() {
   };
   return learnMove('own', 'Inside out', f, say, { all: 'space is turned inside out: every dot’s distance from the centre becomes 1 divided by it, and its y goes to the mirror value' });
 }
+// Two points side by side, about a line u of the flat plane (twStep in 10-approaches.js; share and keep as it takes
+// them). Seen from the line a point lies x along it, y across it and h high. The step is the quaternion square about
+// the line, which doubles the angle from the line, with two moves before it:
+//   To the front   a point behind the middle (x < 0) goes to the place in front that has the same answer: half a
+//                  rotation about the z-axis, or, just behind the top, its mirror place across the line;
+//   Push           the point goes to the direction whose doubling is the rule's answer. In the flat plane and on the
+//                  upright plane on the line that is where it stands already.
+const learnLineSee = (v, u) => [v[0] * u[0] + v[1] * u[1], u[0] * v[1] - u[1] * v[0], v[2]];
+const learnLinePut = (p, u) => [p[0] * u[0] - p[1] * u[1], p[0] * u[1] + p[1] * u[0], p[2]];
+// the two extra terms of twStep, under the roots of the across-part (b²) and of the height (a²)
+function learnLineTerms(y, h, share, keep) {
+  const y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300);
+  return [keep * keep * (share ? h2 * share(h2 / s2) : h2 * h2 / s2), share ? y2 * share(y2 / s2) : y2 * y2 / s2];
+}
+function learnFront(u, share, keep) {
+  // 0: in front, it stays. 1: behind, half a rotation. 2: just behind the top, the mirror place.
+  const side = v => {
+    const [x, y, h] = learnLineSee(v, u);
+    if (!(x < 0)) return 0;
+    return -x / Math.max(Math.sqrt(learnLineTerms(y, h, share, keep)[0]), 1e-300) > TW_BACK ? 1 : 2;
+  };
+  const f = (v, t) => {
+    const k = side(v);
+    if (!k) return v;
+    if (k === 1) return t >= 1 ? [-v[0], -v[1], v[2]] : learnRz(v, t * PI);
+    const [x, y, h] = learnLineSee(v, u);
+    return learnLinePut([(1 - 2 * t) * x, y, h], u);
+  };
+  const say = a => {
+    if (!(len(a) > 0)) return 'The point is at the origin, so there is nothing to bring to the front.';
+    const k = side(a);
+    if (!k) return 'The point is in front of the middle, on the side the line points to. It stays.';
+    if (k === 1) return 'The point is behind the middle. It rotates half way round the z-axis to the front: in the flat picture those two places have the same square.';
+    return 'The point is just behind the top of the ball. It goes straight across to its mirror place in front. Points further back rotate half way round instead: where the two kinds meet, the rule jumps.';
+  };
+  return learnMove('fold', 'To the front', f, say, { line: [u[0], u[1], 0],
+    hinge: v => (side(v) === 1 ? [0, 0, 1] : null),
+    sheet: v => { const k = side(v); return k === 1 ? LEARN_PAGE() : k === 2 ? [[-u[1], u[0], 0], [0, 0, 1]] : null; },
+    all: 'every dot behind the middle comes to the front: half way round the z-axis, or, just behind the top, straight across to its mirror place',
+  });
+}
+function learnPush(u, share, keep) {
+  // the direction, seen from the line, whose angle from the line is half that of the rule's answer
+  const goal = v => {
+    const [x, y, h] = learnLineSee(v, u), r = len(v);
+    if (!(r > 0) || x < 0) return null;
+    const [b2, a2] = learnLineTerms(y, h, share, keep);
+    const X = x * x - y * y - h * h, Y = 2 * y * Math.sqrt(x * x + b2), H = 2 * h * Math.sqrt(x * x + a2), W = Math.hypot(Y, H);
+    if (!(W > 1e-300)) return null;
+    const A = Math.atan2(W, X) / 2, d = learnLinePut([Math.cos(A), Math.sin(A) * Y / W, Math.sin(A) * H / W], u);
+    return len(sub(d, scl(v, 1 / r))) > 1e-12 ? d : null;
+  };
+  const f = (v, t) => {
+    const d = goal(v), r = len(v);
+    if (!d) return v;
+    return scl(t >= 1 ? d : learnSlerp(scl(v, 1 / r), d, t), r);
+  };
+  const roll = v => { const p = learnLineSee(v, u); return Math.atan2(Math.abs(p[2]), Math.abs(p[1])); };
+  const say = (a, b) => {
+    if (!(len(a) > 0)) return LEARN_NO_DIR;
+    const [, y, h] = learnLineSee(a, u), r = len(a);
+    if (Math.abs(h) <= 1e-12 * r) return 'The point lies in the flat plane. There the rule is the flat rule, and nothing is pushed.';
+    if (Math.abs(y) <= 1e-12 * r) return 'The point stands straight over the line. There the rule is the flat rule stood upright, and nothing is pushed.';
+    const ang = Math.atan2(len(cross(a, b)), dot(a, b));
+    if (ang < 1e-9) return 'The point stands between the flat plane and the upright plane on the line, but for this point the push comes to nothing.';
+    return `The point stands between the flat plane and the upright plane on the line. It is pushed ${learnDeg(ang)} round the sphere, ${roll(b) > roll(a) ? 'away from the flat plane' : 'away from the upright plane'}. Without the push the next move would draw a bulb out into a ring.`;
+  };
+  const way = v => { const d = goal(v); if (!d) return null; const e = norm(v), w = sub(d, scl(e, dot(e, d))); return len(w) > 1e-12 ? [e, norm(w)] : null; };
+  return learnMove('lean', 'Push', f, say, { line: [u[0], u[1], 0], hinge: v => { const s = way(v); return s ? cross(s[0], s[1]) : null; }, sheet: way,
+    all: 'every dot between the flat plane and the upright plane on the line is pushed sideways, away from the nearer of the two. Dots in either plane stay' });
+}
+// The quaternion square about the line: the angle from the line is doubled, in the sheet of the line and the point.
+function learnDoubleLine(u) {
+  const e = [u[0], u[1], 0], side = [-u[1], u[0], 0];
+  const say = (a, b) => {
+    if (!(len(a) > 0)) return LEARN_NO_DIR;
+    const s = learnSide(a, e, side), al = Math.atan2(s.rho, s.x);
+    if (!(s.rho > 0) && s.x > 0) return 'The point lies on the line, in front: its angle from the line is 0°, and 0° doubled is 0°. It does not rotate.';
+    return `The point stands ${learnDeg(al)} from the line. Squaring doubles that to ${learnDeg(2 * al)}, in the flat sheet that holds the line and the point.`;
+  };
+  return learnMove('turn', 'Rotate', (v, t) => learnOpen(v, e, side, 2, t), say, { line: e,
+    all: 'every dot’s angle from the line is doubled; it swings in the plane that holds the line and the dot',
+    hinge: v => (len(v) > 0 ? cross(e, learnSide(v, e, side).u) : null),
+    sheet: v => (len(v) > 0 ? [e, learnSide(v, e, side).u] : null),
+  });
+}
+// All of space rotates about the z-axis by the angle of the line, so that a point of the flat plane ends where the
+// flat rule sends it.
+function learnWithLine(ang) {
+  const say = a => {
+    if (Math.abs(ang) < 1e-12) return 'The line lies along the x-axis, so there is nothing to rotate.';
+    const head = `The line stands ${learnDeg(ang)} from the x-axis, and its own angle is doubled too: all of space rotates by ${learnDeg(ang)} about the z-axis.`;
+    return Math.hypot(a[0], a[1]) > 0 ? head : `${head} The point is on that axis, so it stays.`;
+  };
+  return learnMove('back', 'Rotate with the line', (v, t) => learnRz(v, t * ang), say, { hinge: LEARN_Z, sheet: LEARN_PAGE,
+    all: Math.abs(ang) < 1e-12 ? 'the line lies along the x-axis, so no dot moves' : `all the dots rotate together about the z-axis by ${learnDeg(ang)}, the angle of the line` });
+}
 // Any other rule F: the direction goes the short way round the sphere to where the rule sends it. together: the
 // length goes with it in the same move (used when the rule's length depends on the direction).
 function learnOwn(F, together) {
@@ -439,9 +537,11 @@ function learnOdd(space) {
   return LEARN_ODD[space] || (LEARN_ODD[space] = APPROACHES.filter(a =>
     !learnAgree(v => MATH[a.id](v, 2, specDefaults(a.params || []), [0, 0, 0]), v => learnFlatRule(v, 2), space === 1 ? LEARN_PROBE_LINE : LEARN_PROBE_FLAT)));
 }
-// learnPlan({ space, id, params, n, c, abs, flip, carry }) -> { moves: [Move], note, carry }
+// learnPlan({ space, id, params, n, c, abs, flip, carry, kind }) -> { moves: [Move], note, carry }
 //   space 1 | 2 | 3;  id an approach id;  params that approach's dials (S.param[id]);  n the power;
-//   c a 3-vector;  abs [0|1, 0|1, 0|1] and flip [flip y, flip z]: the modifiers (S.abs, S.flip)
+//   c a 3-vector;  abs [0|1, 0|1, 0|1] and flip [flip y, flip z]: the modifiers (S.abs, S.flip);
+//   kind 'm' for a dot of a Mandelbrot picture, which is its own c; anything else: one c for the whole picture.
+//   An entry whose line belongs to the picture takes it for this kind and this c (twFor in 10-approaches.js).
 function learnPlan(o) {
   const space = o.space === 1 || o.space === 2 ? o.space : 3;
   const A = APPROACHES.find(a => a.id === o.id);
@@ -455,7 +555,8 @@ function learnPlan(o) {
   // the orbit carries after the step that starts at v, for the plan of the step after it.
   const car = space === 3 && CARRY[id] ? CARRY[id] : null;
   const car0 = car ? (o.carry !== undefined ? o.carry : car.start(q)) : null;
-  const F = car ? v => car.pw(car.step(car0, v, c, q), v, n) : v => MATH[id](v, n, q, c);
+  const jul = o.kind !== 'm';
+  const F = car ? v => car.pw(car.step(car0, v, c, q), v, n) : v => twFor(jul, c, () => MATH[id](v, n, q, c));
   const moves = mirror ? [mirror] : [];
   let note;
 
@@ -508,6 +609,14 @@ function learnPlan(o) {
       if (n < 0) moves.push(learnInvert());
       note = 'The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.'
         + (n < 0 ? ` A negative power is worked as the power ${aprNum(m)}, followed by one move that turns space inside out. In that move y goes straight through 0 to its mirror value, so a point on the y-axis passes through the origin.` : '');
+    } else if ((id === 'twinswhole' || id === 'twinslong') && n !== 2) {
+      moves.push(learnTurnZ(n, 3, 'longitude'), learnLeanMerc(n), learnStretch(n, zero));
+      note = 'At this power the rule is “Sphere inversions, one plane”: the longitude is multiplied, and the latitude on the scale a Mercator map uses.';
+    } else if (id === 'twinswhole' || id === 'twinslong') {
+      const long = id === 'twinslong', share = long ? twShare : null;
+      const [u, keep] = twFor(jul, c, () => (long ? [twLongLine(c), twLongKeep(c)] : [twWholeLine(c), 1])), ang = Math.atan2(u[1], u[0]);
+      moves.push(learnFront(u, share, keep), learnPush(u, share, keep), learnDoubleLine(u), learnWithLine(ang), learnStretch(n, zero));
+      note = `The line lies in the flat plane and belongs to the set: for this c it stands ${learnDeg(ang)} from the x-axis. “Rotate” is the move of “Quaternion square (Lathe)”, made about that line. “To the front” and “Push” are what this rule adds to it.`;
     } else {
       // no simpler moves are written out: the direction, then the length. That split is true only when the rule's
       // length does not depend on the direction; otherwise both go in one move.

@@ -650,11 +650,17 @@ const CARRY = {
 // The first squaring of a fresh orbit: all that the card, which looks at one squaring, can show. (In space the
 // Learn tab follows the orbit through CARRY itself.)
 const carFirst = (id, v, n, q, c) => { const R = CARRY[id]; return R.pw(R.step(R.start(q), v, c, q), v, n); };
+// The picture a line is asked for: the lab's own, unless a caller names another for the length of a call (twFor).
+// The Learn tab has Julia and Mandelbrot pictures of its own, each with its own c.
+let TW_PIC = null;
+const twJulia = () => (TW_PIC ? TW_PIC.j : S.mode === 'j');
+const twC = () => (TW_PIC ? TW_PIC.c : S.c);
+function twFor(j, c, f) { const was = TW_PIC; TW_PIC = { j: !!j, c }; try { return f(); } finally { TW_PIC = was; } }
 // Two points side by side (the entry "twins"): the square of the direction along which the two points are told
 // apart from their middle. kind 0: the direction from 0 to the fixed point where the bodies pinch together,
 // 1/2 - sqrt(1/4 - c). kind 1: the x-axis.
 function twAxis(c, q) {
-  c = c || (S.mode === 'j' ? S.c : null);
+  c = c || (twJulia() ? twC() : null);
   if (!c || (q && +q.kind === 1)) return [1, 0];
   const wx = 0.25 - c[0], wy = -c[1], m = Math.hypot(wx, wy);
   const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
@@ -735,12 +741,12 @@ function twSide(c) {
   const s = twSideAt(c), m = Math.hypot(s[0], s[1]);
   return [s[1] / m, -s[0] / m];
 }
-const twWholeLine = c => { c = c || (S.mode === 'j' ? S.c : null); return (c && twSide(c)) || twAlpha(c); };
+const twWholeLine = c => { c = c || (twJulia() ? twC() : null); return (c && twSide(c)) || twAlpha(c); };
 // uTwS: a Julia picture's line (x, y) and 1. Or 2 when the shader is to find the line for each orbit's own c, and
 // 0 when it is to take the line of twAlpha.
 function twWholeUniforms(gl, loc) {
-  const u = S.mode === 'j' ? twSide(S.c) : null;
-  gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : S.mode !== 'j' && lnPlain() ? 2 : 0);
+  const j = twJulia(), u = j ? twSide(twC()) : null;
+  gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : !j && lnPlain() ? 2 : 0);
 }
 // How far behind the plane across the line the sign of x starts to count, in units of b = h²/sqrt(y² + h²): on the
 // upright plane on the line that is a sixteenth of a turn behind the top.
@@ -873,23 +879,23 @@ function twLongAt(c) {
 }
 // The line of "twinslong": found from the set for a Julia picture, and the line of "twinswhole" anywhere else.
 const twLongLine = c => {
-  const j = S.mode === 'j';
-  c = c || (j ? S.c : null);
+  const j = twJulia();
+  c = c || (j ? twC() : null);
   return !c ? twAlpha(c) : j && lnPlain() ? twLongAt(c) : twSide(c) || twAlpha(c);
 };
 // The share of the extra term that "twinslong" keeps: found with the line for a Julia picture, all of it anywhere
 // else.
 const twLongKeep = c => {
-  const j = S.mode === 'j';
-  c = c || (j ? S.c : null);
+  const j = twJulia();
+  c = c || (j ? twC() : null);
   return c && j && lnPlain() ? twLongAt(c)[2] : 1;
 };
 // uTwS as for "twinswhole", with a Julia picture's line found from the set, and uTwW, the share of the extra term
 // that is kept.
 function twLongUniforms(gl, loc) {
-  const u = S.mode === 'j' && lnPlain() ? twLongAt(S.c) : null;
+  const j = twJulia(), u = j && lnPlain() ? twLongAt(twC()) : null;
   gl.uniform1f(loc('uTwW'), u ? u[2] : 1);
-  gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : S.mode !== 'j' && lnPlain() ? 2 : 0);
+  gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : !j && lnPlain() ? 2 : 0);
 }
 // One squaring of "twinswhole" and "twinslong" about the line u. share: the step the two shares go through, or
 // nothing for the shares as they are. keep: how much of the across-part's extra term is kept.
