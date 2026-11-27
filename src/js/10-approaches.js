@@ -671,16 +671,47 @@ function twAlpha(c) {
   const ax = 0.5 - Math.sqrt(Math.max(0.5 * (m + wx), 0)), ay = -(wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0)), l = ax * ax + ay * ay;
   return l > 1e-12 ? [ax / Math.sqrt(l), ay / Math.sqrt(l)] : [1, 0];
 }
+// The line for a c with no cycle of bodies (one body, as in the big heart of the Mandelbrot set, or none), as a
+// direction with a front. a is the fixed point 1/2 - sqrt(1/4 - c) and b the other one, 1 - a. Three cases:
+// 1. c within TW_FLAT of the x-axis. The set is close to its own mirror image in the x-axis, and the line stays
+//    close to that axis: its square points along c + b, so that the top of the body lands on -b, the body's far end.
+// 2. c further from the x-axis, inside the big heart. The rule for a cycle of bodies, taken with one step: the
+//    line stands square to the two points that one step brings to -a, so its square points along c + a.
+// 3. Everything else, and a c close to where a bulb of 3 to 6 bodies hangs on the heart (the set has that bulb's
+//    lobes already): the line points at a (twAlpha). How close is told by 2a against the roots of 1 of those
+//    orders (TW_ROOTS: their angles, and the order cubed).
+// Where a and b are nearly as far from 0 (c beyond the cusp, near the x-axis), cases 1 and 2 mix in the same for
+// the other fixed point, so that a c on the x-axis has the x-axis for its line.
+// Measured, as the step this leaves in the skin where the sign changes: 0.3 to 3 percent of the skin's distance
+// out to nine tenths of the way from the heart's middle to its edge, where the line at a leaves up to 47. Close
+// to the edge, between the bulbs on the left, 4 to 14 percent.
+const TW_FLAT = 0.13;
+const TW_ROOTS = [[120, 27], [90, 64], [72, 125], [144, 125], [60, 216]].map(([a, k]) => [Math.cos(a * PI / 180), Math.sin(a * PI / 180), k]);
+function twLoose(c) {
+  const wx = 0.25 - c[0], wy = -c[1], m = Math.hypot(wx, wy);
+  const sx = Math.sqrt(Math.max(0.5 * (m + wx), 0)), sy = (wy < 0 ? -1 : 1) * Math.sqrt(Math.max(0.5 * (m - wx), 0));
+  const a = [0.5 - sx, -sy], b = [0.5 + sx, sy], la = Math.hypot(a[0], a[1]), lb = Math.hypot(b[0], b[1]), t = Math.pow(la / lb, 8);
+  const k = 2 / Math.max(1, 2 * la), hx = k * a[0], hy = k * Math.abs(a[1]);
+  let near = 1e9;
+  for (const [rx, ry, q3] of TW_ROOTS) near = Math.min(near, q3 * Math.hypot(hx - rx, hy - ry));
+  if (near < 5 && t < 0.5) return twAlpha(c);
+  const flat = Math.abs(c[1]) < TW_FLAT;
+  if (!flat && !(2 * la < 0.999)) return twAlpha(c);
+  const unit = (x, y) => { const l = Math.hypot(x, y); return l > 1e-12 ? [x / l, y / l] : [1, 0]; };
+  const p = unit(c[0] + a[0], c[1] + a[1]), q = unit(c[0] + b[0], c[1] + b[1]), g = flat ? unit(q[0] + t * p[0], q[1] + t * p[1]) : unit(p[0] + t * q[0], p[1] + t * q[1]);
+  const u = g[0] > -0.999999 ? unit(g[0] + 1, g[1]) : [0, 1];
+  return u[0] * a[0] + u[1] * a[1] < 0 ? [-u[0], -u[1]] : u;
+}
 // The middle body's side pinch point for z² + c, as [x, y, found]: the one a quarter round on from the pinch point
 // r where the middle body meets the next one. With no cycle of bodies, found is 0 and the point stands a quarter
-// round on from the direction of twAlpha, one unit out. The shader's twSideFind is this, step for step.
+// round on from the direction of twLoose, one unit out. The shader's twSideFind is this, step for step.
 const TW_SIDE = new Map();                       // answers so far, by c
 const TW_NEWTON = 16;
 function twSideAt(c) {
   const key = c[0] + ',' + c[1];
   let at = TW_SIDE.get(key);
   if (at) return at;
-  const a = twAlpha(c), P = pnFind(c[0], c[1]);
+  const a = twLoose(c), P = pnFind(c[0], c[1]);
   at = [-a[1], a[0], 0];
   if (P && P.r) {
     let z = [-0.75 * P.r[1], 0.75 * P.r[0]];      // a quarter round from r, a little nearer the middle
@@ -698,12 +729,10 @@ function twSideAt(c) {
   TW_SIDE.set(key, at);
   return at;
 }
-// The line as a direction, or nothing: the side pinch points belong to z² + c with nothing folded or flipped.
+// The line as a direction, or nothing: all of this belongs to z² + c with nothing folded or flipped.
 function twSide(c) {
   if (!c || !lnPlain()) return null;
-  const s = twSideAt(c);
-  if (!s[2]) return null;
-  const m = Math.hypot(s[0], s[1]);
+  const s = twSideAt(c), m = Math.hypot(s[0], s[1]);
   return [s[1] / m, -s[0] / m];
 }
 const twWholeLine = c => { c = c || (S.mode === 'j' ? S.c : null); return (c && twSide(c)) || twAlpha(c); };
@@ -1287,19 +1316,30 @@ vec3 twCycle(vec2 c){
   }
   return vec3(0.0);
 }
-vec2 twSideFind(vec2 c){
+vec2 twUnit(vec2 v){ float l = length(v); return l > 1e-12 ? v / l : vec2(1.0, 0.0); }
+vec2 twLoose(vec2 c){
   vec2 w = vec2(0.25, 0.0) - c; float m = length(w);
-  vec2 a = vec2(0.5, 0.0) - vec2(sqrt(max(0.5 * (m + w.x), 0.0)), (w.y < 0.0 ? -1.0 : 1.0) * sqrt(max(0.5 * (m - w.x), 0.0)));
-  float l = dot(a, a);
-  vec2 back = l > 1e-12 ? vec2(-a.y, a.x) / sqrt(l) : vec2(0.0, 1.0);
+  vec2 s = vec2(sqrt(max(0.5 * (m + w.x), 0.0)), (w.y < 0.0 ? -1.0 : 1.0) * sqrt(max(0.5 * (m - w.x), 0.0)));
+  vec2 a = vec2(0.5, 0.0) - s, b = vec2(0.5, 0.0) + s;
+  float la = length(a), t = pow(la / length(b), 8.0);
+  vec2 h = 2.0 * vec2(a.x, abs(a.y)) / max(1.0, 2.0 * la);
+  float nr = min(min(27.0 * distance(h, vec2(${TW_ROOTS[0][0].toFixed(9)}, ${TW_ROOTS[0][1].toFixed(9)})), 64.0 * distance(h, vec2(${TW_ROOTS[1][0].toFixed(9)}, ${TW_ROOTS[1][1].toFixed(9)}))),
+    min(min(125.0 * distance(h, vec2(${TW_ROOTS[2][0].toFixed(9)}, ${TW_ROOTS[2][1].toFixed(9)})), 125.0 * distance(h, vec2(${TW_ROOTS[3][0].toFixed(9)}, ${TW_ROOTS[3][1].toFixed(9)}))), 216.0 * distance(h, vec2(${TW_ROOTS[4][0].toFixed(9)}, ${TW_ROOTS[4][1].toFixed(9)}))));
+  bool onx = abs(c.y) < ${TW_FLAT.toFixed(4)};
+  if ((nr < 5.0 && t < 0.5) || (!onx && !(2.0 * la < 0.999))) return la * la > 1e-12 ? a / la : vec2(1.0, 0.0);
+  vec2 g = onx ? twUnit(twUnit(c + b) + t * twUnit(c + a)) : twUnit(twUnit(c + a) + t * twUnit(c + b));
+  vec2 u = g.x > -0.999999 ? twUnit(g + vec2(1.0, 0.0)) : vec2(0.0, 1.0);
+  return dot(u, a) < 0.0 ? -u : u;
+}
+vec2 twSideFind(vec2 c){
+  vec2 u0 = twLoose(c), back = vec2(-u0.y, u0.x);
   vec3 P = twCycle(c);
   if (!(P.z > 1.5)) return back;
   vec2 r = P.xy, z = 0.75 * vec2(-r.y, r.x), u, d, e; int p = int(P.z + 0.5);
   for (int s = 0; s < ${TW_NEWTON}; s++){ pnSteps(z, c, p, u, d, e); z -= pnDiv(u + r, d); }
   pnSteps(z, c, p, u, d, e);
-  float k = z.y * r.x - z.x * r.y, L = length(r);
+  float k = z.y * r.x - z.x * r.y, L = length(r), m = length(z);
   if (k < 0.0){ z = -z; k = -k; }
-  m = length(z);
   return length(u + r) < 1e-4 && m > 1e-6 && k / (m * L) > 0.94 && m < 1.5 * L ? z : back;
 }
 vec2 gTwSdC = vec2(0.0), gTwSdAt = vec2(0.0, 1.0); bool gTwSdHave = false;
@@ -2652,7 +2692,7 @@ const APPROACHES = [
       { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 4, step: 0.1, def: 2, help: 'The colours follow a second point, which changes to the far side gradually over the back of a body, so an orbit trap’s colours run through. How much of the back it uses is this number times how far c lies off the line the squaring lands on: nothing for a set that is its own mirror image, and the whole back at most. At 0 the colours follow the point itself and break along a line.' },
     ],
     formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + b²), 2h·√(x² + y⁴/(y² + h²)))   with x along the line towards the pinch point, y across it, h the height, b = h²/√(y² + h²), and s = 1 in front of x = −' + aprNum(TW_BACK) + '·b and −1 behind it' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
-    about: 'Two things in the entry above go wrong on a set that is not its own mirror image. Its line is aimed at the pinch point where the middle body meets the next one, and the upright axis then lands beside the next body’s far pinch point, not on it: on the rabbit by 2°. Here the line stands square to the middle body’s side pinch points, and the axis lands on the far pinch point. And at a pinch point of the rabbit the two bodies are not alike, so a bud on top was half of the one and half of the other. Here a point behind the upright plane across the line keeps landing where its mirror image in front lands, until it is a sixteenth of a turn behind the top. Each bud on top is then one whole body. Where the change is made the shape has no step to speak of, but an orbit trap would colour the two sides differently, so the colours follow a second point that makes the change gradually. In the Mandelbrot picture every c takes its own line, and the solid is not right.',
+    about: 'Two things in the entry above go wrong on a set that is not its own mirror image. Its line is aimed at the pinch point where the middle body meets the next one, and the upright axis then lands beside the next body’s far pinch point, not on it: on the rabbit by 2°. Here the line stands square to the middle body’s side pinch points, and the axis lands on the far pinch point. And at a pinch point of the rabbit the two bodies are not alike, so a bud on top was half of the one and half of the other. Here a point behind the upright plane across the line keeps landing where its mirror image in front lands, until it is a sixteenth of a turn behind the top. Each bud on top is then one whole body. Where the change is made the shape has no step to speak of, but an orbit trap would colour the two sides differently, so the colours follow a second point that makes the change gradually. A set with one body, or none, has no pinch points: for a c close to the x-axis its line stays close to that axis, and elsewhere inside the big heart it stands square to the two points that one step brings to the point opposite the fixed point. In the Mandelbrot picture every c takes its own line, and the solid is not right.',
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold laid on it. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there. The colours follow a second point, which makes that change gradually.' + aprTear(n, APR_HALF)]),
