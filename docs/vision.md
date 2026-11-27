@@ -1272,6 +1272,26 @@ Not tried, or not finished.
     top bulb are joined on, and no bulb comes up half sunk further down. But a bulb that stands where the cut
     passes is sliced flat. So the three ways to end the fold each leave one thing: loose bulbs (the entry), a
     bulb half sunk (the wide wedge), a bulb sliced flat (the clean cut).
+  - The picture of the demand was confirmed: "Yes, that's it". So the target is: on every body two bulbs in its
+    own flat plane, two square to that plane, one at its tip, all of one shape, each carrying the same again; a
+    big body at each end of the middle body's line and no other big ones; bare skin elsewhere.
+  - Drawn with scripts after that, none in the lab.
+    - The along-part made true to angle near the top only, x² − h² + y² there and x² − y² − h² elsewhere, with
+      the change made within 3 degrees or spread over 55: scratched or swirled skins both ways. Every change of
+      the along-part tried so far roughens the skin; with the along-part left alone the basilica stays smooth.
+    - The clean cut moved to 17 degrees, into what is a gap between bulbs on the basilica: on the rabbit a big
+      bulb stands there and is sliced through. Where the gaps are differs from set to set.
+    - A quarter rotation about the set's line for every point nearer the upright plane on the line than the flat
+      plane, then the near-flat law of *Two points side by side, round*. On the basilica this is the picture:
+      the bulb on top is a rotated copy of the side bulb, and the skin beside it is bare. Thin slits show on the
+      bulb where the two parts meet. The rabbit is shredded: the planes of the rotation cut its other bodies.
+    - The same kept to the reach of the entry *Two planes, between the middle body's pinch points*, with the
+      round law under it: the basilica as above; on the rabbit the tops come out as ribbed fans with a loose
+      plate.
+  - Reasoned, not proved. In the picture four places on the middle body land on one place of the next body (the
+    two side bulbs, the bulb on top and the one underneath), and two places everywhere else. A rule that gives
+    each point one next point can do that only by folding, and then the bulb on top is two mirrored halves: a
+    true copy only on a set that is its own mirror image. Made a whole true copy, it brings more big bodies.
   - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
     rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
