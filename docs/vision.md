@@ -1190,6 +1190,32 @@ Not tried, or not finished.
     the buds on top are ridges. Three numbers are picked by hand. A new c takes 0.1 to 0.2 seconds.
   - The custom approach: share( ) is the new share. Entry and rule draw one picture on twenty views (at most 26
     of 271,364 pixels differ by more than 8 levels; 4 on the dust at (0.35, 0.1)).
+  - Said of version 1.41: "when you describe what's wrong, you describe the math instead of what I can see
+    visually, since I understand visual but not math. When I zoom in on the top buds for the rabbit, they're
+    still floating - it sounds to me that there's no avoiding this, since you're using approximate values
+    somewhere rather than using c perfectly or something". And: "It sounds to me that you're tackling the
+    symptoms and not the root causes".
+  - Looked at as the user looks. At 60 iterations small bulbs beside the rabbit's top bulb hang loose in the air,
+    a little to the side of straight up.
+  - In the solid, or only in the drawing? A block of space round the side of the top bulb was filled point by
+    point with the rule itself. The loose bulbs are separate pieces, at 30, 60 and 200 iterations alike. So it is
+    the rule: not the drawing, not the number of iterations, and not how exactly c is used.
+  - The cause. What stands on top of a body is a copy of what sticks out of its side. The copy is put down
+    exactly only straight up through the middle. A little to the side it is put down a hair above the flat
+    picture. The flat picture's bulbs hang on necks that narrow to nothing, so the neck is missed and the bulb
+    floats. Versions 1.39 and 1.41 made the hair thinner and never nothing: the user's reading, symptoms and not
+    the cause, is right.
+  - Tried with a script, not in the lab: the copy put down exactly in a wide wedge round straight up (30
+    degrees to each side), with the tilt from the flat plane stretched to fit. The loose bulbs beside the top
+    bulb are then one piece with it (counted). The price, drawn: where the wedge ends, further down the side, a
+    bulb that 1.41 leaves out comes up half sunk into the skin, and small dents show, on the basilica's top bulb
+    too. A wedge of 40 degrees moves the same lower down and stretches it. Exact near the flat plane as well:
+    the bulbs between are squashed into flat plates.
+  - Reasoned, not proved for every rule. On top the solid copies the flat picture; at the side it is the flat
+    picture; halfway between a bulb can be neither. So somewhere between the top and the side there is a stretch
+    where bulbs are spoiled. It can be spread thin over the whole top (1.41: small bulbs float everywhere but
+    straight up) or packed lower down (the trial). Behind it stands a proved fact: in the flat picture squaring
+    keeps every small shape true, and no rule in space can do that everywhere.
   - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
     rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
