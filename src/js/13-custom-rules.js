@@ -159,5 +159,18 @@
       F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
       F('wk = land(k, g, cos(pi*clamp((turned(k, g) - pi/8)/(3*pi/8*lam), 0, 1)))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
       ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
+    // The entry "twinslong": the rule above with its line taken from longway( ).
+    { name: 'Two points side by side, line along the long way (power 2)', lab: 'twinslong', only2: true, say: only2, steps: [num('join', 2, 0, 4),
+      ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
+      ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
+      ['func', { name: 'off', args: 'p, g', text: 'max(across(p, g)*across(p, g) + p.z*p.z, 1e-30)' }],
+      ['func', { name: 'behind', args: 'p, g', text: '-along(p, g)/max(p.z*p.z/sqrt(off(p, g)), 1e-20)' }],
+      ['func', { name: 'land', args: 'p, g, sg', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + p.z*p.z*p.z*p.z/off(p, g)), 0)) + vec(0, 0, 2*p.z*sqrt(along(p, g)*along(p, g) + across(p, g)*across(p, g)*across(p, g)*across(p, g)/off(p, g)))' }],
+      F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }],
+      F('sg = same(if(behind(z, g) > 0.414213562, -1, 1))'), F('w = land(z, g, sg)'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
+      ['func', { name: 'turned', args: 'p, g', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*p.z*p.z/sqrt(off(p, g))), 1e-20))' }],
+      F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
+      F('wk = land(k, g, cos(pi*clamp((turned(k, g) - pi/8)/(3*pi/8*lam), 0, 1)))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
+      ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }

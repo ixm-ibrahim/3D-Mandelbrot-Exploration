@@ -251,6 +251,7 @@ and "2d" means two planes.
 | Two points side by side, round | The same formula with the length squared exactly, as *one plane* squares it. The bodies are round again, with no rim and no crease. The basilica and San Marco have whole buds on top and underneath and small ones dotted between. The rabbit is a smooth rabbit: "this is the first time the rabbit in 3d still looks like a rabbit!" One piece on the whole panel, at 14 iterations as at 60. | On the basilica "the bulbs look lathed, rather than being true 3d objects": every bud off the flat plane is spun round its own axis, with its side buds drawn out into rings. On the rabbit the buds on top are small knobs. Few buds away from the two planes. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
 | Two points side by side, up and across alike | The same middle, with the height and the distance across the line following one law. For a c on the x-axis (the basilica, San Marco) a bud on top of a body is a small round body with buds of its own, the same as a bud in the flat plane, and the upright cut is the flat picture. No crease. The rabbit is still a rabbit: "the disconnected surfaces issue we were seeing earlier seems to be much better or at least mitigated". On the basilica: "the basilica looks amazing". | The rabbit has a seam across its middle body and a ragged bud on top: the rule needs a set that is its own mirror image in its line. Shapes are squashed beside the upright plane across the line. The Mandelbrot solid is not right. |
 | Two points side by side, whole buds on top | The entry above with its line laid square to the middle body's side pinch points, and the change of sign moved a sixteenth of a turn behind the top. On the rabbit each bud on top is one whole body, its two halves hang on one point, and the shape has no seam: in plain clay it is one smooth body. The colours follow a second point that makes the change of sign gradually, so an orbit trap's colours run through as well. A set that is its own mirror image comes out as in the entry above. It can be loaded as steps of the custom approach. | The back of a body is coloured by a blend of its two flanks. That second point is a device for the colours alone: the shape's own change of sign is still a jump. Close up, fine saw-teeth show along one stripe of the rabbit. For a set with one body the line is picked by one of three cases, and the picture jumps where the case changes; away from the x-axis such a set is a smooth dome with plates of colour. The Mandelbrot solid is not right: its big heart is a tall, broken drum. |
+| Two points side by side, line along the long way | One rule for the line, for every set of a Julia picture: it runs along the long way of the set and is laid where the skin of the middle body steps least across the change of sign. A set with one body is whole, with even colours and no plates: (0, 0.1), (0.2, 0.3), (−0.3, 0.3), (−0.5, 0.1), (−0.1, 0.6). The rabbit, the basilica, San Marco and the airplane keep the line of the entry above. It can be loaded as steps of the custom approach. | A set that sits off the middle of its bulb is twisted, and keeps a seam and flat faces: on (−1, 0.15) the step is 4 percent, where the entry above leaves 6. Sets at the heart's edge between bulbs are as in the entry above. For a c on the x-axis from 0 to 0.25 and beyond, the line is the y-axis: a lower body with dimples where the entry above draws a tall egg, and holes where the flat set is dust. The Mandelbrot picture takes the line of the entry above. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -1037,6 +1038,56 @@ Not tried, or not finished.
     read, did not mend the choice.
   - Not found: a rule for the line that holds for every Julia set. The test is needed and is not enough; what is
     missing is a measure of whether the solid still is the flat set, made thick.
+  - The answer to that: "all I hear is that you're not done yet, and I asked you to keep trying and don't come
+    back to me until you find it".
+  - What the lines that close the seam are, measured with a script: the middle body's skin, along the surface
+    where the sign changes, found once with the front's sign and once with the back's sign on the first step,
+    for every direction of the line.
+    1. For a small c they make two families. With c straight above the middle they stand at 55 and at 125
+       degrees, whatever the size of c below 0.3, and the step they leave is about 1.3 percent of the length of
+       c: 0.12 percent at c = (0, 0.1), where the line of the three cases left 1.5.
+    2. As c goes once round the middle each family rotates by about 77 degrees and runs into the other. It is one
+       curve of lines, and a round trip about c = 0 carries a line of one family onto the other. So no choice
+       is free of a jump everywhere: one branch has to be taken, and a cut laid somewhere.
+    3. The families differ in how the line lies in the body: across its short way, or along its long way. Both
+       close the seam in the skin about as well. Drawn, the lines along the long way give whole, smooth bodies
+       with even colours. The lines across the short way leave plates of colour and, further out, flat faces.
+       Followed outwards, the long-way family arrives at the pinch-point lines of the bulbs.
+    4. A flat reading of the same: the line across is laid where the outline, seen from the middle, is most
+       nearly the same to its left and its right within 45 degrees. It matches the lines measured in space to a
+       degree or two for most sets and misses by ten for some, so the lab measures in space.
+  - As an entry: *Two points side by side, line along the long way*. Two steps, the same for every c of a Julia
+    picture. The long way: the outline of the flat set at a low level of the escape potential, seen from the
+    middle, and the direction of its second harmonic. Then, if a body lies round the middle, the line within 25
+    degrees of that which leaves the smallest step in the body's skin; where the side pinch points give a line
+    as good, that line is kept. With no body round the middle the long way is the line. In the page a new c
+    takes about a tenth of a second.
+  - Measured, the step in percent, entry above against this one: (0, 0.1) 1.5 and 0.12; (0.2, 0.3) 2.0 and
+    0.56; (−0.3, 0.3) 0.9 and 0.46; (−0.5, 0.1) 3.5 and 0.36; (−0.1, 0.6) 3.1 and 0.28; (−1, 0.15) 5.7 and
+    4.1; the Siegel disc 11.8 and 6.1. The rabbit (0.33), the basilica, San Marco and the airplane are
+    unchanged.
+  - In the custom approach: the step longway( ) gives that line for a c, and the entry is a rule to load, *Two
+    points side by side, line along the long way (power 2)*. Entry and rule draw one picture: on seven sets, at
+    most 15 of 271,364 pixels differ by more than 8 levels.
+  - Shown a sheet of five sets on the positive x-axis, each drawn with the x-axis as its line (a tall egg) and
+    with the y-axis (a lower body with dimples, and holes at c = 0.3): "what you're doing with this image looks
+    amazing, keep it up". Which of the two rows was meant was not said.
+  - The sets that are twisted. A c off the middle of its bulb does not lie on its own body's line, and the body
+    is not its own mirror image in any line. Measured: with the line and the place of the change of sign both
+    chosen freely, the step stays at 2 to 3 percent: 2.8 on (−1, 0.15), 2.5 on (−0.8, 0.156), 2.0 on the Siegel
+    disc. Drawn or measured to close it, and dropped:
+    1. The change of sign made as a roll: the landing is turned about the line from c, over the roof of the
+       next body, keeping its distance from that line. No step is left, and the back of every body is drawn
+       into long ridges, the rabbit's and the basilica's too: the buds on that roof are spread over the back.
+    2. The landing behind the change of sign turned about the next body's far pinch point, so that the mirror
+       is that body's own line: 5.8 to 3.3 percent on (−1, 0.15), and it breaks (−0.8, 0.156).
+    3. Every landing turned about the upright axis through c by an angle that grows with its steepness: 2.6 to
+       0.6 percent on (−0.8, 0.156), and no better on (−1, 0.15), the Siegel disc or the rabbit.
+    4. The extra term of the across-part made narrower. The step falls with it: on (−1, 0.15) 4.2 percent as
+       the entry stands, 1.7 at seven tenths and 0.9 at half. The buds on top are drawn out across the line,
+       and below about half they are ridges again. On the Siegel disc half gives a smooth body.
+  - Not found: a body with no seam for a set that is twisted. Reasoned: the rule's jump shows nothing only where
+    the next body is its own mirror image in the line from c, and such a set has no line of that kind.
   - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
     rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a

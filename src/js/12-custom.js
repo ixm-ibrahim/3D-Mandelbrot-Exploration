@@ -295,6 +295,13 @@ cuDef('conj', 'v', 'v', a => `(${a} * vec3(1.0, -1.0, -1.0))`, a => [a[0], -a[1]
 // The middle body's side pinch point for the flat set of a c (twSideAt in 10-approaches.js; GL_SIDE in the shader,
 // which cuBuild adds for a rule that calls this).
 cuDef('side', 'v', 'v', a => `vec3(twSideOf(${a}), 0.0)`, a => { const s = twSideAt(a); return [s[0], s[1], 0]; });
+// The line along the long way of the flat set of a c (twLongLine in 10-approaches.js). The shader is handed a
+// Julia picture's line (uTwL, with its c in uTwLc), and takes the line square to side( ) for any other c.
+cuDef('longway', 'v', 'v', a => `vec3(twLongOf(${a}), 0.0)`, a => { const u = twLongLine(a); return [u[0], u[1], 0]; });
+const GL_LONG = `
+uniform vec3 uTwL; uniform vec2 uTwLc;
+vec2 twLongOf(vec3 c){ if (uTwL.z > 0.5 && c.xy == uTwLc) return uTwL.xy; vec2 s = twSideOf(c); return normalize(vec2(s.y, -s.x)); }
+`;
 cuDef('quat', 'ssss', 'q', (w, x, y, z) => `vec4(${x}, ${y}, ${z}, ${w})`, (w, x, y, z) => [x, y, z, w]);
 cuDef('quat', 'v', 'q', a => `vec4(${a}, 0.0)`, a => [a[0], a[1], a[2], 0]);
 cuDef('qrot', 'vs', 'q', (a, b) => `cuQrot(${a}, ${b})`, cuQrot);
@@ -460,7 +467,7 @@ function cuParse(text, ctx) {
     let gl = f.gl(...args.map(a => a.gl));
     // In an iteration the orbits beside a point take the side pinch point the point's own orbit found, as inside
     // same( ): the search is long, and a line that differed from the point's would spoil the distance estimate.
-    if (name === 'side' && ctx.sec !== 'pre') { const sites = ctx.same || (ctx.same = []), k = sites.length; sites.push('v'); gl = `(gCarI == 0 ? (gCuW${k} = ${gl}) : gCuW${k})`; }
+    if ((name === 'side' || name === 'longway') && ctx.sec !== 'pre') { const sites = ctx.same || (ctx.same = []), k = sites.length; sites.push('v'); gl = `(gCarI == 0 ? (gCuW${k} = ${gl}) : gCuW${k})`; }
     if (J.length === 1) { const [a] = J; return { t: f.ret, gl, tree, js: E => g(a(E)) }; }
     if (J.length === 2) { const [a, b] = J; return { t: f.ret, gl, tree, js: E => g(a(E), b(E)) }; }
     if (J.length === 3) { const [a, b, c] = J; return { t: f.ret, gl, tree, js: E => g(a(E), b(E), c(E)) }; }
@@ -806,6 +813,7 @@ const CU_OPS = [
   ['f_conj', 'Flip the signs of y and z', 'Points', 'pt', [['Of', 'z']]],
   ['f_point', 'A point of the orbit, by its number', 'Points', 'pt', [['Which: 1 the first, 0 this one, −1 the one before', '1']]],
   ['f_side', 'The middle body’s side pinch point, for a c', 'Points', 'sd', [['The c', 'c']]],
+  ['f_longway', 'The line along the long way of the set, for a c', 'Points', 'g', [['The c', 'c']]],
   // the name "colours" is the one cuBuild looks for
   ['o_colours', 'Colours: follow another point', 'Points', 'colours', [['The point the colours follow', 'z']], a => a],
   ['o_lt', 'Is it less?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['less than this', '1']], (a, b) => `${a} < ${b}`],
@@ -1247,7 +1255,7 @@ vec3 zmap(vec3 P, vec3 c){ return ${preZ ? 'cuPreZ(P, c, cmap(c))' : 'P'}; }`;
   K.set(ctx.K);
   const at = [], lists = { pre: [], main: [], post: [] };
   for (const r of run) { at[r.ord] = r; lists[r.sec].push(r); }
-  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (code.includes('twSideOf(') ? GL_SIDE : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
+  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (code.includes('twSideOf(') || code.includes('twLongOf(') ? GL_SIDE : '') + (code.includes('twLongOf(') ? GL_LONG : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
     K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept, fns: ctx.fns };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).
@@ -1526,6 +1534,9 @@ function cuUniforms(gl, loc) {
   K[CU_ONCE] = S.learn ? 0 : 1;
   K[CU_LAST] = at ? at.last : cuHasPost() ? Math.round(S.iter) + 1 : 0;
   gl.uniform1fv(loc('uCu[0]'), K);
+  const u = S.mode === 'j' && lnPlain() && cuProgram().glsl.includes('twLongOf(') ? twLongAt(S.c) : null;
+  gl.uniform3f(loc('uTwL'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : 0);
+  if (u) gl.uniform2f(loc('uTwLc'), S.c[0], S.c[1]);
 }
 // The plain distance estimate (one number in place of neighbouring orbits) for the finished solid, where the rule
 // asks for it. It holds only for whole steps of a power, so a play takes the fine one, and so does a rule with a
