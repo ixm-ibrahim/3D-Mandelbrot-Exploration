@@ -166,7 +166,7 @@
       ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
       ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
       ['func', { name: 'off', args: 'p, g', text: 'max(across(p, g)*across(p, g) + p.z*p.z, 1e-30)' }],
-      ['func', { name: 'share', args: 't', text: 't*t*t*(t*(6*t - 15) + 10)' }], ['func', { name: 'lift', args: 'p, g, kp', text: 'kp*kp*p.z*p.z*share(p.z*p.z/off(p, g))' }],
+      ['func', { name: 'share', args: 't', text: 't*t*t/(t*t*t + (1 - t)*(1 - t)*(1 - t))' }], ['func', { name: 'lift', args: 'p, g, kp', text: 'kp*kp*p.z*p.z*share(p.z*p.z/off(p, g))' }],
       ['func', { name: 'behind', args: 'p, g, kp', text: '-along(p, g)/max(sqrt(lift(p, g, kp)), 1e-20)' }],
       ['func', { name: 'land', args: 'p, g, sg, kp', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + lift(p, g, kp)), 0)) + vec(0, 0, 2*p.z*sqrt(along(p, g)*along(p, g) + across(p, g)*across(p, g)*share(across(p, g)*across(p, g)/off(p, g))))' }],
       F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }], ['f_kept', { out: 'kp', a0: 'c' }],

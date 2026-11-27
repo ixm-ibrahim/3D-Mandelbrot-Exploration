@@ -251,7 +251,7 @@ and "2d" means two planes.
 | Two points side by side, round | The same formula with the length squared exactly, as *one plane* squares it. The bodies are round again, with no rim and no crease. The basilica and San Marco have whole buds on top and underneath and small ones dotted between. The rabbit is a smooth rabbit: "this is the first time the rabbit in 3d still looks like a rabbit!" One piece on the whole panel, at 14 iterations as at 60. | On the basilica "the bulbs look lathed, rather than being true 3d objects": every bud off the flat plane is spun round its own axis, with its side buds drawn out into rings. On the rabbit the buds on top are small knobs. Few buds away from the two planes. The Mandelbrot solid stays flat, with one tall fin beside the cusp. |
 | Two points side by side, up and across alike | The same middle, with the height and the distance across the line following one law. For a c on the x-axis (the basilica, San Marco) a bud on top of a body is a small round body with buds of its own, the same as a bud in the flat plane, and the upright cut is the flat picture. No crease. The rabbit is still a rabbit: "the disconnected surfaces issue we were seeing earlier seems to be much better or at least mitigated". On the basilica: "the basilica looks amazing". | The rabbit has a seam across its middle body and a ragged bud on top: the rule needs a set that is its own mirror image in its line. Shapes are squashed beside the upright plane across the line. The Mandelbrot solid is not right. |
 | Two points side by side, whole buds on top | The entry above with its line laid square to the middle body's side pinch points, and the change of sign moved a sixteenth of a turn behind the top. On the rabbit each bud on top is one whole body, its two halves hang on one point, and the shape has no seam: in plain clay it is one smooth body. The colours follow a second point that makes the change of sign gradually, so an orbit trap's colours run through as well. A set that is its own mirror image comes out as in the entry above. It can be loaded as steps of the custom approach. | The back of a body is coloured by a blend of its two flanks. That second point is a device for the colours alone: the shape's own change of sign is still a jump. Close up, fine saw-teeth show along one stripe of the rabbit. For a set with one body the line is picked by one of three cases, and the picture jumps where the case changes; away from the x-axis such a set is a smooth dome with plates of colour. The Mandelbrot solid is not right: its big heart is a tall, broken drum. |
-| Two points side by side, line along the long way | One rule for the line, for every set of a Julia picture: it runs along the long way of the set and is laid where the skin of the middle body steps least across the change of sign. A set with one body is whole, with even colours and no plates: (0, 0.1), (0.2, 0.3), (−0.3, 0.3), (−0.5, 0.1), (−0.1, 0.6). The rabbit, the basilica, San Marco and the airplane keep the line of the entry above. A bud on top of a body keeps the small buds on its own top: on the rabbit they hang on it, where the entry above cuts the bud short and leaves its tip loose. As c slides the line moves with it, with no snap inside the big heart. A set close to the heart's edge, like (0, 0.61) or the Siegel disc, is one smooth body with no tears. It can be loaded as steps of the custom approach. | A set that sits off the middle of its bulb is twisted, and keeps a seam and flat faces, as in the entry above: such a set takes the pinch-point line. For a set with one body the line is still found by a search, and how much of the extra term is kept turns on a number picked by hand (half a percent). Sets at the heart's edge between bulbs are as in the entry above. For a c on the x-axis from 0 to 0.25 and beyond, the line is the y-axis: a lower body with dimples where the entry above draws a tall egg, and holes where the flat set is dust. The Mandelbrot picture takes the line of the entry above. |
+| Two points side by side, line along the long way | One rule for the line, for every set of a Julia picture: it runs along the long way of the set, turned to where the two sides of the change of sign meet. A set with one body is whole, with even colours and no plates: (0, 0.1), (0.2, 0.3), (−0.3, 0.3), (−0.5, 0.1), (−0.1, 0.6). The rabbit, the basilica, San Marco and the airplane keep the line of the entry above. A bud on top of a body keeps the small buds on its own top: on the rabbit they hang on it, where the entry above cuts the bud short and leaves its tip loose. The upright arm above the Kokopelli's middle body is whole. As c slides the line moves with it and does not hop: lines that close about as well are blended. A set close to the heart's edge, like (0, 0.61) or the Siegel disc, and a set past it, like (0, 0.65), (0, 0.8) or (−0.4, 0.6), comes out in whole smooth pieces with no tears. It can be loaded as steps of the custom approach. | A set that sits off the middle of its bulb is twisted, and keeps a seam and flat faces, as in the entry above: such a set takes the pinch-point line. Where a bulb hangs on the heart the line turns at once, by 15 to 21 degrees where it was followed. Close to the heart's edge and past it the buds on top are ridges. The line is still found by trying lines, and three numbers are picked by hand: half a percent, one and a half percent, and the power 4 of the blend. Near (0.2, 0.435) the measure reads the two sides as met while the picture is rough. For a c on the x-axis from 0 to 0.25 and beyond, the line is the y-axis: a lower body with dimples where the entry above draws a tall egg, and open cups where the flat set is dust, as at (0.285, 0.01). The Mandelbrot picture takes the line of the entry above. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -1154,6 +1154,42 @@ Not tried, or not finished.
   - The custom approach: the function kept( ) gives that share for a c. Entry and rule draw one picture on
     twelve views (at most 18 of 271,364 pixels differ by more than 8 levels); on the dust at (0.35, 0.1), an
     open shell of thin sheets, 777 differ.
+  - Said of that version: "there's still weird behavior in the z-axis bulbs - like look at the kokopelli fractal
+    at maximum iterations, half of the vertical part of the fractal above the center sphere is discontinued and
+    missing". And: "you may have fixed the 0,0.61 julia, but if I keep going to 0.65 it's still messed up. Like
+    try different things before you consider them done, they were very easy finds".
+  - The Kokopelli, found. The upright arm is a hair that wanders from side to side. A point beside the upright
+    axis still landed a little above the flat plane, by more than the hair is thick where the arm leaves the
+    middle body, so the arm's lower half was lost. Drawn with three sharper shares; each makes the arm whole.
+    Taken: t³/(t³ + (1 − t)³), which is h⁶/(y⁶ + h⁶), sixth powers where the first rule has squares. It stands
+    in place of the smooth step. The two sharper ones leave a dark dent on the rabbit's middle body.
+  - (0, 0.65), found. Past the heart's edge the entry found no body round the middle and kept the whole extra
+    term. Every torn preset was such a set: (−0.4, 0.6), (−0.70176, −0.3842), (−0.835, −0.2321), (0.285, 0.01),
+    and the y-axis from 0.65 on. Such a set now keeps none of it.
+  - More snaps, found by following the line along straight paths of c in small steps. Inside the heart two dips
+    lie some 40 degrees apart over a wide region, and the search hopped from one to the other: by 43 degrees
+    between (−0.325, 0.13) and (−0.35, 0.13), by 54 between (−0.4, 0.18) and (−0.4, 0.20). At the heart's edge it
+    hopped between shallow dips: 102, 151 and 127 degrees at (0, 0.63), (0, 0.64) and (0, 0.65).
+  - Drawn and dropped. The long way alone, with no trying of lines: nothing can hop, but Flint, Split conch,
+    Plated egg and the fat rabbit become ribbed shells, where a line 13 to 30 degrees from the long way closes
+    them. Every tried line weighed by its step, with no closing in on the dips: the line sits between the two
+    dips, where neither closes.
+  - In the entry now. Every dip is closed in on, and the dips are blended, each counting by one over its step to
+    the power 4. One clear dip is taken as it is; two that are nearly as deep give a line between them. Where the
+    blend leaves more than one and a half percent, the line swings back towards the long way. The kept share is
+    read on the line that results.
+  - Followed along seven paths of c: inside the heart, across the x-axis, across the heart's edge at three
+    places, into the rabbit's bulb and into the bulb of two bodies. Inside the heart and across its edge the line
+    moves at most 12 degrees in a step of 0.0125, and 4 degrees in a step of 0.01 up the y-axis. Where a bulb
+    hangs on the heart it still turns at once: 21 degrees into the rabbit's bulb, 15 into the bulb of two bodies.
+  - Drawn at 60 iterations: all 26 presets, and the y-axis from 0.3 to 0.8 in fifteen steps. No torn set among
+    them. Up the y-axis the bodies go from lumps (to 0.5) to twisted ropes (from 0.54) with no hop.
+  - Still wrong. Near (0.2, 0.435), close to the heart's edge, the step reads 0.4 percent on a narrow band of c
+    and the whole term is kept, but the picture is rough there: the measure sees the seam on the middle body
+    only. Past the cusp, at (0.285, 0.01) and (0.35, 0.05), the set is open cups. Close to the edge and past it
+    the buds on top are ridges. Three numbers are picked by hand. A new c takes 0.1 to 0.2 seconds.
+  - The custom approach: share( ) is the new share. Entry and rule draw one picture on twenty views (at most 26
+    of 271,364 pixels differ by more than 8 levels; 4 on the dust at (0.35, 0.1)).
   - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
     rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
