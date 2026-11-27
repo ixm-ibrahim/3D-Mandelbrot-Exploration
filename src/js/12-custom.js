@@ -298,9 +298,13 @@ cuDef('side', 'v', 'v', a => `vec3(twSideOf(${a}), 0.0)`, a => { const s = twSid
 // The line along the long way of the flat set of a c (twLongLine in 10-approaches.js). The shader is handed a
 // Julia picture's line (uTwL, with its c in uTwLc), and takes the line square to side( ) for any other c.
 cuDef('longway', 'v', 'v', a => `vec3(twLongOf(${a}), 0.0)`, a => { const u = twLongLine(a); return [u[0], u[1], 0]; });
+// How much of the across-part's extra term "twinslong" keeps for the flat set of a c (twLongKeep): handed to the
+// shader with a Julia picture's line (uTwLk), and 1 for any other c.
+cuDef('kept', 'v', 's', a => `twKeptOf(${a})`, a => twLongKeep(a));
 const GL_LONG = `
-uniform vec3 uTwL; uniform vec2 uTwLc;
+uniform vec3 uTwL; uniform vec2 uTwLc; uniform float uTwLk;
 vec2 twLongOf(vec3 c){ if (uTwL.z > 0.5 && c.xy == uTwLc) return uTwL.xy; vec2 s = twSideOf(c); return normalize(vec2(s.y, -s.x)); }
+float twKeptOf(vec3 c){ return uTwL.z > 0.5 && c.xy == uTwLc ? uTwLk : 1.0; }
 `;
 cuDef('quat', 'ssss', 'q', (w, x, y, z) => `vec4(${x}, ${y}, ${z}, ${w})`, (w, x, y, z) => [x, y, z, w]);
 cuDef('quat', 'v', 'q', a => `vec4(${a}, 0.0)`, a => [a[0], a[1], a[2], 0]);
@@ -814,6 +818,7 @@ const CU_OPS = [
   ['f_point', 'A point of the orbit, by its number', 'Points', 'pt', [['Which: 1 the first, 0 this one, −1 the one before', '1']]],
   ['f_side', 'The middle body’s side pinch point, for a c', 'Points', 'sd', [['The c', 'c']]],
   ['f_longway', 'The line along the long way of the set, for a c', 'Points', 'g', [['The c', 'c']]],
+  ['f_kept', 'How much of the extra term is kept, for a c', 'Points', 'kp', [['The c', 'c']]],
   // the name "colours" is the one cuBuild looks for
   ['o_colours', 'Colours: follow another point', 'Points', 'colours', [['The point the colours follow', 'z']], a => a],
   ['o_lt', 'Is it less?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['less than this', '1']], (a, b) => `${a} < ${b}`],
@@ -1255,7 +1260,7 @@ vec3 zmap(vec3 P, vec3 c){ return ${preZ ? 'cuPreZ(P, c, cmap(c))' : 'P'}; }`;
   K.set(ctx.K);
   const at = [], lists = { pre: [], main: [], post: [] };
   for (const r of run) { at[r.ord] = r; lists[r.sec].push(r); }
-  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (code.includes('twSideOf(') || code.includes('twLongOf(') ? GL_SIDE : '') + (code.includes('twLongOf(') ? GL_LONG : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
+  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (/tw(Side|Long|Kept)Of\(/.test(code) ? GL_SIDE : '') + (/tw(Long|Kept)Of\(/.test(code) ? GL_LONG : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
     K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept, fns: ctx.fns };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).
@@ -1534,8 +1539,9 @@ function cuUniforms(gl, loc) {
   K[CU_ONCE] = S.learn ? 0 : 1;
   K[CU_LAST] = at ? at.last : cuHasPost() ? Math.round(S.iter) + 1 : 0;
   gl.uniform1fv(loc('uCu[0]'), K);
-  const u = S.mode === 'j' && lnPlain() && cuProgram().glsl.includes('twLongOf(') ? twLongAt(S.c) : null;
+  const u = S.mode === 'j' && lnPlain() && /tw(Long|Kept)Of\(/.test(cuProgram().glsl) ? twLongAt(S.c) : null;
   gl.uniform3f(loc('uTwL'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : 0);
+  gl.uniform1f(loc('uTwLk'), u ? u[2] : 1);
   if (u) gl.uniform2f(loc('uTwLc'), S.c[0], S.c[1]);
 }
 // The plain distance estimate (one number in place of neighbouring orbits) for the finished solid, where the rule
