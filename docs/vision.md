@@ -1251,6 +1251,27 @@ Not tried, or not finished.
     and the step is squeezed between them at the very top. Drawn so far as cuts only, with a script, for the
     basilica: the flat picture, and its copy on a cone to each side, above and below. A bud stands on top of the
     middle body, and four whole arms of the picture rise from it, two above and two below. No solid yet.
+  - Asked for next: "I'd love to visually see your representation of my demand so I can respond better. and of
+    course, your solution will speak for itself when you do it". Drawn and sent, with balls standing in for the
+    true shapes: a middle body with a big body at each end of its line; on every body two bulbs in its own flat
+    plane, two square to that plane and one at its tip, all of one size; and on each of those the same again.
+    Close views of a bulb on top, of a bulb in the flat plane of a bulb on top, and of a bulb on top of a bulb in
+    the flat plane are drawn to look alike. Under it, in real pictures: the basilica's bulb on top in the lab,
+    where the demand is met at that size, and the three things that must not happen (rings, loose bulbs, a bulb
+    half sunk). Whether this is the demand is not yet answered. The reference picture, *Balls on balls*, has no
+    arms: bodies of middle size stand on the middle body, and small ones all over.
+  - The cone, thought through further and not built. With a cone to each side the two touch along the upright
+    axis and leave a thin gap between them that widens up the bud, so the bud on top would carry a spoiled band
+    along its middle. With one cone the bud is whole, but the solid is lopsided, with arms on one side only.
+  - Drawn with a script, not in the lab, and dropped. The plane across the line squared true to angle near the
+    top and near the flat plane, with the along-part x² + (2S − 1)(y² − h²) and the across-part and the height
+    to match: every skin is ribbed, swirled or finned, on the basilica too, and each of the two changes does it
+    alone. The entry's own formula is a narrow good place: the basilica it draws is smooth.
+  - Drawn with a script, not in the lab. The entry with the height's extra term exactly nothing within 20 degrees
+    of straight up, then raised within 3 degrees to at least a tenth of y²: the loose bulbs beside the rabbit's
+    top bulb are joined on, and no bulb comes up half sunk further down. But a bulb that stands where the cut
+    passes is sliced flat. So the three ways to end the fold each leave one thing: loose bulbs (the entry), a
+    bulb half sunk (the wide wedge), a bulb sliced flat (the clean cut).
   - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
     rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
