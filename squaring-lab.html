@@ -13613,7 +13613,10 @@ function learnVDraw() {
     }
   }
   // the line the move works about, where the rule has one of its own: drawn whole, named at its front end
-  if (m && m.line && vk === 's3') { seg(scl(m.line, -E), scl(m.line, E), C.ink, 2, 0.9); tag(scl(m.line, E), 'the set’s line', C.ink, 8, 2); }
+  if (m && m.line && vk === 's3') {
+    const e1 = scl(m.line, E), left = P.to(e1)[0] < P.o[0];
+    seg(scl(m.line, -E), e1, C.ink, 2, 0.9); tag(e1, 'the set’s line', C.ink, left ? -8 : 8, 4, left ? 'right' : 'left');
+  }
 
   // the steps taken before this one
   for (let i = 0; i < L.k; i++) { seg(K.orbit[i], K.orbit[i + 1], C.ink2, 1.25, 0.55); disc(K.orbit[i], 2.75, C.ink2, 0.9); tag(K.orbit[i], String(i), C.ink2, 6, 9, 'left', 10); }

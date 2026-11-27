@@ -1216,6 +1216,41 @@ Not tried, or not finished.
     where bulbs are spoiled. It can be spread thin over the whole top (1.41: small bulbs float everywhere but
     straight up) or packed lower down (the trial). Behind it stands a proved fact: in the flat picture squaring
     keeps every small shape true, and no rule in space can do that everywhere.
+  - The demand that follows: "you've identified the flaw precisely". And: "consider that we're only halfway
+    with the algorithm, with the next step being how to identify how to fill in the space on the surface with
+    more bulbs. So, whatever approach you use to get the 3d bulbs to work, it can't have this flaw. So we need a
+    non-smearing, non-disconnected non-stretched method to getting those bulbs where we want (like I should be
+    able to zoom into any combination of a normal vs. vertical bulb on a vertical/3d bulb and it looks just like
+    every other bulb)".
+  - On quaternions, set straight: "I don't mean replace what we have now with pure quaternion rotations, but
+    that if we do anything that resembles rotations or whatever that we utilize quaternion math so that we don't
+    hit the limits of 3d rotations". Checked on this entry: its step has two rotations, the doubling of the
+    angle from the line and the rotation of space by the line's own angle. Both are worked as products of the
+    point's own three numbers, with no pair of angles anywhere, and the first is the quaternion square about the
+    line. So no limit of 3D rotations is met in this entry, and the flaw does not come from one.
+  - The step as moves, which the Learn tab plays for this entry and for the entry above. A point behind the
+    middle goes to the place in front that has the same answer: half way round the upright axis, or, just
+    behind the top, straight across to its mirror place. A point between the flat plane and the upright plane on
+    the line is pushed sideways. Then its angle from the line is doubled, which is the quaternion square about
+    the line; space rotates by the line's angle; the length is squared; c is added. The first two moves are what
+    the entry adds to the quaternion square. The push is where the flaw lives.
+  - Where the flaw has to sit, reasoned and not proved. The bud on top is made by folding space over a sheet,
+    the upright plane across the line near the top, so that the sheet lands on the flat plane; the bud is whole
+    because the solid is its own mirror image in the flat plane. Such a sheet cannot run down to the flat
+    plane: where the two met, a step up and a step along the flat plane would land the same way, and the flat
+    picture's own bulbs there would be crushed. So the sheet has an edge part of the way down every body. At
+    that edge the fold no longer lands on the flat plane, and a bulb that sits there is cut by it: the loose
+    bulbs of the entry, the half-sunk bulb of the wedge. A rule of this kind can move the edge and cannot be rid
+    of it.
+  - A sheet with no edge. The only one found by reasoning closes round: a cone through the upright axis, opening 60
+    degrees, which is the flat plane folded in two by the half rotation and rolled up. The flat rule itself
+    can act on it with nothing stretched, so every bulb of the flat picture would stand on it exactly, with its
+    neck. What that brings, reasoned: a whole second ring of bulbs over every body, through its top, and more
+    big bodies off the flat plane, not only one bud on top. Between such a cone and the flat plane the step has
+    to stretch, by how much is not known. With a cone to each side, alike, the two touch along the upright axis
+    and the step is squeezed between them at the very top. Drawn so far as cuts only, with a script, for the
+    basilica: the flat picture, and its copy on a cone to each side, above and below. A bud stands on top of the
+    middle body, and four whole arms of the picture rise from it, two above and two below. No solid yet.
   - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
     rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
