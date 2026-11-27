@@ -745,30 +745,35 @@ function twWholeUniforms(gl, loc) {
 // How far behind the plane across the line the sign of x starts to count, in units of b = h²/sqrt(y² + h²): on the
 // upright plane on the line that is a sixteenth of a turn behind the top.
 const TW_BACK = Math.SQRT2 - 1;
-// The line of the entry "twinslong", for a Julia picture: one rule for every c, in two steps.
+// The line of the entry "twinslong", for a Julia picture: one rule for every c.
+// A set with a cycle of bodies whose side pinch points are found takes the line square to them, as "twinswhole"
+// does (twSideAt). Any other set:
 // 1. The long way. The outline of the flat set at a low level of the escape potential (TL_LEVEL, or a quarter
 //    above the middle point's own level where that is higher), seen from the middle: the direction of the second
 //    harmonic of its distance squared (tlLongWay).
-// 2. Where the two sides meet. If a body lies round the middle: of the lines within TL_SPAN degrees of that
-//    direction, both ways round, the one that leaves the smallest step in the body's skin across the change of
-//    sign (tlStep: along twelve rays of the surface x = -TW_BACK·b, the first way out of the solid with the
-//    front's sign and with the back's sign on the first step). Where the side pinch points of a cycle of bodies
-//    give a line no worse than that by more than TL_KEEP, that line is taken. With no body round the middle the
-//    long way is the line. The front of the line faces the fixed point 1/2 - sqrt(1/4 - c), unless the line the
-//    other way round leaves a step smaller by a thousandth.
-const TL_LEVEL = 0.05, TL_SPAN = 25, TL_KEEP = 0.0015;
+// 2. Where the two sides meet. If a body lies round the middle: of the lines within TL_SPAN degrees of the long
+//    way, the one that leaves the smallest step in the body's skin across the change of sign (tlStep: along twelve
+//    rays of the surface where the sign changes, the first way out of the solid with the front's sign and with the
+//    back's sign on the first step). One dip is followed: the deepest of a scan in steps of 2 degrees, closed in
+//    on by halving. With no body round the middle the long way is the line.
+// The front of the line faces the fixed point 1/2 - sqrt(1/4 - c).
+const TL_LEVEL = 0.05, TL_SPAN = 45;
+// The share of "twinslong": how much of a point's distance from the line counts as height, t = h²/(y² + h²), goes
+// through this step before it sets the extra term of the across-part, and 1 - t before it sets that of the
+// height. "twinswhole" takes the share as it is.
+const twShare = t => t * t * t * (t * (6 * t - 15) + 10);
 const TL = new Map();                            // answers so far, by c
 const TL_RAYS = Array.from({ length: 12 }, (_, k) => {
-  const phi = (5 + 7.5 * k) * PI / 180, ch = PI / 2 + Math.atan(TW_BACK * Math.sin(phi) ** 2);
+  const phi = (5 + 7.5 * k) * PI / 180, sn = Math.sin(phi), ch = PI / 2 + Math.atan(TW_BACK * sn * Math.sqrt(twShare(sn * sn)));
   return [Math.cos(ch), Math.sin(ch) * Math.cos(phi), Math.sin(ch) * Math.sin(phi)];
 });
 // Does the point stay, under the entry's rule with the line (ux, uy)? first: a sign forced on the first step, or 0.
 function tlStay(x, y, h, cx, cy, ux, uy, first) {
   const gx = ux * ux - uy * uy, gy = 2 * ux * uy;
   for (let k = 0; k < 32; k++) {
-    const p = x * ux + y * uy, q = ux * y - uy * x, p2 = p * p, q2 = q * q, h2 = h * h, s2 = Math.max(q2 + h2, 1e-300), b2 = h2 * h2 / s2;
+    const p = x * ux + y * uy, q = ux * y - uy * x, p2 = p * p, q2 = q * q, h2 = h * h, s2 = Math.max(q2 + h2, 1e-300), b2 = h2 * twShare(h2 / s2);
     const sg = k === 0 && first ? first : -p > TW_BACK * Math.sqrt(b2) ? -1 : 1;
-    const X = p2 - q2 - h2, Y = 2 * q * sg * Math.sqrt(p2 + b2), H = 2 * h * Math.sqrt(p2 + q2 * q2 / s2), l = Math.hypot(X, Y, H), m = l > 0 ? (p2 + q2 + h2) / l : 1;
+    const X = p2 - q2 - h2, Y = 2 * q * sg * Math.sqrt(p2 + b2), H = 2 * h * Math.sqrt(p2 + q2 * twShare(q2 / s2)), l = Math.hypot(X, Y, H), m = l > 0 ? (p2 + q2 + h2) / l : 1;
     x = (X * gx - Y * gy) * m + cx; y = (X * gy + Y * gx) * m + cy; h = H * m;
     if (!(x * x + y * y + h * h < 64)) return false;
   }
@@ -820,34 +825,24 @@ function twLongAt(c) {
   const key = c[0] + ',' + c[1];
   let at = TL.get(key);
   if (at) return at;
-  const cx = c[0], cy = c[1], al = twAlpha(c), s = tlLongWay(cx, cy);
+  const cx = c[0], cy = c[1], al = twAlpha(c), P = twSideAt(c);
   const faces = a => Math.cos(a) * al[0] + Math.sin(a) * al[1] >= -1e-12;
-  let a = s, body = true;
-  for (let i = 0; i < 30 && body; i++) body = !(tlSkin([Math.cos(i * PI / 30), Math.sin(i * PI / 30), 0], cx, cy, 1, 0, 0) < 0.03);
-  if (body) {
-    const turn = faces(s) ? 0 : PI, S1 = [], at1 = [];
-    for (let i = -TL_SPAN; i <= TL_SPAN; i += 2) { at1.push(i); S1.push(tlStep(cx, cy, s + turn + i * PI / 180)); }
-    const low = Math.min(...S1), dips = [];
-    for (let i = 0; i < S1.length; i++) if ((i === 0 || S1[i] <= S1[i - 1]) && (i === S1.length - 1 || S1[i] <= S1[i + 1]) && S1[i] <= low + 0.004) dips.push(i);
-    dips.sort((p, q) => S1[p] - S1[q]);
-    let best = Infinity;
-    for (const i of dips.slice(0, 2)) {
-      let at0 = at1[i], v0 = S1[i];
-      for (const st of [1, 0.5, 0.25, 0.1]) for (const k of [-1, 1]) {
+  let a;
+  if (P[2]) a = Math.atan2(-P[0], P[1]);
+  else {
+    const s = tlLongWay(cx, cy), turn = faces(s) ? 0 : PI;
+    let body = true, at0 = 0, v0 = Infinity;
+    for (let i = 0; i < 30 && body; i++) body = !(tlSkin([Math.cos(i * PI / 30), Math.sin(i * PI / 30), 0], cx, cy, 1, 0, 0) < 0.03);
+    if (body) {
+      for (let i = -TL_SPAN; i <= TL_SPAN; i += 2) { const v = tlStep(cx, cy, s + turn + i * PI / 180); if (v < v0) { v0 = v; at0 = i; } }
+      if (!(v0 < 1)) at0 = 0;
+      else for (const st of [1, 0.5, 0.25, 0.1]) for (const k of [-1, 1]) {
         const t = clamp(at0 + k * st, -TL_SPAN, TL_SPAN), v = tlStep(cx, cy, s + turn + t * PI / 180);
         if (v < v0) { v0 = v; at0 = t; }
       }
-      if (v0 < best) { best = v0; a = s + turn + at0 * PI / 180; }
     }
-    const P = twSideAt(c);
-    if (P[2]) {
-      let pa = Math.atan2(-P[0], P[1]);
-      if (Math.cos(pa - s - turn) < 0) pa += PI;
-      const off = Math.abs((((pa - s) % PI) + PI + PI / 2) % PI - PI / 2), v = off <= TL_SPAN * PI / 180 ? tlStep(cx, cy, pa) : Infinity;
-      if (v <= best + TL_KEEP) { best = v; a = pa; }
-    }
-    if (tlStep(cx, cy, a + PI) < best - 0.001) a += PI;
-  } else if (!faces(a)) a += PI;
+    a = s + turn + at0 * PI / 180;
+  }
   at = [Math.cos(a), Math.sin(a)];
   if (TL.size > 256) TL.clear();
   TL.set(key, at);
@@ -864,12 +859,14 @@ function twLongUniforms(gl, loc) {
   const u = S.mode === 'j' && lnPlain() ? twLongAt(S.c) : null;
   gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : S.mode !== 'j' && lnPlain() ? 2 : 0);
 }
-// One squaring of "twinswhole" and "twinslong" about the line u.
-function twStep(v, u) {
+// One squaring of "twinswhole" and "twinslong" about the line u. share: the step the two shares go through, or
+// nothing for the shares as they are.
+function twStep(v, u, share) {
   const x = v[0] * u[0] + v[1] * u[1], y = u[0] * v[1] - u[1] * v[0], h = v[2];
-  const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300), b2 = h2 * h2 / s2;
+  const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300);
+  const b2 = share ? h2 * share(h2 / s2) : h2 * h2 / s2, a2 = share ? y2 * share(y2 / s2) : y2 * y2 / s2;
   const sg = -x / Math.max(Math.sqrt(b2), 1e-300) > TW_BACK ? -1 : 1;
-  const X = x2 - y2 - h2, Y = 2 * y * sg * Math.sqrt(x2 + b2), H = 2 * h * Math.sqrt(x2 + y2 * y2 / s2);
+  const X = x2 - y2 - h2, Y = 2 * y * sg * Math.sqrt(x2 + b2), H = 2 * h * Math.sqrt(x2 + a2);
   const gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
   const w = [X * gx - Y * gy, X * gy + Y * gx, H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (x2 + y2 + h2) / l : 1;
   return [w[0] * k, w[1] * k, w[2] * k];
@@ -917,7 +914,7 @@ const MATH = {
     return [w[0] * k, w[1] * k, w[2] * k];
   },
   twinswhole(v, n, q = {}, c) { return n !== 2 ? tpOne(v, n) : twStep(v, twWholeLine(c)); },
-  twinslong(v, n, q = {}, c) { return n !== 2 ? tpOne(v, n) : twStep(v, twLongLine(c)); },
+  twinslong(v, n, q = {}, c) { return n !== 2 ? tpOne(v, n) : twStep(v, twLongLine(c), twShare); },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -1524,6 +1521,12 @@ vec3 cmap(vec3 c){
   if (l > 1e-12){ gTwU = a / sqrt(l); gTw = cmul(gTwU, gTwU); }
   return c;
 }`;
+// The entry "twinslong": the shader of "twinswhole" with the two shares put through twShare.
+const GL_TWINSLONG = [
+  ['vec3 twSq(vec3 v){', 'float twShare(float t){ return t * t * t * (t * (6.0 * t - 15.0) + 10.0); }\nvec3 twSq(vec3 v){'],
+  ['b2 = h2 * h2 / s2;', 'b2 = h2 * twShare(h2 / s2);'],
+  ['sqrt(x2 + y2 * y2 / s2)', 'sqrt(x2 + y2 * twShare(y2 / s2))'],
+].reduce((g, [was, now]) => { if (!g.includes(was)) throw new Error('GL_TWINSLONG: ' + was); return g.replace(was, now); }, GL_TWINSWHOLE);
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -2820,15 +2823,15 @@ const APPROACHES = [
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
   },
   {
-    id: 'twinslong', name: 'Two points side by side, line along the long way', group: 'inversions', glsl: GL_TWINSWHOLE, axis: () => [0, 0, 1],
+    id: 'twinslong', name: 'Two points side by side, line along the long way', group: 'inversions', glsl: GL_TWINSLONG, axis: () => [0, 0, 1],
     usesC: true, uniforms: twLongUniforms,
-    tag: 'The entry above with its line found in one way for every set: it runs along the long way of the set, and is laid where the two sides of the change of sign meet. A set with one body comes out whole, with no plates of colour.',
+    tag: 'The entry above with two things changed. Its line is found in one way for every set: along the long way of the set, where the two sides of the change of sign meet. And a point beside the upright axis lands in the flat plane, so a bud on top of a body keeps its own small buds.',
     params: [
-      { type: 'note', text: 'How it works: seen from the middle, the outline of the flat set has a long way and a short way. The line is looked for within 25° of the long way, and laid where the skin of the middle body steps least across the change of sign. A new c takes a moment.' },
+      { type: 'note', text: 'How it works: seen from the middle, the outline of the flat set has a long way and a short way. The line is looked for within 45° of the long way, and laid where the skin of the middle body steps least across the change of sign. A set with a cycle of bodies keeps the line square to its side pinch points. A new c takes a moment.' },
       { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 4, step: 0.1, def: 2, help: 'The colours follow a second point, which changes to the far side gradually over the back of a body, so an orbit trap’s colours run through. How much of the back it uses is this number times how far c lies off the line the squaring lands on: nothing for a set that is its own mirror image, and the whole back at most. At 0 the colours follow the point itself and break along a line.' },
     ],
-    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + b²), 2h·√(x² + y⁴/(y² + h²)))   with x along the line towards the pinch point, y across it, h the height, b = h²/√(y² + h²), and s = 1 in front of x = −' + aprNum(TW_BACK) + '·b and −1 behind it' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
-    about: 'The entry above takes its line from the pinch points of a cycle of bodies, and for a set with one body from one of three cases. Here one rule serves every set of a Julia picture. First the long way: the outline of the flat set at a low level of the escape potential, seen from the middle, and the direction in which it reaches furthest. Then, if a body lies round the middle, every line within 25° of that direction is tried, both ways round, and the one that leaves the smallest step in the body’s skin across the change of sign is taken; where the side pinch points give a line as good, that line is kept, so the rabbit and the basilica are those of the entry above. A set with no body round the middle keeps the long way. For a c on the x-axis the line is the x-axis where the set is longer that way, and the y-axis where it is taller than wide, as between 0 and 0.25 and beyond. A set that sits off the middle of its bulb is twisted, and still shows a seam: no line closes it. The colours follow a second point, as above. In the Mandelbrot picture every c takes the line of the entry above, and the solid is not right.',
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + h²·S(t)), 2h·√(x² + y²·S(1 − t)))   with x along the line, y across it, h the height, t = h²/(y² + h²), S the step t³(10 − 15t + 6t²), and s = 1 in front of x = −' + aprNum(TW_BACK) + '·h·√S(t) and −1 behind it' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'Two things differ from the entry above. The line. A set with a cycle of bodies keeps the line square to its side pinch points. Any other set gets its line in two steps: first the long way, the direction in which the outline of the flat set reaches furthest from the middle; then, if a body lies round the middle, the line within 45° of that which leaves the smallest step in the body’s skin across the change of sign. A set with no body round the middle keeps the long way. For a c on the x-axis the line is the x-axis where the set is longer that way, and the y-axis where it is taller than wide, as between 0 and 0.25 and beyond. The step. In the entry above a point beside the upright axis lands a little above the flat plane, by the square of its distance from the axis. The neck of a pinch point is too thin for that: a bud on top of a body was cut short there, and its tip hung loose above it. Here the share of height in a point’s distance from the line goes through a smooth step first. Halfway between the two planes nothing changes; beside the upright axis the landing lies in the flat plane to a higher order, and beside the flat plane in the upright plane on the line. A bud on top then keeps the small buds on its own top. A set that sits off the middle of its bulb is twisted, and still shows a seam: no line closes it. The colours follow a second point, as above. In the Mandelbrot picture every c takes the line of the entry above, and the solid is not right.',
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with no fold laid on it. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there. The colours follow a second point, which makes that change gradually.' + aprTear(n, APR_HALF)]),
