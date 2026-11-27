@@ -1017,6 +1017,26 @@ Not tried, or not finished.
     heart it is smoother, but the Julia sets off the axis are then angular. Neither is right.
   - Not found: one formula for the line of a set with one body. Still wrong: the picture jumps where a case
     changes; close to the heart's edge between the bulbs the step is 4 to 14 percent.
+  - Asked for next: "make sure it's a universal solution, like it works on other Julia's too".
+  - Eighteen kinds of Julia set drawn with the entry as it stands: one body near and far from the x-axis, bulbs
+    of 2, 3 and 4 bodies at and off their middles, the fat rabbit, a set on the heart's edge, a dendrite,
+    Kokopelli, and dust. Right to the eye: the sets near the x-axis ((0, 0.1), (−0.5, 0.1), (0.35, 0.1),
+    (−1, 0.15), (−0.8, 0.156)), the rabbit, the fat rabbit, the four-body bulb, the basilica, the dendrite,
+    Kokopelli, and the dust at (0.4, 0.4), which stays dust. Weak: one body well off the axis ((0.2, 0.3),
+    (−0.3, 0.3): smooth domes with plates of colour), the sets at the heart's edge between bulbs (the Siegel
+    disc, (−0.4, 0.6): flat stars with ridges), and (−0.835, −0.232), a chain with breaks.
+  - A test that any Julia set can be put to, with a script. Along the surface where the sign changes, follow
+    both landings and find where each leaves the set's skin; the answer is how far apart the two places are.
+    It needs no pinch points and no bodies. Searched over every degree it finds the rabbit's line by itself
+    (121.3 degrees, where the side pinch points give 121.0) and the four-body bulb's (92.8 against 92.7). So
+    the lines of the bulbs are what this test asks for.
+  - The line with the smallest answer is not always a good line. Drawn for the same eighteen: (0, 0.1) and
+    (0.35, 0.1) come out smooth, with no plates. But the dendrite and (−1, 0.15) are wrecked, (−0.835, −0.232)
+    flies apart, and the dust at (0.4, 0.4) turns into one solid egg. A line settles more than the seam: it
+    settles the whole shape of the solid over the flat set. A second measure, the jump in what the colours
+    read, did not mend the choice.
+  - Not found: a rule for the line that holds for every Julia set. The test is needed and is not enough; what is
+    missing is a measure of whether the solid still is the flat set, made thick.
   - Not found: a rule whose own change of sign is gradual and leaves no welt. The colours are mended beside the
     rule, not by it.
   - Drawn with a script and dropped. The join moved down towards the flat plane, so that the upper back of a
