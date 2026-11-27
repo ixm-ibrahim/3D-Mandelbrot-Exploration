@@ -3136,9 +3136,11 @@ vec2 twSideOf(vec3 c){
 // (30-shaders.js) to step a neighbour on the side the point itself took, so the estimate draws no line along the
 // change.
 // The colours follow a second point, gTwK (APR_TRAP): it starts where the orbit starts and takes the same steps,
-// but its sign runs from 1 to -1 over a width gTwW of the same measure. The width is uA.x times how far c lies
-// off the line the squaring lands on, which is nothing for a set that is its own mirror image: the second point
-// is then the orbit's own.
+// but its sign runs from 1 to -1 gradually, as the cosine of an angle: how far round behind the top the point
+// stands, with x counted in units of sqrt(b·|h|). The change begins a sixteenth of a turn behind the top and
+// takes the share gTwW of the way from there down to the flat plane. gTwW is uA.x times how far c lies off the
+// line the squaring lands on, 1 at most. For a set that is its own mirror image that is nothing, and the second
+// point is the orbit's own.
 const GL_TWINSWHOLE = GL_APR + GL_MERC_PLAIN + GL_SIDE + `
 uniform vec3 uTwS;
 vec2 gTw = vec2(1.0, 0.0), gTwU = vec2(1.0, 0.0);
@@ -3149,7 +3151,7 @@ void aprFollow(bool on){ gTwAs = on; }
 vec3 twSq(vec3 v){
   float x = dot(v.xy, gTwU), y = gTwU.x * v.y - gTwU.y * v.x, x2 = x * x, y2 = y * y, h2 = v.z * v.z, s2 = max(y2 + h2, 1e-30), b2 = h2 * h2 / s2;
   float s = -x / max(sqrt(b2), 1e-20), sg = s > ${TW_BACK.toFixed(9)} ? -1.0 : 1.0;
-  if (gTwSoft) sg = 1.0 - 2.0 * smoothstep(0.0, 1.0, (s - ${TW_BACK.toFixed(9)}) / gTwW);
+  if (gTwSoft) sg = cos(PI * clamp((atan(-x / max(sqrt(sqrt(b2) * abs(v.z)), 1e-20)) - ${Math.atan(TW_BACK).toFixed(9)}) / (${(Math.PI / 2 - Math.atan(TW_BACK)).toFixed(9)} * gTwW), 0.0, 1.0));
   else if (gTwAs) sg = gTwSg; else gTwSg = sg;
   gTwTwo = true;
   vec3 w = vec3(cmul(gTw, vec2(x2 - y2 - h2, 2.0 * y * sg * sqrt(x2 + b2))), 2.0 * v.z * sqrt(x2 + y2 * y2 / s2));
@@ -3166,7 +3168,7 @@ void aprOrbit(vec3 v, vec3 c){
 #define APR_TRAP 1
 vec3 f(vec3 z, vec3 c);
 vec3 aprTrap(vec3 v, vec3 c){
-  gTwW = gTwTwo ? uA.x * abs(gTw.x * c.y - gTw.y * c.x) : 0.0;
+  gTwW = gTwTwo ? min(1.0, uA.x * abs(gTw.x * c.y - gTw.y * c.x)) : 0.0;
   if (!(gTwW > 1e-6)) return v;
   gTwSoft = true; gTwK = f(gTwK, c); gTwSoft = false;
   if (!(dot(gTwK, gTwK) < 1e30)) gTwK = vec3(1e15, 0.0, 0.0);
@@ -4467,7 +4469,7 @@ const APPROACHES = [
     tag: 'The entry above with two things put right for a set that is not its own mirror image, like the rabbit: the line stands square to the middle body’s side pinch points, and a bud on top of a body is one whole body. A set that is its own mirror image comes out the same as above.',
     params: [
       { type: 'note', text: 'How it works: in the entry above a point just behind the upright plane across the line lands on the far side of the next body, so a bud that stands on that plane is two different halves. Here the far side starts a little further back, behind the bud.' },
-      { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 8, step: 0.25, def: 3, help: 'The colours follow a second point. It takes the same steps as the point itself, but changes to the far side gradually, so an orbit trap’s colours run through. The width is this number times how far c lies off the line the squaring lands on, which is nothing for a set that is its own mirror image. At 0 the colours follow the point itself and break along a line.' },
+      { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 4, step: 0.1, def: 2, help: 'The colours follow a second point, which changes to the far side gradually over the back of a body, so an orbit trap’s colours run through. How much of the back it uses is this number times how far c lies off the line the squaring lands on: nothing for a set that is its own mirror image, and the whole back at most. At 0 the colours follow the point itself and break along a line.' },
     ],
     formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + b²), 2h·√(x² + y⁴/(y² + h²)))   with x along the line towards the pinch point, y across it, h the height, b = h²/√(y² + h²), and s = 1 in front of x = −' + aprNum(TW_BACK) + '·b and −1 behind it' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
     about: 'Two things in the entry above go wrong on a set that is not its own mirror image. Its line is aimed at the pinch point where the middle body meets the next one, and the upright axis then lands beside the next body’s far pinch point, not on it: on the rabbit by 2°. Here the line stands square to the middle body’s side pinch points, and the axis lands on the far pinch point. And at a pinch point of the rabbit the two bodies are not alike, so a bud on top was half of the one and half of the other. Here a point behind the upright plane across the line keeps landing where its mirror image in front lands, until it is a sixteenth of a turn behind the top. Each bud on top is then one whole body. Where the change is made the shape has no step to speak of, but an orbit trap would colour the two sides differently, so the colours follow a second point that makes the change gradually. In the Mandelbrot picture every c takes its own line, and the solid is not right.',
@@ -6874,8 +6876,9 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
     // g is the line, square to the side pinch point. Seen from it, behind( ) is how far a point lies behind the plane
     // across the line, in units of b, and land( ) is where squaring puts it when y lands with the sign sg. The
     // point's own sign is sharp, and the orbits beside it take the same one. k is the second point: its sign
-    // changes over the width wj, and the colours follow it.
-    { name: 'Two points side by side, whole buds on top (power 2)', lab: 'twinswhole', only2: true, say: only2, steps: [num('join', 3, 0, 8),
+    // changes gradually, as the cosine of how far round behind the top it stands (turned( ), with x counted in
+    // units of sqrt(b·|h|)), over the share lam of the back of a body, and the colours follow it.
+    { name: 'Two points side by side, whole buds on top (power 2)', lab: 'twinswhole', only2: true, say: only2, steps: [num('join', 2, 0, 4),
       ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
       ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
       ['func', { name: 'off', args: 'p, g', text: 'max(across(p, g)*across(p, g) + p.z*p.z, 1e-30)' }],
@@ -6883,9 +6886,10 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       ['func', { name: 'land', args: 'p, g, sg', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + p.z*p.z*p.z*p.z/off(p, g)), 0)) + vec(0, 0, 2*p.z*sqrt(along(p, g)*along(p, g) + across(p, g)*across(p, g)*across(p, g)*across(p, g)/off(p, g)))' }],
       F('k = if(count < 1.5, z, k)'), ['f_side', { out: 's', a0: 'c' }], F('g = unit(vec(s.y, -s.x, 0))'),
       F('sg = same(if(behind(z, g) > 0.414213562, -1, 1))'), F('w = land(z, g, sg)'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
-      F('g2 = cmul(g, g)'), F('wj = join*abs(g2.x*c.y - g2.y*c.x)'),
-      F('wk = land(k, g, 1 - 2*smoothstep(0, 1, (behind(k, g) - 0.414213562)/wj))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
-      ['o_colours', { out: 'colours', a0: 'if(wj > 0.000001, k, z)' }]] },
+      ['func', { name: 'turned', args: 'p, g', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*p.z*p.z/sqrt(off(p, g))), 1e-20))' }],
+      F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
+      F('wk = land(k, g, cos(pi*clamp((turned(k, g) - pi/8)/(3*pi/8*lam), 0, 1)))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
+      ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }
 

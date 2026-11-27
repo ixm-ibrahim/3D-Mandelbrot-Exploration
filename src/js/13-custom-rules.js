@@ -145,8 +145,9 @@
     // g is the line, square to the side pinch point. Seen from it, behind( ) is how far a point lies behind the plane
     // across the line, in units of b, and land( ) is where squaring puts it when y lands with the sign sg. The
     // point's own sign is sharp, and the orbits beside it take the same one. k is the second point: its sign
-    // changes over the width wj, and the colours follow it.
-    { name: 'Two points side by side, whole buds on top (power 2)', lab: 'twinswhole', only2: true, say: only2, steps: [num('join', 3, 0, 8),
+    // changes gradually, as the cosine of how far round behind the top it stands (turned( ), with x counted in
+    // units of sqrt(b·|h|)), over the share lam of the back of a body, and the colours follow it.
+    { name: 'Two points side by side, whole buds on top (power 2)', lab: 'twinswhole', only2: true, say: only2, steps: [num('join', 2, 0, 4),
       ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
       ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
       ['func', { name: 'off', args: 'p, g', text: 'max(across(p, g)*across(p, g) + p.z*p.z, 1e-30)' }],
@@ -154,8 +155,9 @@
       ['func', { name: 'land', args: 'p, g, sg', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + p.z*p.z*p.z*p.z/off(p, g)), 0)) + vec(0, 0, 2*p.z*sqrt(along(p, g)*along(p, g) + across(p, g)*across(p, g)*across(p, g)*across(p, g)/off(p, g)))' }],
       F('k = if(count < 1.5, z, k)'), ['f_side', { out: 's', a0: 'c' }], F('g = unit(vec(s.y, -s.x, 0))'),
       F('sg = same(if(behind(z, g) > 0.414213562, -1, 1))'), F('w = land(z, g, sg)'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
-      F('g2 = cmul(g, g)'), F('wj = join*abs(g2.x*c.y - g2.y*c.x)'),
-      F('wk = land(k, g, 1 - 2*smoothstep(0, 1, (behind(k, g) - 0.414213562)/wj))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
-      ['o_colours', { out: 'colours', a0: 'if(wj > 0.000001, k, z)' }]] },
+      ['func', { name: 'turned', args: 'p, g', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*p.z*p.z/sqrt(off(p, g))), 1e-20))' }],
+      F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
+      F('wk = land(k, g, cos(pi*clamp((turned(k, g) - pi/8)/(3*pi/8*lam), 0, 1)))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
+      ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }

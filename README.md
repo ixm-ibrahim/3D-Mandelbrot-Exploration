@@ -85,4 +85,4 @@ the entry that folds between them. From those the entry that lays its line squar
 points finds that line (`twSideAt` in `10-approaches.js`), and so does the custom approach's `side( )`. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.35. Each version is tagged, as `v1.35`.
+This is version 1.36. Each version is tagged, as `v1.36`.
