@@ -85,4 +85,4 @@ the entry that folds between them. From those the entry that lays its line squar
 points finds that line (`twSideAt` in `10-approaches.js`), and so does the custom approach's `side( )`. The entry that lays its line along the long way of the set finds it by measuring (`twLongAt`), and the custom approach's `longway( )` gives the same line. The entry that folds the bulb on top alone traces, for the Julia set on show, the two outside rays that end on the next body's far pinch point (`twWakeAt`), and the custom approach's `beyond( )` and `curves( )` read the same rays. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.44. Each version is tagged, as `v1.44`.
+This is version 1.45. Each version is tagged, as `v1.45`.
