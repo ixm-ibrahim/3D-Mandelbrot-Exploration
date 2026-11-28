@@ -178,7 +178,8 @@
     // The entry "twinsbud": the rule above with the fold kept for a point whose folded copy lies beyond the next
     // body's far pinch point, and made true to angles there. fromtop( ) is the angle from straight up, round the
     // line; beside( ) is 1 beside the plane across the line; twice( ) is the across-part's extra term that makes a
-    // point at the angle t from straight up land at 2t; copy( ) is where the fold would put the point on the flat
+    // point at the angle t from straight up land at 2t; tall( ) is what a folded point's height is taken times, so
+    // that its copy is as thick across the plane as wide in it; copy( ) is where the fold would put the point on the flat
     // plane. fz is 1 where the point is folded: the orbits beside it take the same answer. The sign is the one
     // of the rule above, whether the point is folded or not.
     { name: 'Two points side by side, the bulb on top alone (power 2)', lab: 'twinsbud', only2: true, say: only2, steps: [num('join', 2, 0, 4),
@@ -189,12 +190,14 @@
       ['func', { name: 'fromtop', args: 'p, g', text: 'atan2(abs(across(p, g)), abs(p.z))' }],
       ['func', { name: 'beside', args: 'p, g', text: '1 - smoothstep(0.5, 2, along(p, g)*along(p, g)/off(p, g))' }],
       ['func', { name: 'twice', args: 'p, g', text: '1/max((p.z*p.z - across(p, g)*across(p, g))/off(p, g)*((p.z*p.z - across(p, g)*across(p, g))/off(p, g)), 0.000001)' }],
+      ['func', { name: 'up', args: 'p, g', text: 'max(p.z*p.z/off(p, g), 0.000001)' }],
+      ['func', { name: 'tall', args: 'p, g, kp', text: 'sqrt((1 + kp*kp*4*up(p, g)*(1 - up(p, g))*twice(p, g))/up(p, g))' }],
       ['func', { name: 'copyy', args: 'p, g, kp, sg', text: '2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + kp*kp*p.z*p.z*twice(p, g))' }],
-      ['func', { name: 'copy', args: 'p, g, kp, q, sg', text: 'flat(q) + cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 0))*(dot(p, p)/max(len(vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 2*abs(p.z*along(p, g)))), 1e-30))' }],
+      ['func', { name: 'copy', args: 'p, g, kp, q, sg', text: 'flat(q) + cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 0))*(dot(p, p)/max(len(vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 2*tall(p, g, kp)*abs(p.z*along(p, g)))), 1e-30))' }],
       ['func', { name: 'lift', args: 'p, g, kp, fz', text: 'kp*kp*p.z*p.z*(share(p.z*p.z/off(p, g)) + fz*(twice(p, g) - share(p.z*p.z/off(p, g))))' }],
       ['func', { name: 'raise', args: 'p, g, fz, nz, tz', text: 'across(p, g)*across(p, g)*if(fz > 0, share(across(p, g)*across(p, g)/off(p, g))*(1 - nz), share(across(p, g)*across(p, g)/off(p, g)) + tz*(share(across(p, g)*across(p, g)/max(along(p, g)*along(p, g) + across(p, g)*across(p, g), 1e-30)) - share(across(p, g)*across(p, g)/off(p, g))))' }],
       ['func', { name: 'behind', args: 'p, g, kp', text: '-along(p, g)/max(sqrt(lift(p, g, kp, 0)), 1e-20)' }],
-      ['func', { name: 'land', args: 'p, g, sg, kp, fz, ra', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + lift(p, g, kp, fz)), 0)) + vec(0, 0, 2*p.z*sqrt(along(p, g)*along(p, g) + ra))' }],
+      ['func', { name: 'land', args: 'p, g, sg, kp, fz, ra', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + lift(p, g, kp, fz)), 0)) + vec(0, 0, 2*p.z*(1 + fz*(tall(p, g, kp) - 1))*sqrt(along(p, g)*along(p, g) + ra))' }],
       F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }], ['f_kept', { out: 'kp', a0: 'c' }], ['f_curves', { out: 'on', a0: 'c' }],
       F('nz = on*beside(z, g)'), F('tz = nz*(1 - smoothstep(0.610865238, 0.785398163, fromtop(z, g)))'),
       F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'),

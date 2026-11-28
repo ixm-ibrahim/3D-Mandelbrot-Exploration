@@ -371,7 +371,8 @@ function learnInvert() {
   return learnMove('own', 'Inside out', f, say, { all: 'space is turned inside out: every dot’s distance from the centre becomes 1 divided by it, and its y goes to the mirror value' });
 }
 // Two points side by side, about a line u of the flat plane (twStep and twBudStep in 10-approaches.js). terms(x, y, h)
-// gives the rule's two extra terms for a point. Seen from the line a point lies x along it, y across it and h high. The step is the quaternion square about
+// gives the rule's two extra terms for a point, and after them its sign and what its height is taken times where the
+// rule has those. Seen from the line a point lies x along it, y across it and h high. The step is the quaternion square about
 // the line, which doubles the angle from the line, with two moves before it:
 //   To the front   a point behind the middle (x < 0) goes to the place in front that has the same answer: half a
 //                  rotation about the z-axis, or, just behind the top, its mirror place across the line;
@@ -416,8 +417,8 @@ function learnPush(u, terms) {
   const goal = v => {
     const [x, y, h] = learnLineSee(v, u), r = len(v);
     if (!(r > 0) || x < 0) return null;
-    const [b2, a2] = terms(x, y, h);
-    const X = x * x - y * y - h * h, Y = 2 * y * Math.sqrt(x * x + b2), H = 2 * h * Math.sqrt(x * x + a2), W = Math.hypot(Y, H);
+    const [b2, a2, , m = 1] = terms(x, y, h);
+    const X = x * x - y * y - h * h, Y = 2 * y * Math.sqrt(x * x + b2), H = 2 * h * m * Math.sqrt(x * x + a2), W = Math.hypot(Y, H);
     if (!(W > 1e-300)) return null;
     const A = Math.atan2(W, X) / 2, d = learnLinePut([Math.cos(A), Math.sin(A) * Y / W, Math.sin(A) * H / W], u);
     return len(sub(d, scl(v, 1 / r))) > 1e-12 ? d : null;
