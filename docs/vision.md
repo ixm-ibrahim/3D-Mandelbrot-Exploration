@@ -252,7 +252,7 @@ and "2d" means two planes.
 | Two points side by side, up and across alike | The same middle, with the height and the distance across the line following one law. For a c on the x-axis (the basilica, San Marco) a bud on top of a body is a small round body with buds of its own, the same as a bud in the flat plane, and the upright cut is the flat picture. No crease. The rabbit is still a rabbit: "the disconnected surfaces issue we were seeing earlier seems to be much better or at least mitigated". On the basilica: "the basilica looks amazing". | The rabbit has a seam across its middle body and a ragged bud on top: the rule needs a set that is its own mirror image in its line. Shapes are squashed beside the upright plane across the line. The Mandelbrot solid is not right. |
 | Two points side by side, whole buds on top | The entry above with its line laid square to the middle body's side pinch points, and the change of sign moved a sixteenth of a turn behind the top. On the rabbit each bud on top is one whole body, its two halves hang on one point, and the shape has no seam: in plain clay it is one smooth body. The colours follow a second point that makes the change of sign gradually, so an orbit trap's colours run through as well. A set that is its own mirror image comes out as in the entry above. It can be loaded as steps of the custom approach. | The back of a body is coloured by a blend of its two flanks. That second point is a device for the colours alone: the shape's own change of sign is still a jump. Close up, fine saw-teeth show along one stripe of the rabbit. For a set with one body the line is picked by one of three cases, and the picture jumps where the case changes; away from the x-axis such a set is a smooth dome with plates of colour. The Mandelbrot solid is not right: its big heart is a tall, broken drum. |
 | Two points side by side, line along the long way | One rule for the line, for every set of a Julia picture: it runs along the long way of the set, turned to where the two sides of the change of sign meet. A set with one body is whole, with even colours and no plates: (0, 0.1), (0.2, 0.3), (−0.3, 0.3), (−0.5, 0.1), (−0.1, 0.6). The rabbit, the basilica, San Marco and the airplane keep the line of the entry above. A bud on top of a body keeps the small buds on its own top: on the rabbit they hang on it, where the entry above cuts the bud short and leaves its tip loose. The upright arm above the Kokopelli's middle body is whole. As c slides the line moves with it and does not hop: lines that close about as well are blended. A set close to the heart's edge, like (0, 0.61) or the Siegel disc, and a set past it, like (0, 0.65), (0, 0.8) or (−0.4, 0.6), comes out in whole smooth pieces with no tears. It can be loaded as steps of the custom approach. | A set that sits off the middle of its bulb is twisted, and keeps a seam and flat faces, as in the entry above: such a set takes the pinch-point line. Where a bulb hangs on the heart the line turns at once, by 15 to 21 degrees where it was followed. Close to the heart's edge and past it the buds on top are ridges. The line is still found by trying lines, and three numbers are picked by hand: half a percent, one and a half percent, and the power 4 of the blend. Near (0.2, 0.435) the measure reads the two sides as met while the picture is rough. For a c on the x-axis from 0 to 0.25 and beyond, the line is the y-axis: a lower body with dimples where the entry above draws a tall egg, and open cups where the flat set is dust, as at (0.285, 0.01). The Mandelbrot picture takes the line of the entry above. |
-| Two points side by side, the bulb on top alone | The entry above with the fold kept for what hangs beyond the next body's far pinch point, and made true to angle there. On the basilica and the rabbit the bulb on top keeps everything that hangs on it and the skin beside it is bare: the loose bulbs are gone. On the Kokopelli the arm on top is whole and branches like the arms of the flat picture. For a flat c off the middle of its bulb, as at (−1, 0.045) and (−1, 0.1), the skin is as smooth as in the entry above and the bulb on top joins its body at a pinch, as the bulbs of the flat plane do. A copy on top is as thick across the plane it stands in as it is wide. As c slides inside a bulb nothing jumps. It can be loaded as steps of the custom approach, and the Learn tab plays its moves. | A set that is not its own mirror image keeps a seam behind the top, a thin line across a body. For a c with a height of its own, as in the preset Cracked Basilica (−1, 0.045, 0.026), the bulb on top stands clear of its body, as in the entry above. At (−1, 0.1) that step is 3 to 9 percent of the body's radius and its copies show as thin lines; on the rabbit it is at most 0.6 percent and nothing shows. The Kokopelli may keep one thin sliver beside its middle body. Only for a Julia picture of a set with a cycle of 2 to 6 bodies: any other set, and the Mandelbrot picture, is the entry above. |
+| Two points side by side, the bulb on top alone | The entry above with the fold kept for what hangs beyond the next body's far pinch point, and made true to angle there. On the basilica and the rabbit the bulb on top keeps everything that hangs on it and the skin beside it is bare: the loose bulbs are gone. On the Kokopelli the arm on top is whole and branches like the arms of the flat picture. For a flat c off the middle of its bulb, as at (−1, 0.045) and (−1, 0.1), the skin is as smooth as in the entry above and the bulb on top joins its body at a pinch, as the bulbs of the flat plane do. A copy on top is as thick across the plane it stands in as it is wide. As c slides inside a bulb nothing jumps. On a set that is not its own mirror image the skin behind the top is fitted to the skin in front of it, and the thin lines that crossed its bodies are gone. It can be loaded as steps of the custom approach, and the Learn tab plays its moves. | The join behind the top is closed by a fit that is measured for the set, not by the rule itself. A set close to the rim of its bulb keeps a few faint marks. For a c with a height of its own, as in the preset Cracked Basilica (−1, 0.045, 0.026), the bulb on top stands clear of its body, as in the entry above. The Kokopelli may keep one thin sliver beside its middle body. Only for a Julia picture of a set with a cycle of 2 to 6 bodies: any other set, and the Mandelbrot picture, is the entry above. |
 | Balls on balls | The spread: "pretty much perfect". | Not a Julia set. No c. Its placement is arbitrary. |
 
 The three *Four to one* entries and the step that sends six directions to one were judged together: "ok this is
@@ -1327,7 +1327,7 @@ Not tried, or not finished.
       its bulb on top stands clear of its body under this entry and the one above. With the flat c, (−1, 0.045)
       and (−1, 0.1), the bulb on top joins its body at a pinch, as the bulbs of the flat plane do: straight up
       the solid is whole but for a stretch of 0.005 at the pinch itself, where the flat picture has none either.
-    - The thin lines on a set that is not its own mirror image, measured and not mended. They are copies of the
+    - The thin lines on a set that is not its own mirror image, measured. They are copies of the
       place where the sign changes: two points either side of a line are treated alike until, a dozen steps on,
       one stands just in front of that place and the other just behind it. The step there is as large as the
       front of the middle body is lopsided: 3 to 9 percent of its radius at (−1, 0.1) between 27 and 45 degrees
@@ -1339,6 +1339,37 @@ Not tried, or not finished.
       on the rabbit too). The reason, reasoned: the flat plane asks for the back of a body to be its front
       rotated half way round, the top asks for its front mirrored, and the two agree only where the next body
       is its own mirror image in the line from c.
+    - The Mandelbrot picture was set aside, and the rest asked for: "ok don't worry about the mandelbrot, keep
+      resolving the issues. again don't tell me you didn't find it I believe in you".
+    - The thin lines, mended. The change of sign stays where it is, and the gap it leaves in the skin is closed:
+      a point near the change is first moved a little along its own direction, in front of the change one way
+      and behind it the other, each half the way, so that the two skins meet in the middle. How far is measured
+      for the set. Along 71 lines that lie in the change of sign, from one side of the flat plane over the top
+      to the other, the skin is found with the front answer and with the back answer; the move takes up their
+      ratio; and that is done again with the move in place, up to four times, since the move changes the solid a
+      little. The move fades to nothing a short way in front of the change and a longer way behind it. A set
+      that is its own mirror image measures nothing and is drawn as before, dot for dot.
+    - Drawn first and dropped: the whole move given to the points behind the change. At (−1, 0.1), and on a
+      rabbit at (−0.16, 0.7344), the lines went. At (−1, 0.15) and (−1, 0.2) the bodies came out lumpy, with
+      ridges where the lines had been: one fault for another. Shared between the two sides, the same sets are
+      smooth.
+    - The second point, which the colours follow, is not moved. Moved with the rest it put small islands into
+      the bands of colour; left alone, the bands run as they did.
+    - What the measuring showed. The gap is not spread over the back of a body: it is a flat-topped band from 20
+      to 45 degrees from straight up on either side, where the fold lands a point far to one side. Nearer the
+      top and nearer the flat plane the two skins meet within a percent as they are. A curve of three waves
+      fitted to it leaves a quarter of the gap. The measured curve itself, with a single angle that a small bulb
+      lifted taken out and the rest smoothed, leaves about a fifth of a percent at (−1, 0.1), where the gap was
+      9 percent.
+    - Reasoned, not proved: this is a mend beside the rule, as the one for the colours is. The rule still gives
+      a point behind the change the mirror image of its neighbour's answer; the fit sees to it that the two
+      skins stand at one distance.
+    - Looked at, in plain clay and in the default colours: c from (−1, 0.03) up to (−1, 0.2), a rabbit at
+      (−0.16, 0.7344), the rabbit's bulb from its middle to where it joins the heart, the rabbit, the Kokopelli,
+      the basilica, the presets. The measured curve moves evenly as c slides; only at the very rim of a bulb
+      does it move in larger steps. A new c takes about a twentieth of a second. Entry and custom rule draw
+      one picture on seven Julia sets, the Learn moves end where the rule ends, and no picture of another entry
+      changed.
     - More iterations, looked at: at these views the picture stops changing at about 40. Drawn at 120 and at 240
       the five sets with a cycle are the pictures of 60.
     - Sets with one body, looked at: the entry draws them as the entry above does, dot for dot, since nothing
@@ -1353,9 +1384,9 @@ Not tried, or not finished.
       Each fin stands over a small bulb on the round bulb's rim, where the rule takes that small bulb's own
       cycle and its line stands nearly square to its neighbours'. The tear at the cusp end was the hollow cups
       of the Julia sets past the cusp.
-    - Still wrong: a set that is not its own mirror image keeps the seam behind the top, a thin line across a
-      body. A c with a height of its own is not provided for. The Kokopelli may keep one thin sliver beside its
-      middle body. Sets with one body, and the Mandelbrot picture, are drawn as the entry above draws them.
+    - Still wrong: a set close to the rim of its bulb, as at (−1, 0.2), keeps a few faint marks. A c with a
+      height of its own is not provided for. The Kokopelli may keep one thin sliver beside its middle body. Sets with one body,
+      and the Mandelbrot picture, are drawn as the entry above draws them.
   - Reasoned, not proved. In the picture four places on the middle body land on one place of the next body (the
     two side bulbs, the bulb on top and the one underneath), and two places everywhere else. A rule that gives
     each point one next point can do that only by folding, and then the bulb on top is two mirrored halves: a

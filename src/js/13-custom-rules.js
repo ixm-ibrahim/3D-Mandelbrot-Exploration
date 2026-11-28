@@ -181,7 +181,9 @@
     // point at the angle t from straight up land at 2t; tall( ) is what a folded point's height is taken times, so
     // that its copy is as thick across the plane as wide in it; copy( ) is where the fold would put the point on the flat
     // plane. fz is 1 where the point is folded: the orbits beside it take the same answer. The sign is the one
-    // of the rule above, whether the point is folded or not.
+    // of the rule above, whether the point is folded or not. fit( ) is what a point near the change of sign is
+    // taken times before the step, from what seam( ) gives for the set at the point's angle from straight up;
+    // the point the colours follow is not fitted.
     { name: 'Two points side by side, the bulb on top alone (power 2)', lab: 'twinsbud', only2: true, say: only2, steps: [num('join', 2, 0, 4),
       ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
       ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
@@ -197,10 +199,11 @@
       ['func', { name: 'lift', args: 'p, g, kp, fz', text: 'kp*kp*p.z*p.z*(share(p.z*p.z/off(p, g)) + fz*(twice(p, g) - share(p.z*p.z/off(p, g))))' }],
       ['func', { name: 'raise', args: 'p, g, fz, nz, tz', text: 'across(p, g)*across(p, g)*if(fz > 0, share(across(p, g)*across(p, g)/off(p, g))*(1 - nz), share(across(p, g)*across(p, g)/off(p, g)) + tz*(share(across(p, g)*across(p, g)/max(along(p, g)*along(p, g) + across(p, g)*across(p, g), 1e-30)) - share(across(p, g)*across(p, g)/off(p, g))))' }],
       ['func', { name: 'behind', args: 'p, g, kp', text: '-along(p, g)/max(sqrt(lift(p, g, kp, 0)), 1e-20)' }],
+      ['func', { name: 'fit', args: 'p, g, kp, q, sg', text: 'exp(0.25*if(sg < 0, 1 - smoothstep(0.414213562, 3, behind(p, g, kp)), -smoothstep(-1, 0.414213562, behind(p, g, kp)))*seam(q, atan2(across(p, g), abs(p.z))))' }],
       ['func', { name: 'land', args: 'p, g, sg, kp, fz, ra', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + lift(p, g, kp, fz)), 0)) + vec(0, 0, 2*p.z*(1 + fz*(tall(p, g, kp) - 1))*sqrt(along(p, g)*along(p, g) + ra))' }],
       F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }], ['f_kept', { out: 'kp', a0: 'c' }], ['f_curves', { out: 'on', a0: 'c' }],
+      F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'), F('z = z*fit(z, g, kp, c, sg)'),
       F('nz = on*beside(z, g)'), F('tz = nz*(1 - smoothstep(0.610865238, 0.785398163, fromtop(z, g)))'),
-      F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'),
       F('fo = same(if(nz > 0, if(fromtop(z, g) < 0.698131701, beyond(copy(z, g, kp, c, sg), c), 0), 0))'), F('fz = fo*nz'),
       F('w = land(z, g, sg, kp, fz, raise(z, g, fz, nz, tz))'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
       ['func', { name: 'turned', args: 'p, g, kp, fz', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*sqrt(lift(p, g, kp, fz))), 1e-20))' }],

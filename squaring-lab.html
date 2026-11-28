@@ -2729,6 +2729,16 @@ function twLongUniforms(gl, loc) {
 // m = sqrt(1 + keep²·tan² 2t) / cos t, which makes the copy as thick across the plane as it is wide in it. m is
 // written from h²/s², a number between 0 and 1, so that it stays finite for a point on the diagonal |y| = |h|.
 // The fold ends at TW_ZC from straight up.
+// The fit. Behind the plane across the line the sign of the across-part changes at once, as in "twinslong", and the
+// answer jumps to its mirror image in the line. On a set that is not its own mirror image the skin that the answer
+// behind the change gives stands further out, or further in, than the skin in front of it: a step, which every
+// return to the middle body copies. So a point near the change is first moved along its own direction, the two
+// sides opposite ways, each half the way: behind the change by the factor e^(w·L(t)/4), in front of it by
+// e^(-w·L(t)/4). t is the angle of (y, h) from straight up, signed with y; L a curve that is nothing straight up
+// and at the flat plane; w is 1 at the change and fades to nothing TW_SM_END behind it and TW_SM_FRONT in front
+// of it. L is measured for the set (twSeamAt): the skin is found along the change of sign with the front answer
+// and with the back answer, L takes up twice the logarithm of their ratio, and that is done again with the fit in
+// place until the two skins meet. The second point, which the colours follow, is not fitted.
 // Any other point near the top takes the height of the rule's flat side, as far as its copy lies nearer the flat
 // plane than the upright plane on the line (the share of y² in x² + y²): it lands well above the flat plane and
 // copies nothing of the next body's rim, and what stands in the upright plane on the line is left as it is.
@@ -2742,6 +2752,11 @@ function twLongUniforms(gl, loc) {
 // between the two, going round from the second ray to the first.
 // Only for a Julia picture of a set with a cycle of 2 to TW_WP bodies; anywhere else the entry is "twinslong".
 const TW_WN = 1024, TW_WP = 6, TW_WR = 1e4, TW_WS = 6, TW_WDEPTH = 90, TW_Z0 = 35 * PI / 180, TW_Z1 = 45 * PI / 180, TW_ZC = 40 * PI / 180;
+// The fit at the change of sign: it fades out at TW_SM_FRONT in front of the change and at TW_SM_END behind it
+// (in the units the sign counts in); its curve has TW_SM_T equal steps of angle from one side of the flat plane
+// over the top to the other; the skin is measured up to TW_SM_PASS times, with TW_SM_ITS steps for a point
+// that stays.
+const TW_SM_FRONT = -1, TW_SM_END = 3, TW_SM_T = 72, TW_SM_PASS = 4, TW_SM_ITS = 30;
 const TW_WAKE = new Map();                       // answers so far, by c
 function twRay(cx, cy, num, den, depth) {
   const pts = [], a0 = 2 * PI * num / den;
@@ -2882,10 +2897,11 @@ const twSmooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return
 // The two extra terms of "twinsbud" for a point seen from the line u (x along it, y across, h high), its sign and
 // what its height is taken times, as [b², a², sg, m]: b² under the root of the across-part, a² under the root of
 // the height. zx: how near the point is to the plane across the line, 1 beside it; zone: zx times how near it is
-// to straight up. bw: 1 / cos² 2t. The sign is the one "twinslong" gives the point, whether it is folded or not.
-function twBudTerms(x, y, h, u, keep, W, c) {
+// to straight up. bw: 1 / cos² 2t. The sign is the one "twinslong" gives the point, whether it is folded or not;
+// force names another one to take (1 or -1).
+function twBudTerms(x, y, h, u, keep, W, c, force) {
   const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300), sb = twShare(h2 / s2), sa = twShare(y2 / s2);
-  const sg = -x / Math.max(Math.sqrt(keep * keep * h2 * sb), 1e-300) > TW_BACK ? -1 : 1;
+  const sg = force || (-x / Math.max(Math.sqrt(keep * keep * h2 * sb), 1e-300) > TW_BACK ? -1 : 1);
   let zone = 0, zx = 0, w = 0, bw = 1, mw = 1;
   if (W) {
     const tau = Math.atan2(Math.sqrt(y2), Math.sqrt(h2));
@@ -2902,15 +2918,115 @@ function twBudTerms(x, y, h, u, keep, W, c) {
   }
   return w ? [keep * keep * h2 * (sb + zx * (bw - sb)), y2 * sa * (1 - zx), sg, 1 + zx * (mw - 1)] : [keep * keep * h2 * sb, y2 * (sa + zone * (twShare(y2 / Math.max(x2 + y2, 1e-300)) - sa)), sg, 1];
 }
-// One squaring of "twinsbud" about the line u.
-function twBudStep(v, u, keep, W, c) {
-  const x = v[0] * u[0] + v[1] * u[1], y = u[0] * v[1] - u[1] * v[0], h = v[2], x2 = x * x;
-  const [b2, a2, sg, m] = twBudTerms(x, y, h, u, keep, W, c);
+// The curve of the fit at the angle t from straight up (signed with y): sm holds its values at TW_SM_T + 1 angles,
+// and between two of them the curve bends smoothly through all four around it.
+const twSeamLog = (sm, t) => {
+  const a = clamp((t / PI + 0.5) * TW_SM_T, 0, TW_SM_T), i = Math.min(Math.floor(a), TW_SM_T - 1), f = a - i;
+  const p0 = sm[Math.max(i - 1, 0)], p1 = sm[i], p2 = sm[i + 1], p3 = sm[Math.min(i + 2, TW_SM_T)];
+  return p1 + 0.5 * f * (p2 - p0 + f * (2 * p0 - 5 * p1 + 4 * p2 - p3 + f * (3 * (p1 - p2) + p3 - p0)));
+};
+// What a point is taken times before the step. sg: the sign it takes, which says on which side of the change it
+// counts.
+function twSeamPre(x, y, h, keep, sm, sg) {
+  const y2 = y * y, h2 = h * h, back = -x / Math.max(Math.sqrt(keep * keep * h2 * twShare(h2 / Math.max(y2 + h2, 1e-300))), 1e-300);
+  const wg = sg < 0 ? 1 - twSmooth(TW_BACK, TW_SM_END, back) : -twSmooth(TW_SM_FRONT, TW_BACK, back);
+  return wg !== 0 ? Math.exp(0.25 * wg * twSeamLog(sm, Math.atan2(y, Math.abs(h)))) : 1;
+}
+// One squaring of "twinsbud" about the line u. sm: the curve of the fit, or nothing. force: the sign to take on this
+// step (1 or -1), or nothing for the rule's own.
+function twBudStep(v, u, keep, W, c, sm, force) {
+  let x = v[0] * u[0] + v[1] * u[1], y = u[0] * v[1] - u[1] * v[0], h = v[2];
+  if (sm) {
+    const h2 = h * h, own = -x / Math.max(Math.sqrt(keep * keep * h2 * twShare(h2 / Math.max(y * y + h2, 1e-300))), 1e-300) > TW_BACK ? -1 : 1;
+    const pre = twSeamPre(x, y, h, keep, sm, force || own);
+    x *= pre; y *= pre; h *= pre;
+  }
+  const x2 = x * x, [b2, a2, sg, m] = twBudTerms(x, y, h, u, keep, W, c, force);
   const X = x2 - y * y - h * h, Y = 2 * y * sg * Math.sqrt(x2 + b2), H = 2 * h * m * Math.sqrt(x2 + a2);
   const gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
   const w = [X * gx - Y * gy, X * gy + Y * gx, H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (x2 + y * y + h * h) / l : 1;
   return [w[0] * k, w[1] * k, w[2] * k];
 }
+// The fit for the flat set of c: the curve (TW_SM_T + 1 values), or nothing where the two skins meet as they are (a
+// set that is its own mirror image) and where the skin cannot be measured.
+const TW_SEAM = new Map();
+function twSeamAt(c) {
+  const key = c[0] + ',' + c[1];
+  if (TW_SEAM.has(key)) return TW_SEAM.get(key);
+  let sm = null;
+  const W = twWakeAt(c);
+  if (W) {
+    const T = TW_SM_T, mid = T / 2, u = twLongLine(c), keep = twLongKeep(c), sd = twSideAt(c), R = Math.hypot(sd[0], sd[1]), dirs = [];
+    // the lines the skin is measured along: they lie in the change of sign, at the angles of the curve
+    for (let i = 0; i <= T; i++) {
+      const tau = (i / T - 0.5) * PI, y = Math.sin(tau), h = Math.cos(tau), x = -TW_BACK * keep * h * Math.sqrt(twShare(h * h)), n = Math.hypot(x, y, h);
+      dirs.push([(x * u[0] - y * u[1]) / n, (x * u[1] + y * u[0]) / n, h / n]);
+    }
+    const stays = (d, r, force, cur) => {
+      let v = twBudStep([d[0] * r, d[1] * r, d[2] * r], u, keep, W, c, cur, force);
+      v = [v[0] + c[0], v[1] + c[1], v[2]];
+      for (let k = 0; k < TW_SM_ITS; k++) {
+        if (!(v[0] * v[0] + v[1] * v[1] + v[2] * v[2] < 16)) return false;
+        const w = twBudStep(v, u, keep, W, c, cur, 0);
+        v = [w[0] + c[0], w[1] + c[1], w[2]];
+      }
+      return true;
+    };
+    const skin = (d, force, cur) => {
+      let lo = 0.55 * R, hi = 1.7 * R;
+      if (!stays(d, lo, force, cur) || stays(d, hi, force, cur)) return 0;
+      for (let j = 0; j < 12; j++) { const at = 0.5 * (lo + hi); if (stays(d, at, force, cur)) lo = at; else hi = at; }
+      return 0.5 * (lo + hi);
+    };
+    const fixed = i => i === 0 || i === mid || i === T;
+    let cur = null;
+    for (let pass = 0; pass < TW_SM_PASS; pass++) {
+      const raw = new Array(T + 1).fill(null);
+      let found = 0;
+      for (let i = 0; i <= T; i++) {
+        if (fixed(i)) { raw[i] = 0; continue; }
+        const f = skin(dirs[i], 1, cur), b = skin(dirs[i], -1, cur);
+        if (f > 0 && b > 0) { raw[i] = (cur ? cur[i] : 0) + 2 * Math.log(b / f); found++; }
+      }
+      if (found < mid) { cur = null; break; }
+      // an angle where no skin was found takes its value from the angles on its two sides
+      for (let i = 1; i < T; i++) if (raw[i] === null) {
+        let a = i - 1, b = i + 1;
+        while (raw[b] === null) b++;
+        raw[i] = raw[a] + (raw[b] - raw[a]) / (b - a);
+      }
+      // a small bulb in the way lifts one angle off the curve: the middle one of three, then a light smoothing, twice
+      const med = raw.map((val, i) => (fixed(i) ? 0 : [raw[i - 1], val, raw[i + 1]].sort((p, q) => p - q)[1]));
+      const soft = a => a.map((val, i) => (fixed(i) ? 0 : 0.25 * a[i - 1] + 0.5 * val + 0.25 * a[i + 1]));
+      const next = Float32Array.from(soft(soft(med)), val => clamp(val, -0.6, 0.6));
+      const moved = next.reduce((a, val, i) => Math.max(a, Math.abs(val - (cur ? cur[i] : 0))), 0);
+      cur = next;
+      if (moved < 2e-3) break;   // the two skins meet
+    }
+    if (cur && cur.some(val => Math.abs(val) >= 1e-3)) sm = cur;
+  }
+  if (TW_SEAM.size > 64) TW_SEAM.clear();
+  TW_SEAM.set(key, sm);
+  return sm;
+}
+// The fit of "twinsbud" for a Julia picture of a set with a cycle of bodies, and none anywhere else.
+const twBudSeam = c => {
+  const j = twJulia();
+  c = c || (j ? twC() : null);
+  return twBudWake(c) ? twSeamAt(c) : null;
+};
+// Hands the fit sm (or none) to a shader: uTwSmOn says whether there is one, uTwSm holds its curve.
+function twSeamUniforms(gl, loc, sm) {
+  gl.uniform1f(loc('uTwSmOn'), sm ? 1 : 0);
+  if (sm) gl.uniform1fv(loc('uTwSm[0]'), sm);
+}
+const GL_SEAM = `uniform float uTwSm[${TW_SM_T + 1}]; uniform float uTwSmOn;
+float twSeamLog(float t){
+  float a = clamp((t / 3.14159265359 + 0.5) * ${TW_SM_T}.0, 0.0, ${TW_SM_T}.0); int i = int(min(floor(a), ${TW_SM_T - 1}.0)); float f = a - float(i);
+  float p0 = uTwSm[max(i - 1, 0)], p1 = uTwSm[i], p2 = uTwSm[i + 1], p3 = uTwSm[min(i + 2, ${TW_SM_T})];
+  return p1 + 0.5 * f * (p2 - p0 + f * (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3 + f * (3.0 * (p1 - p2) + p3 - p0)));
+}
+`;
 // Hands the rays W (or none) to a shader. uWk: l0, 1/dl, and 1 where there are rays; uWkK: K and the way out; uWkT:
 // the two angles for each distance, a texture one texel high on the unit 4 (the display uses 0 and 1, the lines of
 // 09-lines.js 2 and 3).
@@ -2933,8 +3049,8 @@ function twWakeUniforms(gl, loc, W) {
   if (t.of !== W) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, TW_WN, 1, 0, gl.RG, gl.FLOAT, W.t); t.of = W; }
   gl.activeTexture(gl.TEXTURE0);
 }
-// uTwS and uTwW as for "twinslong", and the rays.
-function twBudUniforms(gl, loc) { twLongUniforms(gl, loc); twWakeUniforms(gl, loc, twBudWake(null)); }
+// uTwS and uTwW as for "twinslong", the rays, and the fit.
+function twBudUniforms(gl, loc) { twLongUniforms(gl, loc); twWakeUniforms(gl, loc, twBudWake(null)); twSeamUniforms(gl, loc, twBudSeam(null)); }
 // One squaring of "twinswhole" and "twinslong" about the line u. share: the step the two shares go through, or
 // nothing for the shares as they are. keep: how much of the across-part's extra term is kept.
 function twStep(v, u, share, keep = 1) {
@@ -2994,7 +3110,7 @@ const MATH = {
   twinsbud(v, n, q = {}, c) {
     if (n !== 2) return tpOne(v, n);
     c = c || (twJulia() ? twC() : null);
-    return twBudStep(v, twLongLine(c), twLongKeep(c), twBudWake(c), c);
+    return twBudStep(v, twLongLine(c), twLongKeep(c), twBudWake(c), c, twBudSeam(c));
   },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
@@ -3622,7 +3738,9 @@ float twWake(vec2 q){
 `;
 // The entry "twinsbud": the shader of "twinslong" with the two extra terms of twBudTerms. twFold says whether the
 // flat image of the folded point lies beyond K, and leaves 1 / cos² 2t in gTwBw and m in gTwMw; twF is that answer times zx. The
-// sign is the one of "twinslong" (from twB0), whether the point is folded or not. A
+// sign is the one of "twinslong" (from twB0), whether the point is folded or not. twPre is twSeamPre: the power is
+// taken of the point times it, a neighbour takes the side of the change the point itself stands on (gTwBk), and
+// the second point, which the colours follow, is left as it is. A
 // neighbour stepped for the distance estimate takes the answer of the point itself (gTwWk), as it takes its sign.
 const GL_TWINSBUD = [
   ['vec3 gTwK = vec3(0.0);', 'vec3 gTwK = vec3(0.0); vec2 gTwC = vec2(0.0); float gTwWk = 0.0;'],
@@ -3643,6 +3761,17 @@ vec3 twSq(vec3 v){`],
   ['b2 = uTwW * uTwW * h2 * twShare(h2 / s2);', `twT = atan(sqrt(y2), sqrt(h2)), twZx = uWk.z * (1.0 - smoothstep(0.5, 2.0, x2 / s2)), twZ = twZx * (1.0 - smoothstep(${TW_Z0.toFixed(9)}, ${TW_Z1.toFixed(9)}, twT)), twSa = twShare(y2 / s2), twSb = twShare(h2 / s2), twB0 = uTwW * uTwW * h2 * twSb, twF = twFold(twT < ${TW_ZC.toFixed(9)} ? twZx : 0.0, -x / max(sqrt(twB0), 1e-20) > ${TW_BACK.toFixed(9)} ? -1.0 : 1.0, x, y, v.z, x2, y2, h2) * twZx, b2 = uTwW * uTwW * h2 * (twSb + twF * (gTwBw - twSb));`],
   ['float s = -x / max(sqrt(b2), 1e-20)', 'float s = -x / max(sqrt(twB0), 1e-20)'],
   ['2.0 * v.z * sqrt(x2 + y2 * twShare(y2 / s2))', '2.0 * v.z * (1.0 + twF * (gTwMw - 1.0)) * sqrt(x2 + y2 * (twF > 0.0 ? twSa * (1.0 - twZx) : twSa + twZ * (twShare(y2 / max(x2 + y2, 1e-30)) - twSa)))'],
+  ['vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a) : aprMpw(a, n); }', GL_SEAM + `bool gTwBk = false;
+float twPre(vec3 v){
+  if (uTwSmOn < 0.5 || gTwSoft) return 1.0;
+  float x = dot(v.xy, gTwU), y = gTwU.x * v.y - gTwU.y * v.x, h2 = v.z * v.z;
+  float s = -x / max(sqrt(uTwW * uTwW * h2 * twShare(h2 / max(y * y + h2, 1e-30))), 1e-20);
+  if (!gTwAs) gTwBk = s > ${TW_BACK.toFixed(9)};
+  float wg = gTwBk ? 1.0 - smoothstep(${TW_BACK.toFixed(9)}, ${TW_SM_END.toFixed(4)}, s) : -smoothstep(${TW_SM_FRONT.toFixed(4)}, ${TW_BACK.toFixed(9)}, s);
+  return wg != 0.0 ? exp(0.25 * wg * twSeamLog(atan(y, abs(v.z)))) : 1.0;
+}
+vec3 pw(vec3 a, float n){ return n == 2.0 ? twSq(a * twPre(a)) : aprMpw(a, n); }`],
+  ['vec3 sqr(vec3 a){ return twSq(a); }', 'vec3 sqr(vec3 a){ return twSq(a * twPre(a)); }'],
 ].reduce((g, [was, now]) => { if (!g.includes(was)) throw new Error('GL_TWINSBUD: ' + was); return g.replace(was, now); }, GL_TWINSLONG);
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
@@ -4959,11 +5088,11 @@ const APPROACHES = [
     usesC: true, uniforms: twBudUniforms,
     tag: 'The entry above with two things changed. Only the bulb on top, with everything that hangs on it, is folded onto a body: the small bulbs that stood loose beside it are gone. And the fold keeps angles, so what stands on top has the shape of what it copies.',
     params: [
-      { type: 'note', text: 'How it works: a point near the top is folded only if its copy lands beyond the next body’s far pinch point, between two curves of the flat picture. This is for a Julia picture of a set with a cycle of 2 to 6 bodies; any other picture is drawn as the entry above draws it.' },
+      { type: 'note', text: 'How it works: a point near the top is folded only if its copy lands beyond the next body’s far pinch point, between two curves of the flat picture. This is for a Julia picture of a set with a cycle of 2 to 6 bodies; any other picture is drawn as the entry above draws it. A new c takes a moment.' },
       { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 4, step: 0.1, def: 2, help: 'The colours follow a second point, which changes to the far side gradually over the back of a body, so an orbit trap’s colours run through. How much of the back it uses is this number times how far c lies off the line the squaring lands on: nothing for a set that is its own mirror image, and the whole back at most. At 0 the colours follow the point itself and break along a line.' },
     ],
-    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + h²·k²·B), 2h·√(x² + y²·A))   with x along the line, y across it, h the height, a the angle of (y, h) from straight up, S(t) = t³/(t³ + (1 − t)³), and k and s as in the entry above. Away from the top, B = S(cos² a) and A = S(sin² a), as there. Beside the top, up to ' + aprNum(TW_ZC * 180 / PI) + '° from straight up: where the folded point lands beyond the far pinch point, B = 1/cos² 2a, A = 0 and the height is taken times √(1 + k²·tan² 2a) / cos a; where it does not, B is as above and A = S(y²/(x² + y²))' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
-    about: 'Two things differ from the entry above. What is folded. There the plane across the line is folded onto the flat plane, and with it whatever the flat picture has beside the next body’s far pinch point: the bulb that hangs on that point, which becomes the bulb on top, and the small bulbs of the next body’s own rim beside it, which come out loose. Here a point is folded only if its copy lands beyond the far pinch point, between the two outside rays of the flat picture that end on it. Everything that hangs on the bulb lies between those rays and nothing else does, so the bulb on top keeps all its own bulbs and the skin beside it is bare. The rays pass through no bulb, so nothing is cut. A point that is not folded takes the height that the rule has beside the flat plane, as far as its copy lies nearer the flat plane than the upright plane on the line. The angles. In the entry above a point of the plane across the line, at an angle from straight up, lands at less than twice that angle from the way to the far pinch point, and less and less the further it leans: a round bulb near the middle keeps its shape, and a thin arm further out is drawn wide. Here it lands at exactly twice the angle, as a point of the flat plane does, so an arm on top branches like the arms of the flat picture; and its height is scaled to match, so a copy is as thick across the plane as it is wide in it. The fold ends ' + aprNum(TW_ZC * 180 / PI) + '° from straight up. The rays are traced for each c, for a Julia picture of a set with a cycle of 2 to 6 bodies whose side pinch points are found; for any other set, and in the Mandelbrot picture, the entry is the entry above. Still wrong: a set that is not its own mirror image has a seam behind the top, a thin line across a body, as in the entry above; a set of thin arms may keep one thin sliver beside a body; for a c with a height of its own, as in the preset Cracked Basilica, the bulb on top stands clear of its body; and the Mandelbrot picture is not right.',
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + h²·k²·B), 2h·√(x² + y²·A))   with x along the line, y across it, h the height, a the angle of (y, h) from straight up, S(t) = t³/(t³ + (1 − t)³), and k and s as in the entry above. Away from the top, B = S(cos² a) and A = S(sin² a), as there. Beside the top, up to ' + aprNum(TW_ZC * 180 / PI) + '° from straight up: where the folded point lands beyond the far pinch point, B = 1/cos² 2a, A = 0 and the height is taken times √(1 + k²·tan² 2a) / cos a; where it does not, B is as above and A = S(y²/(x² + y²)). Before the step, a point is taken times e^(w·L/4) behind the change of s and e^(−w·L/4) in front of it: w is 1 at the change and 0 from ' + aprNum(TW_SM_END) + ' behind it and from ' + aprNum(-TW_SM_FRONT) + ' in front of it, and L is measured for the set at the point’s angle from straight up' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'Two things differ from the entry above. What is folded. There the plane across the line is folded onto the flat plane, and with it whatever the flat picture has beside the next body’s far pinch point: the bulb that hangs on that point, which becomes the bulb on top, and the small bulbs of the next body’s own rim beside it, which come out loose. Here a point is folded only if its copy lands beyond the far pinch point, between the two outside rays of the flat picture that end on it. Everything that hangs on the bulb lies between those rays and nothing else does, so the bulb on top keeps all its own bulbs and the skin beside it is bare. The rays pass through no bulb, so nothing is cut. A point that is not folded takes the height that the rule has beside the flat plane, as far as its copy lies nearer the flat plane than the upright plane on the line. The angles. In the entry above a point of the plane across the line, at an angle from straight up, lands at less than twice that angle from the way to the far pinch point, and less and less the further it leans: a round bulb near the middle keeps its shape, and a thin arm further out is drawn wide. Here it lands at exactly twice the angle, as a point of the flat plane does, so an arm on top branches like the arms of the flat picture; and its height is scaled to match, so a copy is as thick across the plane as it is wide in it. The fold ends ' + aprNum(TW_ZC * 180 / PI) + '° from straight up. The rays are traced for each c, for a Julia picture of a set with a cycle of 2 to 6 bodies whose side pinch points are found; for any other set, and in the Mandelbrot picture, the entry is the entry above. The join. Behind the top the rule changes sign at once, as in the entry above, and on a set that is not its own mirror image the skin behind the change stands a little further out or in than the skin in front of it: a step across a body, copied as a thin line wherever an orbit comes back to the middle body. Here a point near the change is first moved a little along its own direction, out on one side of the change and in on the other, by an amount measured for the set, so that the two skins meet half way; the amount fades to nothing a short way from the change, and it is nothing for a set that is its own mirror image. Still wrong: a set of thin arms may keep one thin sliver beside a body; for a c with a height of its own, as in the preset Cracked Basilica, the bulb on top stands clear of its body; and the Mandelbrot picture is not right.',
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with a jump in it. Beside the top the rule changes at once along the two rays, where nothing of the shape stands. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there. The colours follow a second point, which makes that change gradually.' + aprTear(n, APR_HALF)]),
@@ -5986,10 +6115,15 @@ cuDef('kept', 'v', 's', a => `twKeptOf(${a})`, a => twLongKeep(a));
 // is handed a Julia picture's rays (twWakeUniforms, with its c in uWkC), and has none for any other c.
 cuDef('beyond', 'vv', 's', (a, b) => `twBeyondOf(${a}, ${b})`, (p, c) => { const W = twBudWake(c); return W && twBeyond(W, p[0], p[1]) ? 1 : 0; });
 cuDef('curves', 'v', 's', a => `twCurvesOf(${a})`, c => (twBudWake(c) ? 1 : 0));
+// The fit behind the change of sign, for the flat set of a c, at an angle from straight up (twSeamAt in
+// 10-approaches.js): measured with the rule of the entry "twinsbud", handed to the shader for a Julia picture's c,
+// 0 for any other c.
+cuDef('seam', 'vs', 's', (a, b) => `twSeamOf(${a}, ${b})`, (c, t) => { const m = twBudSeam(c); return m ? twSeamLog(m, t) : 0; });
 const GL_CURVES = GL_WAKE + `
 uniform vec2 uWkC;
 float twCurvesOf(vec3 c){ return uWk.z > 0.5 && c.xy == uWkC ? 1.0 : 0.0; }
 float twBeyondOf(vec3 p, vec3 c){ return twCurvesOf(c) > 0.5 ? twWake(p.xy) : 0.0; }
+` + GL_SEAM + `float twSeamOf(vec3 c, float t){ return twCurvesOf(c) > 0.5 && uTwSmOn > 0.5 ? twSeamLog(t) : 0.0; }
 `;
 const GL_LONG = `
 uniform vec3 uTwL; uniform vec2 uTwLc; uniform float uTwLk;
@@ -6511,6 +6645,7 @@ const CU_OPS = [
   ['f_kept', 'How much of the extra term is kept, for a c', 'Points', 'kp', [['The c', 'c']]],
   ['f_beyond', 'Is a flat point beyond the next body’s far pinch point, for a c? (1 yes, 0 no)', 'Points', 'by', [['The flat point', 'flat(z)'], ['The c', 'c']]],
   ['f_curves', 'Are the two curves at the far pinch point found, for a c? (1 yes, 0 no)', 'Points', 'on', [['The c', 'c']]],
+  ['f_seam', 'How far the two skins miss behind the change of sign, for a c, at an angle from straight up', 'Points', 'ms', [['The c', 'c'], ['The angle', '0']]],
   // the name "colours" is the one cuBuild looks for
   ['o_colours', 'Colours: follow another point', 'Points', 'colours', [['The point the colours follow', 'z']], a => a],
   ['o_lt', 'Is it less?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['less than this', '1']], (a, b) => `${a} < ${b}`],
@@ -6952,7 +7087,7 @@ vec3 zmap(vec3 P, vec3 c){ return ${preZ ? 'cuPreZ(P, c, cmap(c))' : 'P'}; }`;
   K.set(ctx.K);
   const at = [], lists = { pre: [], main: [], post: [] };
   for (const r of run) { at[r.ord] = r; lists[r.sec].push(r); }
-  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (/tw(Side|Long|Kept)Of\(/.test(code) ? GL_SIDE : '') + (/tw(Long|Kept)Of\(/.test(code) ? GL_LONG : '') + (/tw(Beyond|Curves)Of\(/.test(code) ? GL_CURVES : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
+  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (/tw(Side|Long|Kept)Of\(/.test(code) ? GL_SIDE : '') + (/tw(Long|Kept)Of\(/.test(code) ? GL_LONG : '') + (/tw(Beyond|Curves|Seam)Of\(/.test(code) ? GL_CURVES : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
     K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept, fns: ctx.fns };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).
@@ -7235,9 +7370,9 @@ function cuUniforms(gl, loc) {
   gl.uniform3f(loc('uTwL'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : 0);
   gl.uniform1f(loc('uTwLk'), u ? u[2] : 1);
   if (u) gl.uniform2f(loc('uTwLc'), S.c[0], S.c[1]);
-  if (/tw(Beyond|Curves)Of\(/.test(cuProgram().glsl)) {
+  if (/tw(Beyond|Curves|Seam)Of\(/.test(cuProgram().glsl)) {
     const W = S.mode === 'j' && lnPlain() ? twWakeAt(S.c) : null;
-    twWakeUniforms(gl, loc, W);
+    twWakeUniforms(gl, loc, W); twSeamUniforms(gl, loc, W ? twSeamAt(S.c) : null);
     if (W) gl.uniform2f(loc('uWkC'), S.c[0], S.c[1]);
   }
 }
@@ -7437,7 +7572,9 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
     // point at the angle t from straight up land at 2t; tall( ) is what a folded point's height is taken times, so
     // that its copy is as thick across the plane as wide in it; copy( ) is where the fold would put the point on the flat
     // plane. fz is 1 where the point is folded: the orbits beside it take the same answer. The sign is the one
-    // of the rule above, whether the point is folded or not.
+    // of the rule above, whether the point is folded or not. fit( ) is what a point near the change of sign is
+    // taken times before the step, from what seam( ) gives for the set at the point's angle from straight up;
+    // the point the colours follow is not fitted.
     { name: 'Two points side by side, the bulb on top alone (power 2)', lab: 'twinsbud', only2: true, say: only2, steps: [num('join', 2, 0, 4),
       ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
       ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
@@ -7453,10 +7590,11 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       ['func', { name: 'lift', args: 'p, g, kp, fz', text: 'kp*kp*p.z*p.z*(share(p.z*p.z/off(p, g)) + fz*(twice(p, g) - share(p.z*p.z/off(p, g))))' }],
       ['func', { name: 'raise', args: 'p, g, fz, nz, tz', text: 'across(p, g)*across(p, g)*if(fz > 0, share(across(p, g)*across(p, g)/off(p, g))*(1 - nz), share(across(p, g)*across(p, g)/off(p, g)) + tz*(share(across(p, g)*across(p, g)/max(along(p, g)*along(p, g) + across(p, g)*across(p, g), 1e-30)) - share(across(p, g)*across(p, g)/off(p, g))))' }],
       ['func', { name: 'behind', args: 'p, g, kp', text: '-along(p, g)/max(sqrt(lift(p, g, kp, 0)), 1e-20)' }],
+      ['func', { name: 'fit', args: 'p, g, kp, q, sg', text: 'exp(0.25*if(sg < 0, 1 - smoothstep(0.414213562, 3, behind(p, g, kp)), -smoothstep(-1, 0.414213562, behind(p, g, kp)))*seam(q, atan2(across(p, g), abs(p.z))))' }],
       ['func', { name: 'land', args: 'p, g, sg, kp, fz, ra', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + lift(p, g, kp, fz)), 0)) + vec(0, 0, 2*p.z*(1 + fz*(tall(p, g, kp) - 1))*sqrt(along(p, g)*along(p, g) + ra))' }],
       F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }], ['f_kept', { out: 'kp', a0: 'c' }], ['f_curves', { out: 'on', a0: 'c' }],
+      F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'), F('z = z*fit(z, g, kp, c, sg)'),
       F('nz = on*beside(z, g)'), F('tz = nz*(1 - smoothstep(0.610865238, 0.785398163, fromtop(z, g)))'),
-      F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'),
       F('fo = same(if(nz > 0, if(fromtop(z, g) < 0.698131701, beyond(copy(z, g, kp, c, sg), c), 0), 0))'), F('fz = fo*nz'),
       F('w = land(z, g, sg, kp, fz, raise(z, g, fz, nz, tz))'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
       ['func', { name: 'turned', args: 'p, g, kp, fz', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*sqrt(lift(p, g, kp, fz))), 1e-20))' }],
@@ -13277,6 +13415,21 @@ function learnLineTerms(y, h, share, keep) {
   const y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300);
   return [keep * keep * (share ? h2 * share(h2 / s2) : h2 * h2 / s2), share ? y2 * share(y2 / s2) : y2 * y2 / s2];
 }
+// "twinsbud": a point near the place where the rule changes sign first moves a little out or in along its own
+// direction (twSeamPre in 10-approaches.js), so that the skin meets itself there.
+function learnFit(u, keep, sm) {
+  const pre = v => {
+    const [x, y, h] = learnLineSee(v, u), h2 = h * h;
+    return twSeamPre(x, y, h, keep, sm, -x / Math.max(Math.sqrt(keep * keep * h2 * twShare(h2 / Math.max(y * y + h2, 1e-300))), 1e-300) > TW_BACK ? -1 : 1);
+  };
+  const say = (a, b) => {
+    const p = len(a) > 0 ? len(b) / len(a) : 1;
+    if (Math.abs(p - 1) < 1e-6) return 'The point does not stand near the place where the rule changes sign. It stays.';
+    return `The point stands near the place where the rule changes sign. It moves ${p > 1 ? 'out' : 'in'} along its own direction, from ${learnNum(len(a))} to ${learnNum(len(b))}, so that the skin meets itself there.`;
+  };
+  return learnMove('stretch', 'Fit', (v, t) => scl(v, Math.exp(t * Math.log(pre(v)))), say, { line: [u[0], u[1], 0],
+    all: 'dots near the place where the rule changes sign move a little out or in, so that the skin meets itself there. The others stay' });
+}
 function learnFront(u, terms) {
   // 0: in front, it stays. 1: behind, half a rotation. 2: just behind the top, the mirror place.
   const side = v => {
@@ -13509,9 +13662,12 @@ function learnPlan(o) {
       const long = id !== 'twinswhole', share = long ? twShare : null;
       const [u, keep, W] = twFor(jul, c, () => (long ? [twLongLine(c), twLongKeep(c), id === 'twinsbud' ? twBudWake(c) : null] : [twWholeLine(c), 1, null])), ang = Math.atan2(u[1], u[0]);
       const terms = id === 'twinsbud' ? (x, y, h) => twBudTerms(x, y, h, u, keep, W, c) : (x, y, h) => learnLineTerms(y, h, share, keep);
+      const sm = id === 'twinsbud' ? twFor(jul, c, () => twBudSeam(c)) : null;
+      if (sm) moves.push(learnFit(u, keep, sm));
       moves.push(learnFront(u, (x, y, h) => learnLineTerms(y, h, share, keep)), learnPush(u, terms), learnDoubleLine(u), learnWithLine(ang), learnStretch(n, zero));
       note = `The line lies in the flat plane and belongs to the set: for this c it stands ${learnDeg(ang)} from the x-axis. “Rotate” is the move of “Quaternion square (Lathe)”, made about that line. “To the front” and “Push” are what this rule adds to it.`
-        + (id !== 'twinsbud' ? '' : W ? ' Near the top, “Push” lays a point flat only if its copy lands beyond the next body’s far pinch point.' : ' For this c the two curves are not found, so the moves are those of the entry above.');
+        + (id !== 'twinsbud' ? '' : W ? ' Near the top, “Push” lays a point flat only if its copy lands beyond the next body’s far pinch point.' : ' For this c the two curves are not found, so the moves are those of the entry above.')
+        + (sm ? ' “Fit” moves a point near the change of sign a little, so that the skin meets itself there.' : '');
     } else {
       // no simpler moves are written out: the direction, then the length. That split is true only when the rule's
       // length does not depend on the direction; otherwise both go in one move.

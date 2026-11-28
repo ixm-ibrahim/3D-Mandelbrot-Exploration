@@ -385,6 +385,21 @@ function learnLineTerms(y, h, share, keep) {
   const y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300);
   return [keep * keep * (share ? h2 * share(h2 / s2) : h2 * h2 / s2), share ? y2 * share(y2 / s2) : y2 * y2 / s2];
 }
+// "twinsbud": a point near the place where the rule changes sign first moves a little out or in along its own
+// direction (twSeamPre in 10-approaches.js), so that the skin meets itself there.
+function learnFit(u, keep, sm) {
+  const pre = v => {
+    const [x, y, h] = learnLineSee(v, u), h2 = h * h;
+    return twSeamPre(x, y, h, keep, sm, -x / Math.max(Math.sqrt(keep * keep * h2 * twShare(h2 / Math.max(y * y + h2, 1e-300))), 1e-300) > TW_BACK ? -1 : 1);
+  };
+  const say = (a, b) => {
+    const p = len(a) > 0 ? len(b) / len(a) : 1;
+    if (Math.abs(p - 1) < 1e-6) return 'The point does not stand near the place where the rule changes sign. It stays.';
+    return `The point stands near the place where the rule changes sign. It moves ${p > 1 ? 'out' : 'in'} along its own direction, from ${learnNum(len(a))} to ${learnNum(len(b))}, so that the skin meets itself there.`;
+  };
+  return learnMove('stretch', 'Fit', (v, t) => scl(v, Math.exp(t * Math.log(pre(v)))), say, { line: [u[0], u[1], 0],
+    all: 'dots near the place where the rule changes sign move a little out or in, so that the skin meets itself there. The others stay' });
+}
 function learnFront(u, terms) {
   // 0: in front, it stays. 1: behind, half a rotation. 2: just behind the top, the mirror place.
   const side = v => {
@@ -617,9 +632,12 @@ function learnPlan(o) {
       const long = id !== 'twinswhole', share = long ? twShare : null;
       const [u, keep, W] = twFor(jul, c, () => (long ? [twLongLine(c), twLongKeep(c), id === 'twinsbud' ? twBudWake(c) : null] : [twWholeLine(c), 1, null])), ang = Math.atan2(u[1], u[0]);
       const terms = id === 'twinsbud' ? (x, y, h) => twBudTerms(x, y, h, u, keep, W, c) : (x, y, h) => learnLineTerms(y, h, share, keep);
+      const sm = id === 'twinsbud' ? twFor(jul, c, () => twBudSeam(c)) : null;
+      if (sm) moves.push(learnFit(u, keep, sm));
       moves.push(learnFront(u, (x, y, h) => learnLineTerms(y, h, share, keep)), learnPush(u, terms), learnDoubleLine(u), learnWithLine(ang), learnStretch(n, zero));
       note = `The line lies in the flat plane and belongs to the set: for this c it stands ${learnDeg(ang)} from the x-axis. “Rotate” is the move of “Quaternion square (Lathe)”, made about that line. “To the front” and “Push” are what this rule adds to it.`
-        + (id !== 'twinsbud' ? '' : W ? ' Near the top, “Push” lays a point flat only if its copy lands beyond the next body’s far pinch point.' : ' For this c the two curves are not found, so the moves are those of the entry above.');
+        + (id !== 'twinsbud' ? '' : W ? ' Near the top, “Push” lays a point flat only if its copy lands beyond the next body’s far pinch point.' : ' For this c the two curves are not found, so the moves are those of the entry above.')
+        + (sm ? ' “Fit” moves a point near the change of sign a little, so that the skin meets itself there.' : '');
     } else {
       // no simpler moves are written out: the direction, then the length. That split is true only when the rule's
       // length does not depend on the direction; otherwise both go in one move.

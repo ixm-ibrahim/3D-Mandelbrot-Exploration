@@ -82,7 +82,7 @@ name is its place in the page. Only `90-boot.js` runs code when the page loads. 
 `src/js/10-approaches.js`. `09-lines.js` finds, for the Julia set on show, the line through the middle of each of
 its bodies, for the two entries that fold about such lines, and the middle body's two pinch points from c alone, for
 the entry that folds between them. From those the entry that lays its line square to the middle body's side pinch
-points finds that line (`twSideAt` in `10-approaches.js`), and so does the custom approach's `side( )`. The entry that lays its line along the long way of the set finds it by measuring (`twLongAt`), and the custom approach's `longway( )` gives the same line. The entry that folds the bulb on top alone traces, for the Julia set on show, the two outside rays that end on the next body's far pinch point (`twWakeAt`), and the custom approach's `beyond( )` and `curves( )` read the same rays. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
+points finds that line (`twSideAt` in `10-approaches.js`), and so does the custom approach's `side( )`. The entry that lays its line along the long way of the set finds it by measuring (`twLongAt`), and the custom approach's `longway( )` gives the same line. The entry that folds the bulb on top alone traces, for the Julia set on show, the two outside rays that end on the next body's far pinch point (`twWakeAt`), and the custom approach's `beyond( )` and `curves( )` read the same rays. For the same set it measures how far the two skins miss each other behind the change of sign (`twSeamAt`), which the custom approach's `seam( )` gives too. The custom approach is the one entry whose rule is written on the page: `12-custom.js`
 reads its steps into shader text and into the same rule in JavaScript, and `82-custom-ui.js` is its panel.
 
-This is version 1.46. Each version is tagged, as `v1.46`.
+This is version 1.47. Each version is tagged, as `v1.47`.
