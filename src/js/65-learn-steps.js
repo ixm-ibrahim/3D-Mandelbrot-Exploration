@@ -370,8 +370,8 @@ function learnInvert() {
   };
   return learnMove('own', 'Inside out', f, say, { all: 'space is turned inside out: every dot’s distance from the centre becomes 1 divided by it, and its y goes to the mirror value' });
 }
-// Two points side by side, about a line u of the flat plane (twStep in 10-approaches.js; share and keep as it takes
-// them). Seen from the line a point lies x along it, y across it and h high. The step is the quaternion square about
+// Two points side by side, about a line u of the flat plane (twStep and twBudStep in 10-approaches.js). terms(x, y, h)
+// gives the rule's two extra terms for a point. Seen from the line a point lies x along it, y across it and h high. The step is the quaternion square about
 // the line, which doubles the angle from the line, with two moves before it:
 //   To the front   a point behind the middle (x < 0) goes to the place in front that has the same answer: half a
 //                  rotation about the z-axis, or, just behind the top, its mirror place across the line;
@@ -384,12 +384,12 @@ function learnLineTerms(y, h, share, keep) {
   const y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300);
   return [keep * keep * (share ? h2 * share(h2 / s2) : h2 * h2 / s2), share ? y2 * share(y2 / s2) : y2 * y2 / s2];
 }
-function learnFront(u, share, keep) {
+function learnFront(u, terms) {
   // 0: in front, it stays. 1: behind, half a rotation. 2: just behind the top, the mirror place.
   const side = v => {
     const [x, y, h] = learnLineSee(v, u);
     if (!(x < 0)) return 0;
-    return -x / Math.max(Math.sqrt(learnLineTerms(y, h, share, keep)[0]), 1e-300) > TW_BACK ? 1 : 2;
+    return -x / Math.max(Math.sqrt(terms(x, y, h)[0]), 1e-300) > TW_BACK ? 1 : 2;
   };
   const f = (v, t) => {
     const k = side(v);
@@ -411,12 +411,12 @@ function learnFront(u, share, keep) {
     all: 'every dot behind the middle comes to the front: half way round the z-axis, or, just behind the top, straight across to its mirror place',
   });
 }
-function learnPush(u, share, keep) {
+function learnPush(u, terms) {
   // the direction, seen from the line, whose angle from the line is half that of the rule's answer
   const goal = v => {
     const [x, y, h] = learnLineSee(v, u), r = len(v);
     if (!(r > 0) || x < 0) return null;
-    const [b2, a2] = learnLineTerms(y, h, share, keep);
+    const [b2, a2] = terms(x, y, h);
     const X = x * x - y * y - h * h, Y = 2 * y * Math.sqrt(x * x + b2), H = 2 * h * Math.sqrt(x * x + a2), W = Math.hypot(Y, H);
     if (!(W > 1e-300)) return null;
     const A = Math.atan2(W, X) / 2, d = learnLinePut([Math.cos(A), Math.sin(A) * Y / W, Math.sin(A) * H / W], u);
@@ -609,14 +609,16 @@ function learnPlan(o) {
       if (n < 0) moves.push(learnInvert());
       note = 'The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.'
         + (n < 0 ? ` A negative power is worked as the power ${aprNum(m)}, followed by one move that turns space inside out. In that move y goes straight through 0 to its mirror value, so a point on the y-axis passes through the origin.` : '');
-    } else if ((id === 'twinswhole' || id === 'twinslong') && n !== 2) {
+    } else if ((id === 'twinswhole' || id === 'twinslong' || id === 'twinsbud') && n !== 2) {
       moves.push(learnTurnZ(n, 3, 'longitude'), learnLeanMerc(n), learnStretch(n, zero));
       note = 'At this power the rule is “Sphere inversions, one plane”: the longitude is multiplied, and the latitude on the scale a Mercator map uses.';
-    } else if (id === 'twinswhole' || id === 'twinslong') {
-      const long = id === 'twinslong', share = long ? twShare : null;
-      const [u, keep] = twFor(jul, c, () => (long ? [twLongLine(c), twLongKeep(c)] : [twWholeLine(c), 1])), ang = Math.atan2(u[1], u[0]);
-      moves.push(learnFront(u, share, keep), learnPush(u, share, keep), learnDoubleLine(u), learnWithLine(ang), learnStretch(n, zero));
-      note = `The line lies in the flat plane and belongs to the set: for this c it stands ${learnDeg(ang)} from the x-axis. “Rotate” is the move of “Quaternion square (Lathe)”, made about that line. “To the front” and “Push” are what this rule adds to it.`;
+    } else if (id === 'twinswhole' || id === 'twinslong' || id === 'twinsbud') {
+      const long = id !== 'twinswhole', share = long ? twShare : null;
+      const [u, keep, W] = twFor(jul, c, () => (long ? [twLongLine(c), twLongKeep(c), id === 'twinsbud' ? twBudWake(c) : null] : [twWholeLine(c), 1, null])), ang = Math.atan2(u[1], u[0]);
+      const terms = id === 'twinsbud' ? (x, y, h) => twBudTerms(x, y, h, u, keep, W, c) : (x, y, h) => learnLineTerms(y, h, share, keep);
+      moves.push(learnFront(u, (x, y, h) => learnLineTerms(y, h, share, keep)), learnPush(u, terms), learnDoubleLine(u), learnWithLine(ang), learnStretch(n, zero));
+      note = `The line lies in the flat plane and belongs to the set: for this c it stands ${learnDeg(ang)} from the x-axis. “Rotate” is the move of “Quaternion square (Lathe)”, made about that line. “To the front” and “Push” are what this rule adds to it.`
+        + (id !== 'twinsbud' ? '' : W ? ' Near the top, “Push” lays a point flat only if its copy lands beyond the next body’s far pinch point.' : ' For this c the two curves are not found, so the moves are those of the entry above.');
     } else {
       // no simpler moves are written out: the direction, then the length. That split is true only when the rule's
       // length does not depend on the direction; otherwise both go in one move.

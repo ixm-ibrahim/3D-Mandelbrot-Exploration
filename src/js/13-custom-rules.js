@@ -175,5 +175,36 @@
       F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
       F('wk = land(k, g, cos(pi*clamp((turned(k, g, kp) - pi/8)/(3*pi/8*lam), 0, 1)), kp)'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
       ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
+    // The entry "twinsbud": the rule above with the fold kept for a point whose folded copy lies beyond the next
+    // body's far pinch point, and made true to angles there. fromtop( ) is the angle from straight up, round the
+    // line; beside( ) is 1 beside the plane across the line; twice( ) is the across-part's extra term that makes a
+    // point at the angle t from straight up land at 2t; copy( ) is where the fold would put the point on the flat
+    // plane. fz is 1 where the point is folded: the orbits beside it take the same answer. The sign is the one
+    // of the rule above, whether the point is folded or not.
+    { name: 'Two points side by side, the bulb on top alone (power 2)', lab: 'twinsbud', only2: true, say: only2, steps: [num('join', 2, 0, 4),
+      ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
+      ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
+      ['func', { name: 'off', args: 'p, g', text: 'max(across(p, g)*across(p, g) + p.z*p.z, 1e-30)' }],
+      ['func', { name: 'share', args: 't', text: 't*t*t/(t*t*t + (1 - t)*(1 - t)*(1 - t))' }],
+      ['func', { name: 'fromtop', args: 'p, g', text: 'atan2(abs(across(p, g)), abs(p.z))' }],
+      ['func', { name: 'beside', args: 'p, g', text: '1 - smoothstep(0.5, 2, along(p, g)*along(p, g)/off(p, g))' }],
+      ['func', { name: 'twice', args: 'p, g', text: '1/max((p.z*p.z - across(p, g)*across(p, g))/off(p, g)*((p.z*p.z - across(p, g)*across(p, g))/off(p, g)), 0.000001)' }],
+      ['func', { name: 'copyy', args: 'p, g, kp, sg', text: '2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + kp*kp*p.z*p.z*twice(p, g))' }],
+      ['func', { name: 'copy', args: 'p, g, kp, q, sg', text: 'flat(q) + cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 0))*(dot(p, p)/max(len(vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 2*abs(p.z*along(p, g)))), 1e-30))' }],
+      ['func', { name: 'lift', args: 'p, g, kp, fz', text: 'kp*kp*p.z*p.z*(share(p.z*p.z/off(p, g)) + fz*(twice(p, g) - share(p.z*p.z/off(p, g))))' }],
+      ['func', { name: 'raise', args: 'p, g, fz, nz, tz', text: 'across(p, g)*across(p, g)*if(fz > 0, share(across(p, g)*across(p, g)/off(p, g))*(1 - nz), share(across(p, g)*across(p, g)/off(p, g)) + tz*(share(across(p, g)*across(p, g)/max(along(p, g)*along(p, g) + across(p, g)*across(p, g), 1e-30)) - share(across(p, g)*across(p, g)/off(p, g))))' }],
+      ['func', { name: 'behind', args: 'p, g, kp', text: '-along(p, g)/max(sqrt(lift(p, g, kp, 0)), 1e-20)' }],
+      ['func', { name: 'land', args: 'p, g, sg, kp, fz, ra', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + lift(p, g, kp, fz)), 0)) + vec(0, 0, 2*p.z*sqrt(along(p, g)*along(p, g) + ra))' }],
+      F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }], ['f_kept', { out: 'kp', a0: 'c' }], ['f_curves', { out: 'on', a0: 'c' }],
+      F('nz = on*beside(z, g)'), F('tz = nz*(1 - smoothstep(0.610865238, 0.785398163, fromtop(z, g)))'),
+      F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'),
+      F('fo = same(if(nz > 0, if(fromtop(z, g) < 0.698131701, beyond(copy(z, g, kp, c, sg), c), 0), 0))'), F('fz = fo*nz'),
+      F('w = land(z, g, sg, kp, fz, raise(z, g, fz, nz, tz))'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
+      ['func', { name: 'turned', args: 'p, g, kp, fz', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*sqrt(lift(p, g, kp, fz))), 1e-20))' }],
+      F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
+      F('nk = on*beside(k, g)'), F('tk = nk*(1 - smoothstep(0.610865238, 0.785398163, fromtop(k, g)))'),
+      F('fk = nk*if(nk > 0, if(fromtop(k, g) < 0.698131701, beyond(copy(k, g, kp, c, if(behind(k, g, kp) > 0.414213562, -1, 1)), c), 0), 0)'),
+      F('wk = land(k, g, cos(pi*clamp((turned(k, g, kp, fk) - pi/8)/(3*pi/8*lam), 0, 1)), kp, fk, raise(k, g, fk, nk, tk))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
+      ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }

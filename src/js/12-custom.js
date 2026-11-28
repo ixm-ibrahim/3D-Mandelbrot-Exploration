@@ -301,6 +301,16 @@ cuDef('longway', 'v', 'v', a => `vec3(twLongOf(${a}), 0.0)`, a => { const u = tw
 // How much of the across-part's extra term "twinslong" keeps for the flat set of a c (twLongKeep): handed to the
 // shader with a Julia picture's line (uTwLk), and 1 for any other c.
 cuDef('kept', 'v', 's', a => `twKeptOf(${a})`, a => twLongKeep(a));
+// Whether a flat point lies beyond the next body's far pinch point for the flat set of a c: between the two outside
+// rays that land on it (twBeyond in 10-approaches.js), and whether those rays are found for a c at all. The shader
+// is handed a Julia picture's rays (twWakeUniforms, with its c in uWkC), and has none for any other c.
+cuDef('beyond', 'vv', 's', (a, b) => `twBeyondOf(${a}, ${b})`, (p, c) => { const W = twBudWake(c); return W && twBeyond(W, p[0], p[1]) ? 1 : 0; });
+cuDef('curves', 'v', 's', a => `twCurvesOf(${a})`, c => (twBudWake(c) ? 1 : 0));
+const GL_CURVES = GL_WAKE + `
+uniform vec2 uWkC;
+float twCurvesOf(vec3 c){ return uWk.z > 0.5 && c.xy == uWkC ? 1.0 : 0.0; }
+float twBeyondOf(vec3 p, vec3 c){ return twCurvesOf(c) > 0.5 ? twWake(p.xy) : 0.0; }
+`;
 const GL_LONG = `
 uniform vec3 uTwL; uniform vec2 uTwLc; uniform float uTwLk;
 vec2 twLongOf(vec3 c){ if (uTwL.z > 0.5 && c.xy == uTwLc) return uTwL.xy; vec2 s = twSideOf(c); return normalize(vec2(s.y, -s.x)); }
@@ -819,6 +829,8 @@ const CU_OPS = [
   ['f_side', 'The middle body’s side pinch point, for a c', 'Points', 'sd', [['The c', 'c']]],
   ['f_longway', 'The line along the long way of the set, for a c', 'Points', 'g', [['The c', 'c']]],
   ['f_kept', 'How much of the extra term is kept, for a c', 'Points', 'kp', [['The c', 'c']]],
+  ['f_beyond', 'Is a flat point beyond the next body’s far pinch point, for a c? (1 yes, 0 no)', 'Points', 'by', [['The flat point', 'flat(z)'], ['The c', 'c']]],
+  ['f_curves', 'Are the two curves at the far pinch point found, for a c? (1 yes, 0 no)', 'Points', 'on', [['The c', 'c']]],
   // the name "colours" is the one cuBuild looks for
   ['o_colours', 'Colours: follow another point', 'Points', 'colours', [['The point the colours follow', 'z']], a => a],
   ['o_lt', 'Is it less?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['less than this', '1']], (a, b) => `${a} < ${b}`],
@@ -1260,7 +1272,7 @@ vec3 zmap(vec3 P, vec3 c){ return ${preZ ? 'cuPreZ(P, c, cmap(c))' : 'P'}; }`;
   K.set(ctx.K);
   const at = [], lists = { pre: [], main: [], post: [] };
   for (const r of run) { at[r.ord] = r; lists[r.sec].push(r); }
-  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (/tw(Side|Long|Kept)Of\(/.test(code) ? GL_SIDE : '') + (/tw(Long|Kept)Of\(/.test(code) ? GL_LONG : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
+  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (/tw(Side|Long|Kept)Of\(/.test(code) ? GL_SIDE : '') + (/tw(Long|Kept)Of\(/.test(code) ? GL_LONG : '') + (/tw(Beyond|Curves)Of\(/.test(code) ? GL_CURVES : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
     K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept, fns: ctx.fns };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).
@@ -1543,6 +1555,11 @@ function cuUniforms(gl, loc) {
   gl.uniform3f(loc('uTwL'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : 0);
   gl.uniform1f(loc('uTwLk'), u ? u[2] : 1);
   if (u) gl.uniform2f(loc('uTwLc'), S.c[0], S.c[1]);
+  if (/tw(Beyond|Curves)Of\(/.test(cuProgram().glsl)) {
+    const W = S.mode === 'j' && lnPlain() ? twWakeAt(S.c) : null;
+    twWakeUniforms(gl, loc, W);
+    if (W) gl.uniform2f(loc('uWkC'), S.c[0], S.c[1]);
+  }
 }
 // The plain distance estimate (one number in place of neighbouring orbits) for the finished solid, where the rule
 // asks for it. It holds only for whole steps of a power, so a play takes the fine one, and so does a rule with a

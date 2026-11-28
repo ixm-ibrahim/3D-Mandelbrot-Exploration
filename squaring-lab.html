@@ -2717,6 +2717,221 @@ function twLongUniforms(gl, loc) {
   gl.uniform1f(loc('uTwW'), u ? u[2] : 1);
   gl.uniform3f(loc('uTwS'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : !j && lnPlain() ? 2 : 0);
 }
+// The entry "twinsbud": "twinslong" with the fold kept for the bulb on top alone, and made true to angles.
+// The fold of "twinslong" lays the plane across the line onto the flat plane, and with it everything the flat set
+// has beside the next body's far pinch point K = c + (side pinch point)²: the bulb that hangs there, which becomes
+// the bulb on top, and the small bulbs of the next body's own rim beside it, which come out loose. Here a point is
+// folded only if the flat image of the folded point lies beyond K: between the two outside rays of the flat set
+// that land on K and have the next body behind them. There hangs the bulb with everything of its own.
+// A folded point of the plane across the line, at the angle t from straight up, lands at the angle 2t from the way
+// to K as c sees it, as a point of the flat plane does: the across-part's extra term is keep²·h² / cos² 2t, and the
+// height has none. So the copy on top keeps the angles of what it copies. The fold ends at TW_ZC from straight up.
+// Any other point near the top takes the height of the rule's flat side, as far as its copy lies nearer the flat
+// plane than the upright plane on the line (the share of y² in x² + y²): it lands well above the flat plane and
+// copies nothing of the next body's rim, and what stands in the upright plane on the line is left as it is.
+// A ray is traced inwards from far out (twRay): the point of the ray of the angle t at the m-th level solves
+// f^m(z) = R^(1/2^(j/S)) · e^(2πi·2^m·t), by Newton's method from the point before. The rays that land on the
+// pinch point r of the middle body have angles j/(2^p − 1); those on K have 2^p times their angle on the image of
+// r, so they are found among (2j + m(2^p − 1)) / ((2^p − 1)·2^p).
+// Seen from K, each ray is kept as its angle from the way out of the next body, at TW_WN distances that grow evenly
+// on a logarithmic scale from where the tracing ends to where it starts, far outside the set. The angles are counted
+// on along a ray without a break, so one may pass half a turn. A flat point is beyond K if its own angle lies
+// between the two, going round from the second ray to the first.
+// Only for a Julia picture of a set with a cycle of 2 to TW_WP bodies; anywhere else the entry is "twinslong".
+const TW_WN = 1024, TW_WP = 6, TW_WR = 1e4, TW_WS = 6, TW_WDEPTH = 90, TW_Z0 = 35 * PI / 180, TW_Z1 = 45 * PI / 180, TW_ZC = 40 * PI / 180;
+const TW_WAKE = new Map();                       // answers so far, by c
+function twRay(cx, cy, num, den, depth) {
+  const pts = [], a0 = 2 * PI * num / den;
+  let zx = Math.sqrt(TW_WR) * Math.cos(a0), zy = Math.sqrt(TW_WR) * Math.sin(a0), a = num % den;
+  for (let m = 1; m <= depth; m++) {
+    a = (2 * a) % den;
+    const ang = 2 * PI * a / den, ca = Math.cos(ang), sa = Math.sin(ang);
+    for (let j = 1; j <= TW_WS; j++) {
+      const rad = Math.pow(TW_WR, Math.pow(2, -j / TW_WS)), tx = rad * ca, ty = rad * sa;
+      let wx = zx, wy = zy, ok = false;
+      for (let it = 0; it < 30 && !ok; it++) {
+        let ux = wx, uy = wy, dx = 1, dy = 0;
+        for (let k = 0; k < m; k++) {
+          const t = 2 * (ux * dx - uy * dy); dy = 2 * (ux * dy + uy * dx); dx = t;
+          const s = ux * ux - uy * uy + cx; uy = 2 * ux * uy + cy; ux = s;
+        }
+        const ex = ux - tx, ey = uy - ty, dd = dx * dx + dy * dy;
+        if (!(dd > 1e-300) || !isFinite(dd)) break;
+        const sx = (ex * dx + ey * dy) / dd, sy = (ey * dx - ex * dy) / dd;
+        wx -= sx; wy -= sy;
+        ok = sx * sx + sy * sy < 1e-26 * (1 + wx * wx + wy * wy);
+      }
+      if (!ok || !(Math.hypot(wx - zx, wy - zy) < 0.5 * Math.max(1, Math.hypot(zx, zy)))) return pts;
+      zx = wx; zy = wy; pts.push([zx, zy]);
+    }
+  }
+  return pts;
+}
+// The two rays for the flat set of c: { k: K, o: the way out of the next body at K (a unit direction), l0 and dl: the
+// logarithm of the first distance and the step to the next, t: for each of the TW_WN distances the angle of the first
+// ray and then of the second; going round from the second to the first is beyond K }. Nothing where they are not
+// found.
+function twWakeAt(c) {
+  const key = c[0] + ',' + c[1];
+  let W = TW_WAKE.get(key);
+  if (W !== undefined) return W;
+  W = null;
+  const cx = c[0], cy = c[1], P = pnFind(cx, cy), sd = twSideAt(c);
+  if (P && P.r && P.p >= 2 && P.p <= TW_WP && sd[2]) {
+    const p = P.p, q = (1 << p) - 1, kx = cx + sd[0] * sd[0] - sd[1] * sd[1], ky = cy + 2 * sd[0] * sd[1], far = Math.hypot(kx - cx, ky - cy);
+    const ox = (kx - cx) / far, oy = (ky - cy) / far;
+    const angle = e => Math.atan2(ox * (e[1] - ky) - oy * (e[0] - kx), ox * (e[0] - kx) + oy * (e[1] - ky));
+    // Where a traced ray is heading: the point of period p that Newton's method finds from the ray's last point,
+    // with how strongly it pushes away (above 1 for a point a ray can land on). A ray closes in on such a point
+    // slowly where c is near the place its bulb joins the next, so its last point may still be some way off.
+    const goal = e => {
+      let zx = e[0], zy = e[1], m = 0;
+      for (let it = 0; it < 60; it++) {
+        let ux = zx, uy = zy, dx = 1, dy = 0;
+        for (let k = 0; k < p; k++) {
+          const t = 2 * (ux * dx - uy * dy); dy = 2 * (ux * dy + uy * dx); dx = t;
+          const w = ux * ux - uy * uy + cx; uy = 2 * ux * uy + cy; ux = w;
+        }
+        m = Math.hypot(dx, dy);
+        const ex = ux - zx, ey = uy - zy, gx = dx - 1, gy = dy, gg = gx * gx + gy * gy;
+        if (!(gg > 1e-300) || !isFinite(gg)) return null;
+        const sx = (ex * gx + ey * gy) / gg, sy = (ey * gx - ex * gy) / gg;
+        zx -= sx; zy -= sy;
+        if (sx * sx + sy * sy < 1e-28 * (1 + zx * zx + zy * zy)) return [zx, zy, m];
+      }
+      return null;
+    };
+    const rr = Math.hypot(P.r[0], P.r[1]), at = [];
+    for (let j = 1; j < q; j++) {
+      const pts = twRay(cx, cy, j, q, TW_WDEPTH);
+      if (pts.length <= 6 * TW_WS) continue;
+      const e = pts[pts.length - 1], g = goal(e);
+      if (g && g[2] > 1 ? Math.hypot(g[0] - P.r[0], g[1] - P.r[1]) < 1e-6 * (1 + rr) : Math.hypot(e[0] - P.r[0], e[1] - P.r[1]) < 0.1 * rr) at.push(j);
+    }
+    // Every ray that lands on K, in the order of its angle: of the rays that f^p sends onto one that lands on r, the
+    // one that ends nearest K. Far out, where a ray runs straight at its own angle, the rest of the set lies in the
+    // widest gap between two of them, and what hangs beyond K in the others: the second ray is the one after that
+    // gap, the first the one before it.
+    const on = [], den = q << p;
+    for (const j of at) {
+      let best = null;
+      for (let m = 0; m < (1 << p); m++) {
+        const num = (2 * j) % q + m * q, pts = twRay(cx, cy, num, den, TW_WDEPTH);
+        if (pts.length <= 6 * TW_WS) continue;
+        const d = Math.hypot(pts[pts.length - 1][0] - kx, pts[pts.length - 1][1] - ky);
+        if (!best || d < best.d) best = { num, pts, d };
+      }
+      if (best && best.d < 0.5 * far) on.push(best);
+    }
+    on.sort((e, f) => e.num - f.num);
+    if (on.length >= 2) {
+      let gap = -1, at0 = 0;
+      for (let i = 0; i < on.length; i++) {
+        const g = i ? on[i].num - on[i - 1].num : on[0].num + den - on[on.length - 1].num;
+        if (g > gap) { gap = g; at0 = i; }
+      }
+      const B = on[at0], A = on[(at0 + on.length - 1) % on.length], wide = 2 * PI * (den - gap) / den;
+      const dist = e => Math.hypot(e[0] - kx, e[1] - ky);
+      const l0 = Math.log(Math.max(dist(A.pts[A.pts.length - 1]), dist(B.pts[B.pts.length - 1]), 1e-7 * far));
+      const dl = (Math.log(Math.min(dist(A.pts[0]), dist(B.pts[0]))) - l0) / (TW_WN - 1), t = new Float32Array(2 * TW_WN);
+      // walking a ray outwards from K: its angle where it first reaches each distance, counted on without a break
+      const table = (R, at1) => {
+        const pts = R.pts;
+        let k = pts.length - 1, was = angle(pts[k]), wd = dist(pts[k]);
+        for (let i = 0; i < TW_WN; i++) {
+          const want = Math.exp(l0 + i * dl);
+          let now = was, nd = wd;
+          while (k > 0 && nd < want) {
+            was = now; wd = nd; k--;
+            const a = angle(pts[k]);
+            now = a + 2 * PI * Math.round((was - a) / (2 * PI)); nd = dist(pts[k]);
+          }
+          t[2 * i + at1] = was + (nd > wd ? clamp((want - wd) / (nd - wd), 0, 1) : 1) * (now - was);
+          was = now; wd = nd;
+        }
+      };
+      table(A, 0); table(B, 1);
+      // whole turns are taken off the first ray's angles, so that far out it stands `wide` round from the second
+      const off = 2 * PI * Math.round((t[2 * TW_WN - 1] + wide - t[2 * TW_WN - 2]) / (2 * PI));
+      for (let i = 0; i < TW_WN; i++) t[2 * i] += off;
+      W = { k: [kx, ky], o: [ox, oy], l0, dl, t };
+    }
+  }
+  if (TW_WAKE.size > 64) TW_WAKE.clear();
+  TW_WAKE.set(key, W);
+  return W;
+}
+// Is the flat point (qx, qy) beyond K: between the two rays?
+function twBeyond(W, qx, qy) {
+  const ex = qx - W.k[0], ey = qy - W.k[1], d = Math.hypot(ex, ey);
+  const s = clamp((Math.log(Math.max(d, 1e-300)) - W.l0) / W.dl, 0, TW_WN - 1), i = Math.min(Math.floor(s), TW_WN - 2), f = s - i;
+  const a = W.t[2 * i] + f * (W.t[2 * i + 2] - W.t[2 * i]), b = W.t[2 * i + 1] + f * (W.t[2 * i + 3] - W.t[2 * i + 1]);
+  const m = Math.atan2(W.o[0] * ey - W.o[1] * ex, W.o[0] * ex + W.o[1] * ey) - b;
+  return m - 2 * PI * Math.floor(m / (2 * PI)) < a - b;
+}
+// The rays of "twinsbud" for a Julia picture of a set with a cycle of bodies, and nothing anywhere else.
+const twBudWake = c => {
+  const j = twJulia();
+  c = c || (j ? twC() : null);
+  return c && j && lnPlain() ? twWakeAt(c) : null;
+};
+const twSmooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+// The two extra terms of "twinsbud" for a point seen from the line u (x along it, y across, h high), and its sign,
+// as [b², a², sg]: b² under the root of the across-part, a² under the root of the height. zx: how near the point
+// is to the plane across the line, 1 beside it; zone: zx times how near it is to straight up. bw: 1 / cos² 2t. The
+// sign is the one "twinslong" gives the point, whether it is folded or not.
+function twBudTerms(x, y, h, u, keep, W, c) {
+  const x2 = x * x, y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300), sb = twShare(h2 / s2), sa = twShare(y2 / s2);
+  const sg = -x / Math.max(Math.sqrt(keep * keep * h2 * sb), 1e-300) > TW_BACK ? -1 : 1;
+  let zone = 0, zx = 0, w = 0, bw = 1;
+  if (W) {
+    const tau = Math.atan2(Math.sqrt(y2), Math.sqrt(h2));
+    zx = 1 - twSmooth(0.5, 2, x2 / s2); zone = (1 - twSmooth(TW_Z0, TW_Z1, tau)) * zx;
+    if (zx > 0 && tau < TW_ZC) {
+      const c2 = (h2 - y2) / s2;
+      bw = 1 / (c2 * c2);
+      const X = x2 - y2 - h2, Y = 2 * y * sg * Math.sqrt(x2 + keep * keep * h2 * bw), l = Math.hypot(X, Y, 2 * Math.abs(h * x));
+      if (l > 0) {
+        const k = (x2 + y2 + h2) / l, gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
+        w = twBeyond(W, c[0] + (X * gx - Y * gy) * k, c[1] + (X * gy + Y * gx) * k) ? 1 : 0;
+      }
+    }
+  }
+  return w ? [keep * keep * h2 * (sb + zx * (bw - sb)), y2 * sa * (1 - zx), sg] : [keep * keep * h2 * sb, y2 * (sa + zone * (twShare(y2 / Math.max(x2 + y2, 1e-300)) - sa)), sg];
+}
+// One squaring of "twinsbud" about the line u.
+function twBudStep(v, u, keep, W, c) {
+  const x = v[0] * u[0] + v[1] * u[1], y = u[0] * v[1] - u[1] * v[0], h = v[2], x2 = x * x;
+  const [b2, a2, sg] = twBudTerms(x, y, h, u, keep, W, c);
+  const X = x2 - y * y - h * h, Y = 2 * y * sg * Math.sqrt(x2 + b2), H = 2 * h * Math.sqrt(x2 + a2);
+  const gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
+  const w = [X * gx - Y * gy, X * gy + Y * gx, H], l = Math.hypot(w[0], w[1], w[2]), k = l > 0 ? (x2 + y * y + h * h) / l : 1;
+  return [w[0] * k, w[1] * k, w[2] * k];
+}
+// Hands the rays W (or none) to a shader. uWk: l0, 1/dl, and 1 where there are rays; uWkK: K and the way out; uWkT:
+// the two angles for each distance, a texture one texel high on the unit 4 (the display uses 0 and 1, the lines of
+// 09-lines.js 2 and 3).
+const TW_GL = new WeakMap();                     // for each graphics context: { tex, of: whose angles it holds }
+function twWakeUniforms(gl, loc, W) {
+  gl.uniform3f(loc('uWk'), W ? W.l0 : 0, W ? 1 / W.dl : 1, W ? 1 : 0);
+  gl.uniform1i(loc('uWkT'), 4);
+  if (!W) return;
+  gl.uniform4f(loc('uWkK'), W.k[0], W.k[1], W.o[0], W.o[1]);
+  let t = TW_GL.get(gl);
+  gl.activeTexture(gl.TEXTURE4);
+  if (!t || !gl.isTexture(t.tex)) {
+    t = { tex: gl.createTexture(), of: null };
+    gl.bindTexture(gl.TEXTURE_2D, t.tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    TW_GL.set(gl, t);
+  }
+  gl.bindTexture(gl.TEXTURE_2D, t.tex);
+  if (t.of !== W) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RG32F, TW_WN, 1, 0, gl.RG, gl.FLOAT, W.t); t.of = W; }
+  gl.activeTexture(gl.TEXTURE0);
+}
+// uTwS and uTwW as for "twinslong", and the rays.
+function twBudUniforms(gl, loc) { twLongUniforms(gl, loc); twWakeUniforms(gl, loc, twBudWake(null)); }
 // One squaring of "twinswhole" and "twinslong" about the line u. share: the step the two shares go through, or
 // nothing for the shares as they are. keep: how much of the across-part's extra term is kept.
 function twStep(v, u, share, keep = 1) {
@@ -2773,6 +2988,11 @@ const MATH = {
   },
   twinswhole(v, n, q = {}, c) { return n !== 2 ? tpOne(v, n) : twStep(v, twWholeLine(c)); },
   twinslong(v, n, q = {}, c) { return n !== 2 ? tpOne(v, n) : twStep(v, twLongLine(c), twShare, twLongKeep(c)); },
+  twinsbud(v, n, q = {}, c) {
+    if (n !== 2) return tpOne(v, n);
+    c = c || (twJulia() ? twC() : null);
+    return twBudStep(v, twLongLine(c), twLongKeep(c), twBudWake(c), c);
+  },
   softmirror(v, n, q = {}) { return MATH.mercator(smFold(v, q), n, {}); },
   lathe(v, n, q = {}) {
     const [x, y, z] = v, r = Math.hypot(x, y, z);
@@ -3386,6 +3606,41 @@ const GL_TWINSLONG = [
   ['b2 = h2 * h2 / s2;', 'b2 = uTwW * uTwW * h2 * twShare(h2 / s2);'],
   ['sqrt(x2 + y2 * y2 / s2)', 'sqrt(x2 + y2 * twShare(y2 / s2))'],
 ].reduce((g, [was, now]) => { if (!g.includes(was)) throw new Error('GL_TWINSLONG: ' + was); return g.replace(was, now); }, GL_TWINSWHOLE);
+// twWake is twBeyond in the shader, on the angles handed over in uWkT.
+const GL_WAKE = `
+uniform highp sampler2D uWkT; uniform vec3 uWk; uniform vec4 uWkK;
+float twWake(vec2 q){
+  vec2 e = q - uWkK.xy;
+  float t = clamp((log(max(length(e), 1e-30)) - uWk.x) * uWk.y, 0.0, ${(TW_WN - 1).toFixed(1)});
+  int i = int(min(floor(t), ${(TW_WN - 2).toFixed(1)}));
+  vec2 ab = mix(texelFetch(uWkT, ivec2(i, 0), 0).rg, texelFetch(uWkT, ivec2(i + 1, 0), 0).rg, t - float(i));
+  return mod(atan(uWkK.z * e.y - uWkK.w * e.x, uWkK.z * e.x + uWkK.w * e.y) - ab.y, ${(2 * Math.PI).toFixed(9)}) < ab.x - ab.y ? 1.0 : 0.0;
+}
+`;
+// The entry "twinsbud": the shader of "twinslong" with the two extra terms of twBudTerms. twFold says whether the
+// flat image of the folded point lies beyond K, and leaves 1 / cos² 2t in gTwBw; twF is that answer times zx. The
+// sign is the one of "twinslong" (from twB0), whether the point is folded or not. A
+// neighbour stepped for the distance estimate takes the answer of the point itself (gTwWk), as it takes its sign.
+const GL_TWINSBUD = [
+  ['vec3 gTwK = vec3(0.0);', 'vec3 gTwK = vec3(0.0); vec2 gTwC = vec2(0.0); float gTwWk = 0.0;'],
+  ['  gTwK = v;', '  gTwK = v; gTwC = c.xy;'],
+  ['vec3 twSq(vec3 v){', GL_WAKE + `float gTwBw = 1.0;
+float twFold(float zone, float sg, float x, float y, float h, float x2, float y2, float h2){
+  float c2 = (h2 - y2) / max(y2 + h2, 1e-30);
+  gTwBw = 1.0 / max(c2 * c2, 1e-6);
+  if (gTwAs) return gTwWk;
+  gTwWk = 0.0;
+  if (zone > 0.0){
+    vec3 w = vec3(x2 - y2 - h2, 2.0 * y * sg * sqrt(x2 + uTwW * uTwW * h2 * gTwBw), 2.0 * abs(h * x)); float l = length(w);
+    if (l > 0.0) gTwWk = twWake(gTwC + cmul(gTw, w.xy) * ((x2 + y2 + h2) / l));
+  }
+  return gTwWk;
+}
+vec3 twSq(vec3 v){`],
+  ['b2 = uTwW * uTwW * h2 * twShare(h2 / s2);', `twT = atan(sqrt(y2), sqrt(h2)), twZx = uWk.z * (1.0 - smoothstep(0.5, 2.0, x2 / s2)), twZ = twZx * (1.0 - smoothstep(${TW_Z0.toFixed(9)}, ${TW_Z1.toFixed(9)}, twT)), twSa = twShare(y2 / s2), twSb = twShare(h2 / s2), twB0 = uTwW * uTwW * h2 * twSb, twF = twFold(twT < ${TW_ZC.toFixed(9)} ? twZx : 0.0, -x / max(sqrt(twB0), 1e-20) > ${TW_BACK.toFixed(9)} ? -1.0 : 1.0, x, y, v.z, x2, y2, h2) * twZx, b2 = uTwW * uTwW * h2 * (twSb + twF * (gTwBw - twSb));`],
+  ['float s = -x / max(sqrt(b2), 1e-20)', 'float s = -x / max(sqrt(twB0), 1e-20)'],
+  ['sqrt(x2 + y2 * twShare(y2 / s2))', 'sqrt(x2 + y2 * (twF > 0.0 ? twSa * (1.0 - twZx) : twSa + twZ * (twShare(y2 / max(x2 + y2, 1e-30)) - twSa)))'],
+].reduce((g, [was, now]) => { if (!g.includes(was)) throw new Error('GL_TWINSBUD: ' + was); return g.replace(was, now); }, GL_TWINSLONG);
 // Blended planes. uA = (planes, width of each plane's own band, curve: 0 smoothstep 1 smootherstep,
 // mix: 0 great circle 1 straight 2 pinch). cmap is the identity: the constant is not folded.
 const GL_SOFTFOLD = GL_APR + GL_MERC_PLAIN + `
@@ -4697,6 +4952,21 @@ const APPROACHES = [
     slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
   },
   {
+    id: 'twinsbud', name: 'Two points side by side, the bulb on top alone', group: 'inversions', glsl: GL_TWINSBUD, axis: () => [0, 0, 1],
+    usesC: true, uniforms: twBudUniforms,
+    tag: 'The entry above with two things changed. Only the bulb on top, with everything that hangs on it, is folded onto a body: the small bulbs that stood loose beside it are gone. And the fold keeps angles, so what stands on top has the shape of what it copies.',
+    params: [
+      { type: 'note', text: 'How it works: a point near the top is folded only if its copy lands beyond the next body’s far pinch point, between two curves of the flat picture. This is for a Julia picture of a set with a cycle of 2 to 6 bodies; any other picture is drawn as the entry above draws it.' },
+      { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 4, step: 0.1, def: 2, help: 'The colours follow a second point, which changes to the far side gradually over the back of a body, so an orbit trap’s colours run through. How much of the back it uses is this number times how far c lies off the line the squaring lands on: nothing for a set that is its own mirror image, and the whole back at most. At 0 the colours follow the point itself and break along a line.' },
+    ],
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + h²·k²·B), 2h·√(x² + y²·A))   with x along the line, y across it, h the height, a the angle of (y, h) from straight up, S(t) = t³/(t³ + (1 − t)³), and k and s as in the entry above. Away from the top, B = S(cos² a) and A = S(sin² a), as there. Beside the top, up to ' + aprNum(TW_ZC * 180 / PI) + '° from straight up: where the folded point lands beyond the far pinch point, B = 1/cos² 2a and A = 0; where it does not, B is as above and A = S(y²/(x² + y²))' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'Two things differ from the entry above. What is folded. There the plane across the line is folded onto the flat plane, and with it whatever the flat picture has beside the next body’s far pinch point: the bulb that hangs on that point, which becomes the bulb on top, and the small bulbs of the next body’s own rim beside it, which come out loose. Here a point is folded only if its copy lands beyond the far pinch point, between the two outside rays of the flat picture that end on it. Everything that hangs on the bulb lies between those rays and nothing else does, so the bulb on top keeps all its own bulbs and the skin beside it is bare. The rays pass through no bulb, so nothing is cut. A point that is not folded takes the height that the rule has beside the flat plane, as far as its copy lies nearer the flat plane than the upright plane on the line. The angles. In the entry above a point of the plane across the line, at an angle from straight up, lands at less than twice that angle from the way to the far pinch point, and less and less the further it leans: a round bulb near the middle keeps its shape, and a thin arm further out is drawn wide. Here it lands at exactly twice the angle, as a point of the flat plane does, so an arm on top branches like the arms of the flat picture. The fold ends ' + aprNum(TW_ZC * 180 / PI) + '° from straight up. The rays are traced for each c, for a Julia picture of a set with a cycle of 2 to 6 bodies whose side pinch points are found; for any other set, and in the Mandelbrot picture, the entry is the entry above. Still wrong: for a c off the middle of its bulb the bulb on top stands clear of its body, as in the entry above; a set that is not its own mirror image has a seam behind the top; a set of thin arms keeps a few thin slivers beside a body; and the Mandelbrot picture is not right.',
+    roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
+    crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
+    smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with a jump in it. Beside the top the rule changes at once along the two rays, where nothing of the shape stands. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there. The colours follow a second point, which makes that change gradually.' + aprTear(n, APR_HALF)]),
+    slice: ok => (!ok ? 'The plane z = 0 does not follow complex arithmetic.' : 'The plane z = 0 follows complex arithmetic exactly.'),
+  },
+  {
     id: 'lathe', name: 'Quaternion square (Lathe)', group: 'quaternion', glsl: GL_LATHE, axis: () => [1, 0, 0],
     tag: 'Square a quaternion: multiply the angle from the x-axis, and leave the spin around it alone. Sphere inversions with no plane chosen give this same rule.',
     params: [{ type: 'dial', key: 'spin', label: 'Spin multiplier (odd)', min: -7, max: 9, step: 2, def: 1, odd: true, xmin: -31, xmax: 33, xlo: -99, xhi: 99 }],
@@ -5708,6 +5978,16 @@ cuDef('longway', 'v', 'v', a => `vec3(twLongOf(${a}), 0.0)`, a => { const u = tw
 // How much of the across-part's extra term "twinslong" keeps for the flat set of a c (twLongKeep): handed to the
 // shader with a Julia picture's line (uTwLk), and 1 for any other c.
 cuDef('kept', 'v', 's', a => `twKeptOf(${a})`, a => twLongKeep(a));
+// Whether a flat point lies beyond the next body's far pinch point for the flat set of a c: between the two outside
+// rays that land on it (twBeyond in 10-approaches.js), and whether those rays are found for a c at all. The shader
+// is handed a Julia picture's rays (twWakeUniforms, with its c in uWkC), and has none for any other c.
+cuDef('beyond', 'vv', 's', (a, b) => `twBeyondOf(${a}, ${b})`, (p, c) => { const W = twBudWake(c); return W && twBeyond(W, p[0], p[1]) ? 1 : 0; });
+cuDef('curves', 'v', 's', a => `twCurvesOf(${a})`, c => (twBudWake(c) ? 1 : 0));
+const GL_CURVES = GL_WAKE + `
+uniform vec2 uWkC;
+float twCurvesOf(vec3 c){ return uWk.z > 0.5 && c.xy == uWkC ? 1.0 : 0.0; }
+float twBeyondOf(vec3 p, vec3 c){ return twCurvesOf(c) > 0.5 ? twWake(p.xy) : 0.0; }
+`;
 const GL_LONG = `
 uniform vec3 uTwL; uniform vec2 uTwLc; uniform float uTwLk;
 vec2 twLongOf(vec3 c){ if (uTwL.z > 0.5 && c.xy == uTwLc) return uTwL.xy; vec2 s = twSideOf(c); return normalize(vec2(s.y, -s.x)); }
@@ -6226,6 +6506,8 @@ const CU_OPS = [
   ['f_side', 'The middle body’s side pinch point, for a c', 'Points', 'sd', [['The c', 'c']]],
   ['f_longway', 'The line along the long way of the set, for a c', 'Points', 'g', [['The c', 'c']]],
   ['f_kept', 'How much of the extra term is kept, for a c', 'Points', 'kp', [['The c', 'c']]],
+  ['f_beyond', 'Is a flat point beyond the next body’s far pinch point, for a c? (1 yes, 0 no)', 'Points', 'by', [['The flat point', 'flat(z)'], ['The c', 'c']]],
+  ['f_curves', 'Are the two curves at the far pinch point found, for a c? (1 yes, 0 no)', 'Points', 'on', [['The c', 'c']]],
   // the name "colours" is the one cuBuild looks for
   ['o_colours', 'Colours: follow another point', 'Points', 'colours', [['The point the colours follow', 'z']], a => a],
   ['o_lt', 'Is it less?', 'Tests and choices', 'test', [['Is this', 'len(z)'], ['less than this', '1']], (a, b) => `${a} < ${b}`],
@@ -6667,7 +6949,7 @@ vec3 zmap(vec3 P, vec3 c){ return ${preZ ? 'cuPreZ(P, c, cmap(c))' : 'P'}; }`;
   K.set(ctx.K);
   const at = [], lists = { pre: [], main: [], post: [] };
   for (const r of run) { at[r.ord] = r; lists[r.sec].push(r); }
-  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (/tw(Side|Long|Kept)Of\(/.test(code) ? GL_SIDE : '') + (/tw(Long|Kept)Of\(/.test(code) ? GL_LONG : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
+  return { Kd: ctx.K.slice(), cPre: preC, cRun, vars: varsOf.main, varsOf, glsl: GL_APR + GL_MERC_PLAIN + GL_CARRY + CU_GLSL + (/tw(Side|Long|Kept)Of\(/.test(code) ? GL_SIDE : '') + (/tw(Long|Kept)Of\(/.test(code) ? GL_LONG : '') + (/tw(Beyond|Curves)Of\(/.test(code) ? GL_CURVES : '') + code, key: (h >>> 0).toString(36) + '.' + code.length,
     K, run, at, lists, sliders: run.filter(r => r.slider), zero: ctx.zero, errs, scopes, orbit, kept, fns: ctx.fns };
 }
 // The rule as the state holds it now, read once and kept (a picture being saved holds an older state, so a few are kept).
@@ -6950,6 +7232,11 @@ function cuUniforms(gl, loc) {
   gl.uniform3f(loc('uTwL'), u ? u[0] : 1, u ? u[1] : 0, u ? 1 : 0);
   gl.uniform1f(loc('uTwLk'), u ? u[2] : 1);
   if (u) gl.uniform2f(loc('uTwLc'), S.c[0], S.c[1]);
+  if (/tw(Beyond|Curves)Of\(/.test(cuProgram().glsl)) {
+    const W = S.mode === 'j' && lnPlain() ? twWakeAt(S.c) : null;
+    twWakeUniforms(gl, loc, W);
+    if (W) gl.uniform2f(loc('uWkC'), S.c[0], S.c[1]);
+  }
 }
 // The plain distance estimate (one number in place of neighbouring orbits) for the finished solid, where the rule
 // asks for it. It holds only for whole steps of a power, so a play takes the fine one, and so does a rule with a
@@ -7140,6 +7427,37 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       ['func', { name: 'turned', args: 'p, g, kp', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*sqrt(lift(p, g, kp))), 1e-20))' }],
       F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
       F('wk = land(k, g, cos(pi*clamp((turned(k, g, kp) - pi/8)/(3*pi/8*lam), 0, 1)), kp)'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
+      ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
+    // The entry "twinsbud": the rule above with the fold kept for a point whose folded copy lies beyond the next
+    // body's far pinch point, and made true to angles there. fromtop( ) is the angle from straight up, round the
+    // line; beside( ) is 1 beside the plane across the line; twice( ) is the across-part's extra term that makes a
+    // point at the angle t from straight up land at 2t; copy( ) is where the fold would put the point on the flat
+    // plane. fz is 1 where the point is folded: the orbits beside it take the same answer. The sign is the one
+    // of the rule above, whether the point is folded or not.
+    { name: 'Two points side by side, the bulb on top alone (power 2)', lab: 'twinsbud', only2: true, say: only2, steps: [num('join', 2, 0, 4),
+      ['keep', { name: 'k', start: 'vec(0, 0, 0)' }],
+      ['func', { name: 'along', args: 'p, g', text: 'dot(flat(p), g)' }], ['func', { name: 'across', args: 'p, g', text: 'g.x*p.y - g.y*p.x' }],
+      ['func', { name: 'off', args: 'p, g', text: 'max(across(p, g)*across(p, g) + p.z*p.z, 1e-30)' }],
+      ['func', { name: 'share', args: 't', text: 't*t*t/(t*t*t + (1 - t)*(1 - t)*(1 - t))' }],
+      ['func', { name: 'fromtop', args: 'p, g', text: 'atan2(abs(across(p, g)), abs(p.z))' }],
+      ['func', { name: 'beside', args: 'p, g', text: '1 - smoothstep(0.5, 2, along(p, g)*along(p, g)/off(p, g))' }],
+      ['func', { name: 'twice', args: 'p, g', text: '1/max((p.z*p.z - across(p, g)*across(p, g))/off(p, g)*((p.z*p.z - across(p, g)*across(p, g))/off(p, g)), 0.000001)' }],
+      ['func', { name: 'copyy', args: 'p, g, kp, sg', text: '2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + kp*kp*p.z*p.z*twice(p, g))' }],
+      ['func', { name: 'copy', args: 'p, g, kp, q, sg', text: 'flat(q) + cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 0))*(dot(p, p)/max(len(vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, copyy(p, g, kp, sg), 2*abs(p.z*along(p, g)))), 1e-30))' }],
+      ['func', { name: 'lift', args: 'p, g, kp, fz', text: 'kp*kp*p.z*p.z*(share(p.z*p.z/off(p, g)) + fz*(twice(p, g) - share(p.z*p.z/off(p, g))))' }],
+      ['func', { name: 'raise', args: 'p, g, fz, nz, tz', text: 'across(p, g)*across(p, g)*if(fz > 0, share(across(p, g)*across(p, g)/off(p, g))*(1 - nz), share(across(p, g)*across(p, g)/off(p, g)) + tz*(share(across(p, g)*across(p, g)/max(along(p, g)*along(p, g) + across(p, g)*across(p, g), 1e-30)) - share(across(p, g)*across(p, g)/off(p, g))))' }],
+      ['func', { name: 'behind', args: 'p, g, kp', text: '-along(p, g)/max(sqrt(lift(p, g, kp, 0)), 1e-20)' }],
+      ['func', { name: 'land', args: 'p, g, sg, kp, fz, ra', text: 'cmul(cmul(g, g), vec(along(p, g)*along(p, g) - across(p, g)*across(p, g) - p.z*p.z, 2*across(p, g)*sg*sqrt(along(p, g)*along(p, g) + lift(p, g, kp, fz)), 0)) + vec(0, 0, 2*p.z*sqrt(along(p, g)*along(p, g) + ra))' }],
+      F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }], ['f_kept', { out: 'kp', a0: 'c' }], ['f_curves', { out: 'on', a0: 'c' }],
+      F('nz = on*beside(z, g)'), F('tz = nz*(1 - smoothstep(0.610865238, 0.785398163, fromtop(z, g)))'),
+      F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'),
+      F('fo = same(if(nz > 0, if(fromtop(z, g) < 0.698131701, beyond(copy(z, g, kp, c, sg), c), 0), 0))'), F('fz = fo*nz'),
+      F('w = land(z, g, sg, kp, fz, raise(z, g, fz, nz, tz))'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
+      ['func', { name: 'turned', args: 'p, g, kp, fz', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*sqrt(lift(p, g, kp, fz))), 1e-20))' }],
+      F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
+      F('nk = on*beside(k, g)'), F('tk = nk*(1 - smoothstep(0.610865238, 0.785398163, fromtop(k, g)))'),
+      F('fk = nk*if(nk > 0, if(fromtop(k, g) < 0.698131701, beyond(copy(k, g, kp, c, if(behind(k, g, kp) > 0.414213562, -1, 1)), c), 0), 0)'),
+      F('wk = land(k, g, cos(pi*clamp((turned(k, g, kp, fk) - pi/8)/(3*pi/8*lam), 0, 1)), kp, fk, raise(k, g, fk, nk, tk))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
       ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
 }
@@ -12938,8 +13256,8 @@ function learnInvert() {
   };
   return learnMove('own', 'Inside out', f, say, { all: 'space is turned inside out: every dot’s distance from the centre becomes 1 divided by it, and its y goes to the mirror value' });
 }
-// Two points side by side, about a line u of the flat plane (twStep in 10-approaches.js; share and keep as it takes
-// them). Seen from the line a point lies x along it, y across it and h high. The step is the quaternion square about
+// Two points side by side, about a line u of the flat plane (twStep and twBudStep in 10-approaches.js). terms(x, y, h)
+// gives the rule's two extra terms for a point. Seen from the line a point lies x along it, y across it and h high. The step is the quaternion square about
 // the line, which doubles the angle from the line, with two moves before it:
 //   To the front   a point behind the middle (x < 0) goes to the place in front that has the same answer: half a
 //                  rotation about the z-axis, or, just behind the top, its mirror place across the line;
@@ -12952,12 +13270,12 @@ function learnLineTerms(y, h, share, keep) {
   const y2 = y * y, h2 = h * h, s2 = Math.max(y2 + h2, 1e-300);
   return [keep * keep * (share ? h2 * share(h2 / s2) : h2 * h2 / s2), share ? y2 * share(y2 / s2) : y2 * y2 / s2];
 }
-function learnFront(u, share, keep) {
+function learnFront(u, terms) {
   // 0: in front, it stays. 1: behind, half a rotation. 2: just behind the top, the mirror place.
   const side = v => {
     const [x, y, h] = learnLineSee(v, u);
     if (!(x < 0)) return 0;
-    return -x / Math.max(Math.sqrt(learnLineTerms(y, h, share, keep)[0]), 1e-300) > TW_BACK ? 1 : 2;
+    return -x / Math.max(Math.sqrt(terms(x, y, h)[0]), 1e-300) > TW_BACK ? 1 : 2;
   };
   const f = (v, t) => {
     const k = side(v);
@@ -12979,12 +13297,12 @@ function learnFront(u, share, keep) {
     all: 'every dot behind the middle comes to the front: half way round the z-axis, or, just behind the top, straight across to its mirror place',
   });
 }
-function learnPush(u, share, keep) {
+function learnPush(u, terms) {
   // the direction, seen from the line, whose angle from the line is half that of the rule's answer
   const goal = v => {
     const [x, y, h] = learnLineSee(v, u), r = len(v);
     if (!(r > 0) || x < 0) return null;
-    const [b2, a2] = learnLineTerms(y, h, share, keep);
+    const [b2, a2] = terms(x, y, h);
     const X = x * x - y * y - h * h, Y = 2 * y * Math.sqrt(x * x + b2), H = 2 * h * Math.sqrt(x * x + a2), W = Math.hypot(Y, H);
     if (!(W > 1e-300)) return null;
     const A = Math.atan2(W, X) / 2, d = learnLinePut([Math.cos(A), Math.sin(A) * Y / W, Math.sin(A) * H / W], u);
@@ -13177,14 +13495,16 @@ function learnPlan(o) {
       if (n < 0) moves.push(learnInvert());
       note = 'The flat part (x, y) is turned and stretched as on a page, and the height is treated as a number on a line, on its own.'
         + (n < 0 ? ` A negative power is worked as the power ${aprNum(m)}, followed by one move that turns space inside out. In that move y goes straight through 0 to its mirror value, so a point on the y-axis passes through the origin.` : '');
-    } else if ((id === 'twinswhole' || id === 'twinslong') && n !== 2) {
+    } else if ((id === 'twinswhole' || id === 'twinslong' || id === 'twinsbud') && n !== 2) {
       moves.push(learnTurnZ(n, 3, 'longitude'), learnLeanMerc(n), learnStretch(n, zero));
       note = 'At this power the rule is “Sphere inversions, one plane”: the longitude is multiplied, and the latitude on the scale a Mercator map uses.';
-    } else if (id === 'twinswhole' || id === 'twinslong') {
-      const long = id === 'twinslong', share = long ? twShare : null;
-      const [u, keep] = twFor(jul, c, () => (long ? [twLongLine(c), twLongKeep(c)] : [twWholeLine(c), 1])), ang = Math.atan2(u[1], u[0]);
-      moves.push(learnFront(u, share, keep), learnPush(u, share, keep), learnDoubleLine(u), learnWithLine(ang), learnStretch(n, zero));
-      note = `The line lies in the flat plane and belongs to the set: for this c it stands ${learnDeg(ang)} from the x-axis. “Rotate” is the move of “Quaternion square (Lathe)”, made about that line. “To the front” and “Push” are what this rule adds to it.`;
+    } else if (id === 'twinswhole' || id === 'twinslong' || id === 'twinsbud') {
+      const long = id !== 'twinswhole', share = long ? twShare : null;
+      const [u, keep, W] = twFor(jul, c, () => (long ? [twLongLine(c), twLongKeep(c), id === 'twinsbud' ? twBudWake(c) : null] : [twWholeLine(c), 1, null])), ang = Math.atan2(u[1], u[0]);
+      const terms = id === 'twinsbud' ? (x, y, h) => twBudTerms(x, y, h, u, keep, W, c) : (x, y, h) => learnLineTerms(y, h, share, keep);
+      moves.push(learnFront(u, (x, y, h) => learnLineTerms(y, h, share, keep)), learnPush(u, terms), learnDoubleLine(u), learnWithLine(ang), learnStretch(n, zero));
+      note = `The line lies in the flat plane and belongs to the set: for this c it stands ${learnDeg(ang)} from the x-axis. “Rotate” is the move of “Quaternion square (Lathe)”, made about that line. “To the front” and “Push” are what this rule adds to it.`
+        + (id !== 'twinsbud' ? '' : W ? ' Near the top, “Push” lays a point flat only if its copy lands beyond the next body’s far pinch point.' : ' For this c the two curves are not found, so the moves are those of the entry above.');
     } else {
       // no simpler moves are written out: the direction, then the length. That split is true only when the rule's
       // length does not depend on the direction; otherwise both go in one move.
