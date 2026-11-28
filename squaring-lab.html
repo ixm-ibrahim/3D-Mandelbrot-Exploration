@@ -2722,7 +2722,11 @@ function twLongUniforms(gl, loc) {
 // has beside the next body's far pinch point K = c + (side pinch point)²: the bulb that hangs there, which becomes
 // the bulb on top, and the small bulbs of the next body's own rim beside it, which come out loose. Here a point is
 // folded only if the flat image of the folded point lies beyond K: between the two outside rays of the flat set
-// that land on K and have the next body behind them. There hangs the bulb with everything of its own.
+// that land on K and have the next body behind them. There hangs the bulb with everything of its own. The image's
+// mirror image in the line the squaring lands on must lie there too. That is where the point would land with the
+// other sign, so a point just in front of the change of sign and one just behind it are folded alike; decided by
+// the point's own sign alone, a set that is not its own mirror image has places where one is folded and the other
+// is not, and thin loose pieces stand there.
 // A folded point of the plane across the line, at the angle t from straight up, lands at the angle 2t from the way
 // to K as c sees it, as a point of the flat plane does: the across-part's extra term is keep²·h² / cos² 2t, and the
 // height has none. So the copy on top keeps the angles of what it copies. The folded point's height is taken times
@@ -2912,7 +2916,7 @@ function twBudTerms(x, y, h, u, keep, W, c, force) {
       const X = x2 - y2 - h2, Y = 2 * y * sg * Math.sqrt(x2 + keep * keep * h2 * bw), l = Math.hypot(X, Y, 2 * mw * Math.abs(h * x));
       if (l > 0) {
         const k = (x2 + y2 + h2) / l, gx = u[0] * u[0] - u[1] * u[1], gy = 2 * u[0] * u[1];
-        w = twBeyond(W, c[0] + (X * gx - Y * gy) * k, c[1] + (X * gy + Y * gx) * k) ? 1 : 0;
+        w = twBeyond(W, c[0] + (X * gx - Y * gy) * k, c[1] + (X * gy + Y * gx) * k) && twBeyond(W, c[0] + (X * gx + Y * gy) * k, c[1] + (X * gy - Y * gx) * k) ? 1 : 0;
       }
     }
   }
@@ -3737,11 +3741,11 @@ float twWake(vec2 q){
 }
 `;
 // The entry "twinsbud": the shader of "twinslong" with the two extra terms of twBudTerms. twFold says whether the
-// flat image of the folded point lies beyond K, and leaves 1 / cos² 2t in gTwBw and m in gTwMw; twF is that answer times zx. The
-// sign is the one of "twinslong" (from twB0), whether the point is folded or not. twPre is twSeamPre: the power is
-// taken of the point times it, a neighbour takes the side of the change the point itself stands on (gTwBk), and
-// the second point, which the colours follow, is left as it is. A
-// neighbour stepped for the distance estimate takes the answer of the point itself (gTwWk), as it takes its sign.
+// flat image of the folded point and its mirror image both lie beyond K, and leaves 1 / cos² 2t in gTwBw and m in
+// gTwMw; twF is that answer times zx. The sign is the one of "twinslong" (from twB0), whether the point is folded
+// or not. twPre is twSeamPre: the power is taken of the point times it, a neighbour takes the side of the change
+// the point itself stands on (gTwBk), and the second point, which the colours follow, is left as it is. A neighbour
+// stepped for the distance estimate takes the answer of the point itself (gTwWk), as it takes its sign.
 const GL_TWINSBUD = [
   ['vec3 gTwK = vec3(0.0);', 'vec3 gTwK = vec3(0.0); vec2 gTwC = vec2(0.0); float gTwWk = 0.0;'],
   ['  gTwK = v;', '  gTwK = v; gTwC = c.xy;'],
@@ -3753,7 +3757,7 @@ float twFold(float zone, float sg, float x, float y, float h, float x2, float y2
   gTwWk = 0.0;
   if (zone > 0.0){
     vec3 w = vec3(x2 - y2 - h2, 2.0 * y * sg * sqrt(x2 + uTwW * uTwW * h2 * gTwBw), 2.0 * gTwMw * abs(h * x)); float l = length(w);
-    if (l > 0.0) gTwWk = twWake(gTwC + cmul(gTw, w.xy) * ((x2 + y2 + h2) / l));
+    if (l > 0.0){ float k = (x2 + y2 + h2) / l; gTwWk = min(twWake(gTwC + cmul(gTw, w.xy) * k), twWake(gTwC + cmul(gTw, vec2(w.x, -w.y)) * k)); }
   }
   return gTwWk;
 }
@@ -5088,11 +5092,11 @@ const APPROACHES = [
     usesC: true, uniforms: twBudUniforms,
     tag: 'The entry above with two things changed. Only the bulb on top, with everything that hangs on it, is folded onto a body: the small bulbs that stood loose beside it are gone. And the fold keeps angles, so what stands on top has the shape of what it copies.',
     params: [
-      { type: 'note', text: 'How it works: a point near the top is folded only if its copy lands beyond the next body’s far pinch point, between two curves of the flat picture. This is for a Julia picture of a set with a cycle of 2 to 6 bodies; any other picture is drawn as the entry above draws it. A new c takes a moment.' },
+      { type: 'note', text: 'How it works: a point near the top is folded only if its copy lands beyond the next body’s far pinch point, between two curves of the flat picture, and the copy’s mirror image does too. This is for a Julia picture of a set with a cycle of 2 to 6 bodies; any other picture is drawn as the entry above draws it. A new c takes a moment.' },
       { type: 'dial', key: 'join', label: 'Colours: width of the join', min: 0, max: 4, step: 0.1, def: 2, help: 'The colours follow a second point, which changes to the far side gradually over the back of a body, so an orbit trap’s colours run through. How much of the back it uses is this number times how far c lies off the line the squaring lands on: nothing for a set that is its own mirror image, and the whole back at most. At 0 the colours follow the point itself and break along a line.' },
     ],
-    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + h²·k²·B), 2h·√(x² + y²·A))   with x along the line, y across it, h the height, a the angle of (y, h) from straight up, S(t) = t³/(t³ + (1 − t)³), and k and s as in the entry above. Away from the top, B = S(cos² a) and A = S(sin² a), as there. Beside the top, up to ' + aprNum(TW_ZC * 180 / PI) + '° from straight up: where the folded point lands beyond the far pinch point, B = 1/cos² 2a, A = 0 and the height is taken times √(1 + k²·tan² 2a) / cos a; where it does not, B is as above and A = S(y²/(x² + y²)). Before the step, a point is taken times e^(w·L/4) behind the change of s and e^(−w·L/4) in front of it: w is 1 at the change and 0 from ' + aprNum(TW_SM_END) + ' behind it and from ' + aprNum(-TW_SM_FRONT) + ' in front of it, and L is measured for the set at the point’s angle from straight up' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
-    about: 'Two things differ from the entry above. What is folded. There the plane across the line is folded onto the flat plane, and with it whatever the flat picture has beside the next body’s far pinch point: the bulb that hangs on that point, which becomes the bulb on top, and the small bulbs of the next body’s own rim beside it, which come out loose. Here a point is folded only if its copy lands beyond the far pinch point, between the two outside rays of the flat picture that end on it. Everything that hangs on the bulb lies between those rays and nothing else does, so the bulb on top keeps all its own bulbs and the skin beside it is bare. The rays pass through no bulb, so nothing is cut. A point that is not folded takes the height that the rule has beside the flat plane, as far as its copy lies nearer the flat plane than the upright plane on the line. The angles. In the entry above a point of the plane across the line, at an angle from straight up, lands at less than twice that angle from the way to the far pinch point, and less and less the further it leans: a round bulb near the middle keeps its shape, and a thin arm further out is drawn wide. Here it lands at exactly twice the angle, as a point of the flat plane does, so an arm on top branches like the arms of the flat picture; and its height is scaled to match, so a copy is as thick across the plane as it is wide in it. The fold ends ' + aprNum(TW_ZC * 180 / PI) + '° from straight up. The rays are traced for each c, for a Julia picture of a set with a cycle of 2 to 6 bodies whose side pinch points are found; for any other set, and in the Mandelbrot picture, the entry is the entry above. The join. Behind the top the rule changes sign at once, as in the entry above, and on a set that is not its own mirror image the skin behind the change stands a little further out or in than the skin in front of it: a step across a body, copied as a thin line wherever an orbit comes back to the middle body. Here a point near the change is first moved a little along its own direction, out on one side of the change and in on the other, by an amount measured for the set, so that the two skins meet half way; the amount fades to nothing a short way from the change, and it is nothing for a set that is its own mirror image. Still wrong: a set of thin arms may keep one thin sliver beside a body; for a c with a height of its own, as in the preset Cracked Basilica, the bulb on top stands clear of its body; and the Mandelbrot picture is not right.',
+    formula: (p, n) => (aprIs(n, 2) ? '(x, y, h)² = |v|² · unit(x² − y² − h², 2y·s·√(x² + h²·k²·B), 2h·√(x² + y²·A))   with x along the line, y across it, h the height, a the angle of (y, h) from straight up, S(t) = t³/(t³ + (1 − t)³), and k and s as in the entry above. Away from the top, B = S(cos² a) and A = S(sin² a), as there. Beside the top, up to ' + aprNum(TW_ZC * 180 / PI) + '° from straight up: where the folded point and its mirror image in the line both land beyond the far pinch point, B = 1/cos² 2a, A = 0 and the height is taken times √(1 + k²·tan² 2a) / cos a; where it does not, B is as above and A = S(y²/(x² + y²)). Before the step, a point is taken times e^(w·L/4) behind the change of s and e^(−w·L/4) in front of it: w is 1 at the change and 0 from ' + aprNum(TW_SM_END) + ' behind it and from ' + aprNum(-TW_SM_FRONT) + ' in front of it, and L is measured for the set at the point’s angle from straight up' : aprMercFormula(n) + ' At this power the rule is Sphere inversions, one plane.'),
+    about: 'Two things differ from the entry above. What is folded. There the plane across the line is folded onto the flat plane, and with it whatever the flat picture has beside the next body’s far pinch point: the bulb that hangs on that point, which becomes the bulb on top, and the small bulbs of the next body’s own rim beside it, which come out loose. Here a point is folded only if its copy lands beyond the far pinch point, between the two outside rays of the flat picture that end on it. Everything that hangs on the bulb lies between those rays and nothing else does, so the bulb on top keeps all its own bulbs and the skin beside it is bare. The rays pass through no bulb, so nothing is cut. The mirror image of the copy, in the line the squaring lands on, has to lie between the rays too: that is where the point would land from the other side of the change of sign, so the two sides of the change are folded alike and no thin loose piece is left between them. A point that is not folded takes the height that the rule has beside the flat plane, as far as its copy lies nearer the flat plane than the upright plane on the line. The angles. In the entry above a point of the plane across the line, at an angle from straight up, lands at less than twice that angle from the way to the far pinch point, and less and less the further it leans: a round bulb near the middle keeps its shape, and a thin arm further out is drawn wide. Here it lands at exactly twice the angle, as a point of the flat plane does, so an arm on top branches like the arms of the flat picture; and its height is scaled to match, so a copy is as thick across the plane as it is wide in it. The fold ends ' + aprNum(TW_ZC * 180 / PI) + '° from straight up. The rays are traced for each c, for a Julia picture of a set with a cycle of 2 to 6 bodies whose side pinch points are found; for any other set, and in the Mandelbrot picture, the entry is the entry above. The join. Behind the top the rule changes sign at once, as in the entry above, and on a set that is not its own mirror image the skin behind the change stands a little further out or in than the skin in front of it: a step across a body, copied as a thin line wherever an orbit comes back to the middle body. Here a point near the change is first moved a little along its own direction, out on one side of the change and in on the other, by an amount measured for the set, so that the two skins meet half way; the amount fades to nothing a short way from the change, and it is nothing for a set that is its own mirror image. Still wrong: for a c with a height of its own, as in the preset Cracked Basilica, the bulb on top stands clear of its body; and the Mandelbrot picture is not right.',
     roundNote: () => 'This card measures one squaring of the points round the middle. The rule keeps shapes on the flat plane and on the upright plane on the line, and squashes them beside the upright plane across the line.',
     crush: (p, n) => (aprIs(n, 0) ? aprNone() : ['part', 'Space is folded over, with no crease, along the upright plane across the line. Shapes are squashed beside it.' + aprPole(n)]),
     smooth: (p, n) => (aprIs(n, 0) ? aprConstant() : ['part', 'One formula with a jump in it. Beside the top the rule changes at once along the two rays, where nothing of the shape stands. A little behind the upright plane across the line a point jumps to its mirror image in the line: the shape shows nothing there. The colours follow a second point, which makes that change gradually.' + aprTear(n, APR_HALF)]),
@@ -7595,12 +7599,12 @@ const cuReach = () => Math.min(cuBailOf(S.custom.bail), clamp(+S.custom.reach ||
       F('k = if(count < 1.5, z, k)'), ['f_longway', { out: 'g', a0: 'c' }], ['f_kept', { out: 'kp', a0: 'c' }], ['f_curves', { out: 'on', a0: 'c' }],
       F('sg = same(if(behind(z, g, kp) > 0.414213562, -1, 1))'), F('z = z*fit(z, g, kp, c, sg)'),
       F('nz = on*beside(z, g)'), F('tz = nz*(1 - smoothstep(0.610865238, 0.785398163, fromtop(z, g)))'),
-      F('fo = same(if(nz > 0, if(fromtop(z, g) < 0.698131701, beyond(copy(z, g, kp, c, sg), c), 0), 0))'), F('fz = fo*nz'),
+      F('fo = same(if(nz > 0, if(fromtop(z, g) < 0.698131701, beyond(copy(z, g, kp, c, 1), c)*beyond(copy(z, g, kp, c, -1), c), 0), 0))'), F('fz = fo*nz'),
       F('w = land(z, g, sg, kp, fz, raise(z, g, fz, nz, tz))'), F('z = if(len(w) > 0, w*(dot(z, z)/len(w)), w)'), ['addc'],
       ['func', { name: 'turned', args: 'p, g, kp, fz', text: 'atan(-along(p, g)/max(sqrt(abs(p.z)*sqrt(lift(p, g, kp, fz))), 1e-20))' }],
       F('g2 = cmul(g, g)'), F('lam = min(1, join*abs(g2.x*c.y - g2.y*c.x))'),
       F('nk = on*beside(k, g)'), F('tk = nk*(1 - smoothstep(0.610865238, 0.785398163, fromtop(k, g)))'),
-      F('fk = nk*if(nk > 0, if(fromtop(k, g) < 0.698131701, beyond(copy(k, g, kp, c, if(behind(k, g, kp) > 0.414213562, -1, 1)), c), 0), 0)'),
+      F('fk = nk*if(nk > 0, if(fromtop(k, g) < 0.698131701, beyond(copy(k, g, kp, c, 1), c)*beyond(copy(k, g, kp, c, -1), c), 0), 0)'),
       F('wk = land(k, g, cos(pi*clamp((turned(k, g, kp, fk) - pi/8)/(3*pi/8*lam), 0, 1)), kp, fk, raise(k, g, fk, nk, tk))'), F('k = if(len(wk) > 0, wk*(dot(k, k)/len(wk)), wk) + c'),
       ['o_colours', { out: 'colours', a0: 'if(lam > 0.000001, k, z)' }]] },
     { name: 'Parts carried by the orbit', lab: 'partsorbit', steps: [['keep', { name: 'u', start: 'vec(0, 0, 0)' }], F('u = same(if(count < 1.5, flat(z), cpow(u, n) + flat(c)))'), ...fitBend, ['addc']] });
